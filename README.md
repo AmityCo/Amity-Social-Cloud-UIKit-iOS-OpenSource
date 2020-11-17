@@ -19,6 +19,7 @@ UpstraUIKit is a delightful networking library for iOS. It is extending the powe
 ## Requirements
 
 | UpstraUIKit Version | Minimum iOS Target  | Swift Version | Xcode Version |
+
 | v1.4.2 | iOS 11.1 | Swift 5 | Xcode 11.7 |
 
 ## Dependencies
@@ -28,6 +29,8 @@ UpstraUIKit has dependencies with Realm. Currently we are only able to work with
 ## Sample App
 
 UpstraUIKit has sample app you can play along with it. It is written with Swift.
+
+_Please build the target `Release Framework` once before running `SampleApp` target._
 
 ## License
 
