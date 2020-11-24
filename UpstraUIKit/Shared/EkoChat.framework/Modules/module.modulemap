@@ -1,0 +1,11 @@
+framework module EkoChat {
+  umbrella header "EkoChat.h"
+
+  export *
+  module * { export * }
+}
+
+module EkoChat.Swift {
+    header "EkoChat-Swift.h"
+    requires objc
+}

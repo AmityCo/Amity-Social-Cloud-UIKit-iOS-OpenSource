@@ -1,0 +1,187 @@
+/* 
+  Profile.strings
+  UpstraUIKit
+
+  Created by Sarawoot Khunsri on 8/6/2563 BE.
+  Copyright © 2563 Eko Communication. All rights reserved.
+*/
+
+
+"likes" = "%@ likes";
+"comments" = "%@ comments";
+"members" = "%@ members";
+
+"follow" = "Follow";
+"chat_title" = "Chat";
+"recent_title" = "Recent";
+"directory_title" = "Directory";
+"camera" = "Camera";
+"file" = "File";
+"album" = "Album";
+"location" = "Location";
+"image_gallery" = "Image Gallery";
+"moderator" = "Moderator";
+
+"edit_message_title" = "Edit message";
+"close" = "Close";
+"save" = "Save";
+"cancel" = "Cancel";
+"delete" = "Delete";
+"edit" = "Edit";
+"done" = "Done";
+"ok" = "OK";
+"post" = "Post";
+"report" = "Report";
+"discard" = "Discard";
+"leave" = "Leave";
+"like" = "Like";
+"liked" = "Liked";
+"reply" = "Reply";
+"general" = "General";
+"anonymous" = "Anonymous";
+
+"no_user_found" = "No user found";
+"search_results" = "Search results";
+"search_community_not_found" = "No community found";
+"search" = "Search";
+
+"text_message_placeholder" = "Type message";
+
+"message_delete" = "Message deleted • %@";
+"message_edit" = "Edited • %@";
+"message_readmore" = "...Read more";
+
+// MARK: - Message List
+"message_list_alert_error_message_title" = "Error sending message";
+"message_list_alert_error_message_desc" = "Please try again";
+"message_list_alert_delete_error_title" = "Your message was not sent";
+"message_list_alert_delete_title" = "Delete this message?";
+"message_list_alert_delete_desc" = "Message will be also be permanently removed from your friend's devices.";
+"message_list_sending" = "Sending...";
+
+// MARK: - Empty
+"empty_chat_list" = "No conversations";
+"empty_newsfeed_title" = "Your feed is empty";
+"empty_newsfeed_subtitle" = "Find community or create your own";
+"empty_newsfeed_explore_button" = "Explore community";
+"empty_newsfeed_create_button" = "Create community";
+"empty_newsfeed_start_your_first_post" = "Start your first post";
+"empty_title_no_posts" = "No posts yet";
+
+// MARK: - Eko Create Community
+"create_community_title" = "Create Community";
+"create_community_name_title" = "Community name*";
+"create_community_name_placeholder" = "Name your community";
+"create_community_about_title" = "About";
+"create_community_about_placeholder" = "Enter description";
+"create_community_category_title" = "Category";
+"create_community_category_placeholder" = "Please select category";
+"create_community_admin_rule_title" = "Only admin can post";
+"create_community_admin_rule_desc" = "Choose to allow Only Admins to create posts in this community.";
+"create_community_public_title" = "Public";
+"create_community_public_desc" = "Anyone can join, view, and search the posts in this community.";
+"create_community_private_title" = "Private";
+"create_community_private_desc" = "Only members invited by the moderators can join, view, and search the posts in this community.";
+"create_community_add_member_title" = "Add members*";
+"create_community_name_already_taken" = "This name has already been taken.";
+"create_community_button_create" = "Create community";
+"create_community_alert_title" = "Leave without finishing?";
+"create_community_alert_desc" = "Your progress won't be saved and your group won't be created.";
+
+// MARK: - Select Member List
+"select_member_list_title" = "Select member";
+"select_member_list_selected_title" = "%@ Selected";
+
+// MARK: - Category selection
+"category_selection_title" = "Select category";
+"category_selection_title_2" = "Category";
+
+// MARK: - My Community
+"my_community_title" = "My Community";
+"my_community_see_all" = "See all";
+// MARK: - Newsfeed
+"newsfeed_title" = "Newsfeed";
+
+// MARK: - Explore
+"explore_title" = "Explore";
+
+// MARK: - Community home page
+"community_home_title" = "Community";
+
+// MARK: - Community detail page
+"community_detail_post_count" = "%@ posts";
+"community_detail_member_count" = "%@ members";
+"community_detail_join_button" = "Join";
+"community_detail_message_button" = "Message";
+"community_detail_edit_profile_button" = "Edit Profile";
+// MARK: - Timeline
+"timeline_title" = "Timeline";
+
+// MARK: - Post creation
+"post_creation_my_timeline" = "My Timeline";
+"post_creation_text_placeholder" = "What’s going on...";
+"post_creation_discard_post_title" = "Discard Post?";
+"post_creation_discard_post_message" = "Do you want to discard your post?";
+
+// MARK: - Post detail
+"post_detail_text_placeholder" = "Say something nice";
+"post_detail_deleted_item" = "This comment has been deleted.";
+"post_detail_view_all_replies" = "View all replies";
+"post_detail_join_community_message" = "Join community to interact with all posts";
+"post_detail_edit_post" = "Edit post";
+"post_detail_delete_post" = "Delete post";
+"post_detail_report_post" = "Report post";
+"post_detail_edit_comment" = "Edit comment";
+"post_detail_delete_comment" = "Delete comment";
+"post_detail_report_comment" = "Report comment";
+"post_detail_delete_comment_title" = "Delete this comment";
+"post_detail_delete_comment_message" = "This comment will be permanently deleted. You’ll no longer to see and find this comment";
+"post_detail_discard_comment_title" = "Discard Comment?";
+"post_detail_discard_comment_message" = "Do you want to discard your comment?";
+"post_detail_delete_post_title" = "Delete this post";
+"post_detail_delete_post_message" = "This post will be permanently deleted. You’ll no longer to see and find this post";
+"post_detail_comment_edited" = "%@ • Edited";
+
+// MARK: - Post to
+"post_to_title" = "Post to";
+"post_to_post_as_community_title" = "Post as Community";
+"post_to_post_as_community_message" = "This option allows you to post on behalf of the community account.";
+
+// MARK: - Recommended Community
+"recommended_community_title" = "Recommended for you";
+
+// MARK: - Trending Community
+"trending_community_title" = "Today’s Trending";
+"trending_community_category_and_member" = "%@ • %@ members";
+
+// MARK: - Categories
+"category_title" = "Categories";
+
+// MARK: - Community Settings
+"community_settings_edit_profile" = "Edit Profile";
+"community_settings_members" = "Members";
+"community_settings_close_community" = "Close Community";
+"community_settings_leave_community" = "Leave Community";
+"community_settings_alert_close_title" = "Close community?";
+"community_settings_alert_close_desc" = "All members will be removed from the community. All posts, messages, reactions, and media shared in community will be deleted. This cannot be undone.";
+"community_settings_alert_leave_title" = "Leave community?";
+"community_settings_alert_leave_desc" = "You won’t no longer be able to post and interact in this community after leaving.";
+
+// MARK: - Not support role
+"role_permission_alert_desc" = "You don't have permission to perform this action right now , please contact administrator for more info.";
+
+// MARK: - Community member settings
+"community_member_settings_title" = "Members";
+"community_member_settings_options_report" = "Report user";
+
+// MARK: - Edit User Profile
+"edit_user_profile_title" = "Edit Profile";
+"edit_user_profile_display_name_title" = "Display name";
+"edit_user_profile_description_title" = "About";
+
+// MARK: - HUD Message
+"hud_somthing_went_wrong" = "Oops!\nSomething went wrong";
+"hud_successfully_created" = "Successfully\ncreated";
+"hud_successfully_updated" = "Successfully\nupdated";
+"hud_report_sent" = "Report sent";
+"hud_delete" = "Delete";
