@@ -11,9 +11,9 @@ UpstraUIKit is a delightful networking library for iOS. It is extending the powe
 
 ## Requirements
 
-| UpstraUIKit Version | Minimum iOS Target  | Swift Version | Xcode Version |
+| UpstraUIKit Version | EkoChatSDK Version | Minimum iOS Target  | Swift Version | Xcode Version |
 
-| v1.5.2 | iOS 11.1 | Swift 5 | Xcode 12 |
+| v1.5.2 | v4.2.0 | iOS 11.1 | Swift 5 | Xcode 12.2 |
 
 ## Dependencies
 
