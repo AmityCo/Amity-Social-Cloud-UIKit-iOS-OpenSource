@@ -26,7 +26,7 @@ final class EkoCommunityMemberViewController: UIViewController {
     init(pageTitle: String, viewModel: EkoCommunityMemberScreenViewModelType) {
         self.pageTitle = pageTitle
         self.screenViewModel = viewModel
-        super.init(nibName: EkoCommunityMemberViewController.identifier, bundle: UpstraUIKit.bundle)
+        super.init(nibName: EkoCommunityMemberViewController.identifier, bundle: UpstraUIKitManager.bundle)
     }
     
     required init?(coder: NSCoder) {

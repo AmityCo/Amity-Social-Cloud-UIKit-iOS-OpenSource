@@ -35,7 +35,7 @@ class EkoCommunityTableViewCell: UITableViewCell, Nibbable {
     func configure(with type: CommunityCellType) {
         switch type {
         case .myFeed:
-            avatarView.setImage(withImageId: UpstraUIKitManager.shared.client.currentUser?.object?.avatarFileId ?? "", placeholder: EkoIconSet.defaultAvatar)
+            avatarView.setImage(withImageId: UpstraUIKitManagerInternal.shared.client.currentUser?.object?.avatarFileId ?? "", placeholder: EkoIconSet.defaultAvatar)
             titleLabel.text = EkoLocalizedStringSet.postCreationMyTimelineTitle
             badgeImageView.isHidden = false
         case .community(let community):

@@ -47,7 +47,7 @@ class EkoGalleryCollectionView: UICollectionView {
         setupLayout()
         contentInset = UIEdgeInsets(top: Constant.paddingSpacing, left: Constant.paddingSpacing, bottom: Constant.paddingSpacing, right: Constant.paddingSpacing)
         isScrollEnabled = false
-        register(UINib(nibName: EkoGalleryCollectionViewCell.identifier, bundle: UpstraUIKit.bundle), forCellWithReuseIdentifier: EkoGalleryCollectionViewCell.identifier)
+        register(UINib(nibName: EkoGalleryCollectionViewCell.identifier, bundle: UpstraUIKitManager.bundle), forCellWithReuseIdentifier: EkoGalleryCollectionViewCell.identifier)
         dataSource = self
         delegate = self
     }

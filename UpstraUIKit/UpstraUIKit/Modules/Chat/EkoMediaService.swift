@@ -13,7 +13,7 @@ final class EkoMediaService {
     private init() { }
     static let shared = EkoMediaService()
     private let cache = ImageCache()
-    private let media = EkoMediaRepository(client: UpstraUIKitManager.shared.client)
+    private let media = EkoMediaRepository(client: UpstraUIKitManagerInternal.shared.client)
     
     func dowloadImage(messageId: String, size: EkoMediaSize, completion: @escaping (UIImage?) -> Void) {
         if let cacheImage = cache.image(forKey: messageId) {

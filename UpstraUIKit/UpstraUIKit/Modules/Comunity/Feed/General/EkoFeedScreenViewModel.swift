@@ -16,9 +16,9 @@ class EkoFeedScreenViewModel: EkoFeedScreenViewModelType {
     
     weak var delegate: EkoFeedScreenViewModelDelegate?
     
-    private let feedRepository = EkoFeedRepository(client: UpstraUIKitManager.shared.client)
-    private let fileRepository = EkoFileRepository(client: UpstraUIKitManager.shared.client)
-    private let reactionRepository = EkoReactionRepository(client: UpstraUIKitManager.shared.client)
+    private let feedRepository = EkoFeedRepository(client: UpstraUIKitManagerInternal.shared.client)
+    private let fileRepository = EkoFileRepository(client: UpstraUIKitManagerInternal.shared.client)
+    private let reactionRepository = EkoReactionRepository(client: UpstraUIKitManagerInternal.shared.client)
     private var feedCollection: EkoCollection<EkoPost>?
     private var feedToken: EkoNotificationToken?
     
@@ -41,7 +41,7 @@ class EkoFeedScreenViewModel: EkoFeedScreenViewModelType {
             feedCollection = feedRepository.getMyFeedSorted(by: .lastCreated, includeDeleted: false)
         case .userFeed(let userId):
             // If current userId is passing through .userFeed, handle this case as .myFeed type.
-            if userId == UpstraUIKitManager.shared.client.currentUserId {
+            if userId == UpstraUIKitManagerInternal.shared.client.currentUserId {
                 feedCollection = feedRepository.getMyFeedSorted(by: .lastCreated, includeDeleted: false)
             } else {
                 feedCollection = feedRepository.getUserFeed(userId, sortBy: .lastCreated, includeDeleted: false)
@@ -119,12 +119,12 @@ class EkoFeedScreenViewModel: EkoFeedScreenViewModelType {
     }
     
     func deleteComment(comment: EkoCommentModel) {
-        let commentEditor = EkoCommentEditor(client: UpstraUIKitManager.shared.client, comment: comment.comment)
+        let commentEditor = EkoCommentEditor(client: UpstraUIKitManagerInternal.shared.client, comment: comment.comment)
         commentEditor.delete(completion:  nil)
     }
     
     func editComment(comment: EkoCommentModel, text: String) {
-        let commentEditor = EkoCommentEditor(client: UpstraUIKitManager.shared.client, comment: comment.comment)
+        let commentEditor = EkoCommentEditor(client: UpstraUIKitManagerInternal.shared.client, comment: comment.comment)
         commentEditor.editText(text, completion: nil)
     }
     

@@ -20,7 +20,7 @@ class SettingViewController: UIViewController {
         
         guard let preset = Preset(rawValue: sender.tag) else { return }
         UserDefaults.standard.theme = sender.tag
-        UpstraUIKit.set(theme: preset.theme)
+        UpstraUIKitManager.set(theme: preset.theme)
         
         let alert = UIAlertController(title: "Customize Theme", message: "Selected Preset \(sender.tag + 1)", preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))

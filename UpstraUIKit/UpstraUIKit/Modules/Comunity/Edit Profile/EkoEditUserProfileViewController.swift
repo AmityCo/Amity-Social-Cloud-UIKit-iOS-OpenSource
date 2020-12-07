@@ -40,7 +40,7 @@ final public class EkoEditUserProfileViewController: EkoViewController {
     
     private init() {
         self.screenViewModel = EkoEditUserProfileScreenViewModel()
-        super.init(nibName: EkoEditUserProfileViewController.identifier, bundle: UpstraUIKit.bundle)
+        super.init(nibName: EkoEditUserProfileViewController.identifier, bundle: UpstraUIKitManager.bundle)
         
         title = EkoLocalizedStringSet.editUserProfileTitle
         screenViewModel?.delegate = self

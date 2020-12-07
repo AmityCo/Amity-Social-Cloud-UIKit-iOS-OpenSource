@@ -15,7 +15,7 @@ public class EkoCommunityHomePageViewController: EkoPageViewController {
     public let exploreVC = EkoExploreViewController.make()
     
     private init() {
-        super.init(nibName: EkoCommunityHomePageViewController.identifier, bundle: UpstraUIKit.bundle)
+        super.init(nibName: EkoCommunityHomePageViewController.identifier, bundle: UpstraUIKitManager.bundle)
         title = EkoLocalizedStringSet.communityHomeTitle
     }
     

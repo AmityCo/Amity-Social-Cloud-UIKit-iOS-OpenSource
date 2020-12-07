@@ -58,6 +58,8 @@
 "message_list_alert_delete_title" = "Delete this message?";
 "message_list_alert_delete_desc" = "Message will be also be permanently removed from your friend's devices.";
 "message_list_sending" = "Sending...";
+"message_list_hold_to_record" = "Hold to record";
+"message_list_release_to_send" = "Release to send";
 
 // MARK: - Empty
 "empty_chat_list" = "No conversations";
@@ -185,3 +187,6 @@
 "hud_successfully_updated" = "Successfully\nupdated";
 "hud_report_sent" = "Report sent";
 "hud_delete" = "Delete";
+
+// MARK: - Popover Text Message
+"popover_message_is_too_short" = "Message is too short.";

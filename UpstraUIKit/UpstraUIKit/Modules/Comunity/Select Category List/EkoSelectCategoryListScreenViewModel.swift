@@ -12,7 +12,7 @@ class EkoSelectCategoryListScreenViewModel: EkoSelectCategoryListScreenViewModel
     
     weak var delegate: EkoSelectCategoryListScreenViewModelDelegate?
     
-    private let categoryRepository = EkoCommunityRepository(client: UpstraUIKitManager.shared.client)
+    private let categoryRepository = EkoCommunityRepository(client: UpstraUIKitManagerInternal.shared.client)
     private var categoryCollection: EkoCollection<EkoCommunityCategory>?
     private var categoryToken: EkoNotificationToken?
     

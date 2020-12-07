@@ -17,7 +17,7 @@ final class EkoUserManager {
     
     func isModerator() -> Bool {
         return false
-        guard let userRoles = UpstraUIKitManager.shared.client.currentUser?.object?.roles as? [String] else { return false }
+        guard let userRoles = UpstraUIKitManagerInternal.shared.client.currentUser?.object?.roles as? [String] else { return false }
         
         for element in userRoles where element == "moderator" {
             for item in roles where item == element {

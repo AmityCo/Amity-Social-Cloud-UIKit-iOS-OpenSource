@@ -10,11 +10,11 @@ import EkoChat
 
 class EkoPostDetailScreenViewModel: EkoPostDetailScreenViewModelType {
     
-    private let feedRepository: EkoFeedRepository = EkoFeedRepository(client: UpstraUIKitManager.shared.client)
-    private let reactionRepository = EkoReactionRepository(client: UpstraUIKitManager.shared.client)
+    private let feedRepository: EkoFeedRepository = EkoFeedRepository(client: UpstraUIKitManagerInternal.shared.client)
+    private let reactionRepository = EkoReactionRepository(client: UpstraUIKitManagerInternal.shared.client)
     private var postObjectToken: EkoNotificationToken?
     
-    private let commentRepository = EkoCommentRepository(client: UpstraUIKitManager.shared.client)
+    private let commentRepository = EkoCommentRepository(client: UpstraUIKitManagerInternal.shared.client)
     private var commentCollectionToken: EkoNotificationToken?
     private var commentCollection: EkoCollection<EkoComment>?
     
@@ -85,14 +85,14 @@ class EkoPostDetailScreenViewModel: EkoPostDetailScreenViewModelType {
     }
     
     func editComment(comment: EkoCommentModel, text: String) {
-        let commentEditor = EkoCommentEditor(client: UpstraUIKitManager.shared.client, comment: comment.comment)
+        let commentEditor = EkoCommentEditor(client: UpstraUIKitManagerInternal.shared.client, comment: comment.comment)
         commentEditor.editText(text, completion: { (success, error) in
             // Do something with success
         })
     }
     
     func deleteComment(comment: EkoCommentModel) {
-        let commentEditor = EkoCommentEditor(client: UpstraUIKitManager.shared.client, comment: comment.comment)
+        let commentEditor = EkoCommentEditor(client: UpstraUIKitManagerInternal.shared.client, comment: comment.comment)
         commentEditor.delete(completion: { (success, _) in
             // Do something with success
         })

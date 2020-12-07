@@ -32,7 +32,7 @@ class EkoEditTextViewController: EkoViewController {
     private init(message: String, editMode: EditMode) {
         self.message = message
         self.editMode = editMode
-        super.init(nibName: EkoEditTextViewController.identifier, bundle: UpstraUIKit.bundle)
+        super.init(nibName: EkoEditTextViewController.identifier, bundle: UpstraUIKitManager.bundle)
         title = EkoLocalizedStringSet.editMessageTitle
     }
     

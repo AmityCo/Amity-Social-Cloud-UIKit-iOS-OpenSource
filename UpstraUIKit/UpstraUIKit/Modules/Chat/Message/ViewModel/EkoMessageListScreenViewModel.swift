@@ -24,6 +24,17 @@ final class EkoMessageListScreenViewModel: EkoMessageListScreenViewModelType {
         case didDeeleteErrorMessage(indexPath: IndexPath)
         case didSendImage
         case didUploadImage(indexPath: IndexPath)
+        case didSendAudio
+    }
+    
+    enum AudioRecordingEvents {
+        case show
+        case hide
+        case deleting
+        case cancelingDelete
+        case delete
+        case record
+        case timeoutRecord
     }
 
     enum CellEvents {
@@ -35,14 +46,15 @@ final class EkoMessageListScreenViewModel: EkoMessageListScreenViewModelType {
     }
     
     enum KeyboardInputEvents {
-        case `default`, composeBarMenu
+        case `default`, composeBarMenu, audio
     }
     
     weak var delegate: EkoMessageListScreenViewModelDelegate?
+        
     // MARK: - Repository
     private let membershipParticipation: EkoChannelParticipation!
     private let channelRepository: EkoChannelRepository!
-    private let messageRepository: EkoMessageRepository!
+    private var messageRepository: EkoMessageRepository!
     private var editor: EkoMessageEditor?
     
     // MARK: - Collection
@@ -52,7 +64,8 @@ final class EkoMessageListScreenViewModel: EkoMessageListScreenViewModelType {
     private var channelNotificationToken: EkoNotificationToken?
     private var messagesNotificationToken: EkoNotificationToken?
     private var createMessageNotificationToken: EkoNotificationToken?
-    private var createMessageImageNotificationToken: EkoNotificationToken?
+    
+    private var messageAudio: EkoMessageAudioController?
     
     // MARK: - Properties
     private let channelId: String
@@ -60,9 +73,10 @@ final class EkoMessageListScreenViewModel: EkoMessageListScreenViewModelType {
     init(channelId: String) {
         self.channelId = channelId
         
-        membershipParticipation = EkoChannelParticipation(client: UpstraUIKitManager.shared.client, andChannel: channelId)
-        channelRepository = EkoChannelRepository(client: UpstraUIKitManager.shared.client)
-        messageRepository = EkoMessageRepository(client: UpstraUIKitManager.shared.client)
+        membershipParticipation = EkoChannelParticipation(client: UpstraUIKitManagerInternal.shared.client, andChannel: channelId)
+        channelRepository = EkoChannelRepository(client: UpstraUIKitManagerInternal.shared.client)
+        messageRepository = EkoMessageRepository(client: UpstraUIKitManagerInternal.shared.client)
+        EkoMessageMediaService.shared.repository = messageRepository
     }
     
     // MARK: - DataSource
@@ -145,7 +159,7 @@ extension EkoMessageListScreenViewModel {
         }
     }
     
-    func send(with text: String?) {
+    func send(withText text: String?) {
         guard let text = text else { return }
         createMessageNotificationToken = messageRepository.createTextMessage(withChannelId: channelId, text: text)
             .observe { [weak self] (_message, error) in
@@ -156,32 +170,31 @@ extension EkoMessageListScreenViewModel {
     }
     
     func editText(with text: String, messageId: String) {
-        editor = EkoMessageEditor(client: UpstraUIKitManager.shared.client, messageId: messageId)
+        editor = EkoMessageEditor(client: UpstraUIKitManagerInternal.shared.client, messageId: messageId)
         editor?.editText(text, completion: { [weak self] (status, error) in
             if let error = error {
                 return
             }
             self?.delegate?.screenViewModelEvents(for: .didEditText)
             self?.editor = nil
-            self?.scrollToBottom()
         })
     }
     
-    func delete(with messageId: String, at indexPath: IndexPath) {
-        editor = EkoMessageEditor(client: UpstraUIKitManager.shared.client, messageId: messageId)
+    func delete(withMessage message: EkoMessageModel, at indexPath: IndexPath) {
+        editor = EkoMessageEditor(client: UpstraUIKitManagerInternal.shared.client, messageId: message.messageId)
         editor?.delete(completion: { [weak self] (status, error) in
-            if let error = error {
-                return
+            guard error == nil , status else { return }
+            switch message.messageType {
+            case .audio:
+                EkoFileCache.shared.deleteFile(for: .audioDireectory, fileName: message.messageId + ".m4a")
+            default:
+                break
             }
-            
-            if status {
-                self?.delegate?.screenViewModelEvents(for: .didDelete(indexPath: indexPath))
-                self?.editor = nil
-                self?.scrollToBottom()
-            }
-            
+            self?.delegate?.screenViewModelEvents(for: .didDelete(indexPath: indexPath))
+            self?.editor = nil
         })
     }
+    
     
     func deleteErrorMessage(with messageId: String, at indexPath: IndexPath) {
         messageRepository.deleteFailedMessage(messageId) { [weak self] (status, error) in
@@ -247,6 +260,14 @@ extension EkoMessageListScreenViewModel {
         delegate?.screenViewModelCellEvents(for: event)
     }
     
+    func toggleShowDefaultKeyboardAndAudioKeyboard(_ sender: UIButton) {
+        let tag = sender.tag
+        if tag == 0 {
+            delegate?.screenViewModelToggleDefaultKeyboardAndAudioKeyboard(for: .audio)
+        } else if tag == 1 {
+            delegate?.screenViewModelToggleDefaultKeyboardAndAudioKeyboard(for: .default)
+        }
+    }
 }
 
 private extension EkoMessageListScreenViewModel {
@@ -287,13 +308,14 @@ private extension EkoMessageListScreenViewModel {
     }
 }
 
+// MARK: - Send Image
 extension EkoMessageListScreenViewModel {
     
-    func send(with image: UIImage) {
+    func send(withImage image: UIImage) {
         sendImageMessage(with: [image])
     }
     
-    func send(with images: [PHAsset]) {
+    func send(withImages images: [PHAsset]) {
         let mappingImage = images.compactMap { $0.getImage() }
         sendImageMessage(with: mappingImage)
     }
@@ -308,5 +330,25 @@ extension EkoMessageListScreenViewModel {
 
         queue.addOperations(operations, waitUntilFinished: false)
         
+    }
+}
+
+// MARK: - Send Audio
+extension EkoMessageListScreenViewModel {
+    func sendAudio() {
+        messageAudio = EkoMessageAudioController(channelId: channelId, repository: messageRepository)
+        messageAudio?.create { [weak self] in
+            self?.messageAudio = nil
+            self?.delegate?.screenViewModelEvents(for: .updateMessages)
+            self?.scrollToBottom()
+        }
+    }
+
+}
+
+// MARK: - Audio Recording
+extension EkoMessageListScreenViewModel {
+    func performAudioRecordingEvents(for event: AudioRecordingEvents) {
+        delegate?.screenViewModelAudioRecordingEvvents(for: event)
     }
 }

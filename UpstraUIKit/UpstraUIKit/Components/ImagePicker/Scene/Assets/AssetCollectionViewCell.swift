@@ -86,8 +86,8 @@ class AssetCollectionViewCell: UICollectionViewCell {
             selectionOverlayView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
             selectionOverlayView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
             selectionOverlayView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
-            selectionView.heightAnchor.constraint(equalToConstant: 25),
-            selectionView.widthAnchor.constraint(equalToConstant: 25),
+            selectionView.heightAnchor.constraint(equalToConstant: 28),
+            selectionView.widthAnchor.constraint(equalToConstant: 28),
             selectionView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -4),
             selectionView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -4)
         ])

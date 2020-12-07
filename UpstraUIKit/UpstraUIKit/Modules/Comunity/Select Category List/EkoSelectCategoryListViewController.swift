@@ -33,7 +33,7 @@ class EkoSelectCategoryListViewController: EkoViewController {
     
     private init(referenceCategoryId: String?) {
         self.referenceCategoryId = referenceCategoryId
-        super.init(nibName: EkoSelectCategoryListViewController.identifier, bundle: UpstraUIKit.bundle)
+        super.init(nibName: EkoSelectCategoryListViewController.identifier, bundle: UpstraUIKitManager.bundle)
         title = EkoLocalizedStringSet.categorySelectionTitle
     }
     

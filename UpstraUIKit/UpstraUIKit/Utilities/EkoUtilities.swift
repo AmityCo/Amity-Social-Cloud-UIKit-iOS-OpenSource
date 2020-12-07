@@ -16,6 +16,6 @@ struct EkoUtilities {
     }
     
     static func UINibs(nibName: String) -> UINib {
-        return UINib(nibName: nibName, bundle: UpstraUIKit.bundle)
+        return UINib(nibName: nibName, bundle: UpstraUIKitManager.bundle)
     }
 }

@@ -10,6 +10,7 @@ import UIKit
 import EkoChat
 
 public final class EkoMessageModel {
+    var object: EkoMessage
     public var messageId: String
     public var userId: String
     public var displayName: String?
@@ -21,11 +22,13 @@ public final class EkoMessageModel {
     public var date: String
     public var time: String
     public var data: [AnyHashable : Any]?
+    
     public var isOwner: Bool {
-        return userId == UpstraUIKitManager.shared.client.currentUserId
+        return userId == UpstraUIKitManagerInternal.shared.client.currentUserId
     }
     
     public init(object: EkoMessage) {
+        self.object = object
         self.messageId = object.messageId
         self.userId = object.userId
         self.displayName = object.user?.displayName ?? EkoLocalizedStringSet.anonymous

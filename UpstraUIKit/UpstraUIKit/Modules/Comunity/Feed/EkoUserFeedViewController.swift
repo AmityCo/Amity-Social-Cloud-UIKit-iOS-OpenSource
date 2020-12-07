@@ -53,11 +53,8 @@ public class EkoUserFeedViewController: EkoViewController {
         createPostButton.image = EkoIconSet.iconCreatePost
         createPostButton.add(to: view, position: .bottomRight)
         createPostButton.actionHandler = { [weak self] button in
-            // When create button tapped, automatically navigate to post page with `myfeed` target.
-            let vc = EkoPostCreateViewController.make(postTarget: .myFeed)
-            let nvc = UINavigationController(rootViewController: vc)
-            nvc.modalPresentationStyle = .overFullScreen
-            self?.present(nvc, animated: true, completion: nil)
+            guard let strongSelf = self else { return }
+            EkoEventHandler.shared.createPostDidTap(from: strongSelf, postTarget: .myFeed)
         }
         
         // We can't post on other user feed.
@@ -67,7 +64,7 @@ public class EkoUserFeedViewController: EkoViewController {
             createPostButton.isHidden = false
         case .userFeed(let userId):
             // If current userId is passing through .userFeed, handle this case as .myFeed type.
-            createPostButton.isHidden = UpstraUIKitManager.shared.client.currentUserId != userId
+            createPostButton.isHidden = UpstraUIKitManagerInternal.shared.client.currentUserId != userId
         default:
             createPostButton.isHidden = true
         }

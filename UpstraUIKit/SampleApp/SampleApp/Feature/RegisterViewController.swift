@@ -43,7 +43,7 @@ class RegisterViewController: UIViewController {
     
     private func register() {
         let userId = textField.text!.isEmpty ? "victimIOS" : textField.text!
-        UpstraUIKit.registerDevice(withUserId: userId, displayName: userId.uppercased())
+        UpstraUIKitManager.registerDevice(withUserId: userId, displayName: userId.uppercased())
         let tabbar = TabbarViewController()
         navigationController?.pushViewController(tabbar, animated: true)
     }

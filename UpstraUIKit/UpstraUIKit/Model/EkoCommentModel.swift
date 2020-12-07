@@ -51,7 +51,7 @@ struct EkoCommentModel {
     }
     
     var isOwner: Bool {
-        return userId == UpstraUIKitManager.shared.client.currentUserId
+        return userId == UpstraUIKitManagerInternal.shared.client.currentUserId
     }
     
 }

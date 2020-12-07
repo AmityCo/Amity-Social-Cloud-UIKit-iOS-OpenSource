@@ -41,7 +41,7 @@ public class BottomSheetTitleView: UIView, BottomSheetComponent {
         
         titleLabel.textAlignment = .center
         titleLabel.text = "Sheet Title"
-        titleLabel.font = UIFont.systemFont(ofSize: 17, weight: .bold)
+        titleLabel.font = EkoFontSet.title
     }
     
     public func setupRightButton() {

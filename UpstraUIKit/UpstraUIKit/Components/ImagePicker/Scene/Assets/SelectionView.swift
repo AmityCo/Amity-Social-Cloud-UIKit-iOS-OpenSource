@@ -71,7 +71,9 @@ class SelectionView: UIView {
         let group = selectionFrame.insetBy(dx: 3, dy: 3)
         
         //// SelectedOval Drawing
-        let selectedOvalPath = UIBezierPath(ovalIn: CGRect(x: group.minX + floor(group.width * 0.0 + 0.5), y: group.minY + floor(group.height * 0.0 + 0.5), width: floor(group.width * 1.0 + 0.5) - floor(group.width * 0.0 + 0.5), height: floor(group.height * 1.0 + 0.5) - floor(group.height * 0.0 + 0.5)))
+        let minimumSize: CGFloat = 0.5
+        
+        let selectedOvalPath = UIBezierPath(ovalIn: CGRect(x: group.minX + floor(group.width * 0.0 + minimumSize), y: group.minY + floor(group.height * 0.0 + minimumSize), width: floor(group.width * 1.0 + minimumSize) - floor(group.width * 0.0 + minimumSize), height: floor(group.height * 1.0 + minimumSize) - floor(group.height * 0.0 + minimumSize)))
         context?.saveGState()
         context?.setShadow(offset: shadow2Offset, blur: shadow2BlurRadius, color: settings.theme.selectionShadowColor.cgColor)
         settings.theme.selectionFillColor.setFill()

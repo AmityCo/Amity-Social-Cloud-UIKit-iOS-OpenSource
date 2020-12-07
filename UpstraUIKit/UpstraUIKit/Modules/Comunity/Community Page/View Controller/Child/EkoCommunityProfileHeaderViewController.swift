@@ -22,14 +22,17 @@ final class EkoCommunityProfileHeaderViewController: EkoViewController {
     @IBOutlet private var chatButton: EkoButton!
     @IBOutlet private var actionStackView: UIStackView!
     // MARK: - Properties
+    
+    private let settings: EkoCommunityProfilePageSettings
     private let screenViewModel: EkoCommunityProfileScreenViewModelType
     
     // MARK: - Callback
     
     // MARK: - View lifecycle
-    private init(viewModel: EkoCommunityProfileScreenViewModelType) {
+    private init(viewModel: EkoCommunityProfileScreenViewModelType, settings: EkoCommunityProfilePageSettings) {
         self.screenViewModel = viewModel
-        super.init(nibName: EkoCommunityProfileHeaderViewController.identifier, bundle: UpstraUIKit.bundle)
+        self.settings = settings
+        super.init(nibName: EkoCommunityProfileHeaderViewController.identifier, bundle: UpstraUIKitManager.bundle)
     }
     
     required init?(coder: NSCoder) {
@@ -42,8 +45,8 @@ final class EkoCommunityProfileHeaderViewController: EkoViewController {
         bindingViewModel()
     }
     
-    static func make(with viewModel: EkoCommunityProfileScreenViewModelType) -> EkoCommunityProfileHeaderViewController {
-        let vc = EkoCommunityProfileHeaderViewController(viewModel: viewModel)
+    static func make(with viewModel: EkoCommunityProfileScreenViewModelType, settings: EkoCommunityProfilePageSettings) -> EkoCommunityProfileHeaderViewController {
+        let vc = EkoCommunityProfileHeaderViewController(viewModel: viewModel, settings: settings)
         return vc
     }
     
@@ -155,7 +158,8 @@ private extension EkoCommunityProfileHeaderViewController {
     }
     
     @objc func chatTap() {
-        //        buttonTapHandler?(.chat)
+        let channelId = screenViewModel.community.value?.channelId ?? ""
+        EkoEventHandler.shared.communityChannelDidTap(from: self, channelId: channelId)
     }
     
     @objc func memberTap() {
@@ -182,7 +186,7 @@ private extension EkoCommunityProfileHeaderViewController {
                 strongSelf.actionButton.tag = 0
                 strongSelf.actionButton.isHidden = false
             case .joinNotCreator:
-                strongSelf.chatButton.isHidden = true
+                strongSelf.chatButton.isHidden = strongSelf.settings.shouldChatButtonHide
                 strongSelf.actionButton.setTitle(EkoLocalizedStringSet.communityDetailMessageButton, for: .normal)
                 strongSelf.actionButton.setImage(EkoIconSet.iconChat2, position: .left)
                 strongSelf.actionButton.tintColor = EkoColorSet.secondary
@@ -193,7 +197,7 @@ private extension EkoCommunityProfileHeaderViewController {
                 strongSelf.actionButton.tag = 1
                 strongSelf.actionButton.isHidden = true
             case .joinAndCreator:
-                strongSelf.chatButton.isHidden = true
+                strongSelf.chatButton.isHidden = strongSelf.settings.shouldChatButtonHide
                 strongSelf.actionButton.setTitle(EkoLocalizedStringSet.communityDetailEditProfileButton, for: .normal)
                 strongSelf.actionButton.setImage(EkoIconSet.iconEdit, position: .left)
                 strongSelf.actionButton.tintColor = EkoColorSet.secondary

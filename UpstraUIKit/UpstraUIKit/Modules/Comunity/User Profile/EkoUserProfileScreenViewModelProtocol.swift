@@ -11,14 +11,11 @@ import EkoChat
 
 protocol EkoUserProfileScreenViewModelDataSource {
     var userId: String { get }
-    var user: EkoBoxBinding<EkoUserModel?> { get }
-    var userHeader: EkoBoxBinding<EkoUserModel?> { get }
-    var channel: EkoBoxBinding<EkoChannel?> { get }
+    func fetchUserData(completion: ((Result<EkoUserModel, Error>) -> Void)?)
 }
 
 protocol EkoUserProfileScreenViewModelAction {
-    func getInfo()
-    func createChannel()
+    func createChannel(completion: ((EkoChannel?) -> Void)?)
 }
 
 protocol EkoUserProfileScreenViewModelType: EkoUserProfileScreenViewModelAction, EkoUserProfileScreenViewModelDataSource {

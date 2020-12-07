@@ -10,12 +10,19 @@ import UIKit
 import Photos
 import EkoChat
 
-public protocol EkoPostViewControllerDelegate: class {
+public class EkoPostEditorSettings {
+    public init() { }
+    public var shouldCameraButtonHide: Bool = false
+    public var shouldPhotoButtonHide: Bool = false
+    public var shouldFileButtonHide: Bool = false
+}
+
+protocol EkoPostViewControllerDelegate: class {
     func postViewController(_ viewController: UIViewController, didCreatePost post: EkoPostModel)
     func postViewController(_ viewController: UIViewController, didUpdatePost post: EkoPostModel)
 }
 
-class EkoPostTextEditorViewController: EkoViewController {
+public class EkoPostTextEditorViewController: EkoViewController {
     
     enum Constant {
         static let maximumNumberOfImages: Int = 10
@@ -23,7 +30,12 @@ class EkoPostTextEditorViewController: EkoViewController {
     }
     
     // MARK: - Properties
-    private let screenViewModel = EkoPostTextEditorScreenViewModel()
+    
+    // Use specifically for edit mode
+    private var currentPost: EkoPostModel?
+    
+    private let settings: EkoPostEditorSettings
+    private var screenViewModel: EkoPostTextEditorScreenViewModelType = EkoPostTextEditorScreenViewModel()
     private let postTarget: EkoPostTarget
     private let postMode: EkoPostMode
     
@@ -33,7 +45,7 @@ class EkoPostTextEditorViewController: EkoViewController {
     private let separaterLine = UIView(frame: .zero)
     private let galleryView = EkoGalleryCollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout())
     private let fileView = EkoFileTableView(frame: .zero, style: .plain)
-    private let postMenuView = EkoPostTextEditorMenuView(frame: .zero)
+    private let postMenuView: EkoPostTextEditorMenuView
     private var postButton: UIBarButtonItem!
     private var galleryViewHeightConstraint: NSLayoutConstraint!
     private var fileViewHeightConstraint: NSLayoutConstraint!
@@ -46,14 +58,15 @@ class EkoPostTextEditorViewController: EkoViewController {
     
     weak var delegate: EkoPostViewControllerDelegate?
     
-    private init(postTarget: EkoPostTarget, postMode: EkoPostMode) {
+    init(postTarget: EkoPostTarget, postMode: EkoPostMode, settings: EkoPostEditorSettings) {
         self.postTarget = postTarget
         self.postMode = postMode
+        self.settings = settings
+        self.postMenuView = EkoPostTextEditorMenuView(settings: settings)
         super.init(nibName: nil, bundle: nil)
-        if case .edit(let post) = postMode {
-            fileView.configure(files: post.files)
-            galleryView.configure(images: post.images)
-            textView.text = post.text
+        
+        if case .edit(let postId) = postMode {
+            screenViewModel.dataSource.loadPost(for: postId)
         }
     }
     
@@ -61,8 +74,8 @@ class EkoPostTextEditorViewController: EkoViewController {
         fatalError("init(coder:) has not been implemented")
     }
     
-    static func make(postTarget: EkoPostTarget, postMode: EkoPostMode = .create) -> EkoPostTextEditorViewController {
-        let vc = EkoPostTextEditorViewController(postTarget: postTarget, postMode: postMode)
+    static func make(postTarget: EkoPostTarget, postMode: EkoPostMode = .create, settings: EkoPostEditorSettings = EkoPostEditorSettings()) -> EkoPostTextEditorViewController {
+        let vc = EkoPostTextEditorViewController(postTarget: postTarget, postMode: postMode, settings: settings)
         return vc
     }
     
@@ -217,7 +230,7 @@ class EkoPostTextEditorViewController: EkoViewController {
         view.endEditing(true)
         postButton.isEnabled = false
         
-        if case .edit(let post) = postMode {
+        if let post = currentPost {
             // update post
             screenViewModel.updatePost(oldPost: post, text: text, images: images, files: files)
         } else {
@@ -264,7 +277,7 @@ class EkoPostTextEditorViewController: EkoViewController {
             isPostValid = isFileValid
         }
         
-        if case .edit(let post) = postMode {
+        if let post = currentPost {
             let isTextChanged = textView.text != post.text
             let isImageChanged = galleryView.images != post.images
             let isDocumentChanged = fileView.files.map({ $0.id }) != post.files.map({ $0.id })
@@ -401,6 +414,14 @@ extension EkoPostTextEditorViewController: EkoFileTableViewDelegate {
 }
 
 extension EkoPostTextEditorViewController: EkoPostTextEditorScreenViewModelDelegate {
+    
+    func screenViewModelDidLoadPost(_ viewModel: EkoPostTextEditorScreenViewModel, post: EkoPost) {
+        // This will get call once when open with edit mode
+        currentPost = EkoPostModel(post: post)
+        fileView.configure(files: currentPost!.files)
+        galleryView.configure(images: currentPost!.images)
+        textView.text = currentPost!.text
+    }
     
     func screenViewModelDidCreatePost(_ viewModel: EkoPostTextEditorScreenViewModel, error: Error?) {
         postButton.isEnabled = true

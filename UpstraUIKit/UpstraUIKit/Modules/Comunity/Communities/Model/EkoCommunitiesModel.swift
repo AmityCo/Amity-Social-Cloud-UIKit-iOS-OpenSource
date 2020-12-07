@@ -27,7 +27,7 @@ public struct EkoCommunityModel {
     var categoryId: String?
     let avatarId: String
     var isCreator: Bool {
-        return UpstraUIKitManager.shared.client.currentUserId == userId
+        return UpstraUIKitManagerInternal.shared.client.currentUserId == userId
     }
     
     init(object: EkoCommunity) {

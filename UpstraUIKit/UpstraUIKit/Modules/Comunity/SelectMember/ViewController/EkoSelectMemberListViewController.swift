@@ -17,19 +17,11 @@ final public class EkoSelectMemberListViewController: EkoViewController {
     @IBOutlet private var noUserFoundLabel: UILabel!
     
     // MARK: - Properties
-    private var screenViewModel: EkoSelectMemberListScreenViewModelType
+    private var screenViewModel: EkoSelectMemberListScreenViewModelType = EkoSelectMemberListScreenViewModel()
     private var doneButton: UIBarButtonItem?
+    
     // MARK: - Callback handler
     var didSelectUserHandler: (([(String, [EkoSelectMemberModel])], [EkoSelectMemberModel]) -> Void)?
-    
-    private init() {
-        screenViewModel = EkoSelectMemberListScreenViewModel()
-        super.init(nibName: EkoSelectMemberListViewController.identifier, bundle: UpstraUIKit.bundle)
-    }
-    
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
     
     public override func viewDidLoad() {
         super.viewDidLoad()
@@ -43,7 +35,7 @@ final public class EkoSelectMemberListViewController: EkoViewController {
     }
     
     static func make(groupUsers: [(key: String, value: [EkoSelectMemberModel])] = [], selectedUsers: [EkoSelectMemberModel] = []) -> EkoSelectMemberListViewController {
-        let vc = EkoSelectMemberListViewController()
+        let vc = EkoSelectMemberListViewController(nibName: EkoSelectMemberListViewController.identifier, bundle: UpstraUIKitManager.bundle)
         vc.screenViewModel.action.updateAllUsersAndSelectedUsers(groupUsers: groupUsers, selectedUsers: selectedUsers)
         return vc
     }
@@ -97,7 +89,7 @@ final public class EkoSelectMemberListViewController: EkoViewController {
     }
     
     private func setupCollectionView() {
-        selectMemberCollectionView.register(UINib(nibName: EkoSelectMemberListCollectionViewCell.identifier, bundle: UpstraUIKit.bundle), forCellWithReuseIdentifier: EkoSelectMemberListCollectionViewCell.identifier)
+        selectMemberCollectionView.register(UINib(nibName: EkoSelectMemberListCollectionViewCell.identifier, bundle: UpstraUIKitManager.bundle), forCellWithReuseIdentifier: EkoSelectMemberListCollectionViewCell.identifier)
         selectMemberCollectionView.delegate = self
         selectMemberCollectionView.dataSource = self
         (selectMemberCollectionView.collectionViewLayout as? UICollectionViewFlowLayout)?.scrollDirection = .horizontal
@@ -112,7 +104,7 @@ final public class EkoSelectMemberListViewController: EkoViewController {
         noUserFoundLabel.font = EkoFontSet.title
         noUserFoundLabel.isHidden = true
         
-        memberListTableView.register(UINib(nibName: EkoSelectMemberListTableViewCell.identifier, bundle: UpstraUIKit.bundle), forCellReuseIdentifier: EkoSelectMemberListTableViewCell.identifier)
+        memberListTableView.register(UINib(nibName: EkoSelectMemberListTableViewCell.identifier, bundle: UpstraUIKitManager.bundle), forCellReuseIdentifier: EkoSelectMemberListTableViewCell.identifier)
         memberListTableView.delegate = self
         memberListTableView.dataSource = self
         memberListTableView.tableFooterView = UIView()
@@ -165,6 +157,7 @@ extension EkoSelectMemberListViewController: UICollectionViewDelegateFlowLayout 
 }
 
 extension EkoSelectMemberListViewController: UICollectionViewDataSource {
+    
     public func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return screenViewModel.dataSource.numberOfSelectedMember()
     }

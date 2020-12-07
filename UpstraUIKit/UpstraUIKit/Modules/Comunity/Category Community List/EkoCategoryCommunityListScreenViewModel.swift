@@ -10,7 +10,7 @@ import EkoChat
 
 class EkoCategoryCommunityListScreenViewModel: EkoCategoryCommunityListScreenViewModelType {
     
-    private let communityrepository = EkoCommunityRepository(client: UpstraUIKitManager.shared.client)
+    private let communityrepository = EkoCommunityRepository(client: UpstraUIKitManagerInternal.shared.client)
     private var communityCollection: EkoCollection<EkoCommunity>?
     private var communityToken: EkoNotificationToken?
     

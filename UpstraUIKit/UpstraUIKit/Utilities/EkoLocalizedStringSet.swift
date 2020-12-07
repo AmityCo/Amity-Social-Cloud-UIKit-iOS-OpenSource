@@ -61,13 +61,17 @@ public struct EkoLocalizedStringSet {
     static var search = EkoLocalizable.localizedString(forKey: "search")
     
     // MARK: - Message List
-    static var messageListAlertErrorMessageTitle = EkoLocalizable.localizedString(forKey: "message_list_alert_error_message_title")
-    static var messageListAlertErrorMessageDesc = EkoLocalizable.localizedString(forKey: "message_list_alert_error_message_desc")
-    static var messageListAlertDeleteErrorMessageTitle = EkoLocalizable.localizedString(forKey: "message_list_alert_delete_error_title")
-    static var messageListAlertDeleteTitle = EkoLocalizable.localizedString(forKey: "message_list_alert_delete_title")
-    static var messageListAlertDeleteDesc = EkoLocalizable.localizedString(forKey: "message_list_alert_delete_desc")
-    static var messageListSending = EkoLocalizable.localizedString(forKey: "message_list_sending")
     
+    enum MessageList {
+        static let holdToRecord = EkoLocalizable.localizedString(forKey: "message_list_hold_to_record")
+        static let releaseToSend = EkoLocalizable.localizedString(forKey: "message_list_release_to_send")
+        static let alertErrorMessageTitle = EkoLocalizable.localizedString(forKey: "message_list_alert_error_message_title")
+        static let alertErrorMessageDesc = EkoLocalizable.localizedString(forKey: "message_list_alert_error_message_desc")
+        static let alertDeleteErrorMessageTitle = EkoLocalizable.localizedString(forKey: "message_list_alert_delete_error_title")
+        static let alertDeleteTitle = EkoLocalizable.localizedString(forKey: "message_list_alert_delete_title")
+        static let alertDeleteDesc = EkoLocalizable.localizedString(forKey: "message_list_alert_delete_desc")
+        static let sending = EkoLocalizable.localizedString(forKey: "message_list_sending")
+    }
     // MARK: - Empty Newsfeed
     static var emptyNewsfeedTitle = EkoLocalizable.localizedString(forKey: "empty_newsfeed_title")
     static var emptyNewsfeedSubtitle = EkoLocalizable.localizedString(forKey: "empty_newsfeed_subtitle")
@@ -193,6 +197,10 @@ public struct EkoLocalizedStringSet {
         static let successfullyUpdated = EkoLocalizable.localizedString(forKey: "hud_successfully_updated")
         static let reportSent = EkoLocalizable.localizedString(forKey: "hud_report_sent")
         static let delete = EkoLocalizable.localizedString(forKey: "hud_delete")
+    }
+    
+    enum PopoverText {
+        static let popoverMessageIsTooShort = EkoLocalizable.localizedString(forKey: "Message is too short.")
     }
     
 }

@@ -11,7 +11,7 @@ import UIKit
 struct EkoLocalizable {
     private init() { }
     static func localizedString(forKey key: String) -> String {
-        let string = NSLocalizedString(key, tableName: "EkoLocalizable", bundle: UpstraUIKit.bundle, value: "", comment: "")
+        let string = NSLocalizedString(key, tableName: "EkoLocalizable", bundle: UpstraUIKitManager.bundle, value: "", comment: "")
         return string
     }
 }

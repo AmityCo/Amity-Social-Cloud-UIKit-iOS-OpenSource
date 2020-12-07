@@ -81,7 +81,7 @@ extension EkoMessageListTableViewController {
         guard let message = screenViewModel.dataSource.message(at: indexPath) else { return 0 }
         switch message.messageType {
         case .image where !message.isDeleted:
-            return 250
+            return UITableView.automaticDimension
         case .file: return 0
         default:
             return UITableView.automaticDimension
@@ -118,14 +118,13 @@ extension EkoMessageListTableViewController {
         
         let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier, for: indexPath)
         configure(for: cell, at: indexPath)
-        
-//        (cell as? EkoMessageTableViewCell)?.errorStateHandler = handleErrorMessage
         return cell
     }
     
     private func configure(for cell: UITableViewCell, at indexPath: IndexPath) {
         guard let message = screenViewModel.dataSource.message(at: indexPath) else { return }
         if let cell = cell as? EkoMessageTableViewCell {
+            cell.delegate = self
             cell.setViewModel(with: screenViewModel)
             cell.setIndexPath(with: indexPath)
         }
@@ -134,20 +133,42 @@ extension EkoMessageListTableViewController {
     }
     
     private func cellIdentifier(for message: EkoMessageModel) -> String? {
-        let client = UpstraUIKitManager.shared.client
         switch message.messageType {
-        case .custom where message.userId == client.currentUserId:
+        case .custom where message.isOwner:
             fallthrough
-        case .text where message.userId == client.currentUserId:
+        case .text where message.isOwner:
             return EkoMessageTypes.textOutgoing.identifier
         case .text:
             return EkoMessageTypes.textIncoming.identifier
-        case .image where message.userId == client.currentUserId:
+        case .image where message.isOwner:
             return EkoMessageTypes.imageOutgoing.identifier
         case .image:
             return EkoMessageTypes.imageIncoming.identifier
+        case .audio where message.isOwner:
+            return EkoMessageTypes.audioOutgoing.identifier
+        case .audio:
+            return EkoMessageTypes.audioIncoming.identifier
         default:
             return nil
+        }
+    }
+}
+
+extension EkoMessageListTableViewController: EkoMessageCellDelegate {
+    func performEvent(_ cell: EkoMessageTableViewCell, events: EkoMessageCellEvents) {
+        
+        switch cell.message.messageType {
+        case .audio:
+            switch events {
+            case .audioPlaying:
+                tableView.reloadData()
+            case .audioFinishPlaying:
+                tableView.reloadRows(at: [cell.indexPath], with: .none)
+            default:
+                break
+            }
+        default:
+            break
         }
     }
 }

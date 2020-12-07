@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="16097.2" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="17506" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="16087"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17505"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -34,7 +35,7 @@
                                                 </constraints>
                                                 <state key="normal" image="icon_message_failed"/>
                                                 <connections>
-                                                    <action selector="errorStateTap" destination="rWK-Cp-Vgs" eventType="touchUpInside" id="TYK-Ob-Cui"/>
+                                                    <action selector="errorTap" destination="rWK-Cp-Vgs" eventType="touchUpInside" id="DCI-m7-Yq4"/>
                                                 </connections>
                                             </button>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="bAb-yH-6zC" customClass="EkoResponsiveView" customModule="UpstraUIKit" customModuleProvider="target">
@@ -42,10 +43,10 @@
                                                 <subviews>
                                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="LVU-ej-YHX" customClass="EkoTextMessageView" customModule="UpstraUIKit" customModuleProvider="target">
                                                         <rect key="frame" x="0.0" y="0.0" width="58" height="53"/>
-                                                        <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                                                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                                     </view>
                                                 </subviews>
-                                                <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                                 <constraints>
                                                     <constraint firstAttribute="trailing" secondItem="LVU-ej-YHX" secondAttribute="trailing" id="9Pz-Ot-na1"/>
                                                     <constraint firstItem="LVU-ej-YHX" firstAttribute="top" secondItem="bAb-yH-6zC" secondAttribute="top" id="CaX-pw-qtN"/>
@@ -106,7 +107,7 @@
                 <outlet property="containerMessageView" destination="tfQ-2r-PrA" id="Xhr-3O-xA4"/>
                 <outlet property="containerMetadataView" destination="FDI-li-ClV" id="I1o-zU-7gG"/>
                 <outlet property="containerView" destination="bAb-yH-6zC" id="sj0-ej-tCp"/>
-                <outlet property="errorStateButton" destination="nY4-f1-xBr" id="Jjq-JH-7hX"/>
+                <outlet property="errorButton" destination="nY4-f1-xBr" id="TGi-8h-GPK"/>
                 <outlet property="metadataLabel" destination="FTp-Po-pci" id="moq-Bb-2Uh"/>
                 <outlet property="statusMetadataImageView" destination="Dnb-mt-hmn" id="tRW-V9-hNW"/>
                 <outlet property="textMessageView" destination="LVU-ej-YHX" id="iiU-Ih-Phk"/>
@@ -117,5 +118,8 @@
     <resources>
         <image name="icon_delete_message" width="16" height="16"/>
         <image name="icon_message_failed" width="16" height="16"/>
+        <systemColor name="systemBackgroundColor">
+            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
     </resources>
 </document>

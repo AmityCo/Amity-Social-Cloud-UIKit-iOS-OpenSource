@@ -14,6 +14,9 @@ final class EkoMessageListComposeBarViewController: UIViewController {
     @IBOutlet var textComposeBarView: EkoTextComposeBarView!
     @IBOutlet var sendMessageButton: UIButton!
     @IBOutlet private var showKeyboardComposeBarButton: UIButton!
+    @IBOutlet private var showAudioButton: UIButton!
+    @IBOutlet private var showDefaultKeyboardButton: UIButton!
+    @IBOutlet var recordButton: EkoRecordingButton!
     
     // MARK: - Properties
     private let screenViewModel: EkoMessageListScreenViewModelType
@@ -22,7 +25,7 @@ final class EkoMessageListComposeBarViewController: UIViewController {
     // MARK: - View lifecycle
     private init(viewModel: EkoMessageListScreenViewModelType) {
         screenViewModel = viewModel
-        super.init(nibName: EkoMessageListComposeBarViewController.identifier, bundle: UpstraUIKit.bundle)
+        super.init(nibName: EkoMessageListComposeBarViewController.identifier, bundle: UpstraUIKitManager.bundle)
     }
     
     required init?(coder: NSCoder) {
@@ -37,16 +40,28 @@ final class EkoMessageListComposeBarViewController: UIViewController {
     static func make(viewModel: EkoMessageListScreenViewModelType) -> EkoMessageListComposeBarViewController {
         return EkoMessageListComposeBarViewController(viewModel: viewModel)
     }
+    
 }
 
 // MARK: - Action
 private extension EkoMessageListComposeBarViewController {
     @IBAction func sendMessageTap() {
-        screenViewModel.action.send(with: textComposeBarView.text)
+        screenViewModel.action.send(withText: textComposeBarView.text)
     }
     
     @IBAction func showKeyboardComposeBarTap() {
         screenViewModel.action.toggleInputSource()
+        showRecordButton(show: false)
+    }
+    
+    @IBAction func toggleDefaultKeyboardAndAudioKeyboardTap(_ sender: UIButton) {
+        EkoAudioRecorder.shared.requestPermission()
+        screenViewModel.action.toggleShowDefaultKeyboardAndAudioKeyboard(sender)
+    }
+    
+    // MARK: - Audio Recording
+    @IBAction func touchDown(sender: EkoRecordingButton) {
+        screenViewModel.action.performAudioRecordingEvents(for: .show)
     }
 }
 
@@ -56,6 +71,8 @@ private extension EkoMessageListComposeBarViewController {
         setupTextComposeBarView()
         setupSendMessageButton()
         setupShowKeyboardComposeBarButton()
+        setupLeftItems()
+        setupRecordButton()
     }
     
     func setupTextComposeBarView() {
@@ -71,7 +88,6 @@ private extension EkoMessageListComposeBarViewController {
     }
     
     func setupSendMessageButton() {
-        
         sendMessageButton.setTitle(nil, for: .normal)
         sendMessageButton.setImage(EkoIconSet.iconSendMessage, for: .normal)
         sendMessageButton.isEnabled = false
@@ -84,6 +100,43 @@ private extension EkoMessageListComposeBarViewController {
         showKeyboardComposeBarButton.tintColor = EkoColorSet.base.blend(.shade1)
         showKeyboardComposeBarButton.isHidden = false
     }
+    
+    func setupLeftItems() {
+        showAudioButton.isHidden = false
+        showAudioButton.setImage(EkoIconSet.Chat.iconVoiceMessageGrey, for: .normal)
+        showAudioButton.tag = 0
+        
+        showDefaultKeyboardButton.isHidden = true
+        showDefaultKeyboardButton.setImage(EkoIconSet.Chat.iconKeyboard, for: .normal)
+        showDefaultKeyboardButton.tag = 1
+    }
+    
+    func setupRecordButton() {
+        recordButton.layer.cornerRadius = 4
+        recordButton.backgroundColor = EkoColorSet.base.blend(.shade4)
+        recordButton.titleLabel?.font = EkoFontSet.bodyBold
+        recordButton.setTitleColor(EkoColorSet.base, for: .normal)
+        recordButton.setImage(EkoIconSet.Chat.iconMic, for: .normal)
+        recordButton.setTitle(EkoLocalizedStringSet.MessageList.holdToRecord, for: .normal)
+        recordButton.tintColor = EkoColorSet.base
+        recordButton.isHidden = true
+        
+        recordButton.deleteHandler = { [weak self] in
+            self?.screenViewModel.action.performAudioRecordingEvents(for: .delete)
+        }
+        
+        recordButton.recordHandler = { [weak self] in
+            self?.screenViewModel.action.performAudioRecordingEvents(for: .record)
+        }
+        
+        recordButton.deletingHandler = { [weak self] in
+            self?.screenViewModel.action.performAudioRecordingEvents(for: .deleting)
+        }
+        
+        recordButton.recordingHandler = { [weak self] in
+            self?.screenViewModel.action.performAudioRecordingEvents(for: .cancelingDelete)
+        }
+    }
 }
 
 // MARK: - Update views
@@ -92,6 +145,29 @@ extension EkoMessageListComposeBarViewController {
         sendMessageButton.isEnabled = !text.isEmpty
         showKeyboardComposeBarButton.isHidden = !text.isEmpty
         sendMessageButton.isHidden = text.isEmpty
+    }
+    
+    func showRecordButton(show: Bool) {
+        if show {
+            sendMessageButton.isHidden = true
+            showKeyboardComposeBarButton.isHidden = false
+            textComposeBarView.isHidden = true
+            recordButton.isHidden = false
+            showAudioButton.isHidden = true
+            showDefaultKeyboardButton.isHidden = false
+        } else {
+            textComposeBarView.isHidden = false
+            recordButton.isHidden = true
+            showAudioButton.isHidden = false
+            showDefaultKeyboardButton.isHidden = true
+            if textComposeBarView.text != "" {
+                sendMessageButton.isHidden = false
+                showKeyboardComposeBarButton.isHidden = true
+            } else {
+                showKeyboardComposeBarButton.isHidden = false
+                sendMessageButton.isHidden = true
+            }
+        }
     }
 }
 
@@ -111,8 +187,11 @@ extension EkoMessageListComposeBarViewController {
             animationForRotation(with: 0, animation: { [weak self] in
                 guard let strongSelf = self else { return }
                 if strongSelf.screenViewModel.dataSource.getKeyboardVisible() {
-                    strongSelf.textComposeBarView.inputView = nil
-                    strongSelf.textComposeBarView.resignFirstResponder()
+                    if strongSelf.textComposeBarView.inputView != nil {
+                        strongSelf.textComposeBarView.inputView = nil
+                        strongSelf.textComposeBarView.resignFirstResponder()
+                    }
+                    
                     if !strongSelf.textComposeBarView.becomeFirstResponder() {
                         strongSelf.textComposeBarView.textView.becomeFirstResponder()
                     }
@@ -128,5 +207,25 @@ extension EkoMessageListComposeBarViewController {
             self?.showKeyboardComposeBarButton.transform = CGAffineTransform(rotationAngle: angle)
             animation()
         })
+    }
+}
+
+extension EkoMessageListComposeBarViewController: UIPopoverPresentationControllerDelegate {
+    
+    func showPopoverMessage() {
+        let vc = EkoPopoverMessageViewController.make()
+        vc.text = EkoLocalizedStringSet.PopoverText.popoverMessageIsTooShort
+        vc.modalPresentationStyle = .popover
+        
+        let popover = vc.popoverPresentationController
+        popover?.delegate = self
+        popover?.permittedArrowDirections = .down
+        popover?.sourceView = recordButton
+        popover?.sourceRect = recordButton.bounds
+        present(vc, animated: true, completion: nil)
+    }
+    
+    func adaptivePresentationStyle(for controller: UIPresentationController) -> UIModalPresentationStyle {
+        return .none
     }
 }

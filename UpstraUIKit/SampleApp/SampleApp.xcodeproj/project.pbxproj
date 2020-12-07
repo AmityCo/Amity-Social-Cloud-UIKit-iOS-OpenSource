@@ -3,16 +3,22 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 50;
+	objectVersion = 52;
 	objects = {
 
 /* Begin PBXBuildFile section */
+		A052EAEE2577A6B700FF9312 /* Realm.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = A052EAEB2577A6B700FF9312 /* Realm.xcframework */; };
+		A052EAEF2577A6B700FF9312 /* Realm.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = A052EAEB2577A6B700FF9312 /* Realm.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		A052EAF02577A6B700FF9312 /* EkoChat.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = A052EAEC2577A6B700FF9312 /* EkoChat.xcframework */; };
+		A052EAF12577A6B700FF9312 /* EkoChat.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = A052EAEC2577A6B700FF9312 /* EkoChat.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		B72861D924C573B100ECC563 /* TabbarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B72861D824C573B100ECC563 /* TabbarViewController.swift */; };
 		B72CDA3B256B9BEB00F7CAC3 /* CustomMessageTextIncomingTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B72CDA39256B9BEB00F7CAC3 /* CustomMessageTextIncomingTableViewCell.swift */; };
 		B72CDA3C256B9BEB00F7CAC3 /* CustomMessageTextIncomingTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = B72CDA3A256B9BEB00F7CAC3 /* CustomMessageTextIncomingTableViewCell.xib */; };
 		B74ADE5E24F3B026009C86DA /* UserDefaults.swift in Sources */ = {isa = PBXBuildFile; fileRef = B74ADE5D24F3B026009C86DA /* UserDefaults.swift */; };
 		B754DBEC24C6F6B5005A8282 /* SettingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B754DBEB24C6F6B5005A8282 /* SettingViewController.swift */; };
 		B754DBEE24C6F6BB005A8282 /* RegisterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B754DBED24C6F6BB005A8282 /* RegisterViewController.swift */; };
+		B75A3AF925795DA100777499 /* UpstraUIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B75A3AF825795DA100777499 /* UpstraUIKit.framework */; };
+		B75A3AFA25795DA100777499 /* UpstraUIKit.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = B75A3AF825795DA100777499 /* UpstraUIKit.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		B78DA47924BED7D300EE902B /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B78DA47824BED7D300EE902B /* AppDelegate.swift */; };
 		B78DA47B24BED7D300EE902B /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B78DA47A24BED7D300EE902B /* SceneDelegate.swift */; };
 		B78DA48024BED7D300EE902B /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B78DA47E24BED7D300EE902B /* Main.storyboard */; };
@@ -25,12 +31,6 @@
 		B78DA4B324BEDBD100EE902B /* ChatFeatureViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B78DA4B224BEDBD100EE902B /* ChatFeatureViewController.swift */; };
 		B78FC54024CAAA2F0083CBB4 /* UserDefault.swift in Sources */ = {isa = PBXBuildFile; fileRef = B78FC53D24CAAA2F0083CBB4 /* UserDefault.swift */; };
 		B78FC54124CAAA2F0083CBB4 /* Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = B78FC53F24CAAA2F0083CBB4 /* Theme.swift */; };
-		B7A9241A24F3CB99001F4B49 /* EkoChat.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B7A9241724F3CB99001F4B49 /* EkoChat.framework */; };
-		B7A9241B24F3CB99001F4B49 /* EkoChat.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = B7A9241724F3CB99001F4B49 /* EkoChat.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		B7A9241C24F3CB99001F4B49 /* Realm.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B7A9241824F3CB99001F4B49 /* Realm.framework */; };
-		B7A9241D24F3CB99001F4B49 /* Realm.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = B7A9241824F3CB99001F4B49 /* Realm.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		B7A9241E24F3CB99001F4B49 /* UpstraUIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B7A9241924F3CB99001F4B49 /* UpstraUIKit.framework */; };
-		B7A9241F24F3CB99001F4B49 /* UpstraUIKit.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = B7A9241924F3CB99001F4B49 /* UpstraUIKit.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -51,15 +51,15 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
-		727533A724E66BB3002ED33E /* Embed Frameworks */ = {
+		A052EAF42577A6B700FF9312 /* Embed Frameworks */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				B7A9241D24F3CB99001F4B49 /* Realm.framework in Embed Frameworks */,
-				B7A9241B24F3CB99001F4B49 /* EkoChat.framework in Embed Frameworks */,
-				B7A9241F24F3CB99001F4B49 /* UpstraUIKit.framework in Embed Frameworks */,
+				A052EAEF2577A6B700FF9312 /* Realm.xcframework in Embed Frameworks */,
+				A052EAF12577A6B700FF9312 /* EkoChat.xcframework in Embed Frameworks */,
+				B75A3AFA25795DA100777499 /* UpstraUIKit.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -67,12 +67,16 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		A052EAEB2577A6B700FF9312 /* Realm.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = Realm.xcframework; path = ../Distribution/Realm.xcframework; sourceTree = "<group>"; };
+		A052EAEC2577A6B700FF9312 /* EkoChat.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = EkoChat.xcframework; path = ../Distribution/EkoChat.xcframework; sourceTree = "<group>"; };
+		A052EAED2577A6B700FF9312 /* UpstraUIKit.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = UpstraUIKit.xcframework; path = ../Distribution/UpstraUIKit.xcframework; sourceTree = "<group>"; };
 		B72861D824C573B100ECC563 /* TabbarViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabbarViewController.swift; sourceTree = "<group>"; };
 		B72CDA39256B9BEB00F7CAC3 /* CustomMessageTextIncomingTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomMessageTextIncomingTableViewCell.swift; sourceTree = "<group>"; };
 		B72CDA3A256B9BEB00F7CAC3 /* CustomMessageTextIncomingTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CustomMessageTextIncomingTableViewCell.xib; sourceTree = "<group>"; };
 		B74ADE5D24F3B026009C86DA /* UserDefaults.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDefaults.swift; sourceTree = "<group>"; };
 		B754DBEB24C6F6B5005A8282 /* SettingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingViewController.swift; sourceTree = "<group>"; };
 		B754DBED24C6F6BB005A8282 /* RegisterViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterViewController.swift; sourceTree = "<group>"; };
+		B75A3AF825795DA100777499 /* UpstraUIKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = UpstraUIKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		B78DA47524BED7D300EE902B /* SampleApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SampleApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B78DA47824BED7D300EE902B /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		B78DA47A24BED7D300EE902B /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -91,9 +95,6 @@
 		B78DA4B224BEDBD100EE902B /* ChatFeatureViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatFeatureViewController.swift; sourceTree = "<group>"; };
 		B78FC53D24CAAA2F0083CBB4 /* UserDefault.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserDefault.swift; sourceTree = "<group>"; };
 		B78FC53F24CAAA2F0083CBB4 /* Theme.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Theme.swift; sourceTree = "<group>"; };
-		B7A9241724F3CB99001F4B49 /* EkoChat.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = EkoChat.framework; path = ../Distribution/EkoChat.framework; sourceTree = "<group>"; };
-		B7A9241824F3CB99001F4B49 /* Realm.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Realm.framework; path = ../Distribution/Realm.framework; sourceTree = "<group>"; };
-		B7A9241924F3CB99001F4B49 /* UpstraUIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UpstraUIKit.framework; path = ../Distribution/UpstraUIKit.framework; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -101,9 +102,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				B7A9241C24F3CB99001F4B49 /* Realm.framework in Frameworks */,
-				B7A9241A24F3CB99001F4B49 /* EkoChat.framework in Frameworks */,
-				B7A9241E24F3CB99001F4B49 /* UpstraUIKit.framework in Frameworks */,
+				A052EAEE2577A6B700FF9312 /* Realm.xcframework in Frameworks */,
+				A052EAF02577A6B700FF9312 /* EkoChat.xcframework in Frameworks */,
+				B75A3AF925795DA100777499 /* UpstraUIKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -190,9 +191,10 @@
 		B78DA4A824BED83100EE902B /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				B7A9241724F3CB99001F4B49 /* EkoChat.framework */,
-				B7A9241824F3CB99001F4B49 /* Realm.framework */,
-				B7A9241924F3CB99001F4B49 /* UpstraUIKit.framework */,
+				A052EAEC2577A6B700FF9312 /* EkoChat.xcframework */,
+				A052EAEB2577A6B700FF9312 /* Realm.xcframework */,
+				B75A3AF825795DA100777499 /* UpstraUIKit.framework */,
+				A052EAED2577A6B700FF9312 /* UpstraUIKit.xcframework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -239,8 +241,7 @@
 				B78DA47124BED7D300EE902B /* Sources */,
 				B78DA47224BED7D300EE902B /* Frameworks */,
 				B78DA47324BED7D300EE902B /* Resources */,
-				727533A724E66BB3002ED33E /* Embed Frameworks */,
-				72CB92D424E105A700D656FE /* ShellScript */,
+				A052EAF42577A6B700FF9312 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
@@ -357,26 +358,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
-
-/* Begin PBXShellScriptBuildPhase section */
-		72CB92D424E105A700D656FE /* ShellScript */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-			);
-			outputFileListPaths = (
-			);
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "APP_PATH=\"${TARGET_BUILD_DIR}/${WRAPPER_NAME}\"\n\nfind \"$APP_PATH\" -name '*.framework' -type d | while read -r FRAMEWORK\ndo\nFRAMEWORK_EXECUTABLE_NAME=$(defaults read \"$FRAMEWORK/Info.plist\" CFBundleExecutable)\nFRAMEWORK_EXECUTABLE_PATH=\"$FRAMEWORK/$FRAMEWORK_EXECUTABLE_NAME\"\necho \"Executable is $FRAMEWORK_EXECUTABLE_PATH\"\necho $(lipo -info \"$FRAMEWORK_EXECUTABLE_PATH\")\n\nFRAMEWORK_TMP_PATH=\"$FRAMEWORK_EXECUTABLE_PATH-tmp\"\n\ncase \"${TARGET_BUILD_DIR}\" in\n*\"iphonesimulator\")\n    echo \"No need to remove archs\"\n    ;;\n*)\n    if $(lipo \"$FRAMEWORK_EXECUTABLE_PATH\" -verify_arch \"i386\") ; then\n    lipo -output \"$FRAMEWORK_TMP_PATH\" -remove \"i386\" \"$FRAMEWORK_EXECUTABLE_PATH\"\n    echo \"i386 architecture removed\"\n    rm \"$FRAMEWORK_EXECUTABLE_PATH\"\n    mv \"$FRAMEWORK_TMP_PATH\" \"$FRAMEWORK_EXECUTABLE_PATH\"\n    fi\n    if $(lipo \"$FRAMEWORK_EXECUTABLE_PATH\" -verify_arch \"x86_64\") ; then\n    lipo -output \"$FRAMEWORK_TMP_PATH\" -remove \"x86_64\" \"$FRAMEWORK_EXECUTABLE_PATH\"\n    echo \"x86_64 architecture removed\"\n    rm \"$FRAMEWORK_EXECUTABLE_PATH\"\n    mv \"$FRAMEWORK_TMP_PATH\" \"$FRAMEWORK_EXECUTABLE_PATH\"\n    fi\n    ;;\nesac\n\necho \"Completed for executable $FRAMEWORK_EXECUTABLE_PATH\"\necho $(lipo -info \"$FRAMEWORK_EXECUTABLE_PATH\")\n\ndone\n";
-		};
-/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		B78DA47124BED7D300EE902B /* Sources */ = {
@@ -499,7 +480,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 13.4;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -553,7 +534,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 13.4;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;
@@ -568,19 +549,18 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 6;
 				DEVELOPMENT_TEAM = 37Z583JR6K;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/../Distribution",
 				);
 				INFOPLIST_FILE = SampleApp/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.5.3;
+				MARKETING_VERSION = 1.6.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.ekoapp.sample;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_INCLUDE_PATHS = "";
@@ -594,19 +574,18 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 6;
 				DEVELOPMENT_TEAM = 37Z583JR6K;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/../Distribution",
 				);
 				INFOPLIST_FILE = SampleApp/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.5.3;
+				MARKETING_VERSION = 1.6.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.ekoapp.sample;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = RELEASE;

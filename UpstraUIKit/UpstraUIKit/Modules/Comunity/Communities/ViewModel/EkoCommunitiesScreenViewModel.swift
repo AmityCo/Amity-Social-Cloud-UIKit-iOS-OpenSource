@@ -30,7 +30,7 @@ final class EkoCommunitiesScreenViewModel: EkoCommunitiesScreenViewModelType {
     private let listType: ListType
     
     init(listType: ListType) {
-        repository = EkoCommunityRepository(client: UpstraUIKitManager.shared.client)
+        repository = EkoCommunityRepository(client: UpstraUIKitManagerInternal.shared.client)
         self.listType = listType
     }
     

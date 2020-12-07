@@ -8,7 +8,7 @@
 
 import UIKit
 
-public final class EkoTrendingCommunityViewController: UIViewController {
+public final class EkoTrendingCommunityViewController: UIViewController, EkoRefreshable {
     
     // MARK: - IBOutlet Properties
     @IBOutlet private var titleLabel: UILabel!
@@ -24,7 +24,7 @@ public final class EkoTrendingCommunityViewController: UIViewController {
     // MARK: - View lifecycle
     private init(viewModel: EkoTrendingCommunityScreenViewModelType) {
         self.screenViewModel = viewModel
-        super.init(nibName: EkoTrendingCommunityViewController.identifier, bundle: UpstraUIKit.bundle)
+        super.init(nibName: EkoTrendingCommunityViewController.identifier, bundle: UpstraUIKitManager.bundle)
     }
     
     required init?(coder: NSCoder) {
@@ -41,6 +41,13 @@ public final class EkoTrendingCommunityViewController: UIViewController {
         let viewModel: EkoTrendingCommunityScreenViewModelType = EkoTrendingCommunityScreenViewModel()
         return EkoTrendingCommunityViewController(viewModel: viewModel)
     }
+    
+    // MARK: - Refreshahble
+    
+    func handleRefreshing() {
+        screenViewModel.action.getTrending()
+    }
+    
 }
 
 // MARK: - Setup View

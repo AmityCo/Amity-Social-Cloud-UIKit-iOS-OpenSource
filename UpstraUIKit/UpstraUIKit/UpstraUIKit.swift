@@ -10,28 +10,28 @@ import UIKit
 import EkoChat
 
 /// UpstraUIKit
-public final class UpstraUIKit {
+public final class UpstraUIKitManager {
     
     private init() { }
     
     // MARK: - Setup Authentication
     
     public static func setup(_ apiKey: String) {
-        UpstraUIKitManager.shared.setup(apiKey)
+        UpstraUIKitManagerInternal.shared.setup(apiKey)
     }
     
     public static func registerDevice(withUserId userId: String, displayName: String?, authToken: String? = nil) {
-        UpstraUIKitManager.shared.registerDevice(userId, displayName: displayName, authToken: authToken)
+        UpstraUIKitManagerInternal.shared.registerDevice(userId, displayName: displayName, authToken: authToken)
     }
     
     public static func unregisterDevice() {
-        UpstraUIKitManager.shared.unregisterDevice()
+        UpstraUIKitManagerInternal.shared.unregisterDevice()
     }
     
     // MARK: - Variable
     
     public static var client: EkoClient {
-        return UpstraUIKitManager.shared.client
+        return UpstraUIKitManagerInternal.shared.client
     }
     
     static var bundle: Bundle {
@@ -57,12 +57,17 @@ public final class UpstraUIKit {
     }
 }
 
-final class UpstraUIKitManager {
+final class UpstraUIKitManagerInternal {
+
+    // Configuration key for environment changing, please don't change.
+    private let ENV_PROD_KEY = "sdk_environment"
+    // Endpoint for EkoClient, please contact Eko for the proper endpoint and API key.
+    private let ENV_PROD_VALUE = "https://api.pre-prod.ekomedia.technology"
     
     // MARK: - Properties
     
     private var apiKey: String = ""
-    public static let shared = UpstraUIKitManager()
+    public static let shared = UpstraUIKitManagerInternal()
     private var _client: EkoClient?
     
     var client: EkoClient {
@@ -83,6 +88,9 @@ final class UpstraUIKitManager {
     }
 
     func registerDevice(_ userId: String, displayName: String?, authToken: String?) {
+        // setup endpoint
+        EkoClient.setEkoConfig([ENV_PROD_KEY : ENV_PROD_VALUE])
+        
         // clear current client before setting up a new one
         self._client?.unregisterDevice()
         self._client = nil
@@ -97,6 +105,7 @@ final class UpstraUIKitManager {
     }
     
     func unregisterDevice() {
+        EkoFileCache.shared.clearCache()
         self._client?.unregisterDevice()
     }
     

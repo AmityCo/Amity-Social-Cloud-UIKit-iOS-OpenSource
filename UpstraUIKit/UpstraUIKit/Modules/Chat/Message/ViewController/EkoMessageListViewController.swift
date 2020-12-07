@@ -30,17 +30,22 @@ public final class EkoMessageListViewController: EkoViewController {
     private var navigationHeaderViewController: EkoMessageListHeaderViewController!
     private var messageViewController: EkoMessageListTableViewController!
     private var composeBarViewController: EkoMessageListComposeBarViewController!
+
+    private var audioRecordingViewController = EkoMessageListRecordingViewController.make()
+    
+    private let circular = EkoCircularTransition()
     
     // MARK: - View lifecyle
     
     private init(viewModel: EkoMessageListScreenViewModelType) {
         screenViewModel = viewModel
-        super.init(nibName: EkoMessageListViewController.identifier, bundle: UpstraUIKit.bundle)
+        super.init(nibName: EkoMessageListViewController.identifier, bundle: UpstraUIKitManager.bundle)
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+    
     
     public override func viewDidLoad() {
         super.viewDidLoad()
@@ -59,6 +64,7 @@ public final class EkoMessageListViewController: EkoViewController {
         super.viewWillDisappear(animated)
         EkoKeyboardService.shared.delegate = nil
         screenViewModel.action.stopReading()
+        EkoAudioPlayer.shared.stop()
     }
     
     public static func make(channelId: String) -> EkoMessageListViewController {
@@ -89,12 +95,12 @@ private extension EkoMessageListViewController {
     func albumTap() {
         let imagePicker = EkoImagePickerController(selectedAssets: [])
         imagePicker.settings.theme.selectionStyle = .checked
-        imagePicker.settings.fetch.assets.supportedMediaTypes = [.image, .video]
+        imagePicker.settings.fetch.assets.supportedMediaTypes = [.image]
         imagePicker.settings.selection.max = 20
         imagePicker.settings.selection.unselectOnReachingMax = false
         imagePicker.settings.theme.selectionStyle = .numbered
         presentImagePicker(imagePicker, select: nil, deselect: nil, cancel: nil, finish: { [weak self] assets in
-            self?.screenViewModel.action.send(with: assets)
+            self?.screenViewModel.action.send(withImages: assets)
         })
     }
     
@@ -114,6 +120,7 @@ private extension EkoMessageListViewController {
         setupCustomNavigationBar()
         setupMessageContainer()
         setupComposeBarContainer()
+        setupAudioRecordingView()
     }
     
     func setupCustomNavigationBar() {
@@ -148,6 +155,32 @@ private extension EkoMessageListViewController {
             }
         }
     }
+    
+    func setupAudioRecordingView() {
+        let screenSize = UIScreen.main.bounds
+        circular.duration = 0.3
+        circular.startingPoint = CGPoint(x: screenSize.width / 2, y: screenSize.height)
+        circular.circleColor = UIColor.black.withAlphaComponent(0.70)
+        circular.presentedView = audioRecordingViewController.view
+        
+        audioRecordingViewController.finishRecordingHandler = { [weak self] state in
+            switch state {
+            case .finish:
+                self?.screenViewModel.action.sendAudio()
+                Log.add("Finish")
+            case .finishWithMaximumTime:
+                self?.screenViewModel.action.sendAudio()
+                Log.add("finishWithMaximumTime")
+            case .notFinish:
+                Log.add("notFinish")
+            case .timeTooShort:
+                Log.add("timeTooShort")
+                self?.composeBarViewController.showPopoverMessage()
+            }
+        }
+        
+        composeBarViewController.recordButton.deletingTarget = audioRecordingViewController.deleteButton
+    }
 }
 
 // MARK: - Binding ViewModel
@@ -179,13 +212,39 @@ extension EkoMessageListViewController: UIImagePickerControllerDelegate & UINavi
     public func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
         picker.dismiss(animated: true) { [weak self] in
             if let image = info[.originalImage] as? UIImage {
-                self?.screenViewModel.action.send(with: image)
+                self?.screenViewModel.action.send(withImage: image)
             }
         }
     }
 }
 
 extension EkoMessageListViewController: EkoMessageListScreenViewModelDelegate {
+    func screenViewModelAudioRecordingEvvents(for events: EkoMessageListScreenViewModel.AudioRecordingEvents) {
+        switch events {
+        case .show:
+            composeBarViewController.recordButton.isTimeout = false
+            guard let window = UIApplication.shared.keyWindow else { return }
+            circular.show(for: window)
+        case .hide:
+            circular.hide()
+            audioRecordingViewController.stopRecording()
+        case .deleting:
+            audioRecordingViewController.deletingRecording()
+        case .cancelingDelete:
+            audioRecordingViewController.cancelingDelete()
+        case .delete:
+            circular.hide()
+            audioRecordingViewController.deleteRecording()
+        case .record:
+            // success
+            circular.hide()
+            audioRecordingViewController.stopRecording()
+        case .timeoutRecord:
+            circular.hide()
+            screenViewModel.action.sendAudio()
+            composeBarViewController.recordButton.isTimeout = true
+        }
+    }
     
     func screenViewModelRoute(route: EkoMessageListScreenViewModel.Route) {
         switch route {
@@ -212,6 +271,8 @@ extension EkoMessageListViewController: EkoMessageListScreenViewModelDelegate {
             composeBarViewController.rotateMoreButton(canRotate: false)
         case .composeBarMenu:
             composeBarViewController.rotateMoreButton(canRotate: true)
+        default:
+            break
         }
     }
     
@@ -235,7 +296,7 @@ extension EkoMessageListViewController: EkoMessageListScreenViewModelDelegate {
         case .didEditText:
             break
         case .didDelete(let indexPath):
-            break
+            messageViewController.tableView.reloadRows(at: [indexPath], with: .none)
         case .didSendImage:
             break
         case .didUploadImage(indexPath: let indexPath):
@@ -243,6 +304,8 @@ extension EkoMessageListViewController: EkoMessageListScreenViewModelDelegate {
             messageViewController.tableView.reloadRows(at: [indexPath], with: .none)
         case .didDeeleteErrorMessage(let indexPath):
             EkoHUD.show(.success(message: EkoLocalizedStringSet.HUD.delete))
+        case .didSendAudio:
+            break
         }
     }
     
@@ -265,18 +328,18 @@ extension EkoMessageListViewController: EkoMessageListScreenViewModelDelegate {
             present(nav, animated: true, completion: nil)
         case .delete(let indexPath):
             guard let message = screenViewModel.dataSource.message(at: indexPath) else { return }
-            let alertViewController = UIAlertController(title: EkoLocalizedStringSet.messageListAlertDeleteTitle,
-                                                        message: EkoLocalizedStringSet.messageListAlertDeleteDesc, preferredStyle: .alert)
+            let alertViewController = UIAlertController(title: EkoLocalizedStringSet.MessageList.alertDeleteTitle,
+                                                        message: EkoLocalizedStringSet.MessageList.alertDeleteDesc, preferredStyle: .alert)
             let cancel = UIAlertAction(title: EkoLocalizedStringSet.cancel, style: .cancel, handler: nil)
             let delete = UIAlertAction(title: EkoLocalizedStringSet.delete, style: .destructive, handler: { [weak self] _ in
-                self?.screenViewModel.action.delete(with: message.messageId, at: indexPath)
+                self?.screenViewModel.action.delete(withMessage: message, at: indexPath)
             })
             alertViewController.addAction(cancel)
             alertViewController.addAction(delete)
             present(alertViewController, animated: true)
         case .deleteErrorMessage(let indexPath):
             guard let message = screenViewModel.dataSource.message(at: indexPath) else { return }
-            let alertViewController = UIAlertController(title: EkoLocalizedStringSet.messageListAlertDeleteErrorMessageTitle,
+            let alertViewController = UIAlertController(title: EkoLocalizedStringSet.MessageList.alertErrorMessageTitle,
                                                         message: nil, preferredStyle: .actionSheet)
             let cancel = UIAlertAction(title: EkoLocalizedStringSet.cancel, style: .cancel, handler: nil)
             let delete = UIAlertAction(title: EkoLocalizedStringSet.delete, style: .destructive, handler: { [weak self] _ in
@@ -294,4 +357,16 @@ extension EkoMessageListViewController: EkoMessageListScreenViewModelDelegate {
         }
     }
     
+    func screenViewModelToggleDefaultKeyboardAndAudioKeyboard(for events: EkoMessageListScreenViewModel.KeyboardInputEvents) {
+        switch events {
+        case .default:
+            composeBarViewController.showRecordButton(show: false)
+        case .audio:
+            composeBarViewController.showRecordButton(show: true)
+            view.endEditing(true)
+            view.endEditing(true)
+        default:
+            break
+        }
+    }
 }

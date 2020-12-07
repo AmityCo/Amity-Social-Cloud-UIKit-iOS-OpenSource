@@ -20,7 +20,7 @@ open class EkoPhotoCollectionViewCell: UICollectionViewCell {
         let label = UILabel()
         label.textAlignment = .right
         label.textColor = UIColor.white
-        label.font = UIFont.systemFont(ofSize: 15)
+        label.font = EkoFontSet.body
         return label
     }()
     

@@ -14,11 +14,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var window: UIWindow?
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-        UpstraUIKit.setup("b3bab95b3edbf9661a368518045b4481d35cdfeaec35677d")
+        UpstraUIKitManager.setup("b3bab95b3edbf9661a368518045b4481d35cdfeaec35677d")
         UpstraUIKit.set(eventHandler: CustomEventHandler())
         
         guard let preset = Preset(rawValue: UserDefaults.standard.theme ?? 0) else { return false }
-        UpstraUIKit.set(theme: preset.theme)
+        UpstraUIKitManager.set(theme: preset.theme)
         window = UIWindow()
         let registerVC = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "RegisterViewController")
         let nav = UINavigationController(rootViewController: registerVC)
@@ -49,10 +49,41 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 class CustomEventHandler: EkoEventHandler {
     
     override func userDidTap(from source: EkoViewController, userId: String) {
-        print("-> \(source) \(userId)")
-        let viewController = EkoUserProfilePageViewController.make(withUserId: userId)
-        viewController.settings.shouldChatButtonHide = false
+
+        let settings = EkoUserProfilePageSettings()
+        settings.shouldChatButtonHide = false
+        
+        let viewController = EkoUserProfilePageViewController.make(withUserId: userId, settings: settings)
         source.navigationController?.pushViewController(viewController, animated: true)
+    }
+    
+    override func communityDidTap(from source: EkoViewController, communityId: String) {
+        
+        let settings = EkoCommunityProfilePageSettings()
+        settings.shouldChatButtonHide = false
+        
+        let viewController = EkoCommunityProfilePageViewController.make(withCommunityId: communityId, settings: settings)
+        source.navigationController?.pushViewController(viewController, animated: true)
+    }
+    
+    override func communityChannelDidTap(from source: EkoViewController, channelId: String) {
+        print("Channel id: \(channelId)")
+    }
+    
+    override func createPostDidTap(from source: EkoViewController, postTarget: EkoPostTarget) {
+        
+        let settings = EkoPostEditorSettings()
+        settings.shouldFileButtonHide = true
+        
+        if source is EkoPostTargetSelectionViewController {
+            let viewController = EkoPostCreateViewController.make(postTarget: postTarget, settings: settings)
+            source.navigationController?.pushViewController(viewController, animated: true)
+        } else {
+            let viewController = EkoPostCreateViewController.make(postTarget: postTarget, settings: settings)
+            let navigationController = UINavigationController(rootViewController: viewController)
+            navigationController.modalPresentationStyle = .overFullScreen
+            source.present(navigationController, animated: true, completion: nil)
+        }
     }
     
 }

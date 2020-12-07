@@ -44,7 +44,7 @@ final class EkoRecentChatScreenViewModel: EkoRecentChatScreenViewModelType {
     private var channelsToken: EkoNotificationToken?
     
     init() {
-        channelRepository = EkoChannelRepository(client: UpstraUIKitManager.shared.client)
+        channelRepository = EkoChannelRepository(client: UpstraUIKitManagerInternal.shared.client)
     }
     
     required init?(coder: NSCoder) {

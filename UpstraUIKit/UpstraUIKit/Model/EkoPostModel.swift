@@ -116,7 +116,7 @@ public class EkoPostModel {
     }
     
     var isOwner: Bool {
-        return postedUserId == UpstraUIKitManager.shared.client.currentUserId
+        return postedUserId == UpstraUIKitManagerInternal.shared.client.currentUserId
     }
     
     var isCommentable: Bool {

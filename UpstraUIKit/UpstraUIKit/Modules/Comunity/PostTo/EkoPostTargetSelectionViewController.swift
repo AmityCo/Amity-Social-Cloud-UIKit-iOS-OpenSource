@@ -15,8 +15,6 @@ protocol EkoPostTargetSelectionViewControllerDelegate: class {
 
 final public class EkoPostTargetSelectionViewController: EkoViewController {
     
-    weak var delegate: EkoPostTargetSelectionViewControllerDelegate?
-    
     private let tableView = UITableView(frame: .zero, style: .plain)
     private let screenViewModel = EkoPostToScreenViewModel()
     
@@ -123,17 +121,15 @@ extension EkoPostTargetSelectionViewController: UITableViewDelegate {
     }
     
     public func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        var postType: EkoPostTarget
+        var postarget: EkoPostTarget
         if indexPath.section == 0 {
-            postType = .myFeed
+            postarget = .myFeed
         } else {
             guard let community = screenViewModel.community(at: indexPath) else { return }
-            postType = .community(object: community)
+            postarget = .community(object: community)
         }
-
-        let vc = EkoPostTextEditorViewController.make(postTarget: postType)
-        vc.delegate = self
-        navigationController?.pushViewController(vc, animated: true)
+        
+        EkoEventHandler.shared.createPostDidTap(from: self, postTarget: postarget)
     }
     
 }
@@ -142,18 +138,6 @@ extension EkoPostTargetSelectionViewController: EkoPostToScreenViewModelDelegate
     
     func screenViewModelDidUpdateItems(_ viewModel: EkoPostToScreenViewModel) {
         tableView.reloadData()
-    }
-    
-}
-
-extension EkoPostTargetSelectionViewController: EkoPostViewControllerDelegate {
-    
-    public func postViewController(_ viewController: UIViewController, didCreatePost post: EkoPostModel) {
-        delegate?.postTargetSelectionViewController(self, didCreatePost: post)
-    }
-    
-    public func postViewController(_ viewController: UIViewController, didUpdatePost post: EkoPostModel) {
-        delegate?.postTargetSelectionViewController(self, didUpdatePost: post)
     }
     
 }

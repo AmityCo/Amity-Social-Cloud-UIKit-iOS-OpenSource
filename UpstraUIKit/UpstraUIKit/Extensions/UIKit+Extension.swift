@@ -18,7 +18,7 @@ extension Nibbable {
         guard let nibName = NSStringFromClass(Self.self).components(separatedBy: ".").last else {
             fatalError("Class name not found")
         }
-        return UINib(nibName: nibName, bundle: UpstraUIKit.bundle)
+        return UINib(nibName: nibName, bundle: UpstraUIKitManager.bundle)
     }
     
 }

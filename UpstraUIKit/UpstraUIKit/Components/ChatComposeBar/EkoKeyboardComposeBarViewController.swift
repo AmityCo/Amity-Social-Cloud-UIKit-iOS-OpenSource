@@ -40,7 +40,7 @@ final class EkoKeyboardComposeBarViewController: UIViewController {
     
     // MARK: View lifecycle
     private init() {
-        super.init(nibName: EkoKeyboardComposeBarViewController.identifier, bundle: UpstraUIKit.bundle)
+        super.init(nibName: EkoKeyboardComposeBarViewController.identifier, bundle: UpstraUIKitManager.bundle)
     }
     
     required init?(coder: NSCoder) {

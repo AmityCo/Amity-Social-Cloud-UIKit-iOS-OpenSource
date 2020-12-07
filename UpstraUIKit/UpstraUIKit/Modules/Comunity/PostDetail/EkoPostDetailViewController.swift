@@ -128,7 +128,7 @@ public class EkoPostDetailViewController: EkoViewController {
                 if action == editOption {
                     guard let strongSelf = self else { return }
                     #warning("Should be using EkoPostEditViewController")
-                    let createPostViewController = EkoPostTextEditorViewController.make(postTarget: .myFeed, postMode: .edit(strongSelf.post!))
+                    let createPostViewController = EkoPostTextEditorViewController.make(postTarget: .myFeed, postMode: .edit(postId: strongSelf.postId))
                     createPostViewController.delegate = self
                     let nvc = UINavigationController(rootViewController: createPostViewController)
                     nvc.modalPresentationStyle = .fullScreen
@@ -358,8 +358,7 @@ extension EkoPostDetailViewController: EkoKeyboardServiceDelegate {
 extension EkoPostDetailViewController: EkoCommentTableViewCellDelegate {
     
     func commentCellDidTapAvatar(_ cell: EkoCommentTableViewCell, userId: String) {
-        let vc = EkoUserProfilePageViewController.make(withUserId: userId)
-        navigationController?.pushViewController(vc, animated: true)
+        EkoEventHandler.shared.userDidTap(from: self, userId: userId)
     }
     
     func commentCellDidTapReadMore(_ cell: EkoCommentTableViewCell) {

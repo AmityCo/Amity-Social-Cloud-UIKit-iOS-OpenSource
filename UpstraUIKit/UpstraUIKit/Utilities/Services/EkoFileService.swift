@@ -12,7 +12,7 @@ class EkoFileService {
     
     static let shared = EkoFileService()
     
-    private let fileRepository = EkoFileRepository(client: UpstraUIKitManager.shared.client)
+    private let fileRepository = EkoFileRepository(client: UpstraUIKitManagerInternal.shared.client)
     private init() { }
     private let cache = EkoImageCache()
     

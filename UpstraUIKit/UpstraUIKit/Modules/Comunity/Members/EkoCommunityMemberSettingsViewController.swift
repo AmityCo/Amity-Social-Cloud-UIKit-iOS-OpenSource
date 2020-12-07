@@ -25,7 +25,7 @@ final class EkoCommunityMemberSettingsViewController: EkoPageViewController {
     // MARK: - View lifecycle
     private init(viewModel: EkoCommunityMemberScreenViewModelType) {
         self.screenViewModel = viewModel
-        super.init(nibName: EkoCommunityMemberSettingsViewController.identifier, bundle: UpstraUIKit.bundle)
+        super.init(nibName: EkoCommunityMemberSettingsViewController.identifier, bundle: UpstraUIKitManager.bundle)
         title = EkoLocalizedStringSet.communityMemberSettingsTitle
     }
     

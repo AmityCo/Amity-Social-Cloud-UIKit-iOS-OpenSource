@@ -1,0 +1,119 @@
+//
+//  EkoAudioPlayer.swift
+//  UpstraUIKit
+//
+//  Created by Sarawoot Khunsri on 3/12/2563 BE.
+//  Copyright © 2563 BE Upstra. All rights reserved.
+//
+
+import UIKit
+import AVFoundation
+
+protocol EkoAudioPlayerDelegate: class {
+    func playing()
+    func stopPlaying()
+    func finishPlaying()
+    func displayDuration(_ duration: String)
+}
+
+final class EkoAudioPlayer: NSObject {
+    
+    static let shared = EkoAudioPlayer()
+    weak var delegate: EkoAudioPlayerDelegate?
+    
+    var fileName: String?
+    var path: URL?
+    private var _fileName: String?
+    private var player: AVAudioPlayer!
+    private var timer: Timer?
+    private var duration: TimeInterval = 0.0 {
+        didSet {
+            displayDuration()
+        }
+    }
+    func isPlaying() -> Bool {
+        if player == nil {
+            return false
+        }
+        return player.isPlaying
+    }
+    
+    func play() {
+        invalidate()
+        if player == nil {
+            playAudio()
+        } else {
+            if _fileName != fileName {
+                stop()
+                playAudio()
+            } else {
+                if player.isPlaying {
+                    stop()
+                } else {
+                    playAudio()
+                }
+            }
+        }
+    }
+    
+    func stop() {
+        if player != nil {
+            player.stop()
+            player = nil
+            invalidate()
+            delegate?.stopPlaying()
+        }
+    }
+}
+
+private extension EkoAudioPlayer {
+    
+    func playAudio() {
+        _fileName = fileName
+        prepare()
+    }
+    
+    func prepare() {
+        guard let url = path else { return }
+        do {
+            player = try AVAudioPlayer(contentsOf: url)
+            player.delegate = self
+            player.prepareToPlay()
+            player.volume = 1.0
+            player.play()
+            timer = Timer.scheduledTimer(withTimeInterval: 1, repeats: true, block: { [weak self] (timer) in
+                self?.duration += timer.timeInterval
+            })
+            delegate?.playing()
+        } catch {
+            print(error.localizedDescription)
+            player = nil
+        }
+    }
+    
+    func displayDuration() {
+        let time = Int(duration)
+        let minutes = Int(time) / 60 % 60
+        let seconds = Int(time) % 60
+        let display = String(format:"%01i:%02i", minutes, seconds)
+        delegate?.displayDuration(display)
+    }
+    
+    func invalidate() {
+        duration = 0
+        timer?.invalidate()
+    }
+}
+
+extension EkoAudioPlayer: AVAudioPlayerDelegate {
+    func audioPlayerDidFinishPlaying(_ player: AVAudioPlayer, successfully flag: Bool) {
+        self.player = nil
+        fileName = nil
+        invalidate()
+        delegate?.finishPlaying()
+    }
+    
+    func audioPlayerDecodeErrorDidOccur(_ player: AVAudioPlayer, error: Error?) {
+        print("Error while playing audio \(error!.localizedDescription)")
+    }
+}

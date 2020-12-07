@@ -10,7 +10,7 @@ import UIKit
 import EkoChat
 
 final class EkoCategoryPreviewScreenViewModel: EkoCategoryPreviewScreenViewModelType {
-    private let repository = EkoCommunityRepository(client: UpstraUIKitManager.shared.client)
+    private let repository = EkoCommunityRepository(client: UpstraUIKitManagerInternal.shared.client)
     private var categoryCollection: EkoCollection<EkoCommunityCategory>?
     private var categoryToken: EkoNotificationToken?
     private let CATEGORY_MAX: UInt = 8

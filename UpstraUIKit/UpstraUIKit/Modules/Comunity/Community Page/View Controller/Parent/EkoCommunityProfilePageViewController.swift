@@ -8,22 +8,28 @@
 
 import UIKit
 
+public class EkoCommunityProfilePageSettings {
+    public init() { }
+    public var shouldChatButtonHide: Bool = true
+}
+
 /// A view controller for providing community profile and community feed.
-final public class EkoCommunityProfilePageViewController: EkoProfileViewController {
+public final class EkoCommunityProfilePageViewController: EkoProfileViewController, EkoRefreshable {
     
     // MARK: - Properties
     
+    private let settings: EkoCommunityProfilePageSettings
     private let header: EkoCommunityProfileHeaderViewController
     private let bottom: EkoCommunityFeedViewController
     private let postButton: EkoFloatingButton = EkoFloatingButton()
     
     private let screenViewModel: EkoCommunityProfileScreenViewModelType
     
-    private init(viewModel: EkoCommunityProfileScreenViewModelType) {
+    private init(viewModel: EkoCommunityProfileScreenViewModelType, settings: EkoCommunityProfilePageSettings) {
         self.screenViewModel = viewModel
-        self.header = EkoCommunityProfileHeaderViewController.make(with: screenViewModel)
+        self.header = EkoCommunityProfileHeaderViewController.make(with: screenViewModel, settings: settings)
         self.bottom = EkoCommunityFeedViewController.make(communityId: viewModel.communityId)
-
+        self.settings = settings
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -69,9 +75,9 @@ final public class EkoCommunityProfilePageViewController: EkoProfileViewControll
         return topInset
     }
     
-    public static func make(withCommunityId communityId: String) -> EkoCommunityProfilePageViewController {
+    public static func make(withCommunityId communityId: String, settings: EkoCommunityProfilePageSettings = EkoCommunityProfilePageSettings()) -> EkoCommunityProfilePageViewController {
         let screenViewModel = EkoCommunityProfileScreenViewModel(communityId: communityId)
-        let vc = EkoCommunityProfilePageViewController(viewModel: screenViewModel)
+        let vc = EkoCommunityProfilePageViewController(viewModel: screenViewModel, settings: settings)
         return vc
     }
     
@@ -93,6 +99,13 @@ final public class EkoCommunityProfilePageViewController: EkoProfileViewControll
             self.screenViewModel.action.route(to: .post)
         }
     }
+    
+    // MARK: - Refreshable
+    
+    func handleRefreshing() {
+        screenViewModel.action.getInfo()
+    }
+    
 }
 
 private extension EkoCommunityProfilePageViewController {

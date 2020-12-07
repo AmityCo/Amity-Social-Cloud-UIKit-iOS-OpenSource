@@ -14,7 +14,7 @@ class EkoPostToScreenViewModel: EkoPostToScreenViewModelType {
     
     weak var delegate: EkoPostToScreenViewModelDelegate?
     
-    private let communityRepository = EkoCommunityRepository(client: UpstraUIKitManager.shared.client)
+    private let communityRepository = EkoCommunityRepository(client: UpstraUIKitManagerInternal.shared.client)
     private var communityCollection: EkoCollection<EkoCommunity>?
     private var categoryCollectionToken:EkoNotificationToken?
     

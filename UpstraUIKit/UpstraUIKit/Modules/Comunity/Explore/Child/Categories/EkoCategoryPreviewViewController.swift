@@ -8,7 +8,7 @@
 
 import UIKit
 
-public final class EkoCategoryPreviewViewController: UIViewController {
+public final class EkoCategoryPreviewViewController: UIViewController, EkoRefreshable {
 
     // MARK: - IBOutlet Properties
     @IBOutlet private var titleLabel: UILabel!
@@ -26,7 +26,7 @@ public final class EkoCategoryPreviewViewController: UIViewController {
     // MARK: - View lifecycle
     private init(viewModel: EkoCategoryPreviewScreenViewModelType) {
         self.screenViewModel = viewModel
-        super.init(nibName: EkoCategoryPreviewViewController.identifier, bundle: UpstraUIKit.bundle)
+        super.init(nibName: EkoCategoryPreviewViewController.identifier, bundle: UpstraUIKitManager.bundle)
     }
     
     required init?(coder: NSCoder) {
@@ -42,6 +42,12 @@ public final class EkoCategoryPreviewViewController: UIViewController {
     public static func make() -> EkoCategoryPreviewViewController {
         let viewModel: EkoCategoryPreviewScreenViewModelType = EkoCategoryPreviewScreenViewModel()
         return EkoCategoryPreviewViewController(viewModel: viewModel)
+    }
+    
+    // MARK: - Refreshahble
+    
+    func handleRefreshing() {
+        screenViewModel.action.getCategory()
     }
     
 }

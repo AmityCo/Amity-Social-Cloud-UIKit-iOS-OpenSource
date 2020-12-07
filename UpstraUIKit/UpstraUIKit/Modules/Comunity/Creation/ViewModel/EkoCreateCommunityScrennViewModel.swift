@@ -51,7 +51,7 @@ final class EkoCreateCommunityScreenViewModel: EkoCreateCommunityScreenViewModel
     private var imageData: EkoImageData?
     private var imageAvatar: UIImage?
     init() {
-        repository = EkoCommunityRepository(client: UpstraUIKitManager.shared.client)
+        repository = EkoCommunityRepository(client: UpstraUIKitManagerInternal.shared.client)
     }
     
     private func validate() {

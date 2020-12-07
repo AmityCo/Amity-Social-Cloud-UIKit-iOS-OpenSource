@@ -8,8 +8,13 @@
 
 import UIKit
 
+protocol EkoRefreshable {
+    func handleRefreshing()
+}
+
 public class EkoProfileViewController: EkoViewController, EkoProfileDataSource, EkoProfileProgressDelegate {
-    private class EkoProfileHeaderViewController: EkoViewController { }
+    
+    private let refreshControl = UIRefreshControl()
     
     public override func viewDidLoad() {
         super.viewDidLoad()
@@ -17,7 +22,7 @@ public class EkoProfileViewController: EkoViewController, EkoProfileDataSource, 
     }
     
     func headerViewController() -> UIViewController {
-        let header = EkoProfileHeaderViewController()
+        let header = EkoViewController()
         let customView = UIView()
         customView.translatesAutoresizingMaskIntoConstraints = false
         customView.backgroundColor = .red
@@ -45,8 +50,28 @@ public class EkoProfileViewController: EkoViewController, EkoProfileDataSource, 
     }
     
     func eko_scrollViewDidLoad(_ scrollView: UIScrollView) {
+        refreshControl.tintColor = .gray
+        refreshControl.addTarget(self, action: #selector(handleRefreshControl), for: .valueChanged)
         
+        let navBarHeight = UIApplication.shared.statusBarFrame.size.height +
+                 (navigationController?.navigationBar.frame.height ?? 0.0)
+        
+        let refreshView = UIView(frame: CGRect(x: 0, y: navBarHeight, width: 0, height: 0))
+        scrollView.addSubview(refreshView)
+        refreshView.addSubview(refreshControl)
     }
+    
+    // MARK: - Helper function
+    
+    @objc func handleRefreshControl() {
+        (headerViewController() as? EkoRefreshable)?.handleRefreshing()
+        (bottomViewController() as? EkoRefreshable)?.handleRefreshing()
+        
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1) { [weak self] in
+            self?.refreshControl.endRefreshing()
+        }
+    }
+    
 }
 
 public class EkoProfileBottomViewController: EkoButtonPagerTabSViewController, EkoProfilePagerAwareProtocol {
@@ -89,7 +114,7 @@ public class EkoProfileBottomViewController: EkoButtonPagerTabSViewController, E
         super.init(nibName: nil, bundle: nil)
     }
     
-    required public init?(coder aDecoder: NSCoder) {
+    public required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
@@ -142,4 +167,15 @@ public class EkoProfileBottomViewController: EkoButtonPagerTabSViewController, E
         //IMPORTANT!!!: call the following to let the master scroll controller know which view to control in the bottom section
         self.pageDelegate?.eko_pageViewController(self.currentViewController, didSelectPageAt: toIndex)
     }
+}
+
+extension EkoProfileBottomViewController: EkoRefreshable {
+    
+    func handleRefreshing() {
+        // Trigger `handleRefresh` on every child view controllers.
+        for viewController in viewControllers {
+            (viewController as? EkoRefreshable)?.handleRefreshing()
+        }
+    }
+    
 }

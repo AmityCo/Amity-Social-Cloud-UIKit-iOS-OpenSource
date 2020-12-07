@@ -23,7 +23,7 @@ struct EkoUserModel {
     }
     
     var isCurrentUser: Bool {
-        return userId == UpstraUIKitManager.shared.client.currentUserId
+        return userId == UpstraUIKitManagerInternal.shared.client.currentUserId
     }
     
 }

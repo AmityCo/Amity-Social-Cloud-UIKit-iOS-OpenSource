@@ -17,7 +17,7 @@ final class EkoSelectMemberListScreenViewModel: EkoSelectMemberListScreenViewMod
     
     private var userCollectionToken: EkoNotificationToken?
     private var userCollection: EkoCollection<EkoUser>?
-    private let repository: EkoUserRepository = EkoUserRepository(client: UpstraUIKitManager.shared.client)
+    private let repository: EkoUserRepository = EkoUserRepository(client: UpstraUIKitManagerInternal.shared.client)
     
     var users: [EkoSelectMemberModel] = []
     var searchUsers: [EkoSelectMemberModel] = []

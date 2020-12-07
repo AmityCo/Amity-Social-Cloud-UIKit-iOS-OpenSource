@@ -9,13 +9,12 @@
 import UIKit
 import MobileCoreServices
 
-public final class EkoFeedViewController: EkoViewController {
+public final class EkoFeedViewController: EkoViewController, EkoRefreshable {
     
     // MARK: - Properties
     
     var pageTitle: String?
     var pageIndex: Int = 0
-    let tableView = UITableView(frame: .zero, style: .plain)
     var headerView: UIView? {
         didSet {
             DispatchQueue.main.async { [weak self] in
@@ -25,13 +24,13 @@ public final class EkoFeedViewController: EkoViewController {
         }
     }
     var emptyView: UIView?
-    
     var dataDidUpdateHandler: ((Int) -> Void)?
     var emptyViewHandler: ((UIView?) -> Void)?
     
-    private var screenViewModel: EkoFeedScreenViewModelType
+    private let refreshControl = UIRefreshControl()
+    private let tableView = UITableView(frame: .zero, style: .plain)
+    private var screenViewModel: EkoFeedScreenViewModelType!
     private var expandedIds: [String] = []
-    
     private var cellHeights = [IndexPath: CGFloat]()
     private var isVisible: Bool = false
     // It will be marked as dirty when data source changed on view disappear.
@@ -39,17 +38,10 @@ public final class EkoFeedViewController: EkoViewController {
     
     // MARK: - Initializer
     
-    private init(feedType: FeedType) {
-        screenViewModel = EkoFeedScreenViewModel(feedType: feedType)
-        super.init(nibName: nil, bundle: nil)
-    }
-    
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    
     public static func make(feedType: FeedType) -> EkoFeedViewController {
-        return EkoFeedViewController(feedType: feedType)
+        let vc = EkoFeedViewController()
+        vc.screenViewModel = EkoFeedScreenViewModel(feedType: feedType)
+        return vc
     }
     
     // MARK: - View's life cycle
@@ -59,6 +51,7 @@ public final class EkoFeedViewController: EkoViewController {
         setupTableView()
         setupScreenViewModel()
         addNotificationObserver()
+        setupRefreshControl()
     }
     
     public override func viewWillAppear(_ animated: Bool) {
@@ -103,6 +96,12 @@ public final class EkoFeedViewController: EkoViewController {
         }
     }
     
+    // MARK: - Refreshable
+    
+    func handleRefreshing() {
+        screenViewModel.reloadData()
+    }
+    
     // MARK: - Private functions
     
     private func setupTableView() {
@@ -128,6 +127,11 @@ public final class EkoFeedViewController: EkoViewController {
     private func setupScreenViewModel() {
         screenViewModel.delegate = self
     }
+    
+    private func setupRefreshControl() {
+        refreshControl.addTarget(self, action: #selector(handleRefreshControl), for: .valueChanged)
+        tableView.refreshControl = refreshControl
+    }
 
     func scrollToTop() {
         guard tableView.numberOfRows(inSection: 0) > 0 else { return }
@@ -139,6 +143,10 @@ public final class EkoFeedViewController: EkoViewController {
     }
     
     // MARK: - Helper functions
+    
+    @objc private func handleRefreshControl() {
+        screenViewModel.reloadData()
+    }
     
     private func handlePostOption(post: EkoPostModel) {
         let bottomSheet = BottomSheetViewController()
@@ -160,12 +168,7 @@ public final class EkoFeedViewController: EkoViewController {
             bottomSheet?.dismissBottomSheet { [weak self] in
                 guard let strongSelf = self else { return }
                 if action == editOption {
-                    #warning("Incompleted: should support all feed type")
-                    let postTarget: EkoPostTarget = .myFeed
-                    let vc = EkoPostEditViewController.make(postTarget: postTarget, post: post.post)
-                    let nvc = UINavigationController(rootViewController: vc)
-                    nvc.modalPresentationStyle = .overFullScreen
-                    strongSelf.present(nvc, animated: true, completion: nil)
+                    EkoEventHandler.shared.editPostDidTap(from: strongSelf, postId: post.id)
                 } else if action == deleteOption {
                     // delete option
                     let alert = UIAlertController(title: EkoLocalizedStringSet.PostDetail.deletePostTitle, message: EkoLocalizedStringSet.PostDetail.deletePostMessage, preferredStyle: .alert)
@@ -333,8 +336,7 @@ extension EkoFeedViewController: EkoPostFeedTableViewCellDelegate {
     }
     
     func cellDidTapAvatar(_ cell: EkoPostFeedTableViewCell, userId: String) {
-        let vc = EkoUserProfilePageViewController.make(withUserId: userId)
-        navigationController?.pushViewController(vc, animated: true)
+        EkoEventHandler.shared.userDidTap(from: self, userId: userId)
     }
     
     func cellDidTapLike(_ cell: EkoPostFeedTableViewCell, referenceType: EkoPostFeedReferenceType) {
@@ -448,6 +450,7 @@ extension EkoFeedViewController: EkoFeedScreenViewModelDelegate {
         }
         tableView.reloadData()
         dataDidUpdateHandler?(screenViewModel.dataSource.numberOfItems())
+        refreshControl.endRefreshing()
     }
     
 }

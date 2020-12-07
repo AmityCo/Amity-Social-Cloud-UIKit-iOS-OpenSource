@@ -9,7 +9,7 @@
 import UIKit
 
 /// A view controller for providing recommended community list.
-public final class EkoRecommendedCommunityViewController: UIViewController {
+public final class EkoRecommendedCommunityViewController: UIViewController, EkoRefreshable {
 
     // MARK: - IBOutlet Properties
     @IBOutlet private var titleLabel: UILabel!
@@ -24,7 +24,7 @@ public final class EkoRecommendedCommunityViewController: UIViewController {
     // MARK: - View lifecycle
     private init(viewModel: EkoRecommendedCommunityScreenViewModelType) {
         self.screenViewModel = viewModel
-        super.init(nibName: EkoRecommendedCommunityViewController.identifier, bundle: UpstraUIKit.bundle)
+        super.init(nibName: EkoRecommendedCommunityViewController.identifier, bundle: UpstraUIKitManager.bundle)
     }
     
     required init?(coder: NSCoder) {
@@ -41,6 +41,13 @@ public final class EkoRecommendedCommunityViewController: UIViewController {
         let viewModel: EkoRecommendedCommunityScreenViewModelType = EkoRecommendedCommunityScreenViewModel()
         return EkoRecommendedCommunityViewController(viewModel: viewModel)
     }
+    
+    // MARK: - Refreshahble
+    
+    func handleRefreshing() {
+        screenViewModel.action.getRecommendedCommunity()
+    }
+    
 }
 
 // MARK: - Setup View

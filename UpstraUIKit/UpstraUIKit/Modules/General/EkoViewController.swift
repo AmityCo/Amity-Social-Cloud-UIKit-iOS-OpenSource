@@ -24,28 +24,19 @@ public enum EkoNavigationBarType {
 
 public class EkoViewController: UIViewController {
     
-    internal override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
-        super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
-        commonInit()
-    }
-    
-    required init?(coder: NSCoder) {
-        super.init(coder: coder)
-        commonInit()
-    }
-    
-    private func commonInit() {
-        navigationBarType = predefinedBarType()
-    }
-    
     /// Navigation Style
-    public var navigationBarType: EkoNavigationBarType = .root {
-        didSet {
+    public var navigationBarType: EkoNavigationBarType {
+        get {
+            return userDefinedNavigationBarType ?? defaultNavigationBarType
+        }
+        set {
+            userDefinedNavigationBarType = newValue
             updateNavigationBarLayout()
         }
     }
     
-    private func predefinedBarType() -> EkoNavigationBarType {
+    private var userDefinedNavigationBarType: EkoNavigationBarType?
+    private var defaultNavigationBarType: EkoNavigationBarType {
         if navigationController?.viewControllers.count == 1 {
             return presentingViewController == nil ? .root : .present
         }
@@ -131,6 +122,7 @@ public class EkoViewController: UIViewController {
             leftBarButtonItem?.image = EkoIconSet.iconBack
             navigationItem.leftBarButtonItem = leftBarButtonItem
         case .custom:
+            navigationItem.leftBarButtonItem = nil
             break
         }
     }

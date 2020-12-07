@@ -21,13 +21,15 @@ public extension EkoMessageCellProtocol {
 }
 
 protocol EkoMessageCellDelegate: class {
-    func didAction(_ cell: EkoMessageTableViewCell, action: EkoMessageCellAction)
+    func performEvent(_ cell: EkoMessageTableViewCell, events: EkoMessageCellEvents)
 }
 
-enum EkoMessageCellAction {
+enum EkoMessageCellEvents {
     case edit
     case delete
     case report
     case tapImage(imageView: UIImageView)
+    case audioPlaying
+    case audioFinishPlaying
 }
 

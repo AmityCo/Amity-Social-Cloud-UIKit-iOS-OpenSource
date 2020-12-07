@@ -21,42 +21,55 @@ final class EkoUserProfileScreenViewModel: EkoUserProfileScreenViewModelType {
     // MARK: - Initializer
     
     init(userId: String) {
-        userRepository = EkoUserRepository(client: UpstraUIKitManager.shared.client)
-        channelRepository = EkoChannelRepository(client: UpstraUIKitManager.shared.client)
+        userRepository = EkoUserRepository(client: UpstraUIKitManagerInternal.shared.client)
+        channelRepository = EkoChannelRepository(client: UpstraUIKitManagerInternal.shared.client)
         self.userId = userId
     }
     
     // MARK: DataSource
     
-    var user: EkoBoxBinding<EkoUserModel?> = EkoBoxBinding(nil)
-    #warning("workaround for observing data on header")
+    private var user: EkoUserModel?
     var userHeader: EkoBoxBinding<EkoUserModel?> = EkoBoxBinding(nil)
-    var channel: EkoBoxBinding<EkoChannel?> = EkoBoxBinding(nil)
+    
+    func fetchUserData(completion: ((Result<EkoUserModel, Error>) -> Void)?) {
+        userToken?.invalidate()
+        userRepository.user(forId: userId).observe({ _,_  in })
+        userToken = userRepository.user(forId: userId).observe { [weak self] object, error in
+            // Due to `observeOnce` doesn't guarantee if the data is fresh or local.
+            // So, this is a workaround to execute code specifically for fresh data status.
+            switch object.dataStatus {
+            case .fresh:
+                if let user = object.object {
+                    let userModel = EkoUserModel(user: user)
+                    self?.user = userModel
+                    completion?(.success(userModel))
+                }
+            case .error:
+                completion?(.failure(error ?? EkoError.unknown))
+            case .local, .notExist:
+                break
+            @unknown default:
+                break
+            }
+        }
+    }
     
 }
 
 // MARK: Action
 extension EkoUserProfileScreenViewModel {
     
-    func getInfo() {
-        userToken = userRepository.user(forId: userId).observe { [weak self] object, _ in
-            guard let user = object.object else { return }
-            let userModel = EkoUserModel(user: user)
-            self?.user.value = userModel
-            self?.userHeader.value = userModel
-        }
-    }
-    
-    func createChannel() {
+    func createChannel(completion: ((EkoChannel?) -> Void)?) {
         let builder = EkoConversationChannelBuilder()
         builder.setUserId(userId)
-        builder.setDisplayName(user.value?.displayName ?? "")
+        builder.setDisplayName(user?.displayName ?? "")
         
-        let channelObject: EkoObject<EkoChannel> = channelRepository.createConversation(with: builder)
-        channelToken = channelObject.observeOnce { [weak self] channelObject, _ in
+        let channel: EkoObject<EkoChannel> = channelRepository.createConversation(with: builder)
+        channelToken?.invalidate()
+        channelToken = channel.observeOnce { channelObject, _ in
             switch channelObject.dataStatus {
             case .local, .fresh:
-                self?.channel.value = channelObject.object
+                completion?(channelObject.object)
             case .error, .notExist:
                 break
             @unknown default:
@@ -66,3 +79,4 @@ extension EkoUserProfileScreenViewModel {
     }
     
 }
+

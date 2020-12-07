@@ -10,14 +10,13 @@ import EkoChat
 import UIKit
 
 /// A view controller for providing post editor.
-public class EkoPostEditViewController {
+public class EkoPostEditViewController: EkoPostTextEditorViewController {
 
     // This is a wrapper class to help fill in parameters.
-    public static func make(postTarget: EkoPostTarget, post: EkoPost) -> EkoViewController {
-        let postModel = EkoPostModel(post: post)
-        return EkoPostTextEditorViewController.make(postTarget: postTarget, postMode: .edit(postModel))
+    public static func make(withPostId postId: String, settings: EkoPostEditorSettings = EkoPostEditorSettings()) -> EkoPostEditViewController {
+        return EkoPostEditViewController(postTarget: .myFeed, postMode: .edit(postId: postId), settings: settings)
     }
     
-    #warning("should support init with postId")
+    #warning("Should support init with postId")
     
 }

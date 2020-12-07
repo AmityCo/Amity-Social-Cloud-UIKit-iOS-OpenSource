@@ -23,7 +23,7 @@ public class EkoChatHomePageViewController: EkoPageViewController {
     
     // MARK: - View lifecycle
     private init() {
-        super.init(nibName: EkoChatHomePageViewController.identifier, bundle: UpstraUIKit.bundle)
+        super.init(nibName: EkoChatHomePageViewController.identifier, bundle: UpstraUIKitManager.bundle)
         title = EkoLocalizedStringSet.chatTitle
     }
     

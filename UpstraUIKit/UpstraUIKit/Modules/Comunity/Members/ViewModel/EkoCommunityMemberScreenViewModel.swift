@@ -22,7 +22,7 @@ final class EkoCommunityMemberScreenViewModel: EkoCommunityMemberScreenViewModel
     
     init(communityId: String) {
         self.communityId = communityId
-        membershipParticipation = EkoCommunityParticipation(client: UpstraUIKitManager.shared.client, andCommunityId: communityId)
+        membershipParticipation = EkoCommunityParticipation(client: UpstraUIKitManagerInternal.shared.client, andCommunityId: communityId)
     }
     
     // MARK: - DataSource

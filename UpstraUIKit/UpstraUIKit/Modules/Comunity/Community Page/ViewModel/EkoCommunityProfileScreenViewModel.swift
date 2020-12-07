@@ -36,7 +36,7 @@ final class EkoCommunityProfileScreenViewModel: EkoCommunityProfileScreenViewMod
     let communityId: String
     
     init(communityId: String) {
-        repository = EkoCommunityRepository(client: UpstraUIKitManager.shared.client)
+        repository = EkoCommunityRepository(client: UpstraUIKitManagerInternal.shared.client)
         self.communityId = communityId
     }
     

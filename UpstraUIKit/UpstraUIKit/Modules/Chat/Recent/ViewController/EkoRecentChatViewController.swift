@@ -38,7 +38,7 @@ public final class EkoRecentChatViewController: EkoViewController, IndicatorInfo
     // MARK: - View lifecycle
     private init(viewModel: EkoRecentChatScreenViewModelType) {
         screenViewModel = viewModel
-        super.init(nibName: EkoRecentChatViewController.identifier, bundle: UpstraUIKit.bundle)
+        super.init(nibName: EkoRecentChatViewController.identifier, bundle: UpstraUIKitManager.bundle)
     }
     
     required init?(coder: NSCoder) {

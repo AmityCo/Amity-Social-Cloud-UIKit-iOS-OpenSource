@@ -22,7 +22,7 @@ final public class EkoMyCommunityPreviewViewController: UIViewController {
     // MARK: - View lifecycle
     private init(viewModel: EkoCommunitiesScreenViewModelType) {
         self.screenViewModel = viewModel
-        super.init(nibName: EkoMyCommunityPreviewViewController.identifier, bundle: UpstraUIKit.bundle)
+        super.init(nibName: EkoMyCommunityPreviewViewController.identifier, bundle: UpstraUIKitManager.bundle)
     }
     
     required init?(coder: NSCoder) {

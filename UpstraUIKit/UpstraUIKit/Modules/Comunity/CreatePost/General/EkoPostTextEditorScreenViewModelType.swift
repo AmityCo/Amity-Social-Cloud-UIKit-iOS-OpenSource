@@ -11,7 +11,7 @@ import EkoChat
 
 enum EkoPostMode: Equatable {
     case create
-    case edit(EkoPostModel)
+    case edit(postId: String)
     
     static func == (lhs: EkoPostMode, rhs: EkoPostMode) -> Bool {
         if case .create = lhs, case .create = rhs {
@@ -27,21 +27,18 @@ public enum EkoPostTarget {
 }
 
 protocol EkoPostTextEditorScreenViewModelDataSource {
-    func numberOfItems() -> Int
-    func item(at indexPath: IndexPath) -> EkoPost?
+    func loadPost(for postId: String)
 }
 
 protocol EkoPostTextEditorScreenViewModelDelegate: class {
+    func screenViewModelDidLoadPost(_ viewModel: EkoPostTextEditorScreenViewModel, post: EkoPost)
     func screenViewModelDidCreatePost(_ viewModel: EkoPostTextEditorScreenViewModel, error: Error?)
     func screenViewModelDidUpdatePost(_ viewModel: EkoPostTextEditorScreenViewModel, error: Error?)
 }
 
 protocol EkoPostTextEditorScreenViewModelAction {
-    func createPost(text: String, images: [EkoImage], files: [EkoDocument], communityId: String?)
-    func likePost(postId: String)
-    func unlikePost(postId: String)
-    func likeComment(commentId: String)
-    func unlikeComment(commentId: String)
+    func createPost(text: String, images: [EkoImage], files: [EkoFile], communityId: String?)
+    func updatePost(oldPost: EkoPostModel, text: String, images: [EkoImage], files: [EkoFile])
 }
 
 protocol EkoPostTextEditorScreenViewModelType: EkoPostTextEditorScreenViewModelAction, EkoPostTextEditorScreenViewModelDataSource {

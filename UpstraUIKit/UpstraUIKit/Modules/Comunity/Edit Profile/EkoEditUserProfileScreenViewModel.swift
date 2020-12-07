@@ -10,7 +10,7 @@ import EkoChat
 
 class EkoEditUserProfileScreenViewModel: EkoEditUserProfileScreenViewModelType {
     
-    private let userRepository = EkoUserRepository(client: UpstraUIKitManager.shared.client)
+    private let userRepository = EkoUserRepository(client: UpstraUIKitManagerInternal.shared.client)
     private var userObject: EkoObject<EkoUser>?
     private var userCollectionToken: EkoNotificationToken?
     private let dispatchGroup = DispatchGroupWraper()
@@ -19,7 +19,7 @@ class EkoEditUserProfileScreenViewModel: EkoEditUserProfileScreenViewModelType {
     var user: EkoUserModel?
     
     init() {
-        userObject = userRepository.user(forId: UpstraUIKitManager.shared.client.currentUserId!)
+        userObject = userRepository.user(forId: UpstraUIKitManagerInternal.shared.client.currentUserId!)
         userCollectionToken = userObject?.observe { [weak self] user, error in
             guard let strongSelf = self,
                 let user = user.object else{ return }
@@ -41,11 +41,11 @@ class EkoEditUserProfileScreenViewModel: EkoEditUserProfileScreenViewModelType {
         
         // Update description
         dispatchGroup.enter()
-        UpstraUIKitManager.shared.client.setUserDescription(about, completion: completion)
+        UpstraUIKitManagerInternal.shared.client.setUserDescription(about, completion: completion)
         
         // Update display name
         dispatchGroup.enter()
-        UpstraUIKitManager.shared.client.setDisplayName(displayName, completion: completion)
+        UpstraUIKitManagerInternal.shared.client.setDisplayName(displayName, completion: completion)
         
         dispatchGroup.notify(queue: DispatchQueue.main) { error in
             if let error = error {
@@ -59,7 +59,7 @@ class EkoEditUserProfileScreenViewModel: EkoEditUserProfileScreenViewModelType {
     func update(avatar: UIImage, completion: ((Bool) -> Void)?) {
         // Update user avatar
         dispatchGroup.enter()
-        UpstraUIKitManager.shared.client.setAvatar(avatar) { [weak self] success, error in
+        UpstraUIKitManagerInternal.shared.client.setAvatar(avatar) { [weak self] success, error in
             if success {
                 self?.dispatchGroup.leave()
             } else {

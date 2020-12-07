@@ -23,7 +23,7 @@ final class EkoCommunitySettingsViewController: EkoViewController {
     // MARK: - View lifecycle
     private init(viewModel: EkoCommunityProfileScreenViewModelType) {
         self.screenViewModel = viewModel
-        super.init(nibName: EkoCommunitySettingsViewController.identifier, bundle: UpstraUIKit.bundle)
+        super.init(nibName: EkoCommunitySettingsViewController.identifier, bundle: UpstraUIKitManager.bundle)
         title = screenViewModel.dataSource.community.value?.displayName
     }
     

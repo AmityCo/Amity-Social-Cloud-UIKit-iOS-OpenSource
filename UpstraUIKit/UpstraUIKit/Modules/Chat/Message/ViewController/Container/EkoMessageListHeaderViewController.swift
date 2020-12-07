@@ -22,7 +22,7 @@ final class EkoMessageListHeaderViewController: UIViewController {
     // MARK: View lifecycle
     private init(viewModel: EkoMessageListScreenViewModelType) {
         screenViewModel = viewModel
-        super.init(nibName: EkoMessageListHeaderViewController.identifier, bundle: UpstraUIKit.bundle)
+        super.init(nibName: EkoMessageListHeaderViewController.identifier, bundle: UpstraUIKitManager.bundle)
     }
     
     required init?(coder: NSCoder) {

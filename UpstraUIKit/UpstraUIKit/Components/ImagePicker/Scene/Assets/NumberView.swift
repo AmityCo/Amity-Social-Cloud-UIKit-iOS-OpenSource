@@ -37,7 +37,7 @@ class NumberView: UILabel {
     init() {
         super.init(frame: .zero)
 
-        font = UIFont.boldSystemFont(ofSize: 12)
+        font = EkoFontSet.captionBold
         numberOfLines = 1
         adjustsFontSizeToFitWidth = true
         baselineAdjustment = .alignCenters

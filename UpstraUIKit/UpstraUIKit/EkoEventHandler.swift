@@ -38,12 +38,20 @@ open class EkoEventHandler {
     }
     
     /// Event for channel
-    /// It will be triggered when channel list is tapped
+    /// It will be triggered when channel list or chat button is tapped
     ///
     /// A default behavior is navigating to `EkoMessageListViewController`
     open func channelDidTap(from source: EkoViewController, channelId: String) {
         let viewController = EkoMessageListViewController.make(channelId: channelId)
         source.navigationController?.pushViewController(viewController, animated: true)
+    }
+    
+    /// Event for community channel
+    /// It will be triggered when community  button tapped
+    ///
+    /// There is no default behavior yet. Please override and implement your own here.
+    open func communityChannelDidTap(from source: EkoViewController, channelId: String) {
+        // Internally left empty
     }
     
     /// Event for post
@@ -62,6 +70,43 @@ open class EkoEventHandler {
     open func userDidTap(from source: EkoViewController, userId: String) {
         let viewController = EkoUserProfilePageViewController.make(withUserId: userId)
         source.navigationController?.pushViewController(viewController, animated: true)
+    }
+    
+    /// Event for edit user
+    /// It will be triggered when edit user button is tapped
+    ///
+    /// A default behavior is navigating to `EkoEditUserProfileViewController`
+    open func editUserDidTap(from source: EkoViewController, userId: String) {
+        let editProfileViewController = EkoEditUserProfileViewController.make()
+        source.navigationController?.pushViewController(editProfileViewController, animated: true)
+    }
+    
+    /// Event for post creator
+    /// It will be triggered when post button is tapped
+    ///
+    /// A default behavior is presenting or navigating to `EkoPostCreateViewController`
+    open func createPostDidTap(from source: EkoViewController, postTarget: EkoPostTarget) {
+        if source is EkoPostTargetSelectionViewController {
+            let viewController = EkoPostCreateViewController.make(postTarget: postTarget)
+            source.navigationController?.pushViewController(viewController, animated: true)
+        } else {
+            // When create button tapped, automatically navigate to post page with `myfeed` target.
+            let viewController = EkoPostCreateViewController.make(postTarget: postTarget)
+            let navigationController = UINavigationController(rootViewController: viewController)
+            navigationController.modalPresentationStyle = .overFullScreen
+            source.present(navigationController, animated: true, completion: nil)
+        }
+    }
+    
+    /// Event for post editor
+    /// It will be triggered when edit post button is tapped
+    ///
+    /// A default behavior is presenting a `EkoPostEditViewController`
+    open func editPostDidTap(from source: EkoViewController, postId: String) {
+        let viewController = EkoPostEditViewController.make(withPostId: postId)
+        let navigationController = UINavigationController(rootViewController: viewController)
+        navigationController.modalPresentationStyle = .overFullScreen
+        source.present(navigationController, animated: true, completion: nil)
     }
     
 }

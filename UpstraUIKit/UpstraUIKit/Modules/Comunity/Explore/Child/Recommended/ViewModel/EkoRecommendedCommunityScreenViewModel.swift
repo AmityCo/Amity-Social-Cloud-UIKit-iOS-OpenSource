@@ -10,7 +10,7 @@ import UIKit
 import EkoChat
 
 final class EkoRecommendedCommunityScreenViewModel: EkoRecommendedCommunityScreenViewModelType {
-    private let repository = EkoCommunityRepository(client: UpstraUIKitManager.shared.client)
+    private let repository = EkoCommunityRepository(client: UpstraUIKitManagerInternal.shared.client)
     private var recommendedCollection: EkoCollection<EkoCommunity>?
     private var recommendedToken: EkoNotificationToken?
     private let RECOMMENDED_MAX: Int = 4

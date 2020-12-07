@@ -12,10 +12,10 @@ class EkoUserProfileBottomViewController: EkoProfileBottomViewController {
     
     // MARK: - Properties
     
-    private let viewModel: EkoUserProfileScreenViewModelType
+    private let userId: String
     
-    private init(viewModel: EkoUserProfileScreenViewModelType) {
-        self.viewModel = viewModel
+    private init(userId: String) {
+        self.userId = userId
         super.init()
     }
     
@@ -23,12 +23,12 @@ class EkoUserProfileBottomViewController: EkoProfileBottomViewController {
         fatalError("init(coder:) has not been implemented")
     }
     
-    static func make(with viewModel: EkoUserProfileScreenViewModelType) -> EkoUserProfileBottomViewController {
-        return EkoUserProfileBottomViewController(viewModel: viewModel)
+    static func make(withUserId userId: String) -> EkoUserProfileBottomViewController {
+        return EkoUserProfileBottomViewController(userId: userId)
     }
 
     override func viewControllers(for pagerTabStripController: EkoPagerTabViewController) -> [UIViewController] {
-        let timelineVC = EkoFeedViewController.make(feedType: .userFeed(userId: viewModel.userId))
+        let timelineVC = EkoFeedViewController.make(feedType: .userFeed(userId: userId))
         timelineVC.pageTitle = EkoLocalizedStringSet.timelineTitle
         timelineVC.pageIndex = 0
         return [timelineVC]

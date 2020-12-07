@@ -10,7 +10,7 @@ import UIKit
 import EkoChat
 
 final class EkoTrendingCommunityScreenViewModel: EkoTrendingCommunityScreenViewModelType {
-    private let repository = EkoCommunityRepository(client: UpstraUIKitManager.shared.client)
+    private let repository = EkoCommunityRepository(client: UpstraUIKitManagerInternal.shared.client)
     private var trendingCollection: EkoCollection<EkoCommunity>?
     private var trendingToken: EkoNotificationToken?
     private let TRENDING_MAX: Int = 5

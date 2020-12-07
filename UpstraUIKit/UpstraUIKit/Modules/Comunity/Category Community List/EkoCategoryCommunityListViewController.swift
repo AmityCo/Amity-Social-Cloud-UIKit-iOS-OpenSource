@@ -21,7 +21,7 @@ public class EkoCategoryCommunityListViewController: EkoViewController {
     
     private init(categoryId: String) {
         screenViewModel = EkoCategoryCommunityListScreenViewModel(categoryId: categoryId)
-        super.init(nibName: EkoCategoryCommunityListViewController.identifier, bundle: UpstraUIKit.bundle)
+        super.init(nibName: EkoCategoryCommunityListViewController.identifier, bundle: UpstraUIKitManager.bundle)
         screenViewModel.delegate = self
     }
     

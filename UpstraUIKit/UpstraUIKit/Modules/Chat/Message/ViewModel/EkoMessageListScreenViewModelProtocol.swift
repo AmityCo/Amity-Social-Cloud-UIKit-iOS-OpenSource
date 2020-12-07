@@ -19,10 +19,11 @@ protocol EkoMessageListScreenViewModelDelegate: class {
     func screenViewModelEvents(for events: EkoMessageListScreenViewModel.Events)
     func screenViewModelCellEvents(for events: EkoMessageListScreenViewModel.CellEvents)
     func screenViewModelKeyboardInputEvents(for events: EkoMessageListScreenViewModel.KeyboardInputEvents)
+    func screenViewModelToggleDefaultKeyboardAndAudioKeyboard(for events: EkoMessageListScreenViewModel.KeyboardInputEvents)
+    func screenViewModelAudioRecordingEvvents(for events: EkoMessageListScreenViewModel.AudioRecordingEvents)
 }
 
 protocol EkoMessageListScreenViewModelDataSource {
-    
     var allCells: [String: UINib] { get }
     var cache: ImageCache { get }
     
@@ -38,12 +39,13 @@ protocol EkoMessageListScreenViewModelAction {
     func getChannel()
     func getMessage()
     
-    func send(with text: String?)
-    func send(with image: UIImage)
-    func send(with images: [PHAsset])
+    func send(withText text: String?)
+    func send(withImage image: UIImage)
+    func send(withImages images: [PHAsset])
+    func sendAudio()
     
     func editText(with text: String, messageId: String)
-    func delete(with messageId: String, at indexPath: IndexPath)
+    func delete(withMessage message: EkoMessageModel, at indexPath: IndexPath)
     func deleteErrorMessage(with messageId: String, at indexPath: IndexPath)
     func startReading()
     func stopReading()
@@ -60,6 +62,11 @@ protocol EkoMessageListScreenViewModelAction {
     func performCellEvent(for event: EkoMessageListScreenViewModel.CellEvents)
     
     func loadMoreScrollUp(_ scrollView: UIScrollView, withVelocity velocity: CGPoint, targetContentOffset: UnsafeMutablePointer<CGPoint>)
+    
+    func toggleShowDefaultKeyboardAndAudioKeyboard(_ sender: UIButton)
+    
+    func performAudioRecordingEvents(for event: EkoMessageListScreenViewModel.AudioRecordingEvents)
+    
 }
 
 protocol EkoMessageListScreenViewModelType: EkoMessageListScreenViewModelAction, EkoMessageListScreenViewModelDataSource {

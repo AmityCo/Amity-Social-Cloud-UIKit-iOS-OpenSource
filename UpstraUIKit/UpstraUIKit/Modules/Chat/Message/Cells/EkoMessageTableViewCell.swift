@@ -11,6 +11,9 @@ import EkoChat
 
 class EkoMessageTableViewCell: UITableViewCell, EkoMessageCellProtocol {
     
+    // MARK: - Delegate
+    weak var delegate: EkoMessageCellDelegate?
+    
     // MARK: - IBOutlet Properties
     @IBOutlet var avatarView: EkoAvatarView!
     @IBOutlet var containerView: EkoResponsiveView!
@@ -18,7 +21,7 @@ class EkoMessageTableViewCell: UITableViewCell, EkoMessageCellProtocol {
     @IBOutlet var metadataLabel: UILabel!
     @IBOutlet var messageImageView: UIImageView!
     @IBOutlet var statusMetadataImageView: UIImageView!
-    @IBOutlet var errorStateButton: UIButton!
+    @IBOutlet var errorButton: UIButton!
     
     // MARK: Container
     @IBOutlet var containerMessageView: UIView!
@@ -28,16 +31,10 @@ class EkoMessageTableViewCell: UITableViewCell, EkoMessageCellProtocol {
     var screenViewModel: EkoMessageListScreenViewModelType!
     var message: EkoMessageModel!
     
-    var errorStateHandler: (() -> Void)?
-    var errorStateActionHandler: ((EkoMessageModel) -> Void)?
-    
     var indexPath: IndexPath!
     let editMenuItem = UIMenuItem(title: EkoLocalizedStringSet.edit, action: #selector(editTap))
     let deleteMenuItem = UIMenuItem(title: EkoLocalizedStringSet.delete, action: #selector(deleteTap))
     let reportMenuItem = UIMenuItem(title: EkoLocalizedStringSet.report, action: #selector(reportTap))
-    
-    // MARK: - Delegate
-    weak var delegate: EkoMessageCellDelegate?
     
     override var canBecomeFirstResponder: Bool {
         return true
@@ -45,10 +42,11 @@ class EkoMessageTableViewCell: UITableViewCell, EkoMessageCellProtocol {
     
     override func canPerformAction(_ action: Selector, withSender sender: Any?) -> Bool {
         if message.isOwner {
-            if message.messageType == .image || message.messageType == .file {
-                return action == #selector(deleteTap)
-            } else {
+            switch message.messageType {
+            case .text:
                 return action == #selector(editTap) || action == #selector(deleteTap)
+            default:
+                return action == #selector(deleteTap)
             }
         } else {
             return action == #selector(reportTap)
@@ -75,24 +73,37 @@ class EkoMessageTableViewCell: UITableViewCell, EkoMessageCellProtocol {
         indexPath = _indexPath
     }
     
+    func setRoundCorner(isOwner: Bool) -> CACornerMask {
+        if isOwner {
+            return [.layerMinXMinYCorner, .layerMaxXMaxYCorner, .layerMinXMaxYCorner]
+        } else {
+            return [.layerMinXMaxYCorner, .layerMaxXMaxYCorner, .layerMaxXMinYCorner]
+        }
+    }
+    
     func display(message: EkoMessageModel) {
         self.message = message
         
         if message.isOwner {
-            containerView.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMaxYCorner, .layerMinXMaxYCorner]
+            
+            containerView.layer.maskedCorners = setRoundCorner(isOwner: message.isOwner)
             
             switch message.messageType {
-            case .text:
+            case .text, .audio:
                 containerView.backgroundColor = EkoColorSet.messageBubble
+            case .image:
+                containerView.backgroundColor = EkoColorSet.messageBubbleInverse
             default:
                 containerView.backgroundColor = .white
             }
         } else {
-            containerView.layer.maskedCorners = [.layerMinXMaxYCorner, .layerMaxXMaxYCorner, .layerMaxXMinYCorner]
+            avatarView.placeholder = EkoIconSet.defaultAvatar
+            containerView.layer.maskedCorners = setRoundCorner(isOwner: message.isOwner)
             
-            if case .text = message.messageType {
+            switch message.messageType {
+            case .text, .audio:
                 containerView.backgroundColor = EkoColorSet.messageBubbleInverse
-            } else {
+            default:
                 containerView.backgroundColor = .white
             }
             
@@ -119,14 +130,14 @@ class EkoMessageTableViewCell: UITableViewCell, EkoMessageCellProtocol {
             fullString.append(NSAttributedString(string: editMessage, attributes: style))
         } else {
             if message.isOwner {
-                errorStateButton.isHidden = true
+                errorButton.isHidden = true
                 switch message.syncState {
                 case .error:
-                    errorStateButton.isHidden = false
-                    errorStateHandler?()
+                    errorButton.isHidden = false
+//                    errorStateHandler?()
                     fullString.append(NSAttributedString(string: message.time, attributes: style))
                 case .syncing:
-                    fullString.append(NSAttributedString(string: EkoLocalizedStringSet.messageListSending, attributes: style))
+                    fullString.append(NSAttributedString(string: EkoLocalizedStringSet.MessageList.sending, attributes: style))
                 case .synced:
                     fullString.append(NSAttributedString(string: message.time, attributes: style))
                 default:
@@ -171,8 +182,8 @@ private extension EkoMessageTableViewCell {
         screenViewModel.action.performCellEvent(for: .report(indexPath: indexPath))
     }
     
-    @IBAction func errorStateTap() {
-        errorStateActionHandler?(message)
+    @IBAction func errorTap() {
+        screenViewModel.action.performCellEvent(for: .deleteErrorMessage(indexPath: indexPath))
     }
 }
 

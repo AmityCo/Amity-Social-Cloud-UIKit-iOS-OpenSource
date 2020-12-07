@@ -77,30 +77,20 @@ public final class EkoCommunityProfileEditViewController: EkoViewController {
     @IBOutlet private var seperatorLineView: UIView!
     
     // MARK: - Properties
-    private var screenViewModel: EkoCreateCommunityScreenViewModelType
-    private let selectMemberListViewModel: EkoSelectMemberListScreenViewModelType
+    private var screenViewModel: EkoCreateCommunityScreenViewModelType = EkoCreateCommunityScreenViewModel()
+    private let selectMemberListViewModel: EkoSelectMemberListScreenViewModelType = EkoSelectMemberListScreenViewModel()
     private var rightItem: UIBarButtonItem?
-    private let viewType: ViewType
-    
-    private init(viewType: ViewType, _screenViewModel: EkoCreateCommunityScreenViewModelType, _selectMemberListViewModel: EkoSelectMemberListScreenViewModelType) {
-        self.viewType = viewType
-        screenViewModel = _screenViewModel
-        selectMemberListViewModel = _selectMemberListViewModel
-        super.init(nibName: EkoCommunityProfileEditViewController.identifier, bundle: UpstraUIKit.bundle)
-        title = EkoLocalizedStringSet.createCommunityTitle
-    }
-    
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
+    private var viewType: ViewType!
     
     public override func viewDidLoad() {
         super.viewDidLoad()
+        title = title ?? EkoLocalizedStringSet.createCommunityTitle
         setupView()
     }
     
     public static func make(viewType: ViewType) -> EkoCommunityProfileEditViewController {
-        let vc = EkoCommunityProfileEditViewController(viewType: viewType, _screenViewModel: EkoCreateCommunityScreenViewModel(), _selectMemberListViewModel: EkoSelectMemberListScreenViewModel())
+        let vc = EkoCommunityProfileEditViewController(nibName: EkoCommunityProfileEditViewController.identifier, bundle: UpstraUIKitManager.bundle)
+        vc.viewType = viewType
         return vc
     }
     
@@ -277,7 +267,7 @@ public final class EkoCommunityProfileEditViewController: EkoViewController {
             communityAddMemberTitleLabel.attributedText = fullString
                 
             
-            communityAddMemberCollectionView.register(UINib(nibName: EkoMemberCollectionViewCell.identifier, bundle: UpstraUIKit.bundle), forCellWithReuseIdentifier: EkoMemberCollectionViewCell.identifier)
+            communityAddMemberCollectionView.register(UINib(nibName: EkoMemberCollectionViewCell.identifier, bundle: UpstraUIKitManager.bundle), forCellWithReuseIdentifier: EkoMemberCollectionViewCell.identifier)
             
             
             addMemberLineView.backgroundColor = EkoColorSet.base.blend(.shade4)
