@@ -15,7 +15,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         UpstraUIKitManager.setup("b3bab95b3edbf9661a368518045b4481d35cdfeaec35677d")
-        UpstraUIKit.set(eventHandler: CustomEventHandler())
+        UpstraUIKitManager.set(eventHandler: CustomEventHandler())
         
         guard let preset = Preset(rawValue: UserDefaults.standard.theme ?? 0) else { return false }
         UpstraUIKitManager.set(theme: preset.theme)
