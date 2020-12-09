@@ -13,7 +13,7 @@ UpstraUIKit is a delightful networking library for iOS. It is extending the powe
 
 | UpstraUIKit Version | EkoChatSDK Version | Minimum iOS Target  | Swift Version | Xcode Version |
 
-| v1.5.2 | v4.2.0 | iOS 11.1 | Swift 5 | Xcode 12.2 |
+| v1.6.0 | v4.2.0 | iOS 12.0 | Swift 5.3 | Xcode 12.2 |
 
 ## Dependencies
 
@@ -21,7 +21,7 @@ UpstraUIKit has dependencies with Realm. Currently we are only able to work with
 
 ## Framework Building
 
-UpstraUIKit supports building xcframework which can be used any Xcode version. Please follow this instruction for building.
+UpstraUIKit supports building xcframework which can be used on any Xcode version. Please follow this instruction for building.
 1. Open this project with Xcode 12.2 (The version should be the same)
 2. Select `Release Framework` as a build target
 3. Build (The output path is `/UpstraUIKit/Distribution`)
