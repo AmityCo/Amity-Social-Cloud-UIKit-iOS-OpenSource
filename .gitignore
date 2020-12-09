@@ -72,3 +72,4 @@ fastlane/test_output
 */Distribution
 /UpstraUIKit/SampleApp/.DS_Store
 /.DS_Store
+*.xcuserstate

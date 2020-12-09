@@ -58,11 +58,6 @@ public final class UpstraUIKitManager {
 }
 
 final class UpstraUIKitManagerInternal {
-
-    // Configuration key for environment changing, please don't change.
-    private let ENV_PROD_KEY = "sdk_environment"
-    // Endpoint for EkoClient, please contact Eko for the proper endpoint and API key.
-    private let ENV_PROD_VALUE = "https://api.pre-prod.ekomedia.technology"
     
     // MARK: - Properties
     
@@ -88,8 +83,6 @@ final class UpstraUIKitManagerInternal {
     }
 
     func registerDevice(_ userId: String, displayName: String?, authToken: String?) {
-        // setup endpoint
-        EkoClient.setEkoConfig([ENV_PROD_KEY : ENV_PROD_VALUE])
         
         // clear current client before setting up a new one
         self._client?.unregisterDevice()
