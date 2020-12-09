@@ -19,11 +19,18 @@ UpstraUIKit is a delightful networking library for iOS. It is extending the powe
 
 UpstraUIKit has dependencies with Realm. Currently we are only able to work with Realm version 4.x.x.
 
+## Framework Building
+
+UpstraUIKit supports building xcframework which can be used any Xcode version. Please follow this instruction for building.
+1. Open this project with Xcode 12.2 (The version should be the same)
+2. Select `Release Framework` as a build target
+3. Build (The output path is `/UpstraUIKit/Distribution`)
+
+`Distribution` folder will contains `EkoChat.xcframework`, `Realm.xcframework` and `UpstraUIKit.xcframework`. These frameworks can be imported and built on any version of Xcode or Swift.
+
 ## Sample App
 
-UpstraUIKit has sample app you can play along with it. It is written with Swift.
-
-_Please build the target `Release Framework` once before running `SampleApp` target._
+UpstraUIKit has sample app you can play along with it. It is written with Swift. Please finish `Release Framework` before running `SampleApp`.
 
 ## License
 
