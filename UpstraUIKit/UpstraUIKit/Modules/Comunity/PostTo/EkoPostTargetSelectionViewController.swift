@@ -39,7 +39,7 @@ final public class EkoPostTargetSelectionViewController: EkoViewController {
     }
     
     private func setupView() {
-        tableView.backgroundColor = .white
+        tableView.backgroundColor = EkoColorSet.backgroundColor
         tableView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 16, right: 0)
         tableView.translatesAutoresizingMaskIntoConstraints = false
         tableView.tableFooterView = UIView()
@@ -111,7 +111,7 @@ extension EkoPostTargetSelectionViewController: UITableViewDelegate {
     
     public func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         let headerView = UIView(frame: CGRect(x: 0.0, y: 0.0, width: tableView.frame.width, height: 44))
-        headerView.backgroundColor = .white
+        headerView.backgroundColor = EkoColorSet.backgroundColor
         let label = UILabel(frame: CGRect(x: 16.0, y: 0.0, width: headerView.frame.width - 32.0, height: 44))
         label.text = EkoLocalizedStringSet.myCommunityTitle
         label.textColor = EkoColorSet.base.blend(.shade3)

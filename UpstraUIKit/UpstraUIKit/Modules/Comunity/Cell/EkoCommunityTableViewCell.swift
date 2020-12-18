@@ -30,6 +30,7 @@ class EkoCommunityTableViewCell: UITableViewCell, Nibbable {
         titleLabel.font = EkoFontSet.bodyBold
         titleLabel.textColor = EkoColorSet.base
         badgeImageView.image = EkoIconSet.iconBadgeCheckmark
+        badgeImageView.tintColor = EkoColorSet.primary
     }
     
     func configure(with type: CommunityCellType) {

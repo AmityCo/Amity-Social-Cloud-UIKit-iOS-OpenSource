@@ -36,7 +36,7 @@ class EkoComunityPanelView: UIView {
     }
     
     private func commonInit() {
-        backgroundColor = .white
+        backgroundColor = EkoColorSet.backgroundColor
         topBorderLine.translatesAutoresizingMaskIntoConstraints = false
         topBorderLine.backgroundColor = EkoColorSet.base.blend(.shade4)
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
@@ -50,7 +50,7 @@ class EkoComunityPanelView: UIView {
         subtitleLabel.numberOfLines = 2
         subtitleLabel.textColor = EkoColorSet.base.blend(.shade1)
         actionSwitch.translatesAutoresizingMaskIntoConstraints = false
-        actionSwitch.onTintColor = .systemBlue
+        actionSwitch.onTintColor = EkoColorSet.primary
         actionSwitch.setContentCompressionResistancePriority(.required, for: .horizontal)
         addSubview(topBorderLine)
         addSubview(titleLabel)

@@ -11,60 +11,131 @@ import EkoChat
 
 final class EkoCommunityMemberScreenViewModel: EkoCommunityMemberScreenViewModelType {
     
-    enum CellAction {
-        case option(indexPath: IndexPath)
-    }
+    weak var delegate: EkoCommunityMemberScreenViewModelDelegate?
     
+    private var flagger: EkoUserFlagger?
     private let membershipParticipation: EkoCommunityParticipation?
-    private let communityId: String
-    private var memberCollection: EkoCollection<EkoCommunityMembership>?
-    private var memberToken: EkoNotificationToken?
+    private let communityRepository: EkoCommunityRepository?
+    
+    // MARK: - Controller
+    private var memberController: EkoCommunityMemberController?
+    private var communityController: EkoCommunityController?
+    
+    // MARK: - Properties
+    private var members: [EkoCommunityMembershipModel] = []
+    private var _community: EkoCommunityModel?
     
     init(communityId: String) {
-        self.communityId = communityId
         membershipParticipation = EkoCommunityParticipation(client: UpstraUIKitManagerInternal.shared.client, andCommunityId: communityId)
+        memberController = EkoCommunityMemberController(membershipParticipation: membershipParticipation)
+        communityRepository = EkoCommunityRepository(client: UpstraUIKitManagerInternal.shared.client)
+        communityController = EkoCommunityController(repository: communityRepository, communityId: communityId)
     }
-    
-    // MARK: - DataSource
-    var membership: EkoBoxBinding<EkoCollection<EkoCommunityMembership>?> = EkoBoxBinding(nil)
-    var cellAction: EkoBoxBinding<CellAction?> = EkoBoxBinding(nil)
-    var loading: EkoBoxBinding<EkoLoadingState> = EkoBoxBinding(.initial)
-    
-    func numberOfMembers() -> Int {
-        return Int(membership.value?.count() ?? 0)
-    }
-    
-    func item(at indexPath: IndexPath) -> EkoCommunityMembership? {
-        return membership.value?.object(at: UInt(indexPath.row)) ?? nil
-    }
+
 }
 
+// MARK: - DataSource
+extension EkoCommunityMemberScreenViewModel {    
+    func numberOfMembers() -> Int {
+        return members.count
+    }
+    
+    func member(at indexPath: IndexPath) -> EkoCommunityMembershipModel {
+        return members[indexPath.row]
+    }
+    
+    func community() -> EkoCommunityModel? {
+        return _community
+    }
+    
+    func getReportUserStatus(at indexPath: IndexPath, completion: ((Bool) -> Void)?) {
+        guard let user = member(at: indexPath).user else { return }
+        flagger = EkoUserFlagger(client: UpstraUIKitManagerInternal.shared.client, user: user)
+        flagger?.isFlagByMe {
+            completion?($0)
+        }
+    }
+    
+}
 
 // MARK: - Action
 extension EkoCommunityMemberScreenViewModel {
-    func getMember() {
-        memberCollection = membershipParticipation?.getMemberships(.all, sortBy: .lastCreated)
-        memberToken?.invalidate()
-        memberToken = memberCollection?.observe { [weak self] (collection, change, error) in
-            self?.membership.value = collection
+    
+    func getMember(viewType: EkoCommunityMemberViewType) {
+        switch viewType {
+        case .member:
+            memberController?.getMember { [weak self] (result) in
+                switch result {
+                case .success(let members):
+                    self?.members = members
+                    self?.delegate?.screenViewModelDidGetMember()
+                case .failure(let error):
+                    break
+                }
+            }
+        case .moderator:
+            memberController?.getMember(roles: ["moderator"]) { [weak self] (result) in
+                switch result {
+                case .success(let members):
+                    self?.members = members
+                    self?.delegate?.screenViewModelDidGetMember()
+                case .failure(let error):
+                    break
+                }
+            }
         }
     }
     
-    func selectedItem(action: CellAction) {
-        cellAction.value = action
+    func getCommunity() {
+        communityController?.getCommunity { [weak self] result in
+            switch result {
+            case .success(let community):
+                self?._community = community
+            case .failure(let error):
+                break
+            }
+        }
     }
     
     func loadMore() {
-        guard let collection = memberCollection else { return }
-        
-        switch collection.loadingStatus {
-        case .loaded:
-            if collection.hasNext {
-                collection.nextPage()
-                loading.value = .loadmore
+        memberController?.loadMore { [weak self] success in
+            if success {
+                self?.delegate?.screenViewModelLoadingState(state: .loadmore)
+            } else {
+                self?.delegate?.screenViewModelLoadingState(state: .loaded)
             }
-        default:
-            break
         }
     }
+    
+    func removeUser(at indexPath: IndexPath) {
+        let userId = member(at: indexPath).userId
+        memberController?.remove(userIds: [userId]) { [weak self] in
+            self?.delegate?.screenViewModelDidRemoveUser(at: indexPath)
+        }
+    }
+    
+    func reportUser(at indexPath: IndexPath) {
+        guard let user = member(at: indexPath).user else { return }
+        flagger = EkoUserFlagger(client: UpstraUIKitManagerInternal.shared.client, user: user)
+        flagger?.flag { (success, error) in
+            if let error = error {
+                EkoHUD.show(.error(message: error.localizedDescription))
+            } else {
+                EkoHUD.show(.success(message: EkoLocalizedStringSet.HUD.reportSent))
+            }
+        }
+    }
+    
+    func unreportUser(at indexPath: IndexPath) {
+        guard let user = member(at: indexPath).user else { return }
+        flagger = EkoUserFlagger(client: UpstraUIKitManagerInternal.shared.client, user: user)
+        flagger?.unflag { (success, error) in
+            if let error = error {
+                EkoHUD.show(.error(message: error.localizedDescription))
+            } else {
+                EkoHUD.show(.success(message: EkoLocalizedStringSet.HUD.unreportSent))
+            }
+        }
+    }
+    
 }

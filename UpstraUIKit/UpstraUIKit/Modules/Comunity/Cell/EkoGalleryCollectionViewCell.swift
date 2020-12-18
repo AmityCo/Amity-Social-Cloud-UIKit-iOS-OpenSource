@@ -49,10 +49,10 @@ public class EkoGalleryCollectionViewCell: UICollectionViewCell {
         closeButton.layer.cornerRadius = 10
         closeButton.imageEdgeInsets = UIEdgeInsets(top: 5, left: 5, bottom: 5, right: 5)
         closeButton.setImage(EkoIconSet.iconClose, for: .normal)
-        closeButton.tintColor = .white
+        closeButton.tintColor = EkoColorSet.baseInverse
         closeButton.backgroundColor = EkoColorSet.base.withAlphaComponent(0.2)
         
-        progressView.trackTintColor = .white
+        progressView.trackTintColor = EkoColorSet.baseInverse
         progressView.transform = CGAffineTransform(scaleX: 1, y: 2)
         progressView.layer.cornerRadius = 3
         progressView.clipsToBounds = true
@@ -63,7 +63,7 @@ public class EkoGalleryCollectionViewCell: UICollectionViewCell {
         overlayView.isHidden = true
         
         exclamationImageView.image = EkoIconSet.iconExclamation
-        exclamationImageView.tintColor = .white
+        exclamationImageView.tintColor = EkoColorSet.baseInverse
         exclamationBackgroundView.backgroundColor = EkoColorSet.base.withAlphaComponent(0.7)
         exclamationBackgroundView.layer.cornerRadius = 13
         exclamationBackgroundView.clipsToBounds = true

@@ -51,10 +51,6 @@ public final class UpstraUIKitManager {
     public static func set(eventHandler: EkoEventHandler) {
         EkoEventHandler.shared = eventHandler
     }
-    
-    static func setModeratorRole(_ roles: Set<String>) {
-        EkoUserManager.shared.roles = roles
-    }
 }
 
 final class UpstraUIKitManagerInternal {

@@ -49,7 +49,7 @@ final class BottomSheetHandleView: UIView, BottomSheetComponent {
     }
     
     private func setupViews() {
-        backgroundColor = .white
+        backgroundColor = EkoColorSet.backgroundColor
         
         imageView.translatesAutoresizingMaskIntoConstraints = false
         

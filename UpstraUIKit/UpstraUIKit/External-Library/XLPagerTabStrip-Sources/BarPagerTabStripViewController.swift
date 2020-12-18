@@ -60,7 +60,7 @@ class BarPagerTabStripViewController: EkoPagerTabViewController, PagerTabStripDa
             let barView = BarView(frame: CGRect(x: 0, y: 0, width: view.frame.size.width, height: settings.style.barHeight))
             barView.autoresizingMask = .flexibleWidth
             barView.backgroundColor = .black
-            barView.selectedBar.backgroundColor = .white
+            barView.selectedBar.backgroundColor = EkoColorSet.backgroundColor
             return barView
         }()
 

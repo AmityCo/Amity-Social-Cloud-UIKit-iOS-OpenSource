@@ -100,12 +100,12 @@ private extension EkoMessageListRecordingViewController {
 private extension EkoMessageListRecordingViewController {
     
     func waitingForRecordUI() {
-        recordingView.backgroundColor = EkoColorSet.primary.blend(.shade1)
+        recordingView.backgroundColor = EkoColorSet.primary.blend(.shade1).withAlphaComponent(0.5)
         recordingImageView.tintColor = UIColor.white
     }
     
     func recordingUI() {
-        recordingView.backgroundColor = EkoColorSet.primary
+        recordingView.backgroundColor = EkoColorSet.primary.blend(.shade1)
         recordingImageView.tintColor = UIColor.white
         
         waitingForDeleteUI()
@@ -144,7 +144,7 @@ extension EkoMessageListRecordingViewController: EkoAudioRecorderDelegate {
     }
     
     func voiceMonitoring(radius: CGFloat) {
-        let pulse = EkoPulseAnimation(numberOfPulse: 1, radius: radius, postion: recordingView.center)
+        let pulse = EkoPulseAnimation(numberOfPulse: 1, radius: radius + (radius * 0.15), postion: recordingView.center)
         pulse.animationDuration = 3.0
         pulse.backgroundColor = UIColor.black.withAlphaComponent(0.8).cgColor
         view.layer.insertSublayer(pulse, below: recordingView.layer)

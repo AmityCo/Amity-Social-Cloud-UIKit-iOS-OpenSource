@@ -50,7 +50,7 @@ final public class EkoSelectMemberListViewController: EkoViewController {
     
     private func setupNavigationBar() {
         navigationBarType = .custom
-        view.backgroundColor = .white
+        view.backgroundColor = EkoColorSet.backgroundColor
         let customView = UIView(frame: CGRect(x: 0, y: 0, width: 200, height: 44))
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
         customView.addSubview(titleLabel)
@@ -95,7 +95,7 @@ final public class EkoSelectMemberListViewController: EkoViewController {
         (selectMemberCollectionView.collectionViewLayout as? UICollectionViewFlowLayout)?.scrollDirection = .horizontal
         selectMemberCollectionView.showsHorizontalScrollIndicator = false
         selectMemberCollectionView.isHidden = screenViewModel.dataSource.selectedUsers.isEmpty
-        selectMemberCollectionView.backgroundColor = .white
+        selectMemberCollectionView.backgroundColor = EkoColorSet.backgroundColor
     }
     
     private func setupTableView() {
@@ -108,7 +108,7 @@ final public class EkoSelectMemberListViewController: EkoViewController {
         memberListTableView.delegate = self
         memberListTableView.dataSource = self
         memberListTableView.tableFooterView = UIView()
-        memberListTableView.backgroundColor = .white
+        memberListTableView.backgroundColor = EkoColorSet.backgroundColor
     }
 
     private func setupScreenViewModel() {

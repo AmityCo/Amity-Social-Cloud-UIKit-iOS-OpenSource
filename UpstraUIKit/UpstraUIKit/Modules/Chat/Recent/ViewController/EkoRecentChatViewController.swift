@@ -72,9 +72,9 @@ private extension EkoRecentChatViewController {
     }
     
     func setupTableView() {
-        view.backgroundColor = .white
+        view.backgroundColor = EkoColorSet.backgroundColor
         tableView.register(EkoRecentChatTableViewCell.nib, forCellReuseIdentifier: EkoRecentChatTableViewCell.identifier)
-        tableView.backgroundColor = .white
+        tableView.backgroundColor = EkoColorSet.backgroundColor
         tableView.separatorInset.left = 64
         tableView.showsVerticalScrollIndicator = false
         tableView.tableFooterView = UIView()

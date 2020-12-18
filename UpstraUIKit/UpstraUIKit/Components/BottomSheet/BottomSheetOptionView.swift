@@ -11,11 +11,19 @@ import UIKit
 protocol ItemOption: Equatable {
     var tintColor: UIColor { get }
     var title: String { get }
+    var textColor: UIColor { get }
+    var completion: (() -> Void)? { get set }
 }
 
 struct TextItemOption: ItemOption {
-    let tintColor: UIColor = EkoColorSet.base
+    static func == (lhs: TextItemOption, rhs: TextItemOption) -> Bool {
+        return lhs.title == rhs.title
+    }
+    
     let title: String
+    var tintColor: UIColor = EkoColorSet.base
+    var textColor: UIColor = EkoColorSet.base
+    var completion: (() -> Void)? = nil
 }
 
 final class ItemOptionView<T: ItemOption>: UIView, BottomSheetComponent, UITableViewDataSource, UITableViewDelegate {
@@ -37,7 +45,7 @@ final class ItemOptionView<T: ItemOption>: UIView, BottomSheetComponent, UITable
     }
     
     private func setupViews() {
-        backgroundColor = .white
+        backgroundColor = EkoColorSet.backgroundColor
         tableView.translatesAutoresizingMaskIntoConstraints = false
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: String(describing: UITableViewCell.self))
         tableView.dataSource = self
@@ -76,8 +84,8 @@ final class ItemOptionView<T: ItemOption>: UIView, BottomSheetComponent, UITable
         cell.selectionStyle = .none
         cell.textLabel?.text = item.title
         cell.tintColor = item.tintColor
-        cell.textLabel?.textColor = EkoColorSet.base
-        cell.backgroundColor = .white
+        cell.textLabel?.textColor = item.textColor
+        cell.backgroundColor = EkoColorSet.backgroundColor
     }
     
     // Table View Delegate
@@ -88,7 +96,28 @@ final class ItemOptionView<T: ItemOption>: UIView, BottomSheetComponent, UITable
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let item = items[indexPath.row]
-        didSelectItem?(item)
+        if let bottomSheet = parentViewController as? BottomSheetViewController {
+            bottomSheet.dismissBottomSheet { [weak self] in
+                item.completion?()
+                self?.didSelectItem?(item)
+            }
+        } else {
+            item.completion?()
+            didSelectItem?(item)
+        }
     }
     
+}
+
+extension UIView {
+    var parentViewController: UIViewController? {
+        var parentResponder: UIResponder? = self
+        while parentResponder != nil {
+            parentResponder = parentResponder?.next
+            if let viewController = parentResponder as? UIViewController {
+                return viewController
+            }
+        }
+        return nil
+    }
 }

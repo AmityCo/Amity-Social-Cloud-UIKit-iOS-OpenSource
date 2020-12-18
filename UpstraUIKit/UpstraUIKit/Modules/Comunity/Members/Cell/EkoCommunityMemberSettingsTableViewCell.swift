@@ -9,29 +9,32 @@
 import UIKit
 import EkoChat
 
+protocol EkoCommunityMemberSettingsTableViewCellDelegate: class {
+    func cellDidActionOption(at indexPath: IndexPath)
+}
+
 final class EkoCommunityMemberSettingsTableViewCell: UITableViewCell, Nibbable {
 
+    // MARK: - Delegate
+    weak var delegate: EkoCommunityMemberSettingsTableViewCellDelegate?
+    
     // MARK: - IBOutlet Properties
     @IBOutlet private var avatarView: EkoAvatarView!
     @IBOutlet private var displayNameLabel: UILabel!
     @IBOutlet private var optionButton: UIButton!
     
     // MARK: - Properties
-    private var screenViewModel: EkoCommunityMemberScreenViewModelType!
-    private var indexPath: IndexPath!
     
+    private var indexPath: IndexPath!
     override func awakeFromNib() {
         super.awakeFromNib()
         setupView()
     }
     
-    func display(with model: EkoCommunityMembership) {
-        let displayName = model.displayName == "" ? EkoLocalizedStringSet.anonymous : model.displayName
+    func display(with model: EkoCommunityMembershipModel, community: EkoCommunityModel) {
+        let displayName = model.displayName
         displayNameLabel.text = displayName
-    }
-    
-    func setViewModel(with viewModel: EkoCommunityMemberScreenViewModelType) {
-        screenViewModel = viewModel
+        optionButton.isHidden = model.isCurrentUser || !community.isJoined
     }
     
     func setIndexPath(with _indexPath: IndexPath) {
@@ -41,6 +44,7 @@ final class EkoCommunityMemberSettingsTableViewCell: UITableViewCell, Nibbable {
 
 private extension EkoCommunityMemberSettingsTableViewCell {
     func setupView() {
+        selectionStyle = .none
         backgroundColor = EkoColorSet.backgroundColor
         contentView.backgroundColor = EkoColorSet.backgroundColor
         setupAvatarView()
@@ -68,6 +72,6 @@ private extension EkoCommunityMemberSettingsTableViewCell {
 // MARK: - Action
 private extension EkoCommunityMemberSettingsTableViewCell {
     @IBAction func optionTap() {
-        screenViewModel.action.selectedItem(action: .option(indexPath: indexPath))
+        delegate?.cellDidActionOption(at: indexPath)
     }
 }

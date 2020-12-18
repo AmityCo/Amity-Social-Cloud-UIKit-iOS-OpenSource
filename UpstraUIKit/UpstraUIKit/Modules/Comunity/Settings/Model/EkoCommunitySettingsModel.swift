@@ -30,7 +30,7 @@ struct EkoCommunitySettingsModel {
     
     static func prepareData(isCreator: Bool) -> [Self] {
         let data: [EkoCommunitySettingsModel]
-        if isCreator || EkoUserManager.shared.isModerator() {
+        if isCreator {
             data = [
                 EkoCommunitySettingsModel(title: EkoLocalizedStringSet.communitySettingsEditProfile, icon: EkoIconSet.iconEdit, type: .editProfile),
                 EkoCommunitySettingsModel(title: EkoLocalizedStringSet.communitySettingsMembers, icon: EkoIconSet.iconMember, type: .member),

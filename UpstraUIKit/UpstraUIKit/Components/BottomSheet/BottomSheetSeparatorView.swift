@@ -25,6 +25,6 @@ public class BottomSheetSeparatorView: UIView, BottomSheetComponent {
     }
     
     private func setupViews() {
-        backgroundColor = .white
+        backgroundColor = EkoColorSet.backgroundColor
     }
 }

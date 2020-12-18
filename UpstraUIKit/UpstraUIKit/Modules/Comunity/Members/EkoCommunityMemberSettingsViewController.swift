@@ -8,39 +8,25 @@
 
 import UIKit
 
-final class EkoCommunityMemberSettingsTableViewController: UITableViewController {
-    var pageTitle: String?
-    
-}
-
-extension EkoCommunityMemberSettingsTableViewController: IndicatorInfoProvider {
-    func indicatorInfo(for pagerTabStripController: EkoPagerTabViewController) -> IndicatorInfo {
-        return IndicatorInfo(title: pageTitle)
-    }
-}
-
 final class EkoCommunityMemberSettingsViewController: EkoPageViewController {
     
-    private let screenViewModel: EkoCommunityMemberScreenViewModelType
-    // MARK: - View lifecycle
-    private init(viewModel: EkoCommunityMemberScreenViewModelType) {
-        self.screenViewModel = viewModel
-        super.init(nibName: EkoCommunityMemberSettingsViewController.identifier, bundle: UpstraUIKitManager.bundle)
-        title = EkoLocalizedStringSet.communityMemberSettingsTitle
-    }
+    private var communityId: String = ""
     
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
+    // MARK: - View lifecycle
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        title = EkoLocalizedStringSet.CommunityMembreSetting.title
     }
     
     static func make(communityId: String) -> EkoCommunityMemberSettingsViewController {
-        let viewModel: EkoCommunityMemberScreenViewModelType = EkoCommunityMemberScreenViewModel(communityId: communityId)
-        let vc = EkoCommunityMemberSettingsViewController(viewModel: viewModel)
+        let vc = EkoCommunityMemberSettingsViewController(nibName: EkoCommunityMemberSettingsViewController.identifier, bundle: UpstraUIKitManager.bundle)
+        vc.communityId = communityId
         return vc
     }
     
     override func viewControllers(for pagerTabStripController: EkoPagerTabViewController) -> [UIViewController] {
-        let memberVC = EkoCommunityMemberViewController.make(pageTitle: EkoLocalizedStringSet.communityMemberSettingsTitle, viewModel: screenViewModel)
-        return [memberVC]
+        let memberVC = EkoCommunityMemberViewController.make(pageTitle: EkoLocalizedStringSet.CommunityMembreSetting.title, communityId: communityId, viewType: .member)
+        let moderatorVC = EkoCommunityMemberModeratorViewController.make(pageTitle: EkoLocalizedStringSet.CommunityMembreSetting.moderatorTitle, communityId: communityId, viewType: .moderator)
+        return [memberVC, moderatorVC]
     }
 }

@@ -11,6 +11,7 @@ import EkoChat
 class EkoPostTextEditorScreenViewModel: EkoPostTextEditorScreenViewModelType {
     
     private let repository: EkoFeedRepository = EkoFeedRepository(client: UpstraUIKitManagerInternal.shared.client)
+    private var postObjectToken: EkoNotificationToken?
     
     public weak var delegate: EkoPostTextEditorScreenViewModelDelegate?
     private let actionTracker = DispatchGroup()
@@ -18,9 +19,11 @@ class EkoPostTextEditorScreenViewModel: EkoPostTextEditorScreenViewModelType {
     // MARK: - Datasource
     
     func loadPost(for postId: String) {
-        repository.getPostForPostId(postId).observeOnce { [weak self] post, error in
+        postObjectToken = repository.getPostForPostId(postId).observe { [weak self] post, error in
             guard let strongSelf = self, let post = post.object else { return }
             strongSelf.delegate?.screenViewModelDidLoadPost(strongSelf, post: post)
+            // observe once
+            strongSelf.postObjectToken?.invalidate()
         }
     }
     

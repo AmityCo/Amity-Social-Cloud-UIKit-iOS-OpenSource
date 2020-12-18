@@ -17,6 +17,7 @@
                 <outlet property="showDefaultKeyboardButton" destination="IRk-XX-REk" id="Qdd-S8-VGU"/>
                 <outlet property="showKeyboardComposeBarButton" destination="DS8-Pz-OBk" id="jY0-Fv-bkn"/>
                 <outlet property="textComposeBarView" destination="gU0-nB-1dd" id="rjY-59-dov"/>
+                <outlet property="trailingStackView" destination="Vtv-0T-xxf" id="ZDP-hj-LgS"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
         </placeholder>

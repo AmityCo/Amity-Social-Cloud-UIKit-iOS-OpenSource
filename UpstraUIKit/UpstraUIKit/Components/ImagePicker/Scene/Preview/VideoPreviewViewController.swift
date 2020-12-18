@@ -70,7 +70,9 @@ class VideoPreviewViewController: PreviewViewController {
         try? AVAudioSession.sharedInstance().setCategory(.playback, mode: .default)
 
         pauseBarButton = UIBarButtonItem(barButtonSystemItem: .pause, target: self, action: #selector(pausePressed(sender:)))
+        pauseBarButton.tintColor = UIColor.white
         playBarButton = UIBarButtonItem(barButtonSystemItem: .play, target: self, action: #selector(playPressed(sender:)))
+        playBarButton.tintColor = UIColor.white
         
         playerView.frame = view.bounds
         playerView.autoresizingMask = [.flexibleWidth, .flexibleHeight]

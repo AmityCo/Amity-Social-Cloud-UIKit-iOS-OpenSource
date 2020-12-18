@@ -19,6 +19,8 @@ class EkoFeedScreenViewModel: EkoFeedScreenViewModelType {
     private let feedRepository = EkoFeedRepository(client: UpstraUIKitManagerInternal.shared.client)
     private let fileRepository = EkoFileRepository(client: UpstraUIKitManagerInternal.shared.client)
     private let reactionRepository = EkoReactionRepository(client: UpstraUIKitManagerInternal.shared.client)
+    private var postFlagger: EkoPostFlagger?
+    private var commentFlagger: EkoCommentFlagger?
     private var feedCollection: EkoCollection<EkoPost>?
     private var feedToken: EkoNotificationToken?
     
@@ -94,6 +96,20 @@ class EkoFeedScreenViewModel: EkoFeedScreenViewModelType {
         setupCollection()
     }
     
+    func getReportPostStatus(postId: String, completion: ((Bool) -> Void)?) {
+        postFlagger = EkoPostFlagger(client: UpstraUIKitManagerInternal.shared.client, postId: postId)
+        postFlagger?.isPostFlaggedByMe {
+            completion?($0)
+        }
+    }
+    
+    func getReportCommentStatus(commentId: String, completion: ((Bool) -> Void)?) {
+        commentFlagger = EkoCommentFlagger(client: UpstraUIKitManagerInternal.shared.client, commentId: commentId)
+        commentFlagger?.isFlagByMe {
+            completion?($0)
+        }
+    }
+    
     // MARK: - Action
     
     func likePost(postId: String) {
@@ -107,6 +123,28 @@ class EkoFeedScreenViewModel: EkoFeedScreenViewModelType {
     func deletePost(postId: String) {
         feedRepository.deletePost(withPostId: postId, parentId: nil) { _, _ in
             NotificationCenter.default.post(name: NSNotification.Name.Post.didCreate, object: nil)
+        }
+    }
+    
+    func reportPost(postId: String) {
+        postFlagger = EkoPostFlagger(client: UpstraUIKitManagerInternal.shared.client, postId: postId)
+        postFlagger?.flagPost { (success, error) in
+            if let error = error {
+                EkoHUD.show(.error(message: error.localizedDescription))
+            } else {
+                EkoHUD.show(.success(message: EkoLocalizedStringSet.HUD.reportSent))
+            }
+        }
+    }
+    
+    func unreportPost(postId: String) {
+        postFlagger = EkoPostFlagger(client: UpstraUIKitManagerInternal.shared.client, postId: postId)
+        postFlagger?.unflagPost { (success, error) in
+            if let error = error {
+                EkoHUD.show(.error(message: error.localizedDescription))
+            } else {
+                EkoHUD.show(.success(message: EkoLocalizedStringSet.HUD.unreportSent))
+            }
         }
     }
     
@@ -126,6 +164,28 @@ class EkoFeedScreenViewModel: EkoFeedScreenViewModelType {
     func editComment(comment: EkoCommentModel, text: String) {
         let commentEditor = EkoCommentEditor(client: UpstraUIKitManagerInternal.shared.client, comment: comment.comment)
         commentEditor.editText(text, completion: nil)
+    }
+    
+    func reportComment(commentId: String) {
+        commentFlagger = EkoCommentFlagger(client: UpstraUIKitManagerInternal.shared.client, commentId: commentId)
+        commentFlagger?.flag { (success, error) in
+            if let error = error {
+                EkoHUD.show(.error(message: error.localizedDescription))
+            } else {
+                EkoHUD.show(.success(message: EkoLocalizedStringSet.HUD.reportSent))
+            }
+        }
+    }
+    
+    func unreportComment(commentId: String) {
+        commentFlagger = EkoCommentFlagger(client: UpstraUIKitManagerInternal.shared.client, commentId: commentId)
+        commentFlagger?.unflag { (success, error) in
+            if let error = error {
+                EkoHUD.show(.error(message: error.localizedDescription))
+            } else {
+                EkoHUD.show(.success(message: EkoLocalizedStringSet.HUD.unreportSent))
+            }
+        }
     }
     
 }

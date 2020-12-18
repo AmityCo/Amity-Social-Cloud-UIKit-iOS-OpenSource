@@ -28,7 +28,7 @@ public class BottomSheetTitleView: UIView, BottomSheetComponent {
     }
     
     private func setupViews() {
-        backgroundColor = .white
+        backgroundColor = EkoColorSet.backgroundColor
         addSubview(titleLabel)
         
         titleLabel.translatesAutoresizingMaskIntoConstraints = false

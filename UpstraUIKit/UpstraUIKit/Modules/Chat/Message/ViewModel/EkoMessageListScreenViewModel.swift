@@ -340,6 +340,7 @@ extension EkoMessageListScreenViewModel {
         messageAudio?.create { [weak self] in
             self?.messageAudio = nil
             self?.delegate?.screenViewModelEvents(for: .updateMessages)
+            self?.delegate?.screenViewModelEvents(for: .didSendAudio)
             self?.scrollToBottom()
         }
     }
@@ -349,6 +350,6 @@ extension EkoMessageListScreenViewModel {
 // MARK: - Audio Recording
 extension EkoMessageListScreenViewModel {
     func performAudioRecordingEvents(for event: AudioRecordingEvents) {
-        delegate?.screenViewModelAudioRecordingEvvents(for: event)
+        delegate?.screenViewModelAudioRecordingEvents(for: event)
     }
 }

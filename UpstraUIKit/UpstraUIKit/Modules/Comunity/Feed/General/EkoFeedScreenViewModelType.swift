@@ -30,6 +30,8 @@ protocol EkoFeedScreenViewModelDataSource {
     func item(at indexPath: IndexPath) -> FeedViewModel
     func reloadData()
     func loadNext()
+    func getReportPostStatus(postId: String, completion: ((Bool) -> Void)?)
+    func getReportCommentStatus(commentId: String, completion: ((Bool) -> Void)?)
 }
 
 protocol EkoFeedScreenViewModelDelegate: class {
@@ -40,10 +42,14 @@ protocol EkoFeedScreenViewModelAction {
     func likePost(postId: String)
     func unlikePost(postId: String)
     func deletePost(postId: String)
+    func reportPost(postId: String)
+    func unreportPost(postId: String)
     func likeComment(commentId: String)
     func unlikeComment(commentId: String)
     func editComment(comment: EkoCommentModel, text: String)
     func deleteComment(comment: EkoCommentModel)
+    func reportComment(commentId: String)
+    func unreportComment(commentId: String)
 }
 
 protocol EkoFeedScreenViewModelType: EkoFeedScreenViewModelAction, EkoFeedScreenViewModelDataSource {

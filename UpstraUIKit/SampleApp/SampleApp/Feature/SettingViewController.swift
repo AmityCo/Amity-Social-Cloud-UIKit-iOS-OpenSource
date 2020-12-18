@@ -11,18 +11,13 @@ import UpstraUIKit
 
 class SettingViewController: UIViewController {
     
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        
-    }
-    
     @IBAction func selectCustomizeTheme(_ sender: UIButton) {
         
         guard let preset = Preset(rawValue: sender.tag) else { return }
         UserDefaults.standard.theme = sender.tag
         UpstraUIKitManager.set(theme: preset.theme)
         
-        let alert = UIAlertController(title: "Customize Theme", message: "Selected Preset \(sender.tag + 1)", preferredStyle: .alert)
+        let alert = UIAlertController(title: "Customize Theme", message: "Selected \(preset)", preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
         present(alert, animated: true)
     }

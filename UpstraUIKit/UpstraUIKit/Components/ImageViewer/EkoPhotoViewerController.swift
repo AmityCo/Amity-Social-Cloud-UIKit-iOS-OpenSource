@@ -99,7 +99,7 @@ public class EkoPhotoViewerController: UIViewController {
     lazy var cancelButton: UIButton = {
         let cancelButton = UIButton(frame: CGRect.zero)
         cancelButton.setImage(EkoIconSet.iconClose, for: .normal)
-        cancelButton.tintColor = .white
+        cancelButton.tintColor = EkoColorSet.baseInverse
         cancelButton.addTarget(self, action: #selector(cancelButtonTapped(_:)), for: UIControl.Event.touchUpInside)
         cancelButton.contentHorizontalAlignment = .center
         cancelButton.contentVerticalAlignment = UIControl.ContentVerticalAlignment.center
@@ -119,7 +119,7 @@ public class EkoPhotoViewerController: UIViewController {
         let label = UILabel(frame: .zero)
         label.font = .systemFont(ofSize: 17, weight: .semibold)
         label.textAlignment = .center
-        label.textColor = .white
+        label.textColor = EkoColorSet.baseInverse
         return label
     }()
     

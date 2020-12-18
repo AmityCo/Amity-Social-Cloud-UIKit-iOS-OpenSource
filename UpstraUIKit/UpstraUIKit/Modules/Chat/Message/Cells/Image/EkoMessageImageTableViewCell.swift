@@ -19,6 +19,7 @@ class EkoMessageImageTableViewCell: EkoMessageTableViewCell {
     override func prepareForReuse() {
         super.prepareForReuse()
         messageImageView.image = EkoIconSet.defaultMessageImage
+        messageImageView.contentMode = .center
     }
 
     private func setupView() {
@@ -39,9 +40,11 @@ class EkoMessageImageTableViewCell: EkoMessageTableViewCell {
                 case .success(let url):
                     let image = UIImage(contentsOfFile: url.absoluteString)
                     self?.messageImageView.image = image
+                    self?.messageImageView.contentMode = .scaleAspectFill
                 case .failure(let error):
                     self?.messageImageView.image = EkoIconSet.defaultMessageImage
                     self?.metadataLabel.isHidden = false
+                    self?.messageImageView.contentMode = .center
                 }
             }
         }

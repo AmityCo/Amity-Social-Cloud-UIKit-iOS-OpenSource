@@ -39,6 +39,7 @@
 "reply" = "Reply";
 "general" = "General";
 "anonymous" = "Anonymous";
+"remove" = "Remove";
 
 "no_user_found" = "No user found";
 "search_results" = "Search results";
@@ -120,6 +121,7 @@
 "timeline_title" = "Timeline";
 
 // MARK: - Post creation
+"post_creation_edit_post" = "Edit post";
 "post_creation_my_timeline" = "My Timeline";
 "post_creation_text_placeholder" = "What’s going on...";
 "post_creation_discard_post_title" = "Discard Post?";
@@ -133,9 +135,11 @@
 "post_detail_edit_post" = "Edit post";
 "post_detail_delete_post" = "Delete post";
 "post_detail_report_post" = "Report post";
+"post_detail_unreport_post" = "Unreport post";
 "post_detail_edit_comment" = "Edit comment";
 "post_detail_delete_comment" = "Delete comment";
 "post_detail_report_comment" = "Report comment";
+"post_detail_unreport_comment" = "Unreport comment";
 "post_detail_delete_comment_title" = "Delete this comment";
 "post_detail_delete_comment_message" = "This comment will be permanently deleted. You’ll no longer to see and find this comment";
 "post_detail_discard_comment_title" = "Discard Comment?";
@@ -174,7 +178,12 @@
 
 // MARK: - Community member settings
 "community_member_settings_title" = "Members";
+"community_member_settings_moderator_title" = "Moderators";
 "community_member_settings_options_report" = "Report user";
+"community_member_settings_options_unreport" = "Unreport user";
+"community_member_settings_options_remove" = "Remove from community";
+"community_member_settings_alert_title" = "Remove user from community?";
+"community_member_settings_alert_desc" = "This user won't no longer be able to search, post and interact in this community";
 
 // MARK: - Edit User Profile
 "edit_user_profile_title" = "Edit Profile";
@@ -186,6 +195,7 @@
 "hud_successfully_created" = "Successfully\ncreated";
 "hud_successfully_updated" = "Successfully\nupdated";
 "hud_report_sent" = "Report sent";
+"hud_unreport_sent" = "Unreport sent";
 "hud_delete" = "Delete";
 
 // MARK: - Popover Text Message

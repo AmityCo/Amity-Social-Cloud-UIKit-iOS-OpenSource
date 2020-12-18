@@ -105,6 +105,8 @@ public class EkoPostFeedTableViewCell: UITableViewCell, Nibbable {
         warningLabel.text = EkoLocalizedStringSet.PostDetail.joinCommunityMessage
         warningLabel.font = EkoFontSet.body
         warningLabel.textColor = EkoColorSet.base.blend(.shade2)
+        firstCommentView.backgroundColor = EkoColorSet.backgroundColor
+        secondCommentView.backgroundColor = EkoColorSet.backgroundColor
         
         likeButton.setInsets(forContentPadding: .zero, imageTitlePadding: 4)
         commentButton.setInsets(forContentPadding: .zero, imageTitlePadding: 4)

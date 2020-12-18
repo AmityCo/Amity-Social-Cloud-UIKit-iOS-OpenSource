@@ -80,8 +80,8 @@ class EkoTextComposeBarView: EkoView {
     }
     
     private func setupView() {
-        contentView.backgroundColor = .white
-        textView.backgroundColor = .white
+        contentView.backgroundColor = EkoColorSet.backgroundColor
+        textView.backgroundColor = EkoColorSet.backgroundColor
         textView.layer.borderWidth = 1
         textView.layer.borderColor = UIColor.lightGray.cgColor
         textView.layer.cornerRadius = 4

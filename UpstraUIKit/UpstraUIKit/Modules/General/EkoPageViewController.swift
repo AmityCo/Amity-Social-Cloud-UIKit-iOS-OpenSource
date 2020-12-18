@@ -33,7 +33,7 @@ public class EkoPageViewController: EkoButtonPagerTabSViewController {
     
     public override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        navigationController?.setBackgroundColor(with: .white)
+        navigationController?.setBackgroundColor(with: EkoColorSet.backgroundColor)
     }
     
     override func reloadPagerTabStripView() {

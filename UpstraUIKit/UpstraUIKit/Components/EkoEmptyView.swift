@@ -22,7 +22,7 @@ class EkoEmptyView: EkoView {
     }
     
     private func setupView() {
-        contentView.backgroundColor = .white
+        contentView.backgroundColor = EkoColorSet.backgroundColor
         titleLabel.text = ""
         titleLabel.font = EkoFontSet.title
         titleLabel.textColor = EkoColorSet.base.blend(.shade3)

@@ -36,9 +36,9 @@ final class EkoRecentChatTableViewCell: UITableViewCell, Nibbable {
     }
     
     private func setupView() {
-        containerDisplayNameView.backgroundColor = .white
-        containerMessageView.backgroundColor = .white
-        contentView.backgroundColor = .white
+        containerDisplayNameView.backgroundColor = EkoColorSet.backgroundColor
+        containerMessageView.backgroundColor = EkoColorSet.backgroundColor
+        contentView.backgroundColor = EkoColorSet.backgroundColor
         selectionStyle = .none
         
         iconImageView.isHidden = true

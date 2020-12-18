@@ -88,16 +88,10 @@ extension EkoCommunitySettingsViewController: UITableViewDelegate {
         let type = data[indexPath.row].type
         switch type {
         case .editProfile:
-            if EkoUserManager.shared.isModerator() {
-                let alertController = UIAlertController(title: nil, message: EkoLocalizedStringSet.roleSupportAlertDesc, preferredStyle: .alert)
-                alertController.addAction(UIAlertAction(title: EkoLocalizedStringSet.ok, style: .default, handler: nil))
-                present(alertController, animated: true, completion: nil)
-            } else {
-                let vc = EkoCommunityProfileEditViewController.make(viewType: .edit(communityId: screenViewModel.dataSource.communityId))
-                let nav = UINavigationController(rootViewController: vc)
-                nav.modalPresentationStyle = .fullScreen
-                present(nav, animated: true, completion: nil)
-            }
+            let vc = EkoCommunityProfileEditViewController.make(viewType: .edit(communityId: screenViewModel.dataSource.communityId))
+            let nav = UINavigationController(rootViewController: vc)
+            nav.modalPresentationStyle = .fullScreen
+            present(nav, animated: true, completion: nil)
         case .member:
             let communityId = screenViewModel.dataSource.communityId
             let vc = EkoCommunityMemberSettingsViewController.make(communityId: communityId)

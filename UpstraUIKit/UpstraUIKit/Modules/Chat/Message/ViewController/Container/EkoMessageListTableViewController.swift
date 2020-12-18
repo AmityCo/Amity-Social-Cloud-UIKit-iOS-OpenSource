@@ -45,7 +45,7 @@ extension EkoMessageListTableViewController {
         tableView.separatorInset.left = UIScreen.main.bounds.width
         tableView.tableFooterView = UIView()
         tableView.keyboardDismissMode = .onDrag
-        tableView.backgroundColor = .white
+        tableView.backgroundColor = EkoColorSet.backgroundColor
         screenViewModel.dataSource.allCells.forEach {
             tableView.register($0.value, forCellReuseIdentifier: $0.key)
         }

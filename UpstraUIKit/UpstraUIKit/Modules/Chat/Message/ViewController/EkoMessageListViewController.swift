@@ -116,7 +116,7 @@ private extension EkoMessageListViewController {
 // MARK: - Setup View
 private extension EkoMessageListViewController {
     func setupView() {
-        view.backgroundColor = .white
+        view.backgroundColor = EkoColorSet.backgroundColor
         setupCustomNavigationBar()
         setupMessageContainer()
         setupComposeBarContainer()
@@ -219,7 +219,7 @@ extension EkoMessageListViewController: UIImagePickerControllerDelegate & UINavi
 }
 
 extension EkoMessageListViewController: EkoMessageListScreenViewModelDelegate {
-    func screenViewModelAudioRecordingEvvents(for events: EkoMessageListScreenViewModel.AudioRecordingEvents) {
+    func screenViewModelAudioRecordingEvents(for events: EkoMessageListScreenViewModel.AudioRecordingEvents) {
         switch events {
         case .show:
             composeBarViewController.recordButton.isTimeout = false
@@ -236,7 +236,6 @@ extension EkoMessageListViewController: EkoMessageListScreenViewModelDelegate {
             circular.hide()
             audioRecordingViewController.deleteRecording()
         case .record:
-            // success
             circular.hide()
             audioRecordingViewController.stopRecording()
         case .timeoutRecord:
@@ -305,7 +304,8 @@ extension EkoMessageListViewController: EkoMessageListScreenViewModelDelegate {
         case .didDeeleteErrorMessage(let indexPath):
             EkoHUD.show(.success(message: EkoLocalizedStringSet.HUD.delete))
         case .didSendAudio:
-            break
+            circular.hide()
+            audioRecordingViewController.stopRecording()
         }
     }
     

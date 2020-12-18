@@ -28,7 +28,7 @@ final class EkoPopoverMessageViewController: UIViewController {
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 3) { [weak self] in
+        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 2) { [weak self] in
             self?.dismiss(animated: true, completion: nil )
         }
     }
@@ -41,9 +41,11 @@ private extension EkoPopoverMessageViewController {
         titleLabel.text = text
         titleLabel.font = EkoFontSet.body
         titleLabel.textColor = EkoColorSet.baseInverse
+        titleLabel.textAlignment = .center
         
         let textSize = (text as NSString?)?.size(withAttributes: [.font: EkoFontSet.body]) ?? .zero
-        preferredContentSize  = CGSize(width: textSize.width + 24, height: textSize.height + 20)
+        preferredContentSize  = CGSize(width: textSize.width + 32, height: textSize.height + 20)
+        print("Size")
     }
     
 }

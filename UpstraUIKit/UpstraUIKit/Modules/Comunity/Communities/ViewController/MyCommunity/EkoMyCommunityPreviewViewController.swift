@@ -49,7 +49,7 @@ private extension EkoMyCommunityPreviewViewController {
 
 private extension EkoMyCommunityPreviewViewController {
     func setupView() {
-        view.backgroundColor = .white
+        view.backgroundColor = EkoColorSet.backgroundColor
         
         titleLabel.text = EkoLocalizedStringSet.myCommunityTitle
         titleLabel.font = EkoFontSet.title

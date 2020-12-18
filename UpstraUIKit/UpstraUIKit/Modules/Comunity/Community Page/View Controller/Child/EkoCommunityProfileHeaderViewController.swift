@@ -190,7 +190,7 @@ private extension EkoCommunityProfileHeaderViewController {
                 strongSelf.actionButton.setTitle(EkoLocalizedStringSet.communityDetailMessageButton, for: .normal)
                 strongSelf.actionButton.setImage(EkoIconSet.iconChat2, position: .left)
                 strongSelf.actionButton.tintColor = EkoColorSet.secondary
-                strongSelf.actionButton.backgroundColor = .white
+                strongSelf.actionButton.backgroundColor = EkoColorSet.backgroundColor
                 strongSelf.actionButton.layer.borderColor = EkoColorSet.base.blend(.shade3).cgColor
                 strongSelf.actionButton.layer.borderWidth = 1
                 strongSelf.actionButton.layer.cornerRadius = 4
@@ -201,7 +201,7 @@ private extension EkoCommunityProfileHeaderViewController {
                 strongSelf.actionButton.setTitle(EkoLocalizedStringSet.communityDetailEditProfileButton, for: .normal)
                 strongSelf.actionButton.setImage(EkoIconSet.iconEdit, position: .left)
                 strongSelf.actionButton.tintColor = EkoColorSet.secondary
-                strongSelf.actionButton.backgroundColor = .white
+                strongSelf.actionButton.backgroundColor = EkoColorSet.backgroundColor
                 strongSelf.actionButton.layer.borderColor = EkoColorSet.base.blend(.shade3).cgColor
                 strongSelf.actionButton.layer.borderWidth = 1
                 strongSelf.actionButton.layer.cornerRadius = 4

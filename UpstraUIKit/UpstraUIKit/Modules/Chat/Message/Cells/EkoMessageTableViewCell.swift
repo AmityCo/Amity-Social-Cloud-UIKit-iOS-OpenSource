@@ -83,7 +83,6 @@ class EkoMessageTableViewCell: UITableViewCell, EkoMessageCellProtocol {
     
     func display(message: EkoMessageModel) {
         self.message = message
-        
         if message.isOwner {
             
             containerView.layer.maskedCorners = setRoundCorner(isOwner: message.isOwner)
@@ -94,7 +93,7 @@ class EkoMessageTableViewCell: UITableViewCell, EkoMessageCellProtocol {
             case .image:
                 containerView.backgroundColor = EkoColorSet.messageBubbleInverse
             default:
-                containerView.backgroundColor = .white
+                containerView.backgroundColor = EkoColorSet.backgroundColor
             }
         } else {
             avatarView.placeholder = EkoIconSet.defaultAvatar
@@ -104,7 +103,7 @@ class EkoMessageTableViewCell: UITableViewCell, EkoMessageCellProtocol {
             case .text, .audio:
                 containerView.backgroundColor = EkoColorSet.messageBubbleInverse
             default:
-                containerView.backgroundColor = .white
+                containerView.backgroundColor = EkoColorSet.backgroundColor
             }
             
             displayNameLabel.font = EkoFontSet.body
@@ -134,7 +133,6 @@ class EkoMessageTableViewCell: UITableViewCell, EkoMessageCellProtocol {
                 switch message.syncState {
                 case .error:
                     errorButton.isHidden = false
-//                    errorStateHandler?()
                     fullString.append(NSAttributedString(string: message.time, attributes: style))
                 case .syncing:
                     fullString.append(NSAttributedString(string: EkoLocalizedStringSet.MessageList.sending, attributes: style))
@@ -197,6 +195,6 @@ private extension EkoMessageTableViewCell {
         containerView.layer.cornerRadius = 4
         containerView.menuItems = [editMenuItem, deleteMenuItem, reportMenuItem]
         
-        contentView.backgroundColor = .white
+        contentView.backgroundColor = EkoColorSet.backgroundColor
     }
 }

@@ -33,17 +33,18 @@ class EkoAlertViewController: UIViewController {
         NSLayoutConstraint.activate([
             contentView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             contentView.centerYAnchor.constraint(equalTo: view.centerYAnchor),
+            contentView.leadingAnchor.constraint(greaterThanOrEqualTo: view.leadingAnchor, constant: 18),
+            contentView.trailingAnchor.constraint(lessThanOrEqualTo: view.trailingAnchor, constant: -18),
             dismissButton.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             dismissButton.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             dismissButton.topAnchor.constraint(equalTo: view.topAnchor),
-            dismissButton.bottomAnchor.constraint(equalTo: view.bottomAnchor) ])
+            dismissButton.bottomAnchor.constraint(equalTo: view.bottomAnchor)
+        ])
     }
     
     func config(subview: UIView) {
-        if !contentView.subviews.isEmpty {
-            for subview in contentView.subviews {
-                subview.removeFromSuperview()
-            }
+        for subview in contentView.subviews {
+            subview.removeFromSuperview()
         }
         contentView.addSubview(subview)
         NSLayoutConstraint.activate([

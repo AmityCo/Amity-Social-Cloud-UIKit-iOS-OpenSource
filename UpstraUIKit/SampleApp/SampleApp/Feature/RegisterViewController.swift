@@ -38,14 +38,14 @@ class RegisterViewController: UIViewController {
     
     @IBAction func moderatorRoleTap() {
         register()
-//        UpstraUIKit.setModeratorRole(["moderator"])
     }
     
     private func register() {
         let userId = textField.text!.isEmpty ? "victimIOS" : textField.text!
         UpstraUIKitManager.registerDevice(withUserId: userId, displayName: userId.uppercased())
-        let tabbar = TabbarViewController()
-        navigationController?.pushViewController(tabbar, animated: true)
+        
+        UIApplication.shared.windows.first?.rootViewController = TabbarViewController()
+        UIApplication.shared.windows.first?.makeKeyAndVisible()
     }
     
 }

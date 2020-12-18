@@ -21,8 +21,8 @@ struct EkoKeyboardComposeBarModel {
         return [
             EkoKeyboardComposeBarModel(name: EkoLocalizedStringSet.camera, image: EkoIconSet.iconCameraFill, menuType: .camera),
             EkoKeyboardComposeBarModel(name: EkoLocalizedStringSet.album, image: EkoIconSet.iconAlbumFill, menuType: .album),
-            EkoKeyboardComposeBarModel(name: EkoLocalizedStringSet.file, image: EkoIconSet.iconFileFill, menuType: .file),
-            EkoKeyboardComposeBarModel(name: EkoLocalizedStringSet.location, image: EkoIconSet.iconLocationFill, menuType: .location)
+//            EkoKeyboardComposeBarModel(name: EkoLocalizedStringSet.file, image: EkoIconSet.iconFileFill, menuType: .file),
+//            EkoKeyboardComposeBarModel(name: EkoLocalizedStringSet.location, image: EkoIconSet.iconLocationFill, menuType: .location)
         ]
     }
 }

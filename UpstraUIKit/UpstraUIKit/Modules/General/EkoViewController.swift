@@ -37,7 +37,7 @@ public class EkoViewController: UIViewController {
     
     private var userDefinedNavigationBarType: EkoNavigationBarType?
     private var defaultNavigationBarType: EkoNavigationBarType {
-        if navigationController?.viewControllers.count == 1 {
+        if navigationController?.viewControllers.count ?? 0 <= 1 {
             return presentingViewController == nil ? .root : .present
         }
         return .push
@@ -99,7 +99,7 @@ public class EkoViewController: UIViewController {
     
     private func updateNavigationBarLayout() {
         navigationController?.reset()
-        navigationController?.navigationBar.barTintColor = .white
+        navigationController?.navigationBar.barTintColor = EkoColorSet.baseInverse
         #if DEBUG
         titleLabel.isUserInteractionEnabled = true
         let doubleTapGesture = UITapGestureRecognizer(target: self, action: #selector(titleDoubleTap))

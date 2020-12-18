@@ -33,11 +33,11 @@ class EkoHUDErrorView: UIView {
         imageView.translatesAutoresizingMaskIntoConstraints = false
         imageView.contentMode = .scaleAspectFit
         imageView.image = EkoIconSet.iconClose
-        imageView.tintColor = .white
+        imageView.tintColor = EkoColorSet.baseInverse
         
         label.translatesAutoresizingMaskIntoConstraints = false
         label.textAlignment = .center
-        label.textColor = .white
+        label.textColor = EkoColorSet.baseInverse
         label.font = EkoFontSet.headerLine
         label.text = message
         label.numberOfLines = 0

@@ -56,6 +56,7 @@ class EkoEditTextViewController: EkoViewController {
     private func setupView() {
         let buttonTitle = (editMode == .create) ? EkoLocalizedStringSet.post : EkoLocalizedStringSet.save
         saveBarButton = UIBarButtonItem(title: buttonTitle, style: .plain, target: self, action: #selector(saveTap))
+        saveBarButton.tintColor = EkoColorSet.primary
         navigationItem.rightBarButtonItem = saveBarButton
         textView.text = message
         textView.placeholder = EkoLocalizedStringSet.textMessagePlaceholder

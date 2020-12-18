@@ -18,6 +18,8 @@ protocol EkoPostDetailScreenViewModelDataSource {
     var post: EkoPostModel? { get }
     func numberOfItems() -> Int
     func item(at index: Int) -> PostDetailViewModel
+    func getReportPostStatus(postId: String, completion: ((Bool) -> Void)?)
+    func getReportCommentStatus(commentId: String, completion: ((Bool) -> Void)?)
 }
 
 protocol EkoPostDetailScreenViewModelDelegate: class {
@@ -27,6 +29,8 @@ protocol EkoPostDetailScreenViewModelDelegate: class {
 protocol EkoPostDetailScreenViewModelAction {
     func updatePost(text: String)
     func deletePost()
+    func reportPost(postId: String)
+    func unreportPost(postId: String)
     func likePost(postId: String)
     func unlikePost(postId: String)
     func createComment(text: String)
@@ -34,6 +38,8 @@ protocol EkoPostDetailScreenViewModelAction {
     func deleteComment(comment: EkoCommentModel)
     func likeComment(commentId: String)
     func unlikeComment(commentId: String)
+    func reportComment(commentId: String)
+    func unreportComment(commentId: String)
 }
 
 protocol EkoPostDetailScreenViewModelType: EkoPostDetailScreenViewModelAction, EkoPostDetailScreenViewModelDataSource {

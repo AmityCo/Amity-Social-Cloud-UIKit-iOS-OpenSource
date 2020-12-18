@@ -121,14 +121,17 @@ import Photos
         albumButton.setImage(image, for: .normal)
         albumButton.semanticContentAttribute = .forceRightToLeft // To set image to the right without having to calculate insets/constraints.
         albumButton.addTarget(self, action: #selector(EkoImagePickerController.albumsButtonPressed(_:)), for: .touchUpInside)
+        albumButton.tintColor = EkoColorSet.secondary
         firstViewController?.navigationItem.titleView = albumButton
 
         doneButton.target = self
         doneButton.action = #selector(doneButtonPressed(_:))
+        doneButton.tintColor = EkoColorSet.primary
         firstViewController?.navigationItem.rightBarButtonItem = doneButton
 
         cancelButton.target = self
         cancelButton.action = #selector(cancelButtonPressed(_:))
+        cancelButton.tintColor = EkoColorSet.secondary
         firstViewController?.navigationItem.leftBarButtonItem = cancelButton
         
         updatedDoneButton()
@@ -136,7 +139,7 @@ import Photos
 
         // We need to have some color to be able to match with the drop down
         if navigationBar.barTintColor == nil {
-            navigationBar.barTintColor = .systemBackgroundColor
+            navigationBar.barTintColor = EkoColorSet.backgroundColor
         }
 
         if let firstAlbum = albums.first {

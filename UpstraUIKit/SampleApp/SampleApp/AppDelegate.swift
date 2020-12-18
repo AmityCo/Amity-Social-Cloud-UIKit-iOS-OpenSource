@@ -7,22 +7,24 @@
 //
 
 import UIKit
+import EkoChat
 import UpstraUIKit
+
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-        UpstraUIKitManager.setup("YOUR_API_KEY")
+        
+        UpstraUIKitManager.setup("API_KEY")
         UpstraUIKitManager.set(eventHandler: CustomEventHandler())
         
         guard let preset = Preset(rawValue: UserDefaults.standard.theme ?? 0) else { return false }
         UpstraUIKitManager.set(theme: preset.theme)
         window = UIWindow()
         let registerVC = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "RegisterViewController")
-        let nav = UINavigationController(rootViewController: registerVC)
-        window?.rootViewController = nav
+        window?.rootViewController = registerVC
         window?.makeKeyAndVisible()
         
         return true

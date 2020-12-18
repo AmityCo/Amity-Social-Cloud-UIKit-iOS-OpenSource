@@ -166,7 +166,7 @@ open class BottomSheetViewController: UIViewController {
             containerBottomConstraint
         ])
         
-        contentContainerView.backgroundColor = .white
+        contentContainerView.backgroundColor = EkoColorSet.backgroundColor
         contentContainerView.layer.cornerRadius = 16
         contentContainerView.layer.masksToBounds = true
     }

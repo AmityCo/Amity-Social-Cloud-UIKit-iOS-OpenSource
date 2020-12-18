@@ -20,7 +20,7 @@ public struct EkoCommunityModel {
     let postsCount: Int
     var membersCount: Int
     let createdAt: Date
-    let metadata: [String: String]?
+    let metadata: [String: Any]?
     let userId: String
     let tags: [String]
     let category: String

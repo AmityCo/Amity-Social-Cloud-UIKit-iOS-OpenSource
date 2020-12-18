@@ -53,13 +53,13 @@
                                         <rect key="frame" x="0.0" y="52" width="172" height="98"/>
                                         <subviews>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Fe8-gG-I2T">
-                                                <rect key="frame" x="0.0" y="0.0" width="150" height="40"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="136" height="40"/>
                                                 <subviews>
                                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="JVU-hQ-FqS" customClass="EkoResponsiveView" customModule="UpstraUIKit" customModuleProvider="target">
-                                                        <rect key="frame" x="0.0" y="0.0" width="150" height="40"/>
+                                                        <rect key="frame" x="0.0" y="0.0" width="136" height="40"/>
                                                         <subviews>
                                                             <stackView opaque="NO" contentMode="scaleToFill" spacing="50" translatesAutoresizingMaskIntoConstraints="NO" id="n7F-wf-rKs">
-                                                                <rect key="frame" x="8" y="8" width="134" height="24"/>
+                                                                <rect key="frame" x="8" y="8" width="120" height="24"/>
                                                                 <subviews>
                                                                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="2ei-xw-Unq">
                                                                         <rect key="frame" x="0.0" y="0.0" width="24" height="24"/>
@@ -69,18 +69,21 @@
                                                                         </constraints>
                                                                     </imageView>
                                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ubr-OK-9gX">
-                                                                        <rect key="frame" x="74" y="0.0" width="60" height="24"/>
+                                                                        <rect key="frame" x="74" y="0.0" width="46" height="24"/>
                                                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                                         <nil key="textColor"/>
                                                                         <nil key="highlightedColor"/>
                                                                     </label>
                                                                 </subviews>
+                                                                <constraints>
+                                                                    <constraint firstAttribute="width" constant="120" id="ghd-Hc-hBo"/>
+                                                                </constraints>
                                                             </stackView>
                                                             <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="medium" translatesAutoresizingMaskIntoConstraints="NO" id="wpv-TJ-DhD">
-                                                                <rect key="frame" x="122" y="10" width="20" height="20"/>
+                                                                <rect key="frame" x="108" y="10" width="20" height="20"/>
                                                             </activityIndicatorView>
                                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="z0o-5W-VJ4">
-                                                                <rect key="frame" x="0.0" y="0.0" width="150" height="40"/>
+                                                                <rect key="frame" x="0.0" y="0.0" width="136" height="40"/>
                                                                 <connections>
                                                                     <action selector="playTap:" destination="f0d-qB-4Cp" eventType="touchUpInside" id="5Un-qD-Ra8"/>
                                                                 </connections>
@@ -88,7 +91,6 @@
                                                         </subviews>
                                                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                                         <constraints>
-                                                            <constraint firstAttribute="width" constant="150" id="4NS-UI-Boj"/>
                                                             <constraint firstItem="wpv-TJ-DhD" firstAttribute="centerY" secondItem="JVU-hQ-FqS" secondAttribute="centerY" id="AKO-fN-FzF"/>
                                                             <constraint firstAttribute="bottom" secondItem="z0o-5W-VJ4" secondAttribute="bottom" id="H0H-UV-iJS"/>
                                                             <constraint firstItem="z0o-5W-VJ4" firstAttribute="top" secondItem="JVU-hQ-FqS" secondAttribute="top" id="Isj-fq-gqh"/>

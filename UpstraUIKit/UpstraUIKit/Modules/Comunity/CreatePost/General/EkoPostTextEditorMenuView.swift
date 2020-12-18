@@ -72,7 +72,7 @@ class EkoPostTextEditorMenuView: UIView {
     }
     
     private func commonInit() {
-        backgroundColor = .white
+        backgroundColor = EkoColorSet.backgroundColor
         
         stackView.translatesAutoresizingMaskIntoConstraints = false
         stackView.distribution = .fillEqually

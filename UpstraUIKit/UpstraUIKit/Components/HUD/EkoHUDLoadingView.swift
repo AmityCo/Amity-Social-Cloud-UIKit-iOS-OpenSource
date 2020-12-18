@@ -36,7 +36,7 @@ class EkoHUDLoadingView: UIView {
         
         label.translatesAutoresizingMaskIntoConstraints = false
         label.contentMode = .center
-        label.textColor = .white
+        label.textColor = EkoColorSet.baseInverse
         label.font = EkoFontSet.headerLine
         label.text = "Loading"
         

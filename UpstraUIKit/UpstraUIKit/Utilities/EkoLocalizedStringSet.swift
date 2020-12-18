@@ -49,6 +49,7 @@ public struct EkoLocalizedStringSet {
     static let reply = EkoLocalizable.localizedString(forKey: "reply")
     static let likes = EkoLocalizable.localizedString(forKey: "likes")
     static let comments = EkoLocalizable.localizedString(forKey: "comments")
+    static let remove = EkoLocalizable.localizedString(forKey: "remove")
     
     static var textMessagePlaceholder = EkoLocalizable.localizedString(forKey: "text_message_placeholder")
     static var messageReadmore = EkoLocalizable.localizedString(forKey: "message_readmore")
@@ -128,7 +129,8 @@ public struct EkoLocalizedStringSet {
     public static var timelineTitle = EkoLocalizable.localizedString(forKey: "timeline_title")
     
     // MARK: - Post creation
-    static var postCreationMyTimelineTitle =  EkoLocalizable.localizedString(forKey: "post_creation_my_timeline")
+    static var postCreationEditPostTitle = EkoLocalizable.localizedString(forKey: "post_creation_edit_post")
+    static var postCreationMyTimelineTitle = EkoLocalizable.localizedString(forKey: "post_creation_my_timeline")
     static var postCreationTextPlaceholder = EkoLocalizable.localizedString(forKey: "post_creation_text_placeholder")
     static var postCreationDiscardPostTitle = EkoLocalizable.localizedString(forKey: "post_creation_discard_post_title")
     static var postCreationDiscardPostMessage = EkoLocalizable.localizedString(forKey: "post_creation_discard_post_message")
@@ -142,9 +144,11 @@ public struct EkoLocalizedStringSet {
         static var editPost = EkoLocalizable.localizedString(forKey: "post_detail_edit_post")
         static var deletePost = EkoLocalizable.localizedString(forKey: "post_detail_delete_post")
         static var reportPost = EkoLocalizable.localizedString(forKey: "post_detail_report_post")
+        static var unreportPost = EkoLocalizable.localizedString(forKey: "post_detail_unreport_post")
         static var editComment = EkoLocalizable.localizedString(forKey: "post_detail_edit_comment")
         static var deleteComment = EkoLocalizable.localizedString(forKey: "post_detail_delete_comment")
         static var reportComment = EkoLocalizable.localizedString(forKey: "post_detail_report_comment")
+        static var unreportComment = EkoLocalizable.localizedString(forKey: "post_detail_unreport_comment")
         static var deleteCommentTitle = EkoLocalizable.localizedString(forKey: "post_detail_delete_comment_title")
         static var deleteCommentMessage = EkoLocalizable.localizedString(forKey: "post_detail_delete_comment_message")
         static var discardCommentTitle = EkoLocalizable.localizedString(forKey: "post_detail_discard_comment_title")
@@ -182,8 +186,15 @@ public struct EkoLocalizedStringSet {
     static var roleSupportAlertDesc = EkoLocalizable.localizedString(forKey: "role_permission_alert_desc")
     
     // MARK: - Community member settings
-    static var communityMemberSettingsTitle = EkoLocalizable.localizedString(forKey: "community_member_settings_title")
-    static var communityMemberSettingsOptionsReport = EkoLocalizable.localizedString(forKey: "community_member_settings_options_report")
+    enum CommunityMembreSetting {
+        static var alertTitle = EkoLocalizable.localizedString(forKey: "community_member_settings_alert_title")
+        static var alertDesc = EkoLocalizable.localizedString(forKey: "community_member_settings_alert_desc")
+        static var title = EkoLocalizable.localizedString(forKey: "community_member_settings_title")
+        static var moderatorTitle = EkoLocalizable.localizedString(forKey: "community_member_settings_moderator_title")
+        static var optionReport = EkoLocalizable.localizedString(forKey: "community_member_settings_options_report")
+        static var optionUnreport = EkoLocalizable.localizedString(forKey: "community_member_settings_options_unreport")
+        static var optionRemove = EkoLocalizable.localizedString(forKey: "community_member_settings_options_remove")
+    }
     
     // MARK: - Edit User Profile
     static let editUserProfileTitle = EkoLocalizable.localizedString(forKey: "edit_user_profile_title")
@@ -196,6 +207,7 @@ public struct EkoLocalizedStringSet {
         static let successfullyCreated = EkoLocalizable.localizedString(forKey: "hud_successfully_created")
         static let successfullyUpdated = EkoLocalizable.localizedString(forKey: "hud_successfully_updated")
         static let reportSent = EkoLocalizable.localizedString(forKey: "hud_report_sent")
+        static let unreportSent = EkoLocalizable.localizedString(forKey: "hud_unreport_sent")
         static let delete = EkoLocalizable.localizedString(forKey: "hud_delete")
     }
     

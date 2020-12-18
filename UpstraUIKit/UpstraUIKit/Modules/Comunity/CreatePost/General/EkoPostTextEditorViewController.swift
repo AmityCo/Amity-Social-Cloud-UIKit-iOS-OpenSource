@@ -65,9 +65,7 @@ public class EkoPostTextEditorViewController: EkoViewController {
         self.postMenuView = EkoPostTextEditorMenuView(settings: settings)
         super.init(nibName: nil, bundle: nil)
         
-        if case .edit(let postId) = postMode {
-            screenViewModel.dataSource.loadPost(for: postId)
-        }
+        screenViewModel.delegate = self
     }
     
     required init?(coder: NSCoder) {
@@ -79,29 +77,20 @@ public class EkoPostTextEditorViewController: EkoViewController {
         return vc
     }
     
-    private func updateViewLayout() {
-        if case .community(let comunity) = postTarget {
-            title = comunity.displayName
-            comunityPanelView.isHidden = !comunity.isOfficial
-        } else {
-            title = EkoLocalizedStringSet.postCreationMyTimelineTitle
-            comunityPanelView.isHidden = true
-        }
-    }
-    
     public override func viewDidLoad() {
         super.viewDidLoad()
         filePicker = EkoFilePicker(presentationController: self, delegate: self)
         
         let isCreateMode = (postMode == .create)
         postButton = UIBarButtonItem(title: isCreateMode ? EkoLocalizedStringSet.post : EkoLocalizedStringSet.save, style: .plain, target: self, action: #selector(onPostButtonTap))
+        postButton.tintColor = EkoColorSet.primary
         navigationItem.rightBarButtonItem = postButton
         navigationItem.rightBarButtonItem?.isEnabled = false
         
         #warning("ViewController must be implemented with storyboard")
         scrollView.translatesAutoresizingMaskIntoConstraints = false
         scrollView.keyboardDismissMode = .onDrag
-        scrollView.backgroundColor = .white
+        scrollView.backgroundColor = EkoColorSet.backgroundColor
         scrollView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: Constant.toolBarHeight, right: 0)
         view.addSubview(scrollView)
         
@@ -123,7 +112,7 @@ public class EkoPostTextEditorViewController: EkoViewController {
         galleryView.actionDelegate = self
         galleryView.isEditable = true
         galleryView.isScrollEnabled = false
-        galleryView.backgroundColor = .white
+        galleryView.backgroundColor = EkoColorSet.backgroundColor
         scrollView.addSubview(galleryView)
         
         fileView.translatesAutoresizingMaskIntoConstraints = false
@@ -180,8 +169,25 @@ public class EkoPostTextEditorViewController: EkoViewController {
         notificationCenter.addObserver(self, selector: #selector(adjustForKeyboard), name: UIResponder.keyboardWillHideNotification, object: nil)
         notificationCenter.addObserver(self, selector: #selector(adjustForKeyboard), name: UIResponder.keyboardWillChangeFrameNotification, object: nil)
         
-        screenViewModel.delegate = self
-        updateViewLayout()
+        switch postMode {
+        case .edit(let postId):
+            screenViewModel.dataSource.loadPost(for: postId)
+            title = EkoLocalizedStringSet.postCreationEditPostTitle
+            comunityPanelView.isHidden = true
+        case .create:
+            switch postTarget {
+            case .community(let comunity):
+                title = comunity.displayName
+                comunityPanelView.isHidden = !comunity.isOfficial
+            case .myFeed:
+                title = EkoLocalizedStringSet.postCreationMyTimelineTitle
+                comunityPanelView.isHidden = true
+            }
+        }
+        
+        if case .edit(let postId) = postMode {
+            screenViewModel.dataSource.loadPost(for: postId)
+        }
     }
     
     override func didTapLeftBarButton() {
@@ -421,6 +427,7 @@ extension EkoPostTextEditorViewController: EkoPostTextEditorScreenViewModelDeleg
         fileView.configure(files: currentPost!.files)
         galleryView.configure(images: currentPost!.images)
         textView.text = currentPost!.text
+        updateConstraints()
     }
     
     func screenViewModelDidCreatePost(_ viewModel: EkoPostTextEditorScreenViewModel, error: Error?) {

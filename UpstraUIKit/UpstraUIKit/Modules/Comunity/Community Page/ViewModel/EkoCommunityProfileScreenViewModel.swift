@@ -110,10 +110,10 @@ extension EkoCommunityProfileScreenViewModel {
             parentObserveCommunityStatus.value = .notJoin
             childCommunityStatus.value = .notJoin
         } else {
-            if (community.isJoined && (!community.isCreator && EkoUserManager.shared.isModerator())) {
+            if (community.isJoined && (!community.isCreator )) {
                 parentObserveCommunityStatus.value = .joinNotCreator
                 childCommunityStatus.value = .joinNotCreator
-            } else if community.isJoined && (community.isCreator || EkoUserManager.shared.isModerator()) {
+            } else if community.isJoined && (community.isCreator) {
                 parentObserveCommunityStatus.value = .joinAndCreator
                 childCommunityStatus.value = .joinAndCreator
             } else {

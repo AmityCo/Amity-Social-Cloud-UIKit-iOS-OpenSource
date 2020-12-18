@@ -76,14 +76,19 @@ private extension EkoAudioPlayer {
     func prepare() {
         guard let url = path else { return }
         do {
+            try AVAudioSession.sharedInstance().setCategory(.playback)
+            
             player = try AVAudioPlayer(contentsOf: url)
             player.delegate = self
             player.prepareToPlay()
             player.volume = 1.0
             player.play()
-            timer = Timer.scheduledTimer(withTimeInterval: 1, repeats: true, block: { [weak self] (timer) in
+            timer = Timer.scheduledTimer(withTimeInterval: 0.1, repeats: true, block: { [weak self] (timer) in
                 self?.duration += timer.timeInterval
             })
+            timer?.tolerance = 0.2
+            guard let timer = timer else { return }
+            RunLoop.main.add(timer, forMode: .common)
             delegate?.playing()
         } catch {
             print(error.localizedDescription)

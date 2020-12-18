@@ -116,7 +116,7 @@ final class EkoTextView: UITextView {
     
     private func commonInit() {
         delegate = self
-        backgroundColor = .white
+        backgroundColor = EkoColorSet.backgroundColor
         textColor = EkoColorSet.base
         setupPlaceholder()
     }

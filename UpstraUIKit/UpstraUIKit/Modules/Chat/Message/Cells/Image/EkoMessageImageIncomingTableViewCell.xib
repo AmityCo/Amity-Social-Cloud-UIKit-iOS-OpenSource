@@ -19,10 +19,10 @@
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="K2o-Zl-TVY">
-                        <rect key="frame" x="36" y="19" width="312" height="206"/>
+                        <rect key="frame" x="16" y="8" width="352" height="206"/>
                         <subviews>
-                            <stackView opaque="NO" contentMode="scaleToFill" alignment="top" translatesAutoresizingMaskIntoConstraints="NO" id="INA-2w-LGh">
-                                <rect key="frame" x="0.0" y="0.0" width="312" height="206"/>
+                            <stackView opaque="NO" contentMode="scaleToFill" alignment="top" spacing="12" translatesAutoresizingMaskIntoConstraints="NO" id="INA-2w-LGh">
+                                <rect key="frame" x="0.0" y="0.0" width="352" height="206"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="AVg-Ve-gci" customClass="EkoAvatarView" customModule="UpstraUIKit" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="0.0" width="40" height="40"/>
@@ -33,13 +33,13 @@
                                         </constraints>
                                     </view>
                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="zUc-A7-isk">
-                                        <rect key="frame" x="40" y="0.0" width="272" height="206"/>
+                                        <rect key="frame" x="52" y="0.0" width="300" height="206"/>
                                         <subviews>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="xw3-WF-thr">
-                                                <rect key="frame" x="0.0" y="0.0" width="272" height="30"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="300" height="30"/>
                                                 <subviews>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dMQ-Md-CtZ">
-                                                        <rect key="frame" x="0.0" y="0.0" width="272" height="30"/>
+                                                        <rect key="frame" x="0.0" y="0.0" width="300" height="30"/>
                                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                         <nil key="textColor"/>
                                                         <nil key="highlightedColor"/>
@@ -54,7 +54,7 @@
                                                 </constraints>
                                             </view>
                                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="top" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="Mgw-Us-ich">
-                                                <rect key="frame" x="0.0" y="38" width="272" height="168"/>
+                                                <rect key="frame" x="0.0" y="38" width="300" height="168"/>
                                                 <subviews>
                                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Y60-Vi-vLj">
                                                         <rect key="frame" x="0.0" y="0.0" width="140" height="140"/>
@@ -86,7 +86,7 @@
                                                         </constraints>
                                                     </view>
                                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="osn-ES-a6b">
-                                                        <rect key="frame" x="0.0" y="148" width="272" height="20"/>
+                                                        <rect key="frame" x="0.0" y="148" width="260" height="20"/>
                                                         <subviews>
                                                             <stackView opaque="NO" contentMode="scaleToFill" alignment="center" spacing="4" translatesAutoresizingMaskIntoConstraints="NO" id="iAS-jf-SB5">
                                                                 <rect key="frame" x="0.0" y="0.0" width="84" height="20"/>
@@ -128,10 +128,10 @@
                     </view>
                 </subviews>
                 <constraints>
-                    <constraint firstAttribute="bottomMargin" relation="greaterThanOrEqual" secondItem="K2o-Zl-TVY" secondAttribute="bottom" constant="12" id="COo-EF-3sp"/>
-                    <constraint firstAttribute="trailingMargin" secondItem="K2o-Zl-TVY" secondAttribute="trailing" constant="40" id="Tnw-HK-8Bc"/>
-                    <constraint firstItem="K2o-Zl-TVY" firstAttribute="leading" secondItem="hen-IH-UhX" secondAttribute="leadingMargin" constant="16" id="h5C-ct-aP0"/>
-                    <constraint firstItem="K2o-Zl-TVY" firstAttribute="top" secondItem="hen-IH-UhX" secondAttribute="topMargin" constant="8" id="ml2-du-fe7"/>
+                    <constraint firstAttribute="trailing" secondItem="K2o-Zl-TVY" secondAttribute="trailing" constant="40" id="7jh-xT-xsy"/>
+                    <constraint firstItem="K2o-Zl-TVY" firstAttribute="leading" secondItem="hen-IH-UhX" secondAttribute="leading" constant="16" id="UVA-Vd-iNw"/>
+                    <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="K2o-Zl-TVY" secondAttribute="bottom" constant="12" id="ZBs-Xs-uT9"/>
+                    <constraint firstItem="K2o-Zl-TVY" firstAttribute="top" secondItem="hen-IH-UhX" secondAttribute="top" constant="8" id="hpo-GY-Jvi"/>
                 </constraints>
             </tableViewCellContentView>
             <viewLayoutGuide key="safeArea" id="F3g-g8-vSw"/>

@@ -25,7 +25,7 @@ public class EkoCommunityHomePageViewController: EkoPageViewController {
     
     public override func viewDidLoad() {
         super.viewDidLoad()
-        setupView()
+        setupNavigationBar()
     }
     
     public static func make() -> EkoCommunityHomePageViewController {
@@ -39,9 +39,6 @@ public class EkoCommunityHomePageViewController: EkoPageViewController {
     }
     
     // MARK: - Setup view
-    private func setupView() {
-        setupNavigationBar()
-    }
     
     private func setupNavigationBar() {
         let searchItem = UIBarButtonItem(image: EkoIconSet.iconSearch, style: .plain, target: self, action: #selector(searchTap))

@@ -56,6 +56,7 @@ private extension EkoExploreViewController {
     
     private func setupScrollView() {
         refreshControl.addTarget(self, action: #selector(handleRefreshControl), for: .valueChanged)
+        refreshControl.tintColor = EkoColorSet.base.blend(.shade3)
         mainScrollView.refreshControl = refreshControl
         mainScrollView.showsVerticalScrollIndicator = false
     }

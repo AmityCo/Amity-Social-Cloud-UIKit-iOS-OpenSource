@@ -71,7 +71,7 @@ final class EkoMessageAudioTableViewCell: EkoMessageTableViewCell {
 
 extension EkoMessageAudioTableViewCell {
     @IBAction func playTap(_ sender: UIButton) {
-        if !message.isDeleted {
+        if !message.isDeleted && message.syncState == .synced {
             sender.isEnabled = false
             EkoMessageMediaService.shared.download(for: message.object) { [weak self] in
                 self?.durationLabel.alpha = 0

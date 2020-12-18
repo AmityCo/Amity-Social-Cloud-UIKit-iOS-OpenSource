@@ -36,7 +36,7 @@ import Photos
         public lazy var selectionFillColor: UIColor = EkoColorSet.primary
         
         /// Color for the actual checkmark
-        public lazy var selectionStrokeColor: UIColor = .white
+        public lazy var selectionStrokeColor: UIColor = EkoColorSet.baseInverse
         
         /// Shadow color for the circle
         public lazy var selectionShadowColor: UIColor = .systemShadowColor

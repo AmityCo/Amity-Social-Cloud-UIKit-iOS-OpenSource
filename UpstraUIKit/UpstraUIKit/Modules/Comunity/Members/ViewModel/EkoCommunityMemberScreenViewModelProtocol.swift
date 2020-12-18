@@ -9,22 +9,30 @@
 import UIKit
 import EkoChat
 
+protocol EkoCommunityMemberScreenViewModelDelegate: class {
+    func screenViewModelDidGetMember()
+    func screenViewModelLoadingState(state: EkoLoadingState)
+    func screenViewModelDidRemoveUser(at indexPath: IndexPath)
+}
+
 protocol EkoCommunityMemberScreenViewModelDataSource {
-    var membership: EkoBoxBinding<EkoCollection<EkoCommunityMembership>?> { get set }
-    var cellAction: EkoBoxBinding<EkoCommunityMemberScreenViewModel.CellAction?> { get set }
-    var loading: EkoBoxBinding<EkoLoadingState> { get set }
-    
     func numberOfMembers() -> Int
-    func item(at indexPath: IndexPath) -> EkoCommunityMembership?
+    func member(at indexPath: IndexPath) -> EkoCommunityMembershipModel
+    func community() -> EkoCommunityModel?
+    func getReportUserStatus(at indexPath: IndexPath, completion: ((Bool) -> Void)?)
 }
 
 protocol EkoCommunityMemberScreenViewModelAction {
-    func getMember()
-    func selectedItem(action: EkoCommunityMemberScreenViewModel.CellAction)
+    func getMember(viewType: EkoCommunityMemberViewType)
+    func getCommunity()
     func loadMore()
+    func removeUser(at indexPath: IndexPath)
+    func reportUser(at indexPath: IndexPath)
+    func unreportUser(at indexPath: IndexPath)
 }
 
 protocol EkoCommunityMemberScreenViewModelType: EkoCommunityMemberScreenViewModelAction, EkoCommunityMemberScreenViewModelDataSource {
+    var delegate: EkoCommunityMemberScreenViewModelDelegate? { get set }
     var action: EkoCommunityMemberScreenViewModelAction { get }
     var dataSource: EkoCommunityMemberScreenViewModelDataSource { get }
 }

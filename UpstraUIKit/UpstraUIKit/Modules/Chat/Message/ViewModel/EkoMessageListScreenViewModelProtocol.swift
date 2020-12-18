@@ -20,7 +20,7 @@ protocol EkoMessageListScreenViewModelDelegate: class {
     func screenViewModelCellEvents(for events: EkoMessageListScreenViewModel.CellEvents)
     func screenViewModelKeyboardInputEvents(for events: EkoMessageListScreenViewModel.KeyboardInputEvents)
     func screenViewModelToggleDefaultKeyboardAndAudioKeyboard(for events: EkoMessageListScreenViewModel.KeyboardInputEvents)
-    func screenViewModelAudioRecordingEvvents(for events: EkoMessageListScreenViewModel.AudioRecordingEvents)
+    func screenViewModelAudioRecordingEvents(for events: EkoMessageListScreenViewModel.AudioRecordingEvents)
 }
 
 protocol EkoMessageListScreenViewModelDataSource {

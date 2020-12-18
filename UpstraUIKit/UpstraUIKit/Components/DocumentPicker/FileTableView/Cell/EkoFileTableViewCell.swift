@@ -56,7 +56,7 @@ class EkoFileTableViewCell: UITableViewCell, Nibbable {
         progressView.trackTintColor = .clear
         progressView.progress = 0.0
         exclamationImageView.image = EkoIconSet.iconExclamation
-        exclamationImageView.tintColor = .white
+        exclamationImageView.tintColor = EkoColorSet.baseInverse
         exclamationBackgroundView.backgroundColor = EkoColorSet.base.withAlphaComponent(0.7)
         exclamationBackgroundView.layer.cornerRadius = 13
         exclamationBackgroundView.clipsToBounds = true

@@ -17,6 +17,7 @@ final class EkoMessageListComposeBarViewController: UIViewController {
     @IBOutlet private var showAudioButton: UIButton!
     @IBOutlet private var showDefaultKeyboardButton: UIButton!
     @IBOutlet var recordButton: EkoRecordingButton!
+    @IBOutlet private var trailingStackView: UIStackView!
     
     // MARK: - Properties
     private let screenViewModel: EkoMessageListScreenViewModelType
@@ -149,13 +150,13 @@ extension EkoMessageListComposeBarViewController {
     
     func showRecordButton(show: Bool) {
         if show {
-            sendMessageButton.isHidden = true
-            showKeyboardComposeBarButton.isHidden = false
+            trailingStackView.isHidden = true
             textComposeBarView.isHidden = true
             recordButton.isHidden = false
             showAudioButton.isHidden = true
             showDefaultKeyboardButton.isHidden = false
         } else {
+            trailingStackView.isHidden = false
             textComposeBarView.isHidden = false
             recordButton.isHidden = true
             showAudioButton.isHidden = false
