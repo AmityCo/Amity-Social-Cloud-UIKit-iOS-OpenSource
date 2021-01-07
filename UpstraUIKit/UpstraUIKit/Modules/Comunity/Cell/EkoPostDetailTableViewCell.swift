@@ -134,7 +134,7 @@ public class EkoPostDetailTableViewCell: UITableViewCell, Nibbable {
         fileViewHeightConstraint.constant = item.files.isEmpty ? 0 : EkoFileTableView.height(for: item.files.count, isEdtingMode: false, isExpanded: true)
         avatarViewTopConstraint.constant = 0.0
         topContentViewTopConstraint.constant = 0.0
-        if item.isAdmin {
+        if item.isModerator {
             badgeContainerView.isHidden = item.postAsModerator
             subtitleLeadingToBadgeViewConstraint.isActive = item.postAsModerator
         } else {

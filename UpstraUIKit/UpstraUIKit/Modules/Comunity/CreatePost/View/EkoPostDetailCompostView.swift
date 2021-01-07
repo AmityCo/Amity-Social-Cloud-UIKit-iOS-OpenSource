@@ -67,13 +67,13 @@ class EkoPostDetailCompostView: UIView {
     
     private func commonInit() {
         separtorLineView.translatesAutoresizingMaskIntoConstraints = false
-        separtorLineView.backgroundColor = EkoColorSet.base.blend(.shade4)
+        separtorLineView.backgroundColor = EkoColorSet.secondary.blend(.shade4)
         avatarView.translatesAutoresizingMaskIntoConstraints = false
         avatarView.contentMode = .scaleAspectFill
         avatarView.clipsToBounds = true
         avatarView.layer.cornerRadius = 14.0
         textView.translatesAutoresizingMaskIntoConstraints = false
-        textView.backgroundColor = EkoColorSet.base.blend(.shade4)
+        textView.backgroundColor = EkoColorSet.secondary.blend(.shade4)
         textView.padding = UIEdgeInsets(top: 8, left: 8, bottom: 8, right: 40)
         textView.placeholder = EkoLocalizedStringSet.PostDetail.textPlaceholder
         textView.customTextViewDelegate = self

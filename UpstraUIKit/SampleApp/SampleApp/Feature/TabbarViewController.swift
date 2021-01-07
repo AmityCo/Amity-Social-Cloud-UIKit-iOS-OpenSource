@@ -14,16 +14,14 @@ class TabbarViewController: UITabBarController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        let feature = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "FeatureViewController")
+        let feature = UINavigationController(rootViewController: UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "FeatureViewController"))
         feature.tabBarItem.title = "Feature"
         
-        let setting = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "SettingViewController")
+        let setting = UINavigationController(rootViewController: UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "SettingViewController"))
         setting.tabBarItem.title = "Setting"
         
-        let test = EkoCommunityHomePageViewController.make()
-        
-        viewControllers = [UINavigationController(rootViewController: feature),
-                           UINavigationController(rootViewController: setting),
-                           UINavigationController(rootViewController: EkoCommunityHomePageViewController.make())]
+        viewControllers = [ feature,
+                            setting,
+                           /* UINavigationController(rootViewController: EkoCommunityHomePageViewController.make()) */]
     }
 }

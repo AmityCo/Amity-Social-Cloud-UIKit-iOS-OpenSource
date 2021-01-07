@@ -40,7 +40,7 @@ final class EkoSelectMemberListCollectionViewCell: UICollectionViewCell {
         avatarView.placeholder = EkoIconSet.defaultAvatar
         
         containerView.layer.cornerRadius = containerView.frame.height / 2
-        containerView.backgroundColor = EkoColorSet.base.withAlphaComponent(0.5)
+        containerView.backgroundColor = EkoColorSet.secondary.withAlphaComponent(0.5)
         
         deleteButton.addTarget(self, action: #selector(deleteTap(_:)), for: .touchUpInside)
         

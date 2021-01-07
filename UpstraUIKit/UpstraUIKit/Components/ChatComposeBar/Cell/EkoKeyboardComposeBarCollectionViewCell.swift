@@ -36,7 +36,7 @@ final class EkoKeyboardComposeBarCollectionViewCell: UICollectionViewCell, Nibba
 private extension EkoKeyboardComposeBarCollectionViewCell {
     func setupView() {
         containerBackgroundView.backgroundColor = UIColor.white
-        containerView.backgroundColor = EkoColorSet.base.blend(.shade4)
+        containerView.backgroundColor = EkoColorSet.secondary.blend(.shade4)
         containerView.layer.cornerRadius = containerView.frame.height / 2
         
         nameLabel.text = ""

@@ -118,10 +118,10 @@ class EkoSearchViewController: EkoViewController {
         (searchController.searchBar.value(forKey: "cancelButton") as? UIButton)?.tintColor = EkoColorSet.base
         
         if #available(iOS 13, *) {
-            searchController.searchBar.searchTextField.backgroundColor = EkoColorSet.base.blend(.shade4)
+            searchController.searchBar.searchTextField.backgroundColor = EkoColorSet.secondary.blend(.shade4)
         } else {
             if let textField = (searchController.searchBar.value(forKey: "searchField") as? UITextField) {
-                textField.backgroundColor = EkoColorSet.base.blend(.shade4)
+                textField.backgroundColor = EkoColorSet.secondary.blend(.shade4)
                 textField.tintColor = EkoColorSet.base
             }
         }

@@ -15,6 +15,7 @@ final public class EkoEditUserProfileViewController: EkoViewController {
     @IBOutlet private weak var avatarButton: UIButton!
     @IBOutlet private weak var cameraImageView: UIView!
     @IBOutlet private weak var displayNameLabel: UILabel!
+    @IBOutlet private weak var displayNameCounterLabel: UILabel!
     @IBOutlet private weak var displayNameTextField: EkoTextField!
     @IBOutlet private weak var aboutLabel: UILabel!
     @IBOutlet private weak var aboutCounterLabel: UILabel!
@@ -36,6 +37,10 @@ final public class EkoEditUserProfileViewController: EkoViewController {
         let isValueChanged = (displayNameTextField.text != user.displayName) || (aboutTextView.text != user.about) || (uploadingAvatarImage != nil)
         let isValueExisted = !displayNameTextField.text!.isEmpty
         return isValueChanged && isValueExisted
+    }
+    
+    private enum Constant {
+        static let maxCharactor: Int = 100
     }
     
     private init() {
@@ -71,8 +76,8 @@ final public class EkoEditUserProfileViewController: EkoViewController {
     private func setupView() {
         // avatar
         userAvatarView.placeholder = EkoIconSet.defaultAvatar
-        cameraImageView.backgroundColor = EkoColorSet.base.blend(.shade4)
-        cameraImageView.layer.borderColor = UIColor.white.cgColor
+        cameraImageView.backgroundColor = EkoColorSet.secondary.blend(.shade4)
+        cameraImageView.layer.borderColor = EkoColorSet.backgroundColor.cgColor
         cameraImageView.layer.borderWidth = 1.0
         cameraImageView.layer.cornerRadius = 14.0
         cameraImageView.clipsToBounds = true
@@ -81,8 +86,12 @@ final public class EkoEditUserProfileViewController: EkoViewController {
         displayNameLabel.text = EkoLocalizedStringSet.editUserProfileDisplayNameTitle + "*"
         displayNameLabel.font = EkoFontSet.title
         displayNameLabel.textColor = EkoColorSet.base
+        displayNameCounterLabel.font = EkoFontSet.caption
+        displayNameCounterLabel.textColor = EkoColorSet.base.blend(.shade1)
+        displayNameTextField.delegate = self
         displayNameTextField.borderStyle = .none
         displayNameTextField.addTarget(self, action: #selector(textFieldEditingChanged), for: .editingChanged)
+        displayNameTextField.maxLength = Constant.maxCharactor
         
         // about
         aboutLabel.text = EkoLocalizedStringSet.createCommunityAboutTitle
@@ -91,11 +100,11 @@ final public class EkoEditUserProfileViewController: EkoViewController {
         aboutCounterLabel.font = EkoFontSet.caption
         aboutCounterLabel.textColor = EkoColorSet.base.blend(.shade1)
         aboutTextView.customTextViewDelegate = self
-        aboutTextView.maxCharacters = 100
+        aboutTextView.maxCharacters = Constant.maxCharactor
         
         // separator
-        aboutSeparatorView.backgroundColor = EkoColorSet.base.blend(.shade4)
-        displaynameSeparatorView.backgroundColor = EkoColorSet.base.blend(.shade4)
+        aboutSeparatorView.backgroundColor = EkoColorSet.secondary.blend(.shade4)
+        displaynameSeparatorView.backgroundColor = EkoColorSet.secondary.blend(.shade4)
         
         updateViewState()
     }
@@ -168,6 +177,7 @@ final public class EkoEditUserProfileViewController: EkoViewController {
     
     private func updateViewState() {
         saveBarButtonItem?.isEnabled = isValueChanged
+        displayNameCounterLabel?.text = "\(displayNameTextField.text?.count ?? 0)/\(displayNameTextField.maxLength)"
         aboutCounterLabel?.text = "\(aboutTextView.text.count)/\(aboutTextView.maxCharacters)"
     }
 
@@ -189,6 +199,14 @@ extension EkoEditUserProfileViewController: EkoEditUserProfileScreenViewModelDel
         }
         
         updateViewState()
+    }
+    
+}
+
+extension EkoEditUserProfileViewController: UITextFieldDelegate {
+    
+    public func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+        return displayNameTextField.verifyFields(shouldChangeCharactersIn: range, replacementString: string)
     }
     
 }

@@ -61,7 +61,7 @@ public class EkoPostFeedTableViewCell: UITableViewCell, Nibbable {
     @IBOutlet private weak var secondCommentView: EkoCommentView!
     @IBOutlet private weak var topContentViewTopConstraint: NSLayoutConstraint!
     @IBOutlet private weak var avatarViewTopConstraint: NSLayoutConstraint!
-    @IBOutlet private weak var badgeViewWidthConstraint: NSLayoutConstraint!
+    @IBOutlet private var badgeViewWidthConstraint: NSLayoutConstraint!
     @IBOutlet private weak var galleryViewHeightConstraint: NSLayoutConstraint!
     @IBOutlet private weak var fileViewHeightConstraint: NSLayoutConstraint!
     @IBOutlet private weak var topContainerHeightConstraint: NSLayoutConstraint!
@@ -99,8 +99,8 @@ public class EkoPostFeedTableViewCell: UITableViewCell, Nibbable {
         commentButton.tintColor = EkoColorSet.base.blend(.shade2)
         commentButton.setTitleColor(EkoColorSet.base.blend(.shade2), for: .normal)
         shareButton.isHidden = true
-        separatorView.backgroundColor = EkoColorSet.base.blend(.shade4)
-        secondSeparatorView.backgroundColor = EkoColorSet.base.blend(.shade4)
+        separatorView.backgroundColor = EkoColorSet.secondary.blend(.shade4)
+        secondSeparatorView.backgroundColor = EkoColorSet.secondary.blend(.shade4)
         optionButton.tintColor = EkoColorSet.base
         warningLabel.text = EkoLocalizedStringSet.PostDetail.joinCommunityMessage
         warningLabel.font = EkoFontSet.body
@@ -151,7 +151,7 @@ public class EkoPostFeedTableViewCell: UITableViewCell, Nibbable {
         fileViewHeightConstraint.constant = item.files.isEmpty ? 0 : EkoFileTableView.height(for: item.files.count, isEdtingMode: false, isExpanded: false)
         avatarViewTopConstraint.constant = 12.0
         topContentViewTopConstraint.constant = isFirstCell ? 0 : 8
-        if item.isAdmin {
+        if item.isModerator {
             badgeContainerView.isHidden = item.postAsModerator
             badgeViewWidthConstraint.isActive = item.postAsModerator
         } else {

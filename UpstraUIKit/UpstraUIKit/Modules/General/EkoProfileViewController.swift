@@ -127,7 +127,7 @@ public class EkoProfileBottomViewController: EkoButtonPagerTabSViewController, E
         settings.style.buttonBarItemsShouldFillAvailableWidth = false
         settings.style.buttonBarLeftContentInset = 16
         settings.style.buttonBarRightContentInset = 16
-        settings.style.bottomLineColor = EkoColorSet.base.blend(.shade4)
+        settings.style.bottomLineColor = EkoColorSet.secondary.blend(.shade4)
         super.viewDidLoad()
         delegate = self
         self.changeCurrentIndexProgressive = { (oldCell: ButtonBarViewCell?, newCell: ButtonBarViewCell?, progressPercentage: CGFloat, changeCurrentIndex: Bool, animated: Bool) -> Void in

@@ -114,7 +114,7 @@ private extension EkoMessageListComposeBarViewController {
     
     func setupRecordButton() {
         recordButton.layer.cornerRadius = 4
-        recordButton.backgroundColor = EkoColorSet.base.blend(.shade4)
+        recordButton.backgroundColor = EkoColorSet.secondary.blend(.shade4)
         recordButton.titleLabel?.font = EkoFontSet.bodyBold
         recordButton.setTitleColor(EkoColorSet.base, for: .normal)
         recordButton.setImage(EkoIconSet.Chat.iconMic, for: .normal)

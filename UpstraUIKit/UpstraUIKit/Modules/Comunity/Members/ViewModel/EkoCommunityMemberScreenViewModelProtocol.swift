@@ -13,22 +13,30 @@ protocol EkoCommunityMemberScreenViewModelDelegate: class {
     func screenViewModelDidGetMember()
     func screenViewModelLoadingState(state: EkoLoadingState)
     func screenViewModelDidRemoveUser(at indexPath: IndexPath)
+    func screenViewModelDidAddMember(success: Bool)
+    func screenViewModelFailure()
 }
 
 protocol EkoCommunityMemberScreenViewModelDataSource {
     func numberOfMembers() -> Int
     func member(at indexPath: IndexPath) -> EkoCommunityMembershipModel
-    func community() -> EkoCommunityModel?
     func getReportUserStatus(at indexPath: IndexPath, completion: ((Bool) -> Void)?)
+    var isModerator: Bool { get }
+    func prepareData() -> [EkoSelectMemberModel]
+    func isJoined() -> Bool
 }
 
 protocol EkoCommunityMemberScreenViewModelAction {
-    func getMember(viewType: EkoCommunityMemberViewType)
     func getCommunity()
+    func getMember(viewType: EkoCommunityMemberViewType)
+    func getUserIsModerator()
     func loadMore()
+    func addUser(users: [EkoSelectMemberModel])
     func removeUser(at indexPath: IndexPath)
     func reportUser(at indexPath: IndexPath)
     func unreportUser(at indexPath: IndexPath)
+    func addRole(at indexPath: IndexPath)
+    func removeRole(at indexPath: IndexPath)
 }
 
 protocol EkoCommunityMemberScreenViewModelType: EkoCommunityMemberScreenViewModelAction, EkoCommunityMemberScreenViewModelDataSource {

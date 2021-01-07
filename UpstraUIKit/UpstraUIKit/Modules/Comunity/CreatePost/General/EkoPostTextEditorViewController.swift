@@ -104,7 +104,7 @@ public class EkoPostTextEditorViewController: EkoViewController {
         scrollView.addSubview(textView)
         
         separaterLine.translatesAutoresizingMaskIntoConstraints = false
-        separaterLine.backgroundColor = EkoColorSet.base.blend(.shade4)
+        separaterLine.backgroundColor = EkoColorSet.secondary.blend(.shade4)
         separaterLine.isHidden = true
         scrollView.addSubview(separaterLine)
         

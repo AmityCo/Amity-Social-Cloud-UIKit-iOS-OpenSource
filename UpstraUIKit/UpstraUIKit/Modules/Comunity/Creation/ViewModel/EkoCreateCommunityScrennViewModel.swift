@@ -11,15 +11,16 @@ import EkoChat
 
 #warning("should be renmae to EkoCommunityProfileEditScreenViewModel")
 final class EkoCreateCommunityScreenViewModel: EkoCreateCommunityScreenViewModelType {
-
+    
     private let repository: EkoCommunityRepository
+    private var communityModeration: EkoCommunityModeration?
+    
     private var communityInfoToken: EkoNotificationToken?
     weak var delegate: EkoCreateCommunityScreenViewModelDelegate?
     var addMemberState: EkoCreateCommunityMemberState = .add
     var community: EkoBoxBinding<EkoCommunityModel?> = EkoBoxBinding(nil)
     private var communityId: String = ""
-    var groupUsers: [(key: String, value: [EkoSelectMemberModel])] = []
-    var selectedUsers: [EkoSelectMemberModel] = [] {
+    var storeUsers: [EkoSelectMemberModel] = [] {
         didSet {
             validate()
         }
@@ -50,6 +51,7 @@ final class EkoCreateCommunityScreenViewModel: EkoCreateCommunityScreenViewModel
     private var isAdminPost: Bool = true
     private var imageData: EkoImageData?
     private var imageAvatar: UIImage?
+    
     init() {
         repository = EkoCommunityRepository(client: UpstraUIKitManagerInternal.shared.client)
     }
@@ -64,7 +66,7 @@ final class EkoCreateCommunityScreenViewModel: EkoCreateCommunityScreenViewModel
             status = isDisplayNameExisted && isCategoryExist
         } else {
             if communityId.isEmpty {
-                status = isDisplayNameExisted && isCategoryExist && !selectedUsers.isEmpty
+                status = isDisplayNameExisted && isCategoryExist && !storeUsers.isEmpty
             } else {
                 status = isDisplayNameExisted && isCategoryExist
             }
@@ -78,7 +80,7 @@ final class EkoCreateCommunityScreenViewModel: EkoCreateCommunityScreenViewModel
 extension EkoCreateCommunityScreenViewModel {
     
     func numberOfMemberSelected() -> Int {
-        var userCount = selectedUsers.count
+        var userCount = storeUsers.count
         if userCount == 0 {
             addMemberState = .add
         } else if userCount < 8 {
@@ -92,8 +94,8 @@ extension EkoCreateCommunityScreenViewModel {
     }
     
     func user(at indexPath: IndexPath) -> EkoSelectMemberModel? {
-        guard !selectedUsers.isEmpty, indexPath.item < selectedUsers.count else { return nil }
-        return selectedUsers[indexPath.item]
+        guard !storeUsers.isEmpty, indexPath.item < storeUsers.count else { return nil }
+        return storeUsers[indexPath.item]
     }
     
 }
@@ -137,18 +139,13 @@ extension EkoCreateCommunityScreenViewModel {
         delegate?.screenViewModel(self, state: .selectedCommunityType(type: communityType))
     }
     
-    func updateAllUsersAndAllSelectedUsers(allUsers: [(key: String, value: [EkoSelectMemberModel])], allSelectedUsers: [EkoSelectMemberModel]) {
-        groupUsers = allUsers
-        selectedUsers = allSelectedUsers
+    func updateSelectUser(users: [EkoSelectMemberModel]) {
+        storeUsers = users
         delegate?.screenViewModel(self, state: .updateAddMember)
     }
     
     func removeUser(at indexPath: IndexPath) {
-        let user = selectedUsers[indexPath.item]
-        groupUsers.forEach { key, value in
-            value.first(where: { $0 == user})?.isSelect.toggle()
-        }
-        selectedUsers.remove(at: indexPath.item)
+        storeUsers.remove(at: indexPath.item)
         delegate?.screenViewModel(self, state: .updateAddMember)
     }
     
@@ -163,7 +160,7 @@ extension EkoCreateCommunityScreenViewModel {
         builder.setIsPublic(isPublic)
         
         if !isPublic {
-            let userIds = selectedUsers.map { $0.userId }
+            let userIds = storeUsers.map { $0.userId }
             builder.setUserIds(userIds)
         }
         
@@ -191,17 +188,14 @@ extension EkoCreateCommunityScreenViewModel {
             }
         } else {
             repository.createCommunity(builder, completion: { [weak self] (community, error) in
-                guard let strongSelf = self else { return }
                 if let _ = error {
+                    EkoHUD.hide()
                     EkoUtilities.showError()
                     return
                 }
                 
-                guard let community = community else {
-                    return
-                }
-                
-                strongSelf.delegate?.screenViewModel(strongSelf, state: .createSuccess(communityId: community.communityId))
+                guard let community = community else { return }
+                self?.updateRole(withCommunityId: community.communityId)
             })
         }
     }
@@ -247,6 +241,7 @@ extension EkoCreateCommunityScreenViewModel {
                 builder.setAvatar(image)
                 strongSelf.repository.updateCommunity(withId: strongSelf.communityId, builder: builder) { (community, error) in
                     if let _ = error {
+                        EkoHUD.hide()
                         EkoUtilities.showError()
                     } else {
                         strongSelf.delegate?.screenViewModel(strongSelf, state: .updateSuccess)
@@ -257,6 +252,7 @@ extension EkoCreateCommunityScreenViewModel {
             repository.updateCommunity(withId: communityId, builder: builder) { [weak self] (community, error) in
                 guard let strongSelf = self else { return }
                 if let _ = error {
+                    EkoHUD.hide()
                     EkoUtilities.showError()
                 } else {
                     strongSelf.delegate?.screenViewModel(strongSelf, state: .updateSuccess)
@@ -280,6 +276,31 @@ extension EkoCreateCommunityScreenViewModel {
                 completion(_imageData)
             case .failure(let _):
                 break
+            }
+        }
+    }
+}
+
+private extension EkoCreateCommunityScreenViewModel {
+    
+    // Force set moderator after create the community success
+    func updateRole(withCommunityId communityId: String) {
+        let userId = UpstraUIKitManagerInternal.shared.currentUserId
+        communityModeration = EkoCommunityModeration(client: UpstraUIKitManagerInternal.shared.client, andCommunity: communityId)
+        communityModeration?.addRole("moderator", userIds: [userId]) { [weak self] (success, error) in
+            guard let strongSelf = self else { return }
+            if let error = error {
+                EkoHUD.hide()
+                EkoUtilities.showError()
+                return
+            } else {
+                if success {
+                    self?.delegate?.screenViewModel(strongSelf, state: .createSuccess(communityId: communityId))
+                } else {
+                    EkoHUD.hide()
+                    EkoUtilities.showError()
+                    return
+                }
             }
         }
     }

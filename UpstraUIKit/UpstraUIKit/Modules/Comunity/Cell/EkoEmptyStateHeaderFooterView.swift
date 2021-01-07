@@ -78,7 +78,6 @@ class EkoEmptyStateHeaderFooterView: UITableViewHeaderFooterView {
     private func setupSubtitle() {
         subtitleLabel.text = EkoLocalizedStringSet.emptyNewsfeedStartYourFirstPost
         subtitleLabel.font = EkoFontSet.headerLine
-        subtitleLabel.textColor = EkoColorSet.base.blend(.shade3)
         subtitleLabel.textColor = EkoColorSet.base
         subtitleLabel.textAlignment = .center
     }

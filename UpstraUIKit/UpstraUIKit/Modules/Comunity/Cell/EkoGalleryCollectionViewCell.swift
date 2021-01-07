@@ -50,7 +50,7 @@ public class EkoGalleryCollectionViewCell: UICollectionViewCell {
         closeButton.imageEdgeInsets = UIEdgeInsets(top: 5, left: 5, bottom: 5, right: 5)
         closeButton.setImage(EkoIconSet.iconClose, for: .normal)
         closeButton.tintColor = EkoColorSet.baseInverse
-        closeButton.backgroundColor = EkoColorSet.base.withAlphaComponent(0.2)
+        closeButton.backgroundColor = EkoColorSet.secondary.withAlphaComponent(0.2)
         
         progressView.trackTintColor = EkoColorSet.baseInverse
         progressView.transform = CGAffineTransform(scaleX: 1, y: 2)
@@ -64,7 +64,7 @@ public class EkoGalleryCollectionViewCell: UICollectionViewCell {
         
         exclamationImageView.image = EkoIconSet.iconExclamation
         exclamationImageView.tintColor = EkoColorSet.baseInverse
-        exclamationBackgroundView.backgroundColor = EkoColorSet.base.withAlphaComponent(0.7)
+        exclamationBackgroundView.backgroundColor = EkoColorSet.secondary.withAlphaComponent(0.7)
         exclamationBackgroundView.layer.cornerRadius = 13
         exclamationBackgroundView.clipsToBounds = true
     }

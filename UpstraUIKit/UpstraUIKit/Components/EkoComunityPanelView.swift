@@ -38,7 +38,7 @@ class EkoComunityPanelView: UIView {
     private func commonInit() {
         backgroundColor = EkoColorSet.backgroundColor
         topBorderLine.translatesAutoresizingMaskIntoConstraints = false
-        topBorderLine.backgroundColor = EkoColorSet.base.blend(.shade4)
+        topBorderLine.backgroundColor = EkoColorSet.secondary.blend(.shade4)
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
         titleLabel.font = EkoFontSet.bodyBold
         titleLabel.numberOfLines = 1

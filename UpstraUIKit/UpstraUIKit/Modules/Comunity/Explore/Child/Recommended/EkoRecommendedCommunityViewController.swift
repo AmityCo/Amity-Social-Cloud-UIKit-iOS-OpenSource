@@ -54,7 +54,7 @@ public final class EkoRecommendedCommunityViewController: UIViewController, EkoR
 private extension EkoRecommendedCommunityViewController {
     
     func setupView() {
-        view.backgroundColor = EkoColorSet.base.blend(.shade4)
+        view.backgroundColor = EkoColorSet.secondary.blend(.shade4)
         setupTitle()
         setupCollectionView()
         

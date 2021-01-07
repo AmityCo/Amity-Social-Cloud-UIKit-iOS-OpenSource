@@ -18,6 +18,7 @@ struct EkoCommunityMembershipModel {
     var isCurrentUser: Bool {
         return userId == UpstraUIKitManagerInternal.shared.client.currentUserId
     }
+    let avatarId: String
     
     var isModerator: Bool = false
     
@@ -26,6 +27,7 @@ struct EkoCommunityMembershipModel {
         self.displayName = member.displayName == "" ? EkoLocalizedStringSet.anonymous : member.displayName
         self.userId = member.userId
         self.roles = member.roles
+        self.avatarId = member.user?.object?.avatarFileId ?? ""
     }
     
 }

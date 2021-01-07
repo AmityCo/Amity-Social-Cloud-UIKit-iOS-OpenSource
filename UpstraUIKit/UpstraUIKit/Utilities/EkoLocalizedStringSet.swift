@@ -191,6 +191,8 @@ public struct EkoLocalizedStringSet {
         static var alertDesc = EkoLocalizable.localizedString(forKey: "community_member_settings_alert_desc")
         static var title = EkoLocalizable.localizedString(forKey: "community_member_settings_title")
         static var moderatorTitle = EkoLocalizable.localizedString(forKey: "community_member_settings_moderator_title")
+        static let optionPromoteToModerator = EkoLocalizable.localizedString(forKey: "community_member_settings_options_promote_to_moderator")
+        static let optionDismissModerator = EkoLocalizable.localizedString(forKey: "community_member_settings_options_dismiss_moderator")
         static var optionReport = EkoLocalizable.localizedString(forKey: "community_member_settings_options_report")
         static var optionUnreport = EkoLocalizable.localizedString(forKey: "community_member_settings_options_unreport")
         static var optionRemove = EkoLocalizable.localizedString(forKey: "community_member_settings_options_remove")

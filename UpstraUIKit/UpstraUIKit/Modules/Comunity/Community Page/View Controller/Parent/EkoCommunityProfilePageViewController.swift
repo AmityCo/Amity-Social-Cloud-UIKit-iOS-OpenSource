@@ -143,13 +143,6 @@ private extension EkoCommunityProfilePageViewController {
                 let nav = UINavigationController(rootViewController: vc)
                 nav.modalPresentationStyle = .fullScreen
                 strongSelf.present(nav, animated: true, completion: nil)
-//                if EkoUserManager.shared.isModerator() {
-//                    let alertController = UIAlertController(title: nil, message: EkoLocalizedStringSet.roleSupportAlertDesc, preferredStyle: .alert)
-//                    alertController.addAction(UIAlertAction(title: EkoLocalizedStringSet.ok, style: .default, handler: nil))
-//                    strongSelf.present(alertController, animated: true, completion: nil)
-//                } else {
-//                    
-//                }
             case .member:
                 let communityId = strongSelf.screenViewModel.dataSource.communityId
                 let vc = EkoCommunityMemberSettingsViewController.make(communityId: communityId)

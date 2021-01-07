@@ -61,6 +61,8 @@ final class UpstraUIKitManagerInternal {
     public static let shared = UpstraUIKitManagerInternal()
     private var _client: EkoClient?
     
+    var currentUserId: String { return client.currentUserId ?? "" }
+    
     var client: EkoClient {
         guard let client = _client else {
             fatalError("Something went wrong. Please call `UpstraUIKitManager.setup(:_)` for setting an apiKey.")

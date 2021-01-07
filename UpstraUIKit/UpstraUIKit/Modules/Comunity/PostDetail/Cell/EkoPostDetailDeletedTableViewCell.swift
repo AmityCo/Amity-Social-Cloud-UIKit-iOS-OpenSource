@@ -19,7 +19,7 @@ class EkoPostDetailDeletedTableViewCell: UITableViewCell, Nibbable {
         imageView?.image = EkoIconSet.iconDeleteMessage
         textLabel?.font = EkoFontSet.body
         textLabel?.textColor = EkoColorSet.base.blend(.shade2)
-        separatorLine.backgroundColor = EkoColorSet.base.blend(.shade4)
+        separatorLine.backgroundColor = EkoColorSet.secondary.blend(.shade4)
     }
     
     func configure(deletedAt: Date) {

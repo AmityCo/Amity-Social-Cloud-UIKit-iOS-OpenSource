@@ -40,7 +40,7 @@ private extension EkoCategoryPreviewCollectionViewCell {
     
     func setupAvatarView() {
         avatarView.placeholder = EkoIconSet.defaultCategory
-        avatarView.backgroundColor = EkoColorSet.base.blend(.shade3)
+        avatarView.backgroundColor = EkoColorSet.secondary.blend(.shade3)
     }
     
     func setupCategoryName() {

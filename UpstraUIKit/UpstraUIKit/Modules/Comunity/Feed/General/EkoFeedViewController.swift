@@ -106,7 +106,7 @@ public final class EkoFeedViewController: EkoViewController, EkoRefreshable {
     
     private func setupTableView() {
         tableView.translatesAutoresizingMaskIntoConstraints = false
-        tableView.backgroundColor = EkoColorSet.base.blend(.shade4)
+        tableView.backgroundColor = EkoColorSet.secondary.blend(.shade4)
         tableView.tableFooterView = UIView()
         tableView.separatorStyle = .none
         tableView.showsVerticalScrollIndicator = false
@@ -292,6 +292,9 @@ extension EkoFeedViewController: UITableViewDelegate {
     
     public func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
         cellHeights[indexPath] = cell.frame.size.height
+    }
+    
+    public func tableView(_ tableView: UITableView, didEndDisplaying cell: UITableViewCell, forRowAt indexPath: IndexPath) {
         if tableView.isBottomReached {
             screenViewModel.dataSource.loadNext()
         }

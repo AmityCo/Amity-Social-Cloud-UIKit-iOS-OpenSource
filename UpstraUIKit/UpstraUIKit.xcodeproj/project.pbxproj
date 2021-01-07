@@ -22,6 +22,11 @@
 /* End PBXAggregateTarget section */
 
 /* Begin PBXBuildFile section */
+		0DBC353F25A2ED830064D138 /* EkoCommunityInfoController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DBC353E25A2ED830064D138 /* EkoCommunityInfoController.swift */; };
+		0DBC356325A32EE00064D138 /* EkoSearchUserController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DBC356025A32EDF0064D138 /* EkoSearchUserController.swift */; };
+		0DBC356425A32EE00064D138 /* EkoSelectUserController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DBC356125A32EDF0064D138 /* EkoSelectUserController.swift */; };
+		0DBC356525A32EE00064D138 /* EkoFetchUserController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DBC356225A32EDF0064D138 /* EkoFetchUserController.swift */; };
+		0DBC357025A388690064D138 /* EkoCommunityRoleController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DBC356F25A388690064D138 /* EkoCommunityRoleController.swift */; };
 		1A95A5242514C0A70018888F /* EkoFile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A95A5232514C0A70018888F /* EkoFile.swift */; };
 		1A95A5262514E8620018888F /* EkoFileExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A95A5252514E8620018888F /* EkoFileExtension.swift */; };
 		1AF0D2CA251371780083D12C /* Log.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AF0D2C9251371780083D12C /* Log.swift */; };
@@ -246,8 +251,6 @@
 		B70D2BB52577144500E2D56B /* EkoMessageAudioOutgoingTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = B70D2BB42577144500E2D56B /* EkoMessageAudioOutgoingTableViewCell.xib */; };
 		B70D2BBA2577146100E2D56B /* EkoMessageAudioIncomingTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = B70D2BB92577146100E2D56B /* EkoMessageAudioIncomingTableViewCell.xib */; };
 		B70D2BC82577200F00E2D56B /* EkoMessageAudioController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B70D2BC72577200F00E2D56B /* EkoMessageAudioController.swift */; };
-		B70FE4BE258980CF00A2B4AD /* EkoCommunityMemberModeratorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B70FE4BD258980CF00A2B4AD /* EkoCommunityMemberModeratorViewController.swift */; };
-		B70FE4C62589814B00A2B4AD /* EkoCommunityController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B70FE4C52589814B00A2B4AD /* EkoCommunityController.swift */; };
 		B711FF602563D54B00D12FC4 /* AsyncOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = B711FF5E2563D54B00D12FC4 /* AsyncOperation.swift */; };
 		B711FF612563D54B00D12FC4 /* UploadImageMessageOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = B711FF5F2563D54B00D12FC4 /* UploadImageMessageOperation.swift */; };
 		B7157AE4257F217900A28771 /* EkoCircularProgressBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7157AE3257F217900A28771 /* EkoCircularProgressBarView.swift */; };
@@ -259,6 +262,10 @@
 		B729BF6F2519163F00FC1A98 /* EkoMyCommunityTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = B729BF6D2519163F00FC1A98 /* EkoMyCommunityTableViewCell.xib */; };
 		B72D20A0253811070060F939 /* EkoCommunityMemberScreenViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B72D209F253811070060F939 /* EkoCommunityMemberScreenViewModel.swift */; };
 		B72D20A22538110D0060F939 /* EkoCommunityMemberScreenViewModelProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = B72D20A12538110D0060F939 /* EkoCommunityMemberScreenViewModelProtocol.swift */; };
+		B73125D12590B765000E142F /* EkoSelectMemberListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B73125CF2590B765000E142F /* EkoSelectMemberListViewController.swift */; };
+		B73125D22590B765000E142F /* EkoSelectMemberListViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = B73125D02590B765000E142F /* EkoSelectMemberListViewController.xib */; };
+		B73125D82590B772000E142F /* EkoSelectMemberListScreenViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B73125D72590B772000E142F /* EkoSelectMemberListScreenViewModel.swift */; };
+		B73125DD2590B777000E142F /* EkoSelectMemberListScreenViewModelProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = B73125DC2590B777000E142F /* EkoSelectMemberListScreenViewModelProtocol.swift */; };
 		B735CD66254937A100A98B95 /* EkoKeyboardComposeBarCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B735CD64254937A100A98B95 /* EkoKeyboardComposeBarCollectionViewCell.swift */; };
 		B735CD67254937A100A98B95 /* EkoKeyboardComposeBarCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = B735CD65254937A100A98B95 /* EkoKeyboardComposeBarCollectionViewCell.xib */; };
 		B735CD6A254937C200A98B95 /* EkoKeyboardComposeBarViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = B735CD68254937C200A98B95 /* EkoKeyboardComposeBarViewController.xib */; };
@@ -269,6 +276,10 @@
 		B743227525368F1A00FB58D3 /* EkoCommunitySettingsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = B743227325368F1A00FB58D3 /* EkoCommunitySettingsViewController.xib */; };
 		B74322792536907B00FB58D3 /* EkoCommunitySettingsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B74322772536907B00FB58D3 /* EkoCommunitySettingsTableViewCell.swift */; };
 		B743227A2536907B00FB58D3 /* EkoCommunitySettingsTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = B74322782536907B00FB58D3 /* EkoCommunitySettingsTableViewCell.xib */; };
+		B748E16E2591ED4E000CF4CC /* EkoCommunityUserModeratorController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B748E16D2591ED4E000CF4CC /* EkoCommunityUserModeratorController.swift */; };
+		B748E1762591FD73000CF4CC /* EkoCommunityRemoveMemberController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B748E1752591FD73000CF4CC /* EkoCommunityRemoveMemberController.swift */; };
+		B748E17B2591FD7C000CF4CC /* EkoCommunityAddMemberController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B748E17A2591FD7C000CF4CC /* EkoCommunityAddMemberController.swift */; };
+		B748E1802591FDF4000CF4CC /* EkoCommunityFetchMemberController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B748E17F2591FDF4000CF4CC /* EkoCommunityFetchMemberController.swift */; };
 		B750672124FC061B00DD17B4 /* EkoSelectMemberListTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B750671F24FC061B00DD17B4 /* EkoSelectMemberListTableViewCell.swift */; };
 		B750672224FC061B00DD17B4 /* EkoSelectMemberListTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = B750672024FC061B00DD17B4 /* EkoSelectMemberListTableViewCell.xib */; };
 		B750672524FC0A4000DD17B4 /* EkoSelectMemberModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B750672424FC0A4000DD17B4 /* EkoSelectMemberModel.swift */; };
@@ -277,7 +288,6 @@
 		B7539DAA251C45B000E00B66 /* EkoBoxBinding.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7539DA9251C45B000E00B66 /* EkoBoxBinding.swift */; };
 		B754515925612EE900E3C999 /* EkoMediaService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B754515825612EE900E3C999 /* EkoMediaService.swift */; };
 		B75A90E525887C690068DCA2 /* EkoCommunityMembershipModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B75A90E425887C690068DCA2 /* EkoCommunityMembershipModel.swift */; };
-		B75A90EE258919920068DCA2 /* EkoCommunityMemberController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B75A90ED258919920068DCA2 /* EkoCommunityMemberController.swift */; };
 		B760ED5125148F9400BE6648 /* EkoCommunityHomePageViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = B760ED5025148F9400BE6648 /* EkoCommunityHomePageViewController.xib */; };
 		B761FD2F257A0D9200826342 /* EkoMessageImageOutgoingTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B761FD2E257A0D9200826342 /* EkoMessageImageOutgoingTableViewCell.swift */; };
 		B761FD36257A0E1800826342 /* EkoMessageImageIncomingTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B761FD35257A0E1800826342 /* EkoMessageImageIncomingTableViewCell.swift */; };
@@ -304,8 +314,6 @@
 		B77D391E24FB4AF2004907CF /* EkoMessageDateView.xib in Resources */ = {isa = PBXBuildFile; fileRef = B77D391D24FB4AF2004907CF /* EkoMessageDateView.xib */; };
 		B77D392424FB501C004907CF /* Sequence+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = B77D392324FB501C004907CF /* Sequence+Extension.swift */; };
 		B77D392624FB5023004907CF /* Date+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = B77D392524FB5022004907CF /* Date+Extension.swift */; };
-		B77D392A24FB65EF004907CF /* EkoSelectMemberListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B77D392824FB65EF004907CF /* EkoSelectMemberListViewController.swift */; };
-		B77D392B24FB65EF004907CF /* EkoSelectMemberListViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = B77D392924FB65EF004907CF /* EkoSelectMemberListViewController.xib */; };
 		B77DE3132537F1BA00568DF0 /* EkoCommunityMemberSettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B77DE3112537F1BA00568DF0 /* EkoCommunityMemberSettingsViewController.swift */; };
 		B77DE3142537F1BA00568DF0 /* EkoCommunityMemberSettingsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = B77DE3122537F1BA00568DF0 /* EkoCommunityMemberSettingsViewController.xib */; };
 		B77E6C1C24F615F9003EEE49 /* EkoCommunityProfileEditViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B77E6C1A24F615F9003EEE49 /* EkoCommunityProfileEditViewController.swift */; };
@@ -363,8 +371,6 @@
 		B7B31C68250F4ACF000AC6E4 /* EkoButtonPagerTabSViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7B31C51250F4ACF000AC6E4 /* EkoButtonPagerTabSViewController.swift */; };
 		B7B31C6D250F4C99000AC6E4 /* EkoCommunityFeedViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7B31C6C250F4C99000AC6E4 /* EkoCommunityFeedViewController.swift */; };
 		B7B604FE24FBA410005FB53D /* EkoDynamicHeightCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7B604FD24FBA410005FB53D /* EkoDynamicHeightCollectionView.swift */; };
-		B7B6050024FBE71A005FB53D /* EkoSelectMemberListScreenViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7B604FF24FBE71A005FB53D /* EkoSelectMemberListScreenViewModel.swift */; };
-		B7B6050224FBE72A005FB53D /* EkoSelectMemberListScreenViewModelProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7B6050124FBE72A005FB53D /* EkoSelectMemberListScreenViewModelProtocol.swift */; };
 		B7B6050624FBF1CA005FB53D /* EkoSelectMemberListCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7B6050424FBF1CA005FB53D /* EkoSelectMemberListCollectionViewCell.swift */; };
 		B7B6050724FBF1CA005FB53D /* EkoSelectMemberListCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = B7B6050524FBF1CA005FB53D /* EkoSelectMemberListCollectionViewCell.xib */; };
 		B7B7C86A253FE89F002C6F4E /* EkoMyCommunityPreviewViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7B7C868253FE89F002C6F4E /* EkoMyCommunityPreviewViewController.swift */; };
@@ -398,6 +404,11 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		0DBC353E25A2ED830064D138 /* EkoCommunityInfoController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EkoCommunityInfoController.swift; sourceTree = "<group>"; };
+		0DBC356025A32EDF0064D138 /* EkoSearchUserController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EkoSearchUserController.swift; sourceTree = "<group>"; };
+		0DBC356125A32EDF0064D138 /* EkoSelectUserController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EkoSelectUserController.swift; sourceTree = "<group>"; };
+		0DBC356225A32EDF0064D138 /* EkoFetchUserController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EkoFetchUserController.swift; sourceTree = "<group>"; };
+		0DBC356F25A388690064D138 /* EkoCommunityRoleController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EkoCommunityRoleController.swift; sourceTree = "<group>"; };
 		1A95A5232514C0A70018888F /* EkoFile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EkoFile.swift; sourceTree = "<group>"; };
 		1A95A5252514E8620018888F /* EkoFileExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EkoFileExtension.swift; sourceTree = "<group>"; };
 		1AF0D2C9251371780083D12C /* Log.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Log.swift; sourceTree = "<group>"; };
@@ -625,8 +636,6 @@
 		B70D2BB42577144500E2D56B /* EkoMessageAudioOutgoingTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = EkoMessageAudioOutgoingTableViewCell.xib; sourceTree = "<group>"; };
 		B70D2BB92577146100E2D56B /* EkoMessageAudioIncomingTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = EkoMessageAudioIncomingTableViewCell.xib; sourceTree = "<group>"; };
 		B70D2BC72577200F00E2D56B /* EkoMessageAudioController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EkoMessageAudioController.swift; sourceTree = "<group>"; };
-		B70FE4BD258980CF00A2B4AD /* EkoCommunityMemberModeratorViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EkoCommunityMemberModeratorViewController.swift; sourceTree = "<group>"; };
-		B70FE4C52589814B00A2B4AD /* EkoCommunityController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EkoCommunityController.swift; sourceTree = "<group>"; };
 		B711FF5E2563D54B00D12FC4 /* AsyncOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AsyncOperation.swift; sourceTree = "<group>"; };
 		B711FF5F2563D54B00D12FC4 /* UploadImageMessageOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UploadImageMessageOperation.swift; sourceTree = "<group>"; };
 		B7157AE3257F217900A28771 /* EkoCircularProgressBarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EkoCircularProgressBarView.swift; sourceTree = "<group>"; };
@@ -638,6 +647,10 @@
 		B729BF6D2519163F00FC1A98 /* EkoMyCommunityTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = EkoMyCommunityTableViewCell.xib; sourceTree = "<group>"; };
 		B72D209F253811070060F939 /* EkoCommunityMemberScreenViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EkoCommunityMemberScreenViewModel.swift; sourceTree = "<group>"; };
 		B72D20A12538110D0060F939 /* EkoCommunityMemberScreenViewModelProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EkoCommunityMemberScreenViewModelProtocol.swift; sourceTree = "<group>"; };
+		B73125CF2590B765000E142F /* EkoSelectMemberListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EkoSelectMemberListViewController.swift; sourceTree = "<group>"; };
+		B73125D02590B765000E142F /* EkoSelectMemberListViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = EkoSelectMemberListViewController.xib; sourceTree = "<group>"; };
+		B73125D72590B772000E142F /* EkoSelectMemberListScreenViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EkoSelectMemberListScreenViewModel.swift; sourceTree = "<group>"; };
+		B73125DC2590B777000E142F /* EkoSelectMemberListScreenViewModelProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EkoSelectMemberListScreenViewModelProtocol.swift; sourceTree = "<group>"; };
 		B735CD64254937A100A98B95 /* EkoKeyboardComposeBarCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EkoKeyboardComposeBarCollectionViewCell.swift; sourceTree = "<group>"; };
 		B735CD65254937A100A98B95 /* EkoKeyboardComposeBarCollectionViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = EkoKeyboardComposeBarCollectionViewCell.xib; sourceTree = "<group>"; };
 		B735CD68254937C200A98B95 /* EkoKeyboardComposeBarViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = EkoKeyboardComposeBarViewController.xib; sourceTree = "<group>"; };
@@ -648,6 +661,10 @@
 		B743227325368F1A00FB58D3 /* EkoCommunitySettingsViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = EkoCommunitySettingsViewController.xib; sourceTree = "<group>"; };
 		B74322772536907B00FB58D3 /* EkoCommunitySettingsTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EkoCommunitySettingsTableViewCell.swift; sourceTree = "<group>"; };
 		B74322782536907B00FB58D3 /* EkoCommunitySettingsTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = EkoCommunitySettingsTableViewCell.xib; sourceTree = "<group>"; };
+		B748E16D2591ED4E000CF4CC /* EkoCommunityUserModeratorController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EkoCommunityUserModeratorController.swift; sourceTree = "<group>"; };
+		B748E1752591FD73000CF4CC /* EkoCommunityRemoveMemberController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EkoCommunityRemoveMemberController.swift; sourceTree = "<group>"; };
+		B748E17A2591FD7C000CF4CC /* EkoCommunityAddMemberController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EkoCommunityAddMemberController.swift; sourceTree = "<group>"; };
+		B748E17F2591FDF4000CF4CC /* EkoCommunityFetchMemberController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EkoCommunityFetchMemberController.swift; sourceTree = "<group>"; };
 		B750671F24FC061B00DD17B4 /* EkoSelectMemberListTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EkoSelectMemberListTableViewCell.swift; sourceTree = "<group>"; };
 		B750672024FC061B00DD17B4 /* EkoSelectMemberListTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = EkoSelectMemberListTableViewCell.xib; sourceTree = "<group>"; };
 		B750672424FC0A4000DD17B4 /* EkoSelectMemberModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EkoSelectMemberModel.swift; sourceTree = "<group>"; };
@@ -656,7 +673,6 @@
 		B7539DA9251C45B000E00B66 /* EkoBoxBinding.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EkoBoxBinding.swift; sourceTree = "<group>"; };
 		B754515825612EE900E3C999 /* EkoMediaService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EkoMediaService.swift; sourceTree = "<group>"; };
 		B75A90E425887C690068DCA2 /* EkoCommunityMembershipModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EkoCommunityMembershipModel.swift; sourceTree = "<group>"; };
-		B75A90ED258919920068DCA2 /* EkoCommunityMemberController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EkoCommunityMemberController.swift; sourceTree = "<group>"; };
 		B760ED5025148F9400BE6648 /* EkoCommunityHomePageViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = EkoCommunityHomePageViewController.xib; sourceTree = "<group>"; };
 		B761FD2E257A0D9200826342 /* EkoMessageImageOutgoingTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EkoMessageImageOutgoingTableViewCell.swift; sourceTree = "<group>"; };
 		B761FD35257A0E1800826342 /* EkoMessageImageIncomingTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EkoMessageImageIncomingTableViewCell.swift; sourceTree = "<group>"; };
@@ -683,8 +699,6 @@
 		B77D391D24FB4AF2004907CF /* EkoMessageDateView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = EkoMessageDateView.xib; sourceTree = "<group>"; };
 		B77D392324FB501C004907CF /* Sequence+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Sequence+Extension.swift"; sourceTree = "<group>"; };
 		B77D392524FB5022004907CF /* Date+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+Extension.swift"; sourceTree = "<group>"; };
-		B77D392824FB65EF004907CF /* EkoSelectMemberListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EkoSelectMemberListViewController.swift; sourceTree = "<group>"; };
-		B77D392924FB65EF004907CF /* EkoSelectMemberListViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = EkoSelectMemberListViewController.xib; sourceTree = "<group>"; };
 		B77DE3112537F1BA00568DF0 /* EkoCommunityMemberSettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EkoCommunityMemberSettingsViewController.swift; sourceTree = "<group>"; };
 		B77DE3122537F1BA00568DF0 /* EkoCommunityMemberSettingsViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = EkoCommunityMemberSettingsViewController.xib; sourceTree = "<group>"; };
 		B77E6C1A24F615F9003EEE49 /* EkoCommunityProfileEditViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EkoCommunityProfileEditViewController.swift; sourceTree = "<group>"; };
@@ -742,8 +756,6 @@
 		B7B31C51250F4ACF000AC6E4 /* EkoButtonPagerTabSViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EkoButtonPagerTabSViewController.swift; sourceTree = "<group>"; };
 		B7B31C6C250F4C99000AC6E4 /* EkoCommunityFeedViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EkoCommunityFeedViewController.swift; sourceTree = "<group>"; };
 		B7B604FD24FBA410005FB53D /* EkoDynamicHeightCollectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EkoDynamicHeightCollectionView.swift; sourceTree = "<group>"; };
-		B7B604FF24FBE71A005FB53D /* EkoSelectMemberListScreenViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EkoSelectMemberListScreenViewModel.swift; sourceTree = "<group>"; };
-		B7B6050124FBE72A005FB53D /* EkoSelectMemberListScreenViewModelProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EkoSelectMemberListScreenViewModelProtocol.swift; sourceTree = "<group>"; };
 		B7B6050424FBF1CA005FB53D /* EkoSelectMemberListCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EkoSelectMemberListCollectionViewCell.swift; sourceTree = "<group>"; };
 		B7B6050524FBF1CA005FB53D /* EkoSelectMemberListCollectionViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = EkoSelectMemberListCollectionViewCell.xib; sourceTree = "<group>"; };
 		B7B7C868253FE89F002C6F4E /* EkoMyCommunityPreviewViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EkoMyCommunityPreviewViewController.swift; sourceTree = "<group>"; };
@@ -787,6 +799,25 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		0D0CC5C525A2E03B00EB57C5 /* ViewController */ = {
+			isa = PBXGroup;
+			children = (
+				B77DE3112537F1BA00568DF0 /* EkoCommunityMemberSettingsViewController.swift */,
+				B77DE3122537F1BA00568DF0 /* EkoCommunityMemberSettingsViewController.xib */,
+			);
+			path = ViewController;
+			sourceTree = "<group>";
+		};
+		0DBC355F25A32EDF0064D138 /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				0DBC356025A32EDF0064D138 /* EkoSearchUserController.swift */,
+				0DBC356125A32EDF0064D138 /* EkoSelectUserController.swift */,
+				0DBC356225A32EDF0064D138 /* EkoFetchUserController.swift */,
+			);
+			path = Controller;
+			sourceTree = "<group>";
+		};
 		7211553B2550590B0081CC23 /* Select Category List */ = {
 			isa = PBXGroup;
 			children = (
@@ -1682,14 +1713,6 @@
 			path = Audio;
 			sourceTree = "<group>";
 		};
-		B70FE4BC258980B900A2B4AD /* Moderator */ = {
-			isa = PBXGroup;
-			children = (
-				B70FE4BD258980CF00A2B4AD /* EkoCommunityMemberModeratorViewController.swift */,
-			);
-			path = Moderator;
-			sourceTree = "<group>";
-		};
 		B71AD6542537F9D500AFB3D0 /* Cell */ = {
 			isa = PBXGroup;
 			children = (
@@ -1702,7 +1725,6 @@
 		B71AD6592537F9EE00AFB3D0 /* Child */ = {
 			isa = PBXGroup;
 			children = (
-				B70FE4BC258980B900A2B4AD /* Moderator */,
 				B75A90F525891E720068DCA2 /* Member */,
 			);
 			path = Child;
@@ -1724,6 +1746,24 @@
 			children = (
 				B72D209F253811070060F939 /* EkoCommunityMemberScreenViewModel.swift */,
 				B72D20A12538110D0060F939 /* EkoCommunityMemberScreenViewModelProtocol.swift */,
+			);
+			path = ViewModel;
+			sourceTree = "<group>";
+		};
+		B73125CE2590B6C5000E142F /* ViewController */ = {
+			isa = PBXGroup;
+			children = (
+				B73125CF2590B765000E142F /* EkoSelectMemberListViewController.swift */,
+				B73125D02590B765000E142F /* EkoSelectMemberListViewController.xib */,
+			);
+			path = ViewController;
+			sourceTree = "<group>";
+		};
+		B73125D62590B768000E142F /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				B73125D72590B772000E142F /* EkoSelectMemberListScreenViewModel.swift */,
+				B73125DC2590B777000E142F /* EkoSelectMemberListScreenViewModelProtocol.swift */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -1795,8 +1835,12 @@
 		B75A90EC2589197B0068DCA2 /* Controller */ = {
 			isa = PBXGroup;
 			children = (
-				B75A90ED258919920068DCA2 /* EkoCommunityMemberController.swift */,
-				B70FE4C52589814B00A2B4AD /* EkoCommunityController.swift */,
+				0DBC353E25A2ED830064D138 /* EkoCommunityInfoController.swift */,
+				B748E16D2591ED4E000CF4CC /* EkoCommunityUserModeratorController.swift */,
+				B748E17F2591FDF4000CF4CC /* EkoCommunityFetchMemberController.swift */,
+				B748E1752591FD73000CF4CC /* EkoCommunityRemoveMemberController.swift */,
+				B748E17A2591FD7C000CF4CC /* EkoCommunityAddMemberController.swift */,
+				0DBC356F25A388690064D138 /* EkoCommunityRoleController.swift */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -1923,11 +1967,12 @@
 		B77D392724FB658D004907CF /* SelectMember */ = {
 			isa = PBXGroup;
 			children = (
+				0DBC355F25A32EDF0064D138 /* Controller */,
+				B7B6050324FBF1BC005FB53D /* Cells */,
 				B7ED344F2538B9B7005E33A7 /* Model */,
 				B750672624FC0A9F00DD17B4 /* Custom View */,
-				B7B6050324FBF1BC005FB53D /* Cells */,
-				B7DDE07524FB66B7008FBAA1 /* ViewModel */,
-				B7DDE07424FB66B3008FBAA1 /* ViewController */,
+				B73125D62590B768000E142F /* ViewModel */,
+				B73125CE2590B6C5000E142F /* ViewController */,
 			);
 			path = SelectMember;
 			sourceTree = "<group>";
@@ -1936,11 +1981,10 @@
 			isa = PBXGroup;
 			children = (
 				B75A90EC2589197B0068DCA2 /* Controller */,
+				0D0CC5C525A2E03B00EB57C5 /* ViewController */,
 				B75A90E325887BFE0068DCA2 /* Model */,
 				B71AD6542537F9D500AFB3D0 /* Cell */,
 				B71AD6592537F9EE00AFB3D0 /* Child */,
-				B77DE3112537F1BA00568DF0 /* EkoCommunityMemberSettingsViewController.swift */,
-				B77DE3122537F1BA00568DF0 /* EkoCommunityMemberSettingsViewController.xib */,
 				B72D209E253810EC0060F939 /* ViewModel */,
 			);
 			path = Members;
@@ -2233,24 +2277,6 @@
 			path = ViewModel;
 			sourceTree = "<group>";
 		};
-		B7DDE07424FB66B3008FBAA1 /* ViewController */ = {
-			isa = PBXGroup;
-			children = (
-				B77D392824FB65EF004907CF /* EkoSelectMemberListViewController.swift */,
-				B77D392924FB65EF004907CF /* EkoSelectMemberListViewController.xib */,
-			);
-			path = ViewController;
-			sourceTree = "<group>";
-		};
-		B7DDE07524FB66B7008FBAA1 /* ViewModel */ = {
-			isa = PBXGroup;
-			children = (
-				B7B604FF24FBE71A005FB53D /* EkoSelectMemberListScreenViewModel.swift */,
-				B7B6050124FBE72A005FB53D /* EkoSelectMemberListScreenViewModelProtocol.swift */,
-			);
-			path = ViewModel;
-			sourceTree = "<group>";
-		};
 		B7E3C17F25075DD90025485A /* ViewModel */ = {
 			isa = PBXGroup;
 			children = (
@@ -2450,6 +2476,7 @@
 				B77D391E24FB4AF2004907CF /* EkoMessageDateView.xib in Resources */,
 				B729BF6F2519163F00FC1A98 /* EkoMyCommunityTableViewCell.xib in Resources */,
 				B77DE3142537F1BA00568DF0 /* EkoCommunityMemberSettingsViewController.xib in Resources */,
+				B73125D22590B765000E142F /* EkoSelectMemberListViewController.xib in Resources */,
 				72A3511324EA820800DA9D46 /* EkoBadgeView.xib in Resources */,
 				B792A52C250E94E600D09452 /* EkoCommunityProfileHeaderViewController.xib in Resources */,
 				72A3515424EA820800DA9D46 /* EkoMessageTextIncomingTableViewCell.xib in Resources */,
@@ -2458,7 +2485,6 @@
 				7211553F25505D180081CC23 /* EkoSelectCategoryListViewController.xib in Resources */,
 				B750672A24FC0AB600DD17B4 /* EkoSelectMemberListHeaderView.xib in Resources */,
 				B790CFED251BBA1B001DB7C9 /* EkoMyCommunityCollectionViewCell.xib in Resources */,
-				B77D392B24FB65EF004907CF /* EkoSelectMemberListViewController.xib in Resources */,
 				B7C026882574CBC5007CC334 /* EkoPopoverMessageViewController.xib in Resources */,
 				B7B31C59250F4ACF000AC6E4 /* ButtonCell.xib in Resources */,
 				723B6A79251B076E00EAE8D3 /* EkoPostFeedTableViewCell.xib in Resources */,
@@ -2521,7 +2547,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				B77D392A24FB65EF004907CF /* EkoSelectMemberListViewController.swift in Sources */,
 				B77AC1842511FF3D00321CF9 /* EkoFloatingButton.swift in Sources */,
 				72C67DC124EB62EB00B637F5 /* EkoCommunityHomePageViewController.swift in Sources */,
 				B761FD36257A0E1800826342 /* EkoMessageImageIncomingTableViewCell.swift in Sources */,
@@ -2544,9 +2569,11 @@
 				B788B92F252D8457002F4F12 /* EkoRecommendedCommunityScreenViewModelProtocol.swift in Sources */,
 				B7B31C68250F4ACF000AC6E4 /* EkoButtonPagerTabSViewController.swift in Sources */,
 				B7B31C5F250F4ACF000AC6E4 /* ButtonBarView.swift in Sources */,
+				B748E1802591FDF4000CF4CC /* EkoCommunityFetchMemberController.swift in Sources */,
 				B71AD6572537F9E400AFB3D0 /* EkoCommunityMemberSettingsTableViewCell.swift in Sources */,
 				72A3512F24EA820800DA9D46 /* EkoPostTextEditorMenuView.swift in Sources */,
 				72A3515224EA820800DA9D46 /* EkoMessageCellProtocol.swift in Sources */,
+				0DBC353F25A2ED830064D138 /* EkoCommunityInfoController.swift in Sources */,
 				B729BF6E2519163F00FC1A98 /* EkoMyCommunityTableViewCell.swift in Sources */,
 				7271C24425242FAA00E13F9D /* EkoFeedViewController.swift in Sources */,
 				72A3514C24EA820800DA9D46 /* EkoMessageListScreenViewModelProtocol.swift in Sources */,
@@ -2561,8 +2588,10 @@
 				72A3516524EA820800DA9D46 /* UIColor+BSImagePicker.swift in Sources */,
 				72D4B6EA253D6795006693E8 /* Notification+Extension.swift in Sources */,
 				72A3512C24EA820800DA9D46 /* EkoPostDetailViewController.swift in Sources */,
+				B73125D82590B772000E142F /* EkoSelectMemberListScreenViewModel.swift in Sources */,
 				B76A1021252B7E3300AFC7A8 /* EkoCategoryPreviewViewController.swift in Sources */,
 				72A3518624EA820800DA9D46 /* AlbumsViewController.swift in Sources */,
+				B73125DD2590B777000E142F /* EkoSelectMemberListScreenViewModelProtocol.swift in Sources */,
 				72A3517824EA820800DA9D46 /* PreviewBuilder.swift in Sources */,
 				B795878F2577FB04007B027F /* EkoFileCache.swift in Sources */,
 				72A3513A24EA820800DA9D46 /* UIImage+Extension.swift in Sources */,
@@ -2584,6 +2613,7 @@
 				7219CA59253882E300169A35 /* EkoCategoryCommunityListScreenViewModel.swift in Sources */,
 				72A3519624EA820800DA9D46 /* EkoPhotoAnimator.swift in Sources */,
 				72A3511224EA820800DA9D46 /* EkoViewController.swift in Sources */,
+				0DBC356425A32EE00064D138 /* EkoSelectUserController.swift in Sources */,
 				72A3517D24EA820800DA9D46 /* SelectionView.swift in Sources */,
 				72A3513E24EA820800DA9D46 /* UITableView+Extension.swift in Sources */,
 				B7A7F7BC252C3F07000F07DF /* EkoCategoryPreviewCollectionViewCell.swift in Sources */,
@@ -2609,6 +2639,7 @@
 				B7B31C67250F4ACF000AC6E4 /* BaseButtonBarPagerTabStripViewController.swift in Sources */,
 				72A3512324EA820800DA9D46 /* BottomSheetHandleView.swift in Sources */,
 				72A3514624EA820800DA9D46 /* EkoTheme.swift in Sources */,
+				B748E1762591FD73000CF4CC /* EkoCommunityRemoveMemberController.swift in Sources */,
 				B7B31C64250F4ACF000AC6E4 /* PagerTabStripError.swift in Sources */,
 				72A3519024EA820800DA9D46 /* EkoPhotoViewerController+UISrcrollViewDelegate.swift in Sources */,
 				B7ED344E2538B900005E33A7 /* EkoLoadingState.swift in Sources */,
@@ -2638,7 +2669,6 @@
 				72A3519A24EA820800DA9D46 /* EkoFileTableView.swift in Sources */,
 				72476B6A253FF4C800B466A4 /* EkoFeedHeaderTableViewCell.swift in Sources */,
 				72A3515B24EA820800DA9D46 /* EkoMessageListViewController.swift in Sources */,
-				B75A90EE258919920068DCA2 /* EkoCommunityMemberController.swift in Sources */,
 				72AFAC0D24F9009F00269019 /* EkoFileService.swift in Sources */,
 				B7D1FEA1251AF23900F1DBA9 /* EkoSeachCommunitiesViewController.swift in Sources */,
 				72A3517E24EA820800DA9D46 /* NumberView.swift in Sources */,
@@ -2672,6 +2702,7 @@
 				72A3519324EA820800DA9D46 /* EkoPhotoViewerControllerDataSource.swift in Sources */,
 				72A3517F24EA820800DA9D46 /* AssetsViewController.swift in Sources */,
 				72A3517424EA820800DA9D46 /* CameraViewController.swift in Sources */,
+				B748E17B2591FD7C000CF4CC /* EkoCommunityAddMemberController.swift in Sources */,
 				B79EA6C4250A2D4700EC26B7 /* Int+Extension.swift in Sources */,
 				72A3516924EA820800DA9D46 /* EkoImagePickerController+ButtonActions.swift in Sources */,
 				B704D14E2578E2570038BA78 /* EkoAudioRecorder.swift in Sources */,
@@ -2687,6 +2718,7 @@
 				B788B935252D8B71002F4F12 /* EkoTrendingCommunityScreenViewModelProtocol.swift in Sources */,
 				72A3519224EA820800DA9D46 /* Helper.swift in Sources */,
 				B7B31C58250F4ACF000AC6E4 /* EkoProfileProgressDelegate.swift in Sources */,
+				0DBC356325A32EE00064D138 /* EkoSearchUserController.swift in Sources */,
 				7250713A251CCAF700200A24 /* EkoCategoryListScreenViewModelType.swift in Sources */,
 				72A3511E24EA820800DA9D46 /* EkoComunityPanelView.swift in Sources */,
 				72A3513124EA820800DA9D46 /* NibFileOwnerLoadable.swift in Sources */,
@@ -2699,7 +2731,6 @@
 				B7B31C66250F4ACF000AC6E4 /* EkoPagerTabViewController.swift in Sources */,
 				72931CAD24F6C6B5008D6DBD /* EkoPostTextEditorScreenViewModelType.swift in Sources */,
 				B7C6A6EB2558D62F0076DCE9 /* EkoImageCache.swift in Sources */,
-				B70FE4C62589814B00A2B4AD /* EkoCommunityController.swift in Sources */,
 				7236EB3F255931540006F785 /* EkoMyCommunityViewController.swift in Sources */,
 				72A3518D24EA820800DA9D46 /* EkoCommunityTableViewCell.swift in Sources */,
 				72A3517024EA820800DA9D46 /* EkoArrowView.swift in Sources */,
@@ -2711,6 +2742,7 @@
 				7236EB4225593DDC0006F785 /* EkoPostCreateViewController.swift in Sources */,
 				B711FF612563D54B00D12FC4 /* UploadImageMessageOperation.swift in Sources */,
 				B7D98011251007DF0000EBEB /* EkoCommunityProfileScreenViewModelProtocol.swift in Sources */,
+				B748E16E2591ED4E000CF4CC /* EkoCommunityUserModeratorController.swift in Sources */,
 				B77E6C1C24F615F9003EEE49 /* EkoCommunityProfileEditViewController.swift in Sources */,
 				B7B31C55250F4ACF000AC6E4 /* EkoProfilePannableViewsProtocol.swift in Sources */,
 				B70D2BA5257713F100E2D56B /* EkoMessageAudioTableViewCell.swift in Sources */,
@@ -2731,7 +2763,6 @@
 				724FBA8E2530141600EDC556 /* Data+Extension.swift in Sources */,
 				B7B31C65250F4ACF000AC6E4 /* BarPagerTabStripViewController.swift in Sources */,
 				72A3512E24EA820800DA9D46 /* EkoView.swift in Sources */,
-				B7B6050024FBE71A005FB53D /* EkoSelectMemberListScreenViewModel.swift in Sources */,
 				B797ED1224F6CCFA00F3B411 /* UIButton+Extension.swift in Sources */,
 				B788B92D252D7116002F4F12 /* EkoRecommendedCommunityScreenViewModel.swift in Sources */,
 				B773618525552BEC0072B182 /* EkoPageViewController.swift in Sources */,
@@ -2753,6 +2784,7 @@
 				72A3518224EA820800DA9D46 /* GradientView.swift in Sources */,
 				72A3514324EA820800DA9D46 /* EkoThemeManager.swift in Sources */,
 				72887A202538550F00188FAD /* PHAsset+Extension.swift in Sources */,
+				B73125D12590B765000E142F /* EkoSelectMemberListViewController.swift in Sources */,
 				7236EB4425593EE80006F785 /* EkoPostEditViewController.swift in Sources */,
 				7271C24A2524376600E13F9D /* EkoEmptyStateHeaderFooterView.swift in Sources */,
 				7211554325505D5B0081CC23 /* EkoSelectCategoryListScreenViewModelType.swift in Sources */,
@@ -2763,10 +2795,11 @@
 				729A09E42522E52F0081F15A /* EkoUserProfileScreenViewModelProtocol.swift in Sources */,
 				72A3511524EA820800DA9D46 /* EkoPostDetailCompostView.swift in Sources */,
 				7219CA622539513800169A35 /* EkoCategoryCommunityListViewEmptyView.swift in Sources */,
-				B7B6050224FBE72A005FB53D /* EkoSelectMemberListScreenViewModelProtocol.swift in Sources */,
 				B7539DAA251C45B000E00B66 /* EkoBoxBinding.swift in Sources */,
 				B7ED34522538BE23005E33A7 /* UILabel+Extension.swift in Sources */,
 				7271C2422523729300E13F9D /* EkoUserModel.swift in Sources */,
+				0DBC356525A32EE00064D138 /* EkoFetchUserController.swift in Sources */,
+				0DBC357025A388690064D138 /* EkoCommunityRoleController.swift in Sources */,
 				72A3518024EA820800DA9D46 /* VideoCollectionViewCell.swift in Sources */,
 				7211553E25505D180081CC23 /* EkoSelectCategoryListViewController.swift in Sources */,
 				B7997A4924FB8046004AD033 /* EkoMemberCollectionViewCell.swift in Sources */,
@@ -2791,7 +2824,6 @@
 				B7A483DA2509F5DD0047A627 /* EkoCommunityProfilePageViewController.swift in Sources */,
 				B7B6050624FBF1CA005FB53D /* EkoSelectMemberListCollectionViewCell.swift in Sources */,
 				B7B31C6D250F4C99000AC6E4 /* EkoCommunityFeedViewController.swift in Sources */,
-				B70FE4BE258980CF00A2B4AD /* EkoCommunityMemberModeratorViewController.swift in Sources */,
 				72604232252C73F5007E73D5 /* EkoFeedScreenViewModelType.swift in Sources */,
 				729A09E72522E75B0081F15A /* EkoUserProfileHeaderViewController.swift in Sources */,
 				723B6A81251B320E00EAE8D3 /* UIKit+Extension.swift in Sources */,
@@ -2995,7 +3027,7 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.7.0;
+				MARKETING_VERSION = 1.8.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.upstra.upstrauikit;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
@@ -3028,7 +3060,7 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.7.0;
+				MARKETING_VERSION = 1.8.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.upstra.upstrauikit;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;

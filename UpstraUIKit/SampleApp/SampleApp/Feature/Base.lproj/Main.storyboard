@@ -187,7 +187,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="Trt-J3-sgs">
-                                <rect key="frame" x="40" y="318" width="334" height="260"/>
+                                <rect key="frame" x="40" y="283" width="334" height="330"/>
                                 <subviews>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="pp8-X1-iom" userLabel="DEFAULT PRESET">
                                         <rect key="frame" x="0.0" y="0.0" width="334" height="50"/>
@@ -241,10 +241,23 @@
                                             <action selector="selectCustomizeTheme:" destination="Te9-I1-soq" eventType="touchUpInside" id="OYD-QX-UYS"/>
                                         </connections>
                                     </button>
+                                    <button opaque="NO" tag="4" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="wVt-tL-Qsj" userLabel="PRESET 4">
+                                        <rect key="frame" x="0.0" y="280" width="334" height="50"/>
+                                        <color key="backgroundColor" systemColor="systemBlueColor"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="50" id="IM6-dY-pxV"/>
+                                        </constraints>
+                                        <state key="normal" title="PRESET 4">
+                                            <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="selectCustomizeTheme:" destination="Te9-I1-soq" eventType="touchUpInside" id="zYa-yS-FrJ"/>
+                                        </connections>
+                                    </button>
                                 </subviews>
                             </stackView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="9nq-QQ-6ee">
-                                <rect key="frame" x="162.5" y="614" width="89" height="30"/>
+                                <rect key="frame" x="162.5" y="649" width="89" height="30"/>
                                 <state key="normal" title="Color Palette"/>
                                 <connections>
                                     <action selector="colorPaletteTap:" destination="Te9-I1-soq" eventType="touchUpInside" id="ylL-iZ-Cff"/>

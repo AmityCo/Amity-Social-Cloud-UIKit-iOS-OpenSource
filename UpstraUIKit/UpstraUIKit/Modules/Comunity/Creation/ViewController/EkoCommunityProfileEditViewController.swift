@@ -107,7 +107,7 @@ public final class EkoCommunityProfileEditViewController: EkoViewController {
         setupCommunityAdminRule()
         setupCommunityTypes()
         setupCommunityAddMember()
-        seperatorLineView.backgroundColor = EkoColorSet.base.blend(.shade4)
+        seperatorLineView.backgroundColor = EkoColorSet.secondary.blend(.shade4)
         
         setupCreateCommunityButton()
         setupUpdateButton()
@@ -124,9 +124,9 @@ public final class EkoCommunityProfileEditViewController: EkoViewController {
     private func setupCommunityDisplay() {
         avatarView.placeholder = EkoIconSet.defaultCommunity
         
-        cameraBackgroundView.layer.borderColor = UIColor.white.cgColor
+        cameraBackgroundView.layer.borderColor = EkoColorSet.backgroundColor.cgColor
         cameraBackgroundView.layer.borderWidth = 1
-        cameraBackgroundView.backgroundColor = EkoColorSet.base.blend(.shade4)
+        cameraBackgroundView.backgroundColor = EkoColorSet.secondary.blend(.shade4)
         cameraBackgroundView.layer.cornerRadius = cameraBackgroundView.frame.height / 2
         cameraImageView.image = EkoIconSet.iconCamera
     }
@@ -154,7 +154,7 @@ public final class EkoCommunityProfileEditViewController: EkoViewController {
         communityNameTextfield.returnKeyType = .done
         communityNameTextfield.attributedPlaceholder = NSAttributedString(string: EkoLocalizedStringSet.createCommunityNamePlaceholder, attributes: [.foregroundColor : EkoColorSet.base.blend(.shade3)])
         
-        nameLineView.backgroundColor = EkoColorSet.base.blend(.shade4)
+        nameLineView.backgroundColor = EkoColorSet.secondary.blend(.shade4)
         
         errorNameLabel.isHidden = true
         errorNameLabel.text = EkoLocalizedStringSet.createCommunityNameAlreadyTaken
@@ -181,7 +181,7 @@ public final class EkoCommunityProfileEditViewController: EkoViewController {
         
         communityAboutClearButton.alpha = 0
         
-        aboutLineView.backgroundColor = EkoColorSet.base.blend(.shade4)
+        aboutLineView.backgroundColor = EkoColorSet.secondary.blend(.shade4)
     }
     
     private func setupCommunityCategory() {
@@ -196,7 +196,7 @@ public final class EkoCommunityProfileEditViewController: EkoViewController {
         commnuityCategoryArrowImageView.image = EkoIconSet.iconArrowRight
         commnuityCategoryArrowImageView.tintColor = EkoColorSet.base
         
-        categoryLineView.backgroundColor = EkoColorSet.base.blend(.shade4)
+        categoryLineView.backgroundColor = EkoColorSet.secondary.blend(.shade4)
     }
     
     private func updateCommunityCategoryName(_ categoryName: String?) {
@@ -221,7 +221,7 @@ public final class EkoCommunityProfileEditViewController: EkoViewController {
         communityAdminRuleDescLabel.font = EkoFontSet.caption
         communityAdminRuleDescLabel.numberOfLines = 0
         
-        adminRuleLineView.backgroundColor = EkoColorSet.base.blend(.shade4)
+        adminRuleLineView.backgroundColor = EkoColorSet.secondary.blend(.shade4)
     }
     
     private func setupCommunityTypes() {
@@ -247,10 +247,10 @@ public final class EkoCommunityProfileEditViewController: EkoViewController {
         communityTypePrivateDescLabel.numberOfLines = 0
         
         communityTypePrivateRadioImageView.image = EkoIconSet.iconRadioOff
-        communityTypeLineView.backgroundColor = EkoColorSet.base.blend(.shade4)
+        communityTypeLineView.backgroundColor = EkoColorSet.secondary.blend(.shade4)
         
         communityTypeBackgroundView.forEach {
-            $0.backgroundColor = EkoColorSet.base.blend(.shade4)
+            $0.backgroundColor = EkoColorSet.secondary.blend(.shade4)
             $0.layer.cornerRadius = $0.frame.height / 2
         }
     }
@@ -270,7 +270,7 @@ public final class EkoCommunityProfileEditViewController: EkoViewController {
             communityAddMemberCollectionView.register(UINib(nibName: EkoMemberCollectionViewCell.identifier, bundle: UpstraUIKitManager.bundle), forCellWithReuseIdentifier: EkoMemberCollectionViewCell.identifier)
             
             
-            addMemberLineView.backgroundColor = EkoColorSet.base.blend(.shade4)
+            addMemberLineView.backgroundColor = EkoColorSet.secondary.blend(.shade4)
         }
     }
     
@@ -367,12 +367,12 @@ private extension EkoCommunityProfileEditViewController {
     }
     
     func addMemberTap() {
-        let vc = EkoSelectMemberListViewController.make(groupUsers: screenViewModel.dataSource.groupUsers, selectedUsers: screenViewModel.dataSource.selectedUsers)
-        vc.didSelectUserHandler = { [weak self] allUsers, allSelectedUser in
-            guard let self = self else { return }
-            self.screenViewModel.action.updateAllUsersAndAllSelectedUsers(allUsers: allUsers, allSelectedUsers: allSelectedUser)
-        }
+        let vc = EkoSelectMemberListViewController.make()
         
+        vc.selectUsersHandler = { [weak self] storeUsers in
+            self?.screenViewModel.action.updateSelectUser(users: storeUsers)
+        }
+        vc.getUsersFromCreatePage(users: screenViewModel.dataSource.storeUsers)
         let nav = UINavigationController(rootViewController: vc)
         nav.modalPresentationStyle = .overFullScreen
         present(nav, animated: true, completion: nil)
@@ -462,7 +462,7 @@ extension EkoCommunityProfileEditViewController: EkoCreateCommunityScreenViewMod
             rightItem?.isEnabled = status
             createCommunityButton.isEnabled = status
             errorNameLabel.isHidden = true
-            nameLineView.backgroundColor = EkoColorSet.base.blend(.shade4)
+            nameLineView.backgroundColor = EkoColorSet.secondary.blend(.shade4)
         case .createSuccess(let communityId):
             EkoHUD.hide { [weak self] in
                 guard let strongSelf = self else { return }

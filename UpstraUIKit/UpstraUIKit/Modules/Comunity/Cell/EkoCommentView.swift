@@ -64,7 +64,7 @@ class EkoCommentView: EkoView {
         likeButton.setTitleColor(EkoColorSet.base.blend(.shade2), for: .normal)
         likeButton.addTarget(self, action: #selector(likeButtonTap), for: .touchUpInside)
         likeButton.setInsets(forContentPadding: .zero, imageTitlePadding: 4)
-        lineView.backgroundColor = EkoColorSet.base.blend(.shade4)
+        lineView.backgroundColor = EkoColorSet.secondary.blend(.shade4)
         replyButton.setTitle(EkoLocalizedStringSet.reply, for: .normal)
         replyButton.setImage(EkoIconSet.iconReply, for: .normal)
         replyButton.tintColor = EkoColorSet.base.blend(.shade2)
@@ -72,7 +72,7 @@ class EkoCommentView: EkoView {
         replyButton.setTitleColor(EkoColorSet.base.blend(.shade2), for: .normal)
         replyButton.addTarget(self, action: #selector(replyButtonTap), for: .touchUpInside)
         replyButton.setInsets(forContentPadding: .zero, imageTitlePadding: 4)
-        separatorLineView.backgroundColor  = EkoColorSet.base.blend(.shade4)
+        separatorLineView.backgroundColor  = EkoColorSet.secondary.blend(.shade4)
         optionButton.addTarget(self, action: #selector(optionButtonTap), for: .touchUpInside)
         optionButton.tintColor = EkoColorSet.base.blend(.shade2)
     }

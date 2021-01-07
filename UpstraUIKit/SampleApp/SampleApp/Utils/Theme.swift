@@ -14,6 +14,7 @@ enum Preset: Int {
     case preset1
     case preset2
     case preset3
+    case preset4
     
     var theme: EkoTheme {
         switch self {
@@ -22,9 +23,11 @@ enum Preset: Int {
         case .preset1:
             return EkoTheme(primary: UIColor(hex: "#18033A"))
         case .preset2:
-            return EkoTheme(primary: UIColor(hex: "#DE1029"))
+            return EkoTheme(primary: UIColor(hex: "#DE1029"), secondary: UIColor(hex: "#32343d"))
         case .preset3:
             return EkoTheme(primary: UIColor(hex: "#0BDB91"), highlight: UIColor(hex: "#25d7f4"), messageBubble: UIColor(hex: "#25F4AA"))
+        case .preset4:
+            return EkoTheme(primary: .white)
         }
     }
 }

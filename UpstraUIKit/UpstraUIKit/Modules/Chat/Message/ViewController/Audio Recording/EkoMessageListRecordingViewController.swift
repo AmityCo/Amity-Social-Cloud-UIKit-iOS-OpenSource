@@ -112,7 +112,7 @@ private extension EkoMessageListRecordingViewController {
     }
     
     func deleteRecordingUI() {
-        recordingView.backgroundColor = EkoColorSet.base.blend(.shade1)
+        recordingView.backgroundColor = EkoColorSet.secondary.blend(.shade1)
         recordingImageView.tintColor = EkoColorSet.base.blend(.shade3)
         
         deletingButtonUI()
@@ -125,7 +125,7 @@ private extension EkoMessageListRecordingViewController {
     }
     
     func waitingForDeleteUI() {
-        deleteButton.backgroundColor = EkoColorSet.base
+        deleteButton.backgroundColor = EkoColorSet.secondary
         deleteButton.tintColor = EkoColorSet.base.blend(.shade3)
         deleteButton.setImage(EkoIconSet.Chat.iconDelete1, for: .normal)
     }

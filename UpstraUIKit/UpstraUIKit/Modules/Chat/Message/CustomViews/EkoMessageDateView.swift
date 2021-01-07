@@ -30,7 +30,7 @@ class EkoMessageDateView: EkoView {
         backgroundColor = .clear
         contentView.backgroundColor = .clear
         
-        containerView.backgroundColor = EkoColorSet.base.blend(.shade4)
+        containerView.backgroundColor = EkoColorSet.secondary.blend(.shade4)
         containerView.layer.cornerRadius = containerView.frame.height / 2
         
         dateLabel.textColor = EkoColorSet.base
