@@ -108,7 +108,7 @@ class EkoUserProfileHeaderViewController: EkoViewController, EkoRefreshable {
         messageButton.setImage(EkoIconSet.iconChat2, position: .left)
         messageButton.setTitle(EkoLocalizedStringSet.communityDetailMessageButton, for: .normal)
         messageButton.tintColor = EkoColorSet.secondary
-        messageButton.layer.borderColor = EkoColorSet.base.blend(.shade3).cgColor
+        messageButton.layer.borderColor = EkoColorSet.secondary.blend(.shade3).cgColor
         messageButton.layer.borderWidth = 1
         messageButton.layer.cornerRadius = 6
         messageButton.isHidden = settings.shouldChatButtonHide

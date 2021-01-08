@@ -179,6 +179,8 @@
 // MARK: - Community member settings
 "community_member_settings_title" = "Members";
 "community_member_settings_moderator_title" = "Moderators";
+"community_member_settings_options_promote_to_moderator" = "Promote to moderator";
+"community_member_settings_options_dismiss_moderator" = "Dismiss moderator";
 "community_member_settings_options_report" = "Report user";
 "community_member_settings_options_unreport" = "Unreport user";
 "community_member_settings_options_remove" = "Remove from community";

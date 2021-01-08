@@ -81,7 +81,7 @@ class EkoPostTextEditorMenuView: UIView {
         stackView.addArrangedSubview(photoGalleryButton)
         stackView.addArrangedSubview(fileButton)
         topLineView.translatesAutoresizingMaskIntoConstraints = false
-        topLineView.backgroundColor = EkoColorSet.base.blend(.shade4)
+        topLineView.backgroundColor = EkoColorSet.secondary.blend(.shade4)
         
         cameraButton.setImage(EkoIconSet.iconCameraSmall, for: .normal)
         cameraButton.setTintColor(EkoColorSet.base, for: .normal)

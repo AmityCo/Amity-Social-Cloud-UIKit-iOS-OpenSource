@@ -109,7 +109,7 @@ final class EkoCommunityProfileHeaderViewController: EkoViewController {
         chatButton.setImage(EkoIconSet.iconChat2, for: .normal)
         chatButton.tintColor = EkoColorSet.secondary
         chatButton.isHidden = true
-        chatButton.layer.borderColor = EkoColorSet.base.blend(.shade3).cgColor
+        chatButton.layer.borderColor = EkoColorSet.secondary.blend(.shade3).cgColor
         chatButton.layer.borderWidth = 1
         chatButton.layer.cornerRadius = 6
         chatButton.addTarget(self, action: #selector(chatTap), for: .touchUpInside)
@@ -191,7 +191,7 @@ private extension EkoCommunityProfileHeaderViewController {
                 strongSelf.actionButton.setImage(EkoIconSet.iconChat2, position: .left)
                 strongSelf.actionButton.tintColor = EkoColorSet.secondary
                 strongSelf.actionButton.backgroundColor = EkoColorSet.backgroundColor
-                strongSelf.actionButton.layer.borderColor = EkoColorSet.base.blend(.shade3).cgColor
+                strongSelf.actionButton.layer.borderColor = EkoColorSet.secondary.blend(.shade3).cgColor
                 strongSelf.actionButton.layer.borderWidth = 1
                 strongSelf.actionButton.layer.cornerRadius = 4
                 strongSelf.actionButton.tag = 1
@@ -202,7 +202,7 @@ private extension EkoCommunityProfileHeaderViewController {
                 strongSelf.actionButton.setImage(EkoIconSet.iconEdit, position: .left)
                 strongSelf.actionButton.tintColor = EkoColorSet.secondary
                 strongSelf.actionButton.backgroundColor = EkoColorSet.backgroundColor
-                strongSelf.actionButton.layer.borderColor = EkoColorSet.base.blend(.shade3).cgColor
+                strongSelf.actionButton.layer.borderColor = EkoColorSet.secondary.blend(.shade3).cgColor
                 strongSelf.actionButton.layer.borderWidth = 1
                 strongSelf.actionButton.layer.cornerRadius = 4
                 strongSelf.actionButton.tag = 2

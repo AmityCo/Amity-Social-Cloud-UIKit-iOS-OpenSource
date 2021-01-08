@@ -23,6 +23,14 @@ class EkoFeedScreenViewModel: EkoFeedScreenViewModelType {
     private var commentFlagger: EkoCommentFlagger?
     private var feedCollection: EkoCollection<EkoPost>?
     private var feedToken: EkoNotificationToken?
+    private var communityTokens: [String: EkoNotificationToken] = [:]
+    
+    // Map between communityId and moderator user id
+    // in order to check if user is the moderator in the particular community
+    //
+    // Example: [ "communityId" : ["user_a", "user_b"] ]
+    // * This means user_a and user_b are both moderators
+    private var moderatorMap: [String: Set<String>] = [:]
     
     private var imageCache = EkoImageCache()
     private var viewModels: [FeedViewModel] = []
@@ -60,16 +68,63 @@ class EkoFeedScreenViewModel: EkoFeedScreenViewModelType {
         }
     }
     
+    private func getModeratorRole(model: EkoPostModel, completion: @escaping (Bool) -> Void) {
+        guard let communityId = model.communityId, !communityId.isEmpty else {
+            // if community id doesn't exist, mark the user as non-moderator
+            completion(false)
+            return
+        }
+        
+        // check if the particular community has arrays of moderator users
+        if let community = moderatorMap[communityId] {
+            // the arrays of users is already created
+            // then return if the array contains user
+            let isModerator = community.contains(model.postedUserId)
+            completion(isModerator)
+        } else {
+            // the array doesn't assign yet. create it once by calling `getMemberships`
+            let postId = model.id
+            let participation = EkoCommunityParticipation(client: UpstraUIKitManagerInternal.shared.client, andCommunityId: communityId)
+            communityTokens[postId] = participation.getMemberships(.all, roles: [], sortBy: .firstCreated).observe { [weak self] (collection, _, error) in
+                var moderatorIds = Set<String>()
+                for j in 0..<collection.count() {
+                    if let roles = collection.object(at: j)?.roles as? [String], roles.contains("moderator") {
+                        moderatorIds.insert(model.postedUserId)
+                    }
+                }
+                self?.moderatorMap[communityId] = moderatorIds
+                self?.communityTokens[postId]?.invalidate()
+                self?.communityTokens[postId] = nil
+                
+                let isModerator = moderatorIds.contains(model.postedUserId)
+                completion(isModerator)
+            }
+        }
+    }
+    
     private func prepareDataSource() {
         guard let collection = feedCollection else { return }
-        var viewModels = [FeedViewModel]()
+        
+        var postModels = [EkoPostModel]()
+        let dispatchGroup = DispatchGroup()
+        
         for i in 0..<collection.count() {
             guard let post = collection.object(at: i) else { continue }
             let model = EkoPostModel(post: post)
-            viewModels.append(.post(model))
+            postModels.append(model)
+            
+            // assign moderator roles
+            dispatchGroup.enter()
+            getModeratorRole(model: model) { isModerator in
+                postModels[Int(i)].isModerator = isModerator
+                dispatchGroup.leave()
+            }
         }
-        self.viewModels = viewModels
-        delegate?.screenViewModelDidUpdateData(self)
+        dispatchGroup.notify(queue: .main) { [weak self] in
+            guard let strongSelf = self else { return }
+            strongSelf.viewModels = postModels.map { .post($0) }
+            strongSelf.delegate?.screenViewModelDidUpdateData(strongSelf)
+        }
     }
     
     // MARK: - DataSource

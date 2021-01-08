@@ -2,57 +2,58 @@
 //  EkoSelectMemberListScreenViewModel.swift
 //  UpstraUIKit
 //
-//  Created by Sarawoot Khunsri on 30/8/2563 BE.
-//  Copyright © 2563 Upstra. All rights reserved.
+//  Created by Sarawoot Khunsri on 21/12/2563 BE.
+//  Copyright © 2563 BE Upstra. All rights reserved.
 //
 
 import UIKit
 import EkoChat
 
 final class EkoSelectMemberListScreenViewModel: EkoSelectMemberListScreenViewModelType {
-    
     weak var delegate: EkoSelectMemberListScreenViewModelDelegate?
-    private var isFirst: Bool = false
-    var isSearch: Bool = false
     
-    private var userCollectionToken: EkoNotificationToken?
-    private var userCollection: EkoCollection<EkoUser>?
-    private let repository: EkoUserRepository = EkoUserRepository(client: UpstraUIKitManagerInternal.shared.client)
+    // MARK: - Repository
+    private var userRepository: EkoUserRepository?
     
-    var users: [EkoSelectMemberModel] = []
-    var searchUsers: [EkoSelectMemberModel] = []
-    var groupUsers: [(key: String, value: [EkoSelectMemberModel])] = []
-    var selectedUsers: [EkoSelectMemberModel] = [] {
+    // MARK: - Controller
+    private var fetchUserController: EkoFetchUserController?
+    private var searchUserController: EkoSearchUserController?
+    private var selectUserContrller: EkoSelectUserController?
+    
+    private var users: EkoFetchUserController.GroupUser = []
+    private var searchUsers: [EkoSelectMemberModel] = []
+    private var storeUsers: [EkoSelectMemberModel] = [] {
         didSet {
-            delegate?.screenViewModel(self, state: .displaySelectUser(isDisplay: selectedUsers.isEmpty))
+            delegate?.screenViewModelCanDone(enable: !storeUsers.isEmpty)
         }
     }
     
-    var loading: EkoBoxBinding<EkoLoadingState> = EkoBoxBinding(.initial)
+    private var isSearch: Bool = false
+    
+    init() {
+        userRepository = EkoUserRepository(client: UpstraUIKitManagerInternal.shared.client)
+        fetchUserController = EkoFetchUserController(repository: userRepository)
+        searchUserController = EkoSearchUserController(repository: userRepository)
+        selectUserContrller = EkoSelectUserController()
+    }
 }
 
-// MARK: - DataSourceObserver
-extension EkoSelectMemberListScreenViewModel: EkoDataSourceListener {
-    func dataSourceUpdated() {
-        delegate?.screenViewModel(self, state: .updateUser)
-    }
-}
-// MARK: - Data Source
+// MARK: - DataSource
 extension EkoSelectMemberListScreenViewModel {
-    
-    func updateAllUsersAndSelectedUsers(groupUsers: [(key: String, value: [EkoSelectMemberModel])], selectedUsers: [EkoSelectMemberModel]) {
-        guard !groupUsers.isEmpty else { return }
-        isFirst = true
-        self.groupUsers = groupUsers
-        self.selectedUsers = selectedUsers
+    func numberOfAlphabet() -> Int {
+        return isSearch ? 1 : users.count
     }
     
-    func numberInSection() -> Int {
-        return isSearch ? 1 : groupUsers.count
+    func numberOfUsers(in section: Int) -> Int {
+        return isSearch ? searchUsers.count : users[section].value.count
     }
     
-    func numberOfMember(in section: Int) -> Int {
-        return isSearch ? searchUsers.count : groupUsers[section].value.count
+    func numberOfSelectedUsers() -> Int {
+        return storeUsers.count
+    }
+    
+    func alphabetOfHeader(in section: Int) -> String {
+        return users[section].key
     }
     
     func user(at indexPath: IndexPath) -> EkoSelectMemberModel? {
@@ -60,145 +61,96 @@ extension EkoSelectMemberListScreenViewModel {
             guard !searchUsers.isEmpty else { return nil }
             return searchUsers[indexPath.row]
         } else {
-            guard !groupUsers.isEmpty else { return nil }
-            return groupUsers[indexPath.section].value[indexPath.row]
+            guard !users.isEmpty else { return nil }
+            return users[indexPath.section].value[indexPath.row]
         }
     }
     
-    func alphabet(at section: Int) -> String? {
-        guard !groupUsers.isEmpty else { return nil }
-        return groupUsers[section].key
+    func selectUser(at indexPath: IndexPath) -> EkoSelectMemberModel {
+        return storeUsers[indexPath.item]
     }
     
-    func numberOfSelectedMember() -> Int {
-        return selectedUsers.count
+    func isSearching() -> Bool {
+        return isSearch
     }
     
-    func selectedUser(at indexPath: IndexPath) -> EkoSelectMemberModel? {
-        guard !selectedUsers.isEmpty else { return nil }
-        return selectedUsers[indexPath.item]
+    func getStoreUsers() -> [EkoSelectMemberModel] {
+        return storeUsers
     }
-
 }
 
 // MARK: - Action
 extension EkoSelectMemberListScreenViewModel {
-    func getUser() {
-        if isFirst {
-            isFirst = false
-        } else {
-            userCollection = repository.getAllUsersSorted(by: .displayName)
-            userCollectionToken = userCollection?.observe({ [weak self] collection, change, error in
-                self?.groupingUser(with: collection)
-            })
-        }
-        
+    
+    func getUserFromCreatePage(users: [EkoSelectMemberModel]) {
+        storeUsers = users
     }
     
-    private func groupingUser(with collection: EkoCollection<EkoUser>) {
-        
-        for index in 0..<collection.count() {
-            guard let object = collection.object(at: index) else { return }
-            let model = EkoSelectMemberModel(userId: object.userId, displayName: object.displayName, avatarId: object.avatarFileId ?? "")
-            let index = users.firstIndex(where: { $0.userId == object.userId })
-            if index == nil {
-                users.append(model)
-            }
-        }
-        
-        let predicate: (EkoSelectMemberModel) -> (String) = { user in
-            guard let displayName = user.displayName else { return "#" }
-            let c = String(displayName.prefix(1)).uppercased()
-            let alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
-            
-            if alphabet.contains(c) {
-                return c
-            } else {
-                return "#"
-            }
-        }
-        DispatchQueue.main.async { [weak self] in
-            guard let self = self else { return }
-            self.groupUsers = Dictionary(grouping: self.users, by: predicate).sorted { $0.0 < $1.0 }
-            DispatchQueue.main.async {
-                self.delegate?.screenViewModel(self, state: .updateUser)
-            }
-        }
-    }
-    
-    func selectUser(at indexPath: IndexPath) {
-        if isSearch {
-            let user = searchUsers[indexPath.row]
-            selectUserLogic(with: user)
-        } else {
-            let user = groupUsers[indexPath.section].value[indexPath.row]
-            selectUserLogic(with: user)
-        }
-        delegate?.screenViewModel(self, state: .selectUser(number: selectedUsers.count))
-        
-    }
-    
-    private func selectUserLogic(with user: EkoSelectMemberModel) {
-        user.isSelect.toggle()
-        if let _user = selectedUsers.first(where: { $0 == user }), let index = selectedUsers.firstIndex(of: _user) {
-            selectedUsers.remove(at: index)
-        } else {
-            selectedUsers.append(user)
-        }
-    }
-    
-    func deselect(at indexPath: IndexPath) {
-        let user = selectedUsers[indexPath.item]
-        groupUsers.forEach { key, value in
-            value.first(where: { $0 == user})?.isSelect.toggle()
-        }
-        selectedUsers.remove(at: indexPath.item)
-        delegate?.screenViewModel(self, state: .deselectUser(number: selectedUsers.count))
-    }
-    
-    func search(text: String) {
-        
-        searchUsers = []
-        isSearch = text != ""
-        if text == "" {
-            isSearch = false
-            delegate?.screenViewModel(self, state: .search(results: false))
-            delegate?.screenViewModel(self, state: .updateUser)
-            return
-        }
-        groupUsers.forEach { [weak self] (key, list) in
-            guard let strongSelf = self else { return }
-                
-            for user in list {
-                if let displayName = user.displayName,
-                    displayName.lowercased().range(of: text, options: .caseInsensitive) != nil {
-                    strongSelf.searchUsers.append(user)
-                }
-            }
-        }
-        
-        delegate?.screenViewModel(self, state: .updateUser)
-        delegate?.screenViewModel(self, state: .search(results: self.searchUsers.count > 0))
-    }
-    
-    func loadMore() {
-        if !isSearch {
-            guard let collection = userCollection else { return }
-            switch collection.loadingStatus {
-            case .loaded:
-                if collection.hasNext {
-                    collection.nextPage()
-                    self.loading.value = .loadmore
-                } else {
-                    self.loading.value = .loaded
-                }
-            default:
+    func getUsers() {
+        fetchUserController?.storeUsers = storeUsers
+        fetchUserController?.getUser { (result) in
+            switch result {
+            case .success(let users):
+                self.users = users
+                self.delegate?.screenViewModelDidFetchUser()
+            case .failure(let error):
                 break
             }
         }
     }
     
-    func resetSearch() {
-        isSearch = false
+    func searchUser(with text: String) {
+        isSearch = true
+        searchUserController?.search(with: text, storeUsers: storeUsers, { [weak self] (result) in
+            switch result {
+            case .success(let users):
+                self?.searchUsers = users
+                self?.delegate?.screenViewModelDidSearchUser()
+            case .failure(let error):
+                switch error {
+                case .textEmpty:
+                    self?.isSearch = false
+                    self?.delegate?.screenViewModelDidSearchUser()
+                case .unknown:
+                    break
+                }
+            }
+        })
+    }
+    
+    func selectUser(at indexPath: IndexPath) {
+        selectUserContrller?.selectUser(searchUsers: searchUsers, users: &users, storeUsers: &storeUsers, at: indexPath, isSearch: isSearch)
+        if storeUsers.count == 0 {
+            delegate?.screenViewModelDidSelectUser(title: EkoLocalizedStringSet.selectMemberListTitle, isEmpty: true)
+        } else {
+            delegate?.screenViewModelDidSelectUser(title: String.localizedStringWithFormat(EkoLocalizedStringSet.selectMemberListSelectedTitle, "\(storeUsers.count)"), isEmpty: false)
+        }
+    }
+    
+    func deselectUser(at indexPath: IndexPath) {
+        selectUserContrller?.deselect(users: &users, storeUsers: &storeUsers, at: indexPath)
+        if storeUsers.count == 0 {
+            delegate?.screenViewModelDidSelectUser(title: EkoLocalizedStringSet.selectMemberListTitle, isEmpty: true)
+        } else {
+            delegate?.screenViewModelDidSelectUser(title: String.localizedStringWithFormat(EkoLocalizedStringSet.selectMemberListSelectedTitle, "\(storeUsers.count)"), isEmpty: false)
+        }
+    }
+    
+    func loadmore() {
+        var success: Bool = false
+        if isSearch {
+            guard let controller = searchUserController else { return }
+            success = controller.loadmore(isSearch: isSearch)
+        } else {
+            guard let controller = fetchUserController else { return }
+            fetchUserController?.storeUsers = storeUsers
+            success = controller.loadmore(isSearch: isSearch)
+        }
+        
+        if success {
+            delegate?.screenViewModelLoadingState(for: .loadmore)
+        } else {
+            delegate?.screenViewModelLoadingState(for: .loaded)
+        }
     }
 }

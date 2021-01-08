@@ -42,7 +42,7 @@ final class EkoSelectMemberListTableViewCell: UITableViewCell {
     
     func display(with user: EkoSelectMemberModel) {
         displayNameLabel.text = user.displayName ?? user.defaultDisplayName
-        radioImageView.image = user.isSelect ? EkoIconSet.iconRadioCheck : EkoIconSet.iconRadioOff
+        radioImageView.image = user.isSelected ? EkoIconSet.iconRadioCheck : EkoIconSet.iconRadioOff
         avatarView.setImage(withImageId: user.avatarId, placeholder: EkoIconSet.defaultAvatar)
     }
     

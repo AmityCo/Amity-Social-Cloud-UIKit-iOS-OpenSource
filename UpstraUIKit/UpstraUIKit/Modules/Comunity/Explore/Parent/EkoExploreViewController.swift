@@ -47,7 +47,7 @@ public final class EkoExploreViewController: EkoViewController, IndicatorInfoPro
 private extension EkoExploreViewController {
     func setupView() {
         view.backgroundColor = EkoColorSet.backgroundColor
-        backgroundView.backgroundColor = EkoColorSet.base.blend(.shade4)
+        backgroundView.backgroundColor = EkoColorSet.secondary.blend(.shade4)
         setupScrollView()
         setupRecommended()
         setupTrending()
@@ -62,7 +62,7 @@ private extension EkoExploreViewController {
     }
     
     private func setupRecommended() {
-        recommendedContaienrView.backgroundColor = EkoColorSet.base.blend(.shade4)
+        recommendedContaienrView.backgroundColor = EkoColorSet.secondary.blend(.shade4)
         addContainerView(recommendedVC, to: recommendedContaienrView)
         
         recommendedVC.selectedCommunityHandler = { [weak self] community in

@@ -31,10 +31,10 @@ final class EkoCommunityMemberSettingsTableViewCell: UITableViewCell, Nibbable {
         setupView()
     }
     
-    func display(with model: EkoCommunityMembershipModel, community: EkoCommunityModel) {
+    func display(with model: EkoCommunityMembershipModel, isJoined: Bool) {
         let displayName = model.displayName
         displayNameLabel.text = displayName
-        optionButton.isHidden = model.isCurrentUser || !community.isJoined
+        optionButton.isHidden = model.isCurrentUser || !isJoined
     }
     
     func setIndexPath(with _indexPath: IndexPath) {
@@ -53,7 +53,7 @@ private extension EkoCommunityMemberSettingsTableViewCell {
     }
     
     func setupAvatarView() {
-        avatarView.backgroundColor = EkoColorSet.base.blend(.shade4)
+        avatarView.backgroundColor = EkoColorSet.secondary.blend(.shade4)
         avatarView.placeholder = EkoIconSet.defaultAvatar
     }
     

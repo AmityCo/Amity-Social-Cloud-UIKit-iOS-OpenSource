@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import EkoChat
 
 final class EkoSelectMemberModel: Equatable {
     
@@ -14,18 +15,24 @@ final class EkoSelectMemberModel: Equatable {
         return lhs.userId == rhs.userId
     }
     
-    
     var userId: String
     var displayName: String?
-    var isSelect: Bool = false
+    var isSelected: Bool = false
     let avatarId: String
     let defaultDisplayName: String = EkoLocalizedStringSet.anonymous
-    
-    init(userId: String, displayName: String? = nil, isSelect: Bool = false, avatarId: String) {
-        self.userId = userId
-        self.displayName = displayName
-        self.isSelect = isSelect
-        self.avatarId = avatarId
+    var isCurrnetUser: Bool {
+        return userId == UpstraUIKitManagerInternal.shared.client.currentUserId
     }
     
+    init(object: EkoUser) {
+        self.userId = object.userId
+        self.displayName = object.displayName
+        self.avatarId = object.avatarFileId ?? ""
+    }
+    
+    init(object: EkoCommunityMembershipModel) {
+        self.userId = object.userId
+        self.displayName = object.displayName
+        self.avatarId = object.avatarId
+    }
 }

@@ -55,7 +55,7 @@ private extension EkoTrendingCommunityTableViewCell {
     
     func setupAvatarView() {
         avatarView.placeholder = EkoIconSet.defaultCommunity
-        avatarView.backgroundColor = EkoColorSet.base.blend(.shade3)
+        avatarView.backgroundColor = EkoColorSet.secondary.blend(.shade3)
     }
     
     func setupNumber() {

@@ -10,28 +10,35 @@ import UIKit
 import EkoChat
 
 final class EkoCommunityMemberScreenViewModel: EkoCommunityMemberScreenViewModelType {
-    
     weak var delegate: EkoCommunityMemberScreenViewModelDelegate?
     
     private var flagger: EkoUserFlagger?
-    private let membershipParticipation: EkoCommunityParticipation?
-    private let communityRepository: EkoCommunityRepository?
     
     // MARK: - Controller
-    private var memberController: EkoCommunityMemberController?
-    private var communityController: EkoCommunityController?
-    
+    private var communityController: EkoCommunityInfoController?
+    private var fetchMemberController: EkoCommunityFetchMemberController?
+    private var removeMemberController: EkoCommunityRemoveMemberController?
+    private var userModeratorController: EkoCommunityUserModeratorController?
+    private var addMemberController: EkoCommunityAddMemberController?
+    private let roleController: EkoCommunityRoleControllerProtocol
     // MARK: - Properties
     private var members: [EkoCommunityMembershipModel] = []
-    private var _community: EkoCommunityModel?
+    private var community: EkoCommunityModel?
     
-    init(communityId: String) {
-        membershipParticipation = EkoCommunityParticipation(client: UpstraUIKitManagerInternal.shared.client, andCommunityId: communityId)
-        memberController = EkoCommunityMemberController(membershipParticipation: membershipParticipation)
-        communityRepository = EkoCommunityRepository(client: UpstraUIKitManagerInternal.shared.client)
-        communityController = EkoCommunityController(repository: communityRepository, communityId: communityId)
+    init(membershipParticipation: EkoCommunityParticipation?,
+         userModeratorController: EkoCommunityUserModeratorController?,
+         communityController: EkoCommunityInfoController?,
+         communityId: String) {
+        self.communityController = communityController
+        self.userModeratorController = userModeratorController
+        fetchMemberController = EkoCommunityFetchMemberController(communityId: communityId)
+        removeMemberController = EkoCommunityRemoveMemberController(communityId: communityId)
+        addMemberController = EkoCommunityAddMemberController(communityId: communityId)
+        roleController = EkoCommunityRoleController(communityId: communityId)
     }
-
+    
+    var isModerator: Bool = false
+        
 }
 
 // MARK: - DataSource
@@ -43,11 +50,7 @@ extension EkoCommunityMemberScreenViewModel {
     func member(at indexPath: IndexPath) -> EkoCommunityMembershipModel {
         return members[indexPath.row]
     }
-    
-    func community() -> EkoCommunityModel? {
-        return _community
-    }
-    
+
     func getReportUserStatus(at indexPath: IndexPath, completion: ((Bool) -> Void)?) {
         guard let user = member(at: indexPath).user else { return }
         flagger = EkoUserFlagger(client: UpstraUIKitManagerInternal.shared.client, user: user)
@@ -56,15 +59,50 @@ extension EkoCommunityMemberScreenViewModel {
         }
     }
     
+    func prepareData() -> [EkoSelectMemberModel] {
+        
+        var storeUsers: [EkoSelectMemberModel] = []
+        for item in members {
+            if !item.isCurrentUser {
+                storeUsers.append(EkoSelectMemberModel(object: item))
+            }
+        }
+        return storeUsers
+    }
+    
+    func isJoined() -> Bool {
+        return community?.isJoined ?? false
+    }
 }
 
 // MARK: - Action
+
+/// Get community info
 extension EkoCommunityMemberScreenViewModel {
-    
+    func getCommunity() {
+        communityController?.getCommunity { (result) in
+            switch result {
+            case .success(let community):
+                self.community = community
+            case .failure:
+                break
+            }
+        }
+    }
+}
+
+extension EkoCommunityMemberScreenViewModel {
+    func getUserIsModerator() {
+        isModerator = userModeratorController?.isModerator ?? false
+    }
+}
+
+/// Get Member of community
+extension EkoCommunityMemberScreenViewModel {
     func getMember(viewType: EkoCommunityMemberViewType) {
         switch viewType {
         case .member:
-            memberController?.getMember { [weak self] (result) in
+            fetchMemberController?.fetch { [weak self] (result) in
                 switch result {
                 case .success(let members):
                     self?.members = members
@@ -74,7 +112,7 @@ extension EkoCommunityMemberScreenViewModel {
                 }
             }
         case .moderator:
-            memberController?.getMember(roles: ["moderator"]) { [weak self] (result) in
+            fetchMemberController?.fetch(roles: ["moderator"]) { [weak self] (result) in
                 switch result {
                 case .success(let members):
                     self?.members = members
@@ -85,20 +123,9 @@ extension EkoCommunityMemberScreenViewModel {
             }
         }
     }
-    
-    func getCommunity() {
-        communityController?.getCommunity { [weak self] result in
-            switch result {
-            case .success(let community):
-                self?._community = community
-            case .failure(let error):
-                break
-            }
-        }
-    }
-    
+
     func loadMore() {
-        memberController?.loadMore { [weak self] success in
+        fetchMemberController?.loadMore { [weak self] success in
             if success {
                 self?.delegate?.screenViewModelLoadingState(state: .loadmore)
             } else {
@@ -106,14 +133,28 @@ extension EkoCommunityMemberScreenViewModel {
             }
         }
     }
-    
-    func removeUser(at indexPath: IndexPath) {
-        let userId = member(at: indexPath).userId
-        memberController?.remove(userIds: [userId]) { [weak self] in
-            self?.delegate?.screenViewModelDidRemoveUser(at: indexPath)
-        }
+}
+
+/// Add user
+extension EkoCommunityMemberScreenViewModel {
+    func addUser(users: [EkoSelectMemberModel]) {
+        let userIds = users.map { $0.userId }
+        addMemberController?.add(withUserIds: userIds, { [weak self] (result) in
+            switch result {
+            case .success(let success):
+                self?.delegate?.screenViewModelDidAddMember(success: success)
+            case .failure(let error):
+                Log.add(error)
+                self?.delegate?.screenViewModelDidAddMember(success: false)
+            }
+        })
     }
-    
+}
+
+// MARK: Options
+
+/// Report/Unreport user
+extension EkoCommunityMemberScreenViewModel {
     func reportUser(at indexPath: IndexPath) {
         guard let user = member(at: indexPath).user else { return }
         flagger = EkoUserFlagger(client: UpstraUIKitManagerInternal.shared.client, user: user)
@@ -138,4 +179,42 @@ extension EkoCommunityMemberScreenViewModel {
         }
     }
     
+    
+}
+/// Remove user
+extension EkoCommunityMemberScreenViewModel {
+    func removeUser(at indexPath: IndexPath) {
+        let userId = member(at: indexPath).userId
+        removeMemberController?.remove(userIds: [userId]) { [weak self] in
+            self?.members.remove(at: indexPath.row)
+            self?.delegate?.screenViewModelDidRemoveUser(at: indexPath)
+        }
+    }
+}
+
+/// Community Role action
+extension EkoCommunityMemberScreenViewModel {
+    func addRole(at indexPath: IndexPath) {
+        let userId = member(at: indexPath).userId
+        roleController.add(role: .moderator, userIds: [userId]) { [weak self] error in
+            if let error = error {
+                Log.add(error)
+                self?.delegate?.screenViewModelFailure()
+            } else {
+                
+            }
+        }
+    }
+    
+    func removeRole(at indexPath: IndexPath) {
+        let userId = member(at: indexPath).userId
+        roleController.remove(role: .moderator, userIds: [userId]) { [weak self] error in
+            if let error = error {
+                Log.add(error)
+                self?.delegate?.screenViewModelFailure()
+            } else {
+                
+            }
+        }
+    }
 }

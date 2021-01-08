@@ -15,14 +15,39 @@ enum EkoInterfaceStyle {
 }
 
 public struct EkoTheme {
+    
+    // The key color reflects the mood and tones of the application
+    // It will apply to interactable components, e.g., button, highlighted menu, and component background
     let primary: UIColor
+    
+    // The color for filling up and making the boundary of components
+    // It will apply to component background, separater line, and border color
     let secondary: UIColor
+    
+    // The noticeable color for attacting users attention
+    // It will apply to badge, remark, and destructive button
     let alert: UIColor
+    
+    // The color for interactable text
+    // It will apply to link-type text and read more button
     let highlight: UIColor
+    
+    // Color for text, content and menu
+    // It will apply to text components, e.g., title, subtitle, icons, and navigation item tint color
     let base: UIColor
+    
+    // Color for text, content and menu if its background is a primary color
+    // It will apply to text components, e.g., title, subtitle, icons, and navigation item tint color
     let baseInverse: UIColor
+    
+    // Color for message bubble background
+    // It will apply to outgoing message components
     let messageBubble: UIColor
+    
+    // Color for message bubble background
+    // It will apply to incoming message components
     let messageBubbleInverse: UIColor
+    
     public init(primary: UIColor? = nil,
                 secondary: UIColor? = nil,
                 alert: UIColor? = nil,

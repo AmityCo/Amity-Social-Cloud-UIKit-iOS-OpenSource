@@ -1,28 +1,27 @@
 //
-//  EkoCommunityController.swift
+//  EkoCommunityInfoController.swift
 //  UpstraUIKit
 //
-//  Created by Sarawoot Khunsri on 16/12/2563 BE.
-//  Copyright © 2563 BE Upstra. All rights reserved.
+//  Created by sarawoot khunsri on 1/4/21.
+//  Copyright © 2021 Upstra. All rights reserved.
 //
 
 import UIKit
 import EkoChat
 
-final class EkoCommunityController {
+final class EkoCommunityInfoController {
     
-    private weak var repository: EkoCommunityRepository?
+    private var repository: EkoCommunityRepository?
     private var communityId: String
-    
     private var token: EkoNotificationToken?
     private var community: EkoObject<EkoCommunity>?
     
-    init(repository: EkoCommunityRepository?, communityId: String) {
-        self.repository = repository
+    init(communityId: String) {
         self.communityId = communityId
+        repository = EkoCommunityRepository(client: UpstraUIKitManagerInternal.shared.client)
     }
     
-    func getCommunity(completion: @escaping (Result<EkoCommunityModel, Error>) -> Void) {
+    func getCommunity(_ completion: @escaping (Result<EkoCommunityModel, Error>) -> Void) {
         community = repository?.getCommunity(withId: communityId)
         token = community?.observe { community, error in
             if community.dataStatus == .fresh {
@@ -34,9 +33,7 @@ final class EkoCommunityController {
                 
                 let model = EkoCommunityModel(object: object)
                 completion(.success(model))
-                self.token?.invalidate()
             }
-            
         }
     }
 }

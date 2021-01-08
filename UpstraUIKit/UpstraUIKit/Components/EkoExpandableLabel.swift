@@ -235,8 +235,8 @@ extension EkoExpandableLabel {
         lineBreakMode = .byClipping
         collapsedNumberOfLines = numberOfLines
         expandedAttributedLink = nil
-        collapsedAttributedLink = NSAttributedString(string: readMoreText, attributes: [.font: EkoFontSet.bodyBold, .foregroundColor: EkoColorSet.primary])
-        ellipsis = NSAttributedString(string: truncateText, attributes: [.font: EkoFontSet.bodyBold, .foregroundColor: EkoColorSet.primary])
+        collapsedAttributedLink = NSAttributedString(string: readMoreText, attributes: [.font: EkoFontSet.bodyBold, .foregroundColor: EkoColorSet.highlight])
+        ellipsis = NSAttributedString(string: truncateText, attributes: [.font: EkoFontSet.bodyBold, .foregroundColor: EkoColorSet.highlight])
     }
 
     private func textReplaceWordWithLink(_ lineIndex: LineIndexTuple, text: NSAttributedString, linkName: NSAttributedString) -> NSAttributedString {

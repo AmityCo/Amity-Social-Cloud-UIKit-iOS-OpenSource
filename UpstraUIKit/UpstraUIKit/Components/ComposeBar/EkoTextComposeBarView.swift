@@ -83,7 +83,7 @@ class EkoTextComposeBarView: EkoView {
         contentView.backgroundColor = EkoColorSet.backgroundColor
         textView.backgroundColor = EkoColorSet.backgroundColor
         textView.layer.borderWidth = 1
-        textView.layer.borderColor = UIColor.lightGray.cgColor
+        textView.layer.borderColor = EkoColorSet.secondary.blend(.shade4).cgColor
         textView.layer.cornerRadius = 4
         textView.customTextViewDelegate = self
         

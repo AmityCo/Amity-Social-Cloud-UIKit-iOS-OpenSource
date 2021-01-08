@@ -26,7 +26,7 @@ final class EkoSelectMemberListHeaderView: EkoView {
     }
     
     private func setupView() {
-        contentView.backgroundColor = EkoColorSet.base.blend(.shade4)
+        contentView.backgroundColor = EkoColorSet.secondary.blend(.shade4)
         
         titleLabel.text = ""
         titleLabel.textColor = EkoColorSet.base.blend(.shade3)

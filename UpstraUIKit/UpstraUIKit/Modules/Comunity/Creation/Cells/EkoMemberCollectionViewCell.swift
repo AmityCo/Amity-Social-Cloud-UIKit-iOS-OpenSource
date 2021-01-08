@@ -41,7 +41,7 @@ class EkoMemberCollectionViewCell: UICollectionViewCell {
     }
     
     private func setupView() {
-        containerView.backgroundColor = EkoColorSet.base.blend(.shade4)
+        containerView.backgroundColor = EkoColorSet.secondary.blend(.shade4)
         containerView.layer.cornerRadius = contentView.frame.height / 2
         
         setupAvatarView()
@@ -76,7 +76,7 @@ class EkoMemberCollectionViewCell: UICollectionViewCell {
     }
     
     private func setupContainerAddView() {
-        containerAddView.backgroundColor = EkoColorSet.base.blend(.shade4)
+        containerAddView.backgroundColor = EkoColorSet.secondary.blend(.shade4)
         containerAddView.layer.cornerRadius = containerAddView.frame.height / 2
         addButton.addTarget(self, action: #selector(addTap), for: .touchUpInside)
         addImageView.image = EkoIconSet.iconAdd

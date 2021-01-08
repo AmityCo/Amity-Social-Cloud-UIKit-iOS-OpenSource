@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import EkoChat
 
 enum EkoCommunityMemberViewType {
     case moderator, member
@@ -39,15 +40,31 @@ class EkoCommunityMemberViewController: UIViewController {
         screenViewModel.delegate = self
     }
     
-    static func make(pageTitle: String, communityId: String, viewType: EkoCommunityMemberViewType) -> EkoCommunityMemberViewController {
-        let viewModel: EkoCommunityMemberScreenViewModelType = EkoCommunityMemberScreenViewModel(communityId: communityId)
-        let vc = EkoCommunityMemberViewController(nibName: EkoCommunityMemberViewController.identifier, bundle: UpstraUIKitManager.bundle)
+    static func make(pageTitle: String,
+                     viewType: EkoCommunityMemberViewType,
+                     membershipParticipation: EkoCommunityParticipation?,
+                     userModeratorController: EkoCommunityUserModeratorController?,
+                     communityInfoController: EkoCommunityInfoController?,
+                     communityId: String) -> EkoCommunityMemberViewController {
+        let viewModel: EkoCommunityMemberScreenViewModelType = EkoCommunityMemberScreenViewModel(membershipParticipation: membershipParticipation,
+                                                                                                 userModeratorController: userModeratorController,
+                                                                                                 communityController: communityInfoController,
+                                                                                                 communityId: communityId)
+        let vc = EkoCommunityMemberViewController(nibName: EkoCommunityMemberViewController.identifier,
+                                                  bundle: UpstraUIKitManager.bundle)
         vc.pageTitle = pageTitle
         vc.screenViewModel = viewModel
         vc.viewType = viewType
         return vc
     }
 
+    func addMember(users: [EkoSelectMemberModel]) {
+        screenViewModel.action.addUser(users: users)
+    }
+    
+    func passMember() -> [EkoSelectMemberModel] {
+        return screenViewModel.dataSource.prepareData()
+    }
 }
 
 // MARK: - Setup view
@@ -72,6 +89,7 @@ private extension EkoCommunityMemberViewController {
     func bindingViewModel() {
         screenViewModel.action.getCommunity()
         screenViewModel.action.getMember(viewType: viewType)
+        screenViewModel.action.getUserIsModerator()
     }
 }
 
@@ -102,9 +120,8 @@ extension EkoCommunityMemberViewController: UITableViewDataSource {
     
     private func configure(for cell: UITableViewCell, at indexPath: IndexPath) {
         if let cell = cell as? EkoCommunityMemberSettingsTableViewCell {
-            guard let community = screenViewModel.dataSource.community() else { return }
             let member = screenViewModel.dataSource.member(at: indexPath)
-            cell.display(with: member, community: community)
+            cell.display(with: member, isJoined: screenViewModel.dataSource.isJoined())
             cell.setIndexPath(with: indexPath)
             cell.delegate = self
         }
@@ -112,7 +129,7 @@ extension EkoCommunityMemberViewController: UITableViewDataSource {
 }
 
 extension EkoCommunityMemberViewController: EkoCommunityMemberScreenViewModelDelegate {
-   
+
     func screenViewModelDidGetMember() {
         tableView.reloadData()
     }
@@ -129,8 +146,9 @@ extension EkoCommunityMemberViewController: EkoCommunityMemberScreenViewModelDel
     }
     
     func screenViewModelDidRemoveUser(at indexPath: IndexPath) {
-        tableView.reloadRows(at: [indexPath], with: .none)
+        tableView.deleteRows(at: [indexPath], with: .fade)
     }
+    
 }
 
 extension EkoCommunityMemberViewController: EkoCommunityMemberSettingsTableViewCellDelegate {
@@ -143,20 +161,33 @@ extension EkoCommunityMemberViewController: EkoCommunityMemberSettingsTableViewC
         bottomSheet.modalPresentationStyle = .overFullScreen
         
         var options: [TextItemOption] = []
+        
+        switch viewType {
+        case .member:
+            let addRoleOption = TextItemOption(title: EkoLocalizedStringSet.CommunityMembreSetting.optionPromoteToModerator) { [weak self] in
+                self?.screenViewModel.action.addRole(at: indexPath)
+            }
+            options.append(addRoleOption)
+        case .moderator:
+            let removeRoleOption = TextItemOption(title: EkoLocalizedStringSet.CommunityMembreSetting.optionDismissModerator) { [weak self] in
+                self?.screenViewModel.action.removeRole(at: indexPath)
+            }
+            options.append(removeRoleOption)
+        }
+        
         // remove user options
-//        let member = screenViewModel.dataSource.member(at: indexPath)
-//        if member.isModerator {
-//            let removeOption = TextItemOption(title: EkoLocalizedStringSet.CommunityMembreSetting.optionRemove, textColor: EkoColorSet.alert) { [weak self] in
-//                let alert = UIAlertController(title: EkoLocalizedStringSet.CommunityMembreSetting.alertTitle,
-//                                              message: EkoLocalizedStringSet.CommunityMembreSetting.alertDesc, preferredStyle: .alert)
-//                alert.addAction(UIAlertAction(title: EkoLocalizedStringSet.cancel, style: .default, handler: nil))
-//                alert.addAction(UIAlertAction(title: EkoLocalizedStringSet.remove, style: .destructive, handler: { _ in
-//                    self?.screenViewModel.action.removeUser(at: indexPath)
-//                }))
-//                self?.present(alert, animated: true, completion: nil)
-//            }
-//            options.append(removeOption)
-//        }
+        if screenViewModel.dataSource.isModerator {
+            let removeOption = TextItemOption(title: EkoLocalizedStringSet.CommunityMembreSetting.optionRemove, textColor: EkoColorSet.alert) { [weak self] in
+                let alert = UIAlertController(title: EkoLocalizedStringSet.CommunityMembreSetting.alertTitle,
+                                              message: EkoLocalizedStringSet.CommunityMembreSetting.alertDesc, preferredStyle: .alert)
+                alert.addAction(UIAlertAction(title: EkoLocalizedStringSet.cancel, style: .default, handler: nil))
+                alert.addAction(UIAlertAction(title: EkoLocalizedStringSet.remove, style: .destructive, handler: { _ in
+                    self?.screenViewModel.action.removeUser(at: indexPath)
+                }))
+                self?.present(alert, animated: true, completion: nil)
+            }
+            options.append(removeOption)
+        }
         
         // report/unreport option
         screenViewModel.dataSource.getReportUserStatus(at: indexPath) { [weak self] isReported in
@@ -164,16 +195,26 @@ extension EkoCommunityMemberViewController: EkoCommunityMemberSettingsTableViewC
                 let unreportOption = TextItemOption(title: EkoLocalizedStringSet.CommunityMembreSetting.optionUnreport) {
                     self?.screenViewModel.action.unreportUser(at: indexPath)
                 }
-                options.insert(unreportOption, at: 0)
+                options.append(unreportOption)
             } else {
                 let reportOption = TextItemOption(title: EkoLocalizedStringSet.CommunityMembreSetting.optionReport) {
                     self?.screenViewModel.action.reportUser(at: indexPath)
                 }
-                options.insert(reportOption, at: 0)
+                options.append(reportOption)
             }
             contentView.configure(items: options, selectedItem: nil)
             self?.present(bottomSheet, animated: false, completion: nil)
         }
+    }
+    
+    func screenViewModelDidAddMember(success: Bool) {
+        if !success {
+            EkoHUD.show(.error(message: EkoLocalizedStringSet.HUD.somethingWentWrong))
+        }
+    }
+    
+    func screenViewModelFailure() {
+        EkoHUD.show(.error(message: EkoLocalizedStringSet.HUD.somethingWentWrong))
     }
     
 }

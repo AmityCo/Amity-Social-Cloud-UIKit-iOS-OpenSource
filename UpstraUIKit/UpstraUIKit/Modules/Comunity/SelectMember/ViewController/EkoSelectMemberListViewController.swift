@@ -2,55 +2,76 @@
 //  EkoSelectMemberListViewController.swift
 //  UpstraUIKit
 //
-//  Created by Sarawoot Khunsri on 30/8/2563 BE.
-//  Copyright © 2563 Upstra. All rights reserved.
+//  Created by Sarawoot Khunsri on 21/12/2563 BE.
+//  Copyright © 2563 BE Upstra. All rights reserved.
 //
 
 import UIKit
 
-final public class EkoSelectMemberListViewController: EkoViewController {
+public final class EkoSelectMemberListViewController: EkoViewController {
 
+    // MARK: - Callback
+    var selectUsersHandler: (([EkoSelectMemberModel]) -> Void)?
+    
     // MARK: - IBOutlet Properties
     @IBOutlet private var searchBar: UISearchBar!
-    @IBOutlet private var selectMemberCollectionView: EkoDynamicHeightCollectionView!
-    @IBOutlet private var memberListTableView: UITableView!
-    @IBOutlet private var noUserFoundLabel: UILabel!
+    @IBOutlet private var collectionView: UICollectionView!
+    @IBOutlet private var tableView: UITableView!
+    @IBOutlet private var label: UILabel!
     
     // MARK: - Properties
-    private var screenViewModel: EkoSelectMemberListScreenViewModelType = EkoSelectMemberListScreenViewModel()
+    private var screenViewModel: EkoSelectMemberListScreenViewModelType!
     private var doneButton: UIBarButtonItem?
-    
-    // MARK: - Callback handler
-    var didSelectUserHandler: (([(String, [EkoSelectMemberModel])], [EkoSelectMemberModel]) -> Void)?
     
     public override func viewDidLoad() {
         super.viewDidLoad()
-
         setupView()
+        
+        screenViewModel.delegate = self
+        screenViewModel.action.getUsers()
     }
-    
-    public override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-        screenViewModel.action.resetSearch()
-    }
-    
-    static func make(groupUsers: [(key: String, value: [EkoSelectMemberModel])] = [], selectedUsers: [EkoSelectMemberModel] = []) -> EkoSelectMemberListViewController {
+
+    public static func make() -> EkoSelectMemberListViewController {
+        let viewModeel: EkoSelectMemberListScreenViewModelType = EkoSelectMemberListScreenViewModel()
         let vc = EkoSelectMemberListViewController(nibName: EkoSelectMemberListViewController.identifier, bundle: UpstraUIKitManager.bundle)
-        vc.screenViewModel.action.updateAllUsersAndSelectedUsers(groupUsers: groupUsers, selectedUsers: selectedUsers)
+        vc.screenViewModel = viewModeel
         return vc
     }
     
-    private func setupView() {
-        setupScreenViewModel()
-        setupNavigationBar()
-        setupSearchBar()
-        setupCollectionView()
-        setupTableView()
+    func getUsersFromCreatePage(users: [EkoSelectMemberModel]) {
+        screenViewModel.action.getUserFromCreatePage(users: users)
+    }
+}
+
+private extension EkoSelectMemberListViewController {
+    @objc func doneTap() {
+        dismiss(animated: true) { [weak self] in
+            guard let strongSelf = self else { return }
+            strongSelf.selectUsersHandler?(strongSelf.screenViewModel.dataSource.getStoreUsers())
+        }
     }
     
-    private func setupNavigationBar() {
+    @objc func cancelTap() {
+        dismiss(animated: true)
+    }
+    
+    func deleteItem(at indexPath: IndexPath) {
+        screenViewModel.action.deselectUser(at: indexPath)
+    }
+}
+
+private extension EkoSelectMemberListViewController {
+    func setupView() {
+        setupNavigationBar()
+        setupSearchBar()
+        setupTableView()
+        setupCollectionView()
+    }
+    
+    func setupNavigationBar() {
         navigationBarType = .custom
         view.backgroundColor = EkoColorSet.backgroundColor
+        
         let customView = UIView(frame: CGRect(x: 0, y: 0, width: 200, height: 44))
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
         customView.addSubview(titleLabel)
@@ -60,17 +81,17 @@ final public class EkoSelectMemberListViewController: EkoViewController {
             titleLabel.trailingAnchor.constraint(equalTo: customView.trailingAnchor)
         ])
         navigationItem.titleView = customView
-        if screenViewModel.dataSource.selectedUsers.isEmpty {
+        let numberOfSelectedUseres = screenViewModel.dataSource.numberOfSelectedUsers()
+        if numberOfSelectedUseres == 0 {
             title = EkoLocalizedStringSet.selectMemberListTitle
         } else {
-            let number = screenViewModel.dataSource.selectedUsers.count
-            title = String.localizedStringWithFormat(EkoLocalizedStringSet.selectMemberListSelectedTitle, "\(number)")
+            
+            title = String.localizedStringWithFormat(EkoLocalizedStringSet.selectMemberListSelectedTitle, "\(numberOfSelectedUseres)")
         }
-        
         
         doneButton = UIBarButtonItem(title: EkoLocalizedStringSet.done, style: .plain, target: self, action: #selector(doneTap))
         doneButton?.tintColor = EkoColorSet.primary
-        doneButton?.isEnabled = !screenViewModel.dataSource.selectedUsers.isEmpty
+        doneButton?.isEnabled = !(numberOfSelectedUseres == 0)
         
         let cancelButton = UIBarButtonItem(title: EkoLocalizedStringSet.cancel, style: .plain, target: self, action: #selector(cancelTap))
         cancelButton.tintColor = EkoColorSet.base
@@ -79,7 +100,7 @@ final public class EkoSelectMemberListViewController: EkoViewController {
         navigationItem.rightBarButtonItem = doneButton
     }
     
-    private func setupSearchBar() {
+    func setupSearchBar() {
         searchBar.backgroundImage = UIImage()
         searchBar.delegate = self
         searchBar.tintColor = EkoColorSet.base
@@ -88,57 +109,96 @@ final public class EkoSelectMemberListViewController: EkoViewController {
         ((searchBar.value(forKey: "searchField") as? UITextField)?.leftView as? UIImageView)?.tintColor = EkoColorSet.base.blend(.shade2)
     }
     
-    private func setupCollectionView() {
-        selectMemberCollectionView.register(UINib(nibName: EkoSelectMemberListCollectionViewCell.identifier, bundle: UpstraUIKitManager.bundle), forCellWithReuseIdentifier: EkoSelectMemberListCollectionViewCell.identifier)
-        selectMemberCollectionView.delegate = self
-        selectMemberCollectionView.dataSource = self
-        (selectMemberCollectionView.collectionViewLayout as? UICollectionViewFlowLayout)?.scrollDirection = .horizontal
-        selectMemberCollectionView.showsHorizontalScrollIndicator = false
-        selectMemberCollectionView.isHidden = screenViewModel.dataSource.selectedUsers.isEmpty
-        selectMemberCollectionView.backgroundColor = EkoColorSet.backgroundColor
+    func setupTableView() {
+        tableView.register(UINib(nibName: EkoSelectMemberListTableViewCell.identifier, bundle: UpstraUIKitManager.bundle), forCellReuseIdentifier: EkoSelectMemberListTableViewCell.identifier)
+        tableView.tableFooterView = UIView()
+        tableView.backgroundColor = EkoColorSet.backgroundColor
+        tableView.delegate = self
+        tableView.dataSource = self
     }
     
-    private func setupTableView() {
-        noUserFoundLabel.text = EkoLocalizedStringSet.noUserFound
-        noUserFoundLabel.textColor = EkoColorSet.base.blend(.shade3)
-        noUserFoundLabel.font = EkoFontSet.title
-        noUserFoundLabel.isHidden = true
-        
-        memberListTableView.register(UINib(nibName: EkoSelectMemberListTableViewCell.identifier, bundle: UpstraUIKitManager.bundle), forCellReuseIdentifier: EkoSelectMemberListTableViewCell.identifier)
-        memberListTableView.delegate = self
-        memberListTableView.dataSource = self
-        memberListTableView.tableFooterView = UIView()
-        memberListTableView.backgroundColor = EkoColorSet.backgroundColor
-    }
-
-    private func setupScreenViewModel() {
-        screenViewModel.delegate = self
-        screenViewModel.action.getUser()
-    }
-}
-
-private extension EkoSelectMemberListViewController {
-    @objc func doneTap() {
-        let allUsers = screenViewModel.dataSource.groupUsers
-        let allSelectedUsers = screenViewModel.dataSource.selectedUsers
-        
-        dismiss(animated: true) { [weak self] in
-            self?.didSelectUserHandler?(allUsers, allSelectedUsers)
-        }
-    }
-    
-    @objc func cancelTap() {
-        dismiss(animated: true)
-    }
-    
-    func deleteHandler(at indexPath: IndexPath) {
-        screenViewModel.action.deselect(at: indexPath)
+    func setupCollectionView() {
+        collectionView.register(UINib(nibName: EkoSelectMemberListCollectionViewCell.identifier, bundle: UpstraUIKitManager.bundle), forCellWithReuseIdentifier: EkoSelectMemberListCollectionViewCell.identifier)
+        (collectionView.collectionViewLayout as? UICollectionViewFlowLayout)?.scrollDirection = .horizontal
+        collectionView.showsHorizontalScrollIndicator = false
+        collectionView.isHidden = screenViewModel.dataSource.numberOfSelectedUsers() == 0
+        collectionView.backgroundColor = EkoColorSet.backgroundColor
+        collectionView.delegate = self
+        collectionView.dataSource = self
     }
 }
 
 extension EkoSelectMemberListViewController: UISearchBarDelegate {
     public func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-        screenViewModel.action.search(text: searchText)
+        screenViewModel.action.searchUser(with: searchText)
+    }
+}
+
+extension EkoSelectMemberListViewController: UITableViewDelegate {
+    public func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        guard let user = screenViewModel.dataSource.user(at: indexPath) else { return }
+        if !user.isCurrnetUser {
+            screenViewModel.action.selectUser(at: indexPath)
+        }
+    }
+    
+    public func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        let headerView = EkoSelectMemberListHeaderView()
+        if screenViewModel.dataSource.isSearching() {
+            headerView.text = EkoLocalizedStringSet.searchResults
+        } else {
+            headerView.text = screenViewModel.dataSource.alphabetOfHeader(in: section)
+        }
+        return headerView
+    }
+}
+
+extension EkoSelectMemberListViewController: UITableViewDataSource {
+    public func numberOfSections(in tableView: UITableView) -> Int {
+        return screenViewModel.numberOfAlphabet()
+    }
+    
+    public func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return screenViewModel.dataSource.numberOfUsers(in: section)
+    }
+    
+    public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: EkoSelectMemberListTableViewCell.identifier, for: indexPath)
+        configure(tableView, for: cell, at: indexPath)
+        return cell
+    }
+    
+    private func configure(_ tableView: UITableView, for cell: UITableViewCell, at indexPath: IndexPath) {
+        if let cell = cell as? EkoSelectMemberListTableViewCell {
+            guard let user = screenViewModel.dataSource.user(at: indexPath) else { return }
+            cell.display(with: user)
+            if tableView.isBottomReached {
+                screenViewModel.action.loadmore()
+            }
+        }
+    }
+}
+
+extension EkoSelectMemberListViewController: UICollectionViewDataSource {
+    public func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return screenViewModel.dataSource.numberOfSelectedUsers()
+    }
+    
+    public func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: EkoSelectMemberListCollectionViewCell.identifier, for: indexPath)
+        configure(for: cell, at: indexPath)
+        return cell
+    }
+    
+    private func configure(for cell: UICollectionViewCell, at indexPath: IndexPath) {
+        if let cell = cell as? EkoSelectMemberListCollectionViewCell {
+            let user = screenViewModel.dataSource.selectUser(at: indexPath)
+            cell.indexPath = indexPath
+            cell.display(with: user)
+            cell.deleteHandler = { [weak self] indexPath in
+                self?.deleteItem(at: indexPath)
+            }
+        }
     }
 }
 
@@ -156,113 +216,33 @@ extension EkoSelectMemberListViewController: UICollectionViewDelegateFlowLayout 
     }
 }
 
-extension EkoSelectMemberListViewController: UICollectionViewDataSource {
+extension EkoSelectMemberListViewController: EkoSelectMemberListScreenViewModelDelegate {
     
-    public func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return screenViewModel.dataSource.numberOfSelectedMember()
-    }
-    
-    public func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: EkoSelectMemberListCollectionViewCell.identifier, for: indexPath)
-        configure(for: cell, at: indexPath)
-        return cell
-    }
-    
-    private func configure(for cell: UICollectionViewCell, at indexPath: IndexPath) {
-        if let cell = cell as? EkoSelectMemberListCollectionViewCell {
-            guard let user = screenViewModel.dataSource.selectedUser(at: indexPath) else { return }
-            cell.indexPath = indexPath
-            cell.display(with: user)
-            cell.deleteHandler = deleteHandler
-        }
-    }
-}
-
-// MARK: - TableView Delegate
-extension EkoSelectMemberListViewController: UITableViewDelegate {
-    public func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        screenViewModel.action.selectUser(at: indexPath)
+    func screenViewModelDidFetchUser() {
         tableView.reloadData()
     }
     
-    public func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        let headerView = EkoSelectMemberListHeaderView()
-        headerView.text = screenViewModel.dataSource.isSearch ? EkoLocalizedStringSet.searchResults : screenViewModel.dataSource.alphabet(at: section)
-        return headerView
-    }
-}
-
-// MARK: - TableView DataSource
-extension EkoSelectMemberListViewController: UITableViewDataSource {
-    public func numberOfSections(in tableView: UITableView) -> Int {
-        return screenViewModel.dataSource.numberInSection()
-    }
-    public func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return screenViewModel.dataSource.numberOfMember(in: section)
+    func screenViewModelDidSearchUser() {
+        tableView.reloadData()
     }
     
-    public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: EkoSelectMemberListTableViewCell.identifier, for: indexPath)
-        configure(tableView, for: cell, at: indexPath)
-        return cell
+    func screenViewModelCanDone(enable: Bool) {
+        doneButton?.isEnabled = enable
     }
     
-    private func configure(_ tableView: UITableView, for cell: UITableViewCell, at indexPath: IndexPath) {
-        if let cell = cell as? EkoSelectMemberListTableViewCell {
-            guard let user = screenViewModel.dataSource.user(at: indexPath) else { return }
-            cell.display(with: user)
-            if tableView.isBottomReached {
-                screenViewModel.action.loadMore()
-            }
-        }
+    func screenViewModelDidSelectUser(title: String, isEmpty: Bool) {
+        self.title = title
+        collectionView.isHidden = isEmpty
+        tableView.reloadData()
+        collectionView.reloadData()
     }
-}
-
-private extension EkoSelectMemberListViewController {
-    func bindingViewModel() {
-        screenViewModel.dataSource.loading.bind { [weak self] (state) in
-            switch state {
-            case .loadmore:
-                self?.memberListTableView.showLoadingIndicator()
-            case .loaded:
-                self?.memberListTableView.tableFooterView = nil
-            default:
-                break
-            }
-        }
-    }
-}
-
-extension EkoSelectMemberListViewController: EkoSelectMemberListScreenViewModelDelegate {
-    func screenViewModel(_ viewModel: EkoSelectMemberListScreenViewModel, state: EkoSelectMemberListState) {
+    
+    func screenViewModelLoadingState(for state: EkoLoadingState) {
         switch state {
-        case .updateUser:
-            memberListTableView.isScrollEnabled = true
-            memberListTableView.bounces = true
-            noUserFoundLabel.isHidden = true
-            memberListTableView.reloadData()
-        case .selectUser(let number):
-            updateTitle(with: number)
-            selectMemberCollectionView.reloadData()
-        case .deselectUser(let number):
-            updateTitle(with: number)
-            selectMemberCollectionView.reloadData()
-            memberListTableView.reloadData()
-        case .displaySelectUser(let isDisplay):
-            selectMemberCollectionView.isHidden = isDisplay
-            doneButton?.isEnabled = !isDisplay
-        case .search(let results):
-            memberListTableView.isScrollEnabled = results
-            memberListTableView.bounces = results
-            noUserFoundLabel.isHidden = results
-        }
-    }
-    
-    private func updateTitle(with number: Int) {
-        if number == 0 {
-            title = EkoLocalizedStringSet.selectMemberListTitle
-        } else {
-            title = String.localizedStringWithFormat(EkoLocalizedStringSet.selectMemberListSelectedTitle, "\(number)")
+        case .loadmore:
+            tableView.showLoadingIndicator()
+        default:
+            tableView.tableFooterView = UIView()
         }
     }
 }

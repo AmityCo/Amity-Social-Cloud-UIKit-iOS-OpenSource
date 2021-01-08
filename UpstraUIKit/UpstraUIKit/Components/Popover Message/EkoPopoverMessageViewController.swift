@@ -37,7 +37,7 @@ final class EkoPopoverMessageViewController: UIViewController {
 private extension EkoPopoverMessageViewController {
     
     func setupText() {
-        view.backgroundColor = EkoColorSet.base
+        view.backgroundColor = EkoColorSet.secondary
         titleLabel.text = text
         titleLabel.font = EkoFontSet.body
         titleLabel.textColor = EkoColorSet.baseInverse

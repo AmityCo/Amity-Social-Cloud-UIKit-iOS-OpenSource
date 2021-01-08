@@ -233,7 +233,7 @@ extension EkoPostDetailViewController: UITableViewDelegate {
     
     public func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
         let separatorView = UIView(frame: CGRect(x: tableView.separatorInset.left, y: 0.0, width: tableView.frame.width - tableView.separatorInset.right - tableView.separatorInset.left, height: 1.0))
-        separatorView.backgroundColor = EkoColorSet.base.blend(.shade4)
+        separatorView.backgroundColor = EkoColorSet.secondary.blend(.shade4)
         return separatorView
     }
     

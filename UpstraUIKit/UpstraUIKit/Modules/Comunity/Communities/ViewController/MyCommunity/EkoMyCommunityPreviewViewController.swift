@@ -57,12 +57,12 @@ private extension EkoMyCommunityPreviewViewController {
         
         actionButton.setImage(EkoIconSet.iconArrowRight, for: .normal)
         actionButton.tintColor = EkoColorSet.base
-        separatorView.backgroundColor = EkoColorSet.base.blend(.shade4)
+        separatorView.backgroundColor = EkoColorSet.secondary.blend(.shade4)
         
         let layout = (collectionView.collectionViewLayout as? UICollectionViewFlowLayout)
         layout?.scrollDirection = .horizontal
-        layout?.itemSize = CGSize(width: 64, height: 64)
-        layout?.minimumLineSpacing = 0
+        layout?.itemSize = CGSize(width: 68, height: 64)
+        layout?.minimumLineSpacing = 8
         layout?.sectionInset = UIEdgeInsets(top: 16, left: 16, bottom: 16, right: 16)
         
         collectionView.backgroundColor = EkoColorSet.backgroundColor

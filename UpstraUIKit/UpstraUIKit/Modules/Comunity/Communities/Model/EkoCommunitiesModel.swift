@@ -29,6 +29,7 @@ public struct EkoCommunityModel {
     var isCreator: Bool {
         return UpstraUIKitManagerInternal.shared.client.currentUserId == userId
     }
+    let participation: EkoCommunityParticipation
     
     init(object: EkoCommunity) {
         self.communityId = object.communityId
@@ -47,5 +48,6 @@ public struct EkoCommunityModel {
         self.category = object.categories.first?.name ?? EkoLocalizedStringSet.general
         self.categoryId = object.categoryIds.first
         self.avatarId = object.avatar?.fileId ?? ""
+        self.participation = object.participation
     }
 }

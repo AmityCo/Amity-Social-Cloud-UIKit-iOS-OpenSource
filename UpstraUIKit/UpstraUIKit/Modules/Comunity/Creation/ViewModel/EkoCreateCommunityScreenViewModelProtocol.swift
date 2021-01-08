@@ -36,8 +36,7 @@ enum EkoCreateCommunityState {
 }
 
 protocol EkoCreateCommunityScreenViewModelDataSource {
-    var groupUsers: [(key: String, value: [EkoSelectMemberModel])] { get set }
-    var selectedUsers: [EkoSelectMemberModel] { get set }
+    var storeUsers: [EkoSelectMemberModel] { get }
     var addMemberState: EkoCreateCommunityMemberState { get set }
     var selectedCategoryId: String? { get }
     var community: EkoBoxBinding<EkoCommunityModel?> { get set }
@@ -54,7 +53,7 @@ protocol EkoCreateCommunityScreenViewModelAction {
     func text<T>(_ object: T, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool
     func textViewDidChanged(_ textView: EkoTextView)
     func selectCommunityType(_ tag: Int)
-    func updateAllUsersAndAllSelectedUsers(allUsers: [(key: String, value: [EkoSelectMemberModel])], allSelectedUsers: [EkoSelectMemberModel])
+    func updateSelectUser(users: [EkoSelectMemberModel])
     func removeUser(at indexPath: IndexPath)
     func updateSelectedCategory(categoryId: String?)
     func create()

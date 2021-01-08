@@ -23,6 +23,7 @@ public class EkoPostModel {
     var images: [EkoImage] = []
     var files: [EkoFile] = []
     var latestComments: [EkoCommentModel] = []
+    var isModerator: Bool = false
     let postAsModerator: Bool = false
     
     // Maps fileId to PostId for child post
@@ -108,11 +109,6 @@ public class EkoPostModel {
     
     var postedUserId: String {
         return post.postedUserId
-    }
-    
-    var isAdmin: Bool {
-        #warning("incompleted")
-        return false
     }
     
     var isOwner: Bool {

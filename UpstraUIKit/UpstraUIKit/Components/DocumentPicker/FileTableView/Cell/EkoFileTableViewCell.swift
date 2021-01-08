@@ -44,7 +44,7 @@ class EkoFileTableViewCell: UITableViewCell, Nibbable {
         containerView.clipsToBounds = true
         containerView.layer.cornerRadius = 4
         containerView.layer.borderWidth = 1
-        containerView.layer.borderColor = EkoColorSet.base.blend(.shade4).cgColor
+        containerView.layer.borderColor = EkoColorSet.secondary.blend(.shade4).cgColor
         closeButton.setImage(EkoIconSet.iconClose, for: .normal)
         closeButton.tintColor = EkoColorSet.base.blend(.shade2)
         titleLabel.font = EkoFontSet.bodyBold
@@ -52,15 +52,15 @@ class EkoFileTableViewCell: UITableViewCell, Nibbable {
         subtitleLabel.font = EkoFontSet.caption
         subtitleLabel.textColor = EkoColorSet.base.blend(.shade1)
         progressView.transform = CGAffineTransform(scaleX: 1, y: 32)
-        progressView.progressTintColor = EkoColorSet.base.blend(.shade4)
+        progressView.progressTintColor = EkoColorSet.secondary.blend(.shade4)
         progressView.trackTintColor = .clear
         progressView.progress = 0.0
         exclamationImageView.image = EkoIconSet.iconExclamation
         exclamationImageView.tintColor = EkoColorSet.baseInverse
-        exclamationBackgroundView.backgroundColor = EkoColorSet.base.withAlphaComponent(0.7)
+        exclamationBackgroundView.backgroundColor = EkoColorSet.secondary.withAlphaComponent(0.7)
         exclamationBackgroundView.layer.cornerRadius = 13
         exclamationBackgroundView.clipsToBounds = true
-        errorOverlayView.backgroundColor = EkoColorSet.base.blend(.shade4).withAlphaComponent(0.6)
+        errorOverlayView.backgroundColor = EkoColorSet.secondary.blend(.shade4).withAlphaComponent(0.6)
         errorOverlayView.isHidden = true
     }
     
