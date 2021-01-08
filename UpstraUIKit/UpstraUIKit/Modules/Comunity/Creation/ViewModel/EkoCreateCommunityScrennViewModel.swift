@@ -287,7 +287,7 @@ private extension EkoCreateCommunityScreenViewModel {
     func updateRole(withCommunityId communityId: String) {
         let userId = UpstraUIKitManagerInternal.shared.currentUserId
         communityModeration = EkoCommunityModeration(client: UpstraUIKitManagerInternal.shared.client, andCommunity: communityId)
-        communityModeration?.addRole("moderator", userIds: [userId]) { [weak self] (success, error) in
+        communityModeration?.addRole(EkoCommunityRole.moderator.rawValue, userIds: [userId]) { [weak self] (success, error) in
             guard let strongSelf = self else { return }
             if let error = error {
                 EkoHUD.hide()

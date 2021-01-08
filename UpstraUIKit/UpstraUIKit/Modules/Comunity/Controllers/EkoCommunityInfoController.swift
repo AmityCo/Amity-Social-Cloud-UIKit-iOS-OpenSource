@@ -9,9 +9,12 @@
 import UIKit
 import EkoChat
 
-final class EkoCommunityInfoController {
+protocol EkoCommunityInfoControllerProtocol {
+    func getCommunity(_ completion: @escaping (Result<EkoCommunityModel, Error>) -> Void)
+}
+final class EkoCommunityInfoController: EkoCommunityInfoControllerProtocol {
     
-    private var repository: EkoCommunityRepository?
+    private let repository: EkoCommunityRepository
     private var communityId: String
     private var token: EkoNotificationToken?
     private var community: EkoObject<EkoCommunity>?
@@ -22,18 +25,16 @@ final class EkoCommunityInfoController {
     }
     
     func getCommunity(_ completion: @escaping (Result<EkoCommunityModel, Error>) -> Void) {
-        community = repository?.getCommunity(withId: communityId)
+        community = repository.getCommunity(withId: communityId)
         token = community?.observe { community, error in
-            if community.dataStatus == .fresh {
-                guard error == nil, let object = community.object else {
-                    guard let error = error else { return }
-                    completion(.failure(error))
-                    return
-                }
-                
-                let model = EkoCommunityModel(object: object)
-                completion(.success(model))
+            guard error == nil, let object = community.object else {
+                guard let error = error else { return }
+                completion(.failure(error))
+                return
             }
+            
+            let model = EkoCommunityModel(object: object)
+            completion(.success(model))
         }
     }
 }

@@ -8,8 +8,11 @@
 
 import UIKit
 import EkoChat
+protocol EkoCommunityAddMemberControllerProtocol {
+    func add(withUserIds userIds: [String], _ completion: @escaping (EkoError?) -> Void)
+}
 
-final class EkoCommunityAddMemberController {
+final class EkoCommunityAddMemberController: EkoCommunityAddMemberControllerProtocol {
     
     private var membershipParticipation: EkoCommunityParticipation?
     private var memberCollection: EkoCollection<EkoCommunityMembership>?
@@ -19,17 +22,12 @@ final class EkoCommunityAddMemberController {
         membershipParticipation = EkoCommunityParticipation(client: UpstraUIKitManagerInternal.shared.client, andCommunityId: communityId)
     }
     
-    func add(withUserIds userIds: [String], _ completion: @escaping (Result<Bool,Error>) -> Void) {
+    func add(withUserIds userIds: [String], _ completion: @escaping (EkoError?) -> Void) {
         membershipParticipation?.addUsers(userIds, completion: { (success, error) in
-            if let error = error {
-                completion(.failure(error))
-                return
-            }
-            
             if success {
-                completion(.success(true))
+                completion(nil)
             } else {
-                completion(.success(false))
+                completion(EkoError.unknown)
             }
         })
     }

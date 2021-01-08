@@ -22,21 +22,19 @@ final class EkoCommunityFetchMemberController {
     func fetch(roles: [String] = [], completion: @escaping (Result<[EkoCommunityMembershipModel], Error>) -> Void) {
         memberCollection = membershipParticipation?.getMemberships(.all, roles: roles, sortBy: .lastCreated)
         memberToken = memberCollection?.observe { (collection, change, error) in
-            if collection.dataStatus == .fresh {
-                if let error = error {
-                    completion(.failure(error))
-                } else {
-                    var members: [EkoCommunityMembershipModel] = []
-                    for index in 0..<collection.count() {
-                        guard let member = collection.object(at: index) else { continue }
-                        var model = EkoCommunityMembershipModel(member: member)
-                        members.append(model)
-                        if let roles = model.roles as? [String], roles.contains("moderator") {
-                            model.isModerator = true
-                        }
+            if let error = error {
+                completion(.failure(error))
+            } else {
+                var members: [EkoCommunityMembershipModel] = []
+                for index in 0..<collection.count() {
+                    guard let member = collection.object(at: index) else { continue }
+                    var model = EkoCommunityMembershipModel(member: member)
+                    if let roles = model.roles as? [String], roles.contains(EkoCommunityRole.moderator.rawValue) {
+                        model.isModerator = true
                     }
-                    completion(.success(members))
+                    members.append(model)
                 }
+                completion(.success(members))
             }
         }
     }

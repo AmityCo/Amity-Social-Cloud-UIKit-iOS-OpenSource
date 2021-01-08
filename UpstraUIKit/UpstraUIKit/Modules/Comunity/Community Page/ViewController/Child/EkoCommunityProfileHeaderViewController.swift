@@ -42,7 +42,6 @@ final class EkoCommunityProfileHeaderViewController: EkoViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupView()
-        bindingViewModel()
     }
     
     static func make(with viewModel: EkoCommunityProfileScreenViewModelType, settings: EkoCommunityProfilePageSettings) -> EkoCommunityProfileHeaderViewController {
@@ -58,7 +57,6 @@ final class EkoCommunityProfileHeaderViewController: EkoViewController {
         setupDescription()
         setupActionButton()
         setupChatButton()
-    
     }
     
     private func setupDisplayName() {
@@ -123,7 +121,7 @@ final class EkoCommunityProfileHeaderViewController: EkoViewController {
         updatePostsCount(with: Int(community.postsCount))
         updateMembersCount(with: Int(community.membersCount))
         categoryLabel.text = community.category
-        
+        updateActionButton()
         displayNameLabel.setImageWithText(position: .both(imageLeft: community.isPublic ? nil:EkoIconSet.iconPrivate, imageRight: community.isOfficial ? EkoIconSet.iconBadgeCheckmark:nil))
     }
     
@@ -145,70 +143,68 @@ final class EkoCommunityProfileHeaderViewController: EkoViewController {
     }
 }
 
+// MARK: - Action
 private extension EkoCommunityProfileHeaderViewController {
     @objc func actionTap(_ sender: EkoButton) {
-        switch screenViewModel.dataSource.currentCommunityStatus(tag: sender.tag) {
+        switch screenViewModel.dataSource.getCommunityJoinStatus {
         case .notJoin:
-            screenViewModel.action.join()
+            EkoHUD.show(.loading)
+            screenViewModel.action.joinCommunity()
         case .joinNotCreator:
             break
-        case .joinAndCreator:
-            screenViewModel.action.route(to: .editProfile)
+        case .joinAndCreator, .joinAndCreatorAndModerator:
+            screenViewModel.action.route(.editProfile)
         }
     }
     
     @objc func chatTap() {
-        let channelId = screenViewModel.community.value?.channelId ?? ""
-        EkoEventHandler.shared.communityChannelDidTap(from: self, channelId: channelId)
+        EkoEventHandler.shared.communityChannelDidTap(from: self, channelId: screenViewModel.dataSource.communityId)
     }
     
     @objc func memberTap() {
-        screenViewModel.action.route(to: .member)
+        screenViewModel.action.route(.member)
     }
 }
 
-// MARK: - Binding ViewModel
 private extension EkoCommunityProfileHeaderViewController {
-    func bindingViewModel() {
+    func updateActionButton() {
         #warning("UI-Adjustment")
         // As the requirement has been change. I have to added temporary logic for hide some components
         // See more: https://ekoapp.atlassian.net/browse/UKT-737
-        screenViewModel.dataSource.childCommunityStatus.bind { [weak self] (status) in
-            guard let strongSelf = self else { return }
-            switch status {
-            case .notJoin:
-                strongSelf.chatButton.isHidden = true
-                strongSelf.actionButton.setTitle(EkoLocalizedStringSet.communityDetailJoinButton, for: .normal)
-                strongSelf.actionButton.setImage(EkoIconSet.iconAdd, position: .left)
-                strongSelf.actionButton.tintColor = EkoColorSet.baseInverse
-                strongSelf.actionButton.backgroundColor = EkoColorSet.primary
-                strongSelf.actionButton.layer.cornerRadius = 4
-                strongSelf.actionButton.tag = 0
-                strongSelf.actionButton.isHidden = false
-            case .joinNotCreator:
-                strongSelf.chatButton.isHidden = strongSelf.settings.shouldChatButtonHide
-                strongSelf.actionButton.setTitle(EkoLocalizedStringSet.communityDetailMessageButton, for: .normal)
-                strongSelf.actionButton.setImage(EkoIconSet.iconChat2, position: .left)
-                strongSelf.actionButton.tintColor = EkoColorSet.secondary
-                strongSelf.actionButton.backgroundColor = EkoColorSet.backgroundColor
-                strongSelf.actionButton.layer.borderColor = EkoColorSet.secondary.blend(.shade3).cgColor
-                strongSelf.actionButton.layer.borderWidth = 1
-                strongSelf.actionButton.layer.cornerRadius = 4
-                strongSelf.actionButton.tag = 1
-                strongSelf.actionButton.isHidden = true
-            case .joinAndCreator:
-                strongSelf.chatButton.isHidden = strongSelf.settings.shouldChatButtonHide
-                strongSelf.actionButton.setTitle(EkoLocalizedStringSet.communityDetailEditProfileButton, for: .normal)
-                strongSelf.actionButton.setImage(EkoIconSet.iconEdit, position: .left)
-                strongSelf.actionButton.tintColor = EkoColorSet.secondary
-                strongSelf.actionButton.backgroundColor = EkoColorSet.backgroundColor
-                strongSelf.actionButton.layer.borderColor = EkoColorSet.secondary.blend(.shade3).cgColor
-                strongSelf.actionButton.layer.borderWidth = 1
-                strongSelf.actionButton.layer.cornerRadius = 4
-                strongSelf.actionButton.tag = 2
-                strongSelf.actionButton.isHidden = false
-            }
-            strongSelf.actionStackView.isHidden = strongSelf.chatButton.isHidden && strongSelf.actionButton.isHidden
+        
+        switch screenViewModel.dataSource.getCommunityJoinStatus {
+        case .notJoin:
+            chatButton.isHidden = true
+            actionButton.setTitle(EkoLocalizedStringSet.communityDetailJoinButton, for: .normal)
+            actionButton.setImage(EkoIconSet.iconAdd, position: .left)
+            actionButton.tintColor = EkoColorSet.baseInverse
+            actionButton.backgroundColor = EkoColorSet.primary
+            actionButton.layer.cornerRadius = 4
+            actionButton.tag = 0
+            actionButton.isHidden = false
+        case .joinNotCreator:
+            chatButton.isHidden = settings.shouldChatButtonHide
+            actionButton.setTitle(EkoLocalizedStringSet.communityDetailMessageButton, for: .normal)
+            actionButton.setImage(EkoIconSet.iconChat2, position: .left)
+            actionButton.tintColor = EkoColorSet.secondary
+            actionButton.backgroundColor = EkoColorSet.backgroundColor
+            actionButton.layer.borderColor = EkoColorSet.secondary.blend(.shade3).cgColor
+            actionButton.layer.borderWidth = 1
+            actionButton.layer.cornerRadius = 4
+            actionButton.tag = 1
+            actionButton.isHidden = true
+        case .joinAndCreator, .joinAndCreatorAndModerator:
+            chatButton.isHidden = settings.shouldChatButtonHide
+            actionButton.setTitle(EkoLocalizedStringSet.communityDetailEditProfileButton, for: .normal)
+            actionButton.setImage(EkoIconSet.iconEdit, position: .left)
+            actionButton.tintColor = EkoColorSet.secondary
+            actionButton.backgroundColor = EkoColorSet.backgroundColor
+            actionButton.layer.borderColor = EkoColorSet.secondary.blend(.shade3).cgColor
+            actionButton.layer.borderWidth = 1
+            actionButton.layer.cornerRadius = 4
+            actionButton.tag = 2
+            actionButton.isHidden = false
         }
+        actionStackView.isHidden = chatButton.isHidden && actionButton.isHidden
     }
 }

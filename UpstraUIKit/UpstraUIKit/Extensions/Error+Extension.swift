@@ -8,6 +8,9 @@
 
 import Foundation
 
-enum EkoError: Error {
+enum EkoError: Int, Error {
     case unknown
+    case noPermission = 40301
 }
+
+

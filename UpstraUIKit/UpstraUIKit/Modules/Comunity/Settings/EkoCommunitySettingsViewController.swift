@@ -8,46 +8,38 @@
 
 import UIKit
 
-
 final class EkoCommunitySettingsViewController: EkoViewController {
     
-    // MARK: - IBOutlet Properties
+    // MARK: - IBoutlet Properties
     @IBOutlet private var tableView: UITableView!
     
     // MARK: - Properties
-    private let screenViewModel: EkoCommunityProfileScreenViewModelType
+    private var screenViewModel: EkoCommunitySettingsScreenViewModelType!
     private lazy var data: [EkoCommunitySettingsModel] = {
-        return EkoCommunitySettingsModel.prepareData(isCreator: screenViewModel.dataSource.community.value?.isCreator ?? false)
+        return EkoCommunitySettingsModel.prepareData(isCreator: screenViewModel.dataSource.isCreator)
     }()
     
     // MARK: - View lifecycle
-    private init(viewModel: EkoCommunityProfileScreenViewModelType) {
-        self.screenViewModel = viewModel
-        super.init(nibName: EkoCommunitySettingsViewController.identifier, bundle: UpstraUIKitManager.bundle)
-        title = screenViewModel.dataSource.community.value?.displayName
-    }
-    
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    
     override func viewDidLoad() {
         super.viewDidLoad()
+        screenViewModel.delegate = self
         setupView()
-        setupTableView()
-        bindingViewModel()
+        screenViewModel.action.getCommunity()
     }
-
-    static func make(viewModel: EkoCommunityProfileScreenViewModelType) -> EkoCommunitySettingsViewController {
-        return EkoCommunitySettingsViewController(viewModel: viewModel)
+    
+    static func make(communityId: String) -> EkoCommunitySettingsViewController {
+        let viewModel: EkoCommunitySettingsScreenViewModelType = EkoCommunitySettingsScreenViewModel(communityId: communityId)
+        let vc = EkoCommunitySettingsViewController(nibName: EkoCommunitySettingsViewController.identifier, bundle: UpstraUIKitManager.bundle)
+        vc.screenViewModel = viewModel
+        return vc
     }
 }
 
 // MARK: - Setup view
 private extension EkoCommunitySettingsViewController {
-    
     func setupView() {
         view.backgroundColor = EkoColorSet.backgroundColor
+        setupTableView()
     }
     
     func setupTableView() {
@@ -57,28 +49,6 @@ private extension EkoCommunitySettingsViewController {
         tableView.tableFooterView = UIView()
         tableView.delegate = self
         tableView.dataSource = self
-    }
-}
-
-// MARK: - Binding ViewModel
-private extension EkoCommunitySettingsViewController {
-    func bindingViewModel() {
-        screenViewModel.dataSource.settingsAction.bind { [weak self] (complete) in
-            guard let strongSelf = self else { return }
-            switch complete {
-            case .intial:
-                break
-            case .leave:
-                strongSelf.navigationController?.popViewController(animated: true)
-                self?.screenViewModel.dataSource.settingsAction.value = .intial
-            case .close:
-                if let _ = strongSelf.navigationController?.viewControllers.first(where: { $0.isKind(of: EkoCommunityProfileEditViewController.self)}) {
-                    strongSelf.dismiss(animated: true, completion: nil)
-                } else {
-                    strongSelf.navigationController?.popToRootViewController(animated: true)
-                }
-            }
-        }
     }
 }
 
@@ -100,6 +70,7 @@ extension EkoCommunitySettingsViewController: UITableViewDelegate {
             let alertController = UIAlertController(title: EkoLocalizedStringSet.communitySettingsAlertLeaveTitle, message: EkoLocalizedStringSet.communitySettingsAlertLeaveDesc, preferredStyle: .alert)
             alertController.addAction(UIAlertAction(title: EkoLocalizedStringSet.cancel, style: .default, handler: nil))
             alertController.addAction(UIAlertAction(title: EkoLocalizedStringSet.leave, style: .destructive, handler: { [weak self] action in
+                EkoHUD.show(.loading)
                 self?.screenViewModel.action.leaveCommunity()
             }))
             present(alertController, animated: true, completion: nil)
@@ -107,6 +78,7 @@ extension EkoCommunitySettingsViewController: UITableViewDelegate {
             let alertController = UIAlertController(title: EkoLocalizedStringSet.communitySettingsAlertCloseTitle, message: EkoLocalizedStringSet.communitySettingsAlertCloseDesc, preferredStyle: .alert)
             alertController.addAction(UIAlertAction(title: EkoLocalizedStringSet.cancel, style: .default, handler: nil))
             alertController.addAction(UIAlertAction(title: EkoLocalizedStringSet.close, style: .destructive, handler: { [weak self] action in
+                EkoHUD.show(.loading)
                 self?.screenViewModel.action.deleteCommunity()
             }))
             present(alertController, animated: true, completion: nil)
@@ -133,3 +105,32 @@ extension EkoCommunitySettingsViewController: UITableViewDataSource {
     }
 }
 
+
+
+// MARK: - ViewModel Delegate
+extension EkoCommunitySettingsViewController: EkoCommunitySettingsScreenViewModelDelegate {
+    
+    func screenViewModelDidGetCommunitySuccess(community: EkoCommunityModel) {
+        title = community.displayName
+    }
+    
+    func screenViewModelDidLeaveCommunitySuccess() {
+        EkoHUD.hide()
+        navigationController?.popViewController(animated: true)
+    }
+    
+    func screenVieWModelDidDeleteCommunitySuccess() {
+        EkoHUD.hide()
+        if let _ = navigationController?.viewControllers.first(where: { $0.isKind(of: EkoCommunityProfileEditViewController.self)}) {
+            dismiss(animated: true, completion: nil)
+        } else {
+            navigationController?.popToRootViewController(animated: true)
+        }
+    }
+    
+    func screenViewModelFailure() {
+        EkoHUD.hide {
+            EkoHUD.show(.error(message: EkoLocalizedStringSet.HUD.somethingWentWrong))
+        }
+    }
+}

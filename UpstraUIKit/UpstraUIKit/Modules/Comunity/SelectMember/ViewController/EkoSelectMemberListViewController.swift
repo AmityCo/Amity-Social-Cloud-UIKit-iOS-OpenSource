@@ -38,7 +38,7 @@ public final class EkoSelectMemberListViewController: EkoViewController {
         return vc
     }
     
-    func getUsersFromCreatePage(users: [EkoSelectMemberModel]) {
+    func getCurrentUsersList(users: [EkoSelectMemberModel]) {
         screenViewModel.action.getUserFromCreatePage(users: users)
     }
 }

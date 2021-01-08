@@ -10,11 +10,14 @@ import UIKit
 import EkoChat
 
 protocol EkoCommunityMemberScreenViewModelDelegate: class {
+    func screenViewModelDidGetComminityInfo()
     func screenViewModelDidGetMember()
     func screenViewModelLoadingState(state: EkoLoadingState)
     func screenViewModelDidRemoveUser(at indexPath: IndexPath)
-    func screenViewModelDidAddMember(success: Bool)
-    func screenViewModelFailure()
+    func screenViewModelDidAddMemberSuccess()
+    func screenViewModelDidAddRoleSuccess()
+    func screenViewModelDidRemoveRoleSuccess()
+    func screenViewModelFailure(error: EkoError)
 }
 
 protocol EkoCommunityMemberScreenViewModelDataSource {
@@ -29,7 +32,7 @@ protocol EkoCommunityMemberScreenViewModelDataSource {
 protocol EkoCommunityMemberScreenViewModelAction {
     func getCommunity()
     func getMember(viewType: EkoCommunityMemberViewType)
-    func getUserIsModerator()
+    func getUserRoles()
     func loadMore()
     func addUser(users: [EkoSelectMemberModel])
     func removeUser(at indexPath: IndexPath)

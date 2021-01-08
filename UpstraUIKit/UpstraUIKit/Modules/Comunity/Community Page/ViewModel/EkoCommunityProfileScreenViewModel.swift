@@ -2,124 +2,117 @@
 //  EkoCommunityProfileScreenViewModel.swift
 //  UpstraUIKit
 //
-//  Created by Sarawoot Khunsri on 15/9/2563 BE.
-//  Copyright © 2563 Upstra. All rights reserved.
+//  Created by sarawoot khunsri on 1/8/21.
+//  Copyright © 2021 Upstra. All rights reserved.
 //
 
 import UIKit
 import EkoChat
 
 final class EkoCommunityProfileScreenViewModel: EkoCommunityProfileScreenViewModelType {
-    enum Route {
-        case intial
-        case post
-        case settings
-        case editProfile
-        case member
-    }
     
-    enum CommunityStatus: Int {
+    enum CommunityJoinStatus {
         case notJoin
         case joinNotCreator
         case joinAndCreator
+        case joinAndCreatorAndModerator
     }
     
-    enum SettingsActionComplete {
-        case intial
-        case leave
-        case close
-    }
+    weak var delegate: EkoCommunityProfileScreenViewModelDelegate?
+    weak var headerDelegate: EkoCommunityProfileScreenViewModelDelegate?
+    
+    // MARK: Controller
+    private let userRolesController: EkoCommunityUserRolesControllerProtocol
+    private let communityInfoController: EkoCommunityInfoController
+    private let communityJoinController: EkoCommunityJoinControllerProtocol
     
     // MARK: - Properties
-    private let repository: EkoCommunityRepository
-    private var communityInfoToken: EkoNotificationToken?
-    let communityId: String
+    var communityId: String = ""
+    var community: EkoCommunityModel?
+    var isModerator: Bool = false
     
-    init(communityId: String) {
-        repository = EkoCommunityRepository(client: UpstraUIKitManagerInternal.shared.client)
-        self.communityId = communityId
+    private var communityJoinStatus: CommunityJoinStatus = .notJoin {
+        didSet {
+            delegate?.screenViewModelDidJoinCommunity(communityJoinStatus)
+        }
     }
     
-    // MARK: DataSource
-    var community: EkoBoxBinding<EkoCommunityModel?> = EkoBoxBinding(nil)
-    var route: EkoBoxBinding<Route> = EkoBoxBinding(.intial)
-    var parentObserveCommunityStatus: EkoBoxBinding<CommunityStatus> = EkoBoxBinding(.notJoin)
-    var childCommunityStatus: EkoBoxBinding<CommunityStatus> = EkoBoxBinding(.notJoin)
-    var childBottomCommunityIsCreator: EkoBoxBinding<Bool> = EkoBoxBinding(false)
-    var settingsAction: EkoBoxBinding<SettingsActionComplete> = EkoBoxBinding(.intial)
+    init(communityId: String) {
+        self.communityId = communityId
+        self.userRolesController = EkoCommunityUserRolesController(communityId: communityId)
+        self.communityInfoController = EkoCommunityInfoController(communityId: communityId)
+        self.communityJoinController = EkoCommunityJoinController(withCommunityId: communityId)
+    }
     
-    func currentCommunityStatus(tag: Int) -> CommunityStatus {
-        return CommunityStatus(rawValue: tag) ?? .notJoin
+}
+
+// MARK: - DataSource
+extension EkoCommunityProfileScreenViewModel {
+    var getCommunityJoinStatus: CommunityJoinStatus {
+        return communityJoinStatus
     }
 }
 
-// MARK: Action
+// MARK: - Action
+
+// MARK: Routing
+extension EkoCommunityProfileScreenViewModel {
+    func route(_ route: EkoCommunityProfileRoute) {
+        self.delegate?.screenViewModelRoute(self, route: route)
+    }
+}
+
+// MARK: - Get community info
 extension EkoCommunityProfileScreenViewModel {
     
-    func route(to route: Route) {
-        self.route.value = route
+    func getUserRole() {
+        isModerator = userRolesController.getUserRoles(withUserId: UpstraUIKitManagerInternal.shared.currentUserId, role: .moderator)
     }
     
-    func getInfo() {
-        communityInfoToken?.invalidate()
-        communityInfoToken = repository.getCommunity(withId: communityId).observe { [weak self] (community, error) in
-            guard let object = community.object else { return }
-            let model = EkoCommunityModel(object: object)
-            self?.community.value = model
-            self?.childBottomCommunityIsCreator.value = model.isCreator
-            self?.updateCommunityStatus(with: model)
-        }
-    }
-
-    func join() {
-        repository.joinCommunity(withCommunityId: communityId) { [weak self] (status, error) in
-            guard let strongSelf = self else { return }
-            if status {
-                strongSelf.updateCommunityStatus(with: strongSelf.community.value)
+    func getCommunity() {
+        communityInfoController.getCommunity { [weak self] (result) in
+            switch result {
+            case .success(let community):
+                self?.community = community
+                self?.checkingJoinStatus(community: community)
+                self?.delegate?.screenViewModelDidGetCommunity(with: community)
+            case .failure(let error):
+                break
             }
         }
     }
     
-    func leaveCommunity() {
-        repository.leaveCommunity(withCommunityId: communityId) { [weak self] (status, error) in
-            if error != nil {
-                return
-            }
-            
-            if status {
-                self?.settingsAction.value = .leave
-            }
-        }
-    }
-    
-    func deleteCommunity() {
-        repository.deleteCommunity(withId: communityId) { [weak self] (status, error) in
-            if error != nil {
-                return
-            }
-            
-            if status {
-                self?.settingsAction.value = .close
-            }
-        }
-    }
-    
-    private func updateCommunityStatus(with community: EkoCommunityModel?) {
-        guard let community = community else { return }
-        if !community.isJoined {
-            parentObserveCommunityStatus.value = .notJoin
-            childCommunityStatus.value = .notJoin
-        } else {
-            if (community.isJoined && (!community.isCreator )) {
-                parentObserveCommunityStatus.value = .joinNotCreator
-                childCommunityStatus.value = .joinNotCreator
-            } else if community.isJoined && (community.isCreator) {
-                parentObserveCommunityStatus.value = .joinAndCreator
-                childCommunityStatus.value = .joinAndCreator
+    private func checkingJoinStatus(community: EkoCommunityModel) {
+        if community.isJoined {
+            if (community.isCreator) {
+                communityJoinStatus = .joinAndCreator
             } else {
-                parentObserveCommunityStatus.value = .joinNotCreator
-                childCommunityStatus.value = .joinNotCreator
+                communityJoinStatus = .joinNotCreator
+            }
+        } else {
+            communityJoinStatus = .notJoin
+        }
+    }
+}
+
+// MARK: - Join community
+extension EkoCommunityProfileScreenViewModel {
+    func joinCommunity() {
+        communityJoinController.join { [weak self] (error) in
+            if let error = error {
+                self?.delegate?.screenViewModelFailure()
+            } else {
+                self?.delegate?.screenViewModelDidJoinCommunitySuccess()
             }
         }
     }
+}
+
+// MARK: - Leave Community
+extension EkoCommunityProfileScreenViewModel {
+    
+}
+// MARK: - Delete Community
+extension EkoCommunityProfileScreenViewModel {
+    
 }

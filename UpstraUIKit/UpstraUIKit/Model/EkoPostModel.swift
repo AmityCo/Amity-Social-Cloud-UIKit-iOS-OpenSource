@@ -93,10 +93,7 @@ public class EkoPostModel {
     }
     
     var communityDisplayName: String? {
-        if let comunity = post.targetCommunity {
-            return " ‣ \(comunity.displayName)"
-        }
-        return nil
+        return post.targetCommunity?.displayName
     }
     
     var communityId: String? {

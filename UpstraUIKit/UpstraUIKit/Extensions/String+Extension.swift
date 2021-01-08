@@ -25,4 +25,9 @@ extension String {
         }
         return boldString
     }
+    
+    var digits: String {
+        return components(separatedBy: CharacterSet.decimalDigits.inverted)
+            .joined()
+    }
 }

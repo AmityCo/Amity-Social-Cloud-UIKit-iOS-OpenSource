@@ -18,19 +18,16 @@ final class EkoCommunityMemberScreenViewModel: EkoCommunityMemberScreenViewModel
     private var communityController: EkoCommunityInfoController?
     private var fetchMemberController: EkoCommunityFetchMemberController?
     private var removeMemberController: EkoCommunityRemoveMemberController?
-    private var userModeratorController: EkoCommunityUserModeratorController?
+    private var userModeratorController: EkoCommunityUserRolesController?
     private var addMemberController: EkoCommunityAddMemberController?
     private let roleController: EkoCommunityRoleControllerProtocol
     // MARK: - Properties
     private var members: [EkoCommunityMembershipModel] = []
     private var community: EkoCommunityModel?
     
-    init(membershipParticipation: EkoCommunityParticipation?,
-         userModeratorController: EkoCommunityUserModeratorController?,
-         communityController: EkoCommunityInfoController?,
-         communityId: String) {
-        self.communityController = communityController
-        self.userModeratorController = userModeratorController
+    init(communityId: String) {
+        userModeratorController = EkoCommunityUserRolesController(communityId: communityId)
+        communityController = EkoCommunityInfoController(communityId: communityId)
         fetchMemberController = EkoCommunityFetchMemberController(communityId: communityId)
         removeMemberController = EkoCommunityRemoveMemberController(communityId: communityId)
         addMemberController = EkoCommunityAddMemberController(communityId: communityId)
@@ -60,7 +57,6 @@ extension EkoCommunityMemberScreenViewModel {
     }
     
     func prepareData() -> [EkoSelectMemberModel] {
-        
         var storeUsers: [EkoSelectMemberModel] = []
         for item in members {
             if !item.isCurrentUser {
@@ -80,10 +76,11 @@ extension EkoCommunityMemberScreenViewModel {
 /// Get community info
 extension EkoCommunityMemberScreenViewModel {
     func getCommunity() {
-        communityController?.getCommunity { (result) in
+        communityController?.getCommunity { [weak self] (result) in
             switch result {
             case .success(let community):
-                self.community = community
+                self?.community = community
+                self?.delegate?.screenViewModelDidGetComminityInfo()
             case .failure:
                 break
             }
@@ -92,8 +89,11 @@ extension EkoCommunityMemberScreenViewModel {
 }
 
 extension EkoCommunityMemberScreenViewModel {
-    func getUserIsModerator() {
-        isModerator = userModeratorController?.isModerator ?? false
+    func getUserRoles() {
+        if let _isModerator = userModeratorController?.getUserRoles(withUserId: UpstraUIKitManagerInternal.shared.currentUserId, role: .moderator) {
+            isModerator = _isModerator
+        }
+        
     }
 }
 
@@ -112,7 +112,7 @@ extension EkoCommunityMemberScreenViewModel {
                 }
             }
         case .moderator:
-            fetchMemberController?.fetch(roles: ["moderator"]) { [weak self] (result) in
+            fetchMemberController?.fetch(roles: [EkoCommunityRole.moderator.rawValue]) { [weak self] (result) in
                 switch result {
                 case .success(let members):
                     self?.members = members
@@ -139,13 +139,11 @@ extension EkoCommunityMemberScreenViewModel {
 extension EkoCommunityMemberScreenViewModel {
     func addUser(users: [EkoSelectMemberModel]) {
         let userIds = users.map { $0.userId }
-        addMemberController?.add(withUserIds: userIds, { [weak self] (result) in
-            switch result {
-            case .success(let success):
-                self?.delegate?.screenViewModelDidAddMember(success: success)
-            case .failure(let error):
-                Log.add(error)
-                self?.delegate?.screenViewModelDidAddMember(success: false)
+        addMemberController?.add(withUserIds: userIds, { [weak self] (error) in
+            if let error = error {
+                self?.delegate?.screenViewModelFailure(error: error)
+            } else {
+                self?.delegate?.screenViewModelDidAddMemberSuccess()
             }
         })
     }
@@ -198,10 +196,9 @@ extension EkoCommunityMemberScreenViewModel {
         let userId = member(at: indexPath).userId
         roleController.add(role: .moderator, userIds: [userId]) { [weak self] error in
             if let error = error {
-                Log.add(error)
-                self?.delegate?.screenViewModelFailure()
+                self?.delegate?.screenViewModelFailure(error: error)
             } else {
-                
+                self?.delegate?.screenViewModelDidAddRoleSuccess()
             }
         }
     }
@@ -210,10 +207,9 @@ extension EkoCommunityMemberScreenViewModel {
         let userId = member(at: indexPath).userId
         roleController.remove(role: .moderator, userIds: [userId]) { [weak self] error in
             if let error = error {
-                Log.add(error)
-                self?.delegate?.screenViewModelFailure()
+                self?.delegate?.screenViewModelFailure(error: error)
             } else {
-                
+                self?.delegate?.screenViewModelDidRemoveRoleSuccess()
             }
         }
     }

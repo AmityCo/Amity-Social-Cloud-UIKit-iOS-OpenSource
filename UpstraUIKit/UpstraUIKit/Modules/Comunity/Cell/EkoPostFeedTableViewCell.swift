@@ -37,8 +37,7 @@ public class EkoPostFeedTableViewCell: UITableViewCell, Nibbable {
     weak var actionDelegate: EkoPostFeedTableViewCellDelegate?
     
     @IBOutlet private weak var avatarView: EkoAvatarView!
-    @IBOutlet private weak var displayNameButton: UIButton!
-    @IBOutlet private weak var communityNameButton: UIButton!
+    @IBOutlet private weak var displayNameTextView: EkoFeedDisplayNameLabel!
     @IBOutlet private weak var subtitleLabel: UILabel!
     @IBOutlet private weak var likeLabel: UILabel!
     @IBOutlet private weak var commentLabel: UILabel!
@@ -52,7 +51,6 @@ public class EkoPostFeedTableViewCell: UITableViewCell, Nibbable {
     @IBOutlet private weak var actionStackView: UIStackView!
     @IBOutlet private weak var separatorView: UIView!
     @IBOutlet private weak var secondSeparatorView: UIView!
-    @IBOutlet private weak var badgeContainerView: UIView!
     @IBOutlet private weak var badgeImageView: UIImageView!
     @IBOutlet private weak var badgeTitleLabel: UILabel!
     @IBOutlet private weak var bottomPanelButton: UIButton!
@@ -61,7 +59,6 @@ public class EkoPostFeedTableViewCell: UITableViewCell, Nibbable {
     @IBOutlet private weak var secondCommentView: EkoCommentView!
     @IBOutlet private weak var topContentViewTopConstraint: NSLayoutConstraint!
     @IBOutlet private weak var avatarViewTopConstraint: NSLayoutConstraint!
-    @IBOutlet private var badgeViewWidthConstraint: NSLayoutConstraint!
     @IBOutlet private weak var galleryViewHeightConstraint: NSLayoutConstraint!
     @IBOutlet private weak var fileViewHeightConstraint: NSLayoutConstraint!
     @IBOutlet private weak var topContainerHeightConstraint: NSLayoutConstraint!
@@ -70,10 +67,6 @@ public class EkoPostFeedTableViewCell: UITableViewCell, Nibbable {
     public override func awakeFromNib() {
         super.awakeFromNib()
         selectionStyle = .none
-        displayNameButton.titleLabel?.font = EkoFontSet.title
-        displayNameButton.tintColor = EkoColorSet.base
-        communityNameButton.titleLabel?.font = EkoFontSet.title
-        communityNameButton.tintColor = EkoColorSet.base
         subtitleLabel.font = EkoFontSet.caption
         galleryView.actionDelegate = self
         galleryView.contentMode = .scaleAspectFill
@@ -87,7 +80,7 @@ public class EkoPostFeedTableViewCell: UITableViewCell, Nibbable {
         contentLabel.delegate = self
         badgeImageView.contentMode = .scaleAspectFit
         badgeImageView.image = EkoIconSet.iconBadgeModerator
-        badgeTitleLabel.text = "\(EkoLocalizedStringSet.moderator) • "
+        badgeTitleLabel.text = "\(EkoLocalizedStringSet.moderator) •"
         badgeTitleLabel.textColor = EkoColorSet.base.blend(.shade1)
         badgeTitleLabel.font = .systemFont(ofSize: 13, weight: .semibold)
         likeButton.setTitle(EkoLocalizedStringSet.liked, for: .selected)
@@ -121,11 +114,8 @@ public class EkoPostFeedTableViewCell: UITableViewCell, Nibbable {
             guard let strongSelf = self else { return }
             strongSelf.actionDelegate?.cellDidTapAvatar(strongSelf, userId: item.postedUserId)
         }
-        displayNameButton.contentEdgeInsets = .zero
-        displayNameButton.setTitle(item.displayName, for: .normal)
-        communityNameButton.contentEdgeInsets = .zero
-        communityNameButton.setTitle(item.communityDisplayName, for: .normal)
-        communityNameButton.isHidden = shouldCommunityNameHide || item.communityDisplayName == nil
+        displayNameTextView.configure(displayName: item.displayName, communityName: item.communityDisplayName)
+        displayNameTextView.delegate = self
         subtitleLabel.text = item.subtitle
         contentLabel.numberOfLines = isFileAttached ? 3 : 8
         contentLabel.text = item.text
@@ -151,14 +141,14 @@ public class EkoPostFeedTableViewCell: UITableViewCell, Nibbable {
         fileViewHeightConstraint.constant = item.files.isEmpty ? 0 : EkoFileTableView.height(for: item.files.count, isEdtingMode: false, isExpanded: false)
         avatarViewTopConstraint.constant = 12.0
         topContentViewTopConstraint.constant = isFirstCell ? 0 : 8
-        if item.isModerator {
-            badgeContainerView.isHidden = item.postAsModerator
-            badgeViewWidthConstraint.isActive = item.postAsModerator
-        } else {
-            badgeContainerView.isHidden = true
-            badgeViewWidthConstraint.isActive = true
-        }
         setupCommentPreview(comments: item.latestComments)
+        if item.isModerator {
+            badgeImageView.isHidden = item.postAsModerator
+            badgeTitleLabel.isHidden = item.postAsModerator
+        } else {
+            badgeImageView.isHidden = true
+            badgeTitleLabel.isHidden = true
+        }
     }
     
     public override func prepareForReuse() {
@@ -190,16 +180,6 @@ public class EkoPostFeedTableViewCell: UITableViewCell, Nibbable {
         } else {
             secondCommentView.isHidden = true
         }
-    }
-    
-    @IBAction func tapDisplayName(_ sender: Any) {
-        guard let userId = post?.postedUserId else { return }
-        actionDelegate?.cellDidTapDisplayName(self, userId: userId)
-    }
-    
-    @IBAction func tapCommunityName(_ sender: Any) {
-        guard let communityId = post?.communityId else { return }
-        actionDelegate?.cellDidTapCommunityName(self, communityId: communityId)
     }
     
     @IBAction func tapLike(_ sender: Any) {
@@ -338,6 +318,20 @@ extension EkoPostFeedTableViewCell: EkoCommentViewDelegate {
         case .reply:
             break
         }
+    }
+    
+}
+
+extension EkoPostFeedTableViewCell: EkoFeedDisplayNameLabelDelegate {
+    
+    func labelDidTapUserDisplayName(_ label: EkoFeedDisplayNameLabel) {
+        guard let userId = post?.postedUserId else { return }
+        actionDelegate?.cellDidTapDisplayName(self, userId: userId)
+    }
+    
+    func labelDidTapCommunityName(_ label: EkoFeedDisplayNameLabel) {
+        guard let communityId = post?.communityId else { return }
+        actionDelegate?.cellDidTapCommunityName(self, communityId: communityId)
     }
     
 }

@@ -372,7 +372,7 @@ private extension EkoCommunityProfileEditViewController {
         vc.selectUsersHandler = { [weak self] storeUsers in
             self?.screenViewModel.action.updateSelectUser(users: storeUsers)
         }
-        vc.getUsersFromCreatePage(users: screenViewModel.dataSource.storeUsers)
+        vc.getCurrentUsersList(users: screenViewModel.dataSource.storeUsers)
         let nav = UINavigationController(rootViewController: vc)
         nav.modalPresentationStyle = .overFullScreen
         present(nav, animated: true, completion: nil)

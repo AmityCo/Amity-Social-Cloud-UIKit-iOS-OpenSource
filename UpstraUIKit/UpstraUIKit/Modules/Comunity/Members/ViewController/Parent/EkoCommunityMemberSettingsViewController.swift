@@ -9,59 +9,45 @@
 import UIKit
 import EkoChat
 
-final class EkoCommunityMemberSettingsViewController: EkoPageViewController {
+public final class EkoCommunityMemberSettingsViewController: EkoPageViewController {
     
     private var communityId: String = ""
-    private var userModeratorController: EkoCommunityUserModeratorController?
-    private var membershipParticipation: EkoCommunityParticipation?
-    private var communityInfoController: EkoCommunityInfoController?
+    private var userRolesController: EkoCommunityUserRolesControllerProtocol?
     
     // MARK: - Child ViewController
     private var memberVC: EkoCommunityMemberViewController?
     private var moderatorVC: EkoCommunityMemberViewController?
     
     // MARK: - View lifecycle
-    override func viewDidLoad() {
+    public override func viewDidLoad() {
         super.viewDidLoad()
         title = EkoLocalizedStringSet.CommunityMembreSetting.title
         getUserModerator()
     }
     
-    static func make(communityId: String) -> EkoCommunityMemberSettingsViewController {
+    public static func make(communityId: String) -> EkoCommunityMemberSettingsViewController {
         let vc = EkoCommunityMemberSettingsViewController(nibName: EkoCommunityMemberSettingsViewController.identifier,
                                                           bundle: UpstraUIKitManager.bundle)
         
         vc.communityId = communityId
-        let communityInfoController = EkoCommunityInfoController(communityId: communityId)
-        let membershipParticipation = EkoCommunityParticipation(client: UpstraUIKitManagerInternal.shared.client,
-                                                                andCommunityId: communityId)
-        let userModeratorController = EkoCommunityUserModeratorController(communityId: communityId,
-                                                                          userId: UpstraUIKitManagerInternal.shared.currentUserId)
-        vc.communityInfoController = communityInfoController
-        vc.membershipParticipation = membershipParticipation
-        vc.userModeratorController = userModeratorController
         return vc
     }
     
     override func viewControllers(for pagerTabStripController: EkoPagerTabViewController) -> [UIViewController] {
         memberVC = EkoCommunityMemberViewController.make(pageTitle: EkoLocalizedStringSet.CommunityMembreSetting.title,
                                                          viewType: .member,
-                                                         membershipParticipation: membershipParticipation,
-                                                         userModeratorController: userModeratorController,
-                                                         communityInfoController: communityInfoController,
                                                          communityId: communityId)
         
         moderatorVC = EkoCommunityMemberViewController.make(pageTitle: EkoLocalizedStringSet.CommunityMembreSetting.moderatorTitle,
                                                             viewType: .moderator,
-                                                            membershipParticipation: membershipParticipation,
-                                                            userModeratorController: userModeratorController,
-                                                            communityInfoController: communityInfoController,
                                                             communityId: communityId)
         return [memberVC!, moderatorVC!]
     }
     
     private func getUserModerator() {
-        if userModeratorController?.isModerator ?? false {
+        userRolesController = EkoCommunityUserRolesController(communityId: communityId)
+        
+        if userRolesController?.getUserRoles(withUserId: UpstraUIKitManagerInternal.shared.currentUserId, role: .moderator) ?? false {
             let rightItem = UIBarButtonItem(image: EkoIconSet.iconAdd, style: .plain, target: self, action: #selector(addMemberTap))
             rightItem.tintColor = EkoColorSet.base
             navigationItem.rightBarButtonItem = rightItem
@@ -76,7 +62,7 @@ final class EkoCommunityMemberSettingsViewController: EkoPageViewController {
             memberVC.addMember(users: storeUsers)
         }
         
-        vc.getUsersFromCreatePage(users: memberVC.passMember())
+        vc.getCurrentUsersList(users: memberVC.passMember())
         let nav = UINavigationController(rootViewController: vc)
         nav.modalPresentationStyle = .overFullScreen
         present(nav, animated: true, completion: nil)

@@ -42,14 +42,8 @@ class EkoCommunityMemberViewController: UIViewController {
     
     static func make(pageTitle: String,
                      viewType: EkoCommunityMemberViewType,
-                     membershipParticipation: EkoCommunityParticipation?,
-                     userModeratorController: EkoCommunityUserModeratorController?,
-                     communityInfoController: EkoCommunityInfoController?,
                      communityId: String) -> EkoCommunityMemberViewController {
-        let viewModel: EkoCommunityMemberScreenViewModelType = EkoCommunityMemberScreenViewModel(membershipParticipation: membershipParticipation,
-                                                                                                 userModeratorController: userModeratorController,
-                                                                                                 communityController: communityInfoController,
-                                                                                                 communityId: communityId)
+        let viewModel: EkoCommunityMemberScreenViewModelType = EkoCommunityMemberScreenViewModel(communityId: communityId)
         let vc = EkoCommunityMemberViewController(nibName: EkoCommunityMemberViewController.identifier,
                                                   bundle: UpstraUIKitManager.bundle)
         vc.pageTitle = pageTitle
@@ -88,8 +82,6 @@ private extension EkoCommunityMemberViewController {
 private extension EkoCommunityMemberViewController {
     func bindingViewModel() {
         screenViewModel.action.getCommunity()
-        screenViewModel.action.getMember(viewType: viewType)
-        screenViewModel.action.getUserIsModerator()
     }
 }
 
@@ -99,7 +91,7 @@ extension EkoCommunityMemberViewController: UITableViewDelegate {
         tableView.deselectRow(at: indexPath, animated: true)
     }
     
-    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+    func tableView(_ tablbeView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
         if tableView.isBottomReached {
             screenViewModel.action.loadMore()
         }
@@ -129,7 +121,12 @@ extension EkoCommunityMemberViewController: UITableViewDataSource {
 }
 
 extension EkoCommunityMemberViewController: EkoCommunityMemberScreenViewModelDelegate {
-
+    
+    func screenViewModelDidGetComminityInfo() {
+        screenViewModel.action.getMember(viewType: viewType)
+        screenViewModel.action.getUserRoles()
+    }
+    
     func screenViewModelDidGetMember() {
         tableView.reloadData()
     }
@@ -149,6 +146,28 @@ extension EkoCommunityMemberViewController: EkoCommunityMemberScreenViewModelDel
         tableView.deleteRows(at: [indexPath], with: .fade)
     }
     
+    func screenViewModelDidAddMemberSuccess() {
+        EkoHUD.hide()
+    }
+    
+    func screenViewModelDidAddRoleSuccess() {
+        EkoHUD.hide()
+    }
+    
+    func screenViewModelDidRemoveRoleSuccess() {
+        EkoHUD.hide()
+    }
+    
+    func screenViewModelFailure(error: EkoError) {
+        EkoHUD.hide {
+            switch error {
+            case .noPermission:
+                EkoHUD.show(.error(message: EkoLocalizedStringSet.HUD.somethingWentWrong))
+            case .unknown:
+                EkoHUD.show(.error(message: EkoLocalizedStringSet.HUD.somethingWentWrong))
+            }
+        }
+    }
 }
 
 extension EkoCommunityMemberViewController: EkoCommunityMemberSettingsTableViewCellDelegate {
@@ -161,22 +180,27 @@ extension EkoCommunityMemberViewController: EkoCommunityMemberSettingsTableViewC
         bottomSheet.modalPresentationStyle = .overFullScreen
         
         var options: [TextItemOption] = []
-        
-        switch viewType {
-        case .member:
-            let addRoleOption = TextItemOption(title: EkoLocalizedStringSet.CommunityMembreSetting.optionPromoteToModerator) { [weak self] in
-                self?.screenViewModel.action.addRole(at: indexPath)
-            }
-            options.append(addRoleOption)
-        case .moderator:
-            let removeRoleOption = TextItemOption(title: EkoLocalizedStringSet.CommunityMembreSetting.optionDismissModerator) { [weak self] in
-                self?.screenViewModel.action.removeRole(at: indexPath)
-            }
-            options.append(removeRoleOption)
-        }
-        
+
         // remove user options
         if screenViewModel.dataSource.isModerator {
+            let member = screenViewModel.dataSource.member(at: indexPath)
+            switch viewType {
+            case .member:
+                if !member.isModerator {
+                    let addRoleOption = TextItemOption(title: EkoLocalizedStringSet.CommunityMembreSetting.optionPromoteToModerator) { [weak self] in
+                        EkoHUD.show(.loading)
+                        self?.screenViewModel.action.addRole(at: indexPath)
+                    }
+                    options.append(addRoleOption)
+                }
+            case .moderator:
+                let removeRoleOption = TextItemOption(title: EkoLocalizedStringSet.CommunityMembreSetting.optionDismissModerator) { [weak self] in
+                    EkoHUD.show(.loading)
+                    self?.screenViewModel.action.removeRole(at: indexPath)
+                }
+                options.append(removeRoleOption)
+            }
+            
             let removeOption = TextItemOption(title: EkoLocalizedStringSet.CommunityMembreSetting.optionRemove, textColor: EkoColorSet.alert) { [weak self] in
                 let alert = UIAlertController(title: EkoLocalizedStringSet.CommunityMembreSetting.alertTitle,
                                               message: EkoLocalizedStringSet.CommunityMembreSetting.alertDesc, preferredStyle: .alert)
@@ -205,16 +229,6 @@ extension EkoCommunityMemberViewController: EkoCommunityMemberSettingsTableViewC
             contentView.configure(items: options, selectedItem: nil)
             self?.present(bottomSheet, animated: false, completion: nil)
         }
-    }
-    
-    func screenViewModelDidAddMember(success: Bool) {
-        if !success {
-            EkoHUD.show(.error(message: EkoLocalizedStringSet.HUD.somethingWentWrong))
-        }
-    }
-    
-    func screenViewModelFailure() {
-        EkoHUD.show(.error(message: EkoLocalizedStringSet.HUD.somethingWentWrong))
     }
     
 }

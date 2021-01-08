@@ -46,12 +46,10 @@ private extension EkoCommunityFeedViewController {
     func bindingViewModel() {
         timelineVC.emptyViewHandler = { [weak self] emptyView in
             guard let strongSelf = self, let emptyView = emptyView as? EkoEmptyStateHeaderFooterView else { return }
-            strongSelf.screenViewModel.dataSource.childBottomCommunityIsCreator.bind { (isCreator) in
-                if isCreator {
-                    emptyView.setLayout(layout: .label(title: EkoLocalizedStringSet.emptyNewsfeedTitle, subtitle: EkoLocalizedStringSet.emptyNewsfeedStartYourFirstPost, image: nil))
-                } else {
-                    emptyView.setLayout(layout: .label(title: EkoLocalizedStringSet.emptyTitleNoPosts, subtitle: nil, image: EkoIconSet.emptyNoPosts))
-                }
+            if strongSelf.screenViewModel.dataSource.community?.isCreator ?? false {
+                emptyView.setLayout(layout: .label(title: EkoLocalizedStringSet.emptyNewsfeedTitle, subtitle: EkoLocalizedStringSet.emptyNewsfeedStartYourFirstPost, image: nil))
+            } else {
+                emptyView.setLayout(layout: .label(title: EkoLocalizedStringSet.emptyTitleNoPosts, subtitle: nil, image: EkoIconSet.emptyNoPosts))
             }
         }
     }
