@@ -88,4 +88,10 @@ class CustomEventHandler: EkoEventHandler {
         }
     }
     
+    override func sharePostDidTap(from source: EkoViewController, postId: String) {
+        let urlString = "https://amity.co/posts/\(postId)"
+        guard let url = NSURL(string: urlString) else { return }
+        let viewController = EkoActivityController.make(activityItems: [url])
+        source.present(viewController, animated: true, completion: nil)
+    }
 }
