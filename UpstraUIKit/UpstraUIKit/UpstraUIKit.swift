@@ -28,6 +28,10 @@ public final class UpstraUIKitManager {
         UpstraUIKitManagerInternal.shared.unregisterDevice()
     }
     
+    public static func setConfig(_ config: [String: Any]) {
+        EkoClient.setEkoConfig(config)
+    }
+    
     // MARK: - Variable
     
     public static var client: EkoClient {
