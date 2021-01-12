@@ -30,6 +30,7 @@ protocol EkoPostFeedTableViewCellDelegate: class {
     func cell(_ cell: EkoPostFeedTableViewCell, didExpand label: EkoExpandableLabel)
     func cell(_ cell: EkoPostFeedTableViewCell, willCollapse label: EkoExpandableLabel)
     func cell(_ cell: EkoPostFeedTableViewCell, didCollapse label: EkoExpandableLabel)
+    func cellDidTapShare(_ cell: EkoPostFeedTableViewCell, postId: String)
 }
 
 public class EkoPostFeedTableViewCell: UITableViewCell, Nibbable {
@@ -91,7 +92,6 @@ public class EkoPostFeedTableViewCell: UITableViewCell, Nibbable {
         likeButton.setTitleColor(EkoColorSet.base.blend(.shade2), for: .normal)
         commentButton.tintColor = EkoColorSet.base.blend(.shade2)
         commentButton.setTitleColor(EkoColorSet.base.blend(.shade2), for: .normal)
-        shareButton.isHidden = true
         separatorView.backgroundColor = EkoColorSet.secondary.blend(.shade4)
         secondSeparatorView.backgroundColor = EkoColorSet.secondary.blend(.shade4)
         optionButton.tintColor = EkoColorSet.base
@@ -191,7 +191,8 @@ public class EkoPostFeedTableViewCell: UITableViewCell, Nibbable {
     }
     
     @IBAction func tapShare(_ sender: Any) {
-        assertionFailure()
+        guard let post = post else { return }
+        actionDelegate?.cellDidTapShare(self, postId: post.id)
     }
     
     @IBAction func tapOption(_ sender: Any) {
