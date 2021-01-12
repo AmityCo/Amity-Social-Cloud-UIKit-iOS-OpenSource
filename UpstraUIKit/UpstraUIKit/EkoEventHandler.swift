@@ -110,7 +110,7 @@ open class EkoEventHandler {
     }
     
     /// Event to share a post
-    /// It will be triggered when share button is tapped
+    /// It will be triggered when more option is tapped
     ///
     /// A default behavior is presenting a `EkoActivityController`
     open func sharePostDidTap(from source: EkoViewController, postId: String) {
