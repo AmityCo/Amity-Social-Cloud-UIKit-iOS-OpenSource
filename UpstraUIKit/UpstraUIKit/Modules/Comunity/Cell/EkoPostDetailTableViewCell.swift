@@ -16,7 +16,6 @@ protocol EkoPostDetailTableViewCellDelegate: class {
     func postTableViewCell(_ cell: EkoPostDetailTableViewCell, disTapCommunityName communityId: String)
     func postTableViewCell(_ cell: EkoPostDetailTableViewCell, didTapImage image: EkoImage)
     func postTableViewCell(_ cell: EkoPostDetailTableViewCell, didTapFile file: EkoFile)
-    func postTableViewCellDidTapShare(_ cell: EkoPostDetailTableViewCell)
 }
 
 public class EkoPostDetailTableViewCell: UITableViewCell, Nibbable {
@@ -92,6 +91,7 @@ public class EkoPostDetailTableViewCell: UITableViewCell, Nibbable {
         likeButton.setTitleColor(EkoColorSet.base.blend(.shade2), for: .normal)
         commentButton.tintColor = EkoColorSet.base.blend(.shade2)
         commentButton.setTitleColor(EkoColorSet.base.blend(.shade2), for: .normal)
+        shareButton.isHidden = true
         warningLabel.text = EkoLocalizedStringSet.PostDetail.joinCommunityMessage
         warningLabel.font = EkoFontSet.body
         warningLabel.textColor = EkoColorSet.base.blend(.shade2)
@@ -170,12 +170,13 @@ public class EkoPostDetailTableViewCell: UITableViewCell, Nibbable {
     }
     
     @IBAction func tapShare(_ sender: Any) {
-        actionDelegate?.postTableViewCellDidTapShare(self)
+        fatalError()
     }
     
     @IBAction func tapBottomPanel(_ sender: Any) {
         actionDelegate?.postTableViewCellDidTapComment(self)
     }
+    
 }
 
 extension EkoPostDetailTableViewCell: EkoFileTableViewDelegate {

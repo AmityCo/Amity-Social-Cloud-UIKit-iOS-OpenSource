@@ -109,12 +109,4 @@ open class EkoEventHandler {
         source.present(navigationController, animated: true, completion: nil)
     }
     
-    /// Event to share a post
-    /// It will be triggered when more option is tapped
-    ///
-    /// A default behavior is presenting a `EkoActivityController`
-    open func sharePostDidTap(from source: EkoViewController, postId: String) {
-        let viewController = EkoActivityController.make(activityItems: [postId])
-        source.present(viewController, animated: true, completion: nil)
-    }
 }

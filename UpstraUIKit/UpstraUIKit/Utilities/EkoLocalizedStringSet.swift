@@ -217,11 +217,5 @@ public struct EkoLocalizedStringSet {
         static let popoverMessageIsTooShort = EkoLocalizable.localizedString(forKey: "Message is too short.")
     }
     
-    // MARK: - Post Sharing type
-    struct SharingType {
-        static let shareToMyTimeline = EkoLocalizable.localizedString(forKey: "share_to_my_timeline")
-        static let shareToGroup = EkoLocalizable.localizedString(forKey: "share_to_group")
-        static let moreOptions = EkoLocalizable.localizedString(forKey: "more_options")
-    }
 }
 

@@ -446,28 +446,6 @@ extension EkoFeedViewController: EkoPostFeedTableViewCellDelegate {
         tableView.endUpdates()
     }
     
-    func cellDidTapShare(_ cell: EkoPostFeedTableViewCell, postId: String) {
-        let bottomSheet = BottomSheetViewController()
-        let shareToTimeline = TextItemOption(title: EkoLocalizedStringSet.SharingType.shareToMyTimeline)
-        let shareToGroup = TextItemOption(title: EkoLocalizedStringSet.SharingType.shareToGroup)
-        let moreOptions = TextItemOption(title: EkoLocalizedStringSet.SharingType.moreOptions)
-        let contentView = ItemOptionView<TextItemOption>()
-        contentView.configure(items: [shareToTimeline, shareToGroup, moreOptions], selectedItem: nil)
-        contentView.didSelectItem = { [weak bottomSheet] action in
-            bottomSheet?.dismissBottomSheet { [weak self] in
-                guard let strongSelf = self else { return }
-                switch action {
-                case moreOptions:
-                    EkoEventHandler.shared.sharePostDidTap(from: strongSelf, postId: postId)
-                default: break
-                }
-            }
-        }
-        bottomSheet.sheetContentView = contentView
-        bottomSheet.isTitleHidden = true
-        bottomSheet.modalPresentationStyle = .overFullScreen
-        present(bottomSheet, animated: false, completion: nil)
-    }
 }
 
 extension EkoFeedViewController: EkoFeedScreenViewModelDelegate {
