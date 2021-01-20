@@ -77,7 +77,7 @@ private extension EkoMessageListComposeBarViewController {
     }
     
     func setupTextComposeBarView() {
-        textComposeBarView.placeholder = EkoLocalizedStringSet.textMessagePlaceholder
+        textComposeBarView.placeholder = EkoLocalizedStringSet.textMessagePlaceholder.localizedString
         textComposeBarView.textViewDidChanged = { [weak self] text in
             self?.screenViewModel.action.setText(withText: text)
         }
@@ -118,7 +118,7 @@ private extension EkoMessageListComposeBarViewController {
         recordButton.titleLabel?.font = EkoFontSet.bodyBold
         recordButton.setTitleColor(EkoColorSet.base, for: .normal)
         recordButton.setImage(EkoIconSet.Chat.iconMic, for: .normal)
-        recordButton.setTitle(EkoLocalizedStringSet.MessageList.holdToRecord, for: .normal)
+        recordButton.setTitle(EkoLocalizedStringSet.MessageList.holdToRecord.localizedString, for: .normal)
         recordButton.tintColor = EkoColorSet.base
         recordButton.isHidden = true
         
@@ -215,7 +215,7 @@ extension EkoMessageListComposeBarViewController: UIPopoverPresentationControlle
     
     func showPopoverMessage() {
         let vc = EkoPopoverMessageViewController.make()
-        vc.text = EkoLocalizedStringSet.PopoverText.popoverMessageIsTooShort
+        vc.text = EkoLocalizedStringSet.PopoverText.popoverMessageIsTooShort.localizedString
         vc.modalPresentationStyle = .popover
         
         let popover = vc.popoverPresentationController

@@ -10,6 +10,10 @@ import UIKit
 private let NAME_MAX_LENGHT = 30
 private let ABOUT_MAX_LENGHT = 180
 
+protocol EkoCommunityProfileEditViewControllerDelegate: class {
+    func viewController(_ viewController: EkoCommunityProfileEditViewController, didFinishCreateCommunity communityId: String)
+}
+
 /// A view controller for providing community profile editor.
 public final class EkoCommunityProfileEditViewController: EkoViewController {
     
@@ -82,9 +86,11 @@ public final class EkoCommunityProfileEditViewController: EkoViewController {
     private var rightItem: UIBarButtonItem?
     private var viewType: ViewType!
     
+    weak var delegate: EkoCommunityProfileEditViewControllerDelegate?
+    
     public override func viewDidLoad() {
         super.viewDidLoad()
-        title = title ?? EkoLocalizedStringSet.createCommunityTitle
+        title = title ?? EkoLocalizedStringSet.createCommunityTitle.localizedString
         setupView()
     }
     
@@ -133,7 +139,7 @@ public final class EkoCommunityProfileEditViewController: EkoViewController {
     
     private func setupCommunityName() {
         
-        let fullString = NSMutableAttributedString(string: EkoLocalizedStringSet.createCommunityNameTitle,
+        let fullString = NSMutableAttributedString(string: EkoLocalizedStringSet.createCommunityNameTitle.localizedString,
                                                    attributes: [.font : EkoFontSet.title,
                                                                 .foregroundColor : EkoColorSet.base])
         fullString.setColorForText(textForAttribute: "*", withColor: EkoColorSet.alert)
@@ -152,18 +158,18 @@ public final class EkoCommunityProfileEditViewController: EkoViewController {
         communityNameTextfield.delegate = self
         communityNameTextfield.maxLength = NAME_MAX_LENGHT
         communityNameTextfield.returnKeyType = .done
-        communityNameTextfield.attributedPlaceholder = NSAttributedString(string: EkoLocalizedStringSet.createCommunityNamePlaceholder, attributes: [.foregroundColor : EkoColorSet.base.blend(.shade3)])
+        communityNameTextfield.attributedPlaceholder = NSAttributedString(string: EkoLocalizedStringSet.createCommunityNamePlaceholder.localizedString, attributes: [.foregroundColor : EkoColorSet.base.blend(.shade3)])
         
         nameLineView.backgroundColor = EkoColorSet.secondary.blend(.shade4)
         
         errorNameLabel.isHidden = true
-        errorNameLabel.text = EkoLocalizedStringSet.createCommunityNameAlreadyTaken
+        errorNameLabel.text = EkoLocalizedStringSet.createCommunityNameAlreadyTaken.localizedString
         errorNameLabel.textColor = EkoColorSet.alert
         errorNameLabel.font = EkoFontSet.caption
     }
     
     private func setupCommunityAbout() {
-        communityAboutTitleLabel.text = EkoLocalizedStringSet.createCommunityAboutTitle
+        communityAboutTitleLabel.text = EkoLocalizedStringSet.createCommunityAboutTitle.localizedString
         communityAboutTitleLabel.font = EkoFontSet.title
         communityAboutTitleLabel.textColor = EkoColorSet.base
         
@@ -173,7 +179,7 @@ public final class EkoCommunityProfileEditViewController: EkoViewController {
         
         communityAboutTextView.maxLength = ABOUT_MAX_LENGHT
         communityAboutTextView.font = EkoFontSet.body
-        communityAboutTextView.placeholder = EkoLocalizedStringSet.createCommunityAboutPlaceholder
+        communityAboutTextView.placeholder = EkoLocalizedStringSet.createCommunityAboutPlaceholder.localizedString
         communityAboutTextView.placeholderColor = EkoColorSet.base.blend(.shade3)
         
         communityAboutTextView.customTextViewDelegate = self
@@ -185,12 +191,12 @@ public final class EkoCommunityProfileEditViewController: EkoViewController {
     }
     
     private func setupCommunityCategory() {
-        communityCategoryTitleLabel.text = EkoLocalizedStringSet.createCommunityCategoryTitle
+        communityCategoryTitleLabel.text = EkoLocalizedStringSet.createCommunityCategoryTitle.localizedString
         communityCategoryTitleLabel.font = EkoFontSet.title
         communityCategoryTitleLabel.textColor = EkoColorSet.base
         
         communityCategoryLabel.font = EkoFontSet.body
-        communityCategoryLabel.text = EkoLocalizedStringSet.createCommunityCategoryPlaceholder
+        communityCategoryLabel.text = EkoLocalizedStringSet.createCommunityCategoryPlaceholder.localizedString
         communityCategoryLabel.textColor = EkoColorSet.base.blend(.shade3)
         
         commnuityCategoryArrowImageView.image = EkoIconSet.iconArrowRight
@@ -206,17 +212,17 @@ public final class EkoCommunityProfileEditViewController: EkoViewController {
             communityCategoryLabel.textColor = EkoColorSet.base
         } else {
             communityCategoryLabel.font = EkoFontSet.body
-            communityCategoryLabel.text = EkoLocalizedStringSet.createCommunityCategoryPlaceholder
+            communityCategoryLabel.text = EkoLocalizedStringSet.createCommunityCategoryPlaceholder.localizedString
             communityCategoryLabel.textColor = EkoColorSet.base.blend(.shade3)
         }
     }
     
     private func setupCommunityAdminRule() {
-        communityAdminRuleTitleLabel.text = EkoLocalizedStringSet.createCommunityAdminRuleTitle
+        communityAdminRuleTitleLabel.text = EkoLocalizedStringSet.createCommunityAdminRuleTitle.localizedString
         communityAdminRuleTitleLabel.textColor = EkoColorSet.base
         communityAdminRuleTitleLabel.font = EkoFontSet.title
         
-        communityAdminRuleDescLabel.text = EkoLocalizedStringSet.createCommunityAdminRuleDesc
+        communityAdminRuleDescLabel.text = EkoLocalizedStringSet.createCommunityAdminRuleDesc.localizedString
         communityAdminRuleDescLabel.textColor = EkoColorSet.base.blend(.shade1)
         communityAdminRuleDescLabel.font = EkoFontSet.caption
         communityAdminRuleDescLabel.numberOfLines = 0
@@ -225,11 +231,11 @@ public final class EkoCommunityProfileEditViewController: EkoViewController {
     }
     
     private func setupCommunityTypes() {
-        communityTypePublicTitleLabel.text = EkoLocalizedStringSet.createCommunityPublicTitle
+        communityTypePublicTitleLabel.text = EkoLocalizedStringSet.createCommunityPublicTitle.localizedString
         communityTypePublicTitleLabel.textColor = EkoColorSet.base
         communityTypePublicTitleLabel.font = EkoFontSet.title
         
-        communityTypePublicDescLabel.text = EkoLocalizedStringSet.createCommunityPublicDesc
+        communityTypePublicDescLabel.text = EkoLocalizedStringSet.createCommunityPublicDesc.localizedString
         communityTypePublicDescLabel.textColor = EkoColorSet.base.blend(.shade1)
         communityTypePublicDescLabel.font = EkoFontSet.caption
         communityTypePublicDescLabel.numberOfLines = 0
@@ -237,11 +243,11 @@ public final class EkoCommunityProfileEditViewController: EkoViewController {
         communityTypePublicRadioImageView.image = EkoIconSet.iconRadioOn
         
         
-        communityTypePrivateTitleLabel.text = EkoLocalizedStringSet.createCommunityPrivateTitle
+        communityTypePrivateTitleLabel.text = EkoLocalizedStringSet.createCommunityPrivateTitle.localizedString
         communityTypePrivateTitleLabel.textColor = EkoColorSet.base
         communityTypePrivateTitleLabel.font = EkoFontSet.title
         
-        communityTypePrivateDescLabel.text = EkoLocalizedStringSet.createCommunityPrivateDesc
+        communityTypePrivateDescLabel.text = EkoLocalizedStringSet.createCommunityPrivateDesc.localizedString
         communityTypePrivateDescLabel.textColor = EkoColorSet.base.blend(.shade1)
         communityTypePrivateDescLabel.font = EkoFontSet.caption
         communityTypePrivateDescLabel.numberOfLines = 0
@@ -259,7 +265,7 @@ public final class EkoCommunityProfileEditViewController: EkoViewController {
         if case .edit = viewType {
             communityAddMemberView.isHidden = true
         } else {
-            let fullString = NSMutableAttributedString(string: EkoLocalizedStringSet.createCommunityAddMemberTitle, attributes: [.font : EkoFontSet.title,
+            let fullString = NSMutableAttributedString(string: EkoLocalizedStringSet.createCommunityAddMemberTitle.localizedString, attributes: [.font : EkoFontSet.title,
                                                                                                                         .foregroundColor : EkoColorSet.base])
             fullString.setColorForText(textForAttribute: "*", withColor: EkoColorSet.alert)
             
@@ -278,7 +284,7 @@ public final class EkoCommunityProfileEditViewController: EkoViewController {
         if case .edit = viewType {
             createCommunityButton.isHidden = true
         }
-        createCommunityButton.setTitle(EkoLocalizedStringSet.createCommunityButtonCreate, for: .normal)
+        createCommunityButton.setTitle(EkoLocalizedStringSet.createCommunityButtonCreate.localizedString, for: .normal)
         createCommunityButton.titleLabel?.font = EkoFontSet.bodyBold
         createCommunityButton.setTitleColor(EkoColorSet.baseInverse, for: .normal)
         createCommunityButton.setTitleColor(EkoColorSet.baseInverse, for: .disabled)
@@ -290,12 +296,13 @@ public final class EkoCommunityProfileEditViewController: EkoViewController {
     
     private func setupUpdateButton() {
         if case .edit = viewType {
-            rightItem = UIBarButtonItem(title: EkoLocalizedStringSet.save, style: .plain, target: self, action: #selector(updateProfile))
+            rightItem = UIBarButtonItem(title: EkoLocalizedStringSet.save.localizedString, style: .plain, target: self, action: #selector(updateProfile))
             rightItem?.tintColor = EkoColorSet.primary
             rightItem?.isEnabled = false
             navigationItem.rightBarButtonItem = rightItem
         }
     }
+    
 }
 
 private extension EkoCommunityProfileEditViewController {
@@ -307,8 +314,8 @@ private extension EkoCommunityProfileEditViewController {
     
     @IBAction func choosePhotoTap() {
         let bottomSheet = BottomSheetViewController()
-        let cameraOption = TextItemOption(title: EkoLocalizedStringSet.camera)
-        let galleryOption = TextItemOption(title: EkoLocalizedStringSet.imageGallery)
+        let cameraOption = TextItemOption(title: EkoLocalizedStringSet.camera.localizedString)
+        let galleryOption = TextItemOption(title: EkoLocalizedStringSet.imageGallery.localizedString)
         let contentView = ItemOptionView<TextItemOption>()
         contentView.configure(items: [cameraOption, galleryOption], selectedItem: nil)
         contentView.didSelectItem = { [weak bottomSheet] action in
@@ -466,13 +473,15 @@ extension EkoCommunityProfileEditViewController: EkoCreateCommunityScreenViewMod
         case .createSuccess(let communityId):
             EkoHUD.hide { [weak self] in
                 guard let strongSelf = self else { return }
-                EkoEventHandler.shared.communityDidTap(from: strongSelf, communityId: communityId)
+                strongSelf.dismiss(animated: true) {
+                    strongSelf.delegate?.viewController(strongSelf, didFinishCreateCommunity: communityId)
+                }
             }
         case .onDismiss(let isChange):
             if isChange {
-                let alert = UIAlertController(title: EkoLocalizedStringSet.createCommunityAlertTitle, message: EkoLocalizedStringSet.createCommunityAlertDesc, preferredStyle: .alert)
-                alert.addAction(UIAlertAction(title: EkoLocalizedStringSet.cancel, style: .cancel, handler: nil))
-                alert.addAction(UIAlertAction(title: EkoLocalizedStringSet.leave, style: .destructive, handler: { [weak self] _ in
+                let alert = UIAlertController(title: EkoLocalizedStringSet.createCommunityAlertTitle.localizedString, message: EkoLocalizedStringSet.createCommunityAlertDesc.localizedString, preferredStyle: .alert)
+                alert.addAction(UIAlertAction(title: EkoLocalizedStringSet.cancel.localizedString, style: .cancel, handler: nil))
+                alert.addAction(UIAlertAction(title: EkoLocalizedStringSet.leave.localizedString, style: .destructive, handler: { [weak self] _ in
                     self?.dismiss(animated: true, completion: nil)
                 }))
                 present(alert, animated: true, completion: nil)

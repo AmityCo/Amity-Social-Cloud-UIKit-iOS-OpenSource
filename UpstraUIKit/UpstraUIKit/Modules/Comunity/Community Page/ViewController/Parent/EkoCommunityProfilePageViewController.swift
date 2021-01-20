@@ -8,11 +8,6 @@
 
 import UIKit
 
-public enum EkoCommunityProfilePageViewType {
-    case present
-    case navigation
-}
-
 public class EkoCommunityProfilePageSettings {
     public init() { }
     public var shouldChatButtonHide: Bool = true
@@ -22,7 +17,6 @@ public class EkoCommunityProfilePageSettings {
 public final class EkoCommunityProfilePageViewController: EkoProfileViewController {
     
     // MARK: - Properties
-    private var viewType: EkoCommunityProfilePageViewType = .navigation
     private var settings: EkoCommunityProfilePageSettings!
     private var header: EkoCommunityProfileHeaderViewController!
     private var bottom: EkoCommunityFeedViewController!
@@ -55,29 +49,47 @@ public final class EkoCommunityProfilePageViewController: EkoProfileViewControll
         return topInset
     }
     
-    public static func make(withCommunityId communityId: String, settings: EkoCommunityProfilePageSettings = EkoCommunityProfilePageSettings(), _ viewType: EkoCommunityProfilePageViewType = .navigation) -> EkoCommunityProfilePageViewController {
+    public static func make(withCommunityId communityId: String, settings: EkoCommunityProfilePageSettings = EkoCommunityProfilePageSettings()) -> EkoCommunityProfilePageViewController {
         let viewModel: EkoCommunityProfileScreenViewModelType = EkoCommunityProfileScreenViewModel(communityId: communityId)
         let vc = EkoCommunityProfilePageViewController()
         vc.screenViewModel = viewModel
         vc.header = EkoCommunityProfileHeaderViewController.make(with: viewModel, settings: settings)
         vc.bottom = EkoCommunityFeedViewController.make(communityId: communityId)
         vc.settings = settings
-        vc.viewType = viewType
         return vc
     }
     
     override func didTapLeftBarButton() {
-        switch viewType {
-        case .present:
-            let transition = CATransition()
-            transition.duration = 0.3
-            transition.type = .push
-            transition.subtype = .fromLeft
-            transition.timingFunction = CAMediaTimingFunction(name: .easeInEaseOut)
-            view.window?.layer.add(transition, forKey: kCATransition)
-            dismiss(animated: false, completion: nil)
-        case .navigation:
-            navigationController?.popViewController(animated: true)
+        if let vc = navigationController?.previousViewController() as? EkoCommunityProfileEditViewController {
+            // if EkoCommunityProfilePage navigate from EkoCommunityProfileEditViewController
+            // and EkoCommunityProfileEditViewController navigate from another vc
+            // should be popToRootViewController
+            if (vc.navigationController?.viewControllers.count ?? 0) > 2 {
+                navigationController?.popToRootViewController(animated: true)
+            } else {
+                // if EkoCommunityProfilePage navigate from EkoCommunityProfileEditViewController
+                // and EkoCommunityProfilePage present from another vc
+                // should be dismiss
+                let transition = CATransition()
+                transition.duration = 0.3
+                transition.type = .push
+                transition.subtype = .fromLeft
+                transition.timingFunction = CAMediaTimingFunction(name: .easeInEaseOut)
+                view.window?.layer.add(transition, forKey: kCATransition)
+                dismiss(animated: false)
+            }
+        } else {
+            
+            if navigationController != nil {
+                // if navigate from another vc
+                // should be navigation back
+                navigationController?.popViewController(animated: true)
+            } else {
+                // if present from another vc
+                // should be dismiss
+                dismiss(animated: true)
+            }
+            
         }
     }
     
@@ -140,6 +152,7 @@ extension EkoCommunityProfilePageViewController: EkoCommunityProfileScreenViewMo
             navigationController?.pushViewController(vc, animated: true)
         case .editProfile:
             let vc = EkoCommunityProfileEditViewController.make(viewType: .edit(communityId: viewModel.communityId))
+            vc.delegate = self
             let nav = UINavigationController(rootViewController: vc)
             nav.modalPresentationStyle = .fullScreen
             present(nav, animated: true, completion: nil)
@@ -165,7 +178,15 @@ extension EkoCommunityProfilePageViewController: EkoCommunityProfileScreenViewMo
     
     func screenViewModelFailure() {
         EkoHUD.hide {
-            EkoHUD.show(.error(message: EkoLocalizedStringSet.HUD.somethingWentWrong))
+            EkoHUD.show(.error(message: EkoLocalizedStringSet.HUD.somethingWentWrong.localizedString))
         }
     }
+}
+
+extension EkoCommunityProfilePageViewController: EkoCommunityProfileEditViewControllerDelegate {
+    
+    func viewController(_ viewController: EkoCommunityProfileEditViewController, didFinishCreateCommunity communityId: String) {
+        EkoEventHandler.shared.communityDidTap(from: self, communityId: communityId)
+    }
+    
 }

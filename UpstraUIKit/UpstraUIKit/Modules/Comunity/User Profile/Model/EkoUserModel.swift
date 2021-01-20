@@ -17,7 +17,7 @@ struct EkoUserModel {
     
     init(user: EkoUser) {
         userId = user.userId
-        displayName = user.displayName ?? EkoLocalizedStringSet.anonymous
+        displayName = user.displayName ?? EkoLocalizedStringSet.anonymous.localizedString
         avatarFileId = user.avatarFileId ?? ""
         about = user.userDescription
     }

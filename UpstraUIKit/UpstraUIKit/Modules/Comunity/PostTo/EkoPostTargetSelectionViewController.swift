@@ -20,7 +20,7 @@ final public class EkoPostTargetSelectionViewController: EkoViewController {
     
     private init() {
         super.init(nibName: nil, bundle: nil)
-        title = EkoLocalizedStringSet.postToTitle
+        title = EkoLocalizedStringSet.postToTitle.localizedString
     }
     
     required init?(coder: NSCoder) {
@@ -113,7 +113,7 @@ extension EkoPostTargetSelectionViewController: UITableViewDelegate {
         let headerView = UIView(frame: CGRect(x: 0.0, y: 0.0, width: tableView.frame.width, height: 44))
         headerView.backgroundColor = EkoColorSet.backgroundColor
         let label = UILabel(frame: CGRect(x: 16.0, y: 0.0, width: headerView.frame.width - 32.0, height: 44))
-        label.text = EkoLocalizedStringSet.myCommunityTitle
+        label.text = EkoLocalizedStringSet.myCommunityTitle.localizedString
         label.textColor = EkoColorSet.base.blend(.shade3)
         label.font = EkoFontSet.body
         headerView.addSubview(label)

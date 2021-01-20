@@ -16,7 +16,7 @@ public class EkoCommunityHomePageViewController: EkoPageViewController {
     
     private init() {
         super.init(nibName: EkoCommunityHomePageViewController.identifier, bundle: UpstraUIKitManager.bundle)
-        title = EkoLocalizedStringSet.communityHomeTitle
+        title = EkoLocalizedStringSet.communityHomeTitle.localizedString
     }
     
     required init?(coder: NSCoder) {
@@ -33,8 +33,8 @@ public class EkoCommunityHomePageViewController: EkoPageViewController {
     }
     
     override func viewControllers(for pagerTabStripController: EkoPagerTabViewController) -> [UIViewController] {
-        newsFeedVC.pageTitle = EkoLocalizedStringSet.newsfeedTitle
-        exploreVC.pageTitle = EkoLocalizedStringSet.exploreTitle
+        newsFeedVC.pageTitle = EkoLocalizedStringSet.newsfeedTitle.localizedString
+        exploreVC.pageTitle = EkoLocalizedStringSet.exploreTitle.localizedString
         return [newsFeedVC, exploreVC]
     }
     

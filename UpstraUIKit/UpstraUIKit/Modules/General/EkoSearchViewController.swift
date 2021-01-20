@@ -111,7 +111,7 @@ class EkoSearchViewController: EkoViewController {
     private func setupSearchBar() {
         searchController.searchBar.delegate = self
         searchController.obscuresBackgroundDuringPresentation = false
-        searchController.searchBar.placeholder = EkoLocalizedStringSet.search
+        searchController.searchBar.placeholder = EkoLocalizedStringSet.search.localizedString
         searchController.searchBar.tintColor = EkoColorSet.base
         searchController.searchBar.returnKeyType = .done
         

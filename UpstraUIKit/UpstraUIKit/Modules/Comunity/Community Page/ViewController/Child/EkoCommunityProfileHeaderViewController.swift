@@ -71,6 +71,7 @@ final class EkoCommunityProfileHeaderViewController: EkoViewController {
         categoryLabel.text = ""
         categoryLabel.font = EkoFontSet.caption
         categoryLabel.textColor = EkoColorSet.base.blend(.shade1)
+        categoryLabel.numberOfLines = 1
     }
     
     private func setupPostButton() {
@@ -128,7 +129,7 @@ final class EkoCommunityProfileHeaderViewController: EkoViewController {
     
     private func updatePostsCount(with postCount: Int) {
         let value = postCount.formatUsingAbbrevation()
-        let string = String.localizedStringWithFormat(EkoLocalizedStringSet.communityDetailPostCount, value)
+        let string = String.localizedStringWithFormat(EkoLocalizedStringSet.communityDetailPostCount.localizedString, value)
         postsButton.attributedString.setTitle(string)
         postsButton.attributedString.setBoldText(for: [value])
         postsButton.setAttributedTitle()
@@ -136,7 +137,7 @@ final class EkoCommunityProfileHeaderViewController: EkoViewController {
     
     private func updateMembersCount(with memberCount: Int) {
         let value = memberCount.formatUsingAbbrevation()
-        let string = String.localizedStringWithFormat(EkoLocalizedStringSet.communityDetailMemberCount, value)
+        let string = String.localizedStringWithFormat(EkoLocalizedStringSet.communityDetailMemberCount.localizedString, value)
         membersButton.attributedString.setTitle(string)
         membersButton.attributedString.setBoldText(for: [value])
         membersButton.setAttributedTitle()
@@ -175,7 +176,7 @@ private extension EkoCommunityProfileHeaderViewController {
         switch screenViewModel.dataSource.getCommunityJoinStatus {
         case .notJoin:
             chatButton.isHidden = true
-            actionButton.setTitle(EkoLocalizedStringSet.communityDetailJoinButton, for: .normal)
+            actionButton.setTitle(EkoLocalizedStringSet.communityDetailJoinButton.localizedString, for: .normal)
             actionButton.setImage(EkoIconSet.iconAdd, position: .left)
             actionButton.tintColor = EkoColorSet.baseInverse
             actionButton.backgroundColor = EkoColorSet.primary
@@ -184,7 +185,7 @@ private extension EkoCommunityProfileHeaderViewController {
             actionButton.isHidden = false
         case .joinNotCreator:
             chatButton.isHidden = settings.shouldChatButtonHide
-            actionButton.setTitle(EkoLocalizedStringSet.communityDetailMessageButton, for: .normal)
+            actionButton.setTitle(EkoLocalizedStringSet.communityDetailMessageButton.localizedString, for: .normal)
             actionButton.setImage(EkoIconSet.iconChat2, position: .left)
             actionButton.tintColor = EkoColorSet.secondary
             actionButton.backgroundColor = EkoColorSet.backgroundColor
@@ -195,7 +196,7 @@ private extension EkoCommunityProfileHeaderViewController {
             actionButton.isHidden = true
         case .joinAndCreator, .joinAndCreatorAndModerator:
             chatButton.isHidden = settings.shouldChatButtonHide
-            actionButton.setTitle(EkoLocalizedStringSet.communityDetailEditProfileButton, for: .normal)
+            actionButton.setTitle(EkoLocalizedStringSet.communityDetailEditProfileButton.localizedString, for: .normal)
             actionButton.setImage(EkoIconSet.iconEdit, position: .left)
             actionButton.tintColor = EkoColorSet.secondary
             actionButton.backgroundColor = EkoColorSet.backgroundColor

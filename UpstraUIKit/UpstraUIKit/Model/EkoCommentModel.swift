@@ -28,7 +28,7 @@ struct EkoCommentModel {
     
     init(comment: EkoComment) {
         id = comment.commentId
-        displayName = comment.user?.displayName ?? EkoLocalizedStringSet.anonymous
+        displayName = comment.user?.displayName ?? EkoLocalizedStringSet.anonymous.localizedString
         fileId = comment.user?.avatarFileId ?? ""
         text = comment.data?["text"] as? String ?? ""
         isDeleted = comment.isDeleted

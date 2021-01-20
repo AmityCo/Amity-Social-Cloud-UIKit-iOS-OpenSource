@@ -26,8 +26,8 @@ extension String {
         return boldString
     }
     
-    var digits: String {
-        return components(separatedBy: CharacterSet.decimalDigits.inverted)
-            .joined()
+    var localizedString: String {
+            return NSLocalizedString(self, tableName: "EkoLocalizable", bundle: UpstraUIKitManager.bundle, value: "", comment: "")
     }
+    
 }

@@ -14,7 +14,12 @@ final class EkoTrendingCommunityTableViewCell: UITableViewCell, Nibbable {
     @IBOutlet private var numberLabel: UILabel!
     @IBOutlet private var displayNameLabel: UILabel!
     @IBOutlet private var iconImageView: UIImageView!
-    @IBOutlet private var metadataLabel: UILabel!
+    @IBOutlet private var categoryLabel: UILabel!
+    @IBOutlet private var membersLabel: UILabel!
+    
+    var isCategoryLabelTruncated: Bool {
+        return categoryLabel.isTruncated
+    }
     
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -26,21 +31,23 @@ final class EkoTrendingCommunityTableViewCell: UITableViewCell, Nibbable {
         avatarView.image = nil
         displayNameLabel.text = nil
         iconImageView.image = nil
-        metadataLabel.text = nil
+        categoryLabel.text = nil
         numberLabel.text = nil
+        membersLabel.text = nil
     }
     
     func display(with model: EkoCommunityModel) {
         avatarView.setImage(withImageId: model.avatarId, placeholder: EkoIconSet.defaultCommunity)
         displayNameLabel.text = model.displayName
-        metadataLabel.text = String.localizedStringWithFormat(EkoLocalizedStringSet.trendingCommunityCategoryAndMember, model.category, model.membersCount.formatUsingAbbrevation())
+        categoryLabel.text = model.category
+        
+        membersLabel.text = String.localizedStringWithFormat(EkoLocalizedStringSet.trendingCommunityCategoryAndMember.localizedString, model.membersCount.formatUsingAbbrevation())
         iconImageView.isHidden = !model.isOfficial
     }
     
     func displayNumber(with indexPath: IndexPath) {
         numberLabel.text = "\(indexPath.row + 1)"
     }
-    
 }
 
 // MARK: - Setup View
@@ -74,8 +81,12 @@ private extension EkoTrendingCommunityTableViewCell {
     }
     
     func setupMetadata() {
-        metadataLabel.text = ""
-        metadataLabel.textColor = EkoColorSet.base.blend(.shade1)
-        metadataLabel.font = EkoFontSet.caption
+        categoryLabel.text = ""
+        categoryLabel.textColor = EkoColorSet.base.blend(.shade1)
+        categoryLabel.font = EkoFontSet.caption
+        
+        membersLabel.text = ""
+        membersLabel.textColor = EkoColorSet.base.blend(.shade1)
+        membersLabel.font = EkoFontSet.caption
     }
 }

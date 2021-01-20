@@ -75,11 +75,11 @@ class EkoPostDetailCompostView: UIView {
         textView.translatesAutoresizingMaskIntoConstraints = false
         textView.backgroundColor = EkoColorSet.secondary.blend(.shade4)
         textView.padding = UIEdgeInsets(top: 8, left: 8, bottom: 8, right: 40)
-        textView.placeholder = EkoLocalizedStringSet.PostDetail.textPlaceholder
+        textView.placeholder = EkoLocalizedStringSet.PostDetail.textPlaceholder.localizedString
         textView.customTextViewDelegate = self
         textView.font = EkoFontSet.body
         postButton.translatesAutoresizingMaskIntoConstraints = false
-        postButton.setTitle(EkoLocalizedStringSet.post, for: .normal)
+        postButton.setTitle(EkoLocalizedStringSet.post.localizedString, for: .normal)
         postButton.setTitleColor(EkoColorSet.primary, for: .normal)
         postButton.setTitleColor(EkoColorSet.primary.blend(.shade2), for: .disabled)
         postButton.addTarget(self, action: #selector(postButtonTap), for: .touchUpInside)

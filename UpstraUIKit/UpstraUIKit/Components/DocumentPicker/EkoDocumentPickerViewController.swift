@@ -98,7 +98,7 @@ extension EkoFilePicker: UIDocumentPickerDelegate{
         #warning("Localized")
         guard fileSizes.filter({ $0 > Constant.maximumSizeOfIFiles}).isEmpty else {
             let alertController = UIAlertController(title: "Unable to attached the file", message: "The selected file is larger than 1GB. Plese select a new file.", preferredStyle: .alert)
-            let cancelAction = UIAlertAction(title: EkoLocalizedStringSet.ok, style: .cancel, handler: nil)
+            let cancelAction = UIAlertAction(title: EkoLocalizedStringSet.ok.localizedString, style: .cancel, handler: nil)
             alertController.addAction(cancelAction)
             presentationController?.present(alertController, animated: true, completion: nil)
             return
@@ -108,7 +108,7 @@ extension EkoFilePicker: UIDocumentPickerDelegate{
         guard sumNumberOfItems <= Constant.numberOfIFiles else {
             #warning("Localized")
             let alertController = UIAlertController(title: "Maximum number of files exceeded", message: "Maximum number of files that can be uploaded is \(Constant.numberOfIFiles). The rest files will be discarded.", preferredStyle: .alert)
-            let cancelAction = UIAlertAction(title: EkoLocalizedStringSet.ok, style: .cancel, handler: nil)
+            let cancelAction = UIAlertAction(title: EkoLocalizedStringSet.ok.localizedString, style: .cancel, handler: nil)
             alertController.addAction(cancelAction)
             presentationController?.present(alertController, animated: true, completion: nil)
             return

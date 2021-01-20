@@ -25,7 +25,7 @@ final class EkoSearchCommunityViewController: EkoSearchViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         definesPresentationContext = true
-        emptyText = EkoLocalizedStringSet.searchCommunityNotFound
+        emptyText = EkoLocalizedStringSet.searchCommunityNotFound.localizedString
         tableView.register(EkoMyCommunityTableViewCell.nib, forCellReuseIdentifier: EkoMyCommunityTableViewCell.identifier)
         tableView.delegate = self
         tableView.dataSource = self
@@ -55,7 +55,7 @@ final class EkoSearchCommunityViewController: EkoSearchViewController {
 
     private func setupView() {
         if searchType == .inTableView {
-            title = EkoLocalizedStringSet.myCommunityTitle
+            title = EkoLocalizedStringSet.myCommunityTitle.localizedString
             let rightItem = UIBarButtonItem(image: EkoIconSet.iconAdd, style: .plain, target: self, action: #selector(createCommunityTap))
             rightItem.tintColor = EkoColorSet.base
             navigationItem.rightBarButtonItem = rightItem
@@ -140,6 +140,7 @@ private extension EkoSearchCommunityViewController {
                 break
             case .create:
                 let vc = EkoCommunityProfileEditViewController.make(viewType: .create)
+                vc.delegate = self
                 let nav = UINavigationController(rootViewController: vc)
                 nav.modalPresentationStyle = .fullScreen
                 strongSelf.present(nav, animated: true, completion: nil)
@@ -156,4 +157,12 @@ private extension EkoSearchCommunityViewController {
             }
         }
     }
+}
+
+extension EkoSearchCommunityViewController: EkoCommunityProfileEditViewControllerDelegate {
+    
+    func viewController(_ viewController: EkoCommunityProfileEditViewController, didFinishCreateCommunity communityId: String) {
+        EkoEventHandler.shared.communityDidTap(from: self, communityId: communityId)
+    }
+    
 }

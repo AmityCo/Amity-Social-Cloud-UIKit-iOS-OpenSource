@@ -19,7 +19,7 @@ final class EkoSelectMemberModel: Equatable {
     var displayName: String?
     var isSelected: Bool = false
     let avatarId: String
-    let defaultDisplayName: String = EkoLocalizedStringSet.anonymous
+    let defaultDisplayName: String = EkoLocalizedStringSet.anonymous.localizedString
     var isCurrnetUser: Bool {
         return userId == UpstraUIKitManagerInternal.shared.client.currentUserId
     }

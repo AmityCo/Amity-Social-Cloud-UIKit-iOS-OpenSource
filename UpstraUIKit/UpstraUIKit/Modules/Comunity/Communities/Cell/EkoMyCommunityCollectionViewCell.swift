@@ -45,7 +45,7 @@ final class EkoMyCommunityCollectionViewCell: UICollectionViewCell {
     }
     
     func seeAll() {
-        displayNameLabel.text = EkoLocalizedStringSet.myCommunitySeeAll
+        displayNameLabel.text = EkoLocalizedStringSet.myCommunitySeeAll.localizedString
         avatarView.image = nil
         avatarView.placeholder = EkoIconSet.iconArrowRight1
         avatarView.backgroundColor = EkoColorSet.secondary.blend(.shade4)

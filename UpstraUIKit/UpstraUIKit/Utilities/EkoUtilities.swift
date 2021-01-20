@@ -11,7 +11,7 @@ import UIKit
 struct EkoUtilities {
     static func showError() {
         let alertController = UIAlertController(title: "Something wrong", message: "Please try again", preferredStyle: .alert)
-        alertController.addAction(UIAlertAction(title: EkoLocalizedStringSet.ok, style: .default, handler: nil))
+        alertController.addAction(UIAlertAction(title: EkoLocalizedStringSet.ok.localizedString, style: .default, handler: nil))
         UIApplication.topViewController()?.present(alertController, animated: true, completion: nil)
     }
     

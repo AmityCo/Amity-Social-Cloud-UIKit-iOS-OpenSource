@@ -29,7 +29,7 @@ import Photos
     public weak var imagePickerDelegate: EkoImagePickerControllerDelegate?
     public var settings: Settings = Settings()
     public var doneButton: UIBarButtonItem = UIBarButtonItem(title: "", style: .done, target: nil, action: nil)
-    public var cancelButton: UIBarButtonItem = UIBarButtonItem(barButtonSystemItem: .cancel, target: nil, action: nil)
+    public var cancelButton: UIBarButtonItem = UIBarButtonItem(barButtonSystemItem: .stop, target: nil, action: nil)
     public var albumButton: UIButton = UIButton(type: .custom)
     public var selectedAssets: [PHAsset] {
         get {
@@ -41,7 +41,7 @@ import Photos
     // Figure out why. Until then, expose the variable for users to set to whatever they want it localized to
     // TODO: Fix this ^^
     /// Title to use for button
-    public var doneButtonTitle = EkoLocalizedStringSet.done
+    public var doneButtonTitle = EkoLocalizedStringSet.done.localizedString
 
     // MARK: Internal properties
     var assetStore: AssetStore
@@ -122,7 +122,6 @@ import Photos
         albumButton.semanticContentAttribute = .forceRightToLeft // To set image to the right without having to calculate insets/constraints.
         albumButton.addTarget(self, action: #selector(EkoImagePickerController.albumsButtonPressed(_:)), for: .touchUpInside)
         albumButton.tintColor = EkoColorSet.secondary
-        firstViewController?.navigationItem.titleView = albumButton
 
         doneButton.target = self
         doneButton.action = #selector(doneButtonPressed(_:))

@@ -121,18 +121,18 @@ extension EkoSelectMemberListScreenViewModel {
     func selectUser(at indexPath: IndexPath) {
         selectUserContrller?.selectUser(searchUsers: searchUsers, users: &users, storeUsers: &storeUsers, at: indexPath, isSearch: isSearch)
         if storeUsers.count == 0 {
-            delegate?.screenViewModelDidSelectUser(title: EkoLocalizedStringSet.selectMemberListTitle, isEmpty: true)
+            delegate?.screenViewModelDidSelectUser(title: EkoLocalizedStringSet.selectMemberListTitle.localizedString, isEmpty: true)
         } else {
-            delegate?.screenViewModelDidSelectUser(title: String.localizedStringWithFormat(EkoLocalizedStringSet.selectMemberListSelectedTitle, "\(storeUsers.count)"), isEmpty: false)
+            delegate?.screenViewModelDidSelectUser(title: String.localizedStringWithFormat(EkoLocalizedStringSet.selectMemberListSelectedTitle.localizedString, "\(storeUsers.count)"), isEmpty: false)
         }
     }
     
     func deselectUser(at indexPath: IndexPath) {
         selectUserContrller?.deselect(users: &users, storeUsers: &storeUsers, at: indexPath)
         if storeUsers.count == 0 {
-            delegate?.screenViewModelDidSelectUser(title: EkoLocalizedStringSet.selectMemberListTitle, isEmpty: true)
+            delegate?.screenViewModelDidSelectUser(title: EkoLocalizedStringSet.selectMemberListTitle.localizedString, isEmpty: true)
         } else {
-            delegate?.screenViewModelDidSelectUser(title: String.localizedStringWithFormat(EkoLocalizedStringSet.selectMemberListSelectedTitle, "\(storeUsers.count)"), isEmpty: false)
+            delegate?.screenViewModelDidSelectUser(title: String.localizedStringWithFormat(EkoLocalizedStringSet.selectMemberListSelectedTitle.localizedString, "\(storeUsers.count)"), isEmpty: false)
         }
     }
     

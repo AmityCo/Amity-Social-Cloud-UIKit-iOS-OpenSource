@@ -71,4 +71,14 @@ extension UILabel {
             attributedText = completeText
         }
     }
+
+    var isTruncated: Bool {
+        guard let text = text else {
+            return false
+        }
+        
+        let size = CGSize(width: frame.size.width, height: .greatestFiniteMagnitude)
+        let textSize = NSString(string: text).boundingRect(with: size, options: .usesLineFragmentOrigin, attributes: [.font: font],context: nil).size
+        return textSize.height > bounds.size.height
+    }
 }

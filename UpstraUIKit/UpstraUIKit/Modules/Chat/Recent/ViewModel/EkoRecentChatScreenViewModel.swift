@@ -19,7 +19,7 @@ struct EkoChannelModel {
     
     init(object: EkoChannel) {
         self.channelId = object.channelId
-        self.displayName = object.displayName ?? EkoLocalizedStringSet.anonymous
+        self.displayName = object.displayName ?? EkoLocalizedStringSet.anonymous.localizedString
         self.memberCount = object.memberCount
         self.unreadCount = object.unreadCount
         self.lastActivity = object.lastActivity

@@ -36,7 +36,7 @@ final public class EkoCommunityFeedViewController: EkoProfileBottomViewControlle
 
     override func viewControllers(for pagerTabStripController: EkoPagerTabViewController) -> [UIViewController] {
         timelineVC = EkoFeedViewController.make(feedType: .communityFeed(communityId: screenViewModel.dataSource.communityId))
-        timelineVC?.pageTitle = EkoLocalizedStringSet.timelineTitle
+        timelineVC?.pageTitle = EkoLocalizedStringSet.timelineTitle.localizedString
         timelineVC?.pageIndex = 0
         return [timelineVC]
     }
@@ -47,9 +47,9 @@ private extension EkoCommunityFeedViewController {
         timelineVC.emptyViewHandler = { [weak self] emptyView in
             guard let strongSelf = self, let emptyView = emptyView as? EkoEmptyStateHeaderFooterView else { return }
             if strongSelf.screenViewModel.dataSource.community?.isCreator ?? false {
-                emptyView.setLayout(layout: .label(title: EkoLocalizedStringSet.emptyNewsfeedTitle, subtitle: EkoLocalizedStringSet.emptyNewsfeedStartYourFirstPost, image: nil))
+                emptyView.setLayout(layout: .label(title: EkoLocalizedStringSet.emptyNewsfeedTitle.localizedString, subtitle: EkoLocalizedStringSet.emptyNewsfeedStartYourFirstPost.localizedString, image: nil))
             } else {
-                emptyView.setLayout(layout: .label(title: EkoLocalizedStringSet.emptyTitleNoPosts, subtitle: nil, image: EkoIconSet.emptyNoPosts))
+                emptyView.setLayout(layout: .label(title: EkoLocalizedStringSet.emptyTitleNoPosts.localizedString, subtitle: nil, image: EkoIconSet.emptyNoPosts))
             }
         }
     }

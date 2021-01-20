@@ -45,7 +45,7 @@ public struct EkoCommunityModel {
         self.metadata = object.metadata as? [String : String]
         self.userId = object.userId
         self.tags = object.tags ?? []
-        self.category = object.categories.first?.name ?? EkoLocalizedStringSet.general
+        self.category = object.categories.first?.name ?? EkoLocalizedStringSet.general.localizedString
         self.categoryId = object.categoryIds.first
         self.avatarId = object.avatar?.fileId ?? ""
         self.participation = object.participation

@@ -9,8 +9,18 @@
 import Foundation
 
 enum EkoError: Int, Error {
-    case unknown
+    case unknown = 99999
     case noPermission = 40301
+    case bannedWord = 400308
+    
+    init?(error: Error?) {
+        guard let errorCode = error?._code,
+              let _error = EkoError(rawValue: errorCode) else {
+            return nil
+        }
+        self = _error
+    }
+    
 }
 
 

@@ -32,7 +32,7 @@ final class EkoCommunityRoleController: EkoCommunityRoleControllerProtocol {
             if success {
                 completion(nil)
             } else {
-                if let code = Int(error?.localizedDescription.digits ?? ""), let error = EkoError(rawValue: code) {
+                if let error = EkoError(error: error) {
                     completion(error)
                 } else {
                     completion(EkoError.unknown)
@@ -47,11 +47,7 @@ final class EkoCommunityRoleController: EkoCommunityRoleControllerProtocol {
             if success {
                 completion(nil)
             } else {
-                if let code = Int(error?.localizedDescription.digits ?? ""), let error = EkoError(rawValue: code) {
-                    completion(error)
-                } else {
-                    completion(EkoError.unknown)
-                }
+                completion(EkoError(error: error) ?? .unknown)
             }  
         })
     }

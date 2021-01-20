@@ -24,7 +24,7 @@ public class EkoChatHomePageViewController: EkoPageViewController {
     // MARK: - View lifecycle
     private init() {
         super.init(nibName: EkoChatHomePageViewController.identifier, bundle: UpstraUIKitManager.bundle)
-        title = EkoLocalizedStringSet.chatTitle
+        title = EkoLocalizedStringSet.chatTitle.localizedString
     }
     
     required init?(coder: NSCoder) {
@@ -36,7 +36,7 @@ public class EkoChatHomePageViewController: EkoPageViewController {
     }
     
     override func viewControllers(for pagerTabStripController: EkoPagerTabViewController) -> [UIViewController] {
-        recentsChatViewController.pageTitle = EkoLocalizedStringSet.recentTitle
+        recentsChatViewController.pageTitle = EkoLocalizedStringSet.recentTitle.localizedString
         return [recentsChatViewController]
     }
     

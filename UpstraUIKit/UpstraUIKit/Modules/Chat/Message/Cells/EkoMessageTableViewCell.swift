@@ -32,9 +32,9 @@ class EkoMessageTableViewCell: UITableViewCell, EkoMessageCellProtocol {
     var message: EkoMessageModel!
     
     var indexPath: IndexPath!
-    let editMenuItem = UIMenuItem(title: EkoLocalizedStringSet.edit, action: #selector(editTap))
-    let deleteMenuItem = UIMenuItem(title: EkoLocalizedStringSet.delete, action: #selector(deleteTap))
-    let reportMenuItem = UIMenuItem(title: EkoLocalizedStringSet.report, action: #selector(reportTap))
+    let editMenuItem = UIMenuItem(title: EkoLocalizedStringSet.edit.localizedString, action: #selector(editTap))
+    let deleteMenuItem = UIMenuItem(title: EkoLocalizedStringSet.delete.localizedString, action: #selector(deleteTap))
+    let reportMenuItem = UIMenuItem(title: EkoLocalizedStringSet.report.localizedString, action: #selector(reportTap))
     
     override var canBecomeFirstResponder: Bool {
         return true
@@ -121,11 +121,11 @@ class EkoMessageTableViewCell: UITableViewCell, EkoMessageCellProtocol {
         if message.isDeleted {
             containerMessageView.isHidden = true
             statusMetadataImageView.isHidden = false
-            let deleteMessage = String.localizedStringWithFormat(EkoLocalizable.localizedString(forKey: "message_delete"), message.time)
+            let deleteMessage =  String.localizedStringWithFormat(EkoLocalizedStringSet.MessageList.deleteMessage.localizedString, message.time)
             fullString.append(NSAttributedString(string: deleteMessage, attributes: style))
             statusMetadataImageView.image = EkoIconSet.iconDeleteMessage
         } else if message.isEdited {
-            let editMessage = String.localizedStringWithFormat(EkoLocalizable.localizedString(forKey: "message_edit"), message.time)
+            let editMessage = String.localizedStringWithFormat(EkoLocalizedStringSet.MessageList.editMessage.localizedString, message.time)
             fullString.append(NSAttributedString(string: editMessage, attributes: style))
         } else {
             if message.isOwner {
@@ -135,7 +135,7 @@ class EkoMessageTableViewCell: UITableViewCell, EkoMessageCellProtocol {
                     errorButton.isHidden = false
                     fullString.append(NSAttributedString(string: message.time, attributes: style))
                 case .syncing:
-                    fullString.append(NSAttributedString(string: EkoLocalizedStringSet.MessageList.sending, attributes: style))
+                    fullString.append(NSAttributedString(string: EkoLocalizedStringSet.MessageList.sending.localizedString, attributes: style))
                 case .synced:
                     fullString.append(NSAttributedString(string: message.time, attributes: style))
                 default:

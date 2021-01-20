@@ -19,10 +19,10 @@ struct EkoKeyboardComposeBarModel {
     
     static func menuList() -> [EkoKeyboardComposeBarModel] {
         return [
-            EkoKeyboardComposeBarModel(name: EkoLocalizedStringSet.camera, image: EkoIconSet.iconCameraFill, menuType: .camera),
-            EkoKeyboardComposeBarModel(name: EkoLocalizedStringSet.album, image: EkoIconSet.iconAlbumFill, menuType: .album),
-//            EkoKeyboardComposeBarModel(name: EkoLocalizedStringSet.file, image: EkoIconSet.iconFileFill, menuType: .file),
-//            EkoKeyboardComposeBarModel(name: EkoLocalizedStringSet.location, image: EkoIconSet.iconLocationFill, menuType: .location)
+            EkoKeyboardComposeBarModel(name: EkoLocalizedStringSet.camera.localizedString, image: EkoIconSet.iconCameraFill, menuType: .camera),
+            EkoKeyboardComposeBarModel(name: EkoLocalizedStringSet.album.localizedString, image: EkoIconSet.iconAlbumFill, menuType: .album),
+//            EkoKeyboardComposeBarModel(name: EkoLocalizedStringSet.file.localizedString, image: EkoIconSet.iconFileFill, menuType: .file),
+//            EkoKeyboardComposeBarModel(name: EkoLocalizedStringSet.location.localizedString, image: EkoIconSet.iconLocationFill, menuType: .location)
         ]
     }
 }

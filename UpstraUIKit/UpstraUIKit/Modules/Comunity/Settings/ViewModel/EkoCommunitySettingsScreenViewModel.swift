@@ -40,14 +40,14 @@ extension EkoCommunitySettingsScreenViewModel {
             case .success(let community):
                 self?.community = community
                 self?.delegate?.screenViewModelDidGetCommunitySuccess(community: community)
-            case .failure(let error):
+            case .failure:
                 break
             }
         }
     }
     func leaveCommunity() {
         communityLeaveController.leave { [weak self] (error) in
-            if let error = error {
+            if let _ = error {
                 self?.delegate?.screenViewModelFailure()
             } else {
                 self?.delegate?.screenViewModelDidLeaveCommunitySuccess()
@@ -57,7 +57,7 @@ extension EkoCommunitySettingsScreenViewModel {
     
     func deleteCommunity() {
         communityDeleteController.delete { [weak self] (error) in
-            if let error = error {
+            if let _ = error {
                 self?.delegate?.screenViewModelFailure()
             } else {
                 self?.delegate?.screenVieWModelDidDeleteCommunitySuccess()

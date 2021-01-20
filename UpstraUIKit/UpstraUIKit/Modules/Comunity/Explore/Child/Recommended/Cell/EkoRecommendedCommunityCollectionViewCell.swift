@@ -35,7 +35,7 @@ final class EkoRecommendedCommunityCollectionViewCell: UICollectionViewCell, Nib
         avatarView.setImage(withImageId: model.avatarId, placeholder: EkoIconSet.defaultCommunity)
         displayNameLabel.text = model.displayName
         categoryLabel.text = model.category
-        memberLabel.text = String.localizedStringWithFormat(EkoLocalizedStringSet.members, "\(model.membersCount)")
+        memberLabel.text = String.localizedStringWithFormat(EkoLocalizedStringSet.members.localizedString, "\(model.membersCount)")
         descLabel.text = model.description == "" ? "-":model.description
     }
 

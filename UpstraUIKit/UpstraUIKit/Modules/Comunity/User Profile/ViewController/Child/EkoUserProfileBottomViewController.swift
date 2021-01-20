@@ -29,7 +29,7 @@ class EkoUserProfileBottomViewController: EkoProfileBottomViewController {
 
     override func viewControllers(for pagerTabStripController: EkoPagerTabViewController) -> [UIViewController] {
         let timelineVC = EkoFeedViewController.make(feedType: .userFeed(userId: userId))
-        timelineVC.pageTitle = EkoLocalizedStringSet.timelineTitle
+        timelineVC.pageTitle = EkoLocalizedStringSet.timelineTitle.localizedString
         timelineVC.pageIndex = 0
         return [timelineVC]
     }

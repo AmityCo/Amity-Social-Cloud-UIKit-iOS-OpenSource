@@ -82,7 +82,7 @@ public class EkoPostTextEditorViewController: EkoViewController {
         filePicker = EkoFilePicker(presentationController: self, delegate: self)
         
         let isCreateMode = (postMode == .create)
-        postButton = UIBarButtonItem(title: isCreateMode ? EkoLocalizedStringSet.post : EkoLocalizedStringSet.save, style: .plain, target: self, action: #selector(onPostButtonTap))
+        postButton = UIBarButtonItem(title: isCreateMode ? EkoLocalizedStringSet.post.localizedString : EkoLocalizedStringSet.save.localizedString, style: .plain, target: self, action: #selector(onPostButtonTap))
         postButton.tintColor = EkoColorSet.primary
         navigationItem.rightBarButtonItem = postButton
         navigationItem.rightBarButtonItem?.isEnabled = false
@@ -100,7 +100,7 @@ public class EkoPostTextEditorViewController: EkoViewController {
         textView.isScrollEnabled = false
         textView.font = EkoFontSet.body
         textView.minCharacters = 1
-        textView.placeholder = EkoLocalizedStringSet.postCreationTextPlaceholder
+        textView.placeholder = EkoLocalizedStringSet.postCreationTextPlaceholder.localizedString
         scrollView.addSubview(textView)
         
         separaterLine.translatesAutoresizingMaskIntoConstraints = false
@@ -172,7 +172,7 @@ public class EkoPostTextEditorViewController: EkoViewController {
         switch postMode {
         case .edit(let postId):
             screenViewModel.dataSource.loadPost(for: postId)
-            title = EkoLocalizedStringSet.postCreationEditPostTitle
+            title = EkoLocalizedStringSet.postCreationEditPostTitle.localizedString
             comunityPanelView.isHidden = true
         case .create:
             switch postTarget {
@@ -180,7 +180,7 @@ public class EkoPostTextEditorViewController: EkoViewController {
                 title = comunity.displayName
                 comunityPanelView.isHidden = !comunity.isOfficial
             case .myFeed:
-                title = EkoLocalizedStringSet.postCreationMyTimelineTitle
+                title = EkoLocalizedStringSet.postCreationMyTimelineTitle.localizedString
                 comunityPanelView.isHidden = true
             }
         }
@@ -192,9 +192,9 @@ public class EkoPostTextEditorViewController: EkoViewController {
     
     override func didTapLeftBarButton() {
         if isValueChanged {
-            let alertController = UIAlertController(title: EkoLocalizedStringSet.postCreationDiscardPostTitle, message: EkoLocalizedStringSet.postCreationDiscardPostMessage, preferredStyle: .alert)
-            let cancelAction = UIAlertAction(title: EkoLocalizedStringSet.cancel, style: .cancel, handler: nil)
-            let discardAction = UIAlertAction(title: EkoLocalizedStringSet.discard, style: .destructive) { [weak self] _ in
+            let alertController = UIAlertController(title: EkoLocalizedStringSet.postCreationDiscardPostTitle.localizedString, message: EkoLocalizedStringSet.postCreationDiscardPostMessage.localizedString, preferredStyle: .alert)
+            let cancelAction = UIAlertAction(title: EkoLocalizedStringSet.cancel.localizedString, style: .cancel, handler: nil)
+            let discardAction = UIAlertAction(title: EkoLocalizedStringSet.discard.localizedString, style: .destructive) { [weak self] _ in
                 self?.generalDismiss()
             }
             alertController.addAction(cancelAction)
@@ -474,7 +474,7 @@ extension EkoPostTextEditorViewController: EkoPostTextEditorMenuViewDelegate {
         guard sumNumberOfImages <= Constant.maximumNumberOfImages else {
             #warning("Localized")
             let alertController = UIAlertController(title: "Maximum number of images exceeded", message: "Maximum number of images that can be uploaded is \(Constant.maximumNumberOfImages). The rest images will be discarded.", preferredStyle: .alert)
-            let cancelAction = UIAlertAction(title: EkoLocalizedStringSet.ok, style: .cancel, handler: nil)
+            let cancelAction = UIAlertAction(title: EkoLocalizedStringSet.ok.localizedString, style: .cancel, handler: nil)
             alertController.addAction(cancelAction)
             present(alertController, animated: true, completion: nil)
             return

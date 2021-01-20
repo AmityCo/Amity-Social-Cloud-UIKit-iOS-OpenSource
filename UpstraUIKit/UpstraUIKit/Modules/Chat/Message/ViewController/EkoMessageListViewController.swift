@@ -302,7 +302,7 @@ extension EkoMessageListViewController: EkoMessageListScreenViewModelDelegate {
             break
             messageViewController.tableView.reloadRows(at: [indexPath], with: .none)
         case .didDeeleteErrorMessage(let indexPath):
-            EkoHUD.show(.success(message: EkoLocalizedStringSet.HUD.delete))
+            EkoHUD.show(.success(message: EkoLocalizedStringSet.HUD.delete.localizedString))
         case .didSendAudio:
             circular.hide()
             audioRecordingViewController.stopRecording()
@@ -317,6 +317,7 @@ extension EkoMessageListViewController: EkoMessageListScreenViewModelDelegate {
             guard let text = message.data?["text"] as? String else { return }
             
             let editTextVC = EkoEditTextViewController.make(message: text, editMode: .edit)
+            editTextVC.title = EkoLocalizedStringSet.editMessageTitle.localizedString
             editTextVC.dismissHandler = {
                 editTextVC.dismiss(animated: true, completion: nil)
             }
@@ -328,10 +329,10 @@ extension EkoMessageListViewController: EkoMessageListScreenViewModelDelegate {
             present(nav, animated: true, completion: nil)
         case .delete(let indexPath):
             guard let message = screenViewModel.dataSource.message(at: indexPath) else { return }
-            let alertViewController = UIAlertController(title: EkoLocalizedStringSet.MessageList.alertDeleteTitle,
-                                                        message: EkoLocalizedStringSet.MessageList.alertDeleteDesc, preferredStyle: .alert)
-            let cancel = UIAlertAction(title: EkoLocalizedStringSet.cancel, style: .cancel, handler: nil)
-            let delete = UIAlertAction(title: EkoLocalizedStringSet.delete, style: .destructive, handler: { [weak self] _ in
+            let alertViewController = UIAlertController(title: EkoLocalizedStringSet.MessageList.alertDeleteTitle.localizedString,
+                                                        message: EkoLocalizedStringSet.MessageList.alertDeleteDesc.localizedString, preferredStyle: .alert)
+            let cancel = UIAlertAction(title: EkoLocalizedStringSet.cancel.localizedString, style: .cancel, handler: nil)
+            let delete = UIAlertAction(title: EkoLocalizedStringSet.delete.localizedString, style: .destructive, handler: { [weak self] _ in
                 self?.screenViewModel.action.delete(withMessage: message, at: indexPath)
             })
             alertViewController.addAction(cancel)
@@ -339,10 +340,10 @@ extension EkoMessageListViewController: EkoMessageListScreenViewModelDelegate {
             present(alertViewController, animated: true)
         case .deleteErrorMessage(let indexPath):
             guard let message = screenViewModel.dataSource.message(at: indexPath) else { return }
-            let alertViewController = UIAlertController(title: EkoLocalizedStringSet.MessageList.alertErrorMessageTitle,
+            let alertViewController = UIAlertController(title: EkoLocalizedStringSet.MessageList.alertErrorMessageTitle.localizedString,
                                                         message: nil, preferredStyle: .actionSheet)
-            let cancel = UIAlertAction(title: EkoLocalizedStringSet.cancel, style: .cancel, handler: nil)
-            let delete = UIAlertAction(title: EkoLocalizedStringSet.delete, style: .destructive, handler: { [weak self] _ in
+            let cancel = UIAlertAction(title: EkoLocalizedStringSet.cancel.localizedString, style: .cancel, handler: nil)
+            let delete = UIAlertAction(title: EkoLocalizedStringSet.delete.localizedString, style: .destructive, handler: { [weak self] _ in
                 self?.screenViewModel.action.deleteErrorMessage(with: message.messageId, at: indexPath)
             })
             alertViewController.addAction(cancel)
@@ -350,7 +351,7 @@ extension EkoMessageListViewController: EkoMessageListScreenViewModelDelegate {
             present(alertViewController, animated: true)
             
         case .report:
-            EkoHUD.show(.success(message: EkoLocalizedStringSet.HUD.reportSent))
+            EkoHUD.show(.success(message: EkoLocalizedStringSet.HUD.reportSent.localizedString))
         case .imageViewer(let imageView):
             let photoViewerVC = EkoPhotoViewerController(referencedView: imageView, image: imageView.image)
             present(photoViewerVC, animated: true, completion: nil)

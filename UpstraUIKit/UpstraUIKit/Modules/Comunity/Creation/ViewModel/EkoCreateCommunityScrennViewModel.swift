@@ -284,12 +284,12 @@ extension EkoCreateCommunityScreenViewModel {
 private extension EkoCreateCommunityScreenViewModel {
     
     // Force set moderator after create the community success
-    func updateRole(withCommunityId communityId: String) {
+    private func updateRole(withCommunityId communityId: String) {
         let userId = UpstraUIKitManagerInternal.shared.currentUserId
         communityModeration = EkoCommunityModeration(client: UpstraUIKitManagerInternal.shared.client, andCommunity: communityId)
         communityModeration?.addRole(EkoCommunityRole.moderator.rawValue, userIds: [userId]) { [weak self] (success, error) in
             guard let strongSelf = self else { return }
-            if let error = error {
+            if let _ = error {
                 EkoHUD.hide()
                 EkoUtilities.showError()
                 return
@@ -304,4 +304,5 @@ private extension EkoCreateCommunityScreenViewModel {
             }
         }
     }
+    
 }

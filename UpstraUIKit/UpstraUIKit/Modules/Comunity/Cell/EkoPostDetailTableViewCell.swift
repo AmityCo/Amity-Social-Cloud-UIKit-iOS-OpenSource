@@ -80,11 +80,11 @@ public class EkoPostDetailTableViewCell: UITableViewCell, Nibbable {
         contentLabel.isExpanded = false
         badgeImageView.contentMode = .scaleAspectFit
         badgeImageView.image = EkoIconSet.iconBadgeModerator
-        badgeTitleLabel.text = "\(EkoLocalizedStringSet.moderator) • "
+        badgeTitleLabel.text = "\(EkoLocalizedStringSet.moderator.localizedString) • "
         badgeTitleLabel.textColor = EkoColorSet.base.blend(.shade1)
         badgeTitleLabel.font = .systemFont(ofSize: 13, weight: .semibold)
-        likeButton.setTitle(EkoLocalizedStringSet.liked, for: .selected)
-        likeButton.setTitle(EkoLocalizedStringSet.like, for: .normal)
+        likeButton.setTitle(EkoLocalizedStringSet.liked.localizedString, for: .selected)
+        likeButton.setTitle(EkoLocalizedStringSet.like.localizedString, for: .normal)
         likeButton.setTintColor(EkoColorSet.primary, for: .selected)
         likeButton.setTintColor(EkoColorSet.base.blend(.shade2), for: .normal)
         likeButton.setTitleColor(EkoColorSet.primary, for: .selected)
@@ -92,7 +92,7 @@ public class EkoPostDetailTableViewCell: UITableViewCell, Nibbable {
         commentButton.tintColor = EkoColorSet.base.blend(.shade2)
         commentButton.setTitleColor(EkoColorSet.base.blend(.shade2), for: .normal)
         shareButton.isHidden = true
-        warningLabel.text = EkoLocalizedStringSet.PostDetail.joinCommunityMessage
+        warningLabel.text = EkoLocalizedStringSet.PostDetail.joinCommunityMessage.localizedString
         warningLabel.font = EkoFontSet.body
         warningLabel.textColor = EkoColorSet.base.blend(.shade2)
         
@@ -116,9 +116,9 @@ public class EkoPostDetailTableViewCell: UITableViewCell, Nibbable {
         contentLabel.isExpanded = true
         likeButton.isSelected = item.isLiked
         likeLabel.isHidden = item.reactionsCount == 0
-        likeLabel.text = String.localizedStringWithFormat(EkoLocalizedStringSet.likes, item.reactionsCount.formatUsingAbbrevation())
+        likeLabel.text = String.localizedStringWithFormat(EkoLocalizedStringSet.likes.localizedString, item.reactionsCount.formatUsingAbbrevation())
         commentLabel.isHidden = item.allCommentCount == 0
-        commentLabel.text = String.localizedStringWithFormat(EkoLocalizedStringSet.comments, item.allCommentCount.formatUsingAbbrevation())
+        commentLabel.text = String.localizedStringWithFormat(EkoLocalizedStringSet.comments.localizedString, item.allCommentCount.formatUsingAbbrevation())
         
         let isReactionExisted = item.reactionsCount == 0 && item.allCommentCount == 0
         topContainerHeightConstraint.constant = isReactionExisted ? 0 : 40
@@ -134,13 +134,8 @@ public class EkoPostDetailTableViewCell: UITableViewCell, Nibbable {
         fileViewHeightConstraint.constant = item.files.isEmpty ? 0 : EkoFileTableView.height(for: item.files.count, isEdtingMode: false, isExpanded: true)
         avatarViewTopConstraint.constant = 0.0
         topContentViewTopConstraint.constant = 0.0
-        if item.isModerator {
-            badgeContainerView.isHidden = item.postAsModerator
-            subtitleLeadingToBadgeViewConstraint.isActive = item.postAsModerator
-        } else {
-            badgeContainerView.isHidden = true
-            subtitleLeadingToBadgeViewConstraint.isActive = false
-        }
+        badgeContainerView.isHidden = !item.isModerator
+        subtitleLeadingToBadgeViewConstraint.isActive = item.isModerator
     }
     
     public override func prepareForReuse() {

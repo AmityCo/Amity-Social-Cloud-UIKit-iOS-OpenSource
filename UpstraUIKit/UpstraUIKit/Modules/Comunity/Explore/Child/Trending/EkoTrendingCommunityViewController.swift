@@ -17,6 +17,7 @@ public final class EkoTrendingCommunityViewController: UIViewController, EkoRefr
     
     // MARK: - Properties
     private let screenViewModel: EkoTrendingCommunityScreenViewModelType
+    private var tableViewHeight: CGFloat = 0
     
     // MARK: - Callback
     public var selectedCommunityHandler: ((EkoCommunityModel) -> Void)?
@@ -47,7 +48,6 @@ public final class EkoTrendingCommunityViewController: UIViewController, EkoRefr
     func handleRefreshing() {
         screenViewModel.action.getTrending()
     }
-    
 }
 
 // MARK: - Setup View
@@ -58,7 +58,7 @@ private extension EkoTrendingCommunityViewController {
     }
     
     func setupTitle() {
-        titleLabel.text = EkoLocalizedStringSet.trendingCommunityTitle
+        titleLabel.text = EkoLocalizedStringSet.trendingCommunityTitle.localizedString
         titleLabel.textColor = EkoColorSet.base
         titleLabel.font = EkoFontSet.title
     }
@@ -79,21 +79,17 @@ private extension EkoTrendingCommunityViewController {
     func bindingViewModel() {
         screenViewModel.action.getTrending()
         screenViewModel.dataSource.community.bind { [weak self] (communities) in
+            self?.tableViewHeight = 0
             self?.heightTableViewContraint.constant = CGFloat(communities.count * 56)
             self?.tableView.reloadData()
         }
     }
 }
 
-
 extension EkoTrendingCommunityViewController: UITableViewDelegate {
     public func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         guard let item = screenViewModel.dataSource.item(at: indexPath) else { return }
         selectedCommunityHandler?(item)
-    }
-    
-    public func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 56
     }
 }
 
@@ -105,6 +101,7 @@ extension EkoTrendingCommunityViewController: UITableViewDataSource {
     public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: EkoTrendingCommunityTableViewCell.identifier, for: indexPath)
         configure(for: cell, at: indexPath)
+        
         return cell
     }
     
@@ -113,6 +110,10 @@ extension EkoTrendingCommunityViewController: UITableViewDataSource {
             guard let item = screenViewModel.dataSource.item(at: indexPath) else { return }
             cell.display(with: item)
             cell.displayNumber(with: indexPath)
+            
+            let cellHeight = cell.isCategoryLabelTruncated ? 70 : 56
+            tableViewHeight += CGFloat(cellHeight)
+            heightTableViewContraint.constant = tableViewHeight
         }
     }
 }

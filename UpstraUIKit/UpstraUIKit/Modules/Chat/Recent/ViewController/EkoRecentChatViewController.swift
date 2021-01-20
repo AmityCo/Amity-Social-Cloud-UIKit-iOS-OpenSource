@@ -29,7 +29,7 @@ public final class EkoRecentChatViewController: EkoViewController, IndicatorInfo
     
     private lazy var emptyView: EkoEmptyView = {
         let emptyView = EkoEmptyView(frame: tableView.frame)
-        emptyView.update(title: EkoLocalizedStringSet.emptyChatList,
+        emptyView.update(title: EkoLocalizedStringSet.emptyChatList.localizedString,
                          subtitle: nil,
                          image: EkoIconSet.emptyChat)
         return emptyView

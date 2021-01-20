@@ -119,15 +119,15 @@ public class EkoPostDetailViewController: EkoViewController {
         bottomSheet.modalPresentationStyle = .overFullScreen
         
         if post.isOwner {
-            let editOption = TextItemOption(title: EkoLocalizedStringSet.PostDetail.editPost) { [weak self] in
+            let editOption = TextItemOption(title: EkoLocalizedStringSet.PostDetail.editPost.localizedString) { [weak self] in
                 guard let strongSelf = self else { return }
                 EkoEventHandler.shared.editPostDidTap(from: strongSelf, postId: post.id)
             }
-            let deleteOption = TextItemOption(title: EkoLocalizedStringSet.PostDetail.deletePost) { [weak self] in
+            let deleteOption = TextItemOption(title: EkoLocalizedStringSet.PostDetail.deletePost.localizedString) { [weak self] in
                 // delete option
-                let alert = UIAlertController(title: EkoLocalizedStringSet.PostDetail.deletePostTitle, message: EkoLocalizedStringSet.PostDetail.deletePostMessage, preferredStyle: .alert)
-                alert.addAction(UIAlertAction(title: EkoLocalizedStringSet.cancel, style: .cancel, handler: nil))
-                alert.addAction(UIAlertAction(title: EkoLocalizedStringSet.delete, style: .destructive, handler: { [weak self] _ in
+                let alert = UIAlertController(title: EkoLocalizedStringSet.PostDetail.deletePostTitle.localizedString, message: EkoLocalizedStringSet.PostDetail.deletePostMessage.localizedString, preferredStyle: .alert)
+                alert.addAction(UIAlertAction(title: EkoLocalizedStringSet.cancel.localizedString, style: .cancel, handler: nil))
+                alert.addAction(UIAlertAction(title: EkoLocalizedStringSet.delete.localizedString, style: .destructive, handler: { [weak self] _ in
                     self?.screenViewModel.deletePost()
                     self?.navigationController?.popViewController(animated: true)
                 }))
@@ -139,12 +139,12 @@ public class EkoPostDetailViewController: EkoViewController {
         } else {
             screenViewModel.dataSource.getReportPostStatus(postId: post.id) { [weak self] isReported in
                 if isReported {
-                    let unreportOption = TextItemOption(title: EkoLocalizedStringSet.PostDetail.unreportPost) {
+                    let unreportOption = TextItemOption(title: EkoLocalizedStringSet.PostDetail.unreportPost.localizedString) {
                         self?.screenViewModel.action.unreportPost(postId: post.id)
                     }
                     contentView.configure(items: [unreportOption], selectedItem: nil)
                 } else {
-                    let reportOption = TextItemOption(title: EkoLocalizedStringSet.PostDetail.reportPost) {
+                    let reportOption = TextItemOption(title: EkoLocalizedStringSet.PostDetail.reportPost.localizedString) {
                         self?.screenViewModel.action.reportPost(postId: post.id)
                     }
                     contentView.configure(items: [reportOption], selectedItem: nil)
@@ -187,7 +187,7 @@ extension EkoPostDetailViewController: UITableViewDataSource {
         }
         #warning("show all replies will be implemented together with reply cell")
         //        let cell: UITableViewCell = tableView.dequeueReusableCell(for: indexPath)
-        //        cell.textLabel?.text = EkoLocalizedStringSet.postDetailViewAllReplies
+        //        cell.textLabel?.text = EkoLocalizedStringSet.postDetailViewAllReplies.localizedString
         //        cell.textLabel?.font = EkoFontSet.body
         //        cell.textLabel?.textColor = EkoColorSet.base.blend(.shade2)
         //        cell.selectionStyle = .none
@@ -399,9 +399,10 @@ extension EkoPostDetailViewController: EkoCommentTableViewCellDelegate {
         // Comment options
         if comment.isOwner {
             
-            let editOption = TextItemOption(title: EkoLocalizedStringSet.PostDetail.editComment) { [weak self] in
+            let editOption = TextItemOption(title: EkoLocalizedStringSet.PostDetail.editComment.localizedString) { [weak self] in
                 guard let strongSelf = self else { return }
                 let editTextViewController = EkoEditTextViewController.make(message: comment.text, editMode: .edit)
+                editTextViewController.title = EkoLocalizedStringSet.PostDetail.editComment.localizedString
                 editTextViewController.editHandler = { [weak self] text in
                     self?.screenViewModel.action.editComment(comment: comment, text: text)
                     editTextViewController.dismiss(animated: true, completion: nil)
@@ -413,10 +414,10 @@ extension EkoPostDetailViewController: EkoCommentTableViewCellDelegate {
                 nvc.modalPresentationStyle = .fullScreen
                 strongSelf.present(nvc, animated: true, completion: nil)
             }
-            let deleteOption = TextItemOption(title: EkoLocalizedStringSet.PostDetail.deleteComment) { [weak self] in
-                let alert = UIAlertController(title: EkoLocalizedStringSet.PostDetail.deleteCommentTitle, message: EkoLocalizedStringSet.PostDetail.deleteCommentMessage, preferredStyle: .alert)
-                alert.addAction(UIAlertAction(title: EkoLocalizedStringSet.cancel, style: .cancel, handler: nil))
-                alert.addAction(UIAlertAction(title: EkoLocalizedStringSet.delete, style: .destructive) { [weak self] _ in
+            let deleteOption = TextItemOption(title: EkoLocalizedStringSet.PostDetail.deleteComment.localizedString) { [weak self] in
+                let alert = UIAlertController(title: EkoLocalizedStringSet.PostDetail.deleteCommentTitle.localizedString, message: EkoLocalizedStringSet.PostDetail.deleteCommentMessage.localizedString, preferredStyle: .alert)
+                alert.addAction(UIAlertAction(title: EkoLocalizedStringSet.cancel.localizedString, style: .cancel, handler: nil))
+                alert.addAction(UIAlertAction(title: EkoLocalizedStringSet.delete.localizedString, style: .destructive) { [weak self] _ in
                     self?.screenViewModel.action.deleteComment(comment: comment)
                 })
                 self?.present(alert, animated: true, completion: nil)
@@ -428,12 +429,12 @@ extension EkoPostDetailViewController: EkoCommentTableViewCellDelegate {
             
             screenViewModel.dataSource.getReportCommentStatus(commentId: comment.id) { [weak self] isReported in
                 if isReported {
-                    let unreportOption = TextItemOption(title: EkoLocalizedStringSet.PostDetail.unreportComment) {
+                    let unreportOption = TextItemOption(title: EkoLocalizedStringSet.PostDetail.unreportComment.localizedString) {
                         self?.screenViewModel.action.unreportComment(commentId: comment.id)
                     }
                     contentView.configure(items: [unreportOption], selectedItem: nil)
                 } else {
-                    let reportOption = TextItemOption(title: EkoLocalizedStringSet.PostDetail.reportComment) {
+                    let reportOption = TextItemOption(title: EkoLocalizedStringSet.PostDetail.reportComment.localizedString) {
                         self?.screenViewModel.action.reportComment(commentId: comment.id)
                     }
                     contentView.configure(items: [reportOption], selectedItem: nil)
@@ -449,14 +450,15 @@ extension EkoPostDetailViewController: EkoPostDetailCompostViewDelegate {
     
     func composeViewDidTapExpand(_ view: EkoPostDetailCompostView) {
         let editTextViewController = EkoEditTextViewController.make(message: commentComposeBar.text, editMode: .create)
+        editTextViewController.title = EkoLocalizedStringSet.PostDetail.createComment.localizedString
         editTextViewController.editHandler = { [weak self, weak editTextViewController] text in
             self?.screenViewModel.action.createComment(text: text)
             editTextViewController?.dismiss(animated: true, completion: nil)
         }
         editTextViewController.dismissHandler = { [weak editTextViewController] in
-            let alertController = UIAlertController(title: EkoLocalizedStringSet.postCreationDiscardPostTitle, message: EkoLocalizedStringSet.postCreationDiscardPostMessage, preferredStyle: .alert)
-            let cancelAction = UIAlertAction(title: EkoLocalizedStringSet.cancel, style: .cancel, handler: nil)
-            let discardAction = UIAlertAction(title: EkoLocalizedStringSet.discard, style: .destructive) { _ in
+            let alertController = UIAlertController(title: EkoLocalizedStringSet.postCreationDiscardPostTitle.localizedString, message: EkoLocalizedStringSet.postCreationDiscardPostMessage.localizedString, preferredStyle: .alert)
+            let cancelAction = UIAlertAction(title: EkoLocalizedStringSet.cancel.localizedString, style: .cancel, handler: nil)
+            let discardAction = UIAlertAction(title: EkoLocalizedStringSet.discard.localizedString, style: .destructive) { _ in
                 editTextViewController?.dismiss(animated: true, completion: nil)
             }
             alertController.addAction(cancelAction)

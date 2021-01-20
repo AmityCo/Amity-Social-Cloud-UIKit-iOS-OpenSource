@@ -88,6 +88,8 @@ class AssetsViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         updateCollectionViewLayout(for: traitCollection)
+        
+        self.title = EkoLocalizedStringSet.postCreationSelectImageTitle.localizedString
     }
 
     func showAssets(in album: PHAssetCollection) {

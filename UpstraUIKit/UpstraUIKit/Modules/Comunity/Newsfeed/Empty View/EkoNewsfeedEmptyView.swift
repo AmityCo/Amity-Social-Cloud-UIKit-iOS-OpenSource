@@ -31,15 +31,15 @@ final class EkoNewsfeedEmptyView: EkoView {
         contentView.backgroundColor = EkoColorSet.backgroundColor
         
         imageView.image = EkoIconSet.emptyNewsfeed
-        titleLabel.text = EkoLocalizedStringSet.emptyNewsfeedTitle
+        titleLabel.text = EkoLocalizedStringSet.emptyNewsfeedTitle.localizedString
         titleLabel.textColor = EkoColorSet.base.blend(.shade2)
         titleLabel.font = EkoFontSet.headerLine
         
-        subtitleLabel.text = EkoLocalizedStringSet.emptyNewsfeedSubtitle
+        subtitleLabel.text = EkoLocalizedStringSet.emptyNewsfeedSubtitle.localizedString
         subtitleLabel.textColor = EkoColorSet.base.blend(.shade2)
         subtitleLabel.font = EkoFontSet.body
         
-        exploreCommunityButton.setTitle(EkoLocalizedStringSet.emptyNewsfeedExploreButton, for: .normal)
+        exploreCommunityButton.setTitle(EkoLocalizedStringSet.emptyNewsfeedExploreButton.localizedString, for: .normal)
         exploreCommunityButton.setTitleFont(EkoFontSet.bodyBold)
         exploreCommunityButton.setTitleColor(EkoColorSet.baseInverse, for: .normal)
         exploreCommunityButton.backgroundColor = EkoColorSet.primary
@@ -48,7 +48,7 @@ final class EkoNewsfeedEmptyView: EkoView {
         exploreCommunityButton.contentEdgeInsets = .init(top: 0, left: 30, bottom: 0, right: 30)
         exploreCommunityButton.layer.cornerRadius = 4
         
-        createCommunityButton.setTitle(EkoLocalizedStringSet.emptyNewsfeedCreateButton, for: .normal)
+        createCommunityButton.setTitle(EkoLocalizedStringSet.emptyNewsfeedCreateButton.localizedString, for: .normal)
         createCommunityButton.setTitleFont(EkoFontSet.body)
         createCommunityButton.setTitleColor(EkoColorSet.primary, for: .normal)
     }

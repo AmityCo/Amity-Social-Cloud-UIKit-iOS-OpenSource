@@ -20,7 +20,7 @@ public class EkoCategoryListViewController: EkoViewController {
     
     private init() {
         super.init(nibName: EkoCategoryListViewController.identifier, bundle: UpstraUIKitManager.bundle)
-        title = EkoLocalizedStringSet.createCommunityCategoryTitle
+        title = EkoLocalizedStringSet.createCommunityCategoryTitle.localizedString
     }
     
     required init?(coder: NSCoder) {

@@ -66,7 +66,7 @@ class EkoTextMessageView: EkoView {
     
     private func setupView() {
         label.lineBreakMode = .byWordWrapping
-        readmoreLabel.text = EkoLocalizedStringSet.messageReadmore
+        readmoreLabel.text = EkoLocalizedStringSet.messageReadmore.localizedString
         readmoreLabel.font = EkoFontSet.body
     }
     
@@ -107,7 +107,7 @@ class EkoTextMessageView: EkoView {
             readmoreLabel.isHidden = false
             readmoreButton.isHidden = false
             label.numberOfLines = numberOfLines
-            readmoreLabel.text = EkoLocalizedStringSet.messageReadmore
+            readmoreLabel.text = EkoLocalizedStringSet.messageReadmore.localizedString
         }
     }
 }

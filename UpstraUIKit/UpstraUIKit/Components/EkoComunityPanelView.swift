@@ -42,11 +42,11 @@ class EkoComunityPanelView: UIView {
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
         titleLabel.font = EkoFontSet.bodyBold
         titleLabel.numberOfLines = 1
-        titleLabel.text = EkoLocalizedStringSet.postToPostAsCommunityTitle
+        titleLabel.text = EkoLocalizedStringSet.postToPostAsCommunityTitle.localizedString
         titleLabel.textColor = EkoColorSet.base
         subtitleLabel.translatesAutoresizingMaskIntoConstraints = false
         subtitleLabel.font = EkoFontSet.caption
-        subtitleLabel.text = EkoLocalizedStringSet.postToPostAsCommunityMessage
+        subtitleLabel.text = EkoLocalizedStringSet.postToPostAsCommunityMessage.localizedString
         subtitleLabel.numberOfLines = 2
         subtitleLabel.textColor = EkoColorSet.base.blend(.shade1)
         actionSwitch.translatesAutoresizingMaskIntoConstraints = false

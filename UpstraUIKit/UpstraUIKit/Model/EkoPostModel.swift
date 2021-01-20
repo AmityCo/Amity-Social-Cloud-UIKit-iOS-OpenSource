@@ -81,7 +81,7 @@ public class EkoPostModel {
     }
     
     var displayName: String {
-        return post.postedUser?.displayName ?? EkoLocalizedStringSet.anonymous
+        return post.postedUser?.displayName ?? EkoLocalizedStringSet.anonymous.localizedString
     }
     
     var subtitle: String {

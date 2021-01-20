@@ -47,7 +47,7 @@ final public class EkoEditUserProfileViewController: EkoViewController {
         self.screenViewModel = EkoEditUserProfileScreenViewModel()
         super.init(nibName: EkoEditUserProfileViewController.identifier, bundle: UpstraUIKitManager.bundle)
         
-        title = EkoLocalizedStringSet.editUserProfileTitle
+        title = EkoLocalizedStringSet.editUserProfileTitle.localizedString
         screenViewModel?.delegate = self
     }
     
@@ -68,7 +68,7 @@ final public class EkoEditUserProfileViewController: EkoViewController {
     }
     
     private func setupNavigationBar() {
-        saveBarButtonItem = UIBarButtonItem(title: EkoLocalizedStringSet.save, style: .done, target: self, action: #selector(saveButtonTap))
+        saveBarButtonItem = UIBarButtonItem(title: EkoLocalizedStringSet.save.localizedString, style: .done, target: self, action: #selector(saveButtonTap))
         saveBarButtonItem.isEnabled = false
         navigationItem.rightBarButtonItem = saveBarButtonItem
     }
@@ -83,7 +83,7 @@ final public class EkoEditUserProfileViewController: EkoViewController {
         cameraImageView.clipsToBounds = true
         
         // display name
-        displayNameLabel.text = EkoLocalizedStringSet.editUserProfileDisplayNameTitle + "*"
+        displayNameLabel.text = EkoLocalizedStringSet.editUserProfileDisplayNameTitle.localizedString + "*"
         displayNameLabel.font = EkoFontSet.title
         displayNameLabel.textColor = EkoColorSet.base
         displayNameCounterLabel.font = EkoFontSet.caption
@@ -94,7 +94,7 @@ final public class EkoEditUserProfileViewController: EkoViewController {
         displayNameTextField.maxLength = Constant.maxCharactor
         
         // about
-        aboutLabel.text = EkoLocalizedStringSet.createCommunityAboutTitle
+        aboutLabel.text = EkoLocalizedStringSet.createCommunityAboutTitle.localizedString
         aboutLabel.font = EkoFontSet.title
         aboutLabel.textColor = EkoColorSet.base
         aboutCounterLabel.font = EkoFontSet.caption
@@ -120,10 +120,10 @@ final public class EkoEditUserProfileViewController: EkoViewController {
             userAvatarView.state = .loading
             screenViewModel?.action.update(avatar: avatar) { [weak self] success in
                 if success {
-                    EkoHUD.show(.success(message: EkoLocalizedStringSet.HUD.successfullyUpdated))
+                    EkoHUD.show(.success(message: EkoLocalizedStringSet.HUD.successfullyUpdated.localizedString))
                     self?.userAvatarView.image = avatar
                 } else {
-                    EkoHUD.show(.error(message: EkoLocalizedStringSet.HUD.somethingWentWrong))
+                    EkoHUD.show(.error(message: EkoLocalizedStringSet.HUD.somethingWentWrong.localizedString))
                 }
                 self?.userAvatarView.state = .idle
                 self?.uploadingAvatarImage = nil
@@ -135,8 +135,8 @@ final public class EkoEditUserProfileViewController: EkoViewController {
     @IBAction private func avatarButtonTap(_ sender: Any) {
         view.endEditing(true)
         let bottomSheet = BottomSheetViewController()
-        let cameraOption = TextItemOption(title: EkoLocalizedStringSet.camera)
-        let galleryOption = TextItemOption(title: EkoLocalizedStringSet.imageGallery)
+        let cameraOption = TextItemOption(title: EkoLocalizedStringSet.camera.localizedString)
+        let galleryOption = TextItemOption(title: EkoLocalizedStringSet.imageGallery.localizedString)
         let contentView = ItemOptionView<TextItemOption>()
         contentView.configure(items: [cameraOption, galleryOption], selectedItem: nil)
         contentView.didSelectItem = { [weak bottomSheet] action in

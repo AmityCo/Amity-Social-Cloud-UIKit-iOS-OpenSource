@@ -126,6 +126,7 @@
 "post_creation_text_placeholder" = "What’s going on...";
 "post_creation_discard_post_title" = "Discard Post?";
 "post_creation_discard_post_message" = "Do you want to discard your post?";
+"post_creation_select_image" = "Select image";
 
 // MARK: - Post detail
 "post_detail_text_placeholder" = "Say something nice";
@@ -136,6 +137,7 @@
 "post_detail_delete_post" = "Delete post";
 "post_detail_report_post" = "Report post";
 "post_detail_unreport_post" = "Unreport post";
+"post_detail_create_comment" = "Add comment";
 "post_detail_edit_comment" = "Edit comment";
 "post_detail_delete_comment" = "Delete comment";
 "post_detail_report_comment" = "Report comment";
@@ -146,6 +148,7 @@
 "post_detail_discard_comment_message" = "Do you want to discard your comment?";
 "post_detail_delete_post_title" = "Delete this post";
 "post_detail_delete_post_message" = "This post will be permanently deleted. You’ll no longer to see and find this post";
+"post_detail_banned_comment_error_message" = "Sorry, your comment has been deleted due to containing inappropriate words.\nPlease contact the administrator for more information.";
 "post_detail_comment_edited" = "%@ • Edited";
 
 // MARK: - Post to
@@ -158,7 +161,7 @@
 
 // MARK: - Trending Community
 "trending_community_title" = "Today’s Trending";
-"trending_community_category_and_member" = "%@ • %@ members";
+"trending_community_category_and_member" = "• %@ members";
 
 // MARK: - Categories
 "category_title" = "Categories";
@@ -186,6 +189,10 @@
 "community_member_settings_options_remove" = "Remove from community";
 "community_member_settings_alert_title" = "Remove user from community?";
 "community_member_settings_alert_desc" = "This user won't no longer be able to search, post and interact in this community";
+
+// MARK: - Community
+"community_alert_unable_to_perform_action_title" = "Unable to perform this action";
+"community_alert_unable_to_perform_action_desc" = "You no longer have permission to make any changes in this community";
 
 // MARK: - Edit User Profile
 "edit_user_profile_title" = "Edit Profile";

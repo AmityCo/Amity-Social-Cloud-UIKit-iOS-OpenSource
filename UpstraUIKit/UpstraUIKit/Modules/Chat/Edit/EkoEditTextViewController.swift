@@ -33,7 +33,6 @@ class EkoEditTextViewController: EkoViewController {
         self.message = message
         self.editMode = editMode
         super.init(nibName: EkoEditTextViewController.identifier, bundle: UpstraUIKitManager.bundle)
-        title = EkoLocalizedStringSet.editMessageTitle
     }
     
     required init?(coder: NSCoder) {
@@ -54,12 +53,12 @@ class EkoEditTextViewController: EkoViewController {
     }
     
     private func setupView() {
-        let buttonTitle = (editMode == .create) ? EkoLocalizedStringSet.post : EkoLocalizedStringSet.save
+        let buttonTitle = (editMode == .create) ? EkoLocalizedStringSet.post.localizedString : EkoLocalizedStringSet.save.localizedString
         saveBarButton = UIBarButtonItem(title: buttonTitle, style: .plain, target: self, action: #selector(saveTap))
         saveBarButton.tintColor = EkoColorSet.primary
         navigationItem.rightBarButtonItem = saveBarButton
         textView.text = message
-        textView.placeholder = EkoLocalizedStringSet.textMessagePlaceholder
+        textView.placeholder = EkoLocalizedStringSet.textMessagePlaceholder.localizedString
         textView.showsVerticalScrollIndicator = false
         textView.customTextViewDelegate = self
         saveBarButton.isEnabled = (editMode == .create) ? !message.isEmpty : false

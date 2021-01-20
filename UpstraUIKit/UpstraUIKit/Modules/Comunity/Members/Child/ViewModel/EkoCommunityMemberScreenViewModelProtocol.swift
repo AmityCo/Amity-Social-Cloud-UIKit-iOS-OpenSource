@@ -25,8 +25,8 @@ protocol EkoCommunityMemberScreenViewModelDataSource {
     func member(at indexPath: IndexPath) -> EkoCommunityMembershipModel
     func getReportUserStatus(at indexPath: IndexPath, completion: ((Bool) -> Void)?)
     var isModerator: Bool { get }
+    var isJoined: Bool { get }
     func prepareData() -> [EkoSelectMemberModel]
-    func isJoined() -> Bool
 }
 
 protocol EkoCommunityMemberScreenViewModelAction {

@@ -15,9 +15,9 @@ final class EkoCommunitySettingsViewController: EkoViewController {
     
     // MARK: - Properties
     private var screenViewModel: EkoCommunitySettingsScreenViewModelType!
-    private lazy var data: [EkoCommunitySettingsModel] = {
-        return EkoCommunitySettingsModel.prepareData(isCreator: screenViewModel.dataSource.isCreator)
-    }()
+    private var comunitySettingModels: [EkoCommunitySettingsModel] {
+        EkoCommunitySettingsModel.prepareData(isCreator: screenViewModel.dataSource.isCreator)
+    }
     
     // MARK: - View lifecycle
     override func viewDidLoad() {
@@ -54,11 +54,13 @@ private extension EkoCommunitySettingsViewController {
 
 // MARK: - UITableView Delegate
 extension EkoCommunitySettingsViewController: UITableViewDelegate {
+    
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let type = data[indexPath.row].type
+        let type = comunitySettingModels[indexPath.row].type
         switch type {
         case .editProfile:
             let vc = EkoCommunityProfileEditViewController.make(viewType: .edit(communityId: screenViewModel.dataSource.communityId))
+            vc.delegate = self
             let nav = UINavigationController(rootViewController: vc)
             nav.modalPresentationStyle = .fullScreen
             present(nav, animated: true, completion: nil)
@@ -67,29 +69,31 @@ extension EkoCommunitySettingsViewController: UITableViewDelegate {
             let vc = EkoCommunityMemberSettingsViewController.make(communityId: communityId)
             navigationController?.pushViewController(vc, animated: true)
         case .leave:
-            let alertController = UIAlertController(title: EkoLocalizedStringSet.communitySettingsAlertLeaveTitle, message: EkoLocalizedStringSet.communitySettingsAlertLeaveDesc, preferredStyle: .alert)
-            alertController.addAction(UIAlertAction(title: EkoLocalizedStringSet.cancel, style: .default, handler: nil))
-            alertController.addAction(UIAlertAction(title: EkoLocalizedStringSet.leave, style: .destructive, handler: { [weak self] action in
+            let alertController = UIAlertController(title: EkoLocalizedStringSet.communitySettingsAlertLeaveTitle.localizedString, message: EkoLocalizedStringSet.communitySettingsAlertLeaveDesc.localizedString, preferredStyle: .alert)
+            alertController.addAction(UIAlertAction(title: EkoLocalizedStringSet.cancel.localizedString, style: .default, handler: nil))
+            alertController.addAction(UIAlertAction(title: EkoLocalizedStringSet.leave.localizedString, style: .destructive, handler: { [weak self] action in
                 EkoHUD.show(.loading)
                 self?.screenViewModel.action.leaveCommunity()
             }))
             present(alertController, animated: true, completion: nil)
         case .close:
-            let alertController = UIAlertController(title: EkoLocalizedStringSet.communitySettingsAlertCloseTitle, message: EkoLocalizedStringSet.communitySettingsAlertCloseDesc, preferredStyle: .alert)
-            alertController.addAction(UIAlertAction(title: EkoLocalizedStringSet.cancel, style: .default, handler: nil))
-            alertController.addAction(UIAlertAction(title: EkoLocalizedStringSet.close, style: .destructive, handler: { [weak self] action in
+            let alertController = UIAlertController(title: EkoLocalizedStringSet.communitySettingsAlertCloseTitle.localizedString, message: EkoLocalizedStringSet.communitySettingsAlertCloseDesc.localizedString, preferredStyle: .alert)
+            alertController.addAction(UIAlertAction(title: EkoLocalizedStringSet.cancel.localizedString, style: .default, handler: nil))
+            alertController.addAction(UIAlertAction(title: EkoLocalizedStringSet.close.localizedString, style: .destructive, handler: { [weak self] action in
                 EkoHUD.show(.loading)
                 self?.screenViewModel.action.deleteCommunity()
             }))
             present(alertController, animated: true, completion: nil)
         }
     }
+    
 }
 
 // MARK: - UITableView DataSource
 extension EkoCommunitySettingsViewController: UITableViewDataSource {
+    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return data.count
+        return comunitySettingModels.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -100,18 +104,18 @@ extension EkoCommunitySettingsViewController: UITableViewDataSource {
     
     private func configure(for cell: UITableViewCell, at indexPath: IndexPath) {
         if let cell = cell as? EkoCommunitySettingsTableViewCell {
-            cell.display(with: data[indexPath.row])
+            cell.display(with: comunitySettingModels[indexPath.row])
         }
     }
+    
 }
-
-
 
 // MARK: - ViewModel Delegate
 extension EkoCommunitySettingsViewController: EkoCommunitySettingsScreenViewModelDelegate {
     
     func screenViewModelDidGetCommunitySuccess(community: EkoCommunityModel) {
         title = community.displayName
+        tableView.reloadData()
     }
     
     func screenViewModelDidLeaveCommunitySuccess() {
@@ -121,8 +125,10 @@ extension EkoCommunitySettingsViewController: EkoCommunitySettingsScreenViewMode
     
     func screenVieWModelDidDeleteCommunitySuccess() {
         EkoHUD.hide()
-        if let _ = navigationController?.viewControllers.first(where: { $0.isKind(of: EkoCommunityProfileEditViewController.self)}) {
-            dismiss(animated: true, completion: nil)
+        if let communityHomePage = navigationController?.viewControllers.first(where: { $0.isKind(of: EkoCommunityHomePageViewController.self) }) {
+            navigationController?.popToViewController(communityHomePage, animated: true)
+        } else if let globalFeedViewController = navigationController?.viewControllers.first(where: { $0.isKind(of: EkoGlobalFeedViewController.self) }) {
+            navigationController?.popToViewController(globalFeedViewController, animated: true)
         } else {
             navigationController?.popToRootViewController(animated: true)
         }
@@ -130,7 +136,16 @@ extension EkoCommunitySettingsViewController: EkoCommunitySettingsScreenViewMode
     
     func screenViewModelFailure() {
         EkoHUD.hide {
-            EkoHUD.show(.error(message: EkoLocalizedStringSet.HUD.somethingWentWrong))
+            EkoHUD.show(.error(message: EkoLocalizedStringSet.HUD.somethingWentWrong.localizedString))
         }
     }
+    
+}
+
+extension EkoCommunitySettingsViewController: EkoCommunityProfileEditViewControllerDelegate {
+    
+    func viewController(_ viewController: EkoCommunityProfileEditViewController, didFinishCreateCommunity communityId: String) {
+        EkoEventHandler.shared.communityDidTap(from: self, communityId: communityId)
+    }
+    
 }

@@ -31,7 +31,7 @@ public final class EkoMessageModel {
         self.object = object
         self.messageId = object.messageId
         self.userId = object.userId
-        self.displayName = object.user?.displayName ?? EkoLocalizedStringSet.anonymous
+        self.displayName = object.user?.displayName ?? EkoLocalizedStringSet.anonymous.localizedString
         self.syncState = object.syncState
         self.isDeleted = object.isDeleted
         self.isEdited = EkoMessageModel.isEdited(createdAtDate: object.createdAtDate, editedAtDate: object.editedAtDate)

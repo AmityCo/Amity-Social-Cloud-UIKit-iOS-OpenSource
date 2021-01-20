@@ -29,11 +29,11 @@ class EkoCategoryCommunityListViewEmptyView: EkoView {
         contentView.backgroundColor = EkoColorSet.backgroundColor
         
         imageView.image = EkoIconSet.emptyNewsfeed
-        titleLabel.text = EkoLocalizedStringSet.emptyNewsfeedTitle
+        titleLabel.text = EkoLocalizedStringSet.emptyNewsfeedTitle.localizedString
         titleLabel.textColor = EkoColorSet.base.blend(.shade2)
         titleLabel.font = EkoFontSet.headerLine
         
-        subtitleLabel.text = EkoLocalizedStringSet.emptyNewsfeedSubtitle
+        subtitleLabel.text = EkoLocalizedStringSet.emptyNewsfeedSubtitle.localizedString
         subtitleLabel.textColor = EkoColorSet.base.blend(.shade2)
         subtitleLabel.font = EkoFontSet.body
     }

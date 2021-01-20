@@ -80,6 +80,7 @@ private extension EkoNewsfeedViewController {
         }
         emptyView.createHandler = { [weak self] in
             let vc = EkoCommunityProfileEditViewController.make(viewType: .create)
+            vc.delegate = self
             let nav = UINavigationController(rootViewController: vc)
             nav.modalPresentationStyle = .overFullScreen
             self?.present(nav, animated: true, completion: nil)
@@ -104,8 +105,8 @@ private extension EkoNewsfeedViewController {
 private extension EkoNewsfeedViewController {
     
     func bindingViewModel() {
-        communityViewModel.dataSource.numberOfItems.bind { [weak self] in
-            self?.feedViewController.headerView = $0 > 0 ? self?.headerView?.view : nil
+        communityViewModel.dataSource.searchCommunities.bind { [weak self] (result) in
+            self?.feedViewController.headerView = result.count > 0 ? self?.headerView?.view : nil
         }
         
         communityViewModel.dataSource.route.bind { [weak self] (route) in
@@ -123,6 +124,14 @@ private extension EkoNewsfeedViewController {
                 break
             }
         }
+    }
+    
+}
+
+extension EkoNewsfeedViewController: EkoCommunityProfileEditViewControllerDelegate {
+    
+    func viewController(_ viewController: EkoCommunityProfileEditViewController, didFinishCreateCommunity communityId: String) {
+        EkoEventHandler.shared.communityDidTap(from: self, communityId: communityId)
     }
     
 }

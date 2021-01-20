@@ -83,7 +83,7 @@ private extension EkoMessageListRecordingViewController {
     }
     
     func setupDescLabel() {
-        descLabel.text = EkoLocalizedStringSet.MessageList.releaseToSend
+        descLabel.text = EkoLocalizedStringSet.MessageList.releaseToSend.localizedString
         descLabel.textColor = EkoColorSet.base.blend(.shade3)
         descLabel.font = EkoFontSet.caption
     }

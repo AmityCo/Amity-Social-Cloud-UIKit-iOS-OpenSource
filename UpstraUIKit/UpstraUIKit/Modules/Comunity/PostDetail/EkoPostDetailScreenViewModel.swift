@@ -19,6 +19,7 @@ class EkoPostDetailScreenViewModel: EkoPostDetailScreenViewModelType {
     private var commentFlagger: EkoCommentFlagger?
     private var commentCollectionToken: EkoNotificationToken?
     private var commentCollection: EkoCollection<EkoComment>?
+    private var createCommentToken: EkoNotificationToken?
     
     weak var delegate: EkoPostDetailScreenViewModelDelegate?
     private let postId: String
@@ -32,6 +33,11 @@ class EkoPostDetailScreenViewModel: EkoPostDetailScreenViewModelType {
             self?.post = EkoPostModel(post: post)
             self?.prepareData()
         }
+        setupCollection()
+    }
+    
+    private func setupCollection() {
+        commentCollectionToken?.invalidate()
         commentCollection = commentRepository.comments(withReferenceId: postId, referenceType: .post, filterByParentId: false, parentId: nil, orderBy: .ascending, includeDeleted: true)
         commentCollectionToken = commentCollection?.observe { [weak self] collection, _, error in
             self?.prepareData()
@@ -102,7 +108,7 @@ class EkoPostDetailScreenViewModel: EkoPostDetailScreenViewModelType {
             if let error = error {
                 EkoHUD.show(.error(message: error.localizedDescription))
             } else {
-                EkoHUD.show(.success(message: EkoLocalizedStringSet.HUD.reportSent))
+                EkoHUD.show(.success(message: EkoLocalizedStringSet.HUD.reportSent.localizedString))
             }
         }
     }
@@ -113,13 +119,22 @@ class EkoPostDetailScreenViewModel: EkoPostDetailScreenViewModelType {
             if let error = error {
                 EkoHUD.show(.error(message: error.localizedDescription))
             } else {
-                EkoHUD.show(.success(message: EkoLocalizedStringSet.HUD.unreportSent))
+                EkoHUD.show(.success(message: EkoLocalizedStringSet.HUD.unreportSent.localizedString))
             }
         }
     }
     
     func createComment(text: String) {
-        commentRepository.createComment(withReferenceId: postId, referenceType: .post, parentId: nil, text: text)
+        createCommentToken?.invalidate()
+        createCommentToken = commentRepository.createComment(withReferenceId: postId, referenceType: .post, parentId: nil, text: text).observe { [weak self] object, error in
+            // check if the recent comment is contains banned word
+            // if containts, delete the particular comment
+            if let comment = object.object, EkoError(error: error) == .bannedWord {
+                self?.deleteComment(comment: EkoCommentModel(comment: comment))
+                self?.setupCollection()
+                EkoHUD.show(.error(message: EkoLocalizedStringSet.PostDetail.banndedCommentErrorMessage.localizedString))
+            }
+        }
     }
     
     func editComment(comment: EkoCommentModel, text: String) {
@@ -158,7 +173,7 @@ class EkoPostDetailScreenViewModel: EkoPostDetailScreenViewModelType {
             if let error = error {
                 EkoHUD.show(.error(message: error.localizedDescription))
             } else {
-                EkoHUD.show(.success(message: EkoLocalizedStringSet.HUD.reportSent))
+                EkoHUD.show(.success(message: EkoLocalizedStringSet.HUD.reportSent.localizedString))
             }
         }
     }
@@ -169,7 +184,7 @@ class EkoPostDetailScreenViewModel: EkoPostDetailScreenViewModelType {
             if let error = error {
                 EkoHUD.show(.error(message: error.localizedDescription))
             } else {
-                EkoHUD.show(.success(message: EkoLocalizedStringSet.HUD.unreportSent))
+                EkoHUD.show(.success(message: EkoLocalizedStringSet.HUD.unreportSent.localizedString))
             }
         }
     }

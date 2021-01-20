@@ -157,15 +157,15 @@ public final class EkoFeedViewController: EkoViewController, EkoRefreshable {
         bottomSheet.modalPresentationStyle = .overFullScreen
         
         if post.isOwner {
-            let editOption = TextItemOption(title: EkoLocalizedStringSet.PostDetail.editPost) { [weak self] in
+            let editOption = TextItemOption(title: EkoLocalizedStringSet.PostDetail.editPost.localizedString) { [weak self] in
                 guard let strongSelf = self else { return }
                 EkoEventHandler.shared.editPostDidTap(from: strongSelf, postId: post.id)
             }
-            let deleteOption = TextItemOption(title: EkoLocalizedStringSet.PostDetail.deletePost) { [weak self] in
+            let deleteOption = TextItemOption(title: EkoLocalizedStringSet.PostDetail.deletePost.localizedString) { [weak self] in
                 // delete option
-                let alert = UIAlertController(title: EkoLocalizedStringSet.PostDetail.deletePostTitle, message: EkoLocalizedStringSet.PostDetail.deletePostMessage, preferredStyle: .alert)
-                alert.addAction(UIAlertAction(title: EkoLocalizedStringSet.cancel, style: .default, handler: nil))
-                alert.addAction(UIAlertAction(title: EkoLocalizedStringSet.delete, style: .destructive, handler: { _ in
+                let alert = UIAlertController(title: EkoLocalizedStringSet.PostDetail.deletePostTitle.localizedString, message: EkoLocalizedStringSet.PostDetail.deletePostMessage.localizedString, preferredStyle: .alert)
+                alert.addAction(UIAlertAction(title: EkoLocalizedStringSet.cancel.localizedString, style: .default, handler: nil))
+                alert.addAction(UIAlertAction(title: EkoLocalizedStringSet.delete.localizedString, style: .destructive, handler: { _ in
                     self?.screenViewModel.deletePost(postId: post.id)
                     self?.tableView.reloadData()
                 }))
@@ -177,12 +177,12 @@ public final class EkoFeedViewController: EkoViewController, EkoRefreshable {
         } else {
             screenViewModel.dataSource.getReportPostStatus(postId: post.id) { [weak self] isReported in
                 if isReported {
-                    let unreportOption = TextItemOption(title: EkoLocalizedStringSet.PostDetail.unreportPost) {
+                    let unreportOption = TextItemOption(title: EkoLocalizedStringSet.PostDetail.unreportPost.localizedString) {
                         self?.screenViewModel.action.unreportPost(postId: post.id)
                     }
                     contentView.configure(items: [unreportOption], selectedItem: nil)
                 } else {
-                    let reportOption = TextItemOption(title: EkoLocalizedStringSet.PostDetail.reportPost) {
+                    let reportOption = TextItemOption(title: EkoLocalizedStringSet.PostDetail.reportPost.localizedString) {
                         self?.screenViewModel.action.reportPost(postId: post.id)
                     }
                     contentView.configure(items: [reportOption], selectedItem: nil)
@@ -203,9 +203,10 @@ public final class EkoFeedViewController: EkoViewController, EkoRefreshable {
         // Comment options
         if comment.isOwner {
             
-            let editOption = TextItemOption(title: EkoLocalizedStringSet.PostDetail.editComment) { [weak self] in
+            let editOption = TextItemOption(title: EkoLocalizedStringSet.PostDetail.editComment.localizedString) { [weak self] in
                 guard let strongSelf = self else { return }
                 let editTextViewController = EkoEditTextViewController.make(message: comment.text, editMode: .edit)
+                editTextViewController.title = EkoLocalizedStringSet.PostDetail.editComment.localizedString
                 editTextViewController.editHandler = { [weak self] text in
                     self?.screenViewModel.action.editComment(comment: comment, text: text)
                     editTextViewController.dismiss(animated: true, completion: nil)
@@ -217,10 +218,10 @@ public final class EkoFeedViewController: EkoViewController, EkoRefreshable {
                 nvc.modalPresentationStyle = .fullScreen
                 strongSelf.present(nvc, animated: true, completion: nil)
             }
-            let deleteOption = TextItemOption(title: EkoLocalizedStringSet.PostDetail.deleteComment) { [weak self] in
-                let alert = UIAlertController(title: EkoLocalizedStringSet.PostDetail.deleteCommentTitle, message: EkoLocalizedStringSet.PostDetail.deleteCommentMessage, preferredStyle: .alert)
-                alert.addAction(UIAlertAction(title: EkoLocalizedStringSet.cancel, style: .cancel, handler: nil))
-                alert.addAction(UIAlertAction(title: EkoLocalizedStringSet.delete, style: .destructive) { [weak self] _ in
+            let deleteOption = TextItemOption(title: EkoLocalizedStringSet.PostDetail.deleteComment.localizedString) { [weak self] in
+                let alert = UIAlertController(title: EkoLocalizedStringSet.PostDetail.deleteCommentTitle.localizedString, message: EkoLocalizedStringSet.PostDetail.deleteCommentMessage.localizedString, preferredStyle: .alert)
+                alert.addAction(UIAlertAction(title: EkoLocalizedStringSet.cancel.localizedString, style: .cancel, handler: nil))
+                alert.addAction(UIAlertAction(title: EkoLocalizedStringSet.delete.localizedString, style: .destructive) { [weak self] _ in
                     self?.screenViewModel.action.deleteComment(comment: comment)
                 })
                 self?.present(alert, animated: true, completion: nil)
@@ -232,12 +233,12 @@ public final class EkoFeedViewController: EkoViewController, EkoRefreshable {
             
             screenViewModel.dataSource.getReportCommentStatus(commentId: comment.id) { [weak self] isReported in
                 if isReported {
-                    let unreportOption = TextItemOption(title: EkoLocalizedStringSet.PostDetail.unreportComment) {
+                    let unreportOption = TextItemOption(title: EkoLocalizedStringSet.PostDetail.unreportComment.localizedString) {
                         self?.screenViewModel.action.unreportComment(commentId: comment.id)
                     }
                     contentView.configure(items: [unreportOption], selectedItem: nil)
                 } else {
-                    let reportOption = TextItemOption(title: EkoLocalizedStringSet.PostDetail.reportComment) {
+                    let reportOption = TextItemOption(title: EkoLocalizedStringSet.PostDetail.reportComment.localizedString) {
                         self?.screenViewModel.action.reportComment(commentId: comment.id)
                     }
                     contentView.configure(items: [reportOption], selectedItem: nil)
@@ -312,7 +313,7 @@ extension EkoFeedViewController: UITableViewDelegate {
         if let emptyView = emptyView {
             bottomView.setLayout(layout: .custom(emptyView))
         } else if case .userFeed = screenViewModel.dataSource.feedType {
-            bottomView.setLayout(layout: .label(title: EkoLocalizedStringSet.emptyTitleNoPosts, subtitle: nil, image: EkoIconSet.emptyNoPosts))
+            bottomView.setLayout(layout: .label(title: EkoLocalizedStringSet.emptyTitleNoPosts.localizedString, subtitle: nil, image: EkoIconSet.emptyNoPosts))
         }
         emptyViewHandler?(bottomView)
         return bottomView

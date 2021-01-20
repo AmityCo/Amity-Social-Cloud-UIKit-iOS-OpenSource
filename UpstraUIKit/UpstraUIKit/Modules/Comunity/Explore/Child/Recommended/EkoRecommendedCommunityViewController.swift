@@ -61,7 +61,7 @@ private extension EkoRecommendedCommunityViewController {
     }
     
     func setupTitle() {
-        titleLabel.text = EkoLocalizedStringSet.recommendedCommunityTitle
+        titleLabel.text = EkoLocalizedStringSet.recommendedCommunityTitle.localizedString
         titleLabel.textColor = EkoColorSet.base
         titleLabel.font = EkoFontSet.title
     }

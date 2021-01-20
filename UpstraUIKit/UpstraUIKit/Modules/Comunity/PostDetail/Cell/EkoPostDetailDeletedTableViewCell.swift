@@ -23,7 +23,7 @@ class EkoPostDetailDeletedTableViewCell: UITableViewCell, Nibbable {
     }
     
     func configure(deletedAt: Date) {
-        textLabel?.text = "\(EkoLocalizedStringSet.PostDetail.deletedItem) • \(deletedAt.relativeTime)"
+        textLabel?.text = "\(EkoLocalizedStringSet.PostDetail.deletedItem.localizedString) • \(deletedAt.relativeTime)"
     }
     
 }

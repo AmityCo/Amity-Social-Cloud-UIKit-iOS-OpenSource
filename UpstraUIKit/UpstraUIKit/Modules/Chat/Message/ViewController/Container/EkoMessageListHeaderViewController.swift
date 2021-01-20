@@ -66,7 +66,7 @@ private extension EkoMessageListHeaderViewController {
 extension EkoMessageListHeaderViewController {
     
     func updateViews(channel: EkoChannel) {
-        displayNameLabel.text = channel.displayName ?? EkoLocalizedStringSet.anonymous
+        displayNameLabel.text = channel.displayName ?? EkoLocalizedStringSet.anonymous.localizedString
         
         switch channel.channelType {
         case .standard:

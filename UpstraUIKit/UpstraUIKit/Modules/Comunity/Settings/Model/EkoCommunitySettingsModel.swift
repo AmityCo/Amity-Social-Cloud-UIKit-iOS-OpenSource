@@ -29,19 +29,18 @@ struct EkoCommunitySettingsModel {
     }
     
     static func prepareData(isCreator: Bool) -> [Self] {
-        let data: [EkoCommunitySettingsModel]
         if isCreator {
-            data = [
-                EkoCommunitySettingsModel(title: EkoLocalizedStringSet.communitySettingsEditProfile, icon: EkoIconSet.iconEdit, type: .editProfile),
-                EkoCommunitySettingsModel(title: EkoLocalizedStringSet.communitySettingsMembers, icon: EkoIconSet.iconMember, type: .member),
-                EkoCommunitySettingsModel(title: EkoLocalizedStringSet.communitySettingsCloseCommunity, icon: nil, isLast: true, type: .close)
+            return [
+                EkoCommunitySettingsModel(title: EkoLocalizedStringSet.communitySettingsEditProfile.localizedString, icon: EkoIconSet.iconEdit, type: .editProfile),
+                EkoCommunitySettingsModel(title: EkoLocalizedStringSet.communitySettingsMembers.localizedString, icon: EkoIconSet.iconMember, type: .member),
+                EkoCommunitySettingsModel(title: EkoLocalizedStringSet.communitySettingsCloseCommunity.localizedString, icon: nil, isLast: true, type: .close)
             ]
         } else {
-            data = [
-                EkoCommunitySettingsModel(title: EkoLocalizedStringSet.communitySettingsMembers, icon: EkoIconSet.iconMember, type: .member),
-                EkoCommunitySettingsModel(title: EkoLocalizedStringSet.communitySettingsLeaveCommunity, icon: nil, isLast: true, type: .leave)
+            return [
+                EkoCommunitySettingsModel(title: EkoLocalizedStringSet.communitySettingsMembers.localizedString, icon: EkoIconSet.iconMember, type: .member),
+                EkoCommunitySettingsModel(title: EkoLocalizedStringSet.communitySettingsLeaveCommunity.localizedString, icon: nil, isLast: true, type: .leave)
             ]
         }
-        return data
     }
+    
 }

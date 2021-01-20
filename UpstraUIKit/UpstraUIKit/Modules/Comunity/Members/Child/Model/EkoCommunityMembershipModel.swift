@@ -24,7 +24,7 @@ struct EkoCommunityMembershipModel {
     
     init(member: EkoCommunityMembership) {
         self.user = member.user?.object
-        self.displayName = member.displayName == "" ? EkoLocalizedStringSet.anonymous : member.displayName
+        self.displayName = member.displayName == "" ? EkoLocalizedStringSet.anonymous.localizedString : member.displayName
         self.userId = member.userId
         self.roles = member.roles
         self.avatarId = member.user?.object?.avatarFileId ?? ""

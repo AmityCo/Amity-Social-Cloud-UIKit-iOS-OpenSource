@@ -69,7 +69,7 @@ private extension EkoCategoryPreviewViewController {
     }
     
     func setupTitle() {
-        titleLabel.text = EkoLocalizedStringSet.categoryTitle
+        titleLabel.text = EkoLocalizedStringSet.categoryTitle.localizedString
         titleLabel.textColor = EkoColorSet.base
         titleLabel.font = EkoFontSet.title
     }

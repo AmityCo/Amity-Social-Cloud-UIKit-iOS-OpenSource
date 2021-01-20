@@ -34,7 +34,7 @@ class EkoSelectCategoryListViewController: EkoViewController {
     private init(referenceCategoryId: String?) {
         self.referenceCategoryId = referenceCategoryId
         super.init(nibName: EkoSelectCategoryListViewController.identifier, bundle: UpstraUIKitManager.bundle)
-        title = EkoLocalizedStringSet.categorySelectionTitle
+        title = EkoLocalizedStringSet.categorySelectionTitle.localizedString
     }
     
     required init?(coder: NSCoder) {
@@ -57,7 +57,7 @@ class EkoSelectCategoryListViewController: EkoViewController {
     // MARK: - Private functions
     
     private func setupNavigationBar() {
-        doneBarButtonItem = UIBarButtonItem(title: EkoLocalizedStringSet.done, style: .done, target: self, action: #selector(doneButtonTap))
+        doneBarButtonItem = UIBarButtonItem(title: EkoLocalizedStringSet.done.localizedString, style: .done, target: self, action: #selector(doneButtonTap))
         navigationItem.rightBarButtonItem = doneBarButtonItem
         updateNavigationBarState()
     }

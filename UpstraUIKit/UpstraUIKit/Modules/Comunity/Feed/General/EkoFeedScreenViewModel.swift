@@ -19,6 +19,7 @@ class EkoFeedScreenViewModel: EkoFeedScreenViewModelType {
     private let feedRepository = EkoFeedRepository(client: UpstraUIKitManagerInternal.shared.client)
     private let fileRepository = EkoFileRepository(client: UpstraUIKitManagerInternal.shared.client)
     private let reactionRepository = EkoReactionRepository(client: UpstraUIKitManagerInternal.shared.client)
+    private var communityParticipation: EkoCommunityParticipation?
     private var postFlagger: EkoPostFlagger?
     private var commentFlagger: EkoCommentFlagger?
     private var feedCollection: EkoCollection<EkoPost>?
@@ -62,43 +63,8 @@ class EkoFeedScreenViewModel: EkoFeedScreenViewModelType {
         
         feedToken?.invalidate()
         feedToken = feedCollection?.observe { [weak self] (collection, change, error) in
-            guard collection.dataStatus == .fresh else { return }
             self?.prepareDataSource()
             Log.add("Feed collection error: \(String(describing: error))")
-        }
-    }
-    
-    private func getModeratorRole(model: EkoPostModel, completion: @escaping (Bool) -> Void) {
-        guard let communityId = model.communityId, !communityId.isEmpty else {
-            // if community id doesn't exist, mark the user as non-moderator
-            completion(false)
-            return
-        }
-        
-        // check if the particular community has arrays of moderator users
-        if let community = moderatorMap[communityId] {
-            // the arrays of users is already created
-            // then return if the array contains user
-            let isModerator = community.contains(model.postedUserId)
-            completion(isModerator)
-        } else {
-            // the array doesn't assign yet. create it once by calling `getMemberships`
-            let postId = model.id
-            let participation = EkoCommunityParticipation(client: UpstraUIKitManagerInternal.shared.client, andCommunityId: communityId)
-            communityTokens[postId] = participation.getMemberships(.all, roles: [], sortBy: .firstCreated).observe { [weak self] (collection, _, error) in
-                var moderatorIds = Set<String>()
-                for j in 0..<collection.count() {
-                    if let roles = collection.object(at: j)?.roles as? [String], roles.contains("moderator") {
-                        moderatorIds.insert(model.postedUserId)
-                    }
-                }
-                self?.moderatorMap[communityId] = moderatorIds
-                self?.communityTokens[postId]?.invalidate()
-                self?.communityTokens[postId] = nil
-                
-                let isModerator = moderatorIds.contains(model.postedUserId)
-                completion(isModerator)
-            }
         }
     }
     
@@ -106,25 +72,18 @@ class EkoFeedScreenViewModel: EkoFeedScreenViewModelType {
         guard let collection = feedCollection else { return }
         
         var postModels = [EkoPostModel]()
-        let dispatchGroup = DispatchGroup()
-        
         for i in 0..<collection.count() {
             guard let post = collection.object(at: i) else { continue }
             let model = EkoPostModel(post: post)
-            postModels.append(model)
-            
-            // assign moderator roles
-            dispatchGroup.enter()
-            getModeratorRole(model: model) { isModerator in
-                postModels[Int(i)].isModerator = isModerator
-                dispatchGroup.leave()
+            if let communityId = model.communityId {
+                communityParticipation = EkoCommunityParticipation(client: UpstraUIKitManagerInternal.shared.client, andCommunityId: communityId)
+                let roles = communityParticipation?.getMembership(post.postedUserId)?.roles as? [String] ?? []
+                model.isModerator = roles.contains("moderator")
             }
+            postModels.append(model)
         }
-        dispatchGroup.notify(queue: .main) { [weak self] in
-            guard let strongSelf = self else { return }
-            strongSelf.viewModels = postModels.map { .post($0) }
-            strongSelf.delegate?.screenViewModelDidUpdateData(strongSelf)
-        }
+        viewModels = postModels.map { .post($0) }
+        delegate?.screenViewModelDidUpdateData(self)
     }
     
     // MARK: - DataSource
@@ -187,7 +146,7 @@ class EkoFeedScreenViewModel: EkoFeedScreenViewModelType {
             if let error = error {
                 EkoHUD.show(.error(message: error.localizedDescription))
             } else {
-                EkoHUD.show(.success(message: EkoLocalizedStringSet.HUD.reportSent))
+                EkoHUD.show(.success(message: EkoLocalizedStringSet.HUD.reportSent.localizedString))
             }
         }
     }
@@ -198,7 +157,7 @@ class EkoFeedScreenViewModel: EkoFeedScreenViewModelType {
             if let error = error {
                 EkoHUD.show(.error(message: error.localizedDescription))
             } else {
-                EkoHUD.show(.success(message: EkoLocalizedStringSet.HUD.unreportSent))
+                EkoHUD.show(.success(message: EkoLocalizedStringSet.HUD.unreportSent.localizedString))
             }
         }
     }
@@ -227,7 +186,7 @@ class EkoFeedScreenViewModel: EkoFeedScreenViewModelType {
             if let error = error {
                 EkoHUD.show(.error(message: error.localizedDescription))
             } else {
-                EkoHUD.show(.success(message: EkoLocalizedStringSet.HUD.reportSent))
+                EkoHUD.show(.success(message: EkoLocalizedStringSet.HUD.reportSent.localizedString))
             }
         }
     }
@@ -238,7 +197,7 @@ class EkoFeedScreenViewModel: EkoFeedScreenViewModelType {
             if let error = error {
                 EkoHUD.show(.error(message: error.localizedDescription))
             } else {
-                EkoHUD.show(.success(message: EkoLocalizedStringSet.HUD.unreportSent))
+                EkoHUD.show(.success(message: EkoLocalizedStringSet.HUD.unreportSent.localizedString))
             }
         }
     }

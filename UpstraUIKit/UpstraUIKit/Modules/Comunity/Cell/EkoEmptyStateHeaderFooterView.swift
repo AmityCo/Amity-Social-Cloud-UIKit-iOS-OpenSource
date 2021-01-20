@@ -69,14 +69,14 @@ class EkoEmptyStateHeaderFooterView: UITableViewHeaderFooterView {
     }
     
     private func setupTitle() {
-        titleLabel.text = EkoLocalizedStringSet.emptyNewsfeedTitle
+        titleLabel.text = EkoLocalizedStringSet.emptyNewsfeedTitle.localizedString
         titleLabel.font = EkoFontSet.title
         titleLabel.textColor = EkoColorSet.base.blend(.shade3)
         titleLabel.textAlignment = .center
     }
     
     private func setupSubtitle() {
-        subtitleLabel.text = EkoLocalizedStringSet.emptyNewsfeedStartYourFirstPost
+        subtitleLabel.text = EkoLocalizedStringSet.emptyNewsfeedStartYourFirstPost.localizedString
         subtitleLabel.font = EkoFontSet.headerLine
         subtitleLabel.textColor = EkoColorSet.base
         subtitleLabel.textAlignment = .center

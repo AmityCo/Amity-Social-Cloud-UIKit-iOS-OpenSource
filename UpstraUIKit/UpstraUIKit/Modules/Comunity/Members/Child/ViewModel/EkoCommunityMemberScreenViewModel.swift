@@ -17,9 +17,9 @@ final class EkoCommunityMemberScreenViewModel: EkoCommunityMemberScreenViewModel
     // MARK: - Controller
     private var communityController: EkoCommunityInfoController?
     private var fetchMemberController: EkoCommunityFetchMemberController?
-    private var removeMemberController: EkoCommunityRemoveMemberController?
+    private var removeMemberController: EkoCommunityRemoveMemberControllerProtocol?
     private var userModeratorController: EkoCommunityUserRolesController?
-    private var addMemberController: EkoCommunityAddMemberController?
+    private var addMemberController: EkoCommunityAddMemberControllerProtocol?
     private let roleController: EkoCommunityRoleControllerProtocol
     // MARK: - Properties
     private var members: [EkoCommunityMembershipModel] = []
@@ -35,7 +35,9 @@ final class EkoCommunityMemberScreenViewModel: EkoCommunityMemberScreenViewModel
     }
     
     var isModerator: Bool = false
-        
+    var isJoined: Bool {
+        return community?.isJoined ?? false
+    }
 }
 
 // MARK: - DataSource
@@ -64,10 +66,6 @@ extension EkoCommunityMemberScreenViewModel {
             }
         }
         return storeUsers
-    }
-    
-    func isJoined() -> Bool {
-        return community?.isJoined ?? false
     }
 }
 
@@ -138,10 +136,24 @@ extension EkoCommunityMemberScreenViewModel {
 /// Add user
 extension EkoCommunityMemberScreenViewModel {
     func addUser(users: [EkoSelectMemberModel]) {
-        let userIds = users.map { $0.userId }
-        addMemberController?.add(withUserIds: userIds, { [weak self] (error) in
-            if let error = error {
+        addMemberController?.add(currentUsers: members, newUsers: users, { [weak self] (ekoError, controllerError) in
+            if let error = ekoError {
                 self?.delegate?.screenViewModelFailure(error: error)
+            } else if let controllerError = controllerError {
+                switch controllerError {
+                case .addMemberFailure(let error):
+                    if let error = error {
+                        self?.delegate?.screenViewModelFailure(error: error)
+                    } else {
+                        self?.delegate?.screenViewModelDidAddMemberSuccess()
+                    }
+                case .removeMemberFailure(let error):
+                    if let error = error {
+                        self?.delegate?.screenViewModelFailure(error: error)
+                    } else {
+                        self?.delegate?.screenViewModelDidAddMemberSuccess()
+                    }
+                }
             } else {
                 self?.delegate?.screenViewModelDidAddMemberSuccess()
             }
@@ -160,7 +172,7 @@ extension EkoCommunityMemberScreenViewModel {
             if let error = error {
                 EkoHUD.show(.error(message: error.localizedDescription))
             } else {
-                EkoHUD.show(.success(message: EkoLocalizedStringSet.HUD.reportSent))
+                EkoHUD.show(.success(message: EkoLocalizedStringSet.HUD.reportSent.localizedString))
             }
         }
     }
@@ -172,7 +184,7 @@ extension EkoCommunityMemberScreenViewModel {
             if let error = error {
                 EkoHUD.show(.error(message: error.localizedDescription))
             } else {
-                EkoHUD.show(.success(message: EkoLocalizedStringSet.HUD.unreportSent))
+                EkoHUD.show(.success(message: EkoLocalizedStringSet.HUD.unreportSent.localizedString))
             }
         }
     }
@@ -182,11 +194,13 @@ extension EkoCommunityMemberScreenViewModel {
 /// Remove user
 extension EkoCommunityMemberScreenViewModel {
     func removeUser(at indexPath: IndexPath) {
-        let userId = member(at: indexPath).userId
-        removeMemberController?.remove(userIds: [userId]) { [weak self] in
-            self?.members.remove(at: indexPath.row)
-            self?.delegate?.screenViewModelDidRemoveUser(at: indexPath)
-        }
+        removeMemberController?.remove(users: members, at: indexPath, { (error) in
+            if let error = error {
+                self.delegate?.screenViewModelFailure(error: error)
+            } else {
+                self.delegate?.screenViewModelDidRemoveRoleSuccess()
+            }
+        })
     }
 }
 

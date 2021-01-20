@@ -22,13 +22,13 @@
                         <rect key="frame" x="0.0" y="12" width="320" height="670"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="zQD-5m-t42" userLabel="DisplayName Label" customClass="EkoFeedDisplayNameLabel" customModule="UpstraUIKit" customModuleProvider="target">
-                                <rect key="frame" x="68" y="20" width="41.5" height="20.5"/>
+                                <rect key="frame" x="68" y="20" width="41.5" height="5.5"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="lorem ipsum" lineBreakMode="tailTruncation" numberOfLines="8" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2YI-DN-7Uk" customClass="EkoExpandableLabel" customModule="UpstraUIKit" customModuleProvider="target">
-                                <rect key="frame" x="16" y="69.5" width="288" height="20.5"/>
+                                <rect key="frame" x="16" y="54.5" width="288" height="20.5"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
@@ -42,7 +42,7 @@
                                 </constraints>
                             </view>
                             <stackView opaque="NO" contentMode="scaleToFill" spacing="4" translatesAutoresizingMaskIntoConstraints="NO" id="OkO-J0-k3i" userLabel="Badge Stack View">
-                                <rect key="frame" x="68" y="44.5" width="124" height="13"/>
+                                <rect key="frame" x="68" y="29.5" width="124" height="13"/>
                                 <subviews>
                                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="jhm-rS-QXR" userLabel="Badge Image View">
                                         <rect key="frame" x="0.0" y="0.0" width="13" height="13"/>
@@ -77,7 +77,7 @@
                                 </connections>
                             </button>
                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="none" translatesAutoresizingMaskIntoConstraints="NO" id="RDS-bg-XCT" customClass="EkoGalleryCollectionView" customModule="UpstraUIKit" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="90" width="320" height="300"/>
+                                <rect key="frame" x="0.0" y="75" width="320" height="300"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="300" id="pCU-Pz-wpI"/>
@@ -90,14 +90,14 @@
                                 </collectionViewFlowLayout>
                             </collectionView>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="OK0-fu-Aez" customClass="EkoFileTableView" customModule="UpstraUIKit" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="390" width="320" height="60"/>
+                                <rect key="frame" x="0.0" y="375" width="320" height="60"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="60" id="vAZ-HE-Lh2"/>
                                 </constraints>
                             </tableView>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="WMg-GL-KhI" userLabel="Action View">
-                                <rect key="frame" x="0.0" y="454" width="320" height="73"/>
+                                <rect key="frame" x="0.0" y="439" width="320" height="73"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="07m-VM-2N2" userLabel="Top Container View">
                                         <rect key="frame" x="0.0" y="0.0" width="320" height="32"/>
@@ -230,21 +230,21 @@
                                 </constraints>
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="opJ-Jk-bXV">
-                                <rect key="frame" x="0.0" y="527" width="320" height="1"/>
+                                <rect key="frame" x="0.0" y="512" width="320" height="1"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="1" id="XTG-6f-TkE"/>
                                 </constraints>
                             </view>
-                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" spacing="1" translatesAutoresizingMaskIntoConstraints="NO" id="xbJ-Bh-KGM">
-                                <rect key="frame" x="0.0" y="528" width="320" height="142"/>
+                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillProportionally" spacing="1" translatesAutoresizingMaskIntoConstraints="NO" id="xbJ-Bh-KGM">
+                                <rect key="frame" x="0.0" y="513" width="320" height="157"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="vch-gS-SQb" customClass="EkoCommentView" customModule="UpstraUIKit" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="0.0" width="320" height="70.5"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="320" height="78"/>
                                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                     </view>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="2p5-LU-tkB" customClass="EkoCommentView" customModule="UpstraUIKit" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="71.5" width="320" height="70.5"/>
+                                        <rect key="frame" x="0.0" y="79" width="320" height="78"/>
                                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                     </view>
                                 </subviews>

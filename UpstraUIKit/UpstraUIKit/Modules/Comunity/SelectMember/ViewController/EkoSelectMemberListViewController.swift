@@ -83,17 +83,17 @@ private extension EkoSelectMemberListViewController {
         navigationItem.titleView = customView
         let numberOfSelectedUseres = screenViewModel.dataSource.numberOfSelectedUsers()
         if numberOfSelectedUseres == 0 {
-            title = EkoLocalizedStringSet.selectMemberListTitle
+            title = EkoLocalizedStringSet.selectMemberListTitle.localizedString
         } else {
             
-            title = String.localizedStringWithFormat(EkoLocalizedStringSet.selectMemberListSelectedTitle, "\(numberOfSelectedUseres)")
+            title = String.localizedStringWithFormat(EkoLocalizedStringSet.selectMemberListSelectedTitle.localizedString, "\(numberOfSelectedUseres)")
         }
         
-        doneButton = UIBarButtonItem(title: EkoLocalizedStringSet.done, style: .plain, target: self, action: #selector(doneTap))
+        doneButton = UIBarButtonItem(title: EkoLocalizedStringSet.done.localizedString, style: .plain, target: self, action: #selector(doneTap))
         doneButton?.tintColor = EkoColorSet.primary
         doneButton?.isEnabled = !(numberOfSelectedUseres == 0)
         
-        let cancelButton = UIBarButtonItem(title: EkoLocalizedStringSet.cancel, style: .plain, target: self, action: #selector(cancelTap))
+        let cancelButton = UIBarButtonItem(title: EkoLocalizedStringSet.cancel.localizedString, style: .plain, target: self, action: #selector(cancelTap))
         cancelButton.tintColor = EkoColorSet.base
         
         navigationItem.leftBarButtonItem = cancelButton
@@ -145,7 +145,7 @@ extension EkoSelectMemberListViewController: UITableViewDelegate {
     public func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         let headerView = EkoSelectMemberListHeaderView()
         if screenViewModel.dataSource.isSearching() {
-            headerView.text = EkoLocalizedStringSet.searchResults
+            headerView.text = EkoLocalizedStringSet.searchResults.localizedString
         } else {
             headerView.text = screenViewModel.dataSource.alphabetOfHeader(in: section)
         }
