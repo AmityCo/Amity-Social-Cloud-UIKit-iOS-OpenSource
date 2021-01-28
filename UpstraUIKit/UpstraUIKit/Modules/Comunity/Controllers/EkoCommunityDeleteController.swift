@@ -23,19 +23,15 @@ final class EkoCommunityDeleteController: EkoCommunityDeleteControllerProtocol {
         repository = EkoCommunityRepository(client: UpstraUIKitManagerInternal.shared.client)
     }
     
-    
     func delete(_ completion: @escaping (EkoError?) -> Void) {
         repository.deleteCommunity(withId: communityId) { (success, error) in
             if success {
                 completion(nil)
             } else {
-                if let error = error {
-                    completion(.unknown)
-                } else {
-                    completion(.unknown)
-                }
+                completion(EkoError(error: error) ?? .unknown)
             }
         }
     }
+    
 }
 

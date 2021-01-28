@@ -76,6 +76,7 @@ public class EkoViewController: UIViewController {
     }
     
     private var leftBarButtonItem: UIBarButtonItem?
+    private let fullWidthBackGestureRecognizer = UIPanGestureRecognizer()
     
     public override func viewDidLoad() {
         super.viewDidLoad()
@@ -89,6 +90,7 @@ public class EkoViewController: UIViewController {
             overrideUserInterfaceStyle = .light
         }
         updateNavigationBarLayout()
+        setupFullWidthBackGesture()
     }
 
     #if DEBUG
@@ -127,6 +129,16 @@ public class EkoViewController: UIViewController {
         }
     }
     
+    private func setupFullWidthBackGesture() {
+        guard let interactivePopGestureRecognizer = navigationController?.interactivePopGestureRecognizer,
+            let targets = interactivePopGestureRecognizer.value(forKey: "targets") else {
+            return
+        }
+        fullWidthBackGestureRecognizer.setValue(targets, forKey: "targets")
+        fullWidthBackGestureRecognizer.delegate = self
+        view.addGestureRecognizer(fullWidthBackGestureRecognizer)
+    }
+    
     // To support presenting confirmation dialog before dismissing.
     // We provide `didTapLeftBarButton` to be overriden.
     // Otherwise, the default behavior is to call `generalDismiss`.
@@ -159,6 +171,16 @@ public class EkoViewController: UIViewController {
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboardOnTouchView))
         tapGesture.numberOfTouchesRequired = 1
         view.addGestureRecognizer(tapGesture)
+    }
+    
+}
+
+extension EkoViewController: UIGestureRecognizerDelegate {
+    
+    public func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
+        let isSystemSwipeToBackEnabled = navigationController?.interactivePopGestureRecognizer?.isEnabled == true
+        let isThereStackedViewControllers = navigationController?.viewControllers.count ?? 0 > 1
+        return isSystemSwipeToBackEnabled && isThereStackedViewControllers
     }
     
 }

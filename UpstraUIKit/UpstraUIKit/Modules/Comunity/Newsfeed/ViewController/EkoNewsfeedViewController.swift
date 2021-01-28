@@ -105,8 +105,8 @@ private extension EkoNewsfeedViewController {
 private extension EkoNewsfeedViewController {
     
     func bindingViewModel() {
-        communityViewModel.dataSource.searchCommunities.bind { [weak self] (result) in
-            self?.feedViewController.headerView = result.count > 0 ? self?.headerView?.view : nil
+        communityViewModel.dataSource.numberOfItems.bind { [weak self] (count) in
+            self?.feedViewController.headerView = count > 0 ? self?.headerView?.view : nil
         }
         
         communityViewModel.dataSource.route.bind { [weak self] (route) in

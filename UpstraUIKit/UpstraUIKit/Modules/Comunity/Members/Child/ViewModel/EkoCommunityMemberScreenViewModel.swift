@@ -10,34 +10,37 @@ import UIKit
 import EkoChat
 
 final class EkoCommunityMemberScreenViewModel: EkoCommunityMemberScreenViewModelType {
+    
     weak var delegate: EkoCommunityMemberScreenViewModelDelegate?
     
     private var flagger: EkoUserFlagger?
     
     // MARK: - Controller
-    private var communityController: EkoCommunityInfoController?
-    private var fetchMemberController: EkoCommunityFetchMemberController?
-    private var removeMemberController: EkoCommunityRemoveMemberControllerProtocol?
-    private var userModeratorController: EkoCommunityUserRolesController?
-    private var addMemberController: EkoCommunityAddMemberControllerProtocol?
+    private let fetchMemberController: EkoCommunityFetchMemberControllerProtocol
+    private let removeMemberController: EkoCommunityRemoveMemberControllerProtocol
+    private let userModeratorController: EkoCommunityUserRolesControllerProtocol
+    private let addMemberController: EkoCommunityAddMemberControllerProtocol
     private let roleController: EkoCommunityRoleControllerProtocol
+    
     // MARK: - Properties
     private var members: [EkoCommunityMembershipModel] = []
-    private var community: EkoCommunityModel?
-    
-    init(communityId: String) {
-        userModeratorController = EkoCommunityUserRolesController(communityId: communityId)
-        communityController = EkoCommunityInfoController(communityId: communityId)
-        fetchMemberController = EkoCommunityFetchMemberController(communityId: communityId)
-        removeMemberController = EkoCommunityRemoveMemberController(communityId: communityId)
-        addMemberController = EkoCommunityAddMemberController(communityId: communityId)
-        roleController = EkoCommunityRoleController(communityId: communityId)
-    }
-    
+    var community: EkoCommunityModel?
     var isModerator: Bool = false
-    var isJoined: Bool {
-        return community?.isJoined ?? false
+    
+    init(community: EkoCommunityModel,
+         fetchMemberController: EkoCommunityFetchMemberControllerProtocol,
+         removeMemberController: EkoCommunityRemoveMemberControllerProtocol,
+         userModeratorController: EkoCommunityUserRolesController,
+         addMemberController: EkoCommunityAddMemberControllerProtocol,
+         roleController: EkoCommunityRoleControllerProtocol) {
+        self.community = community
+        self.userModeratorController = userModeratorController
+        self.fetchMemberController = fetchMemberController
+        self.removeMemberController = removeMemberController
+        self.addMemberController = addMemberController
+        self.roleController = roleController
     }
+    
 }
 
 // MARK: - DataSource
@@ -59,40 +62,18 @@ extension EkoCommunityMemberScreenViewModel {
     }
     
     func prepareData() -> [EkoSelectMemberModel] {
-        var storeUsers: [EkoSelectMemberModel] = []
-        for item in members {
-            if !item.isCurrentUser {
-                storeUsers.append(EkoSelectMemberModel(object: item))
-            }
-        }
-        return storeUsers
-    }
-}
-
-// MARK: - Action
-
-/// Get community info
-extension EkoCommunityMemberScreenViewModel {
-    func getCommunity() {
-        communityController?.getCommunity { [weak self] (result) in
-            switch result {
-            case .success(let community):
-                self?.community = community
-                self?.delegate?.screenViewModelDidGetComminityInfo()
-            case .failure:
-                break
-            }
-        }
+        return members
+            .filter { !$0.isCurrentUser }
+            .map { EkoSelectMemberModel(object: $0) }
     }
 }
 
 extension EkoCommunityMemberScreenViewModel {
+    
     func getUserRoles() {
-        if let _isModerator = userModeratorController?.getUserRoles(withUserId: UpstraUIKitManagerInternal.shared.currentUserId, role: .moderator) {
-            isModerator = _isModerator
-        }
-        
+        isModerator = userModeratorController.getUserRoles(withUserId: UpstraUIKitManagerInternal.shared.currentUserId, role: .moderator)
     }
+    
 }
 
 /// Get Member of community
@@ -100,22 +81,22 @@ extension EkoCommunityMemberScreenViewModel {
     func getMember(viewType: EkoCommunityMemberViewType) {
         switch viewType {
         case .member:
-            fetchMemberController?.fetch { [weak self] (result) in
+            fetchMemberController.fetch(roles: []) { [weak self] (result) in
                 switch result {
                 case .success(let members):
                     self?.members = members
                     self?.delegate?.screenViewModelDidGetMember()
-                case .failure(let error):
+                case .failure:
                     break
                 }
             }
         case .moderator:
-            fetchMemberController?.fetch(roles: [EkoCommunityRole.moderator.rawValue]) { [weak self] (result) in
+            fetchMemberController.fetch(roles: [EkoCommunityRole.moderator.rawValue]) { [weak self] (result) in
                 switch result {
                 case .success(let members):
                     self?.members = members
                     self?.delegate?.screenViewModelDidGetMember()
-                case .failure(let error):
+                case .failure:
                     break
                 }
             }
@@ -123,11 +104,12 @@ extension EkoCommunityMemberScreenViewModel {
     }
 
     func loadMore() {
-        fetchMemberController?.loadMore { [weak self] success in
+        fetchMemberController.loadMore { [weak self] success in
+            guard let strongSelf = self else { return }
             if success {
-                self?.delegate?.screenViewModelLoadingState(state: .loadmore)
+                strongSelf.delegate?.screenViewModel(strongSelf, loadingState: .loadmore)
             } else {
-                self?.delegate?.screenViewModelLoadingState(state: .loaded)
+                strongSelf.delegate?.screenViewModel(strongSelf, loadingState: .loaded)
             }
         }
     }
@@ -136,22 +118,23 @@ extension EkoCommunityMemberScreenViewModel {
 /// Add user
 extension EkoCommunityMemberScreenViewModel {
     func addUser(users: [EkoSelectMemberModel]) {
-        addMemberController?.add(currentUsers: members, newUsers: users, { [weak self] (ekoError, controllerError) in
+        addMemberController.add(currentUsers: members, newUsers: users, { [weak self] (ekoError, controllerError) in
+            guard let strongSelf = self else { return }
             if let error = ekoError {
-                self?.delegate?.screenViewModelFailure(error: error)
+                strongSelf.delegate?.screenViewModel(strongSelf, failure: error)
             } else if let controllerError = controllerError {
                 switch controllerError {
                 case .addMemberFailure(let error):
                     if let error = error {
-                        self?.delegate?.screenViewModelFailure(error: error)
+                        strongSelf.delegate?.screenViewModel(strongSelf, failure: error)
                     } else {
-                        self?.delegate?.screenViewModelDidAddMemberSuccess()
+                        strongSelf.delegate?.screenViewModelDidAddMemberSuccess()
                     }
                 case .removeMemberFailure(let error):
                     if let error = error {
-                        self?.delegate?.screenViewModelFailure(error: error)
+                        strongSelf.delegate?.screenViewModel(strongSelf, failure: error)
                     } else {
-                        self?.delegate?.screenViewModelDidAddMemberSuccess()
+                        strongSelf.delegate?.screenViewModelDidAddMemberSuccess()
                     }
                 }
             } else {
@@ -194,13 +177,16 @@ extension EkoCommunityMemberScreenViewModel {
 /// Remove user
 extension EkoCommunityMemberScreenViewModel {
     func removeUser(at indexPath: IndexPath) {
-        removeMemberController?.remove(users: members, at: indexPath, { (error) in
+        // remove user role and remove user from community
+        removeRole(at: indexPath)
+        removeMemberController.remove(users: members, at: indexPath) { [weak self] (error) in
+            guard let strongSelf = self else { return }
             if let error = error {
-                self.delegate?.screenViewModelFailure(error: error)
+                strongSelf.delegate?.screenViewModel(strongSelf, failure: error)
             } else {
-                self.delegate?.screenViewModelDidRemoveRoleSuccess()
+                strongSelf.delegate?.screenViewModelDidRemoveRoleSuccess()
             }
-        })
+        }
     }
 }
 
@@ -209,10 +195,11 @@ extension EkoCommunityMemberScreenViewModel {
     func addRole(at indexPath: IndexPath) {
         let userId = member(at: indexPath).userId
         roleController.add(role: .moderator, userIds: [userId]) { [weak self] error in
+            guard let strongSelf = self else { return }
             if let error = error {
-                self?.delegate?.screenViewModelFailure(error: error)
+                strongSelf.delegate?.screenViewModel(strongSelf, failure: error)
             } else {
-                self?.delegate?.screenViewModelDidAddRoleSuccess()
+                strongSelf.delegate?.screenViewModelDidAddRoleSuccess()
             }
         }
     }
@@ -220,10 +207,11 @@ extension EkoCommunityMemberScreenViewModel {
     func removeRole(at indexPath: IndexPath) {
         let userId = member(at: indexPath).userId
         roleController.remove(role: .moderator, userIds: [userId]) { [weak self] error in
+            guard let strongSelf = self else { return }
             if let error = error {
-                self?.delegate?.screenViewModelFailure(error: error)
+                strongSelf.delegate?.screenViewModel(strongSelf, failure: error)
             } else {
-                self?.delegate?.screenViewModelDidRemoveRoleSuccess()
+                strongSelf.delegate?.screenViewModelDidRemoveRoleSuccess()
             }
         }
     }

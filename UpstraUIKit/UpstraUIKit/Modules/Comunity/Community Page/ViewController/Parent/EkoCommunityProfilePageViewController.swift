@@ -28,13 +28,13 @@ public final class EkoCommunityProfilePageViewController: EkoProfileViewControll
         super.viewDidLoad()
         screenViewModel.delegate = self
         setupView()
-        screenViewModel.action.getCommunity()
     }
     
     public override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        screenViewModel.action.getUserRole()
         navigationController?.setBackgroundColor(with: .white)
+        screenViewModel.action.getCommunity()
+        screenViewModel.action.getUserRole()
     }
     
     override func headerViewController() -> UIViewController {
@@ -148,8 +148,10 @@ extension EkoCommunityProfilePageViewController: EkoCommunityProfileScreenViewMo
     func screenViewModelRoute(_ viewModel: EkoCommunityProfileScreenViewModel, route: EkoCommunityProfileRoute) {
         switch route {
         case .member:
-            let vc = EkoCommunityMemberSettingsViewController.make(communityId: viewModel.communityId)
-            navigationController?.pushViewController(vc, animated: true)
+            if let community = viewModel.community {
+                let vc = EkoCommunityMemberSettingsViewController.make(community: community)
+                navigationController?.pushViewController(vc, animated: true)
+            }
         case .editProfile:
             let vc = EkoCommunityProfileEditViewController.make(viewType: .edit(communityId: viewModel.communityId))
             vc.delegate = self
@@ -163,8 +165,10 @@ extension EkoCommunityProfilePageViewController: EkoCommunityProfileScreenViewMo
             nav.modalPresentationStyle = .fullScreen
             present(nav, animated: true, completion: nil)
         case .settings:
-            let vc = EkoCommunitySettingsViewController.make(communityId: viewModel.communityId)
-            navigationController?.pushViewController(vc, animated: true)
+            if let community = viewModel.community {
+                let vc = EkoCommunitySettingsViewController.make(community: community)
+                navigationController?.pushViewController(vc, animated: true)
+            }
         }
     }
     
@@ -187,6 +191,10 @@ extension EkoCommunityProfilePageViewController: EkoCommunityProfileEditViewCont
     
     func viewController(_ viewController: EkoCommunityProfileEditViewController, didFinishCreateCommunity communityId: String) {
         EkoEventHandler.shared.communityDidTap(from: self, communityId: communityId)
+    }
+    
+    func viewController(_ viewController: EkoCommunityProfileEditViewController, didFailWithNoPermission: Bool) {
+        navigationController?.popToRootViewController(animated: true)
     }
     
 }

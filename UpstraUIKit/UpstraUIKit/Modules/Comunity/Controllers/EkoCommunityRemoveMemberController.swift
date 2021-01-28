@@ -10,7 +10,7 @@ import UIKit
 import EkoChat
 
 protocol EkoCommunityRemoveMemberControllerProtocol {
-    func remove(users: [EkoCommunityMembershipModel],at indexPath: IndexPath, _ completion: @escaping (EkoError?) -> Void)
+    func remove(users: [EkoCommunityMembershipModel], at indexPath: IndexPath, _ completion: @escaping (EkoError?) -> Void)
 }
 
 final class EkoCommunityRemoveMemberController: EkoCommunityRemoveMemberControllerProtocol {
@@ -19,10 +19,6 @@ final class EkoCommunityRemoveMemberController: EkoCommunityRemoveMemberControll
     
     init(communityId: String) {
         membershipParticipation = EkoCommunityParticipation(client: UpstraUIKitManagerInternal.shared.client, andCommunityId: communityId)
-    }
-    
-    deinit {
-        membershipParticipation = nil
     }
     
     func remove(users: [EkoCommunityMembershipModel], at indexPath: IndexPath, _ completion: @escaping (EkoError?) -> Void) {

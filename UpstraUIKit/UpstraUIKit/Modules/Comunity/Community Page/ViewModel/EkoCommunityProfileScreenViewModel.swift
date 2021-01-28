@@ -15,11 +15,9 @@ final class EkoCommunityProfileScreenViewModel: EkoCommunityProfileScreenViewMod
         case notJoin
         case joinNotCreator
         case joinAndCreator
-        case joinAndCreatorAndModerator
     }
     
     weak var delegate: EkoCommunityProfileScreenViewModelDelegate?
-    weak var headerDelegate: EkoCommunityProfileScreenViewModelDelegate?
     
     // MARK: Controller
     private let userRolesController: EkoCommunityUserRolesControllerProtocol
@@ -44,13 +42,15 @@ final class EkoCommunityProfileScreenViewModel: EkoCommunityProfileScreenViewMod
         self.communityJoinController = EkoCommunityJoinController(withCommunityId: communityId)
     }
     
+    // MARK: - DataSource
+    var getCommunityJoinStatus: CommunityJoinStatus {
+        return communityJoinStatus
+    }
 }
 
 // MARK: - DataSource
 extension EkoCommunityProfileScreenViewModel {
-    var getCommunityJoinStatus: CommunityJoinStatus {
-        return communityJoinStatus
-    }
+    
 }
 
 // MARK: - Action
@@ -76,7 +76,7 @@ extension EkoCommunityProfileScreenViewModel {
                 self?.community = community
                 self?.checkingJoinStatus(community: community)
                 self?.delegate?.screenViewModelDidGetCommunity(with: community)
-            case .failure(let error):
+            case .failure:
                 break
             }
         }
@@ -84,7 +84,7 @@ extension EkoCommunityProfileScreenViewModel {
     
     private func checkingJoinStatus(community: EkoCommunityModel) {
         if community.isJoined {
-            if (community.isCreator) {
+            if (community.isCreator) || isModerator {
                 communityJoinStatus = .joinAndCreator
             } else {
                 communityJoinStatus = .joinNotCreator
@@ -106,13 +106,4 @@ extension EkoCommunityProfileScreenViewModel {
             }
         }
     }
-}
-
-// MARK: - Leave Community
-extension EkoCommunityProfileScreenViewModel {
-    
-}
-// MARK: - Delete Community
-extension EkoCommunityProfileScreenViewModel {
-    
 }

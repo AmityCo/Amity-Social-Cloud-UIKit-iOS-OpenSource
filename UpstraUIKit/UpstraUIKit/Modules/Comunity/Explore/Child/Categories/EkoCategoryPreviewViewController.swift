@@ -76,7 +76,7 @@ private extension EkoCategoryPreviewViewController {
     
     func setupSeeAllButton() {
         seeAllButton.setTitle("", for: .normal)
-        seeAllButton.setImage(EkoIconSet.iconArrowRight, for: .normal)
+        seeAllButton.setImage(EkoIconSet.iconNext, for: .normal)
         seeAllButton.tintColor = EkoColorSet.base
     }
     

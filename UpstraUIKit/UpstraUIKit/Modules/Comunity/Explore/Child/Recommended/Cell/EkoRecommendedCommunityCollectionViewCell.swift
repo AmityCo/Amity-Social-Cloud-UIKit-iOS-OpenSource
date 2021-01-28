@@ -13,6 +13,7 @@ final class EkoRecommendedCommunityCollectionViewCell: UICollectionViewCell, Nib
     @IBOutlet private var containerView: UIView!
     @IBOutlet private var avatarView: EkoAvatarView!
     @IBOutlet private var displayNameLabel: UILabel!
+    @IBOutlet private var badgeImageView: UIImageView!
     @IBOutlet private var categoryLabel: UILabel!
     @IBOutlet private var memberLabel: UILabel!
     @IBOutlet private var descLabel: UILabel!
@@ -26,6 +27,7 @@ final class EkoRecommendedCommunityCollectionViewCell: UICollectionViewCell, Nib
         super.prepareForReuse()
         avatarView.image = nil
         displayNameLabel.text = nil
+        badgeImageView.isHidden = true
         categoryLabel.text = nil
         memberLabel.text = nil
         descLabel.text = nil
@@ -37,6 +39,7 @@ final class EkoRecommendedCommunityCollectionViewCell: UICollectionViewCell, Nib
         categoryLabel.text = model.category
         memberLabel.text = String.localizedStringWithFormat(EkoLocalizedStringSet.members.localizedString, "\(model.membersCount)")
         descLabel.text = model.description == "" ? "-":model.description
+        badgeImageView.isHidden = !model.isOfficial
     }
 
 }
@@ -46,6 +49,7 @@ private extension EkoRecommendedCommunityCollectionViewCell {
     func setupView() {
         setupContainerView()
         setupAvatarView()
+        setupBadge()
         setupDisplayName()
         setupCategory()
         setupMember()
@@ -65,6 +69,11 @@ private extension EkoRecommendedCommunityCollectionViewCell {
         displayNameLabel.text = ""
         displayNameLabel.textColor = EkoColorSet.base
         displayNameLabel.font = EkoFontSet.bodyBold
+    }
+    
+    func setupBadge() {
+        badgeImageView.image = EkoIconSet.iconBadgeCheckmark
+        badgeImageView.tintColor = EkoColorSet.highlight
     }
     
     func setupCategory() {

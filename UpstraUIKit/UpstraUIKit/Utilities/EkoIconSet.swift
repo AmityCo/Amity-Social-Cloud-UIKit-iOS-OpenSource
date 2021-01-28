@@ -65,9 +65,6 @@ public struct EkoIconSet {
         public static var iconFileZIP = UIImage(named: "icon_file_zip", in: UpstraUIKitManager.bundle, compatibleWith: nil)
     }
     
-    static var sampleChatDirect = getImage(name: "sample_chat_direct")
-    static var sampleChatCommunity = getImage(name: "sample_chat_community")
-    
     public static var emptyChat = getImage(name: "empty_chat")
     public static var iconSendMessage = getImage(name: "icon_send_message")
     public static var defaultPrivateCommunityChat = getImage(name: "default_private_community_chat")
@@ -85,8 +82,8 @@ public struct EkoIconSet {
     
     static var defaultCommunity = getImage("default_community")
     static var iconCloseWithBackground = getImage("icon_close_with_background")
+    static var iconNext = getImage("icon_next")
     static var iconArrowRight = getImage("icon_arrow_right")
-    static var iconArrowRight1 = getImage("icon_arrow_right_1")
     
     static var iconPublic = getImage("icon_public")
     static var iconPrivate = getImage("icon_private")
@@ -98,7 +95,7 @@ public struct EkoIconSet {
     static var iconMessageFailed = getImage("icon_message_failed")
     
     static var iconAdd = getImage("icon_add")
-    static var iconChat2 = getImage("icon_chat_2")
+    static var iconChat = getImage("icon_chat")
     static var iconEdit = getImage("icon_edit")
     static var iconMember = getImage("icon_members")
     

@@ -32,18 +32,24 @@ class EkoCommunityMemberViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupView()
-        bindingViewModel()
-    }
-    
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        screenViewModel.delegate = self
+        screenViewModel.action.getMember(viewType: viewType)
+        screenViewModel.action.getUserRoles()
     }
     
     static func make(pageTitle: String,
                      viewType: EkoCommunityMemberViewType,
-                     communityId: String) -> EkoCommunityMemberViewController {
-        let viewModel: EkoCommunityMemberScreenViewModelType = EkoCommunityMemberScreenViewModel(communityId: communityId)
+                     community: EkoCommunityModel) -> EkoCommunityMemberViewController {
+        let userModeratorController = EkoCommunityUserRolesController(communityId: community.communityId)
+        let fetchMemberController = EkoCommunityFetchMemberController(communityId: community.communityId)
+        let removeMemberController = EkoCommunityRemoveMemberController(communityId: community.communityId)
+        let addMemberController = EkoCommunityAddMemberController(communityId: community.communityId)
+        let roleController = EkoCommunityRoleController(communityId: community.communityId)
+        let viewModel: EkoCommunityMemberScreenViewModelType = EkoCommunityMemberScreenViewModel(community: community,
+                                                                                                 fetchMemberController: fetchMemberController,
+                                                                                                 removeMemberController: removeMemberController,
+                                                                                                 userModeratorController: userModeratorController,
+                                                                                                 addMemberController: addMemberController,
+                                                                                                 roleController: roleController)
         let vc = EkoCommunityMemberViewController(nibName: EkoCommunityMemberViewController.identifier,
                                                   bundle: UpstraUIKitManager.bundle)
         vc.pageTitle = pageTitle
@@ -64,6 +70,7 @@ class EkoCommunityMemberViewController: UIViewController {
 // MARK: - Setup view
 private extension EkoCommunityMemberViewController {
     func setupView() {
+        screenViewModel.delegate = self
         view.backgroundColor = EkoColorSet.backgroundColor
         setupTableView()
     }
@@ -75,13 +82,6 @@ private extension EkoCommunityMemberViewController {
         tableView.tableFooterView = UIView()
         tableView.delegate = self
         tableView.dataSource = self
-    }
-}
-
-// MARK: - Binding ViewModel
-private extension EkoCommunityMemberViewController {
-    func bindingViewModel() {
-        screenViewModel.action.getCommunity()
     }
 }
 
@@ -113,7 +113,7 @@ extension EkoCommunityMemberViewController: UITableViewDataSource {
     private func configure(for cell: UITableViewCell, at indexPath: IndexPath) {
         if let cell = cell as? EkoCommunityMemberSettingsTableViewCell {
             let member = screenViewModel.dataSource.member(at: indexPath)
-            cell.display(with: member, isJoined: screenViewModel.dataSource.isJoined)
+            cell.display(with: member, isJoined: screenViewModel.dataSource.community?.isJoined ?? false)
             cell.setIndexPath(with: indexPath)
             cell.delegate = self
         }
@@ -122,16 +122,11 @@ extension EkoCommunityMemberViewController: UITableViewDataSource {
 
 extension EkoCommunityMemberViewController: EkoCommunityMemberScreenViewModelDelegate {
     
-    func screenViewModelDidGetComminityInfo() {
-        screenViewModel.action.getMember(viewType: viewType)
-        screenViewModel.action.getUserRoles()
-    }
-    
     func screenViewModelDidGetMember() {
         tableView.reloadData()
     }
     
-    func screenViewModelLoadingState(state: EkoLoadingState) {
+    func screenViewModel(_ viewModel: EkoCommunityMemberScreenViewModel, loadingState state: EkoLoadingState) {
         switch state {
         case .loadmore:
             tableView.showLoadingIndicator()
@@ -142,7 +137,7 @@ extension EkoCommunityMemberViewController: EkoCommunityMemberScreenViewModelDel
         }
     }
     
-    func screenViewModelDidRemoveUser(at indexPath: IndexPath) {
+    func screenViewModel(_ viewModel: EkoCommunityMemberScreenViewModel, didRemoveUserAt indexPath: IndexPath) {
         tableView.deleteRows(at: [indexPath], with: .fade)
     }
     
@@ -158,7 +153,7 @@ extension EkoCommunityMemberViewController: EkoCommunityMemberScreenViewModelDel
         EkoHUD.hide()
     }
     
-    func screenViewModelFailure(error: EkoError) {
+    func screenViewModel(_ viewModel: EkoCommunityMemberScreenViewModel, failure error: EkoError) {
         EkoHUD.hide { [weak self] in
             switch error {
             case .noPermission:
@@ -167,7 +162,7 @@ extension EkoCommunityMemberViewController: EkoCommunityMemberScreenViewModelDel
                     self?.navigationController?.popToRootViewController(animated: true)
                 }))
                 self?.present(alert, animated: true, completion: nil)
-            case .unknown, .bannedWord:
+            default:
                 EkoHUD.show(.error(message: EkoLocalizedStringSet.HUD.somethingWentWrong.localizedString))
             }
         }

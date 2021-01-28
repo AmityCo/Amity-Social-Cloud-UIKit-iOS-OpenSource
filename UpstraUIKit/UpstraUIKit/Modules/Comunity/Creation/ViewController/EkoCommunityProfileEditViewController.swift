@@ -12,6 +12,11 @@ private let ABOUT_MAX_LENGHT = 180
 
 protocol EkoCommunityProfileEditViewControllerDelegate: class {
     func viewController(_ viewController: EkoCommunityProfileEditViewController, didFinishCreateCommunity communityId: String)
+    func viewController(_ viewController: EkoCommunityProfileEditViewController, didFailWithNoPermission: Bool)
+}
+
+extension EkoCommunityProfileEditViewControllerDelegate {
+    func viewController(_ viewController: EkoCommunityProfileEditViewController, didFailWithNoPermission: Bool) { }
 }
 
 /// A view controller for providing community profile editor.
@@ -199,7 +204,7 @@ public final class EkoCommunityProfileEditViewController: EkoViewController {
         communityCategoryLabel.text = EkoLocalizedStringSet.createCommunityCategoryPlaceholder.localizedString
         communityCategoryLabel.textColor = EkoColorSet.base.blend(.shade3)
         
-        commnuityCategoryArrowImageView.image = EkoIconSet.iconArrowRight
+        commnuityCategoryArrowImageView.image = EkoIconSet.iconNext
         commnuityCategoryArrowImageView.tintColor = EkoColorSet.base
         
         categoryLineView.backgroundColor = EkoColorSet.secondary.blend(.shade4)
@@ -444,6 +449,21 @@ extension EkoCommunityProfileEditViewController: EkoCreateCommunityScreenViewMod
     public func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         textField.resignFirstResponder()
         return true
+    }
+    
+    func screenViewModel(_ viewModel: EkoCreateCommunityScreenViewModel, failure error: EkoError) {
+        switch error {
+        case .noPermission:
+            let alert = UIAlertController(title: EkoLocalizedStringSet.Community.alertUnableToPerformActionTitle.localizedString, message: EkoLocalizedStringSet.Community.alertUnableToPerformActionDesc.localizedString, preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: EkoLocalizedStringSet.ok, style: .default, handler: { [weak self] _ in
+                guard let strongSelf = self else { return }
+                strongSelf.dismiss(animated: true, completion: {
+                    self?.delegate?.viewController(strongSelf, didFailWithNoPermission: true)
+                })
+            }))
+        default:
+            EkoHUD.show(.error(message: EkoLocalizedStringSet.HUD.somethingWentWrong.localizedString))
+        }
     }
     
     func screenViewModel(_ viewModel: EkoCreateCommunityScreenViewModel, state: EkoCreateCommunityState) {

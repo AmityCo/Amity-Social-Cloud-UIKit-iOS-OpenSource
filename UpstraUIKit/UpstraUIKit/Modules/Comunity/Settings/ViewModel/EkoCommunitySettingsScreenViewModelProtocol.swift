@@ -9,19 +9,19 @@
 import UIKit
 
 protocol EkoCommunitySettingsScreenViewModelDelegate: class {
-    func screenViewModelDidGetCommunitySuccess(community: EkoCommunityModel)
-    func screenViewModelDidLeaveCommunitySuccess()
-    func screenVieWModelDidDeleteCommunitySuccess()
-    func screenViewModelFailure()
+    func screenViewModel(_ viewModel: EkoCommunitySettingsScreenViewModel, didGetCommunitySuccess community: EkoCommunityModel)
+    func screenViewModel(_ viewModel: EkoCommunitySettingsScreenViewModel, didLeaveCommunitySuccess: Bool)
+    func screenViewModel(_ viewModel: EkoCommunitySettingsScreenViewModel, didDeleteCommunitySuccess: Bool)
+    func screenViewModel(_ viewModel: EkoCommunitySettingsScreenViewModel, failure error: EkoError)
 }
 
 protocol EkoCommunitySettingsScreenViewModelDataSource {
-    var communityId: String { get }
-    var isCreator: Bool { get }
+    var community: EkoCommunityModel { get }
+    var isModerator: Bool { get }
 }
 
 protocol EkoCommunitySettingsScreenViewModelAction {
-    func getCommunity()
+    func getUserRoles()
     func leaveCommunity()
     func deleteCommunity()
 }

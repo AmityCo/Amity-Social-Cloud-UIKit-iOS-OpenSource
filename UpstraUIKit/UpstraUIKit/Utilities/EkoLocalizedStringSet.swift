@@ -138,6 +138,8 @@ public struct EkoLocalizedStringSet {
     static let postCreationDiscardPostTitle = "post_creation_discard_post_title"
     static let postCreationDiscardPostMessage = "post_creation_discard_post_message"
     static let postCreationSelectImageTitle = "post_creation_select_image"
+    static let postCreationUploadIncompletTitle = "post_creation_file_upload_icomplete_title"
+    static let postCreationUploadIncompletDescription = "post_creation_file_upload_icomplete_description"
 
     // MARK: - Post detail
     struct PostDetail {
@@ -174,7 +176,7 @@ public struct EkoLocalizedStringSet {
     
     // MARK: - Trending Community
     static let trendingCommunityTitle = "trending_community_title"
-    static let trendingCommunityCategoryAndMember = "trending_community_category_and_member"
+    static let trendingCommunityMembers = "trending_community_members"
     
     // MARK: - Category
     static let categoryTitle = "category_title"

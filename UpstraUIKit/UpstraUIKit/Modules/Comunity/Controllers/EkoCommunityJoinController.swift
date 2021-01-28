@@ -23,19 +23,15 @@ final class EkoCommunityJoinController: EkoCommunityJoinControllerProtocol {
         repository = EkoCommunityRepository(client: UpstraUIKitManagerInternal.shared.client)
     }
     
-    
     func join(_ completion: @escaping (EkoError?) -> Void) {
         repository.joinCommunity(withCommunityId: communityId) { (success, error) in
             if success {
                 completion(nil)
             } else {
-                if let error = error {
-                    completion(.unknown)
-                } else {
-                    completion(.unknown)
-                }
+                completion(EkoError(error: error) ?? .unknown)
             }
         }
     }
+    
 }
 

@@ -9,13 +9,9 @@
 import UIKit
 import EkoChat
 
-enum EkoCommunityRole: String {
-    case moderator
-}
-
 protocol EkoCommunityRoleControllerProtocol {
-    func add(role: EkoCommunityRole, userIds: [String], _ completion: @escaping (EkoError?) -> Void)
-    func remove(role: EkoCommunityRole, userIds: [String], _ completion: @escaping (EkoError?) -> Void)
+    func add(role: EkoCommunityRole, userIds: [String], completion: ((EkoError?) -> Void)?)
+    func remove(role: EkoCommunityRole, userIds: [String], completion: ((EkoError?) -> Void)?)
 }
 
 final class EkoCommunityRoleController: EkoCommunityRoleControllerProtocol {
@@ -27,27 +23,27 @@ final class EkoCommunityRoleController: EkoCommunityRoleControllerProtocol {
     }
     
     // Add role permisstion to users
-    func add(role: EkoCommunityRole, userIds: [String], _ completion: @escaping (EkoError?) -> Void) {
+    func add(role: EkoCommunityRole, userIds: [String], completion: ((EkoError?) -> Void)?) {
         moderation?.addRole(role.rawValue, userIds: userIds, completion: { (success, error) in
             if success {
-                completion(nil)
+                completion?(nil)
             } else {
                 if let error = EkoError(error: error) {
-                    completion(error)
+                    completion?(error)
                 } else {
-                    completion(EkoError.unknown)
+                    completion?(EkoError.unknown)
                 }
             }
         })
     }
     
     // Remove role permisstion from users
-    func remove(role: EkoCommunityRole, userIds: [String], _ completion: @escaping (EkoError?) -> Void) {
+    func remove(role: EkoCommunityRole, userIds: [String], completion: ((EkoError?) -> Void)?) {
         moderation?.removeRole(role.rawValue, userIds: userIds, completion: { (success, error) in
             if success {
-                completion(nil)
+                completion?(nil)
             } else {
-                completion(EkoError(error: error) ?? .unknown)
+                completion?(EkoError(error: error) ?? .unknown)
             }  
         })
     }

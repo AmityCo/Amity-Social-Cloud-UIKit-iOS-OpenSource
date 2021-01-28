@@ -32,6 +32,11 @@ final public class EkoMyCommunityPreviewViewController: UIViewController {
     public override func viewDidLoad() {
         super.viewDidLoad()
         setupView()
+    }
+    
+    public override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
         bindingViewModel()
     }
     
@@ -55,7 +60,7 @@ private extension EkoMyCommunityPreviewViewController {
         titleLabel.font = EkoFontSet.title
         titleLabel.textColor = EkoColorSet.base
         
-        actionButton.setImage(EkoIconSet.iconArrowRight, for: .normal)
+        actionButton.setImage(EkoIconSet.iconNext, for: .normal)
         actionButton.tintColor = EkoColorSet.base
         separatorView.backgroundColor = EkoColorSet.secondary.blend(.shade4)
         

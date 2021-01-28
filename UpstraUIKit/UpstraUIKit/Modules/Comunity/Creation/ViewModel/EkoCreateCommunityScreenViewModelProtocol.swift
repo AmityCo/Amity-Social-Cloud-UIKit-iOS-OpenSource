@@ -46,6 +46,7 @@ protocol EkoCreateCommunityScreenViewModelDataSource {
 
 protocol EkoCreateCommunityScreenViewModelDelegate: class {
     func screenViewModel(_ viewModel: EkoCreateCommunityScreenViewModel, state: EkoCreateCommunityState)
+    func screenViewModel(_ viewModel: EkoCreateCommunityScreenViewModel, failure error: EkoError)
 }
 
 protocol EkoCreateCommunityScreenViewModelAction {

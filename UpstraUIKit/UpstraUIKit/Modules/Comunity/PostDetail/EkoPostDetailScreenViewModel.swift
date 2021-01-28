@@ -52,6 +52,10 @@ class EkoPostDetailScreenViewModel: EkoPostDetailScreenViewModelType {
         
         // post
         if let post = post {
+            if let communityId = post.communityId {
+                let participation = EkoCommunityParticipation(client: UpstraUIKitManagerInternal.shared.client, andCommunityId: communityId)
+                post.isModerator = participation.getMembership(post.postedUserId)?.communityRoles.contains(.moderator) ?? false
+            }
             viewModels = [.post(post)]
         }
         

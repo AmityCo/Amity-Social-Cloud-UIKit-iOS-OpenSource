@@ -16,7 +16,7 @@ final class EkoCommunitySettingsViewController: EkoViewController {
     // MARK: - Properties
     private var screenViewModel: EkoCommunitySettingsScreenViewModelType!
     private var comunitySettingModels: [EkoCommunitySettingsModel] {
-        EkoCommunitySettingsModel.prepareData(isCreator: screenViewModel.dataSource.isCreator)
+        EkoCommunitySettingsModel.prepareData(isCreator: screenViewModel.dataSource.community.isCreator || screenViewModel.dataSource.isModerator)
     }
     
     // MARK: - View lifecycle
@@ -24,11 +24,18 @@ final class EkoCommunitySettingsViewController: EkoViewController {
         super.viewDidLoad()
         screenViewModel.delegate = self
         setupView()
-        screenViewModel.action.getCommunity()
+        title = screenViewModel.dataSource.community.displayName
+        screenViewModel.action.getUserRoles()
     }
     
-    static func make(communityId: String) -> EkoCommunitySettingsViewController {
-        let viewModel: EkoCommunitySettingsScreenViewModelType = EkoCommunitySettingsScreenViewModel(communityId: communityId)
+    static func make(community: EkoCommunityModel) -> EkoCommunitySettingsViewController {
+        let communityLeaveController = EkoCommunityLeaveController(withCommunityId: community.communityId)
+        let communityDeleteController = EkoCommunityDeleteController(withCommunityId: community.communityId)
+        let userRolesController = EkoCommunityUserRolesController(communityId: community.communityId)
+        let viewModel: EkoCommunitySettingsScreenViewModelType = EkoCommunitySettingsScreenViewModel(community: community,
+                                                                                                     communityLeaveController: communityLeaveController,
+                                                                                                     communityDeleteController: communityDeleteController,
+                                                                                                     userRolesController: userRolesController)
         let vc = EkoCommunitySettingsViewController(nibName: EkoCommunitySettingsViewController.identifier, bundle: UpstraUIKitManager.bundle)
         vc.screenViewModel = viewModel
         return vc
@@ -59,14 +66,13 @@ extension EkoCommunitySettingsViewController: UITableViewDelegate {
         let type = comunitySettingModels[indexPath.row].type
         switch type {
         case .editProfile:
-            let vc = EkoCommunityProfileEditViewController.make(viewType: .edit(communityId: screenViewModel.dataSource.communityId))
+            let vc = EkoCommunityProfileEditViewController.make(viewType: .edit(communityId: screenViewModel.dataSource.community.communityId))
             vc.delegate = self
             let nav = UINavigationController(rootViewController: vc)
             nav.modalPresentationStyle = .fullScreen
             present(nav, animated: true, completion: nil)
         case .member:
-            let communityId = screenViewModel.dataSource.communityId
-            let vc = EkoCommunityMemberSettingsViewController.make(communityId: communityId)
+            let vc = EkoCommunityMemberSettingsViewController.make(community: screenViewModel.dataSource.community)
             navigationController?.pushViewController(vc, animated: true)
         case .leave:
             let alertController = UIAlertController(title: EkoLocalizedStringSet.communitySettingsAlertLeaveTitle.localizedString, message: EkoLocalizedStringSet.communitySettingsAlertLeaveDesc.localizedString, preferredStyle: .alert)
@@ -112,18 +118,17 @@ extension EkoCommunitySettingsViewController: UITableViewDataSource {
 
 // MARK: - ViewModel Delegate
 extension EkoCommunitySettingsViewController: EkoCommunitySettingsScreenViewModelDelegate {
-    
-    func screenViewModelDidGetCommunitySuccess(community: EkoCommunityModel) {
+    func screenViewModel(_ viewModel: EkoCommunitySettingsScreenViewModel, didGetCommunitySuccess community: EkoCommunityModel) {
         title = community.displayName
         tableView.reloadData()
     }
     
-    func screenViewModelDidLeaveCommunitySuccess() {
+    func screenViewModel(_ viewModel: EkoCommunitySettingsScreenViewModel, didLeaveCommunitySuccess: Bool) {
         EkoHUD.hide()
         navigationController?.popViewController(animated: true)
     }
     
-    func screenVieWModelDidDeleteCommunitySuccess() {
+    func screenViewModel(_ viewModel: EkoCommunitySettingsScreenViewModel, didDeleteCommunitySuccess: Bool) {
         EkoHUD.hide()
         if let communityHomePage = navigationController?.viewControllers.first(where: { $0.isKind(of: EkoCommunityHomePageViewController.self) }) {
             navigationController?.popToViewController(communityHomePage, animated: true)
@@ -134,18 +139,30 @@ extension EkoCommunitySettingsViewController: EkoCommunitySettingsScreenViewMode
         }
     }
     
-    func screenViewModelFailure() {
-        EkoHUD.hide {
-            EkoHUD.show(.error(message: EkoLocalizedStringSet.HUD.somethingWentWrong.localizedString))
+    func screenViewModel(_ viewModel: EkoCommunitySettingsScreenViewModel, failure error: EkoError) {
+        EkoHUD.hide { [weak self] in
+            switch error {
+            case .noPermission:
+                let alert = UIAlertController(title: EkoLocalizedStringSet.Community.alertUnableToPerformActionTitle, message: EkoLocalizedStringSet.Community.alertUnableToPerformActionDesc, preferredStyle: .alert)
+                alert.addAction(UIAlertAction(title: EkoLocalizedStringSet.ok, style: .default, handler: { _ in
+                    self?.navigationController?.popToRootViewController(animated: true)
+                }))
+                self?.present(alert, animated: true, completion: nil)
+            default:
+                EkoHUD.show(.error(message: EkoLocalizedStringSet.HUD.somethingWentWrong.localizedString))
+            }
         }
     }
-    
 }
 
 extension EkoCommunitySettingsViewController: EkoCommunityProfileEditViewControllerDelegate {
     
     func viewController(_ viewController: EkoCommunityProfileEditViewController, didFinishCreateCommunity communityId: String) {
         EkoEventHandler.shared.communityDidTap(from: self, communityId: communityId)
+    }
+    
+    func viewController(_ viewController: EkoCommunityProfileEditViewController, didFailWithNoPermission: Bool) {
+        navigationController?.popToRootViewController(animated: true)
     }
     
 }

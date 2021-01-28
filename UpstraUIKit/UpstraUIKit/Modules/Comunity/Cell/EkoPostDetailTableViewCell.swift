@@ -21,8 +21,7 @@ protocol EkoPostDetailTableViewCellDelegate: class {
 public class EkoPostDetailTableViewCell: UITableViewCell, Nibbable {
     
     @IBOutlet weak var avatarView: EkoAvatarView!
-    @IBOutlet weak var displayNameButton: UIButton!
-    @IBOutlet weak var communityNameButton: UIButton!
+    @IBOutlet weak var displayNameLabel: EkoFeedDisplayNameLabel!
     @IBOutlet weak var subtitleLabel: UILabel!
     @IBOutlet weak var likeLabel: UILabel!
     @IBOutlet weak var commentLabel: UILabel!
@@ -38,6 +37,12 @@ public class EkoPostDetailTableViewCell: UITableViewCell, Nibbable {
     @IBOutlet private weak var badgeImageView: UIImageView!
     @IBOutlet private weak var badgeTitleLabel: UILabel!
     @IBOutlet private weak var bottomPanelButton: UIButton!
+    @IBOutlet weak var galleryViewHeightConstraint: NSLayoutConstraint!
+    @IBOutlet weak var fileViewHeightConstraint: NSLayoutConstraint!
+    @IBOutlet weak var topContainerHeightConstraint: NSLayoutConstraint!
+    @IBOutlet weak var fileView: EkoFileTableView!
+    @IBOutlet private weak var topContentViewTopConstraint: NSLayoutConstraint!
+    @IBOutlet private weak var avatarViewTopConstraint: NSLayoutConstraint!
     
     weak var actionDelegate: EkoPostDetailTableViewCellDelegate?
     var galleryDelegate: EkoGalleryCollectionViewDelegate? {
@@ -48,26 +53,15 @@ public class EkoPostDetailTableViewCell: UITableViewCell, Nibbable {
             return galleryView.actionDelegate = newValue
         }
     }
-    
-    @IBOutlet weak var galleryViewHeightConstraint: NSLayoutConstraint!
-    @IBOutlet weak var fileViewHeightConstraint: NSLayoutConstraint!
-    @IBOutlet weak var topContainerHeightConstraint: NSLayoutConstraint!
-    // We have 2 constraint for subtitle label. One with title label & one with badge view
-    @IBOutlet var subtitleLeadingToBadgeViewConstraint: NSLayoutConstraint!
-    
-    @IBOutlet weak var fileView: EkoFileTableView!
-    @IBOutlet private weak var topContentViewTopConstraint: NSLayoutConstraint!
-    @IBOutlet private weak var avatarViewTopConstraint: NSLayoutConstraint!
+
     private var post: EkoPostModel?
     
     public override func awakeFromNib() {
         super.awakeFromNib()
         selectionStyle = .none
         avatarView.avatarShape = EkoSettings.avatarShape
-        displayNameButton.titleLabel?.font = EkoFontSet.title
-        displayNameButton.tintColor = EkoColorSet.base
-        communityNameButton.titleLabel?.font = EkoFontSet.title
-        communityNameButton.tintColor = EkoColorSet.base
+        displayNameLabel.font = EkoFontSet.title
+        displayNameLabel.textColor = EkoColorSet.base
         subtitleLabel.font = EkoFontSet.caption
         galleryView.actionDelegate = self
         galleryView.contentMode = .scaleAspectFill
@@ -105,11 +99,9 @@ public class EkoPostDetailTableViewCell: UITableViewCell, Nibbable {
         self.post = item
         let isFileAttached = !(item.images.isEmpty && item.files.isEmpty)
         avatarView.setImage(withImageId: item.avatarId, placeholder: EkoIconSet.defaultAvatar)
-        displayNameButton.contentEdgeInsets = .zero
-        displayNameButton.setTitle(item.displayName, for: .normal)
-        communityNameButton.contentEdgeInsets = .zero
-        communityNameButton.setTitle(item.communityDisplayName, for: .normal)
-        communityNameButton.isHidden = item.communityDisplayName == nil
+        displayNameLabel.text = item.displayName
+        displayNameLabel.configure(displayName: item.displayName, communityName: item.communityDisplayName)
+        displayNameLabel.delegate = self
         subtitleLabel.text = item.subtitle
         contentLabel.numberOfLines = isFileAttached ? 3 : 8
         contentLabel.text = item.text
@@ -135,7 +127,13 @@ public class EkoPostDetailTableViewCell: UITableViewCell, Nibbable {
         avatarViewTopConstraint.constant = 0.0
         topContentViewTopConstraint.constant = 0.0
         badgeContainerView.isHidden = !item.isModerator
-        subtitleLeadingToBadgeViewConstraint.isActive = item.isModerator
+        if item.isModerator {
+            badgeImageView.isHidden = item.postAsModerator
+            badgeTitleLabel.isHidden = item.postAsModerator
+        } else {
+            badgeImageView.isHidden = true
+            badgeTitleLabel.isHidden = true
+        }
     }
     
     public override func prepareForReuse() {
@@ -144,16 +142,6 @@ public class EkoPostDetailTableViewCell: UITableViewCell, Nibbable {
         contentLabel.text = nil
         avatarView.image = nil
         avatarView.placeholder = EkoIconSet.defaultAvatar
-    }
-    
-    @IBAction func tapDisplayName(_ sender: Any) {
-        guard let userId = post?.postedUserId else { return }
-        actionDelegate?.postTableViewCell(self, didTapDisplayName: userId)
-    }
-    
-    @IBAction func tapCommunityName(_ sender: Any) {
-        guard let communityId = post?.communityId else { return }
-        actionDelegate?.postTableViewCell(self, disTapCommunityName: communityId)
     }
     
     @IBAction func tapLike(_ sender: Any) {
@@ -248,4 +236,16 @@ extension EkoPostDetailTableViewCell: EkoPhotoViewerControllerDelegate {
 //        UIImageWriteToSavedPhotosAlbum(images[index], nil, nil, nil)
     }
     
+}
+
+extension EkoPostDetailTableViewCell: EkoFeedDisplayNameLabelDelegate {
+    func labelDidTapUserDisplayName(_ label: EkoFeedDisplayNameLabel) {
+        guard let userId = post?.postedUserId else { return }
+        actionDelegate?.postTableViewCell(self, didTapDisplayName: userId)
+    }
+    
+    func labelDidTapCommunityName(_ label: EkoFeedDisplayNameLabel) {
+        guard let communityId = post?.communityId else { return }
+        actionDelegate?.postTableViewCell(self, disTapCommunityName: communityId)
+    }
 }

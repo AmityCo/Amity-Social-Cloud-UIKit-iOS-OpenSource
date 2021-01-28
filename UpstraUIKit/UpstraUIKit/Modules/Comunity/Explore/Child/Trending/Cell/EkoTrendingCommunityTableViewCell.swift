@@ -16,6 +16,7 @@ final class EkoTrendingCommunityTableViewCell: UITableViewCell, Nibbable {
     @IBOutlet private var iconImageView: UIImageView!
     @IBOutlet private var categoryLabel: UILabel!
     @IBOutlet private var membersLabel: UILabel!
+    @IBOutlet private weak var iconImageViewWidthConstraint: NSLayoutConstraint!
     
     var isCategoryLabelTruncated: Bool {
         return categoryLabel.isTruncated
@@ -41,8 +42,9 @@ final class EkoTrendingCommunityTableViewCell: UITableViewCell, Nibbable {
         displayNameLabel.text = model.displayName
         categoryLabel.text = model.category
         
-        membersLabel.text = String.localizedStringWithFormat(EkoLocalizedStringSet.trendingCommunityCategoryAndMember.localizedString, model.membersCount.formatUsingAbbrevation())
+        membersLabel.text = String.localizedStringWithFormat(EkoLocalizedStringSet.trendingCommunityMembers.localizedString, model.membersCount.formatUsingAbbrevation())
         iconImageView.isHidden = !model.isOfficial
+        iconImageViewWidthConstraint.constant = !model.isOfficial ? 0 : 24
     }
     
     func displayNumber(with indexPath: IndexPath) {
@@ -77,7 +79,9 @@ private extension EkoTrendingCommunityTableViewCell {
         displayNameLabel.font = EkoFontSet.title
         
         iconImageView.image = EkoIconSet.iconBadgeCheckmark
+        iconImageView.tintColor = EkoColorSet.highlight
         iconImageView.isHidden = true
+        iconImageViewWidthConstraint.constant = 0
     }
     
     func setupMetadata() {

@@ -12,55 +12,50 @@ final class EkoCommunitySettingsScreenViewModel: EkoCommunitySettingsScreenViewM
     weak var delegate: EkoCommunitySettingsScreenViewModelDelegate?
     
     // MARK: - Controller
-    private let communityInfoController: EkoCommunityInfoControllerProtocol
     private let communityLeaveController: EkoCommunityLeaveControllerProtocol
     private let communityDeleteController: EkoCommunityDeleteControllerProtocol
+    private let userRolesController: EkoCommunityUserRolesControllerProtocol
     
     // MARK: - Properties
-    var communityId: String = ""
-    var isCreator: Bool {
-        return community?.isCreator ?? false
-    }
-    private var community: EkoCommunityModel?
+    var community: EkoCommunityModel
+    var isModerator: Bool = false
     
-    init(communityId: String) {
-        self.communityId = communityId
-        self.communityInfoController = EkoCommunityInfoController(communityId: communityId)
-        self.communityLeaveController = EkoCommunityLeaveController(withCommunityId: communityId)
-        self.communityDeleteController = EkoCommunityDeleteController(withCommunityId: communityId)
+    init(community: EkoCommunityModel,
+         communityLeaveController: EkoCommunityLeaveControllerProtocol,
+         communityDeleteController: EkoCommunityDeleteControllerProtocol,
+         userRolesController: EkoCommunityUserRolesControllerProtocol) {
+        self.community = community
+        self.communityLeaveController = communityLeaveController
+        self.communityDeleteController = communityDeleteController
+        self.userRolesController = userRolesController
     }
 }
 
 // MARK: - DataSource
 extension EkoCommunitySettingsScreenViewModel {
     
-    func getCommunity() {
-        communityInfoController.getCommunity { [weak self] (result) in
-            switch result {
-            case .success(let community):
-                self?.community = community
-                self?.delegate?.screenViewModelDidGetCommunitySuccess(community: community)
-            case .failure:
-                break
-            }
-        }
+    func getUserRoles() {
+        isModerator = userRolesController.getUserRoles(withUserId: UpstraUIKitManagerInternal.shared.currentUserId, role: .moderator)
     }
+    
     func leaveCommunity() {
         communityLeaveController.leave { [weak self] (error) in
-            if let _ = error {
-                self?.delegate?.screenViewModelFailure()
+            guard let strongSelf = self else { return }
+            if let error = error {
+                strongSelf.delegate?.screenViewModel(strongSelf, failure: error)
             } else {
-                self?.delegate?.screenViewModelDidLeaveCommunitySuccess()
+                strongSelf.delegate?.screenViewModel(strongSelf, didLeaveCommunitySuccess: true)
             }
         }
     }
     
     func deleteCommunity() {
         communityDeleteController.delete { [weak self] (error) in
-            if let _ = error {
-                self?.delegate?.screenViewModelFailure()
+            guard let strongSelf = self else { return }
+            if let error = error {
+                strongSelf.delegate?.screenViewModel(strongSelf, failure: error)
             } else {
-                self?.delegate?.screenVieWModelDidDeleteCommunitySuccess()
+                strongSelf.delegate?.screenViewModel(strongSelf, didDeleteCommunitySuccess: true)	
             }
         }
     }

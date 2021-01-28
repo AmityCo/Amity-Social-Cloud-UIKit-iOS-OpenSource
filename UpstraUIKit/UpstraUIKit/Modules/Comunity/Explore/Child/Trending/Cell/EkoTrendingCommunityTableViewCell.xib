@@ -73,6 +73,7 @@
                             <constraint firstItem="QRB-WP-osP" firstAttribute="leading" secondItem="XTo-DO-Ov3" secondAttribute="trailing" constant="12" id="PUR-Jk-rNr"/>
                             <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="36l-G6-wnc" secondAttribute="bottom" id="YNH-S0-AFQ"/>
                             <constraint firstItem="QRB-WP-osP" firstAttribute="top" secondItem="jYq-PO-fEO" secondAttribute="top" id="dpO-G5-7WI"/>
+                            <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="pLk-NE-Ydr" secondAttribute="trailing" id="f8w-0J-dO1"/>
                             <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="9vD-iD-Xmt" secondAttribute="trailing" id="fMt-As-NYJ"/>
                             <constraint firstItem="Gic-yd-UUu" firstAttribute="leading" secondItem="jYq-PO-fEO" secondAttribute="leading" id="jkE-TC-dfQ"/>
                             <constraint firstItem="pLk-NE-Ydr" firstAttribute="leading" secondItem="QRB-WP-osP" secondAttribute="trailing" constant="4" id="mwy-u5-idJ"/>
@@ -93,6 +94,7 @@
                 <outlet property="categoryLabel" destination="36l-G6-wnc" id="ioo-Rj-Nhy"/>
                 <outlet property="displayNameLabel" destination="QRB-WP-osP" id="CsB-HM-hvX"/>
                 <outlet property="iconImageView" destination="pLk-NE-Ydr" id="TWk-jm-dFI"/>
+                <outlet property="iconImageViewWidthConstraint" destination="QJf-UB-hoz" id="lvj-6U-TrX"/>
                 <outlet property="membersLabel" destination="9vD-iD-Xmt" id="UY6-02-W0I"/>
                 <outlet property="numberLabel" destination="XTo-DO-Ov3" id="3TK-wW-56y"/>
             </connections>

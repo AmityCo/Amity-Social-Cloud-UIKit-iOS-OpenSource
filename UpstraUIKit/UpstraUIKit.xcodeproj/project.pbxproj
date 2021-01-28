@@ -243,6 +243,7 @@
 		72A7EC0A251099EC008221FD /* EkoPostDetailScreenViewModelType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72A7EC09251099EC008221FD /* EkoPostDetailScreenViewModelType.swift */; };
 		72AFAC0D24F9009F00269019 /* EkoFileService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72AFAC0C24F9009F00269019 /* EkoFileService.swift */; };
 		72AFAC0F24F902AD00269019 /* Error+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72AFAC0E24F902AD00269019 /* Error+Extension.swift */; };
+		72C1210B25BEAEB400CE105E /* EkoCommunityMembership+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72C1210A25BEAEB400CE105E /* EkoCommunityMembership+Extension.swift */; };
 		72C67DC124EB62EB00B637F5 /* EkoCommunityHomePageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72C67DC024EB62EB00B637F5 /* EkoCommunityHomePageViewController.swift */; };
 		72D4B6EA253D6795006693E8 /* Notification+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72D4B6E9253D6795006693E8 /* Notification+Extension.swift */; };
 		72D841F324F646A00039B1C2 /* EkoPostTextEditorScreenViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72D841F224F646A00039B1C2 /* EkoPostTextEditorScreenViewModel.swift */; };
@@ -635,6 +636,7 @@
 		72A7EC09251099EC008221FD /* EkoPostDetailScreenViewModelType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EkoPostDetailScreenViewModelType.swift; sourceTree = "<group>"; };
 		72AFAC0C24F9009F00269019 /* EkoFileService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EkoFileService.swift; sourceTree = "<group>"; };
 		72AFAC0E24F902AD00269019 /* Error+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Error+Extension.swift"; sourceTree = "<group>"; };
+		72C1210A25BEAEB400CE105E /* EkoCommunityMembership+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "EkoCommunityMembership+Extension.swift"; sourceTree = "<group>"; };
 		72C67DC024EB62EB00B637F5 /* EkoCommunityHomePageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EkoCommunityHomePageViewController.swift; sourceTree = "<group>"; };
 		72D4B6E9253D6795006693E8 /* Notification+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Notification+Extension.swift"; sourceTree = "<group>"; };
 		72D841F224F646A00039B1C2 /* EkoPostTextEditorScreenViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EkoPostTextEditorScreenViewModel.swift; sourceTree = "<group>"; };
@@ -1316,6 +1318,7 @@
 		72A3508824EA820700DA9D46 /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				72C1210925BEAEA200CE105E /* Extension */,
 				72EA38CD253424D1001DDC8F /* EkoCommentModel.swift */,
 				72A3508924EA820700DA9D46 /* EkoComunity.swift */,
 				720D599B2525BF77009734EF /* EkoImage.swift */,
@@ -1776,6 +1779,14 @@
 				72AFAC0C24F9009F00269019 /* EkoFileService.swift */,
 			);
 			path = Services;
+			sourceTree = "<group>";
+		};
+		72C1210925BEAEA200CE105E /* Extension */ = {
+			isa = PBXGroup;
+			children = (
+				72C1210A25BEAEB400CE105E /* EkoCommunityMembership+Extension.swift */,
+			);
+			path = Extension;
 			sourceTree = "<group>";
 		};
 		72E0694125A817C2006129BE /* View */ = {
@@ -2643,6 +2654,7 @@
 				72A3512C24EA820800DA9D46 /* EkoPostDetailViewController.swift in Sources */,
 				B73125D82590B772000E142F /* EkoSelectMemberListScreenViewModel.swift in Sources */,
 				B76A1021252B7E3300AFC7A8 /* EkoCategoryPreviewViewController.swift in Sources */,
+				72C1210B25BEAEB400CE105E /* EkoCommunityMembership+Extension.swift in Sources */,
 				72A3518624EA820800DA9D46 /* AlbumsViewController.swift in Sources */,
 				B73125DD2590B777000E142F /* EkoSelectMemberListScreenViewModelProtocol.swift in Sources */,
 				72A3517824EA820800DA9D46 /* PreviewBuilder.swift in Sources */,
@@ -3087,7 +3099,7 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.8.2;
+				MARKETING_VERSION = 1.8.4;
 				PRODUCT_BUNDLE_IDENTIFIER = com.upstra.upstrauikit;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
@@ -3120,7 +3132,7 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.8.2;
+				MARKETING_VERSION = 1.8.4;
 				PRODUCT_BUNDLE_IDENTIFIER = com.upstra.upstrauikit;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;

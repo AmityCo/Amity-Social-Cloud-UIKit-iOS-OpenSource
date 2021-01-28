@@ -9,7 +9,12 @@
 import UIKit
 import EkoChat
 
-final class EkoCommunityFetchMemberController {
+protocol EkoCommunityFetchMemberControllerProtocol {
+    func fetch(roles: [String], _ completion: @escaping (Result<[EkoCommunityMembershipModel], Error>) -> Void)
+    func loadMore(_ completion: (Bool) -> Void)
+}
+
+final class EkoCommunityFetchMemberController: EkoCommunityFetchMemberControllerProtocol {
     
     private var membershipParticipation: EkoCommunityParticipation?
     private var memberCollection: EkoCollection<EkoCommunityMembership>?
@@ -19,7 +24,7 @@ final class EkoCommunityFetchMemberController {
         membershipParticipation = EkoCommunityParticipation(client: UpstraUIKitManagerInternal.shared.client, andCommunityId: communityId)
     }
     
-    func fetch(roles: [String] = [], completion: @escaping (Result<[EkoCommunityMembershipModel], Error>) -> Void) {
+    func fetch(roles: [String], _ completion: @escaping (Result<[EkoCommunityMembershipModel], Error>) -> Void) {
         memberCollection = membershipParticipation?.getMemberships(.all, roles: roles, sortBy: .lastCreated)
         memberToken = memberCollection?.observe { (collection, change, error) in
             if let error = error {
@@ -39,7 +44,7 @@ final class EkoCommunityFetchMemberController {
         }
     }
     
-    func loadMore(completion: (Bool) -> Void) {
+    func loadMore(_ completion: (Bool) -> Void) {
         guard let collection = memberCollection else {
             completion(true)
             return
@@ -53,5 +58,5 @@ final class EkoCommunityFetchMemberController {
         default:
             completion(false)
         }
-    }
+    }   
 }

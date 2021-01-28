@@ -13,6 +13,7 @@ final class EkoMyCommunityTableViewCell: UITableViewCell, Nibbable {
     
     @IBOutlet private var avatarView: EkoAvatarView!
     @IBOutlet private var displayNameLabel: UILabel!
+    @IBOutlet private var badgeImageView: UIImageView!
     
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -20,18 +21,16 @@ final class EkoMyCommunityTableViewCell: UITableViewCell, Nibbable {
     }
     
     private func setupView() {
+        selectionStyle = .none
         backgroundColor = .clear
         contentView.backgroundColor = .clear
         
         avatarView.placeholder = EkoIconSet.defaultCommunity
-        avatarView.isUserInteractionEnabled = false
-        
         displayNameLabel.font = EkoFontSet.bodyBold
         displayNameLabel.textColor = EkoColorSet.base
         displayNameLabel.text = ""
-        displayNameLabel.isUserInteractionEnabled = false
-        
-        
+        badgeImageView.image = EkoIconSet.iconBadgeCheckmark
+        badgeImageView.tintColor = EkoColorSet.highlight
     }
     
     override func prepareForReuse() {
@@ -39,11 +38,12 @@ final class EkoMyCommunityTableViewCell: UITableViewCell, Nibbable {
         avatarView.placeholder = EkoIconSet.defaultCommunity
         displayNameLabel.text = ""
         avatarView.image = nil
+        badgeImageView.isHidden = true
     }
     
     func display(with community: EkoCommunityModel) {
         avatarView.setImage(withImageId: community.avatarId, placeholder: EkoIconSet.defaultCommunity)
         displayNameLabel.text = community.displayName
-        displayNameLabel.setImageWithText(position: .both(imageLeft: community.isPublic ? nil:EkoIconSet.iconPrivate, imageRight: community.isOfficial ? EkoIconSet.iconBadgeCheckmark:nil))
+        badgeImageView.isHidden = !community.isOfficial
     }
 }

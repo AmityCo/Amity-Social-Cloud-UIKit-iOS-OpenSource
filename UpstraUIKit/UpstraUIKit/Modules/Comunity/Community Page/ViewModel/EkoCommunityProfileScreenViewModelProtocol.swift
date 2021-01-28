@@ -45,7 +45,6 @@ protocol EkoCommunityProfileScreenViewModelAction {
 
 protocol EkoCommunityProfileScreenViewModelType: EkoCommunityProfileScreenViewModelAction, EkoCommunityProfileScreenViewModelDataSource {
     var delegate: EkoCommunityProfileScreenViewModelDelegate? { get set }
-    var headerDelegate: EkoCommunityProfileScreenViewModelDelegate? { get set }
     var action: EkoCommunityProfileScreenViewModelAction { get }
     var dataSource: EkoCommunityProfileScreenViewModelDataSource { get }
 }

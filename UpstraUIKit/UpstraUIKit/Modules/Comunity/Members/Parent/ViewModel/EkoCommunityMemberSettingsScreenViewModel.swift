@@ -15,21 +15,17 @@ final class EkoCommunityMemberSettingsScreenViewModel: EkoCommunityMemberSetting
     
     // MARK: - Controller
     private let userRolesController: EkoCommunityUserRolesControllerProtocol
-    private let communityInfoController: EkoCommunityInfoControllerProtocol
     
     // MARK: - Properties
-    var communityId: String = ""
+    var community: EkoCommunityModel
     var isModerator: Bool = false
-    var isCreator: Bool = false
     var shouldShowAddMemberButton: Bool = false
     
     // MARK: - initial
-    init(communityId: String,
-         userRolesController: EkoCommunityUserRolesControllerProtocol,
-         communityInfoController: EkoCommunityInfoControllerProtocol) {
-        self.communityId = communityId
+    init(community: EkoCommunityModel,
+         userRolesController: EkoCommunityUserRolesControllerProtocol) {
+        self.community = community
         self.userRolesController = userRolesController
-        self.communityInfoController = communityInfoController
     }
 }
 
@@ -40,21 +36,8 @@ extension EkoCommunityMemberSettingsScreenViewModel {
 
 // MARK: - Action
 extension EkoCommunityMemberSettingsScreenViewModel {
-    func getCommunity() {
-        communityInfoController.getCommunity { [weak self] (result) in
-            guard let strongSelf = self else { return }
-            switch result {
-            case .success(let community):
-                self?.isCreator = community.isCreator
-                self?.delegate?.screenViewModelDidGetCommmunity(strongSelf)
-            case .failure(let error):
-                break
-            }
-        }
-    }
-    
     func getUserRoles() {
         isModerator = userRolesController.getUserRoles(withUserId: UpstraUIKitManagerInternal.shared.currentUserId, role: .moderator)
-        delegate?.screenViewModelShouldShowAddButtonBarItem(status: isCreator || isModerator)
+        delegate?.screenViewModelShouldShowAddButtonBarItem(status: community.isCreator || isModerator)
     }
 }

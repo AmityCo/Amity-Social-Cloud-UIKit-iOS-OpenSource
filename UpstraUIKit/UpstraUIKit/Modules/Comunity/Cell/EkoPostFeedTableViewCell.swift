@@ -37,7 +37,7 @@ public class EkoPostFeedTableViewCell: UITableViewCell, Nibbable {
     weak var actionDelegate: EkoPostFeedTableViewCellDelegate?
     
     @IBOutlet private weak var avatarView: EkoAvatarView!
-    @IBOutlet private weak var displayNameTextView: EkoFeedDisplayNameLabel!
+    @IBOutlet private weak var displayNameLabel: EkoFeedDisplayNameLabel!
     @IBOutlet private weak var subtitleLabel: UILabel!
     @IBOutlet private weak var likeLabel: UILabel!
     @IBOutlet private weak var commentLabel: UILabel!
@@ -114,8 +114,8 @@ public class EkoPostFeedTableViewCell: UITableViewCell, Nibbable {
             guard let strongSelf = self else { return }
             strongSelf.actionDelegate?.cellDidTapAvatar(strongSelf, userId: item.postedUserId)
         }
-        displayNameTextView.configure(displayName: item.displayName, communityName: item.communityDisplayName)
-        displayNameTextView.delegate = self
+        displayNameLabel.configure(displayName: item.displayName, communityName: item.communityDisplayName)
+        displayNameLabel.delegate = self
         subtitleLabel.text = item.subtitle
         contentLabel.numberOfLines = isFileAttached ? 3 : 8
         contentLabel.text = item.text

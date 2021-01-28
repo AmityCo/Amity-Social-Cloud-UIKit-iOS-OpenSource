@@ -29,6 +29,7 @@ struct EkoCommunitySettingsModel {
     }
     
     static func prepareData(isCreator: Bool) -> [Self] {
+        // isCreator or isModerator
         if isCreator {
             return [
                 EkoCommunitySettingsModel(title: EkoLocalizedStringSet.communitySettingsEditProfile.localizedString, icon: EkoIconSet.iconEdit, type: .editProfile),

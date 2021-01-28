@@ -9,19 +9,16 @@
 import UIKit
 
 protocol EkoCommunityMemberSettingsScreenViewModelDelegate: class {
-    func screenViewModelDidGetCommmunity(_ viewModel: EkoCommunityMemberSettingsScreenViewModelType)
     func screenViewModelShouldShowAddButtonBarItem(status: Bool)
 }
 
 protocol EkoCommunityMemberSettingsScreenViewModelDataSource {
-    var communityId: String { get }
+    var community: EkoCommunityModel { get }
     var isModerator: Bool { get }
-    var isCreator: Bool { get }
     var shouldShowAddMemberButton: Bool { get }
 }
 
 protocol EkoCommunityMemberSettingsScreenViewModelAction {
-    func getCommunity()
     func getUserRoles()
 }
 

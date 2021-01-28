@@ -14,6 +14,7 @@ final class EkoCommunityProfileHeaderViewController: EkoViewController {
     // MARK: - IBOutlet Properties
     @IBOutlet private var avatarView: EkoAvatarView!
     @IBOutlet private var displayNameLabel: UILabel!
+    @IBOutlet private var badgeImageView: UIImageView!
     @IBOutlet private var categoryLabel: UILabel!
     @IBOutlet private var postsButton: EkoButton!
     @IBOutlet private var membersButton: EkoButton!
@@ -51,6 +52,7 @@ final class EkoCommunityProfileHeaderViewController: EkoViewController {
     
     private func setupView() {
         setupDisplayName()
+        setupBadgeView()
         setupSubTitleLabel()
         setupPostButton()
         setupMemberButton()
@@ -65,6 +67,11 @@ final class EkoCommunityProfileHeaderViewController: EkoViewController {
         displayNameLabel.font = EkoFontSet.headerLine
         displayNameLabel.textColor = EkoColorSet.base
         displayNameLabel.numberOfLines = 0
+    }
+    
+    private func setupBadgeView() {
+        badgeImageView.image = EkoIconSet.iconBadgeCheckmark
+        badgeImageView.tintColor = EkoColorSet.highlight
     }
     
     private func setupSubTitleLabel() {
@@ -105,7 +112,7 @@ final class EkoCommunityProfileHeaderViewController: EkoViewController {
     }
     
     private func setupChatButton() {
-        chatButton.setImage(EkoIconSet.iconChat2, for: .normal)
+        chatButton.setImage(EkoIconSet.iconChat, for: .normal)
         chatButton.tintColor = EkoColorSet.secondary
         chatButton.isHidden = true
         chatButton.layer.borderColor = EkoColorSet.secondary.blend(.shade3).cgColor
@@ -122,8 +129,8 @@ final class EkoCommunityProfileHeaderViewController: EkoViewController {
         updatePostsCount(with: Int(community.postsCount))
         updateMembersCount(with: Int(community.membersCount))
         categoryLabel.text = community.category
+        badgeImageView.isHidden = !community.isOfficial
         updateActionButton()
-        displayNameLabel.setImageWithText(position: .both(imageLeft: community.isPublic ? nil:EkoIconSet.iconPrivate, imageRight: community.isOfficial ? EkoIconSet.iconBadgeCheckmark:nil))
     }
     
     
@@ -153,7 +160,7 @@ private extension EkoCommunityProfileHeaderViewController {
             screenViewModel.action.joinCommunity()
         case .joinNotCreator:
             break
-        case .joinAndCreator, .joinAndCreatorAndModerator:
+        case .joinAndCreator:
             screenViewModel.action.route(.editProfile)
         }
     }
@@ -186,7 +193,7 @@ private extension EkoCommunityProfileHeaderViewController {
         case .joinNotCreator:
             chatButton.isHidden = settings.shouldChatButtonHide
             actionButton.setTitle(EkoLocalizedStringSet.communityDetailMessageButton.localizedString, for: .normal)
-            actionButton.setImage(EkoIconSet.iconChat2, position: .left)
+            actionButton.setImage(EkoIconSet.iconChat, position: .left)
             actionButton.tintColor = EkoColorSet.secondary
             actionButton.backgroundColor = EkoColorSet.backgroundColor
             actionButton.layer.borderColor = EkoColorSet.secondary.blend(.shade3).cgColor
@@ -194,7 +201,7 @@ private extension EkoCommunityProfileHeaderViewController {
             actionButton.layer.cornerRadius = 4
             actionButton.tag = 1
             actionButton.isHidden = true
-        case .joinAndCreator, .joinAndCreatorAndModerator:
+        case .joinAndCreator:
             chatButton.isHidden = settings.shouldChatButtonHide
             actionButton.setTitle(EkoLocalizedStringSet.communityDetailEditProfileButton.localizedString, for: .normal)
             actionButton.setImage(EkoIconSet.iconEdit, position: .left)

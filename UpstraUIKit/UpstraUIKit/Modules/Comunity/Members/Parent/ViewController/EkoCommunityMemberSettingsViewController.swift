@@ -22,15 +22,13 @@ public final class EkoCommunityMemberSettingsViewController: EkoPageViewControll
         super.viewDidLoad()
         title = EkoLocalizedStringSet.CommunityMembreSetting.title.localizedString
         screenViewModel.delegate = self
-        screenViewModel.action.getCommunity()
+        screenViewModel.action.getUserRoles()
     }
     
-    public static func make(communityId: String) -> EkoCommunityMemberSettingsViewController {
-        let userRolesController: EkoCommunityUserRolesControllerProtocol = EkoCommunityUserRolesController(communityId: communityId)
-        let communityInfoController: EkoCommunityInfoControllerProtocol = EkoCommunityInfoController(communityId: communityId)
-        let viewModel: EkoCommunityMemberSettingsScreenViewModelType = EkoCommunityMemberSettingsScreenViewModel(communityId: communityId,
-                                                                                                                 userRolesController: userRolesController,
-                                                                                                                 communityInfoController: communityInfoController)
+    public static func make(community: EkoCommunityModel) -> EkoCommunityMemberSettingsViewController {
+        let userRolesController: EkoCommunityUserRolesControllerProtocol = EkoCommunityUserRolesController(communityId: community.communityId)
+        let viewModel: EkoCommunityMemberSettingsScreenViewModelType = EkoCommunityMemberSettingsScreenViewModel(community: community,
+                                                                                                                 userRolesController: userRolesController)
         let vc = EkoCommunityMemberSettingsViewController(nibName: EkoCommunityMemberSettingsViewController.identifier,
                                                           bundle: UpstraUIKitManager.bundle)
         
@@ -41,11 +39,11 @@ public final class EkoCommunityMemberSettingsViewController: EkoPageViewControll
     override func viewControllers(for pagerTabStripController: EkoPagerTabViewController) -> [UIViewController] {
         memberVC = EkoCommunityMemberViewController.make(pageTitle: EkoLocalizedStringSet.CommunityMembreSetting.title.localizedString,
                                                          viewType: .member,
-                                                         communityId: screenViewModel.dataSource.communityId)
+                                                         community: screenViewModel.dataSource.community)
         
         moderatorVC = EkoCommunityMemberViewController.make(pageTitle: EkoLocalizedStringSet.CommunityMembreSetting.moderatorTitle.localizedString,
                                                             viewType: .moderator,
-                                                            communityId: screenViewModel.dataSource.communityId)
+                                                            community: screenViewModel.dataSource.community)
         return [memberVC!, moderatorVC!]
     }
 
@@ -64,10 +62,6 @@ public final class EkoCommunityMemberSettingsViewController: EkoPageViewControll
 }
 
 extension EkoCommunityMemberSettingsViewController: EkoCommunityMemberSettingsScreenViewModelDelegate {
-    func screenViewModelDidGetCommmunity(_ viewModel: EkoCommunityMemberSettingsScreenViewModelType) {
-        viewModel.action.getUserRoles()
-    }
-    
     func screenViewModelShouldShowAddButtonBarItem(status: Bool) {
         if status {
             let rightItem = UIBarButtonItem(image: EkoIconSet.iconAdd, style: .plain, target: self, action: #selector(addMemberTap))

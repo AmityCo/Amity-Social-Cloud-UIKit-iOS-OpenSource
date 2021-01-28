@@ -65,7 +65,13 @@ extension EkoCommunitiesScreenViewModel {
         searchCollection = repository.getCommunitiesWithKeyword(text, filter: filter, sortBy: .lastCreated, categoryId: nil, includeDeleted: false)
         searchToken?.invalidate()
         searchToken = searchCollection?.observe ({ [weak self] (collection, change, error) in
-            guard let self = self, self.searchCommunities.value.count < collection.count() else { return }
+            guard let self = self else { return }
+            
+            if self.searchCommunities.value.count > collection.count() {
+                self.numberOfItems.value = 0
+                return
+            }
+            
             for index in (UInt(self.searchCommunities.value.count)..<collection.count()) {
                 guard let object = collection.object(at: index) else { continue }
                 let model = EkoCommunityModel(object: object)
@@ -82,7 +88,7 @@ extension EkoCommunitiesScreenViewModel {
                     return $0.displayName.localizedCaseInsensitiveCompare($01.displayName) == .orderedAscending
                 })
             }
-            self.numberOfItems.value = Int(collection.count())
+            self.numberOfItems.value = self.searchCommunities.value.count
             self.loading.value = .loaded
         })
     }

@@ -173,29 +173,24 @@ extension EkoCreateCommunityScreenViewModel {
                 guard let strongSelf = self else { return }
                 builder.setAvatar(image)
                 strongSelf.repository.createCommunity(builder, completion: {(community, error) in
+                    guard let strongSelf = self else { return }
                     
-                    if let _ = error {
-                        EkoUtilities.showError()
-                        return
+                    if let error = EkoError(error: error), community == nil {
+                        strongSelf.delegate?.screenViewModel(strongSelf, failure: error)
+                    } else if let community = community {
+                        strongSelf.updateRole(withCommunityId: community.communityId)
                     }
-                    
-                    guard let community = community else {
-                        return
-                    }
-                    
-                    strongSelf.delegate?.screenViewModel(strongSelf, state: .createSuccess(communityId: community.communityId))
                 })
             }
         } else {
             repository.createCommunity(builder, completion: { [weak self] (community, error) in
-                if let _ = error {
-                    EkoHUD.hide()
-                    EkoUtilities.showError()
-                    return
-                }
+                guard let strongSelf = self else { return }
                 
-                guard let community = community else { return }
-                self?.updateRole(withCommunityId: community.communityId)
+                if let error = EkoError(error: error), community == nil {
+                    strongSelf.delegate?.screenViewModel(strongSelf, failure: error)
+                } else if let community = community {
+                    strongSelf.updateRole(withCommunityId: community.communityId)
+                }
             })
         }
     }
@@ -240,9 +235,9 @@ extension EkoCreateCommunityScreenViewModel {
                 guard let strongSelf = self else { return }
                 builder.setAvatar(image)
                 strongSelf.repository.updateCommunity(withId: strongSelf.communityId, builder: builder) { (community, error) in
-                    if let _ = error {
+                    if let error = EkoError(error: error) {
                         EkoHUD.hide()
-                        EkoUtilities.showError()
+                        strongSelf.delegate?.screenViewModel(strongSelf, failure: error)
                     } else {
                         strongSelf.delegate?.screenViewModel(strongSelf, state: .updateSuccess)
                     }
@@ -251,9 +246,9 @@ extension EkoCreateCommunityScreenViewModel {
         } else {
             repository.updateCommunity(withId: communityId, builder: builder) { [weak self] (community, error) in
                 guard let strongSelf = self else { return }
-                if let _ = error {
+                if let error = EkoError(error: error) {
                     EkoHUD.hide()
-                    EkoUtilities.showError()
+                    strongSelf.delegate?.screenViewModel(strongSelf, failure: error)
                 } else {
                     strongSelf.delegate?.screenViewModel(strongSelf, state: .updateSuccess)
                 }
@@ -274,7 +269,7 @@ extension EkoCreateCommunityScreenViewModel {
             switch result {
             case .success(let _imageData):
                 completion(_imageData)
-            case .failure(let _):
+            case .failure:
                 break
             }
         }

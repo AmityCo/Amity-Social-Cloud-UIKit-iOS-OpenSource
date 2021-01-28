@@ -105,7 +105,7 @@ class EkoUserProfileHeaderViewController: EkoViewController, EkoRefreshable {
     }
     
     private func setupChatButton() {
-        messageButton.setImage(EkoIconSet.iconChat2, position: .left)
+        messageButton.setImage(EkoIconSet.iconChat, position: .left)
         messageButton.setTitle(EkoLocalizedStringSet.communityDetailMessageButton.localizedString, for: .normal)
         messageButton.tintColor = EkoColorSet.secondary
         messageButton.layer.borderColor = EkoColorSet.secondary.blend(.shade3).cgColor

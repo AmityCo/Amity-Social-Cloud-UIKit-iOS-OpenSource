@@ -10,27 +10,27 @@ import UIKit
 import EkoChat
 
 protocol EkoCommunityMemberScreenViewModelDelegate: class {
-    func screenViewModelDidGetComminityInfo()
     func screenViewModelDidGetMember()
-    func screenViewModelLoadingState(state: EkoLoadingState)
-    func screenViewModelDidRemoveUser(at indexPath: IndexPath)
+    func screenViewModel(_ viewModel: EkoCommunityMemberScreenViewModel, loadingState state: EkoLoadingState)
+    func screenViewModel(_ viewModel: EkoCommunityMemberScreenViewModel, didRemoveUserAt indexPath: IndexPath)
     func screenViewModelDidAddMemberSuccess()
     func screenViewModelDidAddRoleSuccess()
     func screenViewModelDidRemoveRoleSuccess()
-    func screenViewModelFailure(error: EkoError)
+    func screenViewModel(_ viewModel: EkoCommunityMemberScreenViewModel, failure error: EkoError)
+    
 }
 
 protocol EkoCommunityMemberScreenViewModelDataSource {
+    var community: EkoCommunityModel? { get }
+    var isModerator: Bool { get }
     func numberOfMembers() -> Int
     func member(at indexPath: IndexPath) -> EkoCommunityMembershipModel
     func getReportUserStatus(at indexPath: IndexPath, completion: ((Bool) -> Void)?)
-    var isModerator: Bool { get }
-    var isJoined: Bool { get }
+    
     func prepareData() -> [EkoSelectMemberModel]
 }
 
 protocol EkoCommunityMemberScreenViewModelAction {
-    func getCommunity()
     func getMember(viewType: EkoCommunityMemberViewType)
     func getUserRoles()
     func loadMore()

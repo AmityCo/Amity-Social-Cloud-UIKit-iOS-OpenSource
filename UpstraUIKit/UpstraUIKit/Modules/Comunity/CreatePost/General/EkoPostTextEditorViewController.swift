@@ -300,6 +300,8 @@ public class EkoPostTextEditorViewController: EkoViewController {
     // MARK: Helper functions
     
     private func uploadImages() {
+        let fileUploadFailedDispatchGroup = DispatchGroup()
+        var isUploadFailed = false
         for index in 0..<galleryView.images.count {
             let image = galleryView.images[index]
             // if file is uploading, skip checking task
@@ -307,6 +309,7 @@ public class EkoPostTextEditorViewController: EkoViewController {
             
             switch galleryView.imageState(for: image.id) {
             case .localAsset, .image:
+                fileUploadFailedDispatchGroup.enter()
                 EkoFileService.shared.uploadImage(image: image.image(), progressHandler: { [weak self] progress in
                     self?.galleryView.updateViewState(for: image.id, state: .uploading(progress: progress))
                     Log.add("[UIKit]: Upload Progress \(progress)")
@@ -320,7 +323,9 @@ public class EkoPostTextEditorViewController: EkoViewController {
                         Log.add("[UIKit]: Image upload failed")
                         image.state = .error
                         self?.galleryView.updateViewState(for: image.id, state: .error)
+                        isUploadFailed = true
                     }
+                    fileUploadFailedDispatchGroup.leave()
                     self?.updateViewState()
                 })
             default:
@@ -328,9 +333,16 @@ public class EkoPostTextEditorViewController: EkoViewController {
             }
         }
         
+        fileUploadFailedDispatchGroup.notify(queue: .main) { [weak self] in
+            if isUploadFailed && self?.presentedViewController == nil {
+                self?.showUploadFailureAlert()
+            }
+        }
     }
     
     private func uploadFiles() {
+        let fileUploadFailedDispatchGroup = DispatchGroup()
+        var isUploadFailed = false
         for index in 0..<fileView.files.count {
             let file = fileView.files[index]
             // if file is uploading, skip checking task
@@ -340,6 +352,7 @@ public class EkoPostTextEditorViewController: EkoViewController {
             guard let fileUrl = file.fileURL, let fileData = try? Data(contentsOf: fileUrl) else { continue }
             
             let fileToUpload = UploadableFile(fileData: fileData, fileName: file.fileName)
+            fileUploadFailedDispatchGroup.enter()
             EkoFileService.shared.uploadFile(file: fileToUpload, progressHandler: { [weak self] progress in
                 self?.fileView.updateViewState(for: file.id, state: .uploading(progress: progress))
                 Log.add("[UIKit]: File upload progress: \(progress)")
@@ -353,12 +366,26 @@ public class EkoPostTextEditorViewController: EkoViewController {
                     Log.add("[UIKit]: File upload failed")
                     file.state = .error(errorMessage: error.localizedDescription)
                     self?.fileView.updateViewState(for: file.id, state: .error)
+                    isUploadFailed = true
                 }
+                fileUploadFailedDispatchGroup.leave()
                 self?.updateViewState()
             }
         }
+        
+        fileUploadFailedDispatchGroup.notify(queue: .main) { [weak self] in
+            if isUploadFailed && self?.presentedViewController == nil {
+                self?.showUploadFailureAlert()
+            }
+        }
     }
-    
+
+    private func showUploadFailureAlert() {
+        let alertController = UIAlertController(title: EkoLocalizedStringSet.postCreationUploadIncompletTitle.localizedString, message: EkoLocalizedStringSet.postCreationUploadIncompletDescription.localizedString, preferredStyle: .alert)
+        let cancelAction = UIAlertAction(title: EkoLocalizedStringSet.ok.localizedString, style: .cancel, handler: nil)
+        alertController.addAction(cancelAction)
+        present(alertController, animated: true, completion: nil)
+    }
 }
 
 extension EkoPostTextEditorViewController: EkoGalleryCollectionViewDelegate {
@@ -373,7 +400,6 @@ extension EkoPostTextEditorViewController: EkoGalleryCollectionViewDelegate {
     func galleryView(_ view: EkoGalleryCollectionView, didTapImage image: EkoImage, reference: UIImageView) {
         //
     }
-    
 }
 
 extension EkoPostTextEditorViewController: EkoTextViewDelegate {

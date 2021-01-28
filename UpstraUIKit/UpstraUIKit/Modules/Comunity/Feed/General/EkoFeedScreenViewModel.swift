@@ -77,8 +77,7 @@ class EkoFeedScreenViewModel: EkoFeedScreenViewModelType {
             let model = EkoPostModel(post: post)
             if let communityId = model.communityId {
                 communityParticipation = EkoCommunityParticipation(client: UpstraUIKitManagerInternal.shared.client, andCommunityId: communityId)
-                let roles = communityParticipation?.getMembership(post.postedUserId)?.roles as? [String] ?? []
-                model.isModerator = roles.contains("moderator")
+                model.isModerator = communityParticipation?.getMembership(post.postedUserId)?.communityRoles.contains(.moderator) ?? false
             }
             postModels.append(model)
         }

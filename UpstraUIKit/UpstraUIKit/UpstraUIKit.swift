@@ -53,7 +53,7 @@ public final class UpstraUIKitManager {
     }
 }
 
-final class UpstraUIKitManagerInternal {
+final class UpstraUIKitManagerInternal: NSObject {
     
     // MARK: - Properties
     
@@ -72,7 +72,7 @@ final class UpstraUIKitManagerInternal {
     
     // MARK: - Initializer
     
-    private init() { }
+    private override init() { }
     
     // MARK: - Setup functions
 
@@ -83,7 +83,7 @@ final class UpstraUIKitManagerInternal {
     func registerDevice(_ userId: String, displayName: String?, authToken: String?) {
         
         // clear current client before setting up a new one
-        self._client?.unregisterDevice()
+        unregisterDevice()
         self._client = nil
         
         guard let _client = EkoClient(apiKey: apiKey) else {
@@ -91,6 +91,7 @@ final class UpstraUIKitManagerInternal {
             return
         }
         
+        _client.clientErrorDelegate = self
         _client.registerDevice(withUserId: userId, displayName: displayName, authToken: authToken)
         self._client = _client
     }
@@ -102,3 +103,10 @@ final class UpstraUIKitManagerInternal {
     
 }
 
+extension UpstraUIKitManagerInternal: EkoClientErrorDelegate {
+    
+    func didReceiveAsyncError(_ error: Error) {
+        EkoHUD.show(.error(message: error.localizedDescription))
+    }
+    
+}

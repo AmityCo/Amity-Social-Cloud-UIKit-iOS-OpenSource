@@ -10,8 +10,9 @@ import UIKit
 import EkoChat
 
 protocol EkoCommunityInfoControllerProtocol {
-    func getCommunity(_ completion: @escaping (Result<EkoCommunityModel, Error>) -> Void)
+    func getCommunity(_ completion: @escaping (Result<EkoCommunityModel, EkoError>) -> Void)
 }
+
 final class EkoCommunityInfoController: EkoCommunityInfoControllerProtocol {
     
     private let repository: EkoCommunityRepository
@@ -24,17 +25,19 @@ final class EkoCommunityInfoController: EkoCommunityInfoControllerProtocol {
         repository = EkoCommunityRepository(client: UpstraUIKitManagerInternal.shared.client)
     }
     
-    func getCommunity(_ completion: @escaping (Result<EkoCommunityModel, Error>) -> Void) {
+    func getCommunity(_ completion: @escaping (Result<EkoCommunityModel, EkoError>) -> Void) {
         community = repository.getCommunity(withId: communityId)
         token = community?.observe { community, error in
-            guard error == nil, let object = community.object else {
-                guard let error = error else { return }
-                completion(.failure(error))
+            guard let object = community.object else {
+                if let error = EkoError(error: error) {
+                    completion(.failure(error))
+                }
                 return
             }
             
             let model = EkoCommunityModel(object: object)
             completion(.success(model))
+          
         }
     }
 }
