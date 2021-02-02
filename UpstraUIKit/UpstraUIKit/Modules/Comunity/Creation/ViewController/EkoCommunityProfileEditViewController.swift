@@ -89,20 +89,26 @@ public final class EkoCommunityProfileEditViewController: EkoViewController {
     private var screenViewModel: EkoCreateCommunityScreenViewModelType = EkoCreateCommunityScreenViewModel()
     private let selectMemberListViewModel: EkoSelectMemberListScreenViewModelType = EkoSelectMemberListScreenViewModel()
     private var rightItem: UIBarButtonItem?
-    private var viewType: ViewType!
+    private let viewType: ViewType
     
     weak var delegate: EkoCommunityProfileEditViewControllerDelegate?
     
     public override func viewDidLoad() {
         super.viewDidLoad()
-        title = title ?? EkoLocalizedStringSet.createCommunityTitle.localizedString
         setupView()
     }
     
+    private init(viewType: ViewType) {
+        self.viewType = viewType
+        super.init(nibName: EkoCommunityProfileEditViewController.identifier, bundle: UpstraUIKitManager.bundle)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
     public static func make(viewType: ViewType) -> EkoCommunityProfileEditViewController {
-        let vc = EkoCommunityProfileEditViewController(nibName: EkoCommunityProfileEditViewController.identifier, bundle: UpstraUIKitManager.bundle)
-        vc.viewType = viewType
-        return vc
+        return EkoCommunityProfileEditViewController(viewType: viewType)
     }
     
     override func didTapLeftBarButton() {
@@ -118,8 +124,6 @@ public final class EkoCommunityProfileEditViewController: EkoViewController {
         setupCommunityAdminRule()
         setupCommunityTypes()
         setupCommunityAddMember()
-        seperatorLineView.backgroundColor = EkoColorSet.secondary.blend(.shade4)
-        
         setupCreateCommunityButton()
         setupUpdateButton()
         
@@ -130,6 +134,13 @@ public final class EkoCommunityProfileEditViewController: EkoViewController {
         dismissKeyboardFromVC()
         screenViewModel.delegate = self
         scrollView.keyboardDismissMode = .onDrag
+        seperatorLineView.backgroundColor = EkoColorSet.secondary.blend(.shade4)
+        switch viewType {
+        case .create:
+            title = title ?? EkoLocalizedStringSet.createCommunityTitle.localizedString
+        case .edit:
+            title = title ?? EkoLocalizedStringSet.editMessageTitle.localizedString
+        }
     }
     
     private func setupCommunityDisplay() {
@@ -405,7 +416,6 @@ private extension EkoCommunityProfileEditViewController {
     func bindingViewModel() {
         if case .edit(let communityId) = viewType {
             screenViewModel.action.getInfo(communityId: communityId)
-            avatarView.state = .loading
             screenViewModel.dataSource.community.bind { [weak self] (community) in
                 self?.communityNameTextfield.text = community?.displayName
                 self?.communityAboutTextView.text = community?.description

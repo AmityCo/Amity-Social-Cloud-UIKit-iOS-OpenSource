@@ -60,7 +60,7 @@ public class EkoPostDetailViewController: EkoViewController {
         fatalError("init(coder:) has not been implemented")
     }
     
-    static func make(postId: String) -> EkoPostDetailViewController {
+    public static func make(postId: String) -> EkoPostDetailViewController {
         return EkoPostDetailViewController(postId: postId)
     }
     
@@ -332,6 +332,53 @@ extension EkoPostDetailViewController: EkoPostDetailTableViewCellDelegate {
         }
     }
     
+    func postTableViewCellDidTapShare(_ cell: EkoPostDetailTableViewCell) {
+        guard let post = post else { return }
+
+        let bottomSheet = BottomSheetViewController()
+        
+        let shareToTimeline = TextItemOption(title: EkoLocalizedStringSet.SharingType.shareToMyTimeline)
+        let shareToGroup = TextItemOption(title: EkoLocalizedStringSet.SharingType.shareToGroup)
+        let moreOptions = TextItemOption(title: EkoLocalizedStringSet.SharingType.moreOptions)
+        
+        var items = [TextItemOption]()
+        
+        if EkoPostSharePermission.canShareToMyTimeline(post: post) {
+            items.append(shareToTimeline)
+        }
+        
+        if EkoPostSharePermission.canSharePostToGroup(post: post) {
+            items.append(shareToGroup)
+        }
+        
+        if EkoPostSharePermission.canSharePostToExternal(post: post) {
+            items.append(moreOptions)
+        }
+
+        if items.isEmpty { return }
+        
+        let contentView = ItemOptionView<TextItemOption>()
+        contentView.configure(items: items, selectedItem: nil)
+        contentView.didSelectItem = { [weak bottomSheet] action in
+            bottomSheet?.dismissBottomSheet { [weak self] in
+                guard let strongSelf = self else { return }
+                switch action {
+                case shareToTimeline:
+                    EkoFeedEventHandler.shared.sharePostToMyTimelineDidTap(from: strongSelf, postId: post.id)
+                case shareToGroup:
+                    EkoFeedEventHandler.shared.sharePostToGroupDidTap(from: strongSelf, postId: post.id)
+                case moreOptions:
+                    EkoFeedEventHandler.shared.sharePostDidTap(from: strongSelf, postId: post.id)
+                default: break
+                }
+            }
+        }
+        
+        bottomSheet.sheetContentView = contentView
+        bottomSheet.isTitleHidden = true
+        bottomSheet.modalPresentationStyle = .overFullScreen
+        present(bottomSheet, animated: false, completion: nil)
+    }
 }
 
 extension EkoPostDetailViewController: EkoPostViewControllerDelegate {

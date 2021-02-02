@@ -447,6 +447,51 @@ extension EkoFeedViewController: EkoPostFeedTableViewCellDelegate {
         tableView.endUpdates()
     }
     
+    func cellDidTapShare(_ cell: EkoPostFeedTableViewCell, post: EkoPostModel) {
+        let bottomSheet = BottomSheetViewController()
+        
+        let shareToTimeline = TextItemOption(title: EkoLocalizedStringSet.SharingType.shareToMyTimeline.localizedString)
+        let shareToGroup = TextItemOption(title: EkoLocalizedStringSet.SharingType.shareToGroup.localizedString)
+        let moreOptions = TextItemOption(title: EkoLocalizedStringSet.SharingType.moreOptions.localizedString)
+        
+        var items = [TextItemOption]()
+        
+        if EkoPostSharePermission.canShareToMyTimeline(post: post) {
+            items.append(shareToTimeline)
+        }
+        
+        if EkoPostSharePermission.canSharePostToGroup(post: post) {
+            items.append(shareToGroup)
+        }
+        
+        if EkoPostSharePermission.canSharePostToExternal(post: post) {
+            items.append(moreOptions)
+        }
+        
+        if items.isEmpty { return }
+        
+        let contentView = ItemOptionView<TextItemOption>()
+        contentView.configure(items: items, selectedItem: nil)
+        contentView.didSelectItem = { [weak bottomSheet] action in
+            bottomSheet?.dismissBottomSheet { [weak self] in
+                guard let strongSelf = self else { return }
+                switch action {
+                case shareToTimeline:
+                    EkoFeedEventHandler.shared.sharePostToMyTimelineDidTap(from: strongSelf, postId: post.id)
+                case shareToGroup:
+                    EkoFeedEventHandler.shared.sharePostToGroupDidTap(from: strongSelf, postId: post.id)
+                case moreOptions:
+                    EkoFeedEventHandler.shared.sharePostDidTap(from: strongSelf, postId: post.id)
+                default: break
+                }
+            }
+        }
+        
+        bottomSheet.sheetContentView = contentView
+        bottomSheet.isTitleHidden = true
+        bottomSheet.modalPresentationStyle = .overFullScreen
+        present(bottomSheet, animated: false, completion: nil)
+    }
 }
 
 extension EkoFeedViewController: EkoFeedScreenViewModelDelegate {

@@ -22,7 +22,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="156" height="194"/>
                         <subviews>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="top" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="B5k-Ub-rOM">
-                                <rect key="frame" x="12" y="12" width="132" height="145.5"/>
+                                <rect key="frame" x="12" y="12" width="132" height="153.5"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ofq-KP-T7M" customClass="EkoAvatarView" customModule="UpstraUIKit" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="0.0" width="40" height="40"/>
@@ -33,25 +33,25 @@
                                         </constraints>
                                     </view>
                                     <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ixc-6g-EhL">
-                                        <rect key="frame" x="0.0" y="48" width="115" height="16"/>
+                                        <rect key="frame" x="0.0" y="48" width="123" height="24"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="BTS &amp; ARMY" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="tFv-0K-Jhy">
-                                                <rect key="frame" x="0.0" y="0.0" width="99" height="16"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="99" height="24"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                 <nil key="textColor"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="McU-kT-lRM" userLabel="Badge Image View">
-                                                <rect key="frame" x="99" y="0.0" width="16" height="16"/>
+                                                <rect key="frame" x="99" y="0.0" width="24" height="24"/>
                                                 <constraints>
-                                                    <constraint firstAttribute="width" constant="16" id="ITC-SR-mgd"/>
-                                                    <constraint firstAttribute="height" constant="16" id="dkA-BF-EJ2"/>
+                                                    <constraint firstAttribute="width" constant="24" id="ITC-SR-mgd"/>
+                                                    <constraint firstAttribute="height" constant="24" id="dkA-BF-EJ2"/>
                                                 </constraints>
                                             </imageView>
                                         </subviews>
                                     </stackView>
                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="top" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="v01-p8-qGt">
-                                        <rect key="frame" x="0.0" y="72" width="87.5" height="73.5"/>
+                                        <rect key="frame" x="0.0" y="80" width="87.5" height="73.5"/>
                                         <subviews>
                                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="4" translatesAutoresizingMaskIntoConstraints="NO" id="Uri-EL-qcH">
                                                 <rect key="frame" x="0.0" y="0.0" width="86.5" height="45"/>

@@ -108,5 +108,4 @@ open class EkoEventHandler {
         navigationController.modalPresentationStyle = .overFullScreen
         source.present(navigationController, animated: true, completion: nil)
     }
-    
 }

@@ -72,6 +72,7 @@
 "empty_title_no_posts" = "No posts yet";
 
 // MARK: - Eko Create Community
+"edit_community_title" = "Edit Community";
 "create_community_title" = "Create Community";
 "create_community_name_title" = "Community name*";
 "create_community_name_placeholder" = "Name your community";
@@ -211,3 +212,8 @@
 
 // MARK: - Popover Text Message
 "popover_message_is_too_short" = "Message is too short.";
+
+// MARK: - Post Sharing type
+"share_to_my_timeline" = "Share to My Timeline";
+"share_to_group" = "Share to Group";
+"more_options" = "More options";

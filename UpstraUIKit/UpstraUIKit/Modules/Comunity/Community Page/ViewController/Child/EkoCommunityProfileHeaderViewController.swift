@@ -14,7 +14,8 @@ final class EkoCommunityProfileHeaderViewController: EkoViewController {
     // MARK: - IBOutlet Properties
     @IBOutlet private var avatarView: EkoAvatarView!
     @IBOutlet private var displayNameLabel: UILabel!
-    @IBOutlet private var badgeImageView: UIImageView!
+    @IBOutlet private var privateBadgeImageView: UIImageView!
+    @IBOutlet private var officialBadgeImageView: UIImageView!
     @IBOutlet private var categoryLabel: UILabel!
     @IBOutlet private var postsButton: EkoButton!
     @IBOutlet private var membersButton: EkoButton!
@@ -70,8 +71,13 @@ final class EkoCommunityProfileHeaderViewController: EkoViewController {
     }
     
     private func setupBadgeView() {
-        badgeImageView.image = EkoIconSet.iconBadgeCheckmark
-        badgeImageView.tintColor = EkoColorSet.highlight
+        privateBadgeImageView.image = EkoIconSet.iconPrivate
+        privateBadgeImageView.tintColor = EkoColorSet.base
+        privateBadgeImageView.isHidden = true
+        privateBadgeImageView.image = EkoIconSet.iconPrivate
+        officialBadgeImageView.image = EkoIconSet.iconBadgeCheckmark
+        officialBadgeImageView.tintColor = EkoColorSet.highlight
+        officialBadgeImageView.isHidden = true
     }
     
     private func setupSubTitleLabel() {
@@ -129,7 +135,8 @@ final class EkoCommunityProfileHeaderViewController: EkoViewController {
         updatePostsCount(with: Int(community.postsCount))
         updateMembersCount(with: Int(community.membersCount))
         categoryLabel.text = community.category
-        badgeImageView.isHidden = !community.isOfficial
+        privateBadgeImageView.isHidden = community.isPublic
+        officialBadgeImageView.isHidden = !community.isOfficial
         updateActionButton()
     }
     

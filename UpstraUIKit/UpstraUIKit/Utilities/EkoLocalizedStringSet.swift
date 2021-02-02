@@ -84,6 +84,7 @@ public struct EkoLocalizedStringSet {
     static let emptyTitleNoPosts = "empty_title_no_posts"
     
     // MARK: - Create community
+    static let editCommunityTitle = "edit_community_title"
     static let createCommunityTitle = "create_community_title"
     static let createCommunityNameTitle = "create_community_name_title"
     static let createCommunityNamePlaceholder = "create_community_name_placeholder"
@@ -230,5 +231,12 @@ public struct EkoLocalizedStringSet {
     
     enum PopoverText {
         static let popoverMessageIsTooShort = "Message is too short."
+    }
+    
+    // MARK: - Post Sharing type
+    struct SharingType {
+        static let shareToMyTimeline = "share_to_my_timeline"
+        static let shareToGroup = "share_to_group"
+        static let moreOptions = "more_options"
     }
 }

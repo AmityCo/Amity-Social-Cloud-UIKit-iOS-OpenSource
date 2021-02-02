@@ -31,7 +31,6 @@ final class EkoCreateCommunityScreenViewModel: EkoCreateCommunityScreenViewModel
         }
     }
     
-    private var isChange: Bool = false
     private var displayName: String = "" {
         didSet {
             validate()
@@ -47,32 +46,39 @@ final class EkoCreateCommunityScreenViewModel: EkoCreateCommunityScreenViewModel
             validate()
         }
     }
+    private var imageAvatar: UIImage? {
+        didSet {
+            validate()
+        }
+    }
     
     private var isAdminPost: Bool = true
     private var imageData: EkoImageData?
-    private var imageAvatar: UIImage?
     
     init() {
         repository = EkoCommunityRepository(client: UpstraUIKitManagerInternal.shared.client)
     }
     
-    private func validate() {
-        isChange = true
-        let isDisplayNameExisted = !displayName.trimmingCharacters(in: .whitespaces).isEmpty
-        let isCategoryExist = selectedCategoryId != nil
+    private var isValueChanged: Bool {
+        let isRequiredFieldExisted = !displayName.trimmingCharacters(in: .whitespaces).isEmpty && selectedCategoryId != nil
         
-        var status: Bool
-        if isPublic {
-            status = isDisplayNameExisted && isCategoryExist
+        if let community = community.value {
+            // Edit community
+            let isValueChanged = (displayName != community.displayName) || (description != community.description) || (community.isPublic != isPublic) || (imageAvatar != nil)
+            return isRequiredFieldExisted && isValueChanged
         } else {
-            if communityId.isEmpty {
-                status = isDisplayNameExisted && isCategoryExist && !storeUsers.isEmpty
+            if isPublic {
+                // Create public community
+                return isRequiredFieldExisted
             } else {
-                status = isDisplayNameExisted && isCategoryExist
+                // Create private community
+                return isRequiredFieldExisted && !storeUsers.isEmpty
             }
-            
         }
-        delegate?.screenViewModel(self, state: .validateField(status: status))
+    }
+    
+    private func validate() {
+        delegate?.screenViewModel(self, state: .validateField(status: isValueChanged))
     }
 }
 
@@ -196,7 +202,7 @@ extension EkoCreateCommunityScreenViewModel {
     }
     
     func dismiss() {
-        delegate?.screenViewModel(self, state: .onDismiss(isChange: isChange))
+        delegate?.screenViewModel(self, state: .onDismiss(isChange: isValueChanged))
     }
     
     func getInfo(communityId: String) {
@@ -265,7 +271,7 @@ extension EkoCreateCommunityScreenViewModel {
         guard let image = imageAvatar else { return }
         EkoFileService.shared.uploadImage(image: image, progressHandler: { _ in
             
-        }) { [weak self] (result) in
+        }) { (result) in
             switch result {
             case .success(let _imageData):
                 completion(_imageData)

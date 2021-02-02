@@ -31,6 +31,7 @@ final class EkoMyCommunityTableViewCell: UITableViewCell, Nibbable {
         displayNameLabel.text = ""
         badgeImageView.image = EkoIconSet.iconBadgeCheckmark
         badgeImageView.tintColor = EkoColorSet.highlight
+        badgeImageView.isHidden = true
     }
     
     override func prepareForReuse() {

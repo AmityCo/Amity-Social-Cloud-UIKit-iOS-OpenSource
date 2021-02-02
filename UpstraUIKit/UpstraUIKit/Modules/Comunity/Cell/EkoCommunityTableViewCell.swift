@@ -31,6 +31,7 @@ class EkoCommunityTableViewCell: UITableViewCell, Nibbable {
         titleLabel.textColor = EkoColorSet.base
         badgeImageView.image = EkoIconSet.iconBadgeCheckmark
         badgeImageView.tintColor = EkoColorSet.highlight
+        badgeImageView.isHidden = true
     }
     
     func configure(with type: CommunityCellType) {

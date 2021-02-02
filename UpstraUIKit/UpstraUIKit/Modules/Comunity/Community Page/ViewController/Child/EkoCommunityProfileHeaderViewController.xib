@@ -14,13 +14,14 @@
                 <outlet property="actionButton" destination="lLk-g3-YRQ" id="Wu3-vf-Zpc"/>
                 <outlet property="actionStackView" destination="NAF-d6-lDj" id="ne2-Y8-f2o"/>
                 <outlet property="avatarView" destination="imQ-4c-JDP" id="Au5-oN-uWM"/>
-                <outlet property="badgeImageView" destination="g2U-Bm-41v" id="Vo8-pQ-5Wa"/>
                 <outlet property="categoryLabel" destination="zM1-xF-YFX" id="fSB-Xb-BtS"/>
                 <outlet property="chatButton" destination="IPa-YR-eF0" id="das-9P-VDb"/>
                 <outlet property="descriptionLabel" destination="Nvk-sG-u2b" id="12y-pq-Bft"/>
                 <outlet property="displayNameLabel" destination="6YI-Gr-WZV" id="6VU-6U-Vmp"/>
                 <outlet property="membersButton" destination="qCW-pK-KhT" id="sRZ-ve-sY8"/>
+                <outlet property="officialBadgeImageView" destination="g2U-Bm-41v" id="0Ku-EM-RYo"/>
                 <outlet property="postsButton" destination="fQs-e6-TuR" id="dcD-v9-QFO"/>
+                <outlet property="privateBadgeImageView" destination="pVa-KT-F2y" id="i3C-cg-jjW"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
         </placeholder>
@@ -47,16 +48,23 @@
                                     <rect key="frame" x="76" y="85.5" width="306" height="48.5"/>
                                     <subviews>
                                         <stackView opaque="NO" contentMode="scaleToFill" alignment="center" spacing="4" translatesAutoresizingMaskIntoConstraints="NO" id="fe8-na-2Fa">
-                                            <rect key="frame" x="0.0" y="0.0" width="69.5" height="24"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="97.5" height="24"/>
                                             <subviews>
+                                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="pVa-KT-F2y" userLabel="Private Badge Image View">
+                                                    <rect key="frame" x="0.0" y="0.0" width="24" height="24"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="height" constant="24" id="95X-W1-4EY"/>
+                                                        <constraint firstAttribute="width" constant="24" id="HTM-NO-j9N"/>
+                                                    </constraints>
+                                                </imageView>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="1000" text="Label" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6YI-Gr-WZV" userLabel="Title Label">
-                                                    <rect key="frame" x="0.0" y="1.5" width="41.5" height="20.5"/>
+                                                    <rect key="frame" x="28" y="1.5" width="41.5" height="20.5"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="g2U-Bm-41v" userLabel="Badge Image View">
-                                                    <rect key="frame" x="45.5" y="0.0" width="24" height="24"/>
+                                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="g2U-Bm-41v" userLabel="Official Badge Image View">
+                                                    <rect key="frame" x="73.5" y="0.0" width="24" height="24"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="24" id="a8M-IK-08T"/>
                                                         <constraint firstAttribute="width" constant="24" id="cHw-lC-tFJ"/>

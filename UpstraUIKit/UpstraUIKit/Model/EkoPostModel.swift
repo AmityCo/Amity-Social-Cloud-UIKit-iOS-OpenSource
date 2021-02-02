@@ -150,4 +150,8 @@ public class EkoPostModel {
         }
         return myReactions.contains("like")
     }
+    
+    var postTargetType: EkoPostTargetType {
+        return post.targetCommunity == nil ? .user : .community
+    }
 }

@@ -38,6 +38,7 @@ final class EkoMyCommunityCollectionViewCell: UICollectionViewCell {
         displayNameLabel.textColor = EkoColorSet.base
         badgeImageView.image = EkoIconSet.iconBadgeCheckmark
         badgeImageView.tintColor = EkoColorSet.highlight
+        badgeImageView.isHidden = true
     }
     
     func display(with community: EkoCommunityModel) {

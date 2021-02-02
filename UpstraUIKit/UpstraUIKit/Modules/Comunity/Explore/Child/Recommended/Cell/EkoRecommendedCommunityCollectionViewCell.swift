@@ -74,6 +74,7 @@ private extension EkoRecommendedCommunityCollectionViewCell {
     func setupBadge() {
         badgeImageView.image = EkoIconSet.iconBadgeCheckmark
         badgeImageView.tintColor = EkoColorSet.highlight
+        badgeImageView.isHidden = true
     }
     
     func setupCategory() {

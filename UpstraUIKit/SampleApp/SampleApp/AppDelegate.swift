@@ -27,6 +27,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         window?.rootViewController = registerVC
         window?.makeKeyAndVisible()
         
+        UpstraUIKitManager.feedUISettings.eventHandler = CustomFeedEventHandler()
+        UpstraUIKitManager.feedUISettings.setPostSharingSettings(settings: EkoPostSharingSettings())
+        
         return true
     }
 
@@ -45,6 +48,26 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Use this method to release any resources that were specific to the discarded scenes, as they will not return.
     }
 
+    func application(_ application: UIApplication, continue userActivity: NSUserActivity, restorationHandler: @escaping ([UIUserActivityRestoring]?) -> Void) -> Bool {
+        
+        // Handler of opening external url from web browsing session.
+        if userActivity.activityType == NSUserActivityTypeBrowsingWeb, let url = userActivity.webpageURL {
+
+            let urlString = url.absoluteString //"https://upstra.co/post/124325135"
+            // Parse url and be sure that it is a url of a post
+            if urlString.contains("post/") {
+                if let range = urlString.range(of: "post/") {
+                    // Detect id of the post
+                    let postId = String(urlString[range.upperBound...])
+                    
+                    // Open post details page
+                    openPost(withId: postId)
+                }
+            }
+        }
+        
+        return true
+    }
 
 }
 
@@ -87,5 +110,31 @@ class CustomEventHandler: EkoEventHandler {
             source.present(navigationController, animated: true, completion: nil)
         }
     }
+}
+
+class CustomFeedEventHandler: EkoFeedEventHandler {
+    override func sharePostDidTap(from source: EkoViewController, postId: String) {
+        let urlString = "https://amity.co/posts/\(postId)"
+        guard let url = URL(string: urlString) else { return }
+        let viewController = EkoActivityController.make(activityItems: [url])
+        source.present(viewController, animated: true, completion: nil)
+    }
     
+    override func sharePostToGroupDidTap(from source: EkoViewController, postId: String) {
+    }
+    
+    override func sharePostToMyTimelineDidTap(from source: EkoViewController, postId: String) {
+    }
+}
+
+// MARK :- Helper methods
+extension AppDelegate {
+    func openPost(withId postId: String) {
+        window = UIWindow()
+        UpstraUIKitManager.registerDevice(withUserId: "victimIOS", displayName: "victimIOS".uppercased())
+        
+        let postDetailViewController = EkoPostDetailViewController.make(postId: postId)
+        window?.rootViewController = postDetailViewController
+        window?.makeKeyAndVisible()
+    }
 }

@@ -34,6 +34,10 @@ public final class UpstraUIKitManager {
         return UpstraUIKitManagerInternal.shared.client
     }
     
+    public static var feedUISettings: EkoFeedUISettings {
+        return EkoFeedUISettings.shared
+    }
+    
     static var bundle: Bundle {
         return Bundle(for: self)
     }
