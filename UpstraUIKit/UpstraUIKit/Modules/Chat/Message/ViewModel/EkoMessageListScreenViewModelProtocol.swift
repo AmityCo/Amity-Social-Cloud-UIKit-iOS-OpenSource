@@ -40,8 +40,7 @@ protocol EkoMessageListScreenViewModelAction {
     func getMessage()
     
     func send(withText text: String?)
-    func send(withImage image: UIImage)
-    func send(withImages images: [PHAsset])
+    func send(withImages images: [EkoImage])
     func sendAudio()
     
     func editText(with text: String, messageId: String)

@@ -92,7 +92,7 @@ public class EkoGalleryCollectionViewCell: UICollectionViewCell {
         case .downloadable(let fileId, let placeholder):
             imageView.setImage(withFileId: fileId, placeholder: placeholder)
         case .localAsset, .uploaded, .none:
-            selectedImage.loadImage(to: imageView)
+            selectedImage.loadImage(to: imageView, preferredSize: frame.size)
         case .uploading, .error:
             break
         }

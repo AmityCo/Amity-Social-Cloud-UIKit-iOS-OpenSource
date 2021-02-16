@@ -311,16 +311,7 @@ private extension EkoMessageListScreenViewModel {
 // MARK: - Send Image
 extension EkoMessageListScreenViewModel {
     
-    func send(withImage image: UIImage) {
-        sendImageMessage(with: [image])
-    }
-    
-    func send(withImages images: [PHAsset]) {
-        let mappingImage = images.compactMap { $0.getImage() }
-        sendImageMessage(with: mappingImage)
-    }
-    
-    private func sendImageMessage(with images: [UIImage]) {
+    func send(withImages images: [EkoImage]) {
         let operations = images.map { UploadImageMessageOperation(channelId: channelId, image: $0, repository: messageRepository) }
         
         // Define serial dependency A <- B <- C <- ... <- Z
@@ -329,8 +320,8 @@ extension EkoMessageListScreenViewModel {
         }
 
         queue.addOperations(operations, waitUntilFinished: false)
-        
     }
+    
 }
 
 // MARK: - Send Audio

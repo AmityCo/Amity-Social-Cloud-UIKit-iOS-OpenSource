@@ -11,18 +11,32 @@ import UIKit
 
 extension PHAsset {
     
-    func getImage() -> UIImage? {
-        var img: UIImage?
+    func getImage(targetSize: CGSize? = nil, completion: ((Result<UIImage, Error>) -> Void)?) {
         let manager = PHImageManager.default()
         let options = PHImageRequestOptions()
-        options.version = .original
-        options.isSynchronous = true
-        manager.requestImageData(for: self, options: options) { data, _, _, _ in
-            if let data = data {
-                img = UIImage(data: data)
+        options.version = .current
+        options.deliveryMode = .highQualityFormat
+        options.isNetworkAccessAllowed = true
+        
+        if let targetSize = targetSize {
+            // get image size depends on target size
+            manager.requestImage(for: self, targetSize: targetSize, contentMode: .aspectFill, options: options) { (result, info) in
+                if let result = result {
+                    completion?(.success(result))
+                } else {
+                    completion?(.failure(EkoError.unknown))
+                }
+            }
+        } else {
+            // get maximum image size
+            manager.requestImage(for: self, targetSize: PHImageManagerMaximumSize, contentMode: .default, options: options) { (result, info) in
+                if let result = result {
+                    completion?(.success(result))
+                } else {
+                    completion?(.failure(EkoError.unknown))
+                }
             }
         }
-        return img
     }
     
 }

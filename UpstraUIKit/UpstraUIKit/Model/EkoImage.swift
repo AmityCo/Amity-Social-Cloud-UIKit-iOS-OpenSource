@@ -38,19 +38,21 @@ public class EkoImage: Equatable, Hashable {
         self.state = state
     }
     
-    func loadImage(to imageView: UIImageView) {
-        let preferredSize = imageView.frame.size
+    func loadImage(to imageView: UIImageView, preferredSize: CGSize? = nil) {
         switch state {
         case .image(let image):
             imageView.image = image
             
         case .localAsset(let asset):
+            let targetSize = preferredSize ?? imageView.bounds.size
             let manager = PHImageManager.default()
             let option = PHImageRequestOptions()
             option.version = .current
+            option.resizeMode = .none
+            option.deliveryMode = .highQualityFormat
             option.isNetworkAccessAllowed = true
             
-            manager.requestImage(for: asset, targetSize: preferredSize, contentMode: .aspectFill, options: option, resultHandler: { (result, info) in
+            manager.requestImage(for: asset, targetSize: targetSize, contentMode: .aspectFill, options: option, resultHandler: { (result, info) in
                 if let result = result {
                     imageView.image = result
                 }
@@ -67,38 +69,16 @@ public class EkoImage: Equatable, Hashable {
         }
     }
     
-    func image(preferredSize: CGSize = .zero) -> UIImage {
+    func getImageForUploading(completion: ((Result<UIImage, Error>) -> Void)?) {
         switch state {
         case .localAsset(let asset):
-            
-            let manager = PHImageManager.default()
-            let option = PHImageRequestOptions()
-            option.version = .current
-            option.isNetworkAccessAllowed = true
-            option.isSynchronous = true
-            option.deliveryMode = .highQualityFormat
-            option.resizeMode = .exact
-            
-            var image = UIImage()
-            manager.requestImage(for: asset, targetSize: preferredSize, contentMode: .aspectFit, options: option, resultHandler: { (result, info) in
-                if let result = result {
-                    image = result
-                }
-            })
-            #warning("This function is working synchronously and need to be improved.")
-            return image
-            
-        case .downloadable(_, let placeholder):
-            return placeholder
-            
+            asset.getImage(completion: completion)
         case .image(let image):
-            return image
+            completion?(.success(image))
             
-        case .uploaded, .none:
-            return UIImage()
-            
-        case .uploading, .error:
-            fatalError()
+        case .downloadable, .uploaded, .none, .uploading, .error:
+            assertionFailure("This function for uploading process")
+            completion?(.failure(EkoError.unknown))
         }
     }
     

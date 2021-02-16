@@ -146,7 +146,15 @@ extension EkoGalleryCollectionView: UICollectionViewDataSource {
     }
     
     public func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: EkoGalleryCollectionViewCell.identifier, for: indexPath) as! EkoGalleryCollectionViewCell
+        return collectionView.dequeueReusableCell(withReuseIdentifier: EkoGalleryCollectionViewCell.identifier, for: indexPath)
+    }
+    
+}
+
+extension EkoGalleryCollectionView: UICollectionViewDelegateFlowLayout {
+    
+    func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
+        guard let cell = cell as? EkoGalleryCollectionViewCell else { return }
         if isEditable {
             cell.config(image: images[indexPath.item], isEditable: isEditable, numberText: nil)
             cell.delegate = self
@@ -155,12 +163,8 @@ extension EkoGalleryCollectionView: UICollectionViewDataSource {
             let numberText: String? = shouldShowNumber ? "+ \(images.count - Constant.maxNumberOfItems + 1)" : nil
             cell.config(image: images[indexPath.item], isEditable: isEditable, numberText: numberText)
         }
-        return cell
+        
     }
-    
-}
-
-extension EkoGalleryCollectionView: UICollectionViewDelegateFlowLayout {
     
     public func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         if let cell = collectionView.cellForItem(at: indexPath) as? EkoGalleryCollectionViewCell {

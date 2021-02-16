@@ -100,7 +100,8 @@ private extension EkoMessageListViewController {
         imagePicker.settings.selection.unselectOnReachingMax = false
         imagePicker.settings.theme.selectionStyle = .numbered
         presentImagePicker(imagePicker, select: nil, deselect: nil, cancel: nil, finish: { [weak self] assets in
-            self?.screenViewModel.action.send(withImages: assets)
+            let images = assets.map { EkoImage(state: .localAsset($0)) }
+            self?.screenViewModel.action.send(withImages: images)
         })
     }
     
@@ -212,7 +213,8 @@ extension EkoMessageListViewController: UIImagePickerControllerDelegate & UINavi
     public func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
         picker.dismiss(animated: true) { [weak self] in
             if let image = info[.originalImage] as? UIImage {
-                self?.screenViewModel.action.send(withImage: image)
+                let ekoImage = EkoImage(state: .image(image))
+                self?.screenViewModel.action.send(withImages: [ekoImage])
             }
         }
     }

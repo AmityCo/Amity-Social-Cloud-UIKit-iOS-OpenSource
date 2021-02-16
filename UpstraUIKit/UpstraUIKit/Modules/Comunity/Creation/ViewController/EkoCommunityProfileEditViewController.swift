@@ -330,30 +330,39 @@ private extension EkoCommunityProfileEditViewController {
     
     @IBAction func choosePhotoTap() {
         let bottomSheet = BottomSheetViewController()
-        let cameraOption = TextItemOption(title: EkoLocalizedStringSet.camera.localizedString)
-        let galleryOption = TextItemOption(title: EkoLocalizedStringSet.imageGallery.localizedString)
+        var cameraOption = TextItemOption(title: EkoLocalizedStringSet.camera.localizedString)
+        cameraOption.completion = { [weak self] in
+            let cameraPicker = UIImagePickerController()
+            cameraPicker.sourceType = .camera
+            cameraPicker.delegate = self
+            self?.present(cameraPicker, animated: true, completion: nil)
+        }
+        
+        var galleryOption = TextItemOption(title: EkoLocalizedStringSet.imageGallery.localizedString)
+        galleryOption.completion = { [weak self] in
+            let imagePicker = EkoImagePickerController(selectedAssets: [])
+            imagePicker.settings.theme.selectionStyle = .checked
+            imagePicker.settings.fetch.assets.supportedMediaTypes = [.image]
+            imagePicker.settings.selection.max = 1
+            imagePicker.settings.selection.unselectOnReachingMax = true
+            self?.presentImagePicker(imagePicker, select: nil, deselect: nil, cancel: nil, finish: { [weak self] assets in
+                guard let asset = assets.first else { return }
+                asset.getImage { result in
+                    switch result {
+                    case .success(let avatar):
+                        self?.avatarView.image = avatar
+                        self?.screenViewModel.action.setImage(for: avatar)
+                    case .failure:
+                        break
+                    }
+                }
+            })
+        }
+        
         let contentView = ItemOptionView<TextItemOption>()
         contentView.configure(items: [cameraOption, galleryOption], selectedItem: nil)
         contentView.didSelectItem = { [weak bottomSheet] action in
-            bottomSheet?.dismissBottomSheet { [weak self] in
-                if action == cameraOption {
-                    let cameraPicker = UIImagePickerController()
-                    cameraPicker.sourceType = .camera
-                    cameraPicker.delegate = self
-                    self?.present(cameraPicker, animated: true, completion: nil)
-                } else {
-                    let imagePicker = EkoImagePickerController(selectedAssets: [])
-                    imagePicker.settings.theme.selectionStyle = .checked
-                    imagePicker.settings.fetch.assets.supportedMediaTypes = [.image]
-                    imagePicker.settings.selection.max = 1
-                    imagePicker.settings.selection.unselectOnReachingMax = true
-                    self?.presentImagePicker(imagePicker, select: nil, deselect: nil, cancel: nil, finish: { [weak self] assets in
-                        guard let avatar = assets.first?.getImage() else { return }
-                        self?.avatarView.image = avatar
-                        self?.screenViewModel.action.setImage(for: avatar)
-                    })
-                }
-            }
+            bottomSheet?.dismissBottomSheet()
         }
         bottomSheet.sheetContentView = contentView
         bottomSheet.isTitleHidden = true

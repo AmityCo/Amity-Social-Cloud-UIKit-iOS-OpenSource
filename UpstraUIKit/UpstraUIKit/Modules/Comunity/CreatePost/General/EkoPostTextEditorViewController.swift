@@ -309,26 +309,38 @@ public class EkoPostTextEditorViewController: EkoViewController {
             
             switch galleryView.imageState(for: image.id) {
             case .localAsset, .image:
+                
                 fileUploadFailedDispatchGroup.enter()
-                EkoFileService.shared.uploadImage(image: image.image(), progressHandler: { [weak self] progress in
-                    self?.galleryView.updateViewState(for: image.id, state: .uploading(progress: progress))
-                    Log.add("[UIKit]: Upload Progress \(progress)")
-                }, completion:  { [weak self] result in
+                
+                // get local image for uploading
+                image.getImageForUploading { [weak self] result in
                     switch result {
-                    case .success(let imageData):
-                        Log.add("[UIKit]: Uploaded image data \(imageData.fileId)")
-                        image.state = .uploaded(data: imageData)
-                        self?.galleryView.updateViewState(for: image.id, state: .uploaded)
+                    case .success(let img):
+                        EkoFileService.shared.uploadImage(image: img, progressHandler: { progress in
+                            self?.galleryView.updateViewState(for: image.id, state: .uploading(progress: progress))
+                            Log.add("[UIKit]: Upload Progress \(progress)")
+                        }, completion:  { [weak self] result in
+                            switch result {
+                            case .success(let imageData):
+                                Log.add("[UIKit]: Uploaded image data \(imageData.fileId)")
+                                image.state = .uploaded(data: imageData)
+                                self?.galleryView.updateViewState(for: image.id, state: .uploaded)
+                            case .failure:
+                                Log.add("[UIKit]: Image upload failed")
+                                image.state = .error
+                                self?.galleryView.updateViewState(for: image.id, state: .error)
+                                isUploadFailed = true
+                            }
+                            fileUploadFailedDispatchGroup.leave()
+                            self?.updateViewState()
+                        })
                     case .failure:
-                        Log.add("[UIKit]: Image upload failed")
                         image.state = .error
                         self?.galleryView.updateViewState(for: image.id, state: .error)
                         isUploadFailed = true
                     }
-                    fileUploadFailedDispatchGroup.leave()
-                    self?.updateViewState()
-                })
-            default:
+                }
+            case .uploading, .uploaded, .downloadable, .error, .none:
                 break
             }
         }
