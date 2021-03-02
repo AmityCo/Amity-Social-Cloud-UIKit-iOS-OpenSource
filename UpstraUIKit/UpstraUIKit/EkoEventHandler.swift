@@ -59,7 +59,7 @@ open class EkoEventHandler {
     ///
     /// A default behavior is navigating to `EkoPostDetailViewController`
     open func postDidtap(from source: EkoViewController, postId: String) {
-        let viewController = EkoPostDetailViewController.make(postId: postId)
+        let viewController = EkoPostDetailViewController.make(withPostId: postId)
         source.navigationController?.pushViewController(viewController, animated: true)
     }
 

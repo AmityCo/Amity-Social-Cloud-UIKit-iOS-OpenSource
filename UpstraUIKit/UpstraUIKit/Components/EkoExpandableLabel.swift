@@ -47,7 +47,7 @@ open class EkoExpandableLabel: UILabel {
     }
 
     /// Set 'true' if the label should be collapsed or 'false' for expanded.
-    var isExpanded: Bool = true {
+    public var isExpanded: Bool = true {
         didSet {
             super.attributedText = (isExpanded) ? self.expandedText : self.collapsedText
             super.numberOfLines = (isExpanded) ? 0 : self.collapsedNumberOfLines

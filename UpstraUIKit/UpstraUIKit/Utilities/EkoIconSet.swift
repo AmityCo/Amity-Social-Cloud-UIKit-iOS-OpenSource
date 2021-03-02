@@ -29,7 +29,8 @@ public struct EkoIconSet {
     public static let iconCameraSmall = getImage(name: "icon_camera_small")
     public static var iconCommunity = getImage(name: "icon_community")
     public static var iconPrivateSmall = getImage(name: "icon_private_small")
-    public static var iconLike = UIImage(named: "icon_like", in: UpstraUIKitManager.bundle, compatibleWith: nil)?.withRenderingMode(.alwaysOriginal)
+    public static var iconLike = UIImage(named: "icon_like", in: UpstraUIKitManager.bundle, compatibleWith: nil)
+    public static var iconLikeFill = UIImage(named: "icon_like_fill", in: UpstraUIKitManager.bundle, compatibleWith: nil)
     public static var iconComment = UIImage(named: "icon_comment", in: UpstraUIKitManager.bundle, compatibleWith: nil)?.withRenderingMode(.alwaysOriginal)
     public static var iconShare = UIImage(named: "icon_share", in: UpstraUIKitManager.bundle, compatibleWith: nil)?.withRenderingMode(.alwaysOriginal)
     public static var iconPhoto = UIImage(named: "icon_photo", in: UpstraUIKitManager.bundle, compatibleWith: nil)?.withRenderingMode(.alwaysOriginal)
@@ -39,6 +40,7 @@ public struct EkoIconSet {
     public static let iconBadgeCheckmark = UIImage(named: "icon_badge_checkmark", in: UpstraUIKitManager.bundle, compatibleWith: nil)
     public static let iconBadgeModerator = UIImage(named: "icon_badge_moderator", in: UpstraUIKitManager.bundle, compatibleWith: nil)
     public static let iconReply = UIImage(named: "icon_reply", in: UpstraUIKitManager.bundle, compatibleWith: nil)
+    public static let iconReplyInverse = UIImage(named: "icon_reply_inverse", in: UpstraUIKitManager.bundle, compatibleWith: nil)
     public static let iconExpand = UIImage(named: "icon_expand", in: UpstraUIKitManager.bundle, compatibleWith: nil)
     public static let iconCheckMark =  UIImage(named: "icon_checkmark", in: UpstraUIKitManager.bundle, compatibleWith: nil)
     public static let iconExclamation =  UIImage(named: "icon_exclamation", in: UpstraUIKitManager.bundle, compatibleWith: nil)
@@ -114,6 +116,11 @@ public struct EkoIconSet {
         static let iconDelete1 = EkoIconSet.getImage("icon_delete_1")
         static let iconDelete2 = EkoIconSet.getImage("icon_delete_2")
         static let iconDelete3 = EkoIconSet.getImage("icon_delete_3")
+    }
+    
+    enum Post {
+        static let like = EkoIconSet.getImage("icon_post_like")
+        static let liked = EkoIconSet.getImage("icon_post_liked")
     }
 }
 

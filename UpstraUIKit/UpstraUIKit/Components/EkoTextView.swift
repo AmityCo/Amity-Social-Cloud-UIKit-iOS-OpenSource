@@ -88,7 +88,7 @@ final class EkoTextView: UITextView {
         guard !text.allSatisfy({ $0.isWhitespace }) else {
             return false
         }
-        return text.count >= minCharacters
+        return text.utf16.count >= minCharacters
     }
     
     /// Maximum charactors. Default is 0, means not requires any characters.
@@ -169,7 +169,6 @@ final class EkoTextView: UITextView {
             
         case .fullName:
             var characterSet = CharacterSet.letters
-            print(characterSet)
             characterSet = characterSet.union(CharacterSet(charactersIn: " "))
             if string.rangeOfCharacter(from: characterSet.inverted) != nil {
                 return false
@@ -215,7 +214,7 @@ extension EkoTextView: UITextViewDelegate {
     }
     
     func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
-        return customTextViewDelegate?.textView?(self, shouldChangeTextIn: range, replacementText: text) ?? (maxCharacters > 0 ? textView.text.count + (text.count - range.length) <= maxCharacters : true)
+        return customTextViewDelegate?.textView?(self, shouldChangeTextIn: range, replacementText: text) ?? (maxCharacters > 0 ? textView.text.utf16.count + (text.utf16.count - range.length) <= maxCharacters : true)
     }
     
     func textViewDidChange(_ textView: UITextView) {

@@ -55,15 +55,15 @@ public class EkoButton: UIButton {
     
     /// Set image for button position left/right
     /// - Parameter image: UIImage from local storage
-    public func setImage(_ image: UIImage?, position: Position = .right) {
+    public func setImage(_ image: UIImage?, position: Position = .right, constant: CGFloat = 16) {
         setImage(image, for: .normal)
         switch position {
         case .left:
             semanticContentAttribute = .forceLeftToRight
-            imageEdgeInsets = .init(top: 0, left: -16, bottom: 0, right: 0)
+            imageEdgeInsets = .init(top: 0, left: -constant, bottom: 0, right: 0)
         case .right:
             semanticContentAttribute = .forceRightToLeft
-            imageEdgeInsets = .init(top: 0, left: 16, bottom: 0, right: 0)
+            imageEdgeInsets = .init(top: 0, left: constant, bottom: 0, right: 0)
         }
     }
     

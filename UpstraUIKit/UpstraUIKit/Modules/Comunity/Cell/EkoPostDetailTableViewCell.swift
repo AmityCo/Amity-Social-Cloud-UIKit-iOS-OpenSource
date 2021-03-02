@@ -78,6 +78,8 @@ public class EkoPostDetailTableViewCell: UITableViewCell, Nibbable {
         badgeTitleLabel.text = "\(EkoLocalizedStringSet.moderator.localizedString) • "
         badgeTitleLabel.textColor = EkoColorSet.base.blend(.shade1)
         badgeTitleLabel.font = .systemFont(ofSize: 13, weight: .semibold)
+        likeButton.setImage(EkoIconSet.iconLike, for: .normal)
+        likeButton.setImage(EkoIconSet.iconLikeFill, for: .selected)
         likeButton.setTitle(EkoLocalizedStringSet.liked.localizedString, for: .selected)
         likeButton.setTitle(EkoLocalizedStringSet.like.localizedString, for: .normal)
         likeButton.setTintColor(EkoColorSet.primary, for: .selected)

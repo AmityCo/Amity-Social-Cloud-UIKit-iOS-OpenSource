@@ -58,7 +58,6 @@ final class EkoTextField: UITextField {
             
         case .fullName:
             var characterSet = CharacterSet.letters
-            print(characterSet)
             characterSet = characterSet.union(CharacterSet(charactersIn: " "))
             if string.rangeOfCharacter(from: characterSet.inverted) != nil {
                 return false

@@ -83,6 +83,11 @@ extension EkoCommunitiesScreenViewModel {
                 }
             }
             
+            if self.listType != .searchCommunities && text == "" {
+                self.searchCommunities.value = self.searchCommunities.value.sorted(by: {
+                    return $0.displayName.localizedCaseInsensitiveCompare($01.displayName) == .orderedAscending
+                })
+            }
             self.numberOfItems.value = self.searchCommunities.value.count
             self.loading.value = .loaded
         })

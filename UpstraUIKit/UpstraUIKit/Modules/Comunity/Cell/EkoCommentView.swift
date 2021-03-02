@@ -19,6 +19,7 @@ enum EkoCommentViewAction {
     case like
     case reply
     case option
+    case viewReply
 }
 
 protocol EkoCommentViewDelegate: class {
@@ -35,8 +36,9 @@ class EkoCommentView: EkoView {
     @IBOutlet private weak var likeButton: EkoButton!
     @IBOutlet private weak var replyButton: EkoButton!
     @IBOutlet private weak var optionButton: UIButton!
-    @IBOutlet private weak var lineView: UIView!
+    @IBOutlet private weak var viewReplyButton: EkoButton!
     @IBOutlet private weak var separatorLineView: UIView!
+    @IBOutlet private weak var leadingAvatarImageViewConstraint: NSLayoutConstraint!
     @IBOutlet private weak var topAvatarImageViewConstraint: NSLayoutConstraint!
     
     weak var delegate: EkoCommentViewDelegate?
@@ -60,24 +62,38 @@ class EkoCommentView: EkoView {
         contentLabel.textColor = EkoColorSet.base
         contentLabel.font = EkoFontSet.body
         contentLabel.numberOfLines = 8
+        separatorLineView.backgroundColor  = EkoColorSet.secondary.blend(.shade4)
+        
         likeButton.setTitle(EkoLocalizedStringSet.like.localizedString, for: .normal)
-        likeButton.setTintColor(EkoColorSet.primary, for: .selected)
-        likeButton.setTintColor(EkoColorSet.base.blend(.shade2), for: .normal)
+        likeButton.setTitleFont(EkoFontSet.captionBold)
+        likeButton.setImage(EkoIconSet.iconLike, for: .normal)
+        likeButton.setImage(EkoIconSet.iconLikeFill, for: .selected)
         likeButton.setTitleColor(EkoColorSet.primary, for: .selected)
         likeButton.setTitleColor(EkoColorSet.base.blend(.shade2), for: .normal)
+        likeButton.setTintColor(EkoColorSet.primary, for: .selected)
+        likeButton.setTintColor(EkoColorSet.base.blend(.shade2), for: .normal)
         likeButton.addTarget(self, action: #selector(likeButtonTap), for: .touchUpInside)
         likeButton.setInsets(forContentPadding: .zero, imageTitlePadding: 4)
-        lineView.backgroundColor = EkoColorSet.secondary.blend(.shade4)
         replyButton.setTitle(EkoLocalizedStringSet.reply.localizedString, for: .normal)
+        replyButton.setTitleFont(EkoFontSet.captionBold)
         replyButton.setImage(EkoIconSet.iconReply, for: .normal)
         replyButton.tintColor = EkoColorSet.base.blend(.shade2)
         replyButton.setTitleColor(EkoColorSet.primary, for: .selected)
         replyButton.setTitleColor(EkoColorSet.base.blend(.shade2), for: .normal)
         replyButton.addTarget(self, action: #selector(replyButtonTap), for: .touchUpInside)
         replyButton.setInsets(forContentPadding: .zero, imageTitlePadding: 4)
-        separatorLineView.backgroundColor  = EkoColorSet.secondary.blend(.shade4)
         optionButton.addTarget(self, action: #selector(optionButtonTap), for: .touchUpInside)
         optionButton.tintColor = EkoColorSet.base.blend(.shade2)
+        viewReplyButton.setTitle(EkoLocalizedStringSet.viewReply.localizedString, for: .normal)
+        viewReplyButton.setTitleFont(EkoFontSet.captionBold)
+        viewReplyButton.setTitleColor(EkoColorSet.base.blend(.shade1), for: .normal)
+        viewReplyButton.setTintColor(EkoColorSet.base.blend(.shade1), for: .normal)
+        viewReplyButton.setImage(EkoIconSet.iconReplyInverse, for: .normal)
+        viewReplyButton.backgroundColor = EkoColorSet.secondary.blend(.shade4)
+        viewReplyButton.clipsToBounds = true
+        viewReplyButton.layer.cornerRadius = 4
+        viewReplyButton.setInsets(forContentPadding: UIEdgeInsets(top: 6, left: 12, bottom: 6, right: 16), imageTitlePadding: 8)
+        viewReplyButton.addTarget(self, action: #selector(viewReplyButtonTap), for: .touchUpInside)
     }
     
     func configure(with comment: EkoCommentModel, layout: EkoCommentViewLayout) {
@@ -91,28 +107,37 @@ class EkoCommentView: EkoView {
         avatarView.setImage(withImageId: comment.fileId, placeholder: EkoIconSet.defaultAvatar)
         titleLabel.text = comment.displayName
         contentLabel.text = comment.text
-        replyButton.isHidden = true // not support yet
         likeButton.isSelected = comment.isLiked
-        likeButton.setTitle(comment.reactionsCount.formatUsingAbbrevation(), for: .selected)
+        separatorLineView.isHidden = true
         
-        if case .comment(let settings) = layout {
+        if comment.reactionsCount > 0 {
+            likeButton.setTitle(comment.reactionsCount.formatUsingAbbrevation(), for: .normal)
+        } else {
+            likeButton.setTitle(EkoLocalizedStringSet.like.localizedString, for: .normal)
+        }
+        
+        switch layout {
+        case .comment(let contentExpanded, let shouldActionShow,  _):
+            contentLabel.isExpanded = contentExpanded
+            actionStackView.isHidden = !shouldActionShow
+            viewReplyButton.isHidden = true
+            replyButton.isHidden = false
             topAvatarImageViewConstraint.constant = 16
-            lineView.isHidden = !settings.shouldLineShow
-            separatorLineView.isHidden = true
-            contentLabel.isExpanded = settings.contentExpanded
-            actionStackView.isHidden = !settings.shouldActionShow
-        } else if case .commentPreview(let shouldActionShow) = layout {
-            topAvatarImageViewConstraint.constant = 16
-            lineView.isHidden = true
-            separatorLineView.isHidden = false
+            leadingAvatarImageViewConstraint.constant = 16
+        case .commentPreview(let shouldActionShow):
             contentLabel.isExpanded = false
             actionStackView.isHidden = !shouldActionShow
-        } else if case .reply(let settings) = layout {
+            viewReplyButton.isHidden = !comment.isChildrenExisted
+            replyButton.isHidden = false
+            topAvatarImageViewConstraint.constant = 16
+            leadingAvatarImageViewConstraint.constant = 16
+        case .reply(let contentExpanded, let shouldActionShow, _):
+            contentLabel.isExpanded = contentExpanded
+            actionStackView.isHidden = !shouldActionShow
+            viewReplyButton.isHidden = true
+            replyButton.isHidden = true
             topAvatarImageViewConstraint.constant = 0
-            lineView.isHidden = !settings.shouldLineShow
-            separatorLineView.isHidden = true
-            contentLabel.isExpanded = settings.contentExpanded
-            actionStackView.isHidden = !settings.shouldActionShow
+            leadingAvatarImageViewConstraint.constant = 52
         }
     }
 
@@ -126,6 +151,10 @@ class EkoCommentView: EkoView {
 
     @objc private func optionButtonTap() {
         delegate?.commentView(self, didTapAction: .option)
+    }
+    
+    @objc private func viewReplyButtonTap() {
+        delegate?.commentView(self, didTapAction: .viewReply)
     }
     
 }

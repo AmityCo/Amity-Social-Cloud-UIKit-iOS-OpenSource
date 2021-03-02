@@ -191,7 +191,7 @@ final public class EkoEditUserProfileViewController: EkoViewController {
     private func updateViewState() {
         saveBarButtonItem?.isEnabled = isValueChanged
         displayNameCounterLabel?.text = "\(displayNameTextField.text?.count ?? 0)/\(displayNameTextField.maxLength)"
-        aboutCounterLabel?.text = "\(aboutTextView.text.count)/\(aboutTextView.maxCharacters)"
+        aboutCounterLabel?.text = "\(aboutTextView.text.utf16.count)/\(aboutTextView.maxCharacters)"
     }
 
 }

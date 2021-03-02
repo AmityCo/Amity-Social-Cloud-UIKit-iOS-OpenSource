@@ -58,6 +58,9 @@ public class EkoPostFeedTableViewCell: UITableViewCell, Nibbable {
     @IBOutlet private weak var fileView: EkoFileTableView!
     @IBOutlet private weak var firstCommentView: EkoCommentView!
     @IBOutlet private weak var secondCommentView: EkoCommentView!
+    @IBOutlet private weak var commentSeparatorView: UIView!
+    @IBOutlet private weak var viewAllSeparatorView: UIView!
+    @IBOutlet private weak var viewAllCommentButton: UIButton!
     @IBOutlet private weak var topContentViewTopConstraint: NSLayoutConstraint!
     @IBOutlet private weak var avatarViewTopConstraint: NSLayoutConstraint!
     @IBOutlet private weak var galleryViewHeightConstraint: NSLayoutConstraint!
@@ -84,6 +87,8 @@ public class EkoPostFeedTableViewCell: UITableViewCell, Nibbable {
         badgeTitleLabel.text = "\(EkoLocalizedStringSet.moderator.localizedString) •"
         badgeTitleLabel.textColor = EkoColorSet.base.blend(.shade1)
         badgeTitleLabel.font = .systemFont(ofSize: 13, weight: .semibold)
+        likeButton.setImage(EkoIconSet.iconLike, for: .normal)
+        likeButton.setImage(EkoIconSet.iconLikeFill, for: .selected)
         likeButton.setTitle(EkoLocalizedStringSet.liked.localizedString, for: .selected)
         likeButton.setTitle(EkoLocalizedStringSet.like.localizedString, for: .normal)
         likeButton.setTintColor(EkoColorSet.primary, for: .selected)
@@ -100,6 +105,12 @@ public class EkoPostFeedTableViewCell: UITableViewCell, Nibbable {
         warningLabel.textColor = EkoColorSet.base.blend(.shade2)
         firstCommentView.backgroundColor = EkoColorSet.backgroundColor
         secondCommentView.backgroundColor = EkoColorSet.backgroundColor
+        commentSeparatorView.backgroundColor = EkoColorSet.secondary.blend(.shade4)
+        viewAllSeparatorView.backgroundColor = EkoColorSet.secondary.blend(.shade4)
+        viewAllCommentButton.setTitle(EkoLocalizedStringSet.viewAllCommentsTitle.localizedString, for: .normal)
+        viewAllCommentButton.titleLabel?.font = EkoFontSet.bodyBold
+        viewAllCommentButton.tintColor = EkoColorSet.base
+        viewAllCommentButton.backgroundColor = EkoColorSet.backgroundColor
         
         likeButton.setInsets(forContentPadding: .zero, imageTitlePadding: 4)
         commentButton.setInsets(forContentPadding: .zero, imageTitlePadding: 4)
@@ -162,7 +173,7 @@ public class EkoPostFeedTableViewCell: UITableViewCell, Nibbable {
     }
     
     private func setupCommentPreview(comments: [EkoCommentModel]) {
-        let latestComents = Array(comments.suffix(2))
+        let latestComents = Array(comments.reversed()) // sorted by latest comment on top
         let shouldActionShow = post?.isCommentable ?? false
         if latestComents.count > 0 {
             let comment = latestComents[0]
@@ -179,8 +190,17 @@ public class EkoPostFeedTableViewCell: UITableViewCell, Nibbable {
             secondCommentView.delegate = self
             secondCommentView.contentLabel.delegate = self
             secondCommentView.isHidden = false
+            commentSeparatorView.isHidden = false
         } else {
             secondCommentView.isHidden = true
+            commentSeparatorView.isHidden = true
+        }
+        if latestComents.count > 2 {
+            viewAllSeparatorView.isHidden = false
+            viewAllCommentButton.isHidden = false
+        } else {
+            viewAllSeparatorView.isHidden = true
+            viewAllCommentButton.isHidden = true
         }
     }
     
@@ -202,6 +222,10 @@ public class EkoPostFeedTableViewCell: UITableViewCell, Nibbable {
     }
     
     @IBAction func tapBottomPanel(_ sender: Any) {
+        actionDelegate?.cellDidTapComment(self, referenceType: .post)
+    }
+    
+    @IBAction func tapViewAllComment(_ sender: Any) {
         actionDelegate?.cellDidTapComment(self, referenceType: .post)
     }
     
@@ -318,8 +342,8 @@ extension EkoPostFeedTableViewCell: EkoCommentViewDelegate {
             actionDelegate?.cellDidTapLike(self, referenceType: .comment(commentId: comment.id))
         case .option:
             actionDelegate?.cellDidTapOption(self, referenceType: .comment(commentId: comment.id))
-        case .reply:
-            break
+        case .reply, .viewReply:
+            actionDelegate?.cellDidTapViewAll(self)
         }
     }
     

@@ -144,9 +144,6 @@ extension EkoMessageListScreenViewModel {
     func getChannel(){
         channelNotificationToken?.invalidate()
         channelNotificationToken = channelRepository.getChannel(channelId).observe { [weak self] (channel, error) in
-            if let error = error {
-                return
-            }
             guard let model = channel.object else { return }
             self?.delegate?.screenViewModelDidGetChannel(channel: model)
         }

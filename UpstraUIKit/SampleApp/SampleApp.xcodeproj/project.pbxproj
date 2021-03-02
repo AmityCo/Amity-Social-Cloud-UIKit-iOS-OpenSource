@@ -7,6 +7,17 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0D73AC9325DB8CB5000D73CA /* EkoPostThumbsupTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D73AC8B25DB8CB5000D73CA /* EkoPostThumbsupTableViewCell.swift */; };
+		0D73AC9425DB8CB5000D73CA /* EkoPostThumbsupTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0D73AC8C25DB8CB5000D73CA /* EkoPostThumbsupTableViewCell.xib */; };
+		0D73AC9525DB8CB5000D73CA /* EkoPostBirthdayTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D73AC8E25DB8CB5000D73CA /* EkoPostBirthdayTableViewCell.swift */; };
+		0D73AC9625DB8CB5000D73CA /* EkoPostBirthdayTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0D73AC8F25DB8CB5000D73CA /* EkoPostBirthdayTableViewCell.xib */; };
+		0D73AC9725DB8CB5000D73CA /* EkoPostNewJoinerTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0D73AC9125DB8CB5000D73CA /* EkoPostNewJoinerTableViewCell.xib */; };
+		0D73AC9825DB8CB5000D73CA /* EkoPostNewJoinerTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D73AC9225DB8CB5000D73CA /* EkoPostNewJoinerTableViewCell.swift */; };
+		0D73AC9E25DB9332000D73CA /* BirthdayPostComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D73AC9D25DB9332000D73CA /* BirthdayPostComponent.swift */; };
+		0D73ACA425DB93A2000D73CA /* ThumbsupPostComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D73ACA325DB93A2000D73CA /* ThumbsupPostComponent.swift */; };
+		0D73ACA825DB9423000D73CA /* NewJoinerPostComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D73ACA725DB9423000D73CA /* NewJoinerPostComponent.swift */; };
+		0D8FFC2925DCBFD900943538 /* EkoCustomFooterTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D8FFC2725DCBFD900943538 /* EkoCustomFooterTableViewCell.swift */; };
+		0D8FFC2A25DCBFD900943538 /* EkoCustomFooterTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0D8FFC2825DCBFD900943538 /* EkoCustomFooterTableViewCell.xib */; };
 		A052EAEE2577A6B700FF9312 /* Realm.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = A052EAEB2577A6B700FF9312 /* Realm.xcframework */; };
 		A052EAEF2577A6B700FF9312 /* Realm.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = A052EAEB2577A6B700FF9312 /* Realm.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		A052EAF02577A6B700FF9312 /* EkoChat.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = A052EAEC2577A6B700FF9312 /* EkoChat.xcframework */; };
@@ -67,6 +78,17 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		0D73AC8B25DB8CB5000D73CA /* EkoPostThumbsupTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EkoPostThumbsupTableViewCell.swift; sourceTree = "<group>"; };
+		0D73AC8C25DB8CB5000D73CA /* EkoPostThumbsupTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = EkoPostThumbsupTableViewCell.xib; sourceTree = "<group>"; };
+		0D73AC8E25DB8CB5000D73CA /* EkoPostBirthdayTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EkoPostBirthdayTableViewCell.swift; sourceTree = "<group>"; };
+		0D73AC8F25DB8CB5000D73CA /* EkoPostBirthdayTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = EkoPostBirthdayTableViewCell.xib; sourceTree = "<group>"; };
+		0D73AC9125DB8CB5000D73CA /* EkoPostNewJoinerTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = EkoPostNewJoinerTableViewCell.xib; sourceTree = "<group>"; };
+		0D73AC9225DB8CB5000D73CA /* EkoPostNewJoinerTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EkoPostNewJoinerTableViewCell.swift; sourceTree = "<group>"; };
+		0D73AC9D25DB9332000D73CA /* BirthdayPostComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BirthdayPostComponent.swift; sourceTree = "<group>"; };
+		0D73ACA325DB93A2000D73CA /* ThumbsupPostComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThumbsupPostComponent.swift; sourceTree = "<group>"; };
+		0D73ACA725DB9423000D73CA /* NewJoinerPostComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewJoinerPostComponent.swift; sourceTree = "<group>"; };
+		0D8FFC2725DCBFD900943538 /* EkoCustomFooterTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EkoCustomFooterTableViewCell.swift; sourceTree = "<group>"; };
+		0D8FFC2825DCBFD900943538 /* EkoCustomFooterTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = EkoCustomFooterTableViewCell.xib; sourceTree = "<group>"; };
 		A052EAEB2577A6B700FF9312 /* Realm.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = Realm.xcframework; path = ../Distribution/Realm.xcframework; sourceTree = "<group>"; };
 		A052EAEC2577A6B700FF9312 /* EkoChat.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = EkoChat.xcframework; path = ../Distribution/EkoChat.xcframework; sourceTree = "<group>"; };
 		A052EAED2577A6B700FF9312 /* UpstraUIKit.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = UpstraUIKit.xcframework; path = ../Distribution/UpstraUIKit.xcframework; sourceTree = "<group>"; };
@@ -125,6 +147,72 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		0D73AC8925DB8C61000D73CA /* Custom Post */ = {
+			isa = PBXGroup;
+			children = (
+				0D73AC9C25DB931F000D73CA /* Components */,
+				0D73AC9B25DB9316000D73CA /* Cells */,
+			);
+			path = "Custom Post";
+			sourceTree = "<group>";
+		};
+		0D73AC8A25DB8CB5000D73CA /* Thumbsup */ = {
+			isa = PBXGroup;
+			children = (
+				0D73AC8B25DB8CB5000D73CA /* EkoPostThumbsupTableViewCell.swift */,
+				0D73AC8C25DB8CB5000D73CA /* EkoPostThumbsupTableViewCell.xib */,
+			);
+			path = Thumbsup;
+			sourceTree = "<group>";
+		};
+		0D73AC8D25DB8CB5000D73CA /* Birthday */ = {
+			isa = PBXGroup;
+			children = (
+				0D73AC8E25DB8CB5000D73CA /* EkoPostBirthdayTableViewCell.swift */,
+				0D73AC8F25DB8CB5000D73CA /* EkoPostBirthdayTableViewCell.xib */,
+			);
+			path = Birthday;
+			sourceTree = "<group>";
+		};
+		0D73AC9025DB8CB5000D73CA /* New Joiner */ = {
+			isa = PBXGroup;
+			children = (
+				0D73AC9225DB8CB5000D73CA /* EkoPostNewJoinerTableViewCell.swift */,
+				0D73AC9125DB8CB5000D73CA /* EkoPostNewJoinerTableViewCell.xib */,
+			);
+			path = "New Joiner";
+			sourceTree = "<group>";
+		};
+		0D73AC9B25DB9316000D73CA /* Cells */ = {
+			isa = PBXGroup;
+			children = (
+				0D8FFC2F25DCC00800943538 /* Footer */,
+				0D73AC8D25DB8CB5000D73CA /* Birthday */,
+				0D73AC9025DB8CB5000D73CA /* New Joiner */,
+				0D73AC8A25DB8CB5000D73CA /* Thumbsup */,
+			);
+			path = Cells;
+			sourceTree = "<group>";
+		};
+		0D73AC9C25DB931F000D73CA /* Components */ = {
+			isa = PBXGroup;
+			children = (
+				0D73AC9D25DB9332000D73CA /* BirthdayPostComponent.swift */,
+				0D73ACA325DB93A2000D73CA /* ThumbsupPostComponent.swift */,
+				0D73ACA725DB9423000D73CA /* NewJoinerPostComponent.swift */,
+			);
+			path = Components;
+			sourceTree = "<group>";
+		};
+		0D8FFC2F25DCC00800943538 /* Footer */ = {
+			isa = PBXGroup;
+			children = (
+				0D8FFC2725DCBFD900943538 /* EkoCustomFooterTableViewCell.swift */,
+				0D8FFC2825DCBFD900943538 /* EkoCustomFooterTableViewCell.xib */,
+			);
+			path = Footer;
+			sourceTree = "<group>";
+		};
 		B72CDA38256B9BC100F7CAC3 /* Custom Cell */ = {
 			isa = PBXGroup;
 			children = (
@@ -202,6 +290,7 @@
 		B78DA4AD24BED88000EE902B /* Feature */ = {
 			isa = PBXGroup;
 			children = (
+				0D73AC8925DB8C61000D73CA /* Custom Post */,
 				B72CDA38256B9BC100F7CAC3 /* Custom Cell */,
 				B78DA47E24BED7D300EE902B /* Main.storyboard */,
 				B72861D824C573B100ECC563 /* TabbarViewController.swift */,
@@ -337,9 +426,13 @@
 			buildActionMask = 2147483647;
 			files = (
 				B78DA48524BED7DA00EE902B /* LaunchScreen.storyboard in Resources */,
+				0D73AC9425DB8CB5000D73CA /* EkoPostThumbsupTableViewCell.xib in Resources */,
+				0D8FFC2A25DCBFD900943538 /* EkoCustomFooterTableViewCell.xib in Resources */,
 				B78DA48224BED7DA00EE902B /* Assets.xcassets in Resources */,
 				B78DA48024BED7D300EE902B /* Main.storyboard in Resources */,
+				0D73AC9625DB8CB5000D73CA /* EkoPostBirthdayTableViewCell.xib in Resources */,
 				B72CDA3C256B9BEB00F7CAC3 /* CustomMessageTextIncomingTableViewCell.xib in Resources */,
+				0D73AC9725DB8CB5000D73CA /* EkoPostNewJoinerTableViewCell.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -366,15 +459,22 @@
 			files = (
 				B78DA4AF24BED89000EE902B /* FeatureViewController.swift in Sources */,
 				B78DA47924BED7D300EE902B /* AppDelegate.swift in Sources */,
+				0D73AC9525DB8CB5000D73CA /* EkoPostBirthdayTableViewCell.swift in Sources */,
+				0D73AC9325DB8CB5000D73CA /* EkoPostThumbsupTableViewCell.swift in Sources */,
+				0D73AC9825DB8CB5000D73CA /* EkoPostNewJoinerTableViewCell.swift in Sources */,
 				B72861D924C573B100ECC563 /* TabbarViewController.swift in Sources */,
+				0D73AC9E25DB9332000D73CA /* BirthdayPostComponent.swift in Sources */,
 				B74ADE5E24F3B026009C86DA /* UserDefaults.swift in Sources */,
 				B754DBEE24C6F6BB005A8282 /* RegisterViewController.swift in Sources */,
 				B78DA47B24BED7D300EE902B /* SceneDelegate.swift in Sources */,
+				0D8FFC2925DCBFD900943538 /* EkoCustomFooterTableViewCell.swift in Sources */,
 				B78FC54024CAAA2F0083CBB4 /* UserDefault.swift in Sources */,
+				0D73ACA825DB9423000D73CA /* NewJoinerPostComponent.swift in Sources */,
 				B72CDA3B256B9BEB00F7CAC3 /* CustomMessageTextIncomingTableViewCell.swift in Sources */,
 				B78DA4B124BEDBC500EE902B /* CommunityFeatureViewController.swift in Sources */,
 				B78FC54124CAAA2F0083CBB4 /* Theme.swift in Sources */,
 				B754DBEC24C6F6B5005A8282 /* SettingViewController.swift in Sources */,
+				0D73ACA425DB93A2000D73CA /* ThumbsupPostComponent.swift in Sources */,
 				B78DA4B324BEDBD100EE902B /* ChatFeatureViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -560,7 +660,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.9.2;
+				MARKETING_VERSION = 1.10.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.ekoapp.sample;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_INCLUDE_PATHS = "";
@@ -585,7 +685,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.9.2;
+				MARKETING_VERSION = 1.10.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.ekoapp.sample;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = RELEASE;

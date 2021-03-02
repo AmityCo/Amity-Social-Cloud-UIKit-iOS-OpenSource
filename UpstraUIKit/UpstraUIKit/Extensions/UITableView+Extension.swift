@@ -58,6 +58,11 @@ extension UITableView {
         return dequeueReusableCell(withIdentifier: T.identifier, for: indexPath) as! T
     }
     
+    /// help to map cell for register with Nib&Identifier
+    func register<T: UITableViewCell&Nibbable>(cell: T.Type) {
+        register(cell.nib, forCellReuseIdentifier: cell.identifier)
+    }
+    
     func showLoadingIndicator() {
         let loading = UIActivityIndicatorView(style: .gray)
         loading.frame = CGRect(x: 0, y: 0, width: bounds.width, height: 40)

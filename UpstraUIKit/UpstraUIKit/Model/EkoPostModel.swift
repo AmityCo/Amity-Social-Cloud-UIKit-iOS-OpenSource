@@ -10,11 +10,26 @@ import EkoChat
 import UIKit
 
 public class EkoPostModel {
+    enum PostDisplayType {
+        case feed
+        case postDetail
+        
+        var settings: (shouldShowOption: Bool, shouldExpandContent: Bool) {
+            switch self {
+            case .feed:
+                return (shouldShowOption: true, shouldExpandContent: false)
+            case .postDetail:
+                return (shouldShowOption: false, shouldExpandContent: true)
+            }
+        }
+        
+    }
     
     enum DataType: String {
         case text = "text"
         case image = "image"
         case file = "file"
+        case unknown
     }
     
     private(set) var post: EkoPost
@@ -25,7 +40,7 @@ public class EkoPostModel {
     var latestComments: [EkoCommentModel] = []
     var isModerator: Bool = false
     let postAsModerator: Bool = false
-    
+    var shouldContentExpand: Bool = false
     // Maps fileId to PostId for child post
     private var fileMap = [String: String]()
     
@@ -35,12 +50,24 @@ public class EkoPostModel {
         self.latestComments = post.latestComments.map(EkoCommentModel.init)
     }
     
+    var maximumLastestComments: Int {
+        return latestComments.suffix(2).count
+    }
+    
+    // Comment will show below last component
+    func getComment(at indexPath: IndexPath, totalComponent index: Int) -> EkoCommentModel? {
+        let comments = Array(latestComments.suffix(maximumLastestComments))
+        return comments.count > 0 ? comments[indexPath.row - index] : nil
+    }
+    
     // Each post has a property called childrenPosts. This contains an array of EkoPost object.
     // If a post contains files or images, those are present as children posts. So we need
     // to go through that array to determine the post type.
     func extractPostInfo() {
+        
+        dataTypeInternal = DataType(rawValue: post.dataType) ?? .unknown
         // Get Text
-        self.text = post.data?["text"] as? String
+        text = post.data?[DataType.text.rawValue] as? String
         
         // Get images/files for post if any
         if let children = post.childrenPosts, children.count > 0 {
@@ -54,23 +81,46 @@ public class EkoPostModel {
                     
                     images.append(tempImage)
                     fileMap[fileId] = eachChild.postId
+                    dataTypeInternal = .image
                 case "file":
                     if let fileData = eachChild.getFileInfo() {
                         let tempFile = EkoFile(state: .downloadable(fileData: fileData))
                         files.append(tempFile)
                         fileMap[fileData.fileId] = eachChild.postId
+                        dataTypeInternal = .file
                     }
-                    
                 default:
-                    break
+                    dataTypeInternal = .unknown
                 }
             }
         }
     }
-    var dataType: DataType {
-        let type = DataType(rawValue: post.dataType)
-        return type ?? .text
+    
+    // MARK: - Public parameters for client
+    /**
+     * The data type of the post
+     */
+    public var dataType: String {
+        return post.dataType
     }
+    
+    /**
+     * The custom data of the post
+     */
+    public var data: [String: Any]? {
+        return post.data
+    }
+    
+    /**
+     * The post user data of the post
+     */
+    public var postUser: EkoUser? {
+        return post.postedUser
+    }
+    
+    var displayType: PostDisplayType = .feed
+    
+    var dataTypeInternal: DataType = .unknown
     
     var id: String {
         return post.postId
@@ -86,7 +136,7 @@ public class EkoPostModel {
     
     var subtitle: String {
         if post.isEdited {
-            return "\(post.createdAt.relativeTime) • Edited"
+            return String.localizedStringWithFormat(EkoLocalizedStringSet.PostDetail.postDetailCommentEdit.localizedString, post.createdAt.relativeTime)
         }
         
         return post.createdAt.relativeTime
@@ -132,6 +182,10 @@ public class EkoPostModel {
     
     var allCommentCount: Int {
         return Int(post.commentsCount)
+    }
+    
+    var sharedCount: Int {
+        return Int(post.sharedCount)
     }
     
     var author: EkoUser? {

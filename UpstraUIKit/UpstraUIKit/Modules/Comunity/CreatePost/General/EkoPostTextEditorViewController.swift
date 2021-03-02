@@ -357,31 +357,37 @@ public class EkoPostTextEditorViewController: EkoViewController {
         var isUploadFailed = false
         for index in 0..<fileView.files.count {
             let file = fileView.files[index]
-            // if file is uploading, skip checking task
-            guard case .idle = fileView.viewState(for: file.id),
-                case .local = fileView.fileState(for: file.id) else { continue }
             
-            guard let fileUrl = file.fileURL, let fileData = try? Data(contentsOf: fileUrl) else { continue }
-            
-            let fileToUpload = UploadableFile(fileData: fileData, fileName: file.fileName)
-            fileUploadFailedDispatchGroup.enter()
-            EkoFileService.shared.uploadFile(file: fileToUpload, progressHandler: { [weak self] progress in
-                self?.fileView.updateViewState(for: file.id, state: .uploading(progress: progress))
-                Log.add("[UIKit]: File upload progress: \(progress)")
-            }) { [weak self] result in
-                switch result {
-                case .success(let fileData):
-                    Log.add("[UIKit]: File upload success")
-                    file.state = .uploaded(data: fileData)
-                    self?.fileView.updateViewState(for: file.id, state: .uploaded)
-                case .failure(let error):
-                    Log.add("[UIKit]: File upload failed")
-                    file.state = .error(errorMessage: error.localizedDescription)
-                    self?.fileView.updateViewState(for: file.id, state: .error)
-                    isUploadFailed = true
+            switch fileView.viewState(for: file.id) {
+            case .idle:
+                if case .local = fileView.fileState(for: file.id), let fileUrl = file.fileURL, let fileData = try? Data(contentsOf: fileUrl) {
+                    let fileToUpload = UploadableFile(fileData: fileData, fileName: file.fileName)
+                    fileUploadFailedDispatchGroup.enter()
+                    EkoFileService.shared.uploadFile(file: fileToUpload, progressHandler: { [weak self] progress in
+                        self?.fileView.updateViewState(for: file.id, state: .uploading(progress: progress))
+                        Log.add("[UIKit]: File upload progress: \(progress)")
+                    }) { [weak self] result in
+                        switch result {
+                        case .success(let fileData):
+                            Log.add("[UIKit]: File upload success")
+                            file.state = .uploaded(data: fileData)
+                            self?.fileView.updateViewState(for: file.id, state: .uploaded)
+                        case .failure(let error):
+                            Log.add("[UIKit]: File upload failed")
+                            file.state = .error(errorMessage: error.localizedDescription)
+                            self?.fileView.updateViewState(for: file.id, state: .error)
+                            isUploadFailed = true
+                        }
+                        fileUploadFailedDispatchGroup.leave()
+                        self?.updateViewState()
+                    }
+                } else {
+                    fileView.updateViewState(for: file.id, state: .error)
                 }
-                fileUploadFailedDispatchGroup.leave()
-                self?.updateViewState()
+            case .error:
+                fileView.updateViewState(for: file.id, state: .error)
+            case .downloadable, .uploaded, .uploading(_):
+                break
             }
         }
         

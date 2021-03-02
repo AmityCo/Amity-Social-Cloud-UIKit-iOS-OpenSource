@@ -71,7 +71,7 @@ final class EkoRecentChatTableViewCell: UITableViewCell, Nibbable {
         case .conversation:
             avatarView.placeholder = EkoIconSet.defaultAvatar//channel.avatar == nil ? EkoIconSet.default_chat_direct : UIImage()
             memberLabel.text = nil
-            titleLabel.text = channel.displayName ?? EkoLocalizedStringSet.anonymous.localizedString
+            titleLabel.text = channel.displayName
         case .private:
             break
         case .broadcast:

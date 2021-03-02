@@ -19,25 +19,14 @@
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="wOR-bC-8xT" customClass="EkoCommentView" customModule="UpstraUIKit" customModuleProvider="target">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="103"/>
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="104"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
-                    </view>
-                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="XBL-Ca-VcM" userLabel="Separator View">
-                        <rect key="frame" x="0.0" y="103" width="320" height="1"/>
-                        <color key="backgroundColor" red="0.89019607840000003" green="0.89411764709999997" blue="0.90980392160000001" alpha="1" colorSpace="calibratedRGB"/>
-                        <constraints>
-                            <constraint firstAttribute="height" constant="1" id="Fd6-fg-Vui"/>
-                            <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="1" id="YI7-yg-C4b"/>
-                        </constraints>
                     </view>
                 </subviews>
                 <constraints>
-                    <constraint firstItem="XBL-Ca-VcM" firstAttribute="top" secondItem="wOR-bC-8xT" secondAttribute="bottom" id="DcE-3W-chm"/>
-                    <constraint firstAttribute="bottom" secondItem="XBL-Ca-VcM" secondAttribute="bottom" id="QLW-Re-xwH"/>
+                    <constraint firstAttribute="bottom" secondItem="wOR-bC-8xT" secondAttribute="bottom" id="AXY-KA-fDz"/>
                     <constraint firstItem="wOR-bC-8xT" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" id="UJd-Kq-3qE"/>
                     <constraint firstItem="wOR-bC-8xT" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" id="ctL-3W-WcU"/>
-                    <constraint firstItem="XBL-Ca-VcM" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" id="fRv-cz-ebd"/>
-                    <constraint firstAttribute="trailing" secondItem="XBL-Ca-VcM" secondAttribute="trailing" id="n3e-dw-VKq"/>
                     <constraint firstAttribute="trailing" secondItem="wOR-bC-8xT" secondAttribute="trailing" id="oL0-qM-OaY"/>
                 </constraints>
             </tableViewCellContentView>

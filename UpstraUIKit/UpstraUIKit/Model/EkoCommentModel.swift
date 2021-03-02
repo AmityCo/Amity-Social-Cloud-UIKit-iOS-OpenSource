@@ -18,6 +18,7 @@ struct EkoCommentModel {
     var createdAt: Date
     var updatedAt: Date
     let childrenNumber: Int
+    let childrenComment: [EkoCommentModel]
     let parentId: String?
     let userId: String
     private let myReactions: [String]
@@ -39,11 +40,16 @@ struct EkoCommentModel {
         parentId = comment.parentId
         userId = comment.userId
         myReactions = comment.myReactions as? [String] ?? []
+        childrenComment = comment.childrenComments.map { EkoCommentModel(comment: $0) }
         self.comment = comment
     }
     
+    var isChildrenExisted: Bool {
+        return comment.childrenNumber > 0
+    }
+    
     var reactionsCount: Int {
-        return Int(comment.reactionsCount ?? 0)
+        return Int(comment.reactionsCount)
     }
     
     var isLiked: Bool {
@@ -52,6 +58,10 @@ struct EkoCommentModel {
     
     var isOwner: Bool {
         return userId == UpstraUIKitManagerInternal.shared.client.currentUserId
+    }
+    
+    var isParent: Bool {
+        return parentId == nil
     }
     
 }

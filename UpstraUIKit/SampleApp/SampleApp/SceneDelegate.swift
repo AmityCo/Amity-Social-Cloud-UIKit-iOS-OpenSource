@@ -80,7 +80,7 @@ extension SceneDelegate {
         guard let _ = (scene as? UIWindowScene), let windowScene = scene as? UIWindowScene else { return }
         UpstraUIKitManager.registerDevice(withUserId: "victimIOS", displayName: "victimIOS".uppercased())
         let window = UIWindow(windowScene: windowScene)
-        let postDetailViewController = EkoPostDetailViewController.make(postId: "c1bb8697c88a01f6423765984a3e47ac")
+        let postDetailViewController = EkoPostDetailViewController.make(withPostId: "c1bb8697c88a01f6423765984a3e47ac")
             
         window.rootViewController = postDetailViewController
         self.window = window

@@ -10,6 +10,7 @@
 "likes" = "%@ likes";
 "comments" = "%@ comments";
 "members" = "%@ members";
+"shares" = "%@ shares";
 
 "follow" = "Follow";
 "chat_title" = "Chat";
@@ -23,6 +24,8 @@
 "moderator" = "Moderator";
 
 "edit_message_title" = "Edit message";
+"view_all_comments_title" = "View all comments...";
+"view_all_files_title" = "View all files";
 "close" = "Close";
 "save" = "Save";
 "cancel" = "Cancel";
@@ -37,6 +40,7 @@
 "like" = "Like";
 "liked" = "Liked";
 "reply" = "Reply";
+"view_reply" = "View replies";
 "general" = "General";
 "anonymous" = "Anonymous";
 "remove" = "Remove";
@@ -132,8 +136,21 @@
 "post_creation_file_upload_icomplete_description" = "Some files could not be uploaded.\nPlease remove and try again";
 
 // MARK: - Post detail
+"post_detail_replying_to" = "Replying to %@";
+"post_detail_create_reply" = "Reply to";
+"post_detail_edit_reply" = "Edit reply";
+"post_detail_delete_reply" = "Delete reply";
+"post_detail_report_reply" = "Report reply";
+"post_detail_unreport_reply" = "Unreport reply";
+"post_detail_delete_reply_title" = "Delete reply";
+"post_detail_delete_reply_message" = "This reply will be permanently removed.";
+"post_detail_discard_reply_title" = "Discard Reply?";
+"post_detail_discard_reply_message" = "Do you want to discard your reply?";
+"post_detail_discard_edited_reply_message" = "Do you want to discard edited reply?";
+"post_detail_view_more_reply" = "View more replies";
+"post_detail_deleted_reply_message" = "This reply has been deleted.";
 "post_detail_text_placeholder" = "Say something nice";
-"post_detail_deleted_item" = "This comment has been deleted.";
+"post_detail_deleted_comment_message" = "This comment has been deleted.";
 "post_detail_view_all_replies" = "View all replies";
 "post_detail_join_community_message" = "Join community to interact with all posts";
 "post_detail_edit_post" = "Edit post";
@@ -149,6 +166,7 @@
 "post_detail_delete_comment_message" = "This comment will be permanently deleted. You’ll no longer to see and find this comment";
 "post_detail_discard_comment_title" = "Discard Comment?";
 "post_detail_discard_comment_message" = "Do you want to discard your comment?";
+"post_detail_discard_edited_comment_message" = "Do you want to discard edited comment?";
 "post_detail_delete_post_title" = "Delete this post";
 "post_detail_delete_post_message" = "This post will be permanently deleted. You’ll no longer to see and find this post";
 "post_detail_banned_comment_error_message" = "Sorry, your comment has been deleted due to containing inappropriate words.\nPlease contact the administrator for more information.";
@@ -217,3 +235,7 @@
 "share_to_my_timeline" = "Share to My Timeline";
 "share_to_group" = "Share to Group";
 "more_options" = "More options";
+
+// MARK: - Post
+"post_place_holder_title" = "Something went wrong";
+"post_place_holder_desc" = "We couldn’t recognize this post.";

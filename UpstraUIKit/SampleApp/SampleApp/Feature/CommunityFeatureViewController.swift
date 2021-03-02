@@ -17,7 +17,7 @@ class CommunityFeatureViewController: UIViewController {
         case newsfeed
         case globalFeed
         case myFeed
-        
+    
         var text: String {
             switch self {
             case .home:
@@ -33,14 +33,55 @@ class CommunityFeatureViewController: UIViewController {
     }
     
     @IBOutlet private var tableView: UITableView!
-    
+    var birthday: BirthdayPostComponent?
     override func viewDidLoad() {
         super.viewDidLoad()
+
+        EkoFeedUISettings.shared.register(UINib(nibName: "EkoPostBirthdayTableViewCell", bundle: nil), forCellReuseIdentifier: "EkoPostBirthdayTableViewCell")
+        EkoFeedUISettings.shared.register(UINib(nibName: "EkoPostThumbsupTableViewCell", bundle: nil), forCellReuseIdentifier: "EkoPostThumbsupTableViewCell")
+        EkoFeedUISettings.shared.register(UINib(nibName: "EkoPostNewJoinerTableViewCell", bundle: nil), forCellReuseIdentifier: "EkoPostNewJoinerTableViewCell")
+        EkoFeedUISettings.shared.register(UINib(nibName: "EkoCustomFooterTableViewCell", bundle: nil), forCellReuseIdentifier: "EkoCustomFooterTableViewCell")
+        EkoFeedUISettings.shared.delegate = self
+        EkoFeedUISettings.shared.dataSource = self
+        
         title = "Community"
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: "CellID")
         tableView.delegate = self
         tableView.dataSource = self
         tableView.tableFooterView = UIView()
+    }
+}
+
+extension CommunityFeatureViewController: EkoFeedDelegate {
+    func didPerformActionLikePost() {
+    }
+    
+    func didPerformActionUnLikePost() {
+    }
+    
+    func didPerformActionLikeComment() {
+        
+    }
+    
+    func didPerformActionUnLikeComment() {
+        
+    }
+}
+
+extension CommunityFeatureViewController: EkoFeedDataSource {
+    func getUIComponentForPost(post: EkoPostModel, at index: Int) -> EkoPostComposable? {
+        switch post.dataType {
+        case "eko.birthday":
+            birthday = BirthdayPostComponent(post: post)
+            return birthday
+        case "eko.recommendation":
+            return ThumbsupPostComponent(post: post)
+        case "eko.newEmployee":
+            return NewJoinerPostComponent(post: post)
+        default:
+            return nil
+        }
+        
     }
 }
 

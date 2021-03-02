@@ -1,0 +1,12 @@
+{
+  "images" : [
+    {
+      "filename" : "bg_post_thumbsup_overlay.pdf",
+      "idiom" : "universal"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  }
+}

@@ -55,6 +55,8 @@ extension EkoCommentTableViewCell: EkoCommentViewDelegate {
             actionDelegate?.commentCellDidTapOption(self)
         case .reply:
             actionDelegate?.commentCellDidTapReply(self)
+        case .viewReply:
+            actionDelegate?.commentCellDidTapReply(self)
         }
     }
     

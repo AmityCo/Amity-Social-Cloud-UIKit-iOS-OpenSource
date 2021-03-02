@@ -27,7 +27,7 @@ public final class EkoMessageListViewController: EkoViewController {
     private var screenViewModel: EkoMessageListScreenViewModelType
     
     // MARK: - Container View
-    private var navigationHeaderViewController: EkoMessageListHeaderViewController!
+    private var navigationHeaderViewController: EkoMessageListHeaderView!
     private var messageViewController: EkoMessageListTableViewController!
     private var composeBarViewController: EkoMessageListComposeBarViewController!
 
@@ -46,11 +46,10 @@ public final class EkoMessageListViewController: EkoViewController {
         fatalError("init(coder:) has not been implemented")
     }
     
-    
     public override func viewDidLoad() {
         super.viewDidLoad()
         setupView()
-        bindingViewModel()
+        buildViewModel()
         shouldCellOverride()
     }
     
@@ -126,11 +125,11 @@ private extension EkoMessageListViewController {
     
     func setupCustomNavigationBar() {
         navigationBarType = .custom
-        navigationHeaderViewController = EkoMessageListHeaderViewController.make(viewModel: screenViewModel)
-        addChild(viewController: navigationHeaderViewController)
-        let item = UIBarButtonItem(customView: navigationHeaderViewController.view)
+        navigationHeaderViewController = EkoMessageListHeaderView(viewModel: screenViewModel)
+        
+        // Just using the view form this
+        let item = UIBarButtonItem(customView: navigationHeaderViewController)
         navigationItem.leftBarButtonItem = item
-        navigationHeaderViewController.didMove(toParent: self)
     }
     
     func setupMessageContainer() {
@@ -186,8 +185,9 @@ private extension EkoMessageListViewController {
 
 // MARK: - Binding ViewModel
 private extension EkoMessageListViewController {
-    func bindingViewModel() {
-        screenViewModel.delegate = self   
+    func buildViewModel() {
+        screenViewModel.delegate = self
+        screenViewModel.action.getChannel()
     }
 }
 

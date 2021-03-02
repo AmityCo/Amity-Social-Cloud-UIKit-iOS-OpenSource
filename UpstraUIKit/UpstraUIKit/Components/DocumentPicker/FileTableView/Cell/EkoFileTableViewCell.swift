@@ -86,6 +86,8 @@ class EkoFileTableViewCell: UITableViewCell, Nibbable {
             updateViewState(.uploaded)
         case .downloadable:
             isEditingMode ? updateViewState(.idle) : updateViewState(.downloadable)
+        case .error(_):
+            updateViewState(.error)
         default:
             updateViewState(.idle)
         }

@@ -45,7 +45,6 @@ private extension EkoPopoverMessageViewController {
         
         let textSize = (text as NSString?)?.size(withAttributes: [.font: EkoFontSet.body]) ?? .zero
         preferredContentSize  = CGSize(width: textSize.width + 32, height: textSize.height + 20)
-        print("Size")
     }
     
 }

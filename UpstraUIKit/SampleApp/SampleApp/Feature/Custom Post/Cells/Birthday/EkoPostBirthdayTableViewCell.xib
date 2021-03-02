@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="17701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17703"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" rowHeight="605" id="KGk-i7-Jjw" customClass="EkoPostBirthdayTableViewCell" customModule="SampleApp" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="414" height="605"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
+                <rect key="frame" x="0.0" y="0.0" width="414" height="605"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="jip-B8-hIa" userLabel="Background">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="472"/>
+                        <color key="backgroundColor" red="0.4063946605" green="0.363097012" blue="1" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                    </view>
+                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="bg_post_birthday_overlay" translatesAutoresizingMaskIntoConstraints="NO" id="teU-Ez-DNz">
+                        <rect key="frame" x="-43" y="256" width="500" height="286"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="500" id="aXj-aw-Y1Q"/>
+                        </constraints>
+                    </imageView>
+                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="bg_post_birthday_confetti" translatesAutoresizingMaskIntoConstraints="NO" id="xwH-eI-hG6">
+                        <rect key="frame" x="-54" y="244" width="522" height="259"/>
+                    </imageView>
+                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" spacing="24" translatesAutoresizingMaskIntoConstraints="NO" id="0jW-vN-TUL">
+                        <rect key="frame" x="0.0" y="30" width="414" height="473"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="24 November" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="FVj-gr-I0h">
+                                <rect key="frame" x="155.5" y="0.0" width="103.5" height="20.5"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" spacing="16" translatesAutoresizingMaskIntoConstraints="NO" id="ygv-EG-vML">
+                                <rect key="frame" x="0.0" y="44.5" width="414" height="137.5"/>
+                                <subviews>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Hubert Blaine W89asdsdsasadssad!dfdsaasdasda" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="w86-U1-UQr">
+                                        <rect key="frame" x="16" y="0.0" width="382" height="90"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="25"/>
+                                        <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Learning and Development Lead Consultant, Global Financial Markets Training, eLearning and..." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="udX-Wb-fRZ">
+                                        <rect key="frame" x="30" y="106" width="354" height="31.5"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="13"/>
+                                        <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                </subviews>
+                                <constraints>
+                                    <constraint firstItem="udX-Wb-fRZ" firstAttribute="leading" secondItem="ygv-EG-vML" secondAttribute="leading" constant="30" id="F5g-7d-SoD"/>
+                                    <constraint firstItem="w86-U1-UQr" firstAttribute="leading" secondItem="ygv-EG-vML" secondAttribute="leading" constant="16" id="HqT-8h-I68"/>
+                                    <constraint firstAttribute="trailing" secondItem="w86-U1-UQr" secondAttribute="trailing" constant="16" id="qen-OW-uy8"/>
+                                    <constraint firstAttribute="trailing" secondItem="udX-Wb-fRZ" secondAttribute="trailing" constant="30" id="ykJ-Ka-lj8"/>
+                                </constraints>
+                            </stackView>
+                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" spacing="30" translatesAutoresizingMaskIntoConstraints="NO" id="ll7-X4-gus">
+                                <rect key="frame" x="102" y="206" width="210" height="267"/>
+                                <subviews>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="jCk-ch-7Jy" customClass="EkoAvatarView" customModule="UpstraUIKit">
+                                        <rect key="frame" x="69" y="0.0" width="72" height="72"/>
+                                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="72" id="51x-Xb-5M2"/>
+                                            <constraint firstAttribute="height" constant="72" id="cek-Se-6p4"/>
+                                        </constraints>
+                                    </view>
+                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="bg_post_birthday_cake" translatesAutoresizingMaskIntoConstraints="NO" id="Eeo-kD-jJr">
+                                        <rect key="frame" x="0.0" y="102" width="210" height="165"/>
+                                    </imageView>
+                                </subviews>
+                            </stackView>
+                        </subviews>
+                        <constraints>
+                            <constraint firstItem="ygv-EG-vML" firstAttribute="leading" secondItem="0jW-vN-TUL" secondAttribute="leading" id="1Fg-gr-aqs"/>
+                            <constraint firstAttribute="trailing" secondItem="ygv-EG-vML" secondAttribute="trailing" id="XnE-n5-cQd"/>
+                        </constraints>
+                    </stackView>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Send your friend a birthday wish!" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="HNw-MQ-UhK">
+                        <rect key="frame" x="36" y="519" width="342" height="20.5"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                        <nil key="textColor"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                </subviews>
+                <constraints>
+                    <constraint firstItem="HNw-MQ-UhK" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leadingMargin" constant="16" id="1C7-gB-b5j"/>
+                    <constraint firstAttribute="trailingMargin" secondItem="HNw-MQ-UhK" secondAttribute="trailing" constant="16" id="3fm-oA-p8Q"/>
+                    <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="HNw-MQ-UhK" secondAttribute="bottom" constant="16" id="Lqb-ao-zA8"/>
+                    <constraint firstItem="0jW-vN-TUL" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" id="PV3-GU-cRN"/>
+                    <constraint firstAttribute="trailing" secondItem="0jW-vN-TUL" secondAttribute="trailing" id="QZV-Al-hNQ"/>
+                    <constraint firstItem="xwH-eI-hG6" firstAttribute="bottom" secondItem="0jW-vN-TUL" secondAttribute="bottom" id="Rkf-Ad-k8E"/>
+                    <constraint firstItem="jip-B8-hIa" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" id="XdQ-sd-tqr"/>
+                    <constraint firstItem="HNw-MQ-UhK" firstAttribute="top" secondItem="0jW-vN-TUL" secondAttribute="bottom" constant="16" id="cWG-Ud-riH"/>
+                    <constraint firstItem="jip-B8-hIa" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" id="ccL-9Q-6pb"/>
+                    <constraint firstItem="jip-B8-hIa" firstAttribute="bottom" secondItem="teU-Ez-DNz" secondAttribute="bottom" constant="-70" id="dYI-Qa-dMT"/>
+                    <constraint firstAttribute="trailing" secondItem="jip-B8-hIa" secondAttribute="trailing" id="eTc-5V-Tao"/>
+                    <constraint firstItem="0jW-vN-TUL" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="30" id="qkj-iY-5QL"/>
+                    <constraint firstItem="teU-Ez-DNz" firstAttribute="centerX" secondItem="H2p-sc-9uM" secondAttribute="centerX" id="ssJ-5L-Hie"/>
+                    <constraint firstItem="xwH-eI-hG6" firstAttribute="centerX" secondItem="H2p-sc-9uM" secondAttribute="centerX" id="udd-1w-99h"/>
+                    <constraint firstItem="teU-Ez-DNz" firstAttribute="top" secondItem="jCk-ch-7Jy" secondAttribute="top" constant="20" id="znU-bp-URv"/>
+                </constraints>
+            </tableViewCellContentView>
+            <connections>
+                <outlet property="avatarView" destination="jCk-ch-7Jy" id="Gfr-1J-gds"/>
+                <outlet property="birthdayDateLabel" destination="FVj-gr-I0h" id="1zC-CO-D2c"/>
+                <outlet property="contentLabel" destination="HNw-MQ-UhK" id="TVu-lB-hMd"/>
+                <outlet property="displayNameLabel" destination="w86-U1-UQr" id="9N1-qN-Bbi"/>
+                <outlet property="jobTitleLabel" destination="udX-Wb-fRZ" id="CcO-vr-Zrd"/>
+            </connections>
+            <point key="canvasLocation" x="140.57971014492756" y="134.93303571428569"/>
+        </tableViewCell>
+    </objects>
+    <resources>
+        <image name="bg_post_birthday_cake" width="210" height="165"/>
+        <image name="bg_post_birthday_confetti" width="522" height="259"/>
+        <image name="bg_post_birthday_overlay" width="459" height="286"/>
+        <systemColor name="systemBackgroundColor">
+            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+    </resources>
+</document>

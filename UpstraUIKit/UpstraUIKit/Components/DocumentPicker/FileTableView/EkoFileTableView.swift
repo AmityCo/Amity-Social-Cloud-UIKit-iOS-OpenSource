@@ -133,7 +133,7 @@ extension EkoFileTableView: UITableViewDataSource {
     func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
         let footerView = UIView(frame: CGRect(x: 0.0, y: 0.0, width: contentSize.width, height: Constant.footerHeight))
         let label = UILabel(frame: CGRect(x: 16.0, y: 0.0, width: contentSize.width - 32.0, height: Constant.footerLabelHight))
-        label.text = "View all files"
+        label.text = EkoLocalizedStringSet.viewAllFilesTitle.localizedString
         label.textColor = .systemBlue
         label.font = EkoFontSet.body
         let button = UIButton(frame: label.frame)

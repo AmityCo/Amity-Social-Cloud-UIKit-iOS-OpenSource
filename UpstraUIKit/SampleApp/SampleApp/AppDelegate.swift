@@ -17,7 +17,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         
-        UpstraUIKitManager.setup("API_KEY")
+        UpstraUIKitManager.setup("b3bee858328ef4344a308e4a5a091688d05fdee2be353a2b")
         UpstraUIKitManager.set(eventHandler: CustomEventHandler())
         
         guard let preset = Preset(rawValue: UserDefaults.standard.theme ?? 0) else { return false }
@@ -133,7 +133,7 @@ extension AppDelegate {
         window = UIWindow()
         UpstraUIKitManager.registerDevice(withUserId: "victimIOS", displayName: "victimIOS".uppercased())
         
-        let postDetailViewController = EkoPostDetailViewController.make(postId: postId)
+        let postDetailViewController = EkoPostDetailViewController.make(withPostId: "c1bb8697c88a01f6423765984a3e47ac")
         window?.rootViewController = postDetailViewController
         window?.makeKeyAndVisible()
     }

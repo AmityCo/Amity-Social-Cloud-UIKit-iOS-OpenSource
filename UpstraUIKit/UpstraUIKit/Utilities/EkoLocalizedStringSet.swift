@@ -33,6 +33,8 @@ public struct EkoLocalizedStringSet {
     static let album = "album"
     
     static let editMessageTitle = "edit_message_title"
+    static let viewAllCommentsTitle = "view_all_comments_title"
+    static let viewAllFilesTitle = "view_all_files_title"
     
     static let close = "close"
     static let save = "save"
@@ -47,8 +49,10 @@ public struct EkoLocalizedStringSet {
     static let like = "like"
     static let liked = "liked"
     static let reply = "reply"
+    static let viewReply = "view_reply"
     static let likes = "likes"
     static let comments = "comments"
+    static let shares = "shares"
     static let remove = "remove"
     
     static let textMessagePlaceholder = "text_message_placeholder"
@@ -144,8 +148,21 @@ public struct EkoLocalizedStringSet {
 
     // MARK: - Post detail
     struct PostDetail {
+        static let replyingTo = "post_detail_replying_to"
+        static let createReply = "post_detail_create_reply"
+        static let editReply = "post_detail_edit_reply"
+        static let deleteReply = "post_detail_delete_reply"
+        static let reportReply = "post_detail_report_reply"
+        static let unreportReply = "post_detail_unreport_reply"
+        static let deleteReplyTitle = "post_detail_delete_reply_title"
+        static let deleteReplyMessage = "post_detail_delete_reply_message"
+        static let discardReplyTitle = "post_detail_discard_reply_title"
+        static let discardReplyMessage = "post_detail_discard_reply_message"
+        static let discardEditedReplyMessage = "post_detail_discard_edited_reply_message"
+        static let viewMoreReply = "post_detail_view_more_reply"
+        static let deletedReplyMessage = "post_detail_deleted_reply_message"
         static let textPlaceholder = "post_detail_text_placeholder"
-        static let deletedItem = "post_detail_deleted_item"
+        static let deletedCommentMessage = "post_detail_deleted_comment_message"
         static let viewAllReplies = "post_detail_view_all_replies"
         static let joinCommunityMessage = "post_detail_join_community_message"
         static let editPost = "post_detail_edit_post"
@@ -161,6 +178,7 @@ public struct EkoLocalizedStringSet {
         static let deleteCommentMessage = "post_detail_delete_comment_message"
         static let discardCommentTitle = "post_detail_discard_comment_title"
         static let discardCommentMessage = "post_detail_discard_comment_message"
+        static let discardEditedCommentMessage = "post_detail_discard_edited_comment_message"
         static let deletePostTitle = "post_detail_delete_post_title"
         static let deletePostMessage = "post_detail_delete_post_message"
         static let postDetailCommentEdit = "post_detail_comment_edited"
@@ -238,5 +256,11 @@ public struct EkoLocalizedStringSet {
         static let shareToMyTimeline = "share_to_my_timeline"
         static let shareToGroup = "share_to_group"
         static let moreOptions = "more_options"
+    }
+    
+    // MARK: - Post
+    enum Post {
+        static let placeholderTitle = "post_place_holder_title"
+        static let placeholderDesc = "post_place_holder_desc"
     }
 }

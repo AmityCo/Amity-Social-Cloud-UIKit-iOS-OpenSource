@@ -17,19 +17,23 @@ class EkoEditTextViewController: EkoViewController {
     }
     
     // MARK: - IBOutlet Properties
+    @IBOutlet private var headerView: UIView!
+    @IBOutlet private var headerLabel: UILabel!
     @IBOutlet private var textView: EkoTextView!
     @IBOutlet private var bottomConstraint: NSLayoutConstraint!
     
     // MARK: - Properties
     private let editMode: EditMode
     private var saveBarButton: UIBarButtonItem!
-    private var message: String
+    private let header: String?
+    private let message: String
     var editHandler: ((String) -> Void)?
     var dismissHandler: (() -> Void)?
     
     // MARK: - View lifecycle
     
-    private init(message: String, editMode: EditMode) {
+    private init(header: String?, message: String, editMode: EditMode) {
+        self.header = header
         self.message = message
         self.editMode = editMode
         super.init(nibName: EkoEditTextViewController.identifier, bundle: UpstraUIKitManager.bundle)
@@ -39,17 +43,31 @@ class EkoEditTextViewController: EkoViewController {
         fatalError("init(coder:) has not been implemented")
     }
     
-    static func make(message: String, editMode: EditMode) -> EkoEditTextViewController {
-        return EkoEditTextViewController(message: message, editMode: editMode)
+    static func make(header: String? = nil, message: String, editMode: EditMode) -> EkoEditTextViewController {
+        return EkoEditTextViewController(header: header, message: message, editMode: editMode)
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        setupHeaderView()
         setupView()
     }
     
     override func didTapLeftBarButton() {
         dismissHandler?()
+    }
+    
+    private func setupHeaderView() {
+        if let header = header {
+            headerView.isHidden = false
+            headerView.backgroundColor = EkoColorSet.secondary.blend(.shade4)
+            headerLabel.textColor = EkoColorSet.base.blend(.shade1)
+            headerLabel.font = EkoFontSet.body
+            headerLabel.text = header
+            textView.contentInset.top = 40
+        } else {
+            headerView.isHidden = true
+        }
     }
     
     private func setupView() {

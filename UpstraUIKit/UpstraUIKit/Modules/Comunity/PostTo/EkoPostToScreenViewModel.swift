@@ -19,7 +19,7 @@ class EkoPostToScreenViewModel: EkoPostToScreenViewModelType {
     private var categoryCollectionToken:EkoNotificationToken?
     
     func observe() {
-        communityCollection = communityRepository.getCommunitiesWithKeyword("", filter: .userIsMember, sortBy: .lastCreated, categoryId: nil, includeDeleted: false)
+        communityCollection = communityRepository.getCommunitiesWithKeyword("", filter: .userIsMember, sortBy: .firstCreated, categoryId: nil, includeDeleted: false)
         categoryCollectionToken = communityCollection?.observe({ [weak self] (collection, _, _) in
             guard let strongSelf = self else { return }
             strongSelf.delegate?.screenViewModelDidUpdateItems(strongSelf)

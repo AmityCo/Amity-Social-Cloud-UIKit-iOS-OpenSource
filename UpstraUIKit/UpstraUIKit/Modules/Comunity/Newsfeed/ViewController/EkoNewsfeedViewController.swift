@@ -68,7 +68,6 @@ private extension EkoNewsfeedViewController {
     
     private func setupHeaderView() {
         headerView = EkoMyCommunityPreviewViewController.make(viewModel: communityViewModel)
-        
         feedViewController.headerView = headerView?.view
     }
     
@@ -86,6 +85,7 @@ private extension EkoNewsfeedViewController {
             self?.present(nav, animated: true, completion: nil)
         }
         feedViewController.emptyView = emptyView
+
     }
     
     private func setupPostButton() {

@@ -153,7 +153,7 @@ public final class EkoAvatarView: EkoView {
         actionHandler?()
     }
     
-    func setImage(withImageId imageId: String, size: EkoMediaSize = .small, placeholder: UIImage?, completion: (() -> Void)? = nil) {
+    public func setImage(withImageId imageId: String, size: EkoMediaSize = .small, placeholder: UIImage? = EkoIconSet.defaultAvatar, completion: (() -> Void)? = nil) {
         
         placeHolderImageView.image = placeholder
         pendingRequestWorkItem?.cancel()

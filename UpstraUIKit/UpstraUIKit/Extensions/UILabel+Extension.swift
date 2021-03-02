@@ -9,6 +9,17 @@
 import UIKit
 
 extension UILabel {
+    
+    public func setLineSpacing(_ spacing: CGFloat) {
+        let paragraphStyle = NSMutableParagraphStyle()
+        paragraphStyle.lineSpacing = spacing
+        paragraphStyle.alignment = textAlignment
+        paragraphStyle.lineBreakMode = lineBreakMode
+        attributedText = NSAttributedString(string: text ?? "", attributes: [
+            .paragraphStyle: paragraphStyle
+        ])
+    }
+    
     enum Position {
         case left(image: UIImage?), right(image: UIImage?), both(imageLeft: UIImage?, imageRight: UIImage?)
     }
