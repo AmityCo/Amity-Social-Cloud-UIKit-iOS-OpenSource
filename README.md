@@ -13,11 +13,11 @@ UpstraUIKit is a delightful networking library for iOS. It is extending the powe
 
 | UpstraUIKit Version | EkoChatSDK Version | Minimum iOS Target  | Swift Version | Xcode Version |
 
-| v1.9.0 | v4.4.0 | iOS 12.0 | Swift 5.3 | Xcode 12.2 |
+| v1.11.0 | v4.7.0 | iOS 12.0 | Swift 5.3 | Xcode 12.2 |
 
 ## Dependencies
 
-UpstraUIKit has dependencies with Realm. Currently we are only able to work with Realm version 4.x.x.
+UpstraUIKit has dependencies with Realm. Currently we are only able to work with Realm version 5.5.0.
 
 ## Framework Building
 
