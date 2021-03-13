@@ -10,52 +10,50 @@ import UIKit
 import EkoChat
 
 final class EkoCategoryPreviewScreenViewModel: EkoCategoryPreviewScreenViewModelType {
-    private let repository = EkoCommunityRepository(client: UpstraUIKitManagerInternal.shared.client)
-    private var categoryCollection: EkoCollection<EkoCommunityCategory>?
-    private var categoryToken: EkoNotificationToken?
-    private let CATEGORY_MAX: UInt = 8
+
+    weak var delegate: EkoCategoryPreviewCommunityScreenViewModelDelegate?
     
-    // MARK: - DataSource
-    var categories: EkoBoxBinding<[EkoCommunityCategoryModel]> = EkoBoxBinding([])
+    // MARK: - Controller
+    private let categoryController: EkoCommunityCategoryControllerProtocol
+    
+    // MARK: - Properties
+    private var categories: [EkoCommunityCategoryModel] = []
+    private let debouncer = Debouncer(delay: 0.3)
+    
+    init(categoryController: EkoCommunityCategoryControllerProtocol) {
+        self.categoryController = categoryController
+    }
+    
+}
+
+// MARK: - DataSource
+extension EkoCategoryPreviewScreenViewModel {
+    
+    func numberOfCategory() -> Int {
+        return categories.count
+    }
+    
+    func category(at indexPath: IndexPath) -> EkoCommunityCategoryModel {
+        return categories[indexPath.row]
+    }
 }
 
 // MARK: - Action
 extension EkoCategoryPreviewScreenViewModel {
-    
-    func getCategory() {
-        categoryCollection = repository.getAllCategories(.displayName, includeDeleted: false)
-        categoryToken = categoryCollection?.observe { [weak self] (collection, change, error) in
-            if collection.dataStatus == .fresh {
-                self?.categoryToken?.invalidate()
-                self?.prepareDataSource()
-            }
-        }
-    }
-    
-    func numberOfItem() -> Int {
-        return categories.value.count
-    }
-    
-    func item(at indexPath: IndexPath) -> EkoCommunityCategoryModel {
-        return categories.value[indexPath.row]
-    }
-}
 
-// MARK: - Private function
-extension EkoCategoryPreviewScreenViewModel {
-    
-    private func prepareDataSource() {
-        guard let categoryCollection = categoryCollection else { return }
-        
-        var items: [EkoCommunityCategoryModel] = []
-        let numberOfItems = min(categoryCollection.count(), CATEGORY_MAX)
-        
-        for index in 0..<numberOfItems {
-            if let object =  categoryCollection.object(at: index) {
-                items.append(EkoCommunityCategoryModel(name: object.name, avatarFileId: object.avatarFileId, categoryId: object.categoryId))
+    func retrieveCategory() {
+        categoryController.retrieve { [weak self] (result) in
+            guard let strongSelf = self else { return }
+            strongSelf.debouncer.run {
+                switch result {
+                case .success(let category):
+                    strongSelf.categories = category
+                    strongSelf.delegate?.screenViewModel(strongSelf, didRetrieveCategory: category, isEmpty: category.isEmpty)
+                case .failure(let error):
+                    strongSelf.delegate?.screenViewModel(strongSelf, didFail: error)
+                }
             }
         }
-        self.categories.value = items
     }
     
 }

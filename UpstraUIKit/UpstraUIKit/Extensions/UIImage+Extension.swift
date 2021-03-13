@@ -18,6 +18,14 @@ extension UIImage {
         return image!
     }
     
+    func setTintColor(_ color: UIColor) -> UIImage {
+        if #available(iOS 13.0, *) {
+            return self.withTintColor(color)
+        } else {
+            return self
+        }
+    }
+    
     func thumbnail(pixel: Int = 1000) -> UIImage? {
         
         guard let imageData = self.pngData() else { return nil }

@@ -8,16 +8,22 @@
 
 import UIKit
 
-protocol EkoTrendingCommunityScreenViewModelAction {
-    func getTrending()
+protocol EkoTrendingCommunityScreenViewModelDelegate: class {
+    func screenViewModel(_ viewModel: EkoTrendingCommunityScreenViewModelType, didRetrieveTrending trending: [EkoCommunityModel], isEmpty: Bool)
+    func screenViewModel(_ viewModel: EkoTrendingCommunityScreenViewModelType, didFail error: EkoError)
 }
 
 protocol EkoTrendingCommunityScreenViewModelDataSource {
-    var community: EkoBoxBinding<[EkoCommunityModel]> { get set }
-    func item(at indexPath: IndexPath) -> EkoCommunityModel?
+    func community(at indexPath: IndexPath) -> EkoCommunityModel
+    func numberOfTrending() -> Int
+}
+
+protocol EkoTrendingCommunityScreenViewModelAction {
+    func retrieveTrending()
 }
 
 protocol EkoTrendingCommunityScreenViewModelType: EkoTrendingCommunityScreenViewModelAction, EkoTrendingCommunityScreenViewModelDataSource {
+    var delegate: EkoTrendingCommunityScreenViewModelDelegate? { get set }
     var action: EkoTrendingCommunityScreenViewModelAction { get }
     var dataSource: EkoTrendingCommunityScreenViewModelDataSource { get }
 }

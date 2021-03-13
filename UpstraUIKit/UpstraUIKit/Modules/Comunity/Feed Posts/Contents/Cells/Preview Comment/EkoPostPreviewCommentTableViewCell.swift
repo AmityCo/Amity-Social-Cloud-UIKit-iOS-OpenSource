@@ -8,22 +8,23 @@
 
 import UIKit
 
-final class EkoPostPreviewCommentTableViewCell: UITableViewCell, Nibbable, EkoPostPreviewCommentProtocol {
+public final class EkoPostPreviewCommentTableViewCell: UITableViewCell, Nibbable, EkoPostPreviewCommentProtocol {
     
-    weak var delegate: EkoPostPreviewCommentDelegate?
+    public weak var delegate: EkoPostPreviewCommentDelegate?
     
     // MARK: - IBOutlet Properties
     @IBOutlet private var commentView: EkoCommentView!
     @IBOutlet private var separatorView: UIView!
-    // MARK: - Properties
-    private(set) var post: EkoPostModel?
     
-    override func awakeFromNib() {
+    // MARK: - Properties
+    public private(set) var post: EkoPostModel?
+    
+    public override func awakeFromNib() {
         super.awakeFromNib()
         setupView()
     }
     
-    func display(post: EkoPostModel, comment: EkoCommentModel?) {
+    public func display(post: EkoPostModel, comment: EkoCommentModel?) {
         guard let comment = comment else { return }
         self.post = post
         let shouldActionShow = post.isCommentable

@@ -13,6 +13,7 @@ class FeatureViewController: UIViewController {
     enum FeatureList: CaseIterable {
         case chatFeature
         case community
+        case data
         
         var text: String {
             switch self {
@@ -20,6 +21,8 @@ class FeatureViewController: UIViewController {
                 return "Chat"
             case .community:
                 return "Community"
+            case .data:
+                return "Data"
             }
         }
     }
@@ -47,6 +50,10 @@ extension FeatureViewController: UITableViewDelegate {
             navigationController?.pushViewController(vc, animated: true)
         case .community:
             let vc = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "CommunityFeatureViewController")
+            vc.hidesBottomBarWhenPushed = true
+            navigationController?.pushViewController(vc, animated: true)
+        case .data:
+            let vc = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "DataListViewController")
             vc.hidesBottomBarWhenPushed = true
             navigationController?.pushViewController(vc, animated: true)
         }

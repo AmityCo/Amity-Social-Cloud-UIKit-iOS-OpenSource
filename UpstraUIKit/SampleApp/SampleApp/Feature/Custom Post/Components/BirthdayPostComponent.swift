@@ -19,7 +19,14 @@ struct BirthdayPostComponent: EkoPostComposable {
     
     
     func getComponentCount(for index: Int) -> Int {
-        return 2
+        switch post.displayType {
+        case .feed:
+            return 2 + post.maximumLastestComments + post.viewAllCommentSection
+        case .postDetail:
+            return 2
+        @unknown default:
+            return 0
+        }
     }
     
     func getComponentCell(_ tableView: UITableView, at indexPath: IndexPath) -> UITableViewCell {
@@ -32,8 +39,13 @@ struct BirthdayPostComponent: EkoPostComposable {
             let cell = tableView.dequeueReusableCell(withIdentifier: "EkoPostFooterTableViewCell", for: indexPath) as! EkoPostFooterTableViewCell
             cell.display(post: post)
             return cell
+        case 2 + post.maximumLastestComments:
+            let cell = tableView.dequeueReusableCell(withIdentifier: "EkoPostViewAllCommentsTableViewCell", for: indexPath) as! EkoPostViewAllCommentsTableViewCell
+            return cell
         default:
-            return UITableViewCell()
+            let cell = tableView.dequeueReusableCell(withIdentifier: "EkoPostPreviewCommentTableViewCell", for: indexPath) as! EkoPostPreviewCommentTableViewCell
+            cell.display(post: post, comment: post.getComment(at: indexPath, totalComponent: 2))
+            return cell
         }
         
     }

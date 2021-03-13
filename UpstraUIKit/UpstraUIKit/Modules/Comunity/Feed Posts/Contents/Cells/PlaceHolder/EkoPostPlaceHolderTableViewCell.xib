@@ -14,12 +14,12 @@
         <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="KGk-i7-Jjw" customClass="EkoPostPlaceHolderTableViewCell" customModule="UpstraUIKit" customModuleProvider="target">
             <rect key="frame" x="0.0" y="0.0" width="375" height="375"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" ambiguous="YES" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
                 <rect key="frame" x="0.0" y="0.0" width="375" height="375"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="vR1-1R-xZA">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="375"/>
+                        <rect key="frame" x="0.0" y="8" width="375" height="375"/>
                         <subviews>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" spacing="16" translatesAutoresizingMaskIntoConstraints="NO" id="Sjb-j8-wec">
                                 <rect key="frame" x="65.5" y="136" width="244.5" height="103"/>
@@ -58,12 +58,13 @@
                 <constraints>
                     <constraint firstAttribute="trailing" secondItem="vR1-1R-xZA" secondAttribute="trailing" id="Kn1-rt-F7r"/>
                     <constraint firstItem="vR1-1R-xZA" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" id="P8I-c8-0BC"/>
-                    <constraint firstItem="vR1-1R-xZA" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" id="i9P-eO-sdc"/>
+                    <constraint firstItem="vR1-1R-xZA" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="8" id="i9P-eO-sdc"/>
                     <constraint firstAttribute="bottom" secondItem="vR1-1R-xZA" secondAttribute="bottom" id="yO3-6B-piZ"/>
                 </constraints>
             </tableViewCellContentView>
             <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
             <connections>
+                <outlet property="containerView" destination="vR1-1R-xZA" id="gMZ-WN-Dz1"/>
                 <outlet property="descriptionLabel" destination="wJX-3o-BSU" id="RLm-dg-CVZ"/>
                 <outlet property="heightConstaint" destination="Z3z-0F-RLf" id="Eq6-MH-VcR"/>
                 <outlet property="titleLabel" destination="eOG-d1-LOr" id="HCr-1F-0wn"/>

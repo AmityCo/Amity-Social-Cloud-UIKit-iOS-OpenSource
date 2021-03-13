@@ -11,8 +11,11 @@ import EkoChat
 
 final class EkoMyCommunityTableViewCell: UITableViewCell, Nibbable {
     
+    static let defaultHeight: CGFloat = 56.0
+    
     @IBOutlet private var avatarView: EkoAvatarView!
     @IBOutlet private var displayNameLabel: UILabel!
+    @IBOutlet private var privateBadgeImageView: UIImageView!
     @IBOutlet private var badgeImageView: UIImageView!
     
     override func awakeFromNib() {
@@ -29,9 +32,10 @@ final class EkoMyCommunityTableViewCell: UITableViewCell, Nibbable {
         displayNameLabel.font = EkoFontSet.bodyBold
         displayNameLabel.textColor = EkoColorSet.base
         displayNameLabel.text = ""
+        privateBadgeImageView.image = EkoIconSet.iconPrivate
+        privateBadgeImageView.tintColor = EkoColorSet.base
         badgeImageView.image = EkoIconSet.iconBadgeCheckmark
         badgeImageView.tintColor = EkoColorSet.highlight
-        badgeImageView.isHidden = true
     }
     
     override func prepareForReuse() {
@@ -40,11 +44,13 @@ final class EkoMyCommunityTableViewCell: UITableViewCell, Nibbable {
         displayNameLabel.text = ""
         avatarView.image = nil
         badgeImageView.isHidden = true
+        privateBadgeImageView.isHidden = true
     }
     
     func display(with community: EkoCommunityModel) {
         avatarView.setImage(withImageId: community.avatarId, placeholder: EkoIconSet.defaultCommunity)
         displayNameLabel.text = community.displayName
         badgeImageView.isHidden = !community.isOfficial
+        privateBadgeImageView.isHidden = community.isPublic
     }
 }

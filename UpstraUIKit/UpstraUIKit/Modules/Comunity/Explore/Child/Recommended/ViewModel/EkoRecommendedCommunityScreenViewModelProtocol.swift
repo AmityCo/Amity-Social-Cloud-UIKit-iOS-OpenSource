@@ -8,17 +8,22 @@
 
 import UIKit
 
-protocol EkoRecommendedCommunityScreenViewModelAction {
-    func getRecommendedCommunity()
+protocol EkoRecommendedCommunityScreenViewModelDelegate: class {
+    func screenViewModel(_ viewModel: EkoRecommendedCommunityScreenViewModelType, didRetrieveRecommended recommended: [EkoCommunityModel], isEmpty: Bool)
+    func screenViewModel(_ viewModel: EkoRecommendedCommunityScreenViewModelType, didFail error: EkoError)
 }
 
 protocol EkoRecommendedCommunityScreenViewModelDataSource {
-    var community: EkoBoxBinding<[EkoCommunityModel]> { get set }
-    var isNoData: EkoBoxBinding<Bool> { get set }
-    func item(at indexPath: IndexPath) -> EkoCommunityModel?
+    func community(at indexPath: IndexPath) -> EkoCommunityModel
+    func numberOfRecommended() -> Int
+}
+
+protocol EkoRecommendedCommunityScreenViewModelAction {
+    func retrieveRecommended()
 }
 
 protocol EkoRecommendedCommunityScreenViewModelType: EkoRecommendedCommunityScreenViewModelAction, EkoRecommendedCommunityScreenViewModelDataSource {
+    var delegate: EkoRecommendedCommunityScreenViewModelDelegate? { get set }
     var action: EkoRecommendedCommunityScreenViewModelAction { get }
     var dataSource: EkoRecommendedCommunityScreenViewModelDataSource { get }
 }

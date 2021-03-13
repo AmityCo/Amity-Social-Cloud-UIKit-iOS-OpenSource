@@ -27,7 +27,7 @@ public struct EkoPostTextComponent: EkoPostComposable {
     public func getComponentCount(for index: Int) -> Int {
         switch post.displayType {
         case .feed:
-            return EkoPostConstant.defaultNumberComponent + post.maximumLastestComments
+            return EkoPostConstant.defaultNumberComponent + post.maximumLastestComments + post.viewAllCommentSection
         case .postDetail:
             return EkoPostConstant.defaultNumberComponent
         }
@@ -37,22 +37,23 @@ public struct EkoPostTextComponent: EkoPostComposable {
         switch indexPath.row {
         case 0:
             let cell: EkoPostHeaderTableViewCell = tableView.dequeueReusableCell(for: indexPath)
-            cell.display(post: post, shouldShowOption: post.displayType.settings.shouldShowOption)
+            cell.display(post: post, shouldShowOption: post.shouldShowOption)
             return cell
         case 1:
             let cell: EkoPostTextTableViewCell = tableView.dequeueReusableCell(for: indexPath)
-            cell.display(post: post, shouldExpandContent: post.displayType.settings.shouldExpandContent, indexPath: indexPath)
+            cell.display(post: post, shouldExpandContent: post.shouldContentExpand, indexPath: indexPath)
             return cell
         case 2:
             let cell: EkoPostFooterTableViewCell = tableView.dequeueReusableCell(for: indexPath)
             cell.display(post: post)
             return cell
-        case 3,4:
+        case EkoPostConstant.defaultNumberComponent + post.maximumLastestComments:
+            let cell: EkoPostViewAllCommentsTableViewCell = tableView.dequeueReusableCell(for: indexPath)
+            return cell
+        default:
             let cell: EkoPostPreviewCommentTableViewCell = tableView.dequeueReusableCell(for: indexPath)
             cell.display(post: post, comment: post.getComment(at: indexPath, totalComponent: EkoPostConstant.defaultNumberComponent))
             return cell
-        default:
-            return UITableViewCell()
         }
     }
     

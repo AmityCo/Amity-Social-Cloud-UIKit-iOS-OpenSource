@@ -16,37 +16,37 @@ public final class EkoTrendingCommunityViewController: UIViewController, EkoRefr
     @IBOutlet private var heightTableViewContraint: NSLayoutConstraint!
     
     // MARK: - Properties
-    private let screenViewModel: EkoTrendingCommunityScreenViewModelType
-    private var tableViewHeight: CGFloat = 0
+    private var screenViewModel: EkoTrendingCommunityScreenViewModelType!
+    private var tableViewHeight: CGFloat = 0 {
+        didSet {
+            heightTableViewContraint.constant = tableViewHeight
+        }
+    }
     
     // MARK: - Callback
     public var selectedCommunityHandler: ((EkoCommunityModel) -> Void)?
+    public var emptyHandler: ((Bool) -> Void)?
     
     // MARK: - View lifecycle
-    private init(viewModel: EkoTrendingCommunityScreenViewModelType) {
-        self.screenViewModel = viewModel
-        super.init(nibName: EkoTrendingCommunityViewController.identifier, bundle: UpstraUIKitManager.bundle)
-    }
-    
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    
     override public func viewDidLoad() {
         super.viewDidLoad()
         setupView()
-        bindingViewModel()
+        screenViewModel.delegate = self
+        screenViewModel.action.retrieveTrending()
     }
     
     public static func make() -> EkoTrendingCommunityViewController {
-        let viewModel: EkoTrendingCommunityScreenViewModelType = EkoTrendingCommunityScreenViewModel()
-        return EkoTrendingCommunityViewController(viewModel: viewModel)
+        let trendingController = EkoCommunityTrendingController()
+        let viewModel: EkoTrendingCommunityScreenViewModelType = EkoTrendingCommunityScreenViewModel(trendingController: trendingController)
+        let vc = EkoTrendingCommunityViewController(nibName: EkoTrendingCommunityViewController.identifier, bundle: UpstraUIKitManager.bundle)
+        vc.screenViewModel = viewModel  
+        return vc
     }
     
     // MARK: - Refreshahble
     
     func handleRefreshing() {
-        screenViewModel.action.getTrending()
+        screenViewModel.action.retrieveTrending()
     }
 }
 
@@ -74,46 +74,43 @@ private extension EkoTrendingCommunityViewController {
     }
 }
 
-// MARK: - Binding ViewModel
-private extension EkoTrendingCommunityViewController {
-    func bindingViewModel() {
-        screenViewModel.action.getTrending()
-        screenViewModel.dataSource.community.bind { [weak self] (communities) in
-            self?.tableViewHeight = 0
-            self?.heightTableViewContraint.constant = CGFloat(communities.count * 56)
-            self?.tableView.reloadData()
-        }
-    }
-}
-
+// MARK: - UITableViewDelegate
 extension EkoTrendingCommunityViewController: UITableViewDelegate {
     public func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        guard let item = screenViewModel.dataSource.item(at: indexPath) else { return }
-        selectedCommunityHandler?(item)
+        let community = screenViewModel.dataSource.community(at: indexPath)
+        selectedCommunityHandler?(community)
     }
 }
 
+// MARK: - UITableViewDataSource
 extension EkoTrendingCommunityViewController: UITableViewDataSource {
     public func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return screenViewModel.dataSource.community.value.count
+        return screenViewModel.dataSource.numberOfTrending()
     }
     
     public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: EkoTrendingCommunityTableViewCell.identifier, for: indexPath)
-        configure(for: cell, at: indexPath)
-        
+        let cell: EkoTrendingCommunityTableViewCell = tableView.dequeueReusableCell(for: indexPath)
+        let community = screenViewModel.dataSource.community(at: indexPath)
+        cell.display(with: community)
+        cell.displayNumber(with: indexPath)
+        let cellHeight = cell.isCategoryLabelTruncated ? 70 : 56
+        tableViewHeight += CGFloat(cellHeight)
         return cell
     }
-    
-    private func configure(for cell: UITableViewCell, at indexPath: IndexPath) {
-        if let cell = cell as? EkoTrendingCommunityTableViewCell {
-            guard let item = screenViewModel.dataSource.item(at: indexPath) else { return }
-            cell.display(with: item)
-            cell.displayNumber(with: indexPath)
-            
-            let cellHeight = cell.isCategoryLabelTruncated ? 70 : 56
-            tableViewHeight += CGFloat(cellHeight)
-            heightTableViewContraint.constant = tableViewHeight
-        }
+}
+
+// MARK: - EkoTrendingCommunityScreenViewModelDelegate
+extension EkoTrendingCommunityViewController: EkoTrendingCommunityScreenViewModelDelegate {
+
+    func screenViewModel(_ viewModel: EkoTrendingCommunityScreenViewModelType, didRetrieveTrending trending: [EkoCommunityModel], isEmpty: Bool) {
+        emptyHandler?(isEmpty)
+        tableViewHeight = 0
+        heightTableViewContraint.constant = CGFloat(trending.count * 56)
+        tableView.reloadData()
     }
+    
+    func screenViewModel(_ viewModel: EkoTrendingCommunityScreenViewModelType, didFail error: EkoError) {
+        emptyHandler?(true)
+    }
+
 }

@@ -17,7 +17,7 @@ class CommunityFeatureViewController: UIViewController {
         case newsfeed
         case globalFeed
         case myFeed
-    
+        case customPost
         var text: String {
             switch self {
             case .home:
@@ -28,6 +28,8 @@ class CommunityFeatureViewController: UIViewController {
                 return "GlobalFeed"
             case .myFeed:
                 return "MyFeed"
+            case .customPost:
+                return "Custom Post"
             }
         }
     }
@@ -37,12 +39,7 @@ class CommunityFeatureViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        EkoFeedUISettings.shared.register(UINib(nibName: "EkoPostBirthdayTableViewCell", bundle: nil), forCellReuseIdentifier: "EkoPostBirthdayTableViewCell")
-        EkoFeedUISettings.shared.register(UINib(nibName: "EkoPostThumbsupTableViewCell", bundle: nil), forCellReuseIdentifier: "EkoPostThumbsupTableViewCell")
-        EkoFeedUISettings.shared.register(UINib(nibName: "EkoPostNewJoinerTableViewCell", bundle: nil), forCellReuseIdentifier: "EkoPostNewJoinerTableViewCell")
-        EkoFeedUISettings.shared.register(UINib(nibName: "EkoCustomFooterTableViewCell", bundle: nil), forCellReuseIdentifier: "EkoCustomFooterTableViewCell")
-        EkoFeedUISettings.shared.delegate = self
-        EkoFeedUISettings.shared.dataSource = self
+
         
         title = "Community"
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: "CellID")
@@ -50,8 +47,56 @@ class CommunityFeatureViewController: UIViewController {
         tableView.dataSource = self
         tableView.tableFooterView = UIView()
     }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        EkoFeedUISettings.shared.delegate = nil
+        EkoFeedUISettings.shared.dataSource = nil
+    }
 }
 
+extension CommunityFeatureViewController: UITableViewDelegate {
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
+        switch FeatureList.allCases[indexPath.row] {
+        case .home:
+            let homepage = EkoCommunityHomePageViewController.make()
+            navigationController?.pushViewController(homepage, animated: true)
+        case .newsfeed:
+            let newsfeedViewController = EkoNewsfeedViewController.make()
+            navigationController?.pushViewController(newsfeedViewController, animated: true)
+        case .globalFeed:
+            let feedViewController = EkoGlobalFeedViewController.make()
+            navigationController?.pushViewController(feedViewController, animated: true)
+        case .myFeed:
+            let feedViewController = EkoUserFeedViewController.makeMyFeed()
+            navigationController?.pushViewController(feedViewController, animated: true)
+        case .customPost:
+            let homepage = EkoCommunityHomePageViewController.make()
+            navigationController?.pushViewController(homepage, animated: true)
+            
+            EkoFeedUISettings.shared.register(UINib(nibName: "EkoPostBirthdayTableViewCell", bundle: nil), forCellReuseIdentifier: "EkoPostBirthdayTableViewCell")
+            EkoFeedUISettings.shared.register(UINib(nibName: "EkoPostThumbsupTableViewCell", bundle: nil), forCellReuseIdentifier: "EkoPostThumbsupTableViewCell")
+            EkoFeedUISettings.shared.register(UINib(nibName: "EkoPostNewJoinerTableViewCell", bundle: nil), forCellReuseIdentifier: "EkoPostNewJoinerTableViewCell")
+            EkoFeedUISettings.shared.delegate = self
+            EkoFeedUISettings.shared.dataSource = self
+        }
+    }
+}
+
+extension CommunityFeatureViewController: UITableViewDataSource {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return FeatureList.allCases.count
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "CellID", for: indexPath)
+        cell.textLabel?.text = FeatureList.allCases[indexPath.row].text
+        return cell
+    }
+}
+
+// MARK: - EkoFeedDelegate & EkoFeedDataSource
 extension CommunityFeatureViewController: EkoFeedDelegate {
     func didPerformActionLikePost() {
     }
@@ -82,37 +127,5 @@ extension CommunityFeatureViewController: EkoFeedDataSource {
             return nil
         }
         
-    }
-}
-
-extension CommunityFeatureViewController: UITableViewDelegate {
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        tableView.deselectRow(at: indexPath, animated: true)
-        switch FeatureList.allCases[indexPath.row] {
-        case .home:
-            let homepage = EkoCommunityHomePageViewController.make()
-            navigationController?.pushViewController(homepage, animated: true)
-        case .newsfeed:
-            let newsfeedViewController = EkoNewsfeedViewController.make()
-            navigationController?.pushViewController(newsfeedViewController, animated: true)
-        case .globalFeed:
-            let feedViewController = EkoGlobalFeedViewController.make()
-            navigationController?.pushViewController(feedViewController, animated: true)
-        case .myFeed:
-            let feedViewController = EkoUserFeedViewController.makeMyFeed()
-            navigationController?.pushViewController(feedViewController, animated: true)
-        }
-    }
-}
-
-extension CommunityFeatureViewController: UITableViewDataSource {
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return FeatureList.allCases.count
-    }
-    
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "CellID", for: indexPath)
-        cell.textLabel?.text = FeatureList.allCases[indexPath.row].text
-        return cell
     }
 }

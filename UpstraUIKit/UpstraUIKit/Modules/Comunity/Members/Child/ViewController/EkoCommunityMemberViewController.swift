@@ -19,7 +19,7 @@ extension EkoCommunityMemberViewController: IndicatorInfoProvider {
     }
 }
 
-class EkoCommunityMemberViewController: UIViewController {
+class EkoCommunityMemberViewController: EkoViewController {
 
     // MARK: - IBOutlet Properties
     @IBOutlet private var tableView: UITableView!
@@ -170,8 +170,20 @@ extension EkoCommunityMemberViewController: EkoCommunityMemberScreenViewModelDel
 }
 
 extension EkoCommunityMemberViewController: EkoCommunityMemberSettingsTableViewCellDelegate {
-    
-    func cellDidActionOption(at indexPath: IndexPath) {
+    func didPerformAction(at indexPath: IndexPath, action: EkoCommunityMemberAction) {
+        switch action {
+        case .tapAvatar, .tapDisplayName:
+            let member = screenViewModel.dataSource.member(at: indexPath)
+            EkoEventHandler.shared.userDidTap(from: self, userId: member.userId)
+        case .tapOption:
+            openOptionsBottomSheet(for: indexPath)
+        }
+    }
+}
+
+// MARK:- Private Methods
+private extension EkoCommunityMemberViewController {
+    func openOptionsBottomSheet(for indexPath: IndexPath) {
         let bottomSheet = BottomSheetViewController()
         let contentView = ItemOptionView<TextItemOption>()
         bottomSheet.sheetContentView = contentView
@@ -240,5 +252,4 @@ extension EkoCommunityMemberViewController: EkoCommunityMemberSettingsTableViewC
             self?.present(bottomSheet, animated: false, completion: nil)
         }
     }
-    
 }

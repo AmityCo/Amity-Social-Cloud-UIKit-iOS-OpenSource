@@ -24,6 +24,7 @@ protocol EkoCommunitySettingsScreenViewModelAction {
     func getUserRoles()
     func leaveCommunity()
     func deleteCommunity()
+    func getCommunity()
 }
 
 protocol EkoCommunitySettingsScreenViewModelType: EkoCommunitySettingsScreenViewModelAction, EkoCommunitySettingsScreenViewModelDataSource {

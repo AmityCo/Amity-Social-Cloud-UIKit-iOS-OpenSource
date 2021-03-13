@@ -42,7 +42,7 @@ public class EkoCategoryCommunityListViewController: EkoViewController {
     
     private func setupTableView() {
         tableView.separatorStyle = .none
-        tableView.register(EkoCategoryCommunityListTableViewCell.nib, forCellReuseIdentifier: EkoCategoryCommunityListTableViewCell.identifier)
+        tableView.register(EkoMyCommunityTableViewCell.nib, forCellReuseIdentifier: EkoMyCommunityTableViewCell.identifier)
         tableView.register(EkoEmptyStateHeaderFooterView.self, forHeaderFooterViewReuseIdentifier: EkoEmptyStateHeaderFooterView.identifier)
         tableView.dataSource = self
         tableView.delegate = self
@@ -57,9 +57,9 @@ extension EkoCategoryCommunityListViewController: UITableViewDataSource {
     }
     
     public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell: EkoCategoryCommunityListTableViewCell = tableView.dequeueReusableCell(for: indexPath)
+        let cell: EkoMyCommunityTableViewCell = tableView.dequeueReusableCell(for: indexPath)
         if let community = screenViewModel.dataSource.item(at: indexPath) {
-            cell.configure(community: community)
+            cell.display(with: community)
         }
         if tableView.isBottomReached {
             screenViewModel.loadNext()
@@ -77,7 +77,7 @@ extension EkoCategoryCommunityListViewController: UITableViewDelegate {
     }
     
     public func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return EkoCategoryCommunityListTableViewCell.defaultHeight
+        return EkoMyCommunityTableViewCell.defaultHeight
     }
     
     public func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {

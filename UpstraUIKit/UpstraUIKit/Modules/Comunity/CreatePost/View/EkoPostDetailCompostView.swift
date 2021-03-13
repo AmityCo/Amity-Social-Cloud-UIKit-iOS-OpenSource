@@ -84,9 +84,8 @@ class EkoPostDetailCompostView: UIView {
     
     func configure(with post: EkoPostModel) {
         avatarView.placeholder = EkoIconSet.defaultAvatar
-        if !post.isCommentable {
-            isHidden = true
-        }
+        isHidden = !post.isCommentable
+        textContainerView.isHidden = !post.isCommentable
     }
     
     private func commonInit() {
@@ -130,6 +129,8 @@ class EkoPostDetailCompostView: UIView {
         postButton.setTitleColor(EkoColorSet.primary, for: .normal)
         postButton.setTitleColor(EkoColorSet.primary.blend(.shade2), for: .disabled)
         postButton.addTarget(self, action: #selector(postButtonTap), for: .touchUpInside)
+        postButton.setContentCompressionResistancePriority(.required, for: .horizontal)
+        postButton.setContentHuggingPriority(.defaultHigh, for: .horizontal)
         postButton.isEnabled = false
         expandButton.translatesAutoresizingMaskIntoConstraints = false
         expandButton.setImage(EkoIconSet.iconExpand, for: .normal)

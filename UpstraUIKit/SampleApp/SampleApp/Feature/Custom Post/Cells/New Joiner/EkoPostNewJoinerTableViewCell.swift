@@ -29,6 +29,7 @@ final class EkoPostNewJoinerTableViewCell: UITableViewCell {
     }
     
     // MARK: - IBOutlet Properties
+    @IBOutlet private var containerView: UIView!
     @IBOutlet private var welcomeLabel: UILabel!
     @IBOutlet private var jobTitleLabel: UILabel!
     @IBOutlet private var avatarView: EkoAvatarView!
@@ -47,8 +48,9 @@ final class EkoPostNewJoinerTableViewCell: UITableViewCell {
     
     private func setupView() {
         selectionStyle = .none
-        backgroundColor = .white
-        contentView.backgroundColor = .white
+        backgroundColor = .clear
+        contentView.backgroundColor = .clear
+        containerView.backgroundColor = .white
         setupWelcomeLabeL()
         setupJobTitleLabel()
         setupAvatarView()

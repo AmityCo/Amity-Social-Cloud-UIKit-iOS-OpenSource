@@ -178,7 +178,7 @@ public class EkoPostTextEditorViewController: EkoViewController {
             switch postTarget {
             case .community(let comunity):
                 title = comunity.displayName
-                comunityPanelView.isHidden = !comunity.isOfficial
+                comunityPanelView.isHidden = true
             case .myFeed:
                 title = EkoLocalizedStringSet.postCreationMyTimelineTitle.localizedString
                 comunityPanelView.isHidden = true

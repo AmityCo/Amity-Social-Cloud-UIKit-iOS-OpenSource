@@ -63,10 +63,10 @@ extension EkoCommunitiesScreenViewModel {
         }
         
         searchCollection = repository.getCommunitiesWithKeyword(text, filter: filter, sortBy: .lastCreated, categoryId: nil, includeDeleted: false)
-        searchToken?.invalidate()
+
         searchToken = searchCollection?.observe ({ [weak self] (collection, change, error) in
             guard let self = self else { return }
-            
+    
             if self.searchCommunities.value.count > collection.count() {
                 self.numberOfItems.value = 0
                 return
@@ -90,6 +90,10 @@ extension EkoCommunitiesScreenViewModel {
             }
             self.numberOfItems.value = self.searchCommunities.value.count
             self.loading.value = .loaded
+            
+            if collection.dataStatus == .fresh {
+                   self.searchToken?.invalidate()
+            }
         })
     }
 

@@ -11,6 +11,7 @@ import UIKit
 final class EkoPostPlaceHolderTableViewCell: UITableViewCell, Nibbable {
 
     // MARK: - IBOutlet Properties
+    @IBOutlet private var containerView: UIView!
     @IBOutlet private var titleLabel: UILabel!
     @IBOutlet private var descriptionLabel: UILabel!
     @IBOutlet private var heightConstaint: NSLayoutConstraint!
@@ -22,8 +23,9 @@ final class EkoPostPlaceHolderTableViewCell: UITableViewCell, Nibbable {
     
     private func setupView() {
         selectionStyle = .none
-        backgroundColor = EkoColorSet.backgroundColor
-        contentView.backgroundColor = EkoColorSet.backgroundColor
+        backgroundColor = .clear
+        contentView.backgroundColor = .clear
+        containerView.backgroundColor = EkoColorSet.backgroundColor
         heightConstaint.constant = UIScreen.main.bounds.width
         setupTitleLabel()
         setupDescriptionLabel()

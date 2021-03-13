@@ -116,26 +116,26 @@ class EkoCommentView: EkoView {
             likeButton.setTitle(EkoLocalizedStringSet.like.localizedString, for: .normal)
         }
         
+        #warning("Reply button must be hidden on release 1.11.0")
+        replyButton.isHidden = true
+        
         switch layout {
         case .comment(let contentExpanded, let shouldActionShow,  _):
             contentLabel.isExpanded = contentExpanded
             actionStackView.isHidden = !shouldActionShow
             viewReplyButton.isHidden = true
-            replyButton.isHidden = false
             topAvatarImageViewConstraint.constant = 16
             leadingAvatarImageViewConstraint.constant = 16
         case .commentPreview(let shouldActionShow):
             contentLabel.isExpanded = false
             actionStackView.isHidden = !shouldActionShow
             viewReplyButton.isHidden = !comment.isChildrenExisted
-            replyButton.isHidden = false
             topAvatarImageViewConstraint.constant = 16
             leadingAvatarImageViewConstraint.constant = 16
         case .reply(let contentExpanded, let shouldActionShow, _):
             contentLabel.isExpanded = contentExpanded
             actionStackView.isHidden = !shouldActionShow
             viewReplyButton.isHidden = true
-            replyButton.isHidden = true
             topAvatarImageViewConstraint.constant = 0
             leadingAvatarImageViewConstraint.constant = 52
         }

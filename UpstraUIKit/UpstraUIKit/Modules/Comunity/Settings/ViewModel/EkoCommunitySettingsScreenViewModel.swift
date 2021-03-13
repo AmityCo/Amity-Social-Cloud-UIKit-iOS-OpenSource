@@ -15,6 +15,7 @@ final class EkoCommunitySettingsScreenViewModel: EkoCommunitySettingsScreenViewM
     private let communityLeaveController: EkoCommunityLeaveControllerProtocol
     private let communityDeleteController: EkoCommunityDeleteControllerProtocol
     private let userRolesController: EkoCommunityUserRolesControllerProtocol
+    private let communityInfoController: EkoCommunityInfoControllerProtocol
     
     // MARK: - Properties
     var community: EkoCommunityModel
@@ -23,11 +24,12 @@ final class EkoCommunitySettingsScreenViewModel: EkoCommunitySettingsScreenViewM
     init(community: EkoCommunityModel,
          communityLeaveController: EkoCommunityLeaveControllerProtocol,
          communityDeleteController: EkoCommunityDeleteControllerProtocol,
-         userRolesController: EkoCommunityUserRolesControllerProtocol) {
+         userRolesController: EkoCommunityUserRolesControllerProtocol, communityInfoController: EkoCommunityInfoControllerProtocol) {
         self.community = community
         self.communityLeaveController = communityLeaveController
         self.communityDeleteController = communityDeleteController
         self.userRolesController = userRolesController
+        self.communityInfoController = communityInfoController
     }
 }
 
@@ -56,6 +58,19 @@ extension EkoCommunitySettingsScreenViewModel {
                 strongSelf.delegate?.screenViewModel(strongSelf, failure: error)
             } else {
                 strongSelf.delegate?.screenViewModel(strongSelf, didDeleteCommunitySuccess: true)	
+            }
+        }
+    }
+    
+    func getCommunity() {
+        communityInfoController.getCommunity { [weak self] (result) in
+            guard let strongSelf = self else { return }
+            switch result {
+            case .success(let community):
+                self?.community = community
+                self?.delegate?.screenViewModel(strongSelf, didGetCommunitySuccess: community)
+            case .failure:
+                break
             }
         }
     }

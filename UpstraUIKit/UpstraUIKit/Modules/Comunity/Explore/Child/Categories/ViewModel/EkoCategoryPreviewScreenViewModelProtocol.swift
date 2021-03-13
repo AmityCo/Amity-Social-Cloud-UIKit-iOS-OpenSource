@@ -9,17 +9,22 @@
 import UIKit
 import EkoChat
 
-protocol EkoCategoryPreviewScreenViewModelAction {
-    func getCategory()
+protocol EkoCategoryPreviewCommunityScreenViewModelDelegate: class {
+    func screenViewModel(_ viewModel: EkoCategoryPreviewScreenViewModelType, didRetrieveCategory category: [EkoCommunityCategoryModel], isEmpty: Bool)
+    func screenViewModel(_ viewModel: EkoCategoryPreviewScreenViewModelType, didFail error: EkoError)
 }
 
 protocol EkoCategoryPreviewScreenViewModelDataSource {
-    var categories: EkoBoxBinding<[EkoCommunityCategoryModel]> { get }
-    func numberOfItem() -> Int
-    func item(at indexPath: IndexPath) -> EkoCommunityCategoryModel
+    func category(at indexPath: IndexPath) -> EkoCommunityCategoryModel
+    func numberOfCategory() -> Int
+}
+
+protocol EkoCategoryPreviewScreenViewModelAction {
+    func retrieveCategory()
 }
 
 protocol EkoCategoryPreviewScreenViewModelType: EkoCategoryPreviewScreenViewModelAction, EkoCategoryPreviewScreenViewModelDataSource {
+    var delegate: EkoCategoryPreviewCommunityScreenViewModelDelegate? { get set }
     var action: EkoCategoryPreviewScreenViewModelAction { get }
     var dataSource: EkoCategoryPreviewScreenViewModelDataSource { get }
 }

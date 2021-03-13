@@ -86,6 +86,7 @@ final class EkoPostTableView: UITableView, UITableViewDelegate, UITableViewDataS
         register(cell: EkoPostGalleryTableViewCell.self)
         register(cell: EkoPostFileTableViewCell.self)
         register(cell: EkoPostPlaceHolderTableViewCell.self)
+        register(cell: EkoPostViewAllCommentsTableViewCell.self)
     }
     
     

@@ -173,6 +173,15 @@ extension EkoFeedViewController: EkoPostTableViewDelegate {
         }
     }
     
+    func tableView(_ tableView: EkoPostTableView, didSelectRowAt indexPath: IndexPath) {
+        // skip header section handling
+        guard indexPath.section > 0 else { return }
+        
+        let singleComponent = screenViewModel.dataSource.postComponents(in: indexPath.section)
+        let postId = singleComponent._composable.post.id
+        EkoEventHandler.shared.postDidtap(from: self, postId: postId)
+    }
+    
     func tableView(_ tableView: EkoPostTableView, heightForFooterInSection section: Int) -> CGFloat {
         let postComponentsCount = screenViewModel.dataSource.numberOfPostComponents() - (headerView == nil ? 1:0)
         return postComponentsCount > 0 ? 0 : tableView.frame.height
@@ -348,7 +357,7 @@ extension EkoFeedViewController: EkoPostFooterProtocolHandlerDelegate {
 // MARK: EkoPostPreviewCommentDelegate
 extension EkoFeedViewController: EkoPostPreviewCommentDelegate {
     
-    func didPerformAction(_ cell: EkoPostPreviewCommentProtocol, action: EkoPostPreviewCommentAction) {
+    public func didPerformAction(_ cell: EkoPostPreviewCommentProtocol, action: EkoPostPreviewCommentAction) {
         guard let post = cell.post else { return }
         switch action {
         case .tapAvatar(let comment):
@@ -361,7 +370,7 @@ extension EkoFeedViewController: EkoPostPreviewCommentDelegate {
             if let comment = post.latestComments.first(where: { $0.id == comment.id }) {
                 handleCommentOption(comment: comment)
             }
-        case .tapReply(let comment):
+        case .tapReply:
             EkoEventHandler.shared.postDidtap(from: self, postId: post.id)
         case .tapExpandableLabel:
             EkoEventHandler.shared.postDidtap(from: self, postId: post.id)

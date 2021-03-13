@@ -10,7 +10,13 @@ import UIKit
 import EkoChat
 
 protocol EkoCommunityMemberSettingsTableViewCellDelegate: class {
-    func cellDidActionOption(at indexPath: IndexPath)
+    func didPerformAction(at indexPath: IndexPath, action: EkoCommunityMemberAction)
+}
+
+public enum EkoCommunityMemberAction {
+    case tapAvatar
+    case tapDisplayName
+    case tapOption
 }
 
 final class EkoCommunityMemberSettingsTableViewCell: UITableViewCell, Nibbable {
@@ -55,12 +61,19 @@ private extension EkoCommunityMemberSettingsTableViewCell {
     func setupAvatarView() {
         avatarView.backgroundColor = EkoColorSet.secondary.blend(.shade4)
         avatarView.placeholder = EkoIconSet.defaultAvatar
+        avatarView.actionHandler = { [weak self] in
+            self?.avatarTap()
+        }
     }
     
     func setupDisplayName() {
         displayNameLabel.text = ""
         displayNameLabel.font = EkoFontSet.bodyBold
         displayNameLabel.textColor = EkoColorSet.base
+        displayNameLabel.isUserInteractionEnabled = true
+        
+        let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(displayNameTap(_:)))
+        displayNameLabel.addGestureRecognizer(tapGestureRecognizer)
     }
     
     func setupOptionButton() {
@@ -72,6 +85,14 @@ private extension EkoCommunityMemberSettingsTableViewCell {
 // MARK: - Action
 private extension EkoCommunityMemberSettingsTableViewCell {
     @IBAction func optionTap() {
-        delegate?.cellDidActionOption(at: indexPath)
+        delegate?.didPerformAction(at: indexPath, action: .tapOption)
+    }
+    
+    @objc func displayNameTap(_ sender: UIGestureRecognizer) {
+        delegate?.didPerformAction(at: indexPath, action: .tapDisplayName)
+    }
+    
+    func avatarTap() {
+        delegate?.didPerformAction(at: indexPath, action: .tapAvatar)
     }
 }

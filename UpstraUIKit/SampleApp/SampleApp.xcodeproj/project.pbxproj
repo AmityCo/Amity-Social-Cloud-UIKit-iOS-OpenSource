@@ -42,6 +42,11 @@
 		B78DA4B324BEDBD100EE902B /* ChatFeatureViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B78DA4B224BEDBD100EE902B /* ChatFeatureViewController.swift */; };
 		B78FC54024CAAA2F0083CBB4 /* UserDefault.swift in Sources */ = {isa = PBXBuildFile; fileRef = B78FC53D24CAAA2F0083CBB4 /* UserDefault.swift */; };
 		B78FC54124CAAA2F0083CBB4 /* Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = B78FC53F24CAAA2F0083CBB4 /* Theme.swift */; };
+		D495077425E637C1005C033F /* DataListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D495077325E637C1005C033F /* DataListViewController.swift */; };
+		D4AFF1CE25ECE8AD002C001C /* PostPreviewTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = D4AFF1CC25ECE8AD002C001C /* PostPreviewTableViewCell.xib */; };
+		D4AFF1CF25ECE8AD002C001C /* PostPreviewTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4AFF1CD25ECE8AD002C001C /* PostPreviewTableViewCell.swift */; };
+		D4AFF23225ED1E7C002C001C /* GlobalPostsFeedViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4AFF23125ED1E7C002C001C /* GlobalPostsFeedViewController.swift */; };
+		D4AFF23625ED1F88002C001C /* GlobalPostsDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4AFF23525ED1F88002C001C /* GlobalPostsDataSource.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -117,6 +122,11 @@
 		B78DA4B224BEDBD100EE902B /* ChatFeatureViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatFeatureViewController.swift; sourceTree = "<group>"; };
 		B78FC53D24CAAA2F0083CBB4 /* UserDefault.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserDefault.swift; sourceTree = "<group>"; };
 		B78FC53F24CAAA2F0083CBB4 /* Theme.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Theme.swift; sourceTree = "<group>"; };
+		D495077325E637C1005C033F /* DataListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataListViewController.swift; sourceTree = "<group>"; };
+		D4AFF1CC25ECE8AD002C001C /* PostPreviewTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PostPreviewTableViewCell.xib; sourceTree = "<group>"; };
+		D4AFF1CD25ECE8AD002C001C /* PostPreviewTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PostPreviewTableViewCell.swift; sourceTree = "<group>"; };
+		D4AFF23125ED1E7C002C001C /* GlobalPostsFeedViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GlobalPostsFeedViewController.swift; sourceTree = "<group>"; };
+		D4AFF23525ED1F88002C001C /* GlobalPostsDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GlobalPostsDataSource.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -216,6 +226,8 @@
 		B72CDA38256B9BC100F7CAC3 /* Custom Cell */ = {
 			isa = PBXGroup;
 			children = (
+				D4AFF1CD25ECE8AD002C001C /* PostPreviewTableViewCell.swift */,
+				D4AFF1CC25ECE8AD002C001C /* PostPreviewTableViewCell.xib */,
 				B72CDA39256B9BEB00F7CAC3 /* CustomMessageTextIncomingTableViewCell.swift */,
 				B72CDA3A256B9BEB00F7CAC3 /* CustomMessageTextIncomingTableViewCell.xib */,
 			);
@@ -299,6 +311,9 @@
 				B78DA4B224BEDBD100EE902B /* ChatFeatureViewController.swift */,
 				B754DBEB24C6F6B5005A8282 /* SettingViewController.swift */,
 				B754DBED24C6F6BB005A8282 /* RegisterViewController.swift */,
+				D495077325E637C1005C033F /* DataListViewController.swift */,
+				D4AFF23125ED1E7C002C001C /* GlobalPostsFeedViewController.swift */,
+				D4AFF23525ED1F88002C001C /* GlobalPostsDataSource.swift */,
 			);
 			path = Feature;
 			sourceTree = "<group>";
@@ -431,6 +446,7 @@
 				B78DA48224BED7DA00EE902B /* Assets.xcassets in Resources */,
 				B78DA48024BED7D300EE902B /* Main.storyboard in Resources */,
 				0D73AC9625DB8CB5000D73CA /* EkoPostBirthdayTableViewCell.xib in Resources */,
+				D4AFF1CE25ECE8AD002C001C /* PostPreviewTableViewCell.xib in Resources */,
 				B72CDA3C256B9BEB00F7CAC3 /* CustomMessageTextIncomingTableViewCell.xib in Resources */,
 				0D73AC9725DB8CB5000D73CA /* EkoPostNewJoinerTableViewCell.xib in Resources */,
 			);
@@ -457,13 +473,17 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D495077425E637C1005C033F /* DataListViewController.swift in Sources */,
 				B78DA4AF24BED89000EE902B /* FeatureViewController.swift in Sources */,
 				B78DA47924BED7D300EE902B /* AppDelegate.swift in Sources */,
 				0D73AC9525DB8CB5000D73CA /* EkoPostBirthdayTableViewCell.swift in Sources */,
 				0D73AC9325DB8CB5000D73CA /* EkoPostThumbsupTableViewCell.swift in Sources */,
 				0D73AC9825DB8CB5000D73CA /* EkoPostNewJoinerTableViewCell.swift in Sources */,
 				B72861D924C573B100ECC563 /* TabbarViewController.swift in Sources */,
+				D4AFF23225ED1E7C002C001C /* GlobalPostsFeedViewController.swift in Sources */,
 				0D73AC9E25DB9332000D73CA /* BirthdayPostComponent.swift in Sources */,
+				D4AFF1CF25ECE8AD002C001C /* PostPreviewTableViewCell.swift in Sources */,
+				D4AFF23625ED1F88002C001C /* GlobalPostsDataSource.swift in Sources */,
 				B74ADE5E24F3B026009C86DA /* UserDefaults.swift in Sources */,
 				B754DBEE24C6F6BB005A8282 /* RegisterViewController.swift in Sources */,
 				B78DA47B24BED7D300EE902B /* SceneDelegate.swift in Sources */,
@@ -651,6 +671,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 37Z583JR6K;
+				"EXCLUDED_ARCHS[sdk=iphonesimulator*]" = arm64;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/../Distribution",
@@ -660,7 +681,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.10.0;
+				MARKETING_VERSION = 1.11.3;
 				PRODUCT_BUNDLE_IDENTIFIER = com.ekoapp.sample;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_INCLUDE_PATHS = "";
@@ -676,6 +697,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 37Z583JR6K;
+				"EXCLUDED_ARCHS[sdk=iphonesimulator*]" = arm64;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/../Distribution",
@@ -685,7 +707,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.10.0;
+				MARKETING_VERSION = 1.11.3;
 				PRODUCT_BUNDLE_IDENTIFIER = com.ekoapp.sample;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = RELEASE;

@@ -32,6 +32,8 @@ final class EkoPostThumbsupTableViewCell: UITableViewCell {
         static let CONTENT_MAXIMUM_LINE = 8
     }
     
+    // MARK: - IBOutlet Properties
+    @IBOutlet private var containerView: UIView!
     @IBOutlet private var titleLabel: UILabel!
     @IBOutlet private var senderAvatarView: EkoAvatarView!
     @IBOutlet private var senderDisplayNameLabel: UILabel!
@@ -55,8 +57,9 @@ final class EkoPostThumbsupTableViewCell: UITableViewCell {
     // MARK: - Setup views
     private func setupView() {
         selectionStyle = .none
-        backgroundColor = .white
-        contentView.backgroundColor = .white
+        backgroundColor = .clear
+        contentView.backgroundColor = .clear
+        containerView.backgroundColor = .white
         setupTitleLabel()
         setupSender()
         setupReceiver()

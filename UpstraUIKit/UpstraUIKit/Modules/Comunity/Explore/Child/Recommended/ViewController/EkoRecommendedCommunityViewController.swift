@@ -16,36 +16,31 @@ public final class EkoRecommendedCommunityViewController: UIViewController, EkoR
     @IBOutlet private var collectionView: UICollectionView!
     
     // MARK: - Properties
-    private let screenViewModel: EkoRecommendedCommunityScreenViewModelType
+    private var screenViewModel: EkoRecommendedCommunityScreenViewModelType!
     
     // MARK: - Callback
     public var selectedCommunityHandler: ((EkoCommunityModel) -> Void)?
-    public var emptyDataHandler: ((Bool) -> Void)?
+    public var emptyHandler: ((Bool) -> Void)?
+    
     // MARK: - View lifecycle
-    private init(viewModel: EkoRecommendedCommunityScreenViewModelType) {
-        self.screenViewModel = viewModel
-        super.init(nibName: EkoRecommendedCommunityViewController.identifier, bundle: UpstraUIKitManager.bundle)
-    }
-    
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    
     override public func viewDidLoad() {
         super.viewDidLoad()
         setupView()
-        bindingViewModel()
+        screenViewModel.delegate = self
+        screenViewModel.action.retrieveRecommended()
     }
     
     public static func make() -> EkoRecommendedCommunityViewController {
-        let viewModel: EkoRecommendedCommunityScreenViewModelType = EkoRecommendedCommunityScreenViewModel()
-        return EkoRecommendedCommunityViewController(viewModel: viewModel)
+        let recommendedController = EkoCommunityRecommendedController()
+        let viewModel = EkoRecommendedCommunityScreenViewModel(recommendedController: recommendedController)
+        let vc = EkoRecommendedCommunityViewController(nibName: EkoRecommendedCommunityViewController.identifier, bundle: UpstraUIKitManager.bundle)
+        vc.screenViewModel = viewModel
+        return vc
     }
     
     // MARK: - Refreshahble
-    
     func handleRefreshing() {
-        screenViewModel.action.getRecommendedCommunity()
+        screenViewModel.action.retrieveRecommended()
     }
     
 }
@@ -75,51 +70,44 @@ private extension EkoRecommendedCommunityViewController {
         layout?.sectionInset = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
         
         collectionView.showsHorizontalScrollIndicator = false
-        collectionView.register(EkoRecommendedCommunityCollectionViewCell.nib, forCellWithReuseIdentifier: EkoRecommendedCommunityCollectionViewCell.identifier)
+        
+        collectionView.register(EkoRecommendedCommunityCollectionViewCell.self)
         collectionView.delegate = self
         collectionView.dataSource = self
     }
     
 }
 
-// MARK: - Binding ViewModel
-private extension EkoRecommendedCommunityViewController {
-    func bindingViewModel() {
-        screenViewModel.action.getRecommendedCommunity()
-        
-        screenViewModel.dataSource.community.bind { [weak self] _ in
-            self?.collectionView.reloadData()
-        }
-        screenViewModel.dataSource.isNoData.bind { [weak self] status in
-            self?.emptyDataHandler?(status)
-        }
-    }
-}
-
-
-
+// MARK: - UICollectionViewDelegateFlowLayout
 extension EkoRecommendedCommunityViewController: UICollectionViewDelegateFlowLayout {
     public func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        guard let item = screenViewModel.dataSource.item(at: indexPath) else { return }
-        selectedCommunityHandler?(item)
+        let community = screenViewModel.dataSource.community(at: indexPath)
+        selectedCommunityHandler?(community)
     }
 }
 
+// MARK: - UICollectionViewDataSource
 extension EkoRecommendedCommunityViewController: UICollectionViewDataSource {
     public func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return screenViewModel.dataSource.community.value.count
+        return screenViewModel.dataSource.numberOfRecommended()
     }
     
     public func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: EkoRecommendedCommunityCollectionViewCell.identifier, for: indexPath)
-        configure(for: cell, at: indexPath)
+        let cell: EkoRecommendedCommunityCollectionViewCell = collectionView.dequeueReusableCell(for: indexPath)
+        let community = screenViewModel.dataSource.community(at: indexPath)
+        cell.display(with: community)
         return cell
     }
+}
+
+// MARK: - EkoRecommendedCommunityScreenViewModelDelegate
+extension EkoRecommendedCommunityViewController: EkoRecommendedCommunityScreenViewModelDelegate {
+    func screenViewModel(_ viewModel: EkoRecommendedCommunityScreenViewModelType, didRetrieveRecommended recommended: [EkoCommunityModel], isEmpty: Bool) {
+        collectionView.reloadData()
+        emptyHandler?(isEmpty)
+    }
     
-    private func configure(for cell: UICollectionViewCell, at indexPath: IndexPath) {
-        if let cell = cell as? EkoRecommendedCommunityCollectionViewCell {
-            guard let item = screenViewModel.dataSource.item(at: indexPath) else { return }
-            cell.display(with: item)
-        }
+    func screenViewModel(_ viewModel: EkoRecommendedCommunityScreenViewModelType, didFail error: EkoError) {
+        emptyHandler?(true)
     }
 }

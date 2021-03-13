@@ -7,8 +7,10 @@
 //
 
 import EkoChat
-
-struct EkoCommentModel {
+/**
+ Eko Comment model
+ */
+public struct EkoCommentModel {
     let id: String
     let displayName: String
     let fileId: String

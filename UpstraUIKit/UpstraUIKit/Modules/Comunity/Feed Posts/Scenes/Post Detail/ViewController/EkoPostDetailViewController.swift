@@ -126,6 +126,7 @@ public final class EkoPostDetailViewController: EkoViewController {
     
     private func setupComposeBarView() {
         commentComposeBarView.delegate = self
+        commentComposeBarView.isHidden = true
     }
     
     @objc private func optionTap() {
@@ -175,10 +176,10 @@ extension EkoPostDetailViewController: EkoPostTableViewDelegate {
     }
     
     func tableView(_ tableView: EkoPostTableView, heightForFooterInSection section: Int) -> CGFloat {
-        return 1.0
+        return section == 0 ? 0 : 1.0
     }
     
-    func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
+    func tableView(_ tableView: EkoPostTableView, viewForFooterInSection section: Int) -> UIView? {
         let separatorView = UIView(frame: CGRect(x: tableView.separatorInset.left, y: 0.0, width: tableView.frame.width - tableView.separatorInset.right - tableView.separatorInset.left, height: 1.0))
         separatorView.backgroundColor = EkoColorSet.secondary.blend(.shade4)
         return separatorView
@@ -194,7 +195,7 @@ extension EkoPostDetailViewController: EkoPostTableViewDataSource {
     }
     
     func tableView(_ tableView: EkoPostTableView, numberOfRowsInSection section: Int) -> Int {
-        return screenViewModel.dataSource.numberOfItems(in: section)
+        return screenViewModel.dataSource.numberOfItems(tableView, in: section)
     }
     
     func tableView(_ tableView: EkoPostTableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -379,7 +380,9 @@ extension EkoPostDetailViewController: EkoPostFooterProtocolHandlerDelegate {
             }
         case .tapComment:
             parentComment = nil
-            _ = commentComposeBarView.becomeFirstResponder()
+            if post.isGroupMember {
+                _ = commentComposeBarView.becomeFirstResponder()
+            }
         }
     }
     
@@ -450,7 +453,7 @@ extension EkoPostDetailViewController: EkoKeyboardServiceDelegate {
 extension EkoPostDetailViewController: EkoExpandableLabelDelegate {
     
     public func expandableLabeldidTap(_ label: EkoExpandableLabel) {
-        // Internally left empty
+        // Intentionally left empty
     }
     
     public func willExpandLabel(_ label: EkoExpandableLabel) {

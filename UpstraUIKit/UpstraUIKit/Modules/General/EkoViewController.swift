@@ -153,7 +153,7 @@ public class EkoViewController: UIViewController {
     final func generalDismiss() {
         switch navigationBarType {
         case .root, .custom:
-            // Internally left empty
+            // Intentionally left empty
             break
         case .present:
             dismiss(animated: true, completion: nil)

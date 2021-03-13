@@ -24,22 +24,22 @@ extension UILabel {
         case left(image: UIImage?), right(image: UIImage?), both(imageLeft: UIImage?, imageRight: UIImage?)
     }
     
-    func setImageWithText(position: Position) {
+    func setImageWithText(position: Position, size: CGSize? = nil, tintColor: UIColor? = nil) {
         // Initialize mutable string
-        let completeText = NSMutableAttributedString(string: "")
-        let imageOffsetY: CGFloat = -5
+        let completeText = NSMutableAttributedString()
+        let imageOffsetY: CGFloat = -2
         switch position {
         case .left(let image):
             // Add image to mutable string
             if image != nil {
                 let imageLeftAttachment = NSTextAttachment()
-                imageLeftAttachment.image = image
+                imageLeftAttachment.image = image?.setTintColor(tintColor ?? EkoColorSet.base)
                 imageLeftAttachment.bounds = CGRect(x: 0, y: imageOffsetY, width: imageLeftAttachment.image!.size.width, height: imageLeftAttachment.image!.size.height)
                 let attachmentLeftString = NSAttributedString(attachment: imageLeftAttachment)
                 completeText.append(attachmentLeftString)
             }
             // Add your text to mutable string
-            let textAfterIcon = NSAttributedString(string: text ?? "")
+            let textAfterIcon = attributedText ?? NSAttributedString(string: text ?? "")
             // Add image to mutable string
 
             completeText.append(textAfterIcon)
@@ -47,13 +47,13 @@ extension UILabel {
             attributedText = completeText
         case .right(let image):
             // Add your text to mutable string
-            let textBeforeIcon = NSAttributedString(string: text ?? "")
+            let textBeforeIcon = attributedText ?? NSAttributedString(string: text ?? "")
             completeText.append(textBeforeIcon)
             // Add image to mutable string
             if image != nil {
                 let imageRightAttachment = NSTextAttachment()
-                imageRightAttachment.image = image
-                imageRightAttachment.bounds = CGRect(x: 0, y: imageOffsetY, width: imageRightAttachment.image!.size.width, height: imageRightAttachment.image!.size.height)
+                imageRightAttachment.image = image?.setTintColor(tintColor ?? EkoColorSet.base)
+                imageRightAttachment.bounds = CGRect(x: 0, y: imageOffsetY, width: size?.width ?? imageRightAttachment.image!.size.width, height: size?.height ?? imageRightAttachment.image!.size.height)
                 let attachmentRightString = NSAttributedString(attachment: imageRightAttachment)
                 completeText.append(attachmentRightString)
             }
@@ -62,20 +62,20 @@ extension UILabel {
             // Add image to mutable string
             if imageLeft != nil {
                 let imageLeftAttachment = NSTextAttachment()
-                imageLeftAttachment.image = imageLeft
-                imageLeftAttachment.bounds = CGRect(x: 0, y: imageOffsetY, width: imageLeftAttachment.image!.size.width, height: imageLeftAttachment.image!.size.height)
+                imageLeftAttachment.image = imageLeft?.setTintColor(tintColor ?? EkoColorSet.base)
+                imageLeftAttachment.bounds = CGRect(x: 0, y: imageOffsetY, width: size?.width ?? imageLeftAttachment.image!.size.width, height: size?.height ?? imageLeftAttachment.image!.size.height)
                 let attachmentLeftString = NSAttributedString(attachment: imageLeftAttachment)
                 completeText.append(attachmentLeftString)
             }
             
             // Add your text to mutable string
-            let textCenterIcon = NSAttributedString(string: text ?? "")
+            let textCenterIcon = attributedText ?? NSAttributedString(string: text ?? "")
             completeText.append(textCenterIcon)
             // Add image to mutable string
             if imageRight != nil {
                 let imageRightAttachment = NSTextAttachment()
-                imageRightAttachment.image = imageRight
-                imageRightAttachment.bounds = CGRect(x: 0, y: imageOffsetY, width: imageRightAttachment.image!.size.width, height: imageRightAttachment.image!.size.height)
+                imageRightAttachment.image = imageRight?.setTintColor(tintColor ?? EkoColorSet.base)
+                imageRightAttachment.bounds = CGRect(x: 0, y: imageOffsetY, width: size?.width ?? imageRightAttachment.image!.size.width, height: size?.height ?? imageRightAttachment.image!.size.height)
                 let attachmentRightString = NSAttributedString(attachment: imageRightAttachment)
                 completeText.append(attachmentRightString)
             }
@@ -92,4 +92,5 @@ extension UILabel {
         let textSize = NSString(string: text).boundingRect(with: size, options: .usesLineFragmentOrigin, attributes: [.font: font],context: nil).size
         return textSize.height > bounds.size.height
     }
+    
 }

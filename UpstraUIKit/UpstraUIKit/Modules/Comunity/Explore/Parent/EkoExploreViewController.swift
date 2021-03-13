@@ -24,17 +24,22 @@ public final class EkoExploreViewController: EkoViewController, IndicatorInfoPro
     private let trendingVC = EkoTrendingCommunityViewController.make()
     private let categoryVC = EkoCategoryPreviewViewController.make()
     
-    @IBOutlet var backgroundView: UIView!
+    @IBOutlet private var backgroundView: UIView!
     @IBOutlet private var mainScrollView: UIScrollView!
-    @IBOutlet var recommendedContaienrView: UIView!
-    @IBOutlet var trendingContainerView: UIView!
-    @IBOutlet var categoriesContainerView: UIView!
+    @IBOutlet private var recommendedContaienrView: UIView!
+    @IBOutlet private var trendingContainerView: UIView!
+    @IBOutlet private var categoriesContainerView: UIView!
     
     // MARK: - View lifecycle
     
     public override func viewDidLoad() {
         super.viewDidLoad()
         setupView()
+    }
+    
+    public override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        reloadData()
     }
     
     public static func make() -> EkoExploreViewController {
@@ -46,7 +51,7 @@ public final class EkoExploreViewController: EkoViewController, IndicatorInfoPro
 // MARK: - Setup View
 private extension EkoExploreViewController {
     func setupView() {
-        view.backgroundColor = EkoColorSet.backgroundColor
+        view.backgroundColor = EkoColorSet.secondary.blend(.shade4)
         backgroundView.backgroundColor = EkoColorSet.secondary.blend(.shade4)
         setupScrollView()
         setupRecommended()
@@ -55,7 +60,7 @@ private extension EkoExploreViewController {
     }
     
     private func setupScrollView() {
-        refreshControl.addTarget(self, action: #selector(handleRefreshControl), for: .valueChanged)
+        refreshControl.addTarget(self, action: #selector(reloadData), for: .valueChanged)
         refreshControl.tintColor = EkoColorSet.base.blend(.shade3)
         mainScrollView.refreshControl = refreshControl
         mainScrollView.showsVerticalScrollIndicator = false
@@ -69,10 +74,10 @@ private extension EkoExploreViewController {
             guard let strongSelf = self else { return }
             EkoEventHandler.shared.communityDidTap(from: strongSelf, communityId: community.communityId)
         }
-        
-        recommendedVC.emptyDataHandler = { [weak self] status in
-            self?.recommendedContaienrView.isHidden = status
-            self?.backgroundView.isHidden = status
+
+        recommendedVC.emptyHandler = { [weak self] isEmpty in
+            self?.recommendedContaienrView.isHidden = isEmpty
+            self?.backgroundView.isHidden = isEmpty
         }
     }
     
@@ -83,6 +88,10 @@ private extension EkoExploreViewController {
         trendingVC.selectedCommunityHandler = { [weak self] community in
             guard let strongSelf = self else { return }
             EkoEventHandler.shared.communityDidTap(from: strongSelf, communityId: community.communityId)
+        }
+        
+        trendingVC.emptyHandler = { [weak self] isEmpty in
+            self?.trendingContainerView.isHidden = isEmpty
         }
     }
     
@@ -100,13 +109,16 @@ private extension EkoExploreViewController {
             let categoryVC = EkoCategoryListViewController.make()
             self?.navigationController?.pushViewController(categoryVC, animated: true)
         }
+        
+        categoryVC.emptyHandler = { [weak self] isEmpty in
+            self?.categoriesContainerView.isHidden = isEmpty
+        }
     }
     
-    @objc private func handleRefreshControl() {
+    @objc private func reloadData() {
         recommendedVC.handleRefreshing()
         trendingVC.handleRefreshing()
         categoryVC.handleRefreshing()
-        
         DispatchQueue.main.asyncAfter(deadline: .now() + 1) { [weak self] in
             self?.refreshControl.endRefreshing()
         }

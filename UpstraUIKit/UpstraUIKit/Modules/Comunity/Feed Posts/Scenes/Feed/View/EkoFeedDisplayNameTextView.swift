@@ -33,7 +33,7 @@ class EkoFeedDisplayNameLabel: UILabel {
         addGestureRecognizer(tap)
     }
     
-    func configure(displayName: String, communityName: String?) {
+    func configure(displayName: String, communityName: String?, isOfficial: Bool) {
         self.displayName = displayName
         self.communityName = communityName
         
@@ -44,9 +44,12 @@ class EkoFeedDisplayNameLabel: UILabel {
             attributeString.append(NSAttributedString(string: " ‣ "))
             attributeString.append(NSAttributedString(string: communityName))
         }
-        let attributes: [NSAttributedString.Key : Any] = [.foregroundColor: EkoColorSet.base, .font: EkoFontSet.title]
+        let attributes: [NSAttributedString.Key : Any] = [.foregroundColor: EkoColorSet.base, .font: EkoFontSet.bodyBold]
         attributeString.addAttributes(attributes, range: NSRange(location: 0, length: attributeString.string.count) )
         attributedText = attributeString
+        
+        let shouldShowBadge = (communityName != nil && isOfficial)
+        setImageWithText(position: .right(image: shouldShowBadge ? EkoIconSet.iconBadgeCheckmark : nil), size: CGSize(width: 18, height: 18), tintColor: EkoColorSet.highlight)
     }
     
     @objc func tapFunction(sender: UITapGestureRecognizer) {

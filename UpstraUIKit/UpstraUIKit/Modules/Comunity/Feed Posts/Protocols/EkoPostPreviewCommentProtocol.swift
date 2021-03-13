@@ -8,18 +8,18 @@
 
 import UIKit
 
-protocol EkoPostPreviewCommentProtocol: UITableViewCell {
+public protocol EkoPostPreviewCommentProtocol: UITableViewCell {
     var delegate: EkoPostPreviewCommentDelegate? { get set }
     var post: EkoPostModel? { get }
     
     func display(post: EkoPostModel, comment: EkoCommentModel?)
 }
 
-protocol EkoPostPreviewCommentDelegate: class {
+public protocol EkoPostPreviewCommentDelegate: class {
     func didPerformAction(_ cell: EkoPostPreviewCommentProtocol, action: EkoPostPreviewCommentAction)
 }
 
-enum EkoPostPreviewCommentAction {
+public enum EkoPostPreviewCommentAction {
     case tapAvatar(comment: EkoCommentModel)
     case tapLike(comment: EkoCommentModel)
     case tapOption(comment: EkoCommentModel)

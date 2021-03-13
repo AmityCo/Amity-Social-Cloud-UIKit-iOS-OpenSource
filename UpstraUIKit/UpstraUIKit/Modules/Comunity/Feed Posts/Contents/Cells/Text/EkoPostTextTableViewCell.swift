@@ -13,7 +13,7 @@ public final class EkoPostTextTableViewCell: UITableViewCell, Nibbable, EkoPostP
     weak var delegate: EkoPostDelegate?
     
     private enum Constant {
-        static let CONTENT_MAXIMUM_LINE = 8
+        static let ContentMaximumLine = 8
     }
     
     // MARK: - IBOutlet Properties
@@ -26,6 +26,7 @@ public final class EkoPostTextTableViewCell: UITableViewCell, Nibbable, EkoPostP
     public override func awakeFromNib() {
         super.awakeFromNib()
         setupView()
+        setupContentLabel()
     }
     
     public override func prepareForReuse() {
@@ -47,7 +48,6 @@ public final class EkoPostTextTableViewCell: UITableViewCell, Nibbable, EkoPostP
         selectionStyle = .none
         backgroundColor = EkoColorSet.backgroundColor
         contentView.backgroundColor = EkoColorSet.backgroundColor
-        setupContentLabel()
     }
     
     private func setupContentLabel() {
@@ -55,8 +55,9 @@ public final class EkoPostTextTableViewCell: UITableViewCell, Nibbable, EkoPostP
         contentLabel.textColor = EkoColorSet.base
         contentLabel.shouldCollapse = false
         contentLabel.textReplacementType = .character
-        contentLabel.numberOfLines = Constant.CONTENT_MAXIMUM_LINE
+        contentLabel.numberOfLines = Constant.ContentMaximumLine
         contentLabel.isExpanded = false
+        contentLabel.delegate = self
     }
     
     // MARK: - Perform Action

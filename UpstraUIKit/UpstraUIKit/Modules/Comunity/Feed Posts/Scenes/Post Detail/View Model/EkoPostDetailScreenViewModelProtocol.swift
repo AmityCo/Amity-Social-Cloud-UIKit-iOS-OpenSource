@@ -58,7 +58,7 @@ protocol EkoPostDetailScreenViewModelDelegate: class {
 protocol EkoPostDetailScreenViewModelDataSource {
     var post: EkoPostModel? { get }
     func numberOfSection() -> Int
-    func numberOfItems(in section: Int) -> Int
+    func numberOfItems(_ tableView: EkoPostTableView, in section: Int) -> Int
     func item(at indexPath: IndexPath) -> PostDetailViewModel
 }
 

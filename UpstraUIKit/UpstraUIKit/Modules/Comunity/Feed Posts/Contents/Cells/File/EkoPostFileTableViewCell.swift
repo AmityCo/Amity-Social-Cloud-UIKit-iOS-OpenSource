@@ -12,8 +12,8 @@ public final class EkoPostFileTableViewCell: UITableViewCell, Nibbable, EkoPostP
     weak var delegate: EkoPostDelegate?
     
     private enum Constant {
-        static let CONTENT_MAXIMUM_LINE = 8
-        static let CONTENT_ATTACH_MAXIMUM_LINE = 3
+        static let ContentMaximumLine = 8
+        static let ContentAttachMaximumLine = 3
     }
     
     // MARK: - IBOutlet Properties
@@ -27,6 +27,8 @@ public final class EkoPostFileTableViewCell: UITableViewCell, Nibbable, EkoPostP
     public override func awakeFromNib() {
         super.awakeFromNib()
         setupView()
+        setupFileTableView()
+        setupContentLabel()
     }
     
     public override func prepareForReuse() {
@@ -39,10 +41,13 @@ public final class EkoPostFileTableViewCell: UITableViewCell, Nibbable, EkoPostP
         self.post = post
         self.indexPath = indexPath
         fileTableView.configure(files: post.files)
-        heightConstraint.constant = EkoFileTableView.height(for: post.files.count, isEdtingMode: false, isExpanded: false)
         contentLabel.text = post.text
         contentLabel.isExpanded = shouldExpandContent
-        contentLabel.numberOfLines = !post.files.isEmpty ? Constant.CONTENT_ATTACH_MAXIMUM_LINE : Constant.CONTENT_MAXIMUM_LINE
+        contentLabel.numberOfLines = !post.files.isEmpty ? Constant.ContentAttachMaximumLine : Constant.ContentMaximumLine
+        
+        let isFileTableViewExpanded = post.displayType == .postDetail
+        fileTableView.isExpanded = isFileTableViewExpanded
+        heightConstraint.constant = EkoFileTableView.height(for: post.files.count, isEdtingMode: false, isExpanded: isFileTableViewExpanded)
     }
     
     // MARK: - Setup views
@@ -50,9 +55,6 @@ public final class EkoPostFileTableViewCell: UITableViewCell, Nibbable, EkoPostP
         selectionStyle = .none
         backgroundColor = EkoColorSet.backgroundColor
         contentView.backgroundColor = EkoColorSet.backgroundColor
-        
-        setupFileTableView()
-        setupContentLabel()
     }
     
     private func setupFileTableView() {
@@ -65,7 +67,7 @@ public final class EkoPostFileTableViewCell: UITableViewCell, Nibbable, EkoPostP
         contentLabel.textColor = EkoColorSet.base
         contentLabel.shouldCollapse = false
         contentLabel.textReplacementType = .character
-        contentLabel.numberOfLines = Constant.CONTENT_MAXIMUM_LINE
+        contentLabel.numberOfLines = Constant.ContentMaximumLine
         contentLabel.isExpanded = false
         contentLabel.delegate = self
     }

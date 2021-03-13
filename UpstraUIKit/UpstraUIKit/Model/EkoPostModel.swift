@@ -10,19 +10,9 @@ import EkoChat
 import UIKit
 
 public class EkoPostModel {
-    enum PostDisplayType {
+    public enum PostDisplayType {
         case feed
         case postDetail
-        
-        var settings: (shouldShowOption: Bool, shouldExpandContent: Bool) {
-            switch self {
-            case .feed:
-                return (shouldShowOption: true, shouldExpandContent: false)
-            case .postDetail:
-                return (shouldShowOption: false, shouldExpandContent: true)
-            }
-        }
-        
     }
     
     enum DataType: String {
@@ -40,22 +30,25 @@ public class EkoPostModel {
     var latestComments: [EkoCommentModel] = []
     var isModerator: Bool = false
     let postAsModerator: Bool = false
-    var shouldContentExpand: Bool = false
     // Maps fileId to PostId for child post
     private var fileMap = [String: String]()
     
     public init(post: EkoPost) {
         self.post = post
         self.extractPostInfo()
-        self.latestComments = post.latestComments.map(EkoCommentModel.init)
+        self.latestComments = post.latestComments.map(EkoCommentModel.init).reversed()
     }
     
-    var maximumLastestComments: Int {
-        return latestComments.suffix(2).count
+    public var maximumLastestComments: Int {
+        return min(2, latestComments.count)
+    }
+    
+    public var viewAllCommentSection: Int {
+        return latestComments.count > 2 ? 1 : 0
     }
     
     // Comment will show below last component
-    func getComment(at indexPath: IndexPath, totalComponent index: Int) -> EkoCommentModel? {
+    public func getComment(at indexPath: IndexPath, totalComponent index: Int) -> EkoCommentModel? {
         let comments = Array(latestComments.suffix(maximumLastestComments))
         return comments.count > 0 ? comments[indexPath.row - index] : nil
     }
@@ -118,7 +111,17 @@ public class EkoPostModel {
         return post.postedUser
     }
     
-    var displayType: PostDisplayType = .feed
+    /**
+     * Id of the target this post belongs to.
+     */
+    public var targetId: String {
+        return post.targetId
+    }
+    
+    /**
+     * The displayType of view `Feed/PostDetail`
+     */
+    public var displayType: PostDisplayType = .feed
     
     var dataTypeInternal: DataType = .unknown
     
@@ -148,6 +151,10 @@ public class EkoPostModel {
     
     var communityId: String? {
         return post.targetCommunity?.communityId
+    }
+    
+    var isOfficialCommunity: Bool {
+        return post.targetCommunity?.isOfficial ?? false
     }
     
     var avatarId: String {
@@ -208,4 +215,30 @@ public class EkoPostModel {
     var postTargetType: EkoPostTargetType {
         return post.targetCommunity == nil ? .user : .community
     }
+    
+    // Displaying logic
+    
+    // The flag marking a post for how it will display
+    //   - true : display a full content
+    //   - false : display a partial content with read more button
+    var isExpanding: Bool = false
+    
+    var shouldContentExpand: Bool {
+        switch displayType {
+        case .feed:
+            return isExpanding
+        case .postDetail:
+            return true
+        }
+    }
+    
+    var shouldShowOption: Bool {
+        switch displayType {
+        case .feed:
+            return true
+        case .postDetail:
+            return false
+        }
+    }
+    
 }

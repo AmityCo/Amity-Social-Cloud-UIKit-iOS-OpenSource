@@ -7,45 +7,52 @@
 //
 
 import UIKit
-import EkoChat
 
 final class EkoTrendingCommunityScreenViewModel: EkoTrendingCommunityScreenViewModelType {
-    private let repository = EkoCommunityRepository(client: UpstraUIKitManagerInternal.shared.client)
-    private var trendingCollection: EkoCollection<EkoCommunity>?
-    private var trendingToken: EkoNotificationToken?
-    private let TRENDING_MAX: UInt = 5
     
-    // MARK: - DataSource
-    var community: EkoBoxBinding<[EkoCommunityModel]> = EkoBoxBinding([])
+    weak var delegate: EkoTrendingCommunityScreenViewModelDelegate?
+    
+    // MARK: - Controller
+    private let trendingController: EkoCommunityTrendingControllerProtocol
+    
+    // MARK: - Properties
+    private var communities: [EkoCommunityModel] = []
+    private let debouncer = Debouncer(delay: 0.3)
+    
+    init(trendingController: EkoCommunityTrendingControllerProtocol) {
+        self.trendingController = trendingController
+    }
+    
+}
+
+// MARK: - DataSource {
+extension EkoTrendingCommunityScreenViewModel {
+    
+    func numberOfTrending() -> Int {
+        return communities.count
+    }
+    
+    func community(at indexPath: IndexPath) -> EkoCommunityModel {
+        return communities[indexPath.row]
+    }
+
 }
 
 // MARK: - Action
 extension EkoTrendingCommunityScreenViewModel {
-    func getTrending() {
-        trendingCollection = repository.getTrendingCommunities()
-        trendingToken = trendingCollection?.observe { [weak self] (collection, change, error) in
+    func retrieveTrending() {
+        trendingController.retrieve { [weak self] result in
             guard let strongSelf = self else { return }
-            if collection.dataStatus == .fresh {
-                strongSelf.trendingToken?.invalidate()
-                strongSelf.prepareDataSource()
+            strongSelf.debouncer.run {
+                switch result {
+                case .success(let community):
+                    strongSelf.communities = community
+                    strongSelf.delegate?.screenViewModel(strongSelf, didRetrieveTrending: community, isEmpty: community.isEmpty)
+                case .failure(let error):
+                    strongSelf.delegate?.screenViewModel(strongSelf, didFail: error)
+                }
             }
         }
     }
-    
-    func item(at indexPath: IndexPath) -> EkoCommunityModel? {
-        guard 0..<community.value.count ~= indexPath.row else { return nil }
-        return community.value[indexPath.row]
-    }
-    
-    private func prepareDataSource() {
-        guard let collection = trendingCollection else { return }
-        var community: [EkoCommunityModel] = []
-        for index in 0..<min(collection.count(), TRENDING_MAX) {
-            guard let object = collection.object(at: index) else { continue }
-            let model = EkoCommunityModel(object: object)
-            community.append(model)
-        }
-        self.community.value = community
-    }
-    
+
 }

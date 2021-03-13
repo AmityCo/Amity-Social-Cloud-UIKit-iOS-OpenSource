@@ -51,7 +51,7 @@ open class EkoEventHandler {
     ///
     /// There is no default behavior yet. Please override and implement your own here.
     open func communityChannelDidTap(from source: EkoViewController, channelId: String) {
-        // Internally left empty
+        // Intentionally left empty
     }
     
     /// Event for post
@@ -59,6 +59,9 @@ open class EkoEventHandler {
     ///
     /// A default behavior is navigating to `EkoPostDetailViewController`
     open func postDidtap(from source: EkoViewController, postId: String) {
+        // if post is tapped from EkoPostDetailViewController, ignores the event to avoid page stacking.
+        guard !(source is EkoPostDetailViewController) else { return }
+        
         let viewController = EkoPostDetailViewController.make(withPostId: postId)
         source.navigationController?.pushViewController(viewController, animated: true)
     }

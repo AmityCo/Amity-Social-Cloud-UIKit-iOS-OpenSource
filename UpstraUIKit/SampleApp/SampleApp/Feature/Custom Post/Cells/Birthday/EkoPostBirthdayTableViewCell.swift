@@ -25,7 +25,7 @@ private struct EkoBirthdayModel {
         let inputFormatter = DateFormatter()
         inputFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ssZ"
         let showDate = inputFormatter.date(from: input)
-        inputFormatter.dateFormat = "dd, MMMM"
+        inputFormatter.dateFormat = "dd MMMM"
         if let date = showDate {
             return inputFormatter.string(from: date)
         }
@@ -41,6 +41,7 @@ final class EkoPostBirthdayTableViewCell: UITableViewCell {
     }
     
     // MARK: - IBOutlet Properties
+    @IBOutlet private var containerView: UIView!
     @IBOutlet private var birthdayDateLabel: UILabel!
     @IBOutlet private var displayNameLabel: UILabel!
     @IBOutlet private var jobTitleLabel: UILabel!
@@ -61,8 +62,9 @@ final class EkoPostBirthdayTableViewCell: UITableViewCell {
     
     private func setupView() {
         selectionStyle = .none
-        backgroundColor = .white
-        contentView.backgroundColor = .white
+        backgroundColor = .clear
+        contentView.backgroundColor = .clear
+        containerView.backgroundColor = .white
         setupBirthdayDateLabel()
         setupDisplayNameLabel()
         setupJobLabel()

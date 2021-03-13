@@ -28,14 +28,22 @@ final class EkoCommunitySettingsViewController: EkoViewController {
         screenViewModel.action.getUserRoles()
     }
     
+    public override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+
+        screenViewModel.action.getCommunity()
+    }
+    
     static func make(community: EkoCommunityModel) -> EkoCommunitySettingsViewController {
         let communityLeaveController = EkoCommunityLeaveController(withCommunityId: community.communityId)
         let communityDeleteController = EkoCommunityDeleteController(withCommunityId: community.communityId)
         let userRolesController = EkoCommunityUserRolesController(communityId: community.communityId)
+        let communityInfoController = EkoCommunityInfoController(communityId: community.communityId)
         let viewModel: EkoCommunitySettingsScreenViewModelType = EkoCommunitySettingsScreenViewModel(community: community,
                                                                                                      communityLeaveController: communityLeaveController,
                                                                                                      communityDeleteController: communityDeleteController,
-                                                                                                     userRolesController: userRolesController)
+                                                                                                     userRolesController: userRolesController,
+                                                                                                     communityInfoController: communityInfoController)
         let vc = EkoCommunitySettingsViewController(nibName: EkoCommunitySettingsViewController.identifier, bundle: UpstraUIKitManager.bundle)
         vc.screenViewModel = viewModel
         return vc

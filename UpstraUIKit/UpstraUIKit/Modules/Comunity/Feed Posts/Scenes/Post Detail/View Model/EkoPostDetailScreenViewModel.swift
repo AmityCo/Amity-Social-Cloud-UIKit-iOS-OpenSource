@@ -48,12 +48,15 @@ extension EkoPostDetailScreenViewModel {
         return viewModelArrays.count
     }
     
-    func numberOfItems(in section: Int) -> Int {
+    func numberOfItems(_ tableView: EkoPostTableView, in section: Int) -> Int {
         let viewModels = viewModelArrays[section]
         if case .post(let postComponent) = viewModels.first(where: { $0.isPostType }) {
             // a postComponent has section/row manager, return its component count
             // a single post will be splited as 3 rows
             // example: [.post(component)] => [.header, .body, .footer]
+            if let component = tableView.postDataSource?.getUIComponentForPost(post: postComponent._composable.post, at: section) {
+                return component.getComponentCount(for: section)
+            }
             return postComponent.getComponentCount(for: section)
         }
         return viewModels.count
@@ -121,9 +124,15 @@ extension EkoPostDetailScreenViewModel {
             
             // child comments
             let parentId = model.id
-            let loadedItems = childrenController.childrenComments(for: parentId)
+            var loadedItems = childrenController.childrenComments(for: parentId)
             let itemToDisplay = childrenController.numberOfDisplayingItem(for: parentId)
             let deletedItemCount = childrenController.numberOfDeletedChildren(for: parentId)
+            
+            // loadedItems will be empty on the first load.
+            // set childrenComment directly to reduce number of server request.
+            if loadedItems.isEmpty {
+                loadedItems = model.childrenComment.reversed()
+            }
             
             // model.childrenNumber doesn't include deleted children.
             // so, add it directly to correct the total count.
@@ -172,7 +181,9 @@ extension EkoPostDetailScreenViewModel {
             switch result {
             case .success(let post):
                 self?.post = post
-                self?.prepareData()
+                self?.debouncer.run {
+                    self?.prepareData()
+                }
             case .failure:
                 break
             }
@@ -184,7 +195,9 @@ extension EkoPostDetailScreenViewModel {
             switch result {
             case .success(let comments):
                 self?.comments = comments
-                self?.prepareData()
+                self?.debouncer.run {
+                    self?.prepareData()
+                }
             case .failure:
                 break
             }
@@ -331,7 +344,9 @@ extension EkoPostDetailScreenViewModel {
         // get parent comment at section
         guard case .comment(let comment) = viewModelArrays[section].first else { return }
         childrenController.increasePageNumber(for: comment.id)
-        prepareData()
+        debouncer.run { [weak self] in
+            self?.prepareData()
+        }
     }
 
     // MARK: Report handler

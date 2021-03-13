@@ -17,7 +17,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         
-        UpstraUIKitManager.setup("b3bee858328ef4344a308e4a5a091688d05fdee2be353a2b")
+        UpstraUIKitManager.setup("API_KEY")
         UpstraUIKitManager.set(eventHandler: CustomEventHandler())
         
         guard let preset = Preset(rawValue: UserDefaults.standard.theme ?? 0) else { return false }
@@ -76,7 +76,7 @@ class CustomEventHandler: EkoEventHandler {
     override func userDidTap(from source: EkoViewController, userId: String) {
 
         let settings = EkoUserProfilePageSettings()
-        settings.shouldChatButtonHide = false
+        settings.shouldChatButtonHide = true
         
         let viewController = EkoUserProfilePageViewController.make(withUserId: userId, settings: settings)
         source.navigationController?.pushViewController(viewController, animated: true)
@@ -85,7 +85,7 @@ class CustomEventHandler: EkoEventHandler {
     override func communityDidTap(from source: EkoViewController, communityId: String) {
         
         let settings = EkoCommunityProfilePageSettings()
-        settings.shouldChatButtonHide = false
+        settings.shouldChatButtonHide = true
         
         let viewController = EkoCommunityProfilePageViewController.make(withCommunityId: communityId, settings: settings)
         source.navigationController?.pushViewController(viewController, animated: true)
@@ -98,7 +98,7 @@ class CustomEventHandler: EkoEventHandler {
     override func createPostDidTap(from source: EkoViewController, postTarget: EkoPostTarget) {
         
         let settings = EkoPostEditorSettings()
-        settings.shouldFileButtonHide = true
+        settings.shouldFileButtonHide = false
         
         if source is EkoPostTargetSelectionViewController {
             let viewController = EkoPostCreateViewController.make(postTarget: postTarget, settings: settings)
@@ -133,7 +133,7 @@ extension AppDelegate {
         window = UIWindow()
         UpstraUIKitManager.registerDevice(withUserId: "victimIOS", displayName: "victimIOS".uppercased())
         
-        let postDetailViewController = EkoPostDetailViewController.make(withPostId: "c1bb8697c88a01f6423765984a3e47ac")
+        let postDetailViewController = EkoPostDetailViewController.make(postId: postId)
         window?.rootViewController = postDetailViewController
         window?.makeKeyAndVisible()
     }

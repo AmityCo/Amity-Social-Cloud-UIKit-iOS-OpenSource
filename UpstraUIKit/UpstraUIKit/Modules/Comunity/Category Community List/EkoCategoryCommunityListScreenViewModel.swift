@@ -17,7 +17,7 @@ class EkoCategoryCommunityListScreenViewModel: EkoCategoryCommunityListScreenVie
     weak var delegate: EkoCategoryCommunityListScreenViewModelDelegate?
     
     init(categoryId: String) {
-        communityCollection = communityrepository.getCommunitiesWithKeyword(nil, filter: .all, sortBy: .lastCreated, categoryId: categoryId, includeDeleted: false)
+        communityCollection = communityrepository.getCommunitiesWithKeyword(nil, filter: .all, sortBy: .displayName, categoryId: categoryId, includeDeleted: false)
         communityToken = communityCollection?.observe{ [weak self] _,_,_  in
             guard let strongSelf = self else { return  }
             strongSelf.delegate?.screenViewModelDidUpdateData(strongSelf)

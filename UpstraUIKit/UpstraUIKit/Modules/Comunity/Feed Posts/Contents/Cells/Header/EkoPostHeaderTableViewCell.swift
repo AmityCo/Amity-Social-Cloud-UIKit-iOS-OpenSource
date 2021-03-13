@@ -42,7 +42,7 @@ public final class EkoPostHeaderTableViewCell: UITableViewCell, Nibbable, EkoPos
             self?.avatarTap()
         }
 
-        displayNameLabel.configure(displayName: post.displayName, communityName: post.communityDisplayName)
+        displayNameLabel.configure(displayName: post.displayName, communityName: post.communityDisplayName, isOfficial: post.isOfficialCommunity)
         displayNameLabel.delegate = self
         datetimeLabel.text = post.subtitle
         optionButton.isHidden = !(shouldShowOption && post.isCommentable)
@@ -60,7 +60,7 @@ public final class EkoPostHeaderTableViewCell: UITableViewCell, Nibbable, EkoPos
         backgroundColor = .clear
         contentView.backgroundColor = .clear
         containerView.backgroundColor = EkoColorSet.backgroundColor
-        displayNameLabel.configure(displayName: "Annonymous", communityName: "None")
+        displayNameLabel.configure(displayName: EkoLocalizedStringSet.anonymous.localizedString, communityName: nil, isOfficial: false)
         
         // badge
         badgeLabel.text = EkoLocalizedStringSet.moderator.localizedString + " • "
