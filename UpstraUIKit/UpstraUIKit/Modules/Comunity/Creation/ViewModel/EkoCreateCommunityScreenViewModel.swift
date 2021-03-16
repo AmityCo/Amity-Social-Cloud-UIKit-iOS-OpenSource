@@ -1,5 +1,5 @@
 //
-//  EkoCreateCommunityScrennViewModel.swift
+//  EkoCreateCommunityScreenViewModel.swift
 //  UpstraUIKit
 //
 //  Created by Sarawoot Khunsri on 26/8/2563 BE.
@@ -64,7 +64,7 @@ final class EkoCreateCommunityScreenViewModel: EkoCreateCommunityScreenViewModel
         
         if let community = community.value {
             // Edit community
-            let isValueChanged = (displayName != community.displayName) || (description != community.description) || (community.isPublic != isPublic) || (imageAvatar != nil)
+            let isValueChanged = (displayName != community.displayName) || (description != community.description) || (community.isPublic != isPublic) || (imageAvatar != nil) || (community.categoryId != selectedCategoryId)
             return isRequiredFieldExisted && isValueChanged
         } else {
             if isPublic {

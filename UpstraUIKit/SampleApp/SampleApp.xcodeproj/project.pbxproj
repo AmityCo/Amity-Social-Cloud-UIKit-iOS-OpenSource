@@ -681,7 +681,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.11.3;
+				MARKETING_VERSION = 1.11.4;
 				PRODUCT_BUNDLE_IDENTIFIER = com.ekoapp.sample;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_INCLUDE_PATHS = "";
@@ -707,7 +707,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.11.3;
+				MARKETING_VERSION = 1.11.4;
 				PRODUCT_BUNDLE_IDENTIFIER = com.ekoapp.sample;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = RELEASE;
