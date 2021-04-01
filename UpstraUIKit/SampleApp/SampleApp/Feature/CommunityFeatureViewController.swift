@@ -17,7 +17,7 @@ class CommunityFeatureViewController: UIViewController {
         case newsfeed
         case globalFeed
         case myFeed
-        case customPost
+        
         var text: String {
             switch self {
             case .home:
@@ -28,8 +28,6 @@ class CommunityFeatureViewController: UIViewController {
                 return "GlobalFeed"
             case .myFeed:
                 return "MyFeed"
-            case .customPost:
-                return "Custom Post"
             }
         }
     }
@@ -62,6 +60,12 @@ extension CommunityFeatureViewController: UITableViewDelegate {
         case .home:
             let homepage = EkoCommunityHomePageViewController.make()
             navigationController?.pushViewController(homepage, animated: true)
+            
+            EkoFeedUISettings.shared.register(UINib(nibName: "EkoPostBirthdayTableViewCell", bundle: nil), forCellReuseIdentifier: "EkoPostBirthdayTableViewCell")
+            EkoFeedUISettings.shared.register(UINib(nibName: "EkoPostThumbsupTableViewCell", bundle: nil), forCellReuseIdentifier: "EkoPostThumbsupTableViewCell")
+            EkoFeedUISettings.shared.register(UINib(nibName: "EkoPostNewJoinerTableViewCell", bundle: nil), forCellReuseIdentifier: "EkoPostNewJoinerTableViewCell")
+            EkoFeedUISettings.shared.delegate = self
+            EkoFeedUISettings.shared.dataSource = self
         case .newsfeed:
             let newsfeedViewController = EkoNewsfeedViewController.make()
             navigationController?.pushViewController(newsfeedViewController, animated: true)
@@ -71,15 +75,6 @@ extension CommunityFeatureViewController: UITableViewDelegate {
         case .myFeed:
             let feedViewController = EkoUserFeedViewController.makeMyFeed()
             navigationController?.pushViewController(feedViewController, animated: true)
-        case .customPost:
-            let homepage = EkoCommunityHomePageViewController.make()
-            navigationController?.pushViewController(homepage, animated: true)
-            
-            EkoFeedUISettings.shared.register(UINib(nibName: "EkoPostBirthdayTableViewCell", bundle: nil), forCellReuseIdentifier: "EkoPostBirthdayTableViewCell")
-            EkoFeedUISettings.shared.register(UINib(nibName: "EkoPostThumbsupTableViewCell", bundle: nil), forCellReuseIdentifier: "EkoPostThumbsupTableViewCell")
-            EkoFeedUISettings.shared.register(UINib(nibName: "EkoPostNewJoinerTableViewCell", bundle: nil), forCellReuseIdentifier: "EkoPostNewJoinerTableViewCell")
-            EkoFeedUISettings.shared.delegate = self
-            EkoFeedUISettings.shared.dataSource = self
         }
     }
 }

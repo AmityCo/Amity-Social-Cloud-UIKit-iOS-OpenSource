@@ -18,23 +18,19 @@ final class EkoCommunityMemberScreenViewModel: EkoCommunityMemberScreenViewModel
     // MARK: - Controller
     private let fetchMemberController: EkoCommunityFetchMemberControllerProtocol
     private let removeMemberController: EkoCommunityRemoveMemberControllerProtocol
-    private let userModeratorController: EkoCommunityUserRolesControllerProtocol
     private let addMemberController: EkoCommunityAddMemberControllerProtocol
     private let roleController: EkoCommunityRoleControllerProtocol
     
     // MARK: - Properties
     private var members: [EkoCommunityMembershipModel] = []
-    var community: EkoCommunityModel?
-    var isModerator: Bool = false
+    let community: EkoCommunityModel
     
     init(community: EkoCommunityModel,
          fetchMemberController: EkoCommunityFetchMemberControllerProtocol,
          removeMemberController: EkoCommunityRemoveMemberControllerProtocol,
-         userModeratorController: EkoCommunityUserRolesController,
          addMemberController: EkoCommunityAddMemberControllerProtocol,
          roleController: EkoCommunityRoleControllerProtocol) {
         self.community = community
-        self.userModeratorController = userModeratorController
         self.fetchMemberController = fetchMemberController
         self.removeMemberController = removeMemberController
         self.addMemberController = addMemberController
@@ -67,15 +63,19 @@ extension EkoCommunityMemberScreenViewModel {
             .map { EkoSelectMemberModel(object: $0) }
     }
 }
-
-extension EkoCommunityMemberScreenViewModel {
-    
-    func getUserRoles() {
-        isModerator = userModeratorController.getUserRoles(withUserId: UpstraUIKitManagerInternal.shared.currentUserId, role: .moderator)
+// MARK: - Action
+extension  EkoCommunityMemberScreenViewModel{
+    func getCommunityEditUserPermission(_ completion: ((Bool) -> Void)?) {
+        UpstraUIKitManagerInternal.shared.client.hasPermission(.editCommunityUser, forCommunity: community.communityId) { [weak self] (hasPermission) in
+            guard let strongSelf = self else { return }
+            if strongSelf.community.isCreator {
+                completion?(true)
+            } else {
+                completion?(hasPermission)
+            }
+        }
     }
-    
 }
-
 /// Get Member of community
 extension EkoCommunityMemberScreenViewModel {
     func getMember(viewType: EkoCommunityMemberViewType) {
@@ -107,7 +107,7 @@ extension EkoCommunityMemberScreenViewModel {
         fetchMemberController.loadMore { [weak self] success in
             guard let strongSelf = self else { return }
             if success {
-                strongSelf.delegate?.screenViewModel(strongSelf, loadingState: .loadmore)
+                strongSelf.delegate?.screenViewModel(strongSelf, loadingState: .loading)
             } else {
                 strongSelf.delegate?.screenViewModel(strongSelf, loadingState: .loaded)
             }

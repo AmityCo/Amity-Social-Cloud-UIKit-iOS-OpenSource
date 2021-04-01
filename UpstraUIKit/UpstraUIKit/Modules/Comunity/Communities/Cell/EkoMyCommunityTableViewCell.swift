@@ -9,9 +9,15 @@
 import UIKit
 import EkoChat
 
+protocol EkoMyCommunityTableViewCellDelegate: class {
+    func cellDidTapOnAvatar(_ cell: EkoMyCommunityTableViewCell)
+}
+
 final class EkoMyCommunityTableViewCell: UITableViewCell, Nibbable {
     
     static let defaultHeight: CGFloat = 56.0
+    
+    weak var delegate: EkoMyCommunityTableViewCellDelegate?
     
     @IBOutlet private var avatarView: EkoAvatarView!
     @IBOutlet private var displayNameLabel: UILabel!
@@ -28,7 +34,8 @@ final class EkoMyCommunityTableViewCell: UITableViewCell, Nibbable {
         backgroundColor = .clear
         contentView.backgroundColor = .clear
         
-        avatarView.placeholder = EkoIconSet.defaultCommunity
+        setupAvatarView()
+        
         displayNameLabel.font = EkoFontSet.bodyBold
         displayNameLabel.textColor = EkoColorSet.base
         displayNameLabel.text = ""
@@ -36,6 +43,13 @@ final class EkoMyCommunityTableViewCell: UITableViewCell, Nibbable {
         privateBadgeImageView.tintColor = EkoColorSet.base
         badgeImageView.image = EkoIconSet.iconBadgeCheckmark
         badgeImageView.tintColor = EkoColorSet.highlight
+    }
+    
+    func setupAvatarView() {
+        avatarView.placeholder = EkoIconSet.defaultCommunity
+        avatarView.actionHandler = { [weak self] in
+            self?.avatarTap()
+        }
     }
     
     override func prepareForReuse() {
@@ -52,5 +66,12 @@ final class EkoMyCommunityTableViewCell: UITableViewCell, Nibbable {
         displayNameLabel.text = community.displayName
         badgeImageView.isHidden = !community.isOfficial
         privateBadgeImageView.isHidden = community.isPublic
+    }
+}
+
+// MARK:- Actions
+private extension EkoMyCommunityTableViewCell {
+    func avatarTap() {
+        delegate?.cellDidTapOnAvatar(self)
     }
 }

@@ -154,14 +154,10 @@ public final class EkoCommunityProfileEditViewController: EkoViewController {
     }
     
     private func setupCommunityName() {
-        
-        let fullString = NSMutableAttributedString(string: EkoLocalizedStringSet.createCommunityNameTitle.localizedString,
-                                                   attributes: [.font : EkoFontSet.title,
-                                                                .foregroundColor : EkoColorSet.base])
-        fullString.setColorForText(textForAttribute: "*", withColor: EkoColorSet.alert)
-        
-        communityNameTitleLabel.attributedText = fullString
+        communityNameTitleLabel.text = EkoLocalizedStringSet.createCommunityNameTitle.localizedString
         communityNameTitleLabel.font = EkoFontSet.title
+        communityNameTitleLabel.textColor = EkoColorSet.base
+        communityNameTitleLabel.markAsMandatoryField()
         
         communityNameCountLabel.text = "0/\(NAME_MAX_LENGHT)"
         communityNameCountLabel.textColor = EkoColorSet.base.blend(.shade1)
@@ -210,6 +206,7 @@ public final class EkoCommunityProfileEditViewController: EkoViewController {
         communityCategoryTitleLabel.text = EkoLocalizedStringSet.createCommunityCategoryTitle.localizedString
         communityCategoryTitleLabel.font = EkoFontSet.title
         communityCategoryTitleLabel.textColor = EkoColorSet.base
+        communityCategoryTitleLabel.markAsMandatoryField()
         
         communityCategoryLabel.font = EkoFontSet.body
         communityCategoryLabel.text = EkoLocalizedStringSet.createCommunityCategoryPlaceholder.localizedString
@@ -281,14 +278,11 @@ public final class EkoCommunityProfileEditViewController: EkoViewController {
         if case .edit = viewType {
             communityAddMemberView.isHidden = true
         } else {
-            let fullString = NSMutableAttributedString(string: EkoLocalizedStringSet.createCommunityAddMemberTitle.localizedString, attributes: [.font : EkoFontSet.title,
-                                                                                                                        .foregroundColor : EkoColorSet.base])
-            fullString.setColorForText(textForAttribute: "*", withColor: EkoColorSet.alert)
-            
+            communityAddMemberTitleLabel.text = EkoLocalizedStringSet.createCommunityAddMemberTitle.localizedString
+            communityAddMemberTitleLabel.font = EkoFontSet.title
+            communityAddMemberTitleLabel.textColor = EkoColorSet.base
+            communityAddMemberTitleLabel.markAsMandatoryField()
             communityAddMemberView.isHidden = true
-            communityAddMemberTitleLabel.attributedText = fullString
-                
-            
             communityAddMemberCollectionView.register(UINib(nibName: EkoMemberCollectionViewCell.identifier, bundle: UpstraUIKitManager.bundle), forCellWithReuseIdentifier: EkoMemberCollectionViewCell.identifier)
             
             
@@ -377,6 +371,7 @@ private extension EkoCommunityProfileEditViewController {
     @IBAction func clearCommunityAboutTap(_ sender: UIButton) {
         communityAboutTextView.text = ""
         sender.alpha = 0
+        screenViewModel.action.textViewDidChanged(communityAboutTextView)
     }
     
     @IBAction func chooseCategoryTap() {
@@ -487,20 +482,21 @@ extension EkoCommunityProfileEditViewController: EkoCreateCommunityScreenViewMod
     
     func screenViewModel(_ viewModel: EkoCreateCommunityScreenViewModel, state: EkoCreateCommunityState) {
         switch state {
-        case let .textFieldOnChanged(text, lenght):
+        case let .textFieldOnChanged(_, lenght):
             communityNameCountLabel.text = "\(lenght)/\(NAME_MAX_LENGHT)"
-        case let .textViewOnChanged(text, lenght, hasValue):
+        case let .textViewOnChanged(_, lenght, hasValue):
             communityAboutCountLabel.text = "\(lenght)/\(ABOUT_MAX_LENGHT)"
             communityAboutClearButton.alpha = hasValue ? 1 : 0
         case .selectedCommunityType(let type):
             communityTypePublicRadioImageView.image = type == .public ? EkoIconSet.iconRadioOn : EkoIconSet.iconRadioOff
             communityTypePrivateRadioImageView.image = type == .public ? EkoIconSet.iconRadioOff : EkoIconSet.iconRadioOn
-            if case .edit = viewType {
-                communityAddMemberView.isHidden = true
-            } else {
+            switch viewType {
+            case .create:
                 communityAddMemberView.isHidden = type == .public
                 communityAddMemberCollectionView.delegate = type == .public ? nil : self
                 communityAddMemberCollectionView.dataSource = type == .public ? nil : self
+            case .edit:
+                communityAddMemberView.isHidden = true
             }
         case .updateAddMember:
             communityAddMemberCollectionView.reloadData()
@@ -510,6 +506,8 @@ extension EkoCommunityProfileEditViewController: EkoCreateCommunityScreenViewMod
             errorNameLabel.isHidden = true
             nameLineView.backgroundColor = EkoColorSet.secondary.blend(.shade4)
         case .createSuccess(let communityId):
+            
+            EkoCommunityProfilePageViewController.newCreatedCommunityIds.insert(communityId)
             EkoHUD.hide { [weak self] in
                 guard let strongSelf = self else { return }
                 strongSelf.dismiss(animated: true) {

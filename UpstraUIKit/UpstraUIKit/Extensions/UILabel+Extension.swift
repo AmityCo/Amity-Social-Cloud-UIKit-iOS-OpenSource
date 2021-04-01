@@ -10,6 +10,14 @@ import UIKit
 
 extension UILabel {
     
+    func markAsMandatoryField() {
+        guard let text = text else { return }
+        let attributedText = NSMutableAttributedString(string: text, attributes: [.font: font, .foregroundColor: textColor])
+        let asterisk = NSAttributedString(string: "*", attributes: [.font: font, .foregroundColor: EkoColorSet.alert])
+        attributedText.append(asterisk)
+        self.attributedText = attributedText
+    }
+    
     public func setLineSpacing(_ spacing: CGFloat) {
         let paragraphStyle = NSMutableParagraphStyle()
         paragraphStyle.lineSpacing = spacing

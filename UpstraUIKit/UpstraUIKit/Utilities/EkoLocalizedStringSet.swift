@@ -19,6 +19,13 @@ import UIKit
 public struct EkoLocalizedStringSet {
     private init() { }
     
+    enum General {
+        static let report = "general_report"
+        static let undoReport = "genera_undo_report"
+    }
+    
+    static let titlePlaceholder = "title_placeholder"
+    static let descriptionPlaceholder = "description_placeholder"
     static let members = "members"
     static let follow = "follow"
     static let chatTitle = "chat_title"
@@ -38,6 +45,7 @@ public struct EkoLocalizedStringSet {
     
     static let close = "close"
     static let save = "save"
+    static let saved = "saved"
     static let cancel = "cancel"
     static let delete = "delete"
     static let edit = "edit"
@@ -50,10 +58,20 @@ public struct EkoLocalizedStringSet {
     static let liked = "liked"
     static let reply = "reply"
     static let viewReply = "view_reply"
-    static let likes = "likes"
-    static let comments = "comments"
-    static let shares = "shares"
+    static let likesPlural = "likes_plural"
+    static let likesSingular = "likes_singular"
+    static let commentsPlural = "comments_plural"
+    static let commentsSingular = "comments_singular"
+    static let sharesPlural = "shares_plural"
+    static let sharesSingular = "shares_singular"
     static let remove = "remove"
+    static let communitySettings = "community_settings"
+    static let skipForNow = "skip_for_now"
+    static let turnOn = "turn_on"
+    static let turnOff = "turn_off"
+    
+    static let on = "on"
+    static let off = "off"
     
     static let textMessagePlaceholder = "text_message_placeholder"
     static let messageReadmore = "message_readmore"
@@ -64,6 +82,9 @@ public struct EkoLocalizedStringSet {
     static let searchResults = "search_results"
     static let searchCommunityNotFound = "search_community_not_found"
     static let search = "search"
+    
+    static let somethingWentWrongWithTryAgain = "something_went_wrong_with_try_again"
+    static let noInternetConnection = "no_internet_connection"
     
     // MARK: - Message List
     enum MessageList {
@@ -152,8 +173,6 @@ public struct EkoLocalizedStringSet {
         static let createReply = "post_detail_create_reply"
         static let editReply = "post_detail_edit_reply"
         static let deleteReply = "post_detail_delete_reply"
-        static let reportReply = "post_detail_report_reply"
-        static let unreportReply = "post_detail_unreport_reply"
         static let deleteReplyTitle = "post_detail_delete_reply_title"
         static let deleteReplyMessage = "post_detail_delete_reply_message"
         static let discardReplyTitle = "post_detail_discard_reply_title"
@@ -167,13 +186,9 @@ public struct EkoLocalizedStringSet {
         static let joinCommunityMessage = "post_detail_join_community_message"
         static let editPost = "post_detail_edit_post"
         static let deletePost = "post_detail_delete_post"
-        static let reportPost = "post_detail_report_post"
-        static let unreportPost = "post_detail_unreport_post"
         static let createComment = "post_detail_create_comment"
         static let editComment = "post_detail_edit_comment"
         static let deleteComment = "post_detail_delete_comment"
-        static let reportComment = "post_detail_report_comment"
-        static let unreportComment = "post_detail_unreport_comment"
         static let deleteCommentTitle = "post_detail_delete_comment_title"
         static let deleteCommentMessage = "post_detail_delete_comment_message"
         static let discardCommentTitle = "post_detail_discard_comment_title"
@@ -201,15 +216,46 @@ public struct EkoLocalizedStringSet {
     static let categoryTitle = "category_title"
     
     // MARK: - Community Settings
-    static let communitySettingsEditProfile = "community_settings_edit_profile"
-    static let communitySettingsMembers = "community_settings_members"
-    static let communitySettingsCloseCommunity = "community_settings_close_community"
-    static let communitySettingsLeaveCommunity = "community_settings_leave_community"
-    static let communitySettingsAlertCloseTitle = "community_settings_alert_close_title"
-    static let communitySettingsAlertCloseDesc = "community_settings_alert_close_desc"
-    static let communitySettingsAlertLeaveTitle = "community_settings_alert_leave_title"
-    static let communitySettingsAlertLeaveDesc = "community_settings_alert_leave_desc"
+    enum CommunitySettings {
+        static let itemHeaderBasicInfo = "community_settings_item_header_basic_info"
+        static let itemHeaderCommunityPermissions = "community_settings_item_header_community_permissions"
+        static let itemTitleEditProfile = "community_settings_item_title_edit_profile"
+        static let itemTitleMembers = "community_settings_item_title_members"
+        static let itemTitleNotifications = "community_settings_item_title_notifications"
+        static let itemTitlePostReview = "community_settings_item_title_post_review"
+        static let itemTitleLeaveCommunity = "community_settings_item_title_leave_community"
+        static let itemTitleCloseCommunity = "community_settings_item_title_close_community"
+        static let itemDescCloseCommunity = "community_settings_item_desc_close_community"
+        static let alertTitleLeave = "community_settings_alert_title_leave"
+        static let alertDescLeave = "community_settings_alert_desc_leave"
+        static let alertTitleClose = "community_settings_alert_title_close"
+        static let alertDescClose = "community_settings_alert_desc_close"
+        static let alertFailTitleLeave = "community_settings_alert_fail_title_leave"
+        static let alertFailTitleClose = "community_settings_alert_fail_title_leave"
+        static let alertFailTitleTurnNotificationOn = "community_settings_alert_fail_title_notification_on"
+        static let alertFailTitleTurnNotificationOff = "community_settings_alert_fail_title_notification_off"
+    }
 
+    // MARK: - Notification Settings
+    enum CommunityNotificationSettings {
+        static let titleNotifications = "community_notification_settings_title_notifications"
+        static let descriptionNotifications = "community_notification_settings_description_notifications"
+        static let titleReactsPosts = "community_notification_settings_title_reacts_posts"
+        static let descriptionReactsPosts = "community_notification_settings_description_reacts_posts"
+        static let titleNewPosts = "community_notification_settings_title_new_posts"
+        static let descriptionNewPosts = "community_notification_settings_description_new_posts"
+        static let titleReactsComments = "community_notification_settings_title_reacts_comments"
+        static let descriptionReactsComments = "community_notification_settings_description_reacts_comments"
+        static let titleNewComments = "community_notification_settings_title_new_comments"
+        static let descriptionNewComments = "community_notification_settings_description_new_comments"
+        static let titleReplies = "community_notification_settings_title_replies"
+        static let descriptionReplies = "community_notification_settings_description_replies"
+        static let post = "community_notification_settings_post"
+        static let comment = "community_notification_settings_comment"
+        static let everyone = "community_notification_settings_everyone"
+        static let onlyModerator = "community_notification_settings_only_moderator"
+    }
+    
     // MARK: - Not support role
     static let roleSupportAlertDesc = "role_permission_alert_desc"
     
@@ -221,8 +267,6 @@ public struct EkoLocalizedStringSet {
         static let moderatorTitle = "community_member_settings_moderator_title"
         static let optionPromoteToModerator = "community_member_settings_options_promote_to_moderator"
         static let optionDismissModerator = "community_member_settings_options_dismiss_moderator"
-        static let optionReport = "community_member_settings_options_report"
-        static let optionUnreport = "community_member_settings_options_unreport"
         static let optionRemove = "community_member_settings_options_remove"
     }
     
@@ -262,5 +306,22 @@ public struct EkoLocalizedStringSet {
     enum Post {
         static let placeholderTitle = "post_place_holder_title"
         static let placeholderDesc = "post_place_holder_desc"
+    }
+    
+    enum PostReviewSettings {
+        static let title = "post_review_settings_title"
+        static let itemTitleApproveMemberPosts = "post_review_settings_item_title_approve_member_posts";
+        static let itemDescApproveMemberPosts = "post_review_settings_item_desc_approve_member_posts";
+        static let alertTitleTurnOffPostReview = "post_review_settings_alert_title_turn_off_post_review"
+        static let alertDescTurnOffPostReview = "post_review_settings_alert_desc_turn_off_post_reivew"
+        static let hudTitleTurnOffPostReview = "post_review_settings_hud_title_turn_off_post_review"
+        static let alertFailTitleTurnOn = "post_review_settings_alert_fail_title_turn_on"
+        static let alertFailTitleTurnOff = "post_review_settings_alert_fail_title_turn_off"
+    }
+    
+    // MARK: - Modal
+    enum Modal {
+        static let communitySettingsTitle = "modal_community_settings_title"
+        static let communitySettingsDesc = "modal_community_settings_desc"
     }
 }

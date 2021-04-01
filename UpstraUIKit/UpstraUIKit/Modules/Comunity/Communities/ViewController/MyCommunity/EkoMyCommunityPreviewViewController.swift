@@ -8,7 +8,20 @@
 
 import UIKit
 
+public protocol EkoMyCommunityPreviewViewControllerDelegate: class {
+    func viewController(_ viewController: EkoMyCommunityPreviewViewController, didPerformAction action: EkoMyCommunityPreviewViewController.ActionType)
+}
+
 final public class EkoMyCommunityPreviewViewController: UIViewController {
+    
+    public enum ActionType {
+        case seeAll
+        case communityItem(indexPath: IndexPath)
+    }
+    
+    private enum Constant {
+        static let maximumItems: Int = 8
+    }
 
     // MARK: -  IBOutlet Properties
     @IBOutlet private var titleLabel: UILabel!
@@ -17,43 +30,25 @@ final public class EkoMyCommunityPreviewViewController: UIViewController {
     @IBOutlet private var separatorView: UIView!
     
     // MARK: - Properties
-    private let screenViewModel: EkoCommunitiesScreenViewModelType
+    private var communities: [EkoCommunityModel] = []
+    public weak var delegate: EkoMyCommunityPreviewViewControllerDelegate?
     
     // MARK: - View lifecycle
-    private init(viewModel: EkoCommunitiesScreenViewModelType) {
-        self.screenViewModel = viewModel
-        super.init(nibName: EkoMyCommunityPreviewViewController.identifier, bundle: UpstraUIKitManager.bundle)
-    }
-    
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    
     public override func viewDidLoad() {
         super.viewDidLoad()
         setupView()
     }
     
-    public override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        
-        bindingViewModel()
+    func configure(with communities: [EkoCommunityModel]) {
+        self.communities = communities
+        collectionView?.reloadData()
     }
     
-    static func make(viewModel: EkoCommunitiesScreenViewModelType) -> EkoMyCommunityPreviewViewController {
-        let vc = EkoMyCommunityPreviewViewController(viewModel: viewModel)
-        return vc
+    public static func make() -> EkoMyCommunityPreviewViewController {
+        return EkoMyCommunityPreviewViewController(nibName: EkoMyCommunityPreviewViewController.identifier, bundle: UpstraUIKitManager.bundle)
     }
-}
-
-private extension EkoMyCommunityPreviewViewController {
-    @IBAction func myCommunityTap() {
-        screenViewModel.action.route(to: .myCommunity)
-    }
-}
-
-private extension EkoMyCommunityPreviewViewController {
-    func setupView() {
+    
+    private func setupView() {
         view.backgroundColor = EkoColorSet.backgroundColor
         
         titleLabel.text = EkoLocalizedStringSet.myCommunityTitle.localizedString
@@ -77,22 +72,19 @@ private extension EkoMyCommunityPreviewViewController {
         collectionView.delegate = self
         collectionView.dataSource = self
     }
-}
-
-private extension EkoMyCommunityPreviewViewController {
-    func bindingViewModel() {
-        screenViewModel.dataSource.searchCommunities.bind { [weak self] communities in
-            self?.collectionView.reloadData()
-        }
+    
+    @IBAction func myCommunityTap() {
+        delegate?.viewController(self, didPerformAction: .seeAll)
     }
+    
 }
 
 extension EkoMyCommunityPreviewViewController: UICollectionViewDelegate {
     public func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        if indexPath.row == 8 {
-            screenViewModel.action.route(to: .myCommunity)
+        if indexPath.row == Constant.maximumItems {
+            delegate?.viewController(self, didPerformAction: .seeAll)
         } else {
-            screenViewModel.action.route(to: .communityProfile(indexPath: indexPath))
+            delegate?.viewController(self, didPerformAction: .communityItem(indexPath: indexPath))
         }
     }
 }
@@ -100,8 +92,8 @@ extension EkoMyCommunityPreviewViewController: UICollectionViewDelegate {
 extension EkoMyCommunityPreviewViewController: UICollectionViewDataSource {
     
     public func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        let count = screenViewModel.dataSource.searchCommunities.value.count
-        return count <= 8 ? count : 9
+        let count = communities.count
+        return count <= Constant.maximumItems ? count : Constant.maximumItems + 1 // seemore button
     }
     
     public func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -112,14 +104,13 @@ extension EkoMyCommunityPreviewViewController: UICollectionViewDataSource {
     
     private func configure(for cell: UICollectionViewCell, at indexPath: IndexPath) {
         if let cell = cell as? EkoMyCommunityCollectionViewCell {
-            if indexPath.row == 8 {
+            if indexPath.row == Constant.maximumItems {
                 cell.seeAll()
             } else {
-                let community = screenViewModel.dataSource.community(at: indexPath)
+                let community = communities[indexPath.row]
                 cell.display(with: community)
             }
             
         }
     }
 }
-

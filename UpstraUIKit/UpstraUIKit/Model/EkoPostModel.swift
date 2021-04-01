@@ -36,7 +36,7 @@ public class EkoPostModel {
     public init(post: EkoPost) {
         self.post = post
         self.extractPostInfo()
-        self.latestComments = post.latestComments.map(EkoCommentModel.init).reversed()
+        self.latestComments = post.latestComments.map(EkoCommentModel.init)
     }
     
     public var maximumLastestComments: Int {
@@ -49,7 +49,7 @@ public class EkoPostModel {
     
     // Comment will show below last component
     public func getComment(at indexPath: IndexPath, totalComponent index: Int) -> EkoCommentModel? {
-        let comments = Array(latestComments.suffix(maximumLastestComments))
+        let comments = Array(latestComments.suffix(maximumLastestComments).reversed())
         return comments.count > 0 ? comments[indexPath.row - index] : nil
     }
     

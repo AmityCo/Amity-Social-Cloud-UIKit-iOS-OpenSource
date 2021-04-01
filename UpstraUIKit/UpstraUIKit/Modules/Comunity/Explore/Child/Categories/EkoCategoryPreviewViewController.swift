@@ -89,7 +89,7 @@ private extension EkoCategoryPreviewViewController {
         collectionView.delegate = self
         collectionView.dataSource = self
     }
-    
+
 }
 
 
@@ -128,6 +128,7 @@ extension EkoCategoryPreviewViewController: UICollectionViewDataSource {
         let cell: EkoCategoryPreviewCollectionViewCell = collectionView.dequeueReusableCell(for: indexPath)
         let category = screenViewModel.dataSource.category(at: indexPath)
         cell.display(with: category)
+        cell.delegate = self
         return cell
     }
 }
@@ -160,3 +161,11 @@ extension EkoCategoryPreviewViewController: EkoCategoryPreviewCommunityScreenVie
     }
 }
     
+// MARK: - EkoCategoryPreviewCollectionViewCellDelegate
+extension EkoCategoryPreviewViewController: EkoCategoryPreviewCollectionViewCellDelegate {
+    func cellDidTapOnAvatar(_ cell: EkoCategoryPreviewCollectionViewCell) {
+        guard let indexPath = collectionView.indexPath(for: cell) else { return }
+        let category = screenViewModel.dataSource.category(at: indexPath)
+        selectedCategoryHandler?(category)
+    }
+}

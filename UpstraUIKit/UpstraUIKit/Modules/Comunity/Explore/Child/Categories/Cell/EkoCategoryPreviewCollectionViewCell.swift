@@ -8,11 +8,18 @@
 
 import UIKit
 import EkoChat
+
+protocol EkoCategoryPreviewCollectionViewCellDelegate: class {
+    func cellDidTapOnAvatar(_ cell: EkoCategoryPreviewCollectionViewCell)
+}
+
 class EkoCategoryPreviewCollectionViewCell: UICollectionViewCell, Nibbable {
 
     @IBOutlet private var containerView: UIView!
     @IBOutlet private var avatarView: EkoAvatarView!
     @IBOutlet private var categoryNameLabel: UILabel!
+    
+    weak var delegate: EkoCategoryPreviewCollectionViewCellDelegate?
     
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -28,7 +35,6 @@ class EkoCategoryPreviewCollectionViewCell: UICollectionViewCell, Nibbable {
         super.prepareForReuse()
         avatarView.image = nil
     }
-
 }
 
 // MARK: - Setup view
@@ -41,11 +47,22 @@ private extension EkoCategoryPreviewCollectionViewCell {
     func setupAvatarView() {
         avatarView.placeholder = EkoIconSet.defaultCategory
         avatarView.backgroundColor = EkoColorSet.secondary.blend(.shade3)
+        
+        avatarView.actionHandler = { [weak self] in
+            self?.avatarTap()
+        }
     }
     
     func setupCategoryName() {
         categoryNameLabel.text = ""
         categoryNameLabel.textColor = EkoColorSet.base
         categoryNameLabel.font = EkoFontSet.bodyBold
+    }
+}
+
+// MARK:- Actions
+private extension EkoCategoryPreviewCollectionViewCell {
+    func avatarTap() {
+        delegate?.cellDidTapOnAvatar(self)
     }
 }

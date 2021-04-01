@@ -60,6 +60,27 @@ extension EkoCommunityProfileScreenViewModel {
     func route(_ route: EkoCommunityProfileRoute) {
         self.delegate?.screenViewModelRoute(self, route: route)
     }
+    
+    func showCommunitySettingsModal() {
+        if EkoCommunityProfilePageViewController.newCreatedCommunityIds.contains(communityId) {
+            let firstAction = EkoDefaultModalModel.Action(title: EkoLocalizedStringSet.communitySettings,
+                                                          textColor: EkoColorSet.baseInverse,
+                                                          backgroundColor: EkoColorSet.primary)
+            let secondAction = EkoDefaultModalModel.Action(title: EkoLocalizedStringSet.skipForNow,
+                                                           textColor: EkoColorSet.primary,
+                                                           font: EkoFontSet.body,
+                                                           backgroundColor: .clear)
+
+            let communitySettingsModel = EkoDefaultModalModel(image: EkoIconSet.iconMagicWand,
+                                                              title: EkoLocalizedStringSet.Modal.communitySettingsTitle,
+                                                              description: EkoLocalizedStringSet.Modal.communitySettingsDesc,
+                                                              firstAction: firstAction,
+                                                              secondAction: secondAction,
+                                                              layout: .vertical)
+            EkoCommunityProfilePageViewController.newCreatedCommunityIds.remove(communityId)
+            delegate?.screenViewModelShowCommunitySettingsModal(self, withModel: communitySettingsModel)
+        }
+    }
 }
 
 // MARK: - Get community info

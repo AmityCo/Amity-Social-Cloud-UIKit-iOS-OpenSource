@@ -14,18 +14,19 @@ final class EkoMyCommunityCollectionViewCell: UICollectionViewCell {
     @IBOutlet private var avatarView: EkoAvatarView!
     @IBOutlet private var displayNameLabel: UILabel!
     @IBOutlet private var badgeImageView: UIImageView!
+    @IBOutlet private var privateBadgeImageView: UIImageView!
     
     override func awakeFromNib() {
         super.awakeFromNib()
         setupView()
     }
     
-    
     override func prepareForReuse() {
         super.prepareForReuse()
         displayNameLabel.text = ""
         avatarView.placeholder = EkoIconSet.defaultCommunity
         avatarView.image = nil
+        privateBadgeImageView.isHidden = true
     }
     
     private func setupView() {
@@ -36,6 +37,8 @@ final class EkoMyCommunityCollectionViewCell: UICollectionViewCell {
         displayNameLabel.textAlignment = .center
         displayNameLabel.font = EkoFontSet.caption
         displayNameLabel.textColor = EkoColorSet.base
+        privateBadgeImageView.image = EkoIconSet.iconPrivate
+        privateBadgeImageView.tintColor = EkoColorSet.base
         badgeImageView.image = EkoIconSet.iconBadgeCheckmark
         badgeImageView.tintColor = EkoColorSet.highlight
         badgeImageView.isHidden = true
@@ -46,6 +49,7 @@ final class EkoMyCommunityCollectionViewCell: UICollectionViewCell {
         avatarView.setImage(withImageId: community.avatarId, placeholder: EkoIconSet.defaultCommunity)
         avatarView.backgroundColor = EkoColorSet.primary.blend(.shade3)
         badgeImageView.isHidden = !community.isOfficial
+        privateBadgeImageView.isHidden = community.isPublic
     }
     
     func seeAll() {
@@ -53,7 +57,6 @@ final class EkoMyCommunityCollectionViewCell: UICollectionViewCell {
         avatarView.image = nil
         avatarView.placeholder = EkoIconSet.iconArrowRight
         avatarView.backgroundColor = EkoColorSet.secondary.blend(.shade4)
-        
+        privateBadgeImageView.isHidden = true
     }
-
 }

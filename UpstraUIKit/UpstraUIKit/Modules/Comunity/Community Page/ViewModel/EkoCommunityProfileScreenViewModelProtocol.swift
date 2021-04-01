@@ -22,6 +22,7 @@ protocol EkoCommunityProfileScreenViewModelDelegate: class {
     func screenViewModelDidJoinCommunity(_ status: EkoCommunityProfileScreenViewModel.CommunityJoinStatus)
     func screenViewModelFailure()
     func screenViewModelRoute(_ viewModel: EkoCommunityProfileScreenViewModel, route: EkoCommunityProfileRoute)
+    func screenViewModelShowCommunitySettingsModal(_ viewModel: EkoCommunityProfileScreenViewModel, withModel model: EkoDefaultModalModel)
 }
 
 protocol EkoCommunityProfileHeaderScreenViewModelDelegate: class {
@@ -41,6 +42,8 @@ protocol EkoCommunityProfileScreenViewModelAction {
     func getUserRole()
     func joinCommunity()
     func route(_ route: EkoCommunityProfileRoute)
+    
+    func showCommunitySettingsModal()
 }
 
 protocol EkoCommunityProfileScreenViewModelType: EkoCommunityProfileScreenViewModelAction, EkoCommunityProfileScreenViewModelDataSource {

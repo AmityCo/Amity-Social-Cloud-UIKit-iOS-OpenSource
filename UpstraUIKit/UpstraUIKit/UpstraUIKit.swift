@@ -23,9 +23,16 @@ public final class UpstraUIKitManager {
     public static func registerDevice(withUserId userId: String, displayName: String?, authToken: String? = nil) {
         UpstraUIKitManagerInternal.shared.registerDevice(userId, displayName: displayName, authToken: authToken)
     }
-    
     public static func unregisterDevice() {
         UpstraUIKitManagerInternal.shared.unregisterDevice()
+    }
+    
+    public static func registerDeviceForPushNotification(_ deviceToken: String) {
+        UpstraUIKitManagerInternal.shared.registerDeviceForPushNotification(deviceToken)
+    }
+    
+    public static func unregisterDevicePushNotification() {
+        UpstraUIKitManagerInternal.shared.unregisterDevicePushNotification()
     }
     
     // MARK: - Variable
@@ -97,12 +104,22 @@ final class UpstraUIKitManagerInternal: NSObject {
         
         _client.clientErrorDelegate = self
         _client.registerDevice(withUserId: userId, displayName: displayName, authToken: authToken)
+        _client.unregisterDevicePushNotification(forUserId: userId, completion: nil)
         self._client = _client
     }
     
     func unregisterDevice() {
         EkoFileCache.shared.clearCache()
         self._client?.unregisterDevice()
+    }
+    
+    func registerDeviceForPushNotification(_ deviceToken: String, completion: EkoRequestCompletion? = nil) {
+        self._client?.registerDeviceForPushNotification(withDeviceToken: deviceToken, completion: completion)
+    }
+    
+    func unregisterDevicePushNotification() {
+        guard let currentUserId = self._client?.currentUserId else { return }
+        client.unregisterDevicePushNotification(forUserId: currentUserId, completion: nil)
     }
     
 }

@@ -8,8 +8,15 @@
 
 import UIKit
 
+protocol EkoRecommendedCommunityCollectionViewCellDelegate: class {
+    func cellDidTapOnAvatar(_ cell: EkoRecommendedCommunityCollectionViewCell)
+}
+
+
 final class EkoRecommendedCommunityCollectionViewCell: UICollectionViewCell, Nibbable {
 
+    weak var delegate: EkoRecommendedCommunityCollectionViewCellDelegate?
+    
     @IBOutlet private var containerView: UIView!
     @IBOutlet private var avatarView: EkoAvatarView!
     @IBOutlet private var displayNameLabel: UILabel!
@@ -41,7 +48,6 @@ final class EkoRecommendedCommunityCollectionViewCell: UICollectionViewCell, Nib
         descLabel.text = model.description == "" ? "-":model.description
         badgeImageView.isHidden = !model.isOfficial
     }
-
 }
 
 // MARK: - Setup view
@@ -63,6 +69,9 @@ private extension EkoRecommendedCommunityCollectionViewCell {
     func setupAvatarView() {
         avatarView.placeholder = EkoIconSet.defaultCommunity
         avatarView.backgroundColor = EkoColorSet.secondary.blend(.shade3)
+        avatarView.actionHandler = { [weak self] in
+            self?.avatarTap()
+        }
     }
     
     func setupDisplayName() {
@@ -94,5 +103,12 @@ private extension EkoRecommendedCommunityCollectionViewCell {
         descLabel.textColor = EkoColorSet.base
         descLabel.font = EkoFontSet.caption
         descLabel.numberOfLines = 3
+    }
+}
+
+// MARK:- Actions
+private extension EkoRecommendedCommunityCollectionViewCell {
+    func avatarTap() {
+        delegate?.cellDidTapOnAvatar(self)
     }
 }

@@ -8,6 +8,10 @@
 
 import UIKit
 
+protocol EkoTrendingCommunityTableViewCellDelegate: class {
+    func cellDidTapOnAvatar(_ cell: EkoTrendingCommunityTableViewCell)
+}
+
 final class EkoTrendingCommunityTableViewCell: UITableViewCell, Nibbable {
 
     @IBOutlet private var avatarView: EkoAvatarView!
@@ -17,6 +21,8 @@ final class EkoTrendingCommunityTableViewCell: UITableViewCell, Nibbable {
     @IBOutlet private var categoryLabel: UILabel!
     @IBOutlet private var membersLabel: UILabel!
     @IBOutlet private weak var iconImageViewWidthConstraint: NSLayoutConstraint!
+    
+    weak var delegate: EkoTrendingCommunityTableViewCellDelegate?
     
     var isCategoryLabelTruncated: Bool {
         return categoryLabel.isTruncated
@@ -65,6 +71,10 @@ private extension EkoTrendingCommunityTableViewCell {
     func setupAvatarView() {
         avatarView.placeholder = EkoIconSet.defaultCommunity
         avatarView.backgroundColor = EkoColorSet.secondary.blend(.shade3)
+        
+        avatarView.actionHandler = { [weak self] in
+            self?.avatarTap()
+        }
     }
     
     func setupNumber() {
@@ -92,5 +102,12 @@ private extension EkoTrendingCommunityTableViewCell {
         membersLabel.text = ""
         membersLabel.textColor = EkoColorSet.base.blend(.shade1)
         membersLabel.font = EkoFontSet.caption
+    }
+}
+
+// MARK:- Actions
+private extension EkoTrendingCommunityTableViewCell {
+    func avatarTap() {
+        delegate?.cellDidTapOnAvatar(self)
     }
 }

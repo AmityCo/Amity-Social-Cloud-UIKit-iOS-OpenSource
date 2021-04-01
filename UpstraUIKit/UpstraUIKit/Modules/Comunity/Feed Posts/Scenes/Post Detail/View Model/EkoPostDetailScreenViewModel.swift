@@ -256,7 +256,7 @@ extension EkoPostDetailScreenViewModel {
     
     func unreportPost() {
         postController.unreport(withPostId: postId) { [weak self] (success, error) in
-            self?.reportHandler(success: success, error: error)
+            self?.unreportHandler(success: success, error: error)
         }
     }
     

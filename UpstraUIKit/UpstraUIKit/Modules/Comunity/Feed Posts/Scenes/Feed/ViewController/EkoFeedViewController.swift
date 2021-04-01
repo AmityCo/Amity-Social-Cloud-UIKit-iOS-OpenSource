@@ -18,6 +18,7 @@ public final class EkoFeedViewController: EkoViewController, EkoRefreshable {
     
     // MARK: - Properties
     private var screenViewModel: EkoFeedScreenViewModelType!
+    private var shouldShowLoadingIndicator = true
     
     // MARK: - Post Protocol Handler
     private var postHeaderProtocolHandler: EkoPostHeaderProtocolHandler?
@@ -28,8 +29,7 @@ public final class EkoFeedViewController: EkoViewController, EkoRefreshable {
     var headerView: UIView? {
         didSet {
             DispatchQueue.main.async { [weak self] in
-                guard self?.tableView.numberOfSections ?? 0 > 0 else { return }
-                self?.tableView.reloadSections([0], with: .none)
+                self?.tableView.reloadData()
             }
         }
     }
@@ -188,7 +188,12 @@ extension EkoFeedViewController: EkoPostTableViewDelegate {
     }
 
     func tableView(_ tableView: EkoPostTableView, viewForFooterInSection section: Int) -> UIView? {
-        guard let bottomView = tableView.dequeueReusableHeaderFooterView(withIdentifier: EkoEmptyStateHeaderFooterView.identifier) as? EkoEmptyStateHeaderFooterView else { return nil }
+        guard let bottomView = tableView.dequeueReusableHeaderFooterView(withIdentifier: EkoEmptyStateHeaderFooterView.identifier) as? EkoEmptyStateHeaderFooterView, !shouldShowLoadingIndicator else {
+            let loading = UIActivityIndicatorView(style: .gray)
+            loading.center = tableView.center
+            loading.startAnimating()
+            return loading
+        }
         if let emptyView = emptyView {
             bottomView.setLayout(layout: .custom(emptyView))
         } else {
@@ -255,6 +260,7 @@ extension EkoFeedViewController: EkoFeedScreenViewModelDelegate {
             isDataSourceDirty = true
             return
         }
+        shouldShowLoadingIndicator = false
         tableView.reloadData()
         dataDidUpdateHandler?(screenViewModel.dataSource.numberOfPostComponents())
         refreshControl.endRefreshing()
@@ -262,11 +268,12 @@ extension EkoFeedViewController: EkoFeedScreenViewModelDelegate {
     
     func screenViewModelLoadingState(_ viewModel: EkoFeedScreenViewModelType, for loadingState: EkoLoadingState) {
         switch loadingState {
-        case .loadmore:
+        case .loading:
             tableView.showLoadingIndicator()
         case .loaded:
             tableView.tableFooterView = UIView()
-        default: break
+        case .initial:
+            break
         }
     }
     
@@ -297,7 +304,7 @@ extension EkoFeedViewController: EkoFeedScreenViewModelDelegate {
     }
     
     func screenViewModelDidGetReportStatusPost(isReported: Bool) {
-        postHeaderProtocolHandler?.updateReportPostStatus(isReported: isReported)
+        postHeaderProtocolHandler?.showOptions(withReportStatus: isReported)
     }
     
     // MARK: Commend
@@ -436,12 +443,12 @@ extension EkoFeedViewController: EkoPostPreviewCommentDelegate {
         } else {
             screenViewModel.action.getReportStatus(withCommendId: comment.id) { [weak self] (isReported) in
                 if isReported {
-                    let unreportOption = TextItemOption(title: EkoLocalizedStringSet.PostDetail.unreportComment.localizedString) {
+                    let unreportOption = TextItemOption(title: EkoLocalizedStringSet.General.undoReport.localizedString) {
                         self?.screenViewModel.action.unreport(withCommentId: comment.id)
                     }
                     contentView.configure(items: [unreportOption], selectedItem: nil)
                 } else {
-                    let reportOption = TextItemOption(title: EkoLocalizedStringSet.PostDetail.reportComment.localizedString) {
+                    let reportOption = TextItemOption(title: EkoLocalizedStringSet.General.report.localizedString) {
                         self?.screenViewModel.action.report(withCommentId: comment.id)
                     }
                     contentView.configure(items: [reportOption], selectedItem: nil)

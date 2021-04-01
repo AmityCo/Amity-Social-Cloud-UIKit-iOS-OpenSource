@@ -18,6 +18,8 @@
 		0D73ACA825DB9423000D73CA /* NewJoinerPostComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D73ACA725DB9423000D73CA /* NewJoinerPostComponent.swift */; };
 		0D8FFC2925DCBFD900943538 /* EkoCustomFooterTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D8FFC2725DCBFD900943538 /* EkoCustomFooterTableViewCell.swift */; };
 		0D8FFC2A25DCBFD900943538 /* EkoCustomFooterTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0D8FFC2825DCBFD900943538 /* EkoCustomFooterTableViewCell.xib */; };
+		721AF3C426088849005BA15F /* CustomEventHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 721AF3C326088849005BA15F /* CustomEventHandler.swift */; };
+		721AF3CA26088884005BA15F /* CustomFeedEventHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 721AF3C926088884005BA15F /* CustomFeedEventHandler.swift */; };
 		A052EAEE2577A6B700FF9312 /* Realm.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = A052EAEB2577A6B700FF9312 /* Realm.xcframework */; };
 		A052EAEF2577A6B700FF9312 /* Realm.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = A052EAEB2577A6B700FF9312 /* Realm.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		A052EAF02577A6B700FF9312 /* EkoChat.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = A052EAEC2577A6B700FF9312 /* EkoChat.xcframework */; };
@@ -94,6 +96,9 @@
 		0D73ACA725DB9423000D73CA /* NewJoinerPostComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewJoinerPostComponent.swift; sourceTree = "<group>"; };
 		0D8FFC2725DCBFD900943538 /* EkoCustomFooterTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EkoCustomFooterTableViewCell.swift; sourceTree = "<group>"; };
 		0D8FFC2825DCBFD900943538 /* EkoCustomFooterTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = EkoCustomFooterTableViewCell.xib; sourceTree = "<group>"; };
+		721AF3C326088849005BA15F /* CustomEventHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomEventHandler.swift; sourceTree = "<group>"; };
+		721AF3C926088884005BA15F /* CustomFeedEventHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomFeedEventHandler.swift; sourceTree = "<group>"; };
+		72363461260877D600CEB2B5 /* SampleApp.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = SampleApp.entitlements; sourceTree = "<group>"; };
 		A052EAEB2577A6B700FF9312 /* Realm.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = Realm.xcframework; path = ../Distribution/Realm.xcframework; sourceTree = "<group>"; };
 		A052EAEC2577A6B700FF9312 /* EkoChat.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = EkoChat.xcframework; path = ../Distribution/EkoChat.xcframework; sourceTree = "<group>"; };
 		A052EAED2577A6B700FF9312 /* UpstraUIKit.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = UpstraUIKit.xcframework; path = ../Distribution/UpstraUIKit.xcframework; sourceTree = "<group>"; };
@@ -223,6 +228,15 @@
 			path = Footer;
 			sourceTree = "<group>";
 		};
+		721AF3C226088830005BA15F /* EventHandler */ = {
+			isa = PBXGroup;
+			children = (
+				721AF3C326088849005BA15F /* CustomEventHandler.swift */,
+				721AF3C926088884005BA15F /* CustomFeedEventHandler.swift */,
+			);
+			path = EventHandler;
+			sourceTree = "<group>";
+		};
 		B72CDA38256B9BC100F7CAC3 /* Custom Cell */ = {
 			isa = PBXGroup;
 			children = (
@@ -258,6 +272,8 @@
 		B78DA47724BED7D300EE902B /* SampleApp */ = {
 			isa = PBXGroup;
 			children = (
+				72363461260877D600CEB2B5 /* SampleApp.entitlements */,
+				721AF3C226088830005BA15F /* EventHandler */,
 				B78FC53C24CAAA2F0083CBB4 /* Extension */,
 				B78FC53E24CAAA2F0083CBB4 /* Utils */,
 				B78DA4AD24BED88000EE902B /* Feature */,
@@ -492,9 +508,11 @@
 				0D73ACA825DB9423000D73CA /* NewJoinerPostComponent.swift in Sources */,
 				B72CDA3B256B9BEB00F7CAC3 /* CustomMessageTextIncomingTableViewCell.swift in Sources */,
 				B78DA4B124BEDBC500EE902B /* CommunityFeatureViewController.swift in Sources */,
+				721AF3CA26088884005BA15F /* CustomFeedEventHandler.swift in Sources */,
 				B78FC54124CAAA2F0083CBB4 /* Theme.swift in Sources */,
 				B754DBEC24C6F6B5005A8282 /* SettingViewController.swift in Sources */,
 				0D73ACA425DB93A2000D73CA /* ThumbsupPostComponent.swift in Sources */,
+				721AF3C426088849005BA15F /* CustomEventHandler.swift in Sources */,
 				B78DA4B324BEDBD100EE902B /* ChatFeatureViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -668,8 +686,9 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = SampleApp/SampleApp.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 8;
 				DEVELOPMENT_TEAM = 37Z583JR6K;
 				"EXCLUDED_ARCHS[sdk=iphonesimulator*]" = arm64;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -681,7 +700,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.11.4;
+				MARKETING_VERSION = 1.12.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.ekoapp.sample;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_INCLUDE_PATHS = "";
@@ -694,8 +713,9 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = SampleApp/SampleApp.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 8;
 				DEVELOPMENT_TEAM = 37Z583JR6K;
 				"EXCLUDED_ARCHS[sdk=iphonesimulator*]" = arm64;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -707,7 +727,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.11.4;
+				MARKETING_VERSION = 1.12.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.ekoapp.sample;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = RELEASE;

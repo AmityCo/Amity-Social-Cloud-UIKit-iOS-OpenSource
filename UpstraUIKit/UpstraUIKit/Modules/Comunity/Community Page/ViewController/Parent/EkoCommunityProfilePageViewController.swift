@@ -16,6 +16,8 @@ public class EkoCommunityProfilePageSettings {
 /// A view controller for providing community profile and community feed.
 public final class EkoCommunityProfilePageViewController: EkoProfileViewController {
     
+    static var newCreatedCommunityIds =  Set<String>()
+    
     // MARK: - Properties
     private var settings: EkoCommunityProfilePageSettings!
     private var header: EkoCommunityProfileHeaderViewController!
@@ -60,37 +62,7 @@ public final class EkoCommunityProfilePageViewController: EkoProfileViewControll
     }
     
     override func didTapLeftBarButton() {
-        if let vc = navigationController?.previousViewController() as? EkoCommunityProfileEditViewController {
-            // if EkoCommunityProfilePage navigate from EkoCommunityProfileEditViewController
-            // and EkoCommunityProfileEditViewController navigate from another vc
-            // should be popToRootViewController
-            if (vc.navigationController?.viewControllers.count ?? 0) > 2 {
-                navigationController?.popToRootViewController(animated: true)
-            } else {
-                // if EkoCommunityProfilePage navigate from EkoCommunityProfileEditViewController
-                // and EkoCommunityProfilePage present from another vc
-                // should be dismiss
-                let transition = CATransition()
-                transition.duration = 0.3
-                transition.type = .push
-                transition.subtype = .fromLeft
-                transition.timingFunction = CAMediaTimingFunction(name: .easeInEaseOut)
-                view.window?.layer.add(transition, forKey: kCATransition)
-                dismiss(animated: false)
-            }
-        } else {
-            
-            if navigationController != nil {
-                // if navigate from another vc
-                // should be navigation back
-                navigationController?.popViewController(animated: true)
-            } else {
-                // if present from another vc
-                // should be dismiss
-                dismiss(animated: true)
-            }
-            
-        }
+        navigationController?.popViewController(animated: true)
     }
     
 }
@@ -184,6 +156,21 @@ extension EkoCommunityProfilePageViewController: EkoCommunityProfileScreenViewMo
         EkoHUD.hide {
             EkoHUD.show(.error(message: EkoLocalizedStringSet.HUD.somethingWentWrong.localizedString))
         }
+    }
+    
+    func screenViewModelShowCommunitySettingsModal(_ viewModel: EkoCommunityProfileScreenViewModel, withModel model: EkoDefaultModalModel) {
+        let communitySettingsModalView = EkoDefaultModalView.make(content: model)
+        communitySettingsModalView.firstActionHandler = {
+            EkoHUD.hide { [weak self] in
+                self?.screenViewModel.action.route(.settings)
+            }
+        }
+        
+        communitySettingsModalView.secondActionHandler = {
+            EkoHUD.hide()
+        }
+    
+        EkoHUD.show(.custom(view: communitySettingsModalView))
     }
 }
 

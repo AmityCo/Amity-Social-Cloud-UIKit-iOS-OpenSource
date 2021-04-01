@@ -33,13 +33,11 @@ class EkoCommunityMemberViewController: EkoViewController {
         super.viewDidLoad()
         setupView()
         screenViewModel.action.getMember(viewType: viewType)
-        screenViewModel.action.getUserRoles()
     }
     
     static func make(pageTitle: String,
                      viewType: EkoCommunityMemberViewType,
                      community: EkoCommunityModel) -> EkoCommunityMemberViewController {
-        let userModeratorController = EkoCommunityUserRolesController(communityId: community.communityId)
         let fetchMemberController = EkoCommunityFetchMemberController(communityId: community.communityId)
         let removeMemberController = EkoCommunityRemoveMemberController(communityId: community.communityId)
         let addMemberController = EkoCommunityAddMemberController(communityId: community.communityId)
@@ -47,7 +45,6 @@ class EkoCommunityMemberViewController: EkoViewController {
         let viewModel: EkoCommunityMemberScreenViewModelType = EkoCommunityMemberScreenViewModel(community: community,
                                                                                                  fetchMemberController: fetchMemberController,
                                                                                                  removeMemberController: removeMemberController,
-                                                                                                 userModeratorController: userModeratorController,
                                                                                                  addMemberController: addMemberController,
                                                                                                  roleController: roleController)
         let vc = EkoCommunityMemberViewController(nibName: EkoCommunityMemberViewController.identifier,
@@ -113,7 +110,7 @@ extension EkoCommunityMemberViewController: UITableViewDataSource {
     private func configure(for cell: UITableViewCell, at indexPath: IndexPath) {
         if let cell = cell as? EkoCommunityMemberSettingsTableViewCell {
             let member = screenViewModel.dataSource.member(at: indexPath)
-            cell.display(with: member, isJoined: screenViewModel.dataSource.community?.isJoined ?? false)
+            cell.display(with: member, isJoined: screenViewModel.dataSource.community.isJoined)
             cell.setIndexPath(with: indexPath)
             cell.delegate = self
         }
@@ -128,11 +125,11 @@ extension EkoCommunityMemberViewController: EkoCommunityMemberScreenViewModelDel
     
     func screenViewModel(_ viewModel: EkoCommunityMemberScreenViewModel, loadingState state: EkoLoadingState) {
         switch state {
-        case .loadmore:
+        case .loading:
             tableView.showLoadingIndicator()
         case .loaded:
             tableView.tableFooterView = nil
-        default:
+        case .initial:
             break
         }
     }
@@ -191,65 +188,68 @@ private extension EkoCommunityMemberViewController {
         bottomSheet.modalPresentationStyle = .overFullScreen
         
         var options: [TextItemOption] = []
-
-        // remove user options
-        if screenViewModel.dataSource.isModerator {
-            let member = screenViewModel.dataSource.member(at: indexPath)
-            switch viewType {
-            case .member:
-                if !member.isModerator {
-                    let addRoleOption = TextItemOption(title: EkoLocalizedStringSet.CommunityMembreSetting.optionPromoteToModerator.localizedString) { [weak self] in
-                        EkoHUD.show(.loading)
-                        self?.screenViewModel.action.addRole(at: indexPath)
-                    }
-                    options.append(addRoleOption)
-                }
-            case .moderator:
-                let removeRoleOption = TextItemOption(title: EkoLocalizedStringSet.CommunityMembreSetting.optionDismissModerator.localizedString) { [weak self] in
-                    EkoHUD.show(.loading)
-                    self?.screenViewModel.action.removeRole(at: indexPath)
-                }
-                options.append(removeRoleOption)
-            }
-            
-            let removeOption = TextItemOption(title: EkoLocalizedStringSet.CommunityMembreSetting.optionRemove.localizedString, textColor: EkoColorSet.alert) { [weak self] in
-                let alert = UIAlertController(title: EkoLocalizedStringSet.CommunityMembreSetting.alertTitle.localizedString,
-                                              message: EkoLocalizedStringSet.CommunityMembreSetting.alertDesc.localizedString, preferredStyle: .alert)
-                alert.addAction(UIAlertAction(title: EkoLocalizedStringSet.cancel.localizedString, style: .default, handler: nil))
-                alert.addAction(UIAlertAction(title: EkoLocalizedStringSet.remove.localizedString, style: .destructive, handler: { _ in
-                    self?.screenViewModel.action.removeUser(at: indexPath)
-                }))
-                self?.present(alert, animated: true, completion: nil)
-            }
-            options.append(removeOption)
-        }
         
-        // report/unreport option
-        screenViewModel.dataSource.getReportUserStatus(at: indexPath) { [weak self] isReported in
-            var option: TextItemOption
-            if isReported {
-                // unreport option
-                option = TextItemOption(title: EkoLocalizedStringSet.CommunityMembreSetting.optionUnreport.localizedString) {
-                    self?.screenViewModel.action.unreportUser(at: indexPath)
+        screenViewModel.dataSource.getCommunityEditUserPermission { [weak self] (hasPermission) in
+            guard let strongSelf = self else { return }
+            // remove user options
+            if hasPermission {
+                let member = strongSelf.screenViewModel.dataSource.member(at: indexPath)
+                switch strongSelf.viewType {
+                case .member:
+                    if !member.isModerator {
+                        let addRoleOption = TextItemOption(title: EkoLocalizedStringSet.CommunityMembreSetting.optionPromoteToModerator.localizedString) {
+                            EkoHUD.show(.loading)
+                            strongSelf.screenViewModel.action.addRole(at: indexPath)
+                        }
+                        options.append(addRoleOption)
+                    }
+                case .moderator:
+                    let removeRoleOption = TextItemOption(title: EkoLocalizedStringSet.CommunityMembreSetting.optionDismissModerator.localizedString) {
+                        EkoHUD.show(.loading)
+                        strongSelf.screenViewModel.action.removeRole(at: indexPath)
+                    }
+                    options.append(removeRoleOption)
                 }
-            } else {
-                // report option
-                option = TextItemOption(title: EkoLocalizedStringSet.CommunityMembreSetting.optionReport.localizedString) {
-                    self?.screenViewModel.action.reportUser(at: indexPath)
+                
+                let removeOption = TextItemOption(title: EkoLocalizedStringSet.CommunityMembreSetting.optionRemove.localizedString, textColor: EkoColorSet.alert) {
+                    let alert = UIAlertController(title: EkoLocalizedStringSet.CommunityMembreSetting.alertTitle.localizedString,
+                                                  message: EkoLocalizedStringSet.CommunityMembreSetting.alertDesc.localizedString, preferredStyle: .alert)
+                    alert.addAction(UIAlertAction(title: EkoLocalizedStringSet.cancel.localizedString, style: .default, handler: nil))
+                    alert.addAction(UIAlertAction(title: EkoLocalizedStringSet.remove.localizedString, style: .destructive, handler: { _ in
+                        strongSelf.screenViewModel.action.removeUser(at: indexPath)
+                    }))
+                    strongSelf.present(alert, animated: true, completion: nil)
                 }
+                options.append(removeOption)
             }
-            // the options wil show like this below:
-            // - Promote moderator/Dismiss moderator
-            // - Report/Unreport
-            // - Remove from community
-            // option 'Remove from community' always show last element
             
-            // if options more than 2 items, the report/unreport option will insert at index 1
-            // if options less than 2 items, the report/unreport option will insert at index 0
-            
-            options.insert(option, at: options.count > 1 ? 1:0)
-            contentView.configure(items: options, selectedItem: nil)
-            self?.present(bottomSheet, animated: false, completion: nil)
+            // report/unreport option
+            strongSelf.screenViewModel.dataSource.getReportUserStatus(at: indexPath) { isReported in
+                var option: TextItemOption
+                if isReported {
+                    // unreport option
+                    option = TextItemOption(title: EkoLocalizedStringSet.General.undoReport.localizedString) {
+                        strongSelf.screenViewModel.action.unreportUser(at: indexPath)
+                    }
+                } else {
+                    // report option
+                    option = TextItemOption(title: EkoLocalizedStringSet.General.report.localizedString) {
+                        strongSelf.screenViewModel.action.reportUser(at: indexPath)
+                    }
+                }
+                // the options wil show like this below:
+                // - Promote moderator/Dismiss moderator
+                // - Report/Unreport
+                // - Remove from community
+                // option 'Remove from community' always show last element
+                
+                // if options more than 2 items, the report/unreport option will insert at index 1
+                // if options less than 2 items, the report/unreport option will insert at index 0
+                
+                options.insert(option, at: options.count > 1 ? 1:0)
+                contentView.configure(items: options, selectedItem: nil)
+                strongSelf.present(bottomSheet, animated: false, completion: nil)
+            }
         }
     }
 }

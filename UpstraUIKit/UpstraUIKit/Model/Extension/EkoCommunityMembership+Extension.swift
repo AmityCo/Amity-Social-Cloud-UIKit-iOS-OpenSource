@@ -11,7 +11,6 @@ import EkoChat
 enum EkoCommunityRole: String {
     case moderator
     case member
-    case unknown
 }
 
 extension EkoCommunityMembership {
@@ -20,7 +19,7 @@ extension EkoCommunityMembership {
         guard let roles = roles as? [String] else {
             return []
         }
-        return roles.map { EkoCommunityRole(rawValue: $0) ?? .unknown }
+        return roles.map { EkoCommunityRole(rawValue: $0) ?? .member }
     }
     
 }

@@ -279,12 +279,10 @@ extension EkoMessageListViewController: EkoMessageListScreenViewModelDelegate {
     
     func screenViewModelLoadingState(for state: EkoLoadingState) {
         switch state {
-        case .loadmore:
+        case .loading:
             messageViewController.showBottomIndicator()
         case .loaded, .initial:
             messageViewController.hideBottomIndicator()
-        case .loading:
-            break
         }
     }
     

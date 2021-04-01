@@ -93,12 +93,7 @@ extension EkoFeedScreenViewModel {
     }
     
     func loadMore() {
-        let canLoadmore = postController.loadMore()
-        if canLoadmore {
-            delegate?.screenViewModelLoadingState(self, for: .loadmore)
-        } else {
-            delegate?.screenViewModelLoadingState(self, for: .loaded)
-        }
+        postController.loadMore()
     }
     
     func reload() {

@@ -95,6 +95,7 @@ extension EkoRecommendedCommunityViewController: UICollectionViewDataSource {
     public func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell: EkoRecommendedCommunityCollectionViewCell = collectionView.dequeueReusableCell(for: indexPath)
         let community = screenViewModel.dataSource.community(at: indexPath)
+        cell.delegate = self
         cell.display(with: community)
         return cell
     }
@@ -109,5 +110,14 @@ extension EkoRecommendedCommunityViewController: EkoRecommendedCommunityScreenVi
     
     func screenViewModel(_ viewModel: EkoRecommendedCommunityScreenViewModelType, didFail error: EkoError) {
         emptyHandler?(true)
+    }
+}
+
+// MARK: - EkoRecommendedCommunityCollectionViewCellDelegate
+extension EkoRecommendedCommunityViewController: EkoRecommendedCommunityCollectionViewCellDelegate {
+    func cellDidTapOnAvatar(_ cell: EkoRecommendedCommunityCollectionViewCell) {
+        guard let indexPath = collectionView.indexPath(for: cell) else { return }
+        let community = screenViewModel.dataSource.community(at: indexPath)
+        selectedCommunityHandler?(community)
     }
 }

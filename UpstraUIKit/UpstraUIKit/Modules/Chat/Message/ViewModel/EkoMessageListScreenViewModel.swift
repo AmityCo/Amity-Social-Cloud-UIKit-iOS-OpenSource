@@ -245,7 +245,7 @@ extension EkoMessageListScreenViewModel {
             case .loaded:
                 if collection.hasPrevious {
                     collection.previousPage()
-                    delegate?.screenViewModelLoadingState(for: .loadmore)
+                    delegate?.screenViewModelLoadingState(for: .loading)
                 }
             default:
                 break

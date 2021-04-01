@@ -6,11 +6,21 @@
   Copyright © 2563 Eko Communication. All rights reserved.
 */
 
+// MARK: - General
 
-"likes" = "%@ likes";
-"comments" = "%@ comments";
+"general_report" = "Report";
+"genera_undo_report" = "Undo Report";
+
+"title_placeholder" = "Title";
+"description_placeholder" = "Description";
+
+"likes_plural" = "%@ likes";
+"likes_singular" = "%@ like";
+"comments_plural" = "%@ comments";
+"comments_singular" = "%@ comment";
 "members" = "%@ members";
-"shares" = "%@ shares";
+"shares_plural" = "%@ shares";
+"shares_singular" = "%@ share";
 
 "follow" = "Follow";
 "chat_title" = "Chat";
@@ -28,6 +38,7 @@
 "view_all_files_title" = "View all files";
 "close" = "Close";
 "save" = "Save";
+"saved" = "Saved";
 "cancel" = "Cancel";
 "delete" = "Delete";
 "edit" = "Edit";
@@ -44,7 +55,12 @@
 "general" = "General";
 "anonymous" = "Anonymous";
 "remove" = "Remove";
-
+"community_settings" = "Community settings";
+"skip_for_now" = "Skip for now";
+"turn_on" = "Turn on";
+"turn_off" = "Turn off";
+"on" = "On";
+"off" = "Off";
 "no_user_found" = "No user found";
 "search_results" = "Search results";
 "search_community_not_found" = "No community found";
@@ -55,6 +71,9 @@
 "message_delete" = "Message deleted • %@";
 "message_edit" = "Edited • %@";
 "message_readmore" = "...Read more";
+
+"something_went_wrong_with_try_again"= "Something went wrong. Please try again later.";
+"no_internet_connection" = "No internet connection";
 
 // MARK: - Message List
 "message_list_alert_error_message_title" = "Error sending message";
@@ -78,7 +97,7 @@
 // MARK: - Eko Create Community
 "edit_community_title" = "Edit Community";
 "create_community_title" = "Create Community";
-"create_community_name_title" = "Community name*";
+"create_community_name_title" = "Community name";
 "create_community_name_placeholder" = "Name your community";
 "create_community_about_title" = "About";
 "create_community_about_placeholder" = "Enter description";
@@ -90,7 +109,7 @@
 "create_community_public_desc" = "Anyone can join, view, and search the posts in this community.";
 "create_community_private_title" = "Private";
 "create_community_private_desc" = "Only members invited by the moderators can join, view, and search the posts in this community.";
-"create_community_add_member_title" = "Add members*";
+"create_community_add_member_title" = "Add members";
 "create_community_name_already_taken" = "This name has already been taken.";
 "create_community_button_create" = "Create community";
 "create_community_alert_title" = "Leave without finishing?";
@@ -140,8 +159,6 @@
 "post_detail_create_reply" = "Reply to";
 "post_detail_edit_reply" = "Edit reply";
 "post_detail_delete_reply" = "Delete reply";
-"post_detail_report_reply" = "Report reply";
-"post_detail_unreport_reply" = "Unreport reply";
 "post_detail_delete_reply_title" = "Delete reply";
 "post_detail_delete_reply_message" = "This reply will be permanently removed.";
 "post_detail_discard_reply_title" = "Discard Reply?";
@@ -155,13 +172,9 @@
 "post_detail_join_community_message" = "Join community to interact with all posts";
 "post_detail_edit_post" = "Edit post";
 "post_detail_delete_post" = "Delete post";
-"post_detail_report_post" = "Report post";
-"post_detail_unreport_post" = "Unreport post";
 "post_detail_create_comment" = "Add comment";
 "post_detail_edit_comment" = "Edit comment";
 "post_detail_delete_comment" = "Delete comment";
-"post_detail_report_comment" = "Report comment";
-"post_detail_unreport_comment" = "Unreport comment";
 "post_detail_delete_comment_title" = "Delete this comment";
 "post_detail_delete_comment_message" = "This comment will be permanently deleted. You’ll no longer to see and find this comment";
 "post_detail_discard_comment_title" = "Discard Comment?";
@@ -188,14 +201,42 @@
 "category_title" = "Categories";
 
 // MARK: - Community Settings
-"community_settings_edit_profile" = "Edit Profile";
-"community_settings_members" = "Members";
-"community_settings_close_community" = "Close Community";
-"community_settings_leave_community" = "Leave Community";
-"community_settings_alert_close_title" = "Close community?";
-"community_settings_alert_close_desc" = "All members will be removed from the community. All posts, messages, reactions, and media shared in community will be deleted. This cannot be undone.";
-"community_settings_alert_leave_title" = "Leave community?";
-"community_settings_alert_leave_desc" = "You won’t no longer be able to post and interact in this community after leaving.";
+"community_settings_item_header_basic_info" = "Basic info";
+"community_settings_item_header_community_permissions" = "Community permissions";
+"community_settings_item_title_edit_profile" = "Edit profile";
+"community_settings_item_title_members" = "Members";
+"community_settings_item_title_notifications" = "Notifications";
+"community_settings_item_title_header_community_permission" = "Community permissions";
+"community_settings_item_title_post_review" = "Post review";
+"community_settings_item_title_leave_community" = "Leave community";
+"community_settings_item_title_close_community" = "Close community";
+"community_settings_item_desc_close_community" = "Closing this community will remove the community page and all its content and comments.";
+"community_settings_alert_title_leave" = "Leave community?";
+"community_settings_alert_desc_leave" = "You won’t no longer be able to post and interact in this community after leaving.";
+"community_settings_alert_title_close" = "Close community?";
+"community_settings_alert_desc_close" = "All members will be removed from the community. All posts, messages, reactions, and media shared in community will be deleted. This cannot be undone.";
+"community_settings_alert_fail_title_leave" = "Unable to leave community";
+"community_settings_alert_fail_title_close" = "Unable to close community";
+"community_settings_alert_fail_title_notification_on" = "Unable to turn on notifications";
+"community_settings_alert_fail_title_notification_off" = "Unable to turn off notifications";
+
+// MARK: - Notification Settings
+"community_notification_settings_title_notifications" = "Allow notifications";
+"community_notification_settings_description_notifications" = "Turn on to receive push notifications from this community.";
+"community_notification_settings_title_reacts_posts" = "React posts";
+"community_notification_settings_description_reacts_posts" = "Receive notifications when someone make a reaction to your posts in this community";
+"community_notification_settings_title_new_posts" = "New posts";
+"community_notification_settings_description_new_posts" = "Receive notifications when someone create new posts  in this community";
+"community_notification_settings_title_reacts_comments" = "React comments";
+"community_notification_settings_description_reacts_comments" = "Receive notifications when someone like your comment in this community.";
+"community_notification_settings_title_new_comments" = "New comments";
+"community_notification_settings_description_new_comments" = "Receive notifications when someone comment to your posts in this community.";
+"community_notification_settings_title_replies" = "Replies";
+"community_notification_settings_description_replies" = "Receive notifications when someone comment to your comments in this community.";
+"community_notification_settings_post" = "Posts";
+"community_notification_settings_comment" = "Comments";
+"community_notification_settings_everyone" = "Everyone";
+"community_notification_settings_only_moderator" = "Only moderator";
 
 // MARK: - Not support role
 "role_permission_alert_desc" = "You don't have permission to perform this action right now , please contact administrator for more info.";
@@ -205,8 +246,6 @@
 "community_member_settings_moderator_title" = "Moderators";
 "community_member_settings_options_promote_to_moderator" = "Promote to moderator";
 "community_member_settings_options_dismiss_moderator" = "Dismiss moderator";
-"community_member_settings_options_report" = "Report user";
-"community_member_settings_options_unreport" = "Unreport user";
 "community_member_settings_options_remove" = "Remove from community";
 "community_member_settings_alert_title" = "Remove user from community?";
 "community_member_settings_alert_desc" = "This user won't no longer be able to search, post and interact in this community";
@@ -228,6 +267,7 @@
 "hud_unreport_sent" = "Unreport sent";
 "hud_delete" = "Delete";
 
+
 // MARK: - Popover Text Message
 "popover_message_is_too_short" = "Message is too short.";
 
@@ -239,3 +279,17 @@
 // MARK: - Post
 "post_place_holder_title" = "Something went wrong";
 "post_place_holder_desc" = "We couldn’t recognize this post.";
+
+// MARK: - Post review setting
+"post_review_settings_title" = "Post review";
+"post_review_settings_item_title_approve_member_posts" = "Approve member posts";
+"post_review_settings_item_desc_approve_member_posts" = "Posts by members have to be reviewed and approved by community moderator.";
+"post_review_settings_alert_title_turn_off_post_review" = "Turn off post review";
+"post_review_settings_alert_desc_turn_off_post_reivew" = "All pending posts will be posted in community feed. Continue?";
+"post_review_settings_hud_title_turn_off_post_review" = "Pending posts\nare posted";
+"post_review_settings_alert_fail_title_turn_on" = "Unable to turn on post review";
+"post_review_settings_alert_fail_title_turn_off" = "Unable to turn off post review";
+
+// MARK: - Modal
+"modal_community_settings_title" = "Customize your community";
+"modal_community_settings_desc" = "You’ve successfully created a community! Now let's manage permissions that work best for you";

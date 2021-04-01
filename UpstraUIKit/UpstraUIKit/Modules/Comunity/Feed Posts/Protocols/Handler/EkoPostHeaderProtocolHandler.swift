@@ -24,17 +24,20 @@ final class EkoPostHeaderProtocolHandler: EkoPostHeaderDelegate {
     
     private weak var viewController: EkoViewController?
     private var isReported: Bool = false
+    private var post: EkoPostModel?
     
     init(viewController: EkoViewController) {
         self.viewController = viewController
     }
     
-    func updateReportPostStatus(isReported: Bool) {
+    func showOptions(withReportStatus isReported: Bool) {
         self.isReported = isReported
+        handlePostOption()
     }
     
     func didPerformAction(_ cell: EkoPostHeaderProtocol, action: EkoPostHeaderAction) {
         guard let viewController = viewController, let post = cell.post else { return }
+        self.post = post
         switch action {
         case .tapAvatar, .tapDisplayName:
             EkoEventHandler.shared.userDidTap(from: viewController, userId: post.postedUserId)
@@ -42,12 +45,11 @@ final class EkoPostHeaderProtocolHandler: EkoPostHeaderDelegate {
             EkoEventHandler.shared.communityDidTap(from: viewController, communityId: post.communityId ?? "")
         case .tapOption:
             delegate?.headerProtocolHandlerDidPerformAction(self, action: .tapOption, withPost: post)
-            handlePostOption(post: post)
         }
     }
     
-    private func handlePostOption(post: EkoPostModel) {
-        guard let viewController = viewController else { return }
+    private func handlePostOption() {
+        guard let viewController = viewController, let post = self.post else { return }
         let bottomSheet = BottomSheetViewController()
         let contentView = ItemOptionView<TextItemOption>()
         bottomSheet.isTitleHidden = true
@@ -73,13 +75,13 @@ final class EkoPostHeaderProtocolHandler: EkoPostHeaderDelegate {
             viewController.present(bottomSheet, animated: false, completion: nil)
         } else {
             if isReported {
-                let unreportOption = TextItemOption(title: EkoLocalizedStringSet.PostDetail.unreportPost.localizedString) { [weak self] in
+                let unreportOption = TextItemOption(title: EkoLocalizedStringSet.General.undoReport.localizedString) { [weak self] in
                     guard let strongSelf = self else { return }
                     strongSelf.delegate?.headerProtocolHandlerDidPerformAction(strongSelf, action: .tapUnreport, withPost: post)
                 }
                 contentView.configure(items: [unreportOption], selectedItem: nil)
             } else {
-                let reportOption = TextItemOption(title: EkoLocalizedStringSet.PostDetail.reportPost.localizedString) { [weak self] in
+                let reportOption = TextItemOption(title: EkoLocalizedStringSet.General.report.localizedString) { [weak self] in
                     guard let strongSelf = self else { return }
                     strongSelf.delegate?.headerProtocolHandlerDidPerformAction(strongSelf, action: .tapReport, withPost: post)
                 }

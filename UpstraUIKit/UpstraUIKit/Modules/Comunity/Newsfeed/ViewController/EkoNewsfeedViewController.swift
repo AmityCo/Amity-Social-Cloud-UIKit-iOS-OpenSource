@@ -21,20 +21,14 @@ public class EkoNewsfeedViewController: EkoViewController, IndicatorInfoProvider
     private var headerView: EkoMyCommunityPreviewViewController?
     private let createPostButton: EkoFloatingButton = EkoFloatingButton()
     private let feedViewController = EkoFeedViewController.make(feedType: .globalFeed)
-    private let communityViewModel: EkoCommunitiesScreenViewModelType
-    
-    private init(communityViewModel: EkoCommunitiesScreenViewModelType) {
-        self.communityViewModel = communityViewModel
-        super.init(nibName: nil, bundle: nil)
-    }
-    
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
+    private var communityViewModel: EkoCommunitiesScreenViewModelType!
     
     public override func viewDidLoad() {
         super.viewDidLoad()
-        setupView()
+        setupFeedView()
+        setupHeaderView()
+        setupEmptyView()
+        setupPostButton()
     }
     
     public override func viewWillAppear(_ animated: Bool) {
@@ -44,20 +38,15 @@ public class EkoNewsfeedViewController: EkoViewController, IndicatorInfoProvider
     
     public static func make() -> EkoNewsfeedViewController {
         let communityViewModel = EkoCommunitiesScreenViewModel(listType: .newsfeedMyCommunities)
-        let vc = EkoNewsfeedViewController(communityViewModel: communityViewModel)
+        let vc = EkoNewsfeedViewController(nibName: nil, bundle: nil)
+        vc.communityViewModel = communityViewModel
+        communityViewModel.delegate = vc
         return vc
     }
 }
 
 // MARK: - Setup view
 private extension EkoNewsfeedViewController {
-    private func setupView() {
-        setupFeedView()
-        setupHeaderView()
-        setupEmptyView()
-        setupPostButton()
-        bindingViewModel()
-    }
     
     private func setupFeedView() {
         addChild(viewController: feedViewController)
@@ -67,8 +56,8 @@ private extension EkoNewsfeedViewController {
     }
     
     private func setupHeaderView() {
-        headerView = EkoMyCommunityPreviewViewController.make(viewModel: communityViewModel)
-        feedViewController.headerView = headerView?.view
+        headerView = EkoMyCommunityPreviewViewController.make()
+        headerView?.delegate = self
     }
     
     private func setupEmptyView() {
@@ -101,37 +90,38 @@ private extension EkoNewsfeedViewController {
     
 }
 
-// MARK: - Binding ViewModel
-private extension EkoNewsfeedViewController {
-    
-    func bindingViewModel() {
-        communityViewModel.dataSource.numberOfItems.bind { [weak self] (count) in
-            self?.feedViewController.headerView = count > 0 ? self?.headerView?.view : nil
-        }
-        
-        communityViewModel.dataSource.route.bind { [weak self] (route) in
-            guard let strongSelf = self else { return }
-            switch route {
-            case .initial:
-                break
-            case .myCommunity:
-                let vc = EkoMyCommunityViewController.make()
-                strongSelf.navigationController?.pushViewController(vc, animated: true)
-            case .communityProfile(let indexPath):
-                let communityId = strongSelf.communityViewModel.dataSource.community(at: indexPath).communityId
-                EkoEventHandler.shared.communityDidTap(from: strongSelf, communityId: communityId)
-            case .create:
-                break
-            }
-        }
-    }
-    
-}
-
 extension EkoNewsfeedViewController: EkoCommunityProfileEditViewControllerDelegate {
     
     func viewController(_ viewController: EkoCommunityProfileEditViewController, didFinishCreateCommunity communityId: String) {
         EkoEventHandler.shared.communityDidTap(from: self, communityId: communityId)
+    }
+    
+}
+
+extension EkoNewsfeedViewController: EkoCommunitiesScreenViewModelDelegate {
+    
+    func screenViewModel(_ model: EkoCommunitiesScreenViewModelType, didUpdateCommunities communities: [EkoCommunityModel]) {
+        headerView?.configure(with: communities)
+        feedViewController.headerView = communities.count > 0 ? headerView?.view : nil
+    }
+    
+    func screenViewModel(_ model: EkoCommunitiesScreenViewModelType, didUpdateLoadingState loadingState: EkoLoadingState) {
+        // Intentionally left empty
+    }
+    
+}
+
+extension EkoNewsfeedViewController: EkoMyCommunityPreviewViewControllerDelegate {
+    
+    public func viewController(_ viewController: EkoMyCommunityPreviewViewController, didPerformAction action: EkoMyCommunityPreviewViewController.ActionType) {
+        switch action {
+        case .seeAll:
+            let vc = EkoMyCommunityViewController.make()
+            navigationController?.pushViewController(vc, animated: true)
+        case .communityItem(indexPath: let indexPath):
+            let communityId = communityViewModel.dataSource.community(at: indexPath).communityId
+            EkoEventHandler.shared.communityDidTap(from: self, communityId: communityId)
+        }
     }
     
 }

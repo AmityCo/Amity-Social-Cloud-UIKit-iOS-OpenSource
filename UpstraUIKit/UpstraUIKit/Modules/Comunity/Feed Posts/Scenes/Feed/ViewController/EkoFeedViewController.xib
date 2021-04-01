@@ -21,19 +21,19 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="XOB-JW-neK" customClass="EkoPostTableView" customModule="UpstraUIKit" customModuleProvider="target">
-                    <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                    <rect key="frame" x="0.0" y="44" width="414" height="818"/>
                     <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                 </tableView>
             </subviews>
             <viewLayoutGuide key="safeArea" id="zN9-du-z87"/>
             <color key="backgroundColor" systemColor="systemBackgroundColor"/>
             <constraints>
-                <constraint firstAttribute="bottom" secondItem="XOB-JW-neK" secondAttribute="bottom" id="7Yy-ej-e7I"/>
-                <constraint firstItem="XOB-JW-neK" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="Buh-Jm-lY6"/>
-                <constraint firstItem="XOB-JW-neK" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="rA4-pt-3UW"/>
-                <constraint firstAttribute="trailing" secondItem="XOB-JW-neK" secondAttribute="trailing" id="u3l-yt-kzo"/>
+                <constraint firstItem="zN9-du-z87" firstAttribute="trailing" secondItem="XOB-JW-neK" secondAttribute="trailing" id="CT5-az-UeL"/>
+                <constraint firstItem="XOB-JW-neK" firstAttribute="top" secondItem="zN9-du-z87" secondAttribute="top" id="JZk-Ub-NDv"/>
+                <constraint firstItem="XOB-JW-neK" firstAttribute="leading" secondItem="zN9-du-z87" secondAttribute="leading" id="QJx-zR-Kpl"/>
+                <constraint firstItem="zN9-du-z87" firstAttribute="bottom" secondItem="XOB-JW-neK" secondAttribute="bottom" id="kuJ-nN-JHT"/>
             </constraints>
-            <point key="canvasLocation" x="139" y="105"/>
+            <point key="canvasLocation" x="137.68115942028987" y="104.46428571428571"/>
         </view>
     </objects>
     <resources>

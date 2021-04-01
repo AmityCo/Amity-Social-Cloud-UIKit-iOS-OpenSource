@@ -126,9 +126,9 @@ extension EkoRecentChatViewController: EkoRecentChatScreenViewModelDelegate {
         switch state {
         case .loaded:
             tableView.tableFooterView = UIView()
-        case .loadmore:
+        case .loading:
             tableView.showLoadingIndicator()
-        default:
+        case .initial:
             break
         }
     }

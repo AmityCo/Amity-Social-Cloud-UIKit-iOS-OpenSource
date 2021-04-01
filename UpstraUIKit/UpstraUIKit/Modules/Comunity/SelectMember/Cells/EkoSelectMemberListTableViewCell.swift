@@ -25,6 +25,7 @@ final class EkoSelectMemberListTableViewCell: UITableViewCell {
         
         displayNameLabel.text = ""
         radioImageView.image = EkoIconSet.iconRadioOff
+        radioImageView.isHidden = false
         avatarView.image = nil
         avatarView.placeholder = EkoIconSet.defaultAvatar
     }
@@ -32,7 +33,7 @@ final class EkoSelectMemberListTableViewCell: UITableViewCell {
     private func setupView() {
         
         selectionStyle = .none
-        
+        avatarView.isUserInteractionEnabled = false
         displayNameLabel.text = ""
         displayNameLabel.textColor = EkoColorSet.base
         displayNameLabel.font = EkoFontSet.bodyBold
@@ -43,6 +44,7 @@ final class EkoSelectMemberListTableViewCell: UITableViewCell {
     func display(with user: EkoSelectMemberModel) {
         displayNameLabel.text = user.displayName ?? user.defaultDisplayName
         radioImageView.image = user.isSelected ? EkoIconSet.iconRadioCheck : EkoIconSet.iconRadioOff
+        radioImageView.isHidden = user.isCurrnetUser
         avatarView.setImage(withImageId: user.avatarId, placeholder: EkoIconSet.defaultAvatar)
     }
     

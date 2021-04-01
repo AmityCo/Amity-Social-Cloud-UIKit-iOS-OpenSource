@@ -148,7 +148,7 @@ extension EkoSelectMemberListScreenViewModel {
         }
         
         if success {
-            delegate?.screenViewModelLoadingState(for: .loadmore)
+            delegate?.screenViewModelLoadingState(for: .loading)
         } else {
             delegate?.screenViewModelLoadingState(for: .loaded)
         }

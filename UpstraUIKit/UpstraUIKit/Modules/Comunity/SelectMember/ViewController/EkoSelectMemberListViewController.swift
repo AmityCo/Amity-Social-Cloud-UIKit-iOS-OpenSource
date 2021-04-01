@@ -239,9 +239,9 @@ extension EkoSelectMemberListViewController: EkoSelectMemberListScreenViewModelD
     
     func screenViewModelLoadingState(for state: EkoLoadingState) {
         switch state {
-        case .loadmore:
+        case .loading:
             tableView.showLoadingIndicator()
-        default:
+        case .initial, .loaded:
             tableView.tableFooterView = UIView()
         }
     }

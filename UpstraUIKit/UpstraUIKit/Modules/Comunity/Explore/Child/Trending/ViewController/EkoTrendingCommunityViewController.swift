@@ -93,6 +93,7 @@ extension EkoTrendingCommunityViewController: UITableViewDataSource {
         let community = screenViewModel.dataSource.community(at: indexPath)
         cell.display(with: community)
         cell.displayNumber(with: indexPath)
+        cell.delegate = self
         let cellHeight = cell.isCategoryLabelTruncated ? 70 : 56
         tableViewHeight += CGFloat(cellHeight)
         return cell
@@ -113,4 +114,13 @@ extension EkoTrendingCommunityViewController: EkoTrendingCommunityScreenViewMode
         emptyHandler?(true)
     }
 
+}
+
+// MARK: - EkoTrendingCommunityTableViewCellDelegate
+extension EkoTrendingCommunityViewController: EkoTrendingCommunityTableViewCellDelegate {
+    func cellDidTapOnAvatar(_ cell: EkoTrendingCommunityTableViewCell) {
+        guard let indexPath = tableView.indexPath(for: cell) else { return }
+        let community = screenViewModel.dataSource.community(at: indexPath)
+        selectedCommunityHandler?(community)
+    }
 }

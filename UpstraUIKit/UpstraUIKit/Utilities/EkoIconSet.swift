@@ -67,6 +67,7 @@ public struct EkoIconSet {
         public static var iconFileZIP = UIImage(named: "icon_file_zip", in: UpstraUIKitManager.bundle, compatibleWith: nil)
     }
     
+    public static var noInternetConnection = UIImage(named: "no_internet_connection", in: UpstraUIKitManager.bundle, compatibleWith: nil)
     public static var emptyChat = getImage(name: "empty_chat")
     public static var iconSendMessage = getImage(name: "icon_send_message")
     public static var defaultPrivateCommunityChat = getImage(name: "default_private_community_chat")
@@ -106,6 +107,8 @@ public struct EkoIconSet {
     static let iconFileFill = getImage("icon_file_fill")
     static let iconLocationFill = getImage("icon_location_fill")
     
+    static let iconMagicWand = getImage("icon_magic_wand")
+    
     enum Chat {
         static let iconKeyboard = EkoIconSet.getImage("icon_keyboard")
         static let iconMic = EkoIconSet.getImage("icon_mic")
@@ -121,6 +124,23 @@ public struct EkoIconSet {
     enum Post {
         static let like = EkoIconSet.getImage("icon_post_like")
         static let liked = EkoIconSet.getImage("icon_post_liked")
+    }
+    
+    enum CommunitySettings {
+        static let iconItemEditProfile = EkoIconSet.getImage("icon_item_edit_profile")
+        static let iconItemMembers = EkoIconSet.getImage("icon_item_members")
+        static let iconItemNotification = EkoIconSet.getImage("icon_item_notification")
+        static let iconItemPostReview = EkoIconSet.getImage("icon_item_post_review")
+        static let iconCommentSetting = EkoIconSet.getImage("icon_community_setting_comment")
+        static let iconPostSetting = EkoIconSet.getImage("icon_community_setting_post")
+    }
+    
+    enum CommunityNotificationSettings {
+        static let iconComments = EkoIconSet.getImage("icon_comments")
+        static let iconNewPosts = EkoIconSet.getImage("icon_new_posts")
+        static let iconReacts = EkoIconSet.getImage("icon_reacts")
+        static let iconReplies = EkoIconSet.getImage("icon_replies")
+        static let iconNotificationSettings = EkoIconSet.getImage("icon_notification_settings")
     }
 }
 

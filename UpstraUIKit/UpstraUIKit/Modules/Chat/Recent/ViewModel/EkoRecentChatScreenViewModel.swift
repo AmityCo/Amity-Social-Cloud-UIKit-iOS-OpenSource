@@ -77,7 +77,7 @@ extension EkoRecentChatScreenViewModel {
         case .loaded:
             if collection.hasNext {
                 collection.nextPage()
-                delegate?.screenViewModelLoadingState(for: .loadmore)
+                delegate?.screenViewModelLoadingState(for: .loading)
             }
         default: break
         }

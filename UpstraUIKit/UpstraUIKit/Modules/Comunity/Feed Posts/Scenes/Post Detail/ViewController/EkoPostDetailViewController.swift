@@ -276,12 +276,12 @@ extension EkoPostDetailViewController: EkoPostDetailScreenViewModelDelegate {
         bottomSheet.modalPresentationStyle = .overFullScreen
         
         if isReported {
-            let unreportOption = TextItemOption(title: EkoLocalizedStringSet.PostDetail.unreportPost.localizedString) { [weak self] in
+            let unreportOption = TextItemOption(title: EkoLocalizedStringSet.General.undoReport.localizedString) { [weak self] in
                 self?.screenViewModel.action.unreportPost()
             }
             contentView.configure(items: [unreportOption], selectedItem: nil)
         } else {
-            let reportOption = TextItemOption(title: EkoLocalizedStringSet.PostDetail.reportPost.localizedString) { [weak self] in
+            let reportOption = TextItemOption(title: EkoLocalizedStringSet.General.report.localizedString) { [weak self] in
                 self?.screenViewModel.action.reportPost()
             }
             contentView.configure(items: [reportOption], selectedItem: nil)
@@ -321,14 +321,12 @@ extension EkoPostDetailViewController: EkoPostDetailScreenViewModelDelegate {
         bottomSheet.modalPresentationStyle = .overFullScreen
         
         if isReported {
-            let reportTitle = comment.isParent ? EkoLocalizedStringSet.PostDetail.unreportComment.localizedString : EkoLocalizedStringSet.PostDetail.unreportReply.localizedString
-            let unreportOption = TextItemOption(title: reportTitle) {
+            let unreportOption = TextItemOption(title: EkoLocalizedStringSet.General.undoReport.localizedString) {
                 self.screenViewModel.action.unreportComment(withCommentId: comment.id)
             }
             contentView.configure(items: [unreportOption], selectedItem: nil)
         } else {
-            let unreportTitle = comment.isParent ? EkoLocalizedStringSet.PostDetail.reportComment.localizedString : EkoLocalizedStringSet.PostDetail.reportReply.localizedString
-            let reportOption = TextItemOption(title: unreportTitle) {
+            let reportOption = TextItemOption(title: EkoLocalizedStringSet.General.report.localizedString) {
                 self.screenViewModel.action.reportComment(withCommentId: comment.id)
             }
             contentView.configure(items: [reportOption], selectedItem: nil)

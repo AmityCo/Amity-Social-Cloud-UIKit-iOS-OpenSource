@@ -23,11 +23,13 @@ final class EkoCommunitiesScreenViewModel: EkoCommunitiesScreenViewModelType {
         case searchCommunities
     }
     
+    weak var delegate: EkoCommunitiesScreenViewModelDelegate?
+    
     private let repository: EkoCommunityRepository
     private var searchCollection: EkoCollection<EkoCommunity>?
     private var searchToken: EkoNotificationToken?
-
     private let listType: ListType
+    private let debouncer = Debouncer(delay: 0.3)
     
     init(listType: ListType) {
         repository = EkoCommunityRepository(client: UpstraUIKitManagerInternal.shared.client)
@@ -35,20 +37,18 @@ final class EkoCommunitiesScreenViewModel: EkoCommunitiesScreenViewModelType {
     }
     
     // MARK: - DataSource
-    var searchCommunities: EkoBoxBinding<[EkoCommunityModel]> = EkoBoxBinding([])
-    var route: EkoBoxBinding<Route> = EkoBoxBinding(.initial)
-    var numberOfItems: EkoBoxBinding<Int> = EkoBoxBinding(0)
-    var loading: EkoBoxBinding<EkoLoadingState> = EkoBoxBinding(.initial)
+    private(set) var communities: [EkoCommunityModel] = []
+    private(set) var loadingState: EkoLoadingState = .initial {
+        didSet {
+            delegate?.screenViewModel(self, didUpdateLoadingState: loadingState)
+        }
+    }
 }
 
 // MARK: - Action
 extension EkoCommunitiesScreenViewModel {
-    func route(to route: Route) {
-        self.route.value = route
-    }
     
     func search(with text: String?) {
-        searchCommunities.value = []
         let filter: EkoCommunityQueryFilter
         switch listType {
         case .searchCommunities:
@@ -62,39 +62,31 @@ extension EkoCommunitiesScreenViewModel {
             filter = .userIsMember
         }
         
-        searchCollection = repository.getCommunitiesWithKeyword(text, filter: filter, sortBy: .lastCreated, categoryId: nil, includeDeleted: false)
+        searchCollection = repository.getCommunitiesWithKeyword(text, filter: filter, sortBy: .displayName, categoryId: nil, includeDeleted: false)
 
-        searchToken = searchCollection?.observe ({ [weak self] (collection, change, error) in
-            guard let self = self else { return }
+        searchToken?.invalidate()
+        searchToken = searchCollection?.observe { [weak self] (collection, change, error) in
+            self?.debouncer.run {
+                self?.prepareData()
+            }
+        }
+    }
     
-            if self.searchCommunities.value.count > collection.count() {
-                self.numberOfItems.value = 0
-                return
-            }
-            
-            for index in (UInt(self.searchCommunities.value.count)..<collection.count()) {
-                guard let object = collection.object(at: index) else { continue }
-                let model = EkoCommunityModel(object: object)
-                let index = self.searchCommunities.value.firstIndex(where: { $0.communityId == object.communityId })
-                if let index = index {
-                    self.searchCommunities.value[index] = model
-                } else {
-                    self.searchCommunities.value.append(model)
-                }
-            }
-            
-            if self.listType != .searchCommunities && text == "" {
-                self.searchCommunities.value = self.searchCommunities.value.sorted(by: {
-                    return $0.displayName.localizedCaseInsensitiveCompare($01.displayName) == .orderedAscending
-                })
-            }
-            self.numberOfItems.value = self.searchCommunities.value.count
-            self.loading.value = .loaded
-            
-            if collection.dataStatus == .fresh {
-                   self.searchToken?.invalidate()
-            }
-        })
+    private func prepareData() {
+        guard let collection = searchCollection, collection.dataStatus == .fresh else {
+            return
+        }
+        
+        var communites: [EkoCommunityModel] = []
+        for index in 0..<collection.count() {
+            guard let object = collection.object(at: index) else { continue }
+            let model = EkoCommunityModel(object: object)
+            communites.append(model)
+        }
+        communities = communites
+        loadingState = .loaded
+        delegate?.screenViewModel(self, didUpdateCommunities: communites)
+        
     }
 
     func loadMore() {
@@ -103,7 +95,7 @@ extension EkoCommunitiesScreenViewModel {
         case .loaded:
             if collection.hasNext {
                 collection.nextPage()
-                loading.value = .loadmore
+                loadingState = .loading
             }
         default:
             break
@@ -111,10 +103,11 @@ extension EkoCommunitiesScreenViewModel {
     }
     
     func community(at indexPath: IndexPath) -> EkoCommunityModel {
-        return searchCommunities.value[indexPath.row]
+        return communities[indexPath.row]
     }
     
-    func reset() {
-        searchCommunities.value = []
+    func resetData() {
+        communities.removeAll()
+        delegate?.screenViewModel(self, didUpdateCommunities: communities)
     }
 }

@@ -33,16 +33,23 @@
                                         </constraints>
                                     </view>
                                     <stackView opaque="NO" contentMode="scaleToFill" alignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="yz3-Ey-ChE">
-                                        <rect key="frame" x="15.5" y="44" width="114.5" height="36"/>
+                                        <rect key="frame" x="6.5" y="44" width="132.5" height="36"/>
                                         <subviews>
+                                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="0iv-kO-NUB" userLabel="Private Badge Image View">
+                                                <rect key="frame" x="0.0" y="9" width="18" height="18"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="width" constant="18" id="R5Y-GF-DDQ"/>
+                                                    <constraint firstAttribute="height" constant="18" id="SpW-P9-TGu"/>
+                                                </constraints>
+                                            </imageView>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" text="Labelasdasd" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Kpb-4q-FsM">
-                                                <rect key="frame" x="0.0" y="8" width="96.5" height="20.5"/>
+                                                <rect key="frame" x="18" y="8" width="96.5" height="20.5"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                 <nil key="textColor"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="glw-WT-XoX" userLabel="Badge Image View">
-                                                <rect key="frame" x="96.5" y="9" width="18" height="18"/>
+                                                <rect key="frame" x="114.5" y="9" width="18" height="18"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="18" id="7iF-Or-q4r"/>
                                                     <constraint firstAttribute="width" constant="18" id="twg-CQ-yBm"/>
@@ -76,6 +83,7 @@
                 <outlet property="badgeImageView" destination="glw-WT-XoX" id="X3F-MJ-7gx"/>
                 <outlet property="containerView" destination="ntV-0V-d7h" id="4Ox-Oo-4wI"/>
                 <outlet property="displayNameLabel" destination="Kpb-4q-FsM" id="gVA-X0-dCy"/>
+                <outlet property="privateBadgeImageView" destination="0iv-kO-NUB" id="vUt-th-rB3"/>
             </connections>
             <point key="canvasLocation" x="265.94202898550725" y="111.16071428571428"/>
         </collectionViewCell>

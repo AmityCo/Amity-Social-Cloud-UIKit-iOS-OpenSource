@@ -48,6 +48,10 @@ public class EkoCategoryCommunityListViewController: EkoViewController {
         tableView.delegate = self
     }
 
+    private func communityDidTap(at indexPath: IndexPath) {
+        guard let community = screenViewModel.dataSource.item(at: indexPath) else { return }
+        EkoEventHandler.shared.communityDidTap(from: self, communityId: community.communityId)
+    }
 }
 
 extension EkoCategoryCommunityListViewController: UITableViewDataSource {
@@ -60,6 +64,7 @@ extension EkoCategoryCommunityListViewController: UITableViewDataSource {
         let cell: EkoMyCommunityTableViewCell = tableView.dequeueReusableCell(for: indexPath)
         if let community = screenViewModel.dataSource.item(at: indexPath) {
             cell.display(with: community)
+            cell.delegate = self
         }
         if tableView.isBottomReached {
             screenViewModel.loadNext()
@@ -72,8 +77,7 @@ extension EkoCategoryCommunityListViewController: UITableViewDataSource {
 extension EkoCategoryCommunityListViewController: UITableViewDelegate {
     
     public func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        guard let community = screenViewModel.dataSource.item(at: indexPath) else { return }
-        EkoEventHandler.shared.communityDidTap(from: self, communityId: community.communityId)
+        communityDidTap(at: indexPath)
     }
     
     public func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
@@ -101,4 +105,12 @@ extension EkoCategoryCommunityListViewController: EkoCategoryCommunityListScreen
         tableView?.reloadData()
     }
     
+}
+
+// MARK: - EkoMyCommunityTableViewCellDelegate
+extension EkoCategoryCommunityListViewController: EkoMyCommunityTableViewCellDelegate {
+    func cellDidTapOnAvatar(_ cell: EkoMyCommunityTableViewCell) {
+        guard let indexPath = tableView.indexPath(for: cell) else { return }
+        communityDidTap(at: indexPath)
+    }
 }

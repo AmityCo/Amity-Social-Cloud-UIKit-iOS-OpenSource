@@ -7,7 +7,8 @@
 //
 
 import UIKit
-
+#warning("#HUD")
+#warning("Need to refactor hud view to support fullscreen and handle the content inside of itself")
 class EkoHUDSuccessView: UIView {
     
     private let imageView = UIImageView(frame: .zero)

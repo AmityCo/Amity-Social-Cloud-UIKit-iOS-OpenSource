@@ -42,10 +42,13 @@ public final class EkoPostFooterTableViewCell: UITableViewCell, Nibbable, EkoPos
         self.post = post
         likeButton.isSelected = post.isLiked
         likeLabel.isHidden = post.reactionsCount == 0
-        likeLabel.text = String.localizedStringWithFormat(EkoLocalizedStringSet.likes.localizedString,
+        let reactionsPrefix = post.reactionsCount > 1 ? EkoLocalizedStringSet.likesPlural.localizedString : EkoLocalizedStringSet.likesSingular.localizedString
+        likeLabel.text = String.localizedStringWithFormat(reactionsPrefix,
                                                           post.reactionsCount.formatUsingAbbrevation())
         commentLabel.isHidden = post.allCommentCount == 0
-        commentLabel.text = String.localizedStringWithFormat(EkoLocalizedStringSet.comments.localizedString,
+        let commentPrefix = post.allCommentCount > 1 ? EkoLocalizedStringSet.commentsPlural.localizedString :
+            EkoLocalizedStringSet.commentsSingular.localizedString
+        commentLabel.text = String.localizedStringWithFormat(commentPrefix,
                                                              post.allCommentCount.formatUsingAbbrevation())
         
         let isReactionExisted = post.reactionsCount == 0 && post.allCommentCount == 0
@@ -55,7 +58,9 @@ public final class EkoPostFooterTableViewCell: UITableViewCell, Nibbable, EkoPos
         
         shareButton.isHidden = !EkoPostSharePermission.canSharePost(post: post)
         shareLabel.isHidden = post.sharedCount == 0
-        shareLabel.text = String.localizedStringWithFormat(EkoLocalizedStringSet.shares, post.sharedCount)
+        let sharePrefix = post.sharedCount > 1 ? EkoLocalizedStringSet.sharesPlural.localizedString :
+            EkoLocalizedStringSet.sharesSingular.localizedString
+        shareLabel.text = String.localizedStringWithFormat(sharePrefix, post.sharedCount)
     }
     
     // MARK: - Setup views

@@ -207,12 +207,14 @@ extension EkoCreateCommunityScreenViewModel {
     
     func getInfo(communityId: String) {
         self.communityId = communityId
-        communityInfoToken?.invalidate()
         communityInfoToken = repository.getCommunity(withId: communityId).observe{ [weak self] (community, error) in
             guard let object = community.object else { return }
             let model = EkoCommunityModel(object: object)
             self?.community.value = model
             self?.showProfile(model: model)
+            if community.dataStatus == .fresh {
+                self?.communityInfoToken?.invalidate()
+            }
         }
     }
     
@@ -225,7 +227,7 @@ extension EkoCreateCommunityScreenViewModel {
     }
     
     func update() {
-        let builder = EkoCommunityCreationDataBuilder()
+        let builder = EkoCommunityUpdateDataBuilder()
         builder.setDisplayName(displayName)
         builder.setCommunityDescription(description)
         builder.setIsPublic(isPublic)

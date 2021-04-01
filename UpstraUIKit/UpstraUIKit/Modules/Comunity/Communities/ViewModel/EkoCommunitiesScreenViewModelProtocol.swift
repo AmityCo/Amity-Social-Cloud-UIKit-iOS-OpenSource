@@ -10,24 +10,26 @@ import UIKit
 import EkoChat
 
 protocol EkoCommunitiesScreenViewModelAction {
-    func route(to route: EkoCommunitiesScreenViewModel.Route)
     func search(with text: String?)
     func loadMore()
-    func reset()
+    func resetData()
 }
 
 protocol EkoCommunitiesScreenViewModelDataSource {
-    var searchCommunities: EkoBoxBinding<[EkoCommunityModel]> { get set }
-    var route: EkoBoxBinding<EkoCommunitiesScreenViewModel.Route> { get set }
-    var numberOfItems: EkoBoxBinding<Int> { get }
-    var loading: EkoBoxBinding<EkoLoadingState> { get set }
+    var communities: [EkoCommunityModel] { get }
+    var loadingState: EkoLoadingState { get }
     func community(at indexPath: IndexPath) -> EkoCommunityModel
-    func reset()
+}
+
+protocol EkoCommunitiesScreenViewModelDelegate: class {
+    func screenViewModel(_ model: EkoCommunitiesScreenViewModelType, didUpdateCommunities communities: [EkoCommunityModel])
+    func screenViewModel(_ model: EkoCommunitiesScreenViewModelType, didUpdateLoadingState loadingState: EkoLoadingState)
 }
 
 protocol EkoCommunitiesScreenViewModelType: EkoCommunitiesScreenViewModelAction, EkoCommunitiesScreenViewModelDataSource {
     var action: EkoCommunitiesScreenViewModelAction { get }
     var dataSource: EkoCommunitiesScreenViewModelDataSource { get }
+    var delegate: EkoCommunitiesScreenViewModelDelegate? { get set }
 }
 
 extension EkoCommunitiesScreenViewModelType {

@@ -17,6 +17,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         
+        // Setup UNUserNotificationCenter to handle push notification.
+        // https://developer.apple.com/documentation/usernotifications/
+        UNUserNotificationCenter.current().delegate = self
+        
+        // Setup UpstraUIKit
         UpstraUIKitManager.setup("API_KEY")
         UpstraUIKitManager.set(eventHandler: CustomEventHandler())
         
@@ -68,73 +73,52 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         return true
     }
+    
+    // MARK: Push Notification
+    
+    func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
+        // https://developer.apple.com/documentation/usernotifications/registering_your_app_with_apns
+        // Forward Tokens to Your Provider Server
+        sendDeviceTokenToServer(token: deviceToken)
+    }
+    
+    func application(_ application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: Error) {
+        print("Fail didFailToRegisterForRemoteNotificationsWithError: \(error.localizedDescription)")
+    }
+    
+    private func sendDeviceTokenToServer(token: Data) {
+        // Transform deviceToken into a raw string, before sending to EkoChatSDK server.
+        let tokenParts: [String] = token.map { data in String(format: "%02.2hhx", data) }
+        let tokenString: String = tokenParts.joined()
+        
+        UpstraUIKitManager.registerDeviceForPushNotification(tokenString)
+    }
 
 }
 
-class CustomEventHandler: EkoEventHandler {
+extension AppDelegate: UNUserNotificationCenterDelegate {
     
-    override func userDidTap(from source: EkoViewController, userId: String) {
-
-        let settings = EkoUserProfilePageSettings()
-        settings.shouldChatButtonHide = true
-        
-        let viewController = EkoUserProfilePageViewController.make(withUserId: userId, settings: settings)
-        source.navigationController?.pushViewController(viewController, animated: true)
+    func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
+        // For this sample app, we allow every push notification, to present while the app is in foreground.
+        completionHandler([.alert, .badge, .sound])
     }
     
-    override func communityDidTap(from source: EkoViewController, communityId: String) {
+    func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void) {
         
-        let settings = EkoCommunityProfilePageSettings()
-        settings.shouldChatButtonHide = true
-        
-        let viewController = EkoCommunityProfilePageViewController.make(withCommunityId: communityId, settings: settings)
-        source.navigationController?.pushViewController(viewController, animated: true)
     }
     
-    override func communityChannelDidTap(from source: EkoViewController, channelId: String) {
-        print("Channel id: \(channelId)")
-    }
-    
-    override func createPostDidTap(from source: EkoViewController, postTarget: EkoPostTarget) {
-        
-        let settings = EkoPostEditorSettings()
-        settings.shouldFileButtonHide = false
-        
-        if source is EkoPostTargetSelectionViewController {
-            let viewController = EkoPostCreateViewController.make(postTarget: postTarget, settings: settings)
-            source.navigationController?.pushViewController(viewController, animated: true)
-        } else {
-            let viewController = EkoPostCreateViewController.make(postTarget: postTarget, settings: settings)
-            let navigationController = UINavigationController(rootViewController: viewController)
-            navigationController.modalPresentationStyle = .overFullScreen
-            source.present(navigationController, animated: true, completion: nil)
-        }
-    }
 }
 
-class CustomFeedEventHandler: EkoFeedEventHandler {
-    override func sharePostDidTap(from source: EkoViewController, postId: String) {
-        let urlString = "https://amity.co/posts/\(postId)"
-        guard let url = URL(string: urlString) else { return }
-        let viewController = EkoActivityController.make(activityItems: [url])
-        source.present(viewController, animated: true, completion: nil)
-    }
-    
-    override func sharePostToGroupDidTap(from source: EkoViewController, postId: String) {
-    }
-    
-    override func sharePostToMyTimelineDidTap(from source: EkoViewController, postId: String) {
-    }
-}
-
-// MARK :- Helper methods
+// MARK:- Helper methods
 extension AppDelegate {
-    func openPost(withId postId: String) {
+    
+    private func openPost(withId postId: String) {
         window = UIWindow()
         UpstraUIKitManager.registerDevice(withUserId: "victimIOS", displayName: "victimIOS".uppercased())
         
-        let postDetailViewController = EkoPostDetailViewController.make(postId: postId)
+        let postDetailViewController = EkoPostDetailViewController.make(withPostId: "c1bb8697c88a01f6423765984a3e47ac")
         window?.rootViewController = postDetailViewController
         window?.makeKeyAndVisible()
     }
+    
 }

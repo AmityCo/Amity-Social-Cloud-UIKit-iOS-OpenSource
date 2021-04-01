@@ -11,6 +11,5 @@ import Foundation
 enum EkoLoadingState {
     case initial
     case loading
-    case loadmore
     case loaded
 }

@@ -11,28 +11,12 @@ import EkoChat
 
 final class EkoSearchCommunityViewController: EkoSearchViewController {
     
-    private let screenViewModel: EkoCommunitiesScreenViewModelType
-    
-    private init(for viewController: UIViewController? = nil, duration: TimeInterval = 0.2, searchType: EkoSearchViewController.SearchType, viewModel: EkoCommunitiesScreenViewModelType) {
-        self.screenViewModel = viewModel
-        super.init(for: viewController, duration: duration, searchType: searchType)
-    }
-    
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
+    private var screenViewModel: EkoCommunitiesScreenViewModelType!
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        definesPresentationContext = true
-        emptyText = EkoLocalizedStringSet.searchCommunityNotFound.localizedString
-        tableView.register(EkoMyCommunityTableViewCell.nib, forCellReuseIdentifier: EkoMyCommunityTableViewCell.identifier)
-        tableView.delegate = self
-        tableView.dataSource = self
-        tableView.separatorInset.left = view.frame.width
         setupView()
         bindingSearch()
-        bindingViewModel()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -41,19 +25,27 @@ final class EkoSearchCommunityViewController: EkoSearchViewController {
     }
     
     static func make(for viewController: UIViewController?, searchType: EkoSearchViewController.SearchType) -> EkoSearchCommunityViewController {
-        let viewModel: EkoCommunitiesScreenViewModelType
-        let vc: EkoSearchCommunityViewController
+        var viewModel: EkoCommunitiesScreenViewModelType
         if searchType == .inTableView {
             viewModel = EkoCommunitiesScreenViewModel(listType: .myCommunities)
-            vc = EkoSearchCommunityViewController(searchType: .inTableView, viewModel: viewModel)
         } else {
             viewModel = EkoCommunitiesScreenViewModel(listType: .searchCommunities)
-            vc = EkoSearchCommunityViewController(for: viewController, searchType: searchType, viewModel: viewModel)
         }
-        return vc
+        
+        let viewControlelr = EkoSearchCommunityViewController(for: viewController, searchType: searchType)
+        viewModel.delegate = viewControlelr
+        viewControlelr.screenViewModel = viewModel
+        return viewControlelr
     }
 
     private func setupView() {
+        definesPresentationContext = true
+        emptyText = EkoLocalizedStringSet.searchCommunityNotFound.localizedString
+        tableView.register(EkoMyCommunityTableViewCell.nib, forCellReuseIdentifier: EkoMyCommunityTableViewCell.identifier)
+        tableView.delegate = self
+        tableView.dataSource = self
+        tableView.separatorInset.left = view.frame.width
+        
         if searchType == .inTableView {
             title = EkoLocalizedStringSet.myCommunityTitle.localizedString
             let rightItem = UIBarButtonItem(image: EkoIconSet.iconAdd, style: .plain, target: self, action: #selector(createCommunityTap))
@@ -67,7 +59,11 @@ final class EkoSearchCommunityViewController: EkoSearchViewController {
 // MARK: - Action
 private extension EkoSearchCommunityViewController {
     @objc func createCommunityTap() {
-        screenViewModel.action.route(to: .create)
+        let vc = EkoCommunityProfileEditViewController.make(viewType: .create)
+        vc.delegate = self
+        let nav = UINavigationController(rootViewController: vc)
+        nav.modalPresentationStyle = .fullScreen
+        present(nav, animated: true, completion: nil)
     }
 }
 
@@ -81,12 +77,14 @@ private extension EkoSearchCommunityViewController {
             return cell
         }
         
-        selectedItemHandler = ({ [weak self] (indexPath) in
-            self?.screenViewModel.action.route(to: .communityProfile(indexPath: indexPath))
-        })
+        selectedItemHandler = { [weak self] (indexPath) in
+            guard let strongSelf = self else { return }
+            let communityId = strongSelf.screenViewModel.dataSource.community(at: indexPath).communityId
+            EkoEventHandler.shared.communityDidTap(from: strongSelf, communityId: communityId)
+        }
         
         numberOfRowHandler = { [weak self] section in
-            return self?.screenViewModel.dataSource.searchCommunities.value.count ?? 0
+            return self?.screenViewModel.dataSource.communities.count ?? 0
         }
         
         searchTextDidChangeHandler = { [weak self] text in
@@ -97,8 +95,7 @@ private extension EkoSearchCommunityViewController {
             if self?.searchType == .inTableView {
                 self?.screenViewModel.action.search(with: "")
             } else {
-                self?.screenViewModel.action.reset()
-                self?.tableView.reloadData()
+                self?.screenViewModel.action.resetData()
             }
         }
     }
@@ -107,10 +104,20 @@ private extension EkoSearchCommunityViewController {
         if let cell = cell as? EkoMyCommunityTableViewCell {
             let community = screenViewModel.dataSource.community(at: indexPath)
             cell.display(with: community)
+            cell.delegate = self
             if tableView.isBottomReached {
                 screenViewModel.action.loadMore()
             }
         }
+    }
+}
+
+// MARK: - EkoMyCommunityTableViewCellDelegate
+extension EkoSearchCommunityViewController: EkoMyCommunityTableViewCellDelegate {
+    func cellDidTapOnAvatar(_ cell: EkoMyCommunityTableViewCell) {
+        guard let indexPath = tableView.indexPath(for: cell) else { return }
+        let community = screenViewModel.dataSource.community(at: indexPath)
+        EkoEventHandler.shared.communityDidTap(from: self, communityId: community.communityId)
     }
 }
 
@@ -123,40 +130,25 @@ private extension EkoSearchCommunityViewController {
         }
     }
     
-    func bindingViewModel() {
-        screenViewModel.dataSource.searchCommunities.bind { [weak self] communities in
-            self?.tableView.reloadData()
-        }
-        
-        screenViewModel.dataSource.route.bind { [weak self] route in
-            guard let strongSelf = self else { return }
-            switch route {
-            case .initial:
-                break
-            case .communityProfile(let indexPath):
-                let communityId = strongSelf.screenViewModel.dataSource.community(at: indexPath).communityId
-                EkoEventHandler.shared.communityDidTap(from: strongSelf, communityId: communityId)
-            case .myCommunity:
-                break
-            case .create:
-                let vc = EkoCommunityProfileEditViewController.make(viewType: .create)
-                vc.delegate = self
-                let nav = UINavigationController(rootViewController: vc)
-                nav.modalPresentationStyle = .fullScreen
-                strongSelf.present(nav, animated: true, completion: nil)
-            }
-        }
-        
-        screenViewModel.dataSource.loading.bind { (state) in
-            switch state {
-            case .loadmore:
-                self.tableView.showLoadingIndicator()
-            case .loaded:
-                self.tableView.tableFooterView = nil
-            default: break
-            }
+}
+
+extension EkoSearchCommunityViewController: EkoCommunitiesScreenViewModelDelegate {
+    
+    func screenViewModel(_ model: EkoCommunitiesScreenViewModelType, didUpdateCommunities communities: [EkoCommunityModel]) {
+        tableView.reloadData()
+    }
+    
+    func screenViewModel(_ model: EkoCommunitiesScreenViewModelType, didUpdateLoadingState loadingState: EkoLoadingState) {
+        switch loadingState {
+        case .loading:
+            tableView.showLoadingIndicator()
+        case .loaded:
+            tableView.tableFooterView = nil
+        case .initial:
+            break
         }
     }
+    
 }
 
 extension EkoSearchCommunityViewController: EkoCommunityProfileEditViewControllerDelegate {

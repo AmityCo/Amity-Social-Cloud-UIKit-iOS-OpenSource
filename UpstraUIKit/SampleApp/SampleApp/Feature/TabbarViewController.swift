@@ -23,5 +23,18 @@ class TabbarViewController: UITabBarController {
         viewControllers = [ feature,
                             setting,
                            /* UINavigationController(rootViewController: EkoCommunityHomePageViewController.make()) */]
+        
+        registerForPushNotifications()
     }
+    
+    func registerForPushNotifications() {
+        UNUserNotificationCenter.current()
+            .requestAuthorization(options: [.alert, .sound, .badge]) { granted, _ in
+                guard granted else { return }
+                DispatchQueue.main.async {
+                    UIApplication.shared.registerForRemoteNotifications()
+                }
+            }
+    }
+    
 }

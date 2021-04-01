@@ -21,18 +21,16 @@ protocol EkoCommunityMemberScreenViewModelDelegate: class {
 }
 
 protocol EkoCommunityMemberScreenViewModelDataSource {
-    var community: EkoCommunityModel? { get }
-    var isModerator: Bool { get }
+    var community: EkoCommunityModel { get }
     func numberOfMembers() -> Int
     func member(at indexPath: IndexPath) -> EkoCommunityMembershipModel
     func getReportUserStatus(at indexPath: IndexPath, completion: ((Bool) -> Void)?)
-    
     func prepareData() -> [EkoSelectMemberModel]
+    func getCommunityEditUserPermission(_ completion: ((Bool) -> Void)?)
 }
 
 protocol EkoCommunityMemberScreenViewModelAction {
     func getMember(viewType: EkoCommunityMemberViewType)
-    func getUserRoles()
     func loadMore()
     func addUser(users: [EkoSelectMemberModel])
     func removeUser(at indexPath: IndexPath)
