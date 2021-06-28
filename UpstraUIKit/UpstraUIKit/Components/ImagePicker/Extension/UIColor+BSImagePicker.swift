@@ -24,7 +24,7 @@ import UIKit
 
 extension UIColor {
     
-    #warning("Remove this after migrating with EkoColor")
+    #warning("Remove this after migrating with AmityColor")
     static var systemBackgroundColor: UIColor {
         if #available(iOS 13.0, *) {
             return systemBackground
@@ -34,7 +34,7 @@ extension UIColor {
         }
     }
     
-    #warning("Remove this after migrating with EkoColor")
+    #warning("Remove this after migrating with AmityColor")
     static var systemShadowColor: UIColor {
        if #available(iOS 13.0, *) {
             return tertiarySystemBackground
@@ -44,7 +44,7 @@ extension UIColor {
         }
     }
     
-    #warning("Remove this after migrating with EkoColor")
+    #warning("Remove this after migrating with AmityColor")
     static var systemPrimaryTextColor: UIColor {
        if #available(iOS 13.0, *) {
             return label
@@ -54,7 +54,7 @@ extension UIColor {
         }
     }
     
-    #warning("Remove this after migrating with EkoColor")
+    #warning("Remove this after migrating with AmityColor")
     static var systemSecondaryTextColor: UIColor {
        if #available(iOS 13.0, *) {
             return secondaryLabel
@@ -64,7 +64,7 @@ extension UIColor {
         }
     }
     
-    #warning("Remove this after migrating with EkoColor")
+    #warning("Remove this after migrating with AmityColor")
     static var systemStrokeColor: UIColor {
         if #available(iOS 13.0, *) {
             return UIColor { (traitCollection: UITraitCollection) -> UIColor in
@@ -80,7 +80,7 @@ extension UIColor {
         }
     }
     
-    #warning("Remove this after migrating with EkoColor")
+    #warning("Remove this after migrating with AmityColor")
     static var systemOverlayColor: UIColor {
         if #available(iOS 13.0, *) {
             return secondarySystemBackground

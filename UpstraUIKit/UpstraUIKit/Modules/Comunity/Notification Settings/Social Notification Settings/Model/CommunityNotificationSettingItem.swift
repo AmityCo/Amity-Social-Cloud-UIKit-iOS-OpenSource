@@ -1,9 +1,9 @@
 //
 //  CommunityNotificationSettingItem.swift
-//  UpstraUIKit
+//  AmityUIKit
 //
 //  Created by Nontapat Siengsanor on 31/3/2564 BE.
-//  Copyright © 2564 BE Upstra. All rights reserved.
+//  Copyright © 2564 BE Amity. All rights reserved.
 //
 
 import Foundation

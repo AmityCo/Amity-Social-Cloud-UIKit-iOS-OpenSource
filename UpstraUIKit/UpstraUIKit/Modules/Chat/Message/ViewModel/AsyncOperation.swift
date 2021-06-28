@@ -1,16 +1,16 @@
 //
 //  AsyncOperation.swift
-//  UpstraUIKit
+//  AmityUIKit
 //
 //  Created by Nutchaphon Rewik on 17/11/2563 BE.
-//  Copyright © 2563 Upstra. All rights reserved.
+//  Copyright © 2563 Amity. All rights reserved.
 //
 
 import Foundation
 
 class AsyncOperation: Operation {
     
-    private let stateQueue = DispatchQueue(label: "com.upstra.state-queue", attributes: .concurrent)
+    private let stateQueue = DispatchQueue(label: "com.Amity.state-queue", attributes: .concurrent)
 
     override var isAsynchronous: Bool {
         return true

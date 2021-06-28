@@ -1,9 +1,9 @@
 //
 //  BottomSheetHandleView.swift
-//  UpstraUIKit
+//  AmityUIKit
 //
 //  Created by Nishan Niraula on 1/23/20.
-//  Copyright © 2020 Eko. All rights reserved.
+//  Copyright © 2020 Amity. All rights reserved.
 //
 
 import UIKit
@@ -49,7 +49,7 @@ final class BottomSheetHandleView: UIView, BottomSheetComponent {
     }
     
     private func setupViews() {
-        backgroundColor = EkoColorSet.backgroundColor
+        backgroundColor = AmityColorSet.backgroundColor
         
         imageView.translatesAutoresizingMaskIntoConstraints = false
         

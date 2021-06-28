@@ -3,13 +3,13 @@
 //  SampleApp
 //
 //  Created by Sarawoot Khunsri on 23/11/2563 BE.
-//  Copyright © 2563 BE Eko. All rights reserved.
+//  Copyright © 2563 BE Amity. All rights reserved.
 //
 
 import UIKit
-import UpstraUIKit
+import AmityUIKit
 
-class CustomMessageTextIncomingTableViewCell: UITableViewCell, EkoMessageCellProtocol {
+class CustomMessageTextIncomingTableViewCell: UITableViewCell, AmityMessageCellProtocol {
 
     @IBOutlet private var displayTextLabel: UILabel!
     
@@ -18,7 +18,7 @@ class CustomMessageTextIncomingTableViewCell: UITableViewCell, EkoMessageCellPro
     
     }
     
-    func display(message: EkoMessageModel) {
+    func display(message: AmityMessageModel) {
         displayTextLabel.text = message.data?["text"] as? String
     }
 }

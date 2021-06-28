@@ -1,0 +1,164 @@
+//
+//  AmityCommentView.swift
+//  AmityUIKit
+//
+//  Created by Nontapat Siengsanor on 23/9/2563 BE.
+//  Copyright © 2563 Amity. All rights reserved.
+//
+
+import UIKit
+
+enum AmityCommentViewLayout {
+    case comment(contentExpanded: Bool, shouldActionShow: Bool, shouldLineShow: Bool)
+    case commentPreview(shouldActionShow: Bool)
+    case reply(contentExpanded: Bool, shouldActionShow: Bool, shouldLineShow: Bool)
+}
+
+enum AmityCommentViewAction {
+    case avatar
+    case like
+    case reply
+    case option
+    case viewReply
+}
+
+protocol AmityCommentViewDelegate: class {
+    func commentView(_ view: AmityCommentView, didTapAction action: AmityCommentViewAction)
+}
+
+class AmityCommentView: AmityView {
+    
+    @IBOutlet private weak var avatarView: AmityAvatarView!
+    @IBOutlet private weak var titleLabel: UILabel!
+    @IBOutlet private weak var timeLabel: UILabel!
+    @IBOutlet weak var contentLabel: AmityExpandableLabel!
+    @IBOutlet private weak var actionStackView: UIStackView!
+    @IBOutlet private weak var likeButton: AmityButton!
+    @IBOutlet private weak var replyButton: AmityButton!
+    @IBOutlet private weak var optionButton: UIButton!
+    @IBOutlet private weak var viewReplyButton: AmityButton!
+    @IBOutlet private weak var separatorLineView: UIView!
+    @IBOutlet private weak var leadingAvatarImageViewConstraint: NSLayoutConstraint!
+    @IBOutlet private weak var topAvatarImageViewConstraint: NSLayoutConstraint!
+    
+    weak var delegate: AmityCommentViewDelegate?
+    private(set) var comment: AmityCommentModel?
+    
+    override func initial() {
+        loadNibContent()
+        setupView()
+    }
+    
+    private func setupView() {
+        avatarView.placeholder = AmityIconSet.defaultAvatar
+        avatarView.actionHandler = { [weak self] in
+            guard let strongSelf = self else { return }
+            strongSelf.delegate?.commentView(strongSelf, didTapAction: .avatar)
+        }
+        titleLabel.textColor = AmityColorSet.base
+        titleLabel.font = AmityFontSet.bodyBold
+        timeLabel.textColor = AmityColorSet.base.blend(.shade1)
+        timeLabel.font = AmityFontSet.caption
+        contentLabel.textColor = AmityColorSet.base
+        contentLabel.font = AmityFontSet.body
+        contentLabel.numberOfLines = 8
+        separatorLineView.backgroundColor  = AmityColorSet.secondary.blend(.shade4)
+        
+        likeButton.setTitle(AmityLocalizedStringSet.like.localizedString, for: .normal)
+        likeButton.setTitleFont(AmityFontSet.captionBold)
+        likeButton.setImage(AmityIconSet.iconLike, for: .normal)
+        likeButton.setImage(AmityIconSet.iconLikeFill, for: .selected)
+        likeButton.setTitleColor(AmityColorSet.primary, for: .selected)
+        likeButton.setTitleColor(AmityColorSet.base.blend(.shade2), for: .normal)
+        likeButton.setTintColor(AmityColorSet.primary, for: .selected)
+        likeButton.setTintColor(AmityColorSet.base.blend(.shade2), for: .normal)
+        likeButton.addTarget(self, action: #selector(likeButtonTap), for: .touchUpInside)
+        likeButton.setInsets(forContentPadding: .zero, imageTitlePadding: 4)
+        replyButton.setTitle(AmityLocalizedStringSet.reply.localizedString, for: .normal)
+        replyButton.setTitleFont(AmityFontSet.captionBold)
+        replyButton.setImage(AmityIconSet.iconReply, for: .normal)
+        replyButton.tintColor = AmityColorSet.base.blend(.shade2)
+        replyButton.setTitleColor(AmityColorSet.primary, for: .selected)
+        replyButton.setTitleColor(AmityColorSet.base.blend(.shade2), for: .normal)
+        replyButton.addTarget(self, action: #selector(replyButtonTap), for: .touchUpInside)
+        replyButton.setInsets(forContentPadding: .zero, imageTitlePadding: 4)
+        optionButton.addTarget(self, action: #selector(optionButtonTap), for: .touchUpInside)
+        optionButton.tintColor = AmityColorSet.base.blend(.shade2)
+        viewReplyButton.setTitle(AmityLocalizedStringSet.viewReply.localizedString, for: .normal)
+        viewReplyButton.setTitleFont(AmityFontSet.captionBold)
+        viewReplyButton.setTitleColor(AmityColorSet.base.blend(.shade1), for: .normal)
+        viewReplyButton.setTintColor(AmityColorSet.base.blend(.shade1), for: .normal)
+        viewReplyButton.setImage(AmityIconSet.iconReplyInverse, for: .normal)
+        viewReplyButton.backgroundColor = AmityColorSet.secondary.blend(.shade4)
+        viewReplyButton.clipsToBounds = true
+        viewReplyButton.layer.cornerRadius = 4
+        viewReplyButton.setInsets(forContentPadding: UIEdgeInsets(top: 6, left: 12, bottom: 6, right: 16), imageTitlePadding: 8)
+        viewReplyButton.addTarget(self, action: #selector(viewReplyButtonTap), for: .touchUpInside)
+    }
+    
+    func configure(with comment: AmityCommentModel, layout: AmityCommentViewLayout) {
+        self.comment = comment
+        
+        if comment.isEdited {
+            timeLabel.text = String.localizedStringWithFormat(AmityLocalizedStringSet.PostDetail.postDetailCommentEdit.localizedString, comment.createdAt.relativeTime)
+        } else {
+            timeLabel.text = comment.createdAt.relativeTime
+        }
+        avatarView.setImage(withImageURL: comment.fileURL, placeholder: AmityIconSet.defaultAvatar)
+        titleLabel.text = comment.displayName
+        contentLabel.text = comment.text
+        likeButton.isSelected = comment.isLiked
+        separatorLineView.isHidden = true
+        
+        if comment.reactionsCount > 0 {
+            likeButton.setTitle(comment.reactionsCount.formatUsingAbbrevation(), for: .normal)
+        } else {
+            likeButton.setTitle(AmityLocalizedStringSet.like.localizedString, for: .normal)
+        }
+        
+        switch layout {
+        case .comment(let contentExpanded, let shouldActionShow,  _):
+            contentLabel.isExpanded = contentExpanded
+            actionStackView.isHidden = !shouldActionShow
+            viewReplyButton.isHidden = true
+            replyButton.isHidden = false
+            topAvatarImageViewConstraint.constant = 16
+            leadingAvatarImageViewConstraint.constant = 16
+        case .commentPreview(let shouldActionShow):
+            contentLabel.isExpanded = false
+            actionStackView.isHidden = !shouldActionShow
+            viewReplyButton.isHidden = !comment.isChildrenExisted
+            replyButton.isHidden = false
+            topAvatarImageViewConstraint.constant = 16
+            leadingAvatarImageViewConstraint.constant = 16
+        case .reply(let contentExpanded, let shouldActionShow, _):
+            contentLabel.isExpanded = contentExpanded
+            actionStackView.isHidden = !shouldActionShow
+            viewReplyButton.isHidden = true
+            replyButton.isHidden = true
+            topAvatarImageViewConstraint.constant = 0
+            leadingAvatarImageViewConstraint.constant = 52
+        }
+    }
+
+    @IBAction func displaynameTap(_ sender: Any) {
+        delegate?.commentView(self, didTapAction: .avatar)
+    }
+    
+    @objc private func replyButtonTap() {
+        delegate?.commentView(self, didTapAction: .reply)
+    }
+
+    @objc private func likeButtonTap() {
+        delegate?.commentView(self, didTapAction: .like)
+    }
+
+    @objc private func optionButtonTap() {
+        delegate?.commentView(self, didTapAction: .option)
+    }
+    
+    @objc private func viewReplyButtonTap() {
+        delegate?.commentView(self, didTapAction: .viewReply)
+    }
+    
+}

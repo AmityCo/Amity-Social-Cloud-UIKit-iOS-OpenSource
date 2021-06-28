@@ -3,22 +3,23 @@
 //  SampleApp
 //
 //  Created by Nontapat Siengsanor on 22/3/2564 BE.
-//  Copyright © 2564 BE Eko. All rights reserved.
+//  Copyright © 2564 BE Amity. All rights reserved.
 //
 
-import UpstraUIKit
+import Foundation
+import AmityUIKit
 
-class CustomFeedEventHandler: EkoFeedEventHandler {
-    override func sharePostDidTap(from source: EkoViewController, postId: String) {
+class CustomFeedEventHandler: AmityFeedEventHandler {
+    override func sharePostDidTap(from source: AmityViewController, postId: String) {
         let urlString = "https://amity.co/posts/\(postId)"
         guard let url = URL(string: urlString) else { return }
-        let viewController = EkoActivityController.make(activityItems: [url])
+        let viewController = AmityActivityController.make(activityItems: [url])
         source.present(viewController, animated: true, completion: nil)
     }
     
-    override func sharePostToGroupDidTap(from source: EkoViewController, postId: String) {
+    override func sharePostToGroupDidTap(from source: AmityViewController, postId: String) {
     }
     
-    override func sharePostToMyTimelineDidTap(from source: EkoViewController, postId: String) {
+    override func sharePostToMyTimelineDidTap(from source: AmityViewController, postId: String) {
     }
 }

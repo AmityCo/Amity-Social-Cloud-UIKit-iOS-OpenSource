@@ -1,9 +1,9 @@
 //
 //  Sequence+Extension.swift
-//  UpstraUIKit
+//  AmityUIKit
 //
 //  Created by Sarawoot Khunsri on 30/8/2563 BE.
-//  Copyright © 2563 Upstra. All rights reserved.
+//  Copyright © 2563 Amity. All rights reserved.
 //
 
 import UIKit

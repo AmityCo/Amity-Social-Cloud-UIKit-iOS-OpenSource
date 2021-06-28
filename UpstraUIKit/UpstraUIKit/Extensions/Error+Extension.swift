@@ -1,21 +1,21 @@
 //
 //  Error+Extension.swift
-//  UpstraUIKit
+//  AmityUIKit
 //
 //  Created by Nontapat Siengsanor on 28/8/2563 BE.
-//  Copyright © 2563 Upstra. All rights reserved.
+//  Copyright © 2563 Amity. All rights reserved.
 //
 
 import Foundation
 
-enum EkoError: Int, Error {
+enum AmityError: Int, Error {
     case unknown = 99999
     case noPermission = 40301
     case bannedWord = 400308
     
     init?(error: Error?) {
         guard let errorCode = error?._code,
-              let _error = EkoError(rawValue: errorCode) else {
+              let _error = AmityError(rawValue: errorCode) else {
             return nil
         }
         self = _error

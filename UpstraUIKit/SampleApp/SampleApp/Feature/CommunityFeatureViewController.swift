@@ -3,11 +3,11 @@
 //  SampleApp
 //
 //  Created by Sarawoot Khunsri on 15/7/2563 BE.
-//  Copyright © 2563 Eko. All rights reserved.
+//  Copyright © 2563 Amity. All rights reserved.
 //
 
 import UIKit
-import UpstraUIKit
+import AmityUIKit
 import SwiftUI
 
 class CommunityFeatureViewController: UIViewController {
@@ -48,8 +48,8 @@ class CommunityFeatureViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        EkoFeedUISettings.shared.delegate = nil
-        EkoFeedUISettings.shared.dataSource = nil
+        AmityFeedUISettings.shared.delegate = nil
+        AmityFeedUISettings.shared.dataSource = nil
     }
 }
 
@@ -58,22 +58,22 @@ extension CommunityFeatureViewController: UITableViewDelegate {
         tableView.deselectRow(at: indexPath, animated: true)
         switch FeatureList.allCases[indexPath.row] {
         case .home:
-            let homepage = EkoCommunityHomePageViewController.make()
+            let homepage = AmityCommunityHomePageViewController.make()
             navigationController?.pushViewController(homepage, animated: true)
             
-            EkoFeedUISettings.shared.register(UINib(nibName: "EkoPostBirthdayTableViewCell", bundle: nil), forCellReuseIdentifier: "EkoPostBirthdayTableViewCell")
-            EkoFeedUISettings.shared.register(UINib(nibName: "EkoPostThumbsupTableViewCell", bundle: nil), forCellReuseIdentifier: "EkoPostThumbsupTableViewCell")
-            EkoFeedUISettings.shared.register(UINib(nibName: "EkoPostNewJoinerTableViewCell", bundle: nil), forCellReuseIdentifier: "EkoPostNewJoinerTableViewCell")
-            EkoFeedUISettings.shared.delegate = self
-            EkoFeedUISettings.shared.dataSource = self
+            AmityFeedUISettings.shared.register(UINib(nibName: "AmityPostBirthdayTableViewCell", bundle: nil), forCellReuseIdentifier: "AmityPostBirthdayTableViewCell")
+            AmityFeedUISettings.shared.register(UINib(nibName: "AmityPostThumbsupTableViewCell", bundle: nil), forCellReuseIdentifier: "AmityPostThumbsupTableViewCell")
+            AmityFeedUISettings.shared.register(UINib(nibName: "AmityPostNewJoinerTableViewCell", bundle: nil), forCellReuseIdentifier: "AmityPostNewJoinerTableViewCell")
+            AmityFeedUISettings.shared.delegate = self
+            AmityFeedUISettings.shared.dataSource = self
         case .newsfeed:
-            let newsfeedViewController = EkoNewsfeedViewController.make()
+            let newsfeedViewController = AmityNewsfeedViewController.make()
             navigationController?.pushViewController(newsfeedViewController, animated: true)
         case .globalFeed:
-            let feedViewController = EkoGlobalFeedViewController.make()
+            let feedViewController = AmityGlobalFeedViewController.make()
             navigationController?.pushViewController(feedViewController, animated: true)
         case .myFeed:
-            let feedViewController = EkoUserFeedViewController.makeMyFeed()
+            let feedViewController = AmityUserFeedViewController.makeMyFeed()
             navigationController?.pushViewController(feedViewController, animated: true)
         }
     }
@@ -91,8 +91,8 @@ extension CommunityFeatureViewController: UITableViewDataSource {
     }
 }
 
-// MARK: - EkoFeedDelegate & EkoFeedDataSource
-extension CommunityFeatureViewController: EkoFeedDelegate {
+// MARK: - AmityFeedDelegate & AmityFeedDataSource
+extension CommunityFeatureViewController: AmityFeedDelegate {
     func didPerformActionLikePost() {
     }
     
@@ -108,15 +108,15 @@ extension CommunityFeatureViewController: EkoFeedDelegate {
     }
 }
 
-extension CommunityFeatureViewController: EkoFeedDataSource {
-    func getUIComponentForPost(post: EkoPostModel, at index: Int) -> EkoPostComposable? {
+extension CommunityFeatureViewController: AmityFeedDataSource {
+    func getUIComponentForPost(post: AmityPostModel, at index: Int) -> AmityPostComposable? {
         switch post.dataType {
-        case "eko.birthday":
+        case "Amity.birthday":
             birthday = BirthdayPostComponent(post: post)
             return birthday
-        case "eko.recommendation":
+        case "Amity.recommendation":
             return ThumbsupPostComponent(post: post)
-        case "eko.newEmployee":
+        case "Amity.newEmployee":
             return NewJoinerPostComponent(post: post)
         default:
             return nil

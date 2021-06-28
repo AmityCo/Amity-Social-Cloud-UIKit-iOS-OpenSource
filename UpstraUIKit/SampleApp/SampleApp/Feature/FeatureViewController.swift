@@ -3,7 +3,7 @@
 //  SampleApp
 //
 //  Created by Sarawoot Khunsri on 15/7/2563 BE.
-//  Copyright © 2563 Eko. All rights reserved.
+//  Copyright © 2563 Amity. All rights reserved.
 //
 
 import UIKit
@@ -28,6 +28,7 @@ class FeatureViewController: UIViewController {
     }
     
     @IBOutlet private var tableView: UITableView!
+    private var logoutButtonItem: UIBarButtonItem!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -36,7 +37,15 @@ class FeatureViewController: UIViewController {
         tableView.delegate = self
         tableView.dataSource = self
         tableView.tableFooterView = UIView()
+        
+        logoutButtonItem = UIBarButtonItem(title: "Logout", style: .plain, target: self, action: #selector(logoutTap))
+        navigationItem.rightBarButtonItem = logoutButtonItem
     }
+    
+    @objc private func logoutTap() {
+        AppManager.shared.unregister()
+    }
+    
 }
 
 extension FeatureViewController: UITableViewDelegate {

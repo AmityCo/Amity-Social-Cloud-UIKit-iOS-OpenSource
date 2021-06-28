@@ -1,9 +1,9 @@
 //
 //  BottomSheetOptionView.swift
-//  UpstraUIKit
+//  AmityUIKit
 //
 //  Created by Nontapat Siengsanor on 7/8/2563 BE.
-//  Copyright © 2563 Eko Communication. All rights reserved.
+//  Copyright © 2563 Amity Communication. All rights reserved.
 //
 
 import UIKit
@@ -21,8 +21,8 @@ struct TextItemOption: ItemOption {
     }
     
     let title: String
-    var tintColor: UIColor = EkoColorSet.base
-    var textColor: UIColor = EkoColorSet.base
+    var tintColor: UIColor = AmityColorSet.base
+    var textColor: UIColor = AmityColorSet.base
     var completion: (() -> Void)? = nil
 }
 
@@ -45,7 +45,7 @@ final class ItemOptionView<T: ItemOption>: UIView, BottomSheetComponent, UITable
     }
     
     private func setupViews() {
-        backgroundColor = EkoColorSet.backgroundColor
+        backgroundColor = AmityColorSet.backgroundColor
         tableView.translatesAutoresizingMaskIntoConstraints = false
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: String(describing: UITableViewCell.self))
         tableView.dataSource = self
@@ -85,7 +85,7 @@ final class ItemOptionView<T: ItemOption>: UIView, BottomSheetComponent, UITable
         cell.textLabel?.text = item.title
         cell.tintColor = item.tintColor
         cell.textLabel?.textColor = item.textColor
-        cell.backgroundColor = EkoColorSet.backgroundColor
+        cell.backgroundColor = AmityColorSet.backgroundColor
     }
     
     // Table View Delegate

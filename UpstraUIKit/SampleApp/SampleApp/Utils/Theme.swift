@@ -3,11 +3,11 @@
 //  SampleApp
 //
 //  Created by Sarawoot Khunsri on 23/7/2563 BE.
-//  Copyright © 2563 Eko. All rights reserved.
+//  Copyright © 2563 Amity. All rights reserved.
 //
 
 import UIKit
-import UpstraUIKit
+import AmityUIKit
 
 enum Preset: Int {
     case defaultPreset
@@ -16,18 +16,18 @@ enum Preset: Int {
     case preset3
     case preset4
     
-    var theme: EkoTheme {
+    var theme: AmityTheme {
         switch self {
         case .defaultPreset:
-            return EkoTheme()
+            return AmityTheme()
         case .preset1:
-            return EkoTheme(primary: UIColor(hex: "#18033A"))
+            return AmityTheme(primary: UIColor(hex: "#18033A"))
         case .preset2:
-            return EkoTheme(primary: UIColor(hex: "#DE1029"), secondary: UIColor(hex: "#32343d"))
+            return AmityTheme(primary: UIColor(hex: "#DE1029"), secondary: UIColor(hex: "#32343d"))
         case .preset3:
-            return EkoTheme(primary: UIColor(hex: "#0BDB91"), highlight: UIColor(hex: "#25d7f4"), messageBubble: UIColor(hex: "#25F4AA"))
+            return AmityTheme(primary: UIColor(hex: "#0BDB91"), highlight: UIColor(hex: "#25d7f4"), messageBubble: UIColor(hex: "#25F4AA"))
         case .preset4:
-            return EkoTheme(primary: .white)
+            return AmityTheme(primary: .white)
         }
     }
 }

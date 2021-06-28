@@ -89,7 +89,7 @@ class AssetsViewController: UIViewController {
         super.viewWillAppear(animated)
         updateCollectionViewLayout(for: traitCollection)
         
-        self.title = EkoLocalizedStringSet.postCreationSelectImageTitle.localizedString
+        self.title = AmityLocalizedStringSet.postCreationSelectImageTitle.localizedString
     }
 
     func showAssets(in album: PHAssetCollection) {

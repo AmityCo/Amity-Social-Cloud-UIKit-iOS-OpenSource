@@ -79,7 +79,7 @@ class LivePreviewViewController: PreviewViewController {
             return
         }
 
-        let imageFrame = EkoImagePickerViewLayout.frameForImageWithSize(livePhoto.size, previousFrame: .zero, inContainerWithSize: livePhotoView.frame.size, usingContentMode: .scaleAspectFit)
+        let imageFrame = AmityImagePickerViewLayout.frameForImageWithSize(livePhoto.size, previousFrame: .zero, inContainerWithSize: livePhotoView.frame.size, usingContentMode: .scaleAspectFit)
         badgeView.frame.origin = imageFrame.origin
     }
 

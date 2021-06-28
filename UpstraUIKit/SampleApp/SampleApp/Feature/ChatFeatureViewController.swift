@@ -3,18 +3,20 @@
 //  SampleApp
 //
 //  Created by Sarawoot Khunsri on 15/7/2563 BE.
-//  Copyright © 2563 Eko. All rights reserved.
+//  Copyright © 2563 Amity. All rights reserved.
 //
 
 import UIKit
-import UpstraUIKit
+import AmityUIKit
 
 class ChatFeatureViewController: UIViewController {
     
     enum FeatureList: CaseIterable {
+        
         case chatHome
         case chatList
         case chatListCustomize
+        case messageListWithTextOnlyKeyboard
         
         var text: String {
             switch self {
@@ -24,8 +26,11 @@ class ChatFeatureViewController: UIViewController {
                 return "Chat List"
             case .chatListCustomize:
                 return "Chat List with customization"
+            case .messageListWithTextOnlyKeyboard:
+                return "Message List with text only keyboard"
             }
         }
+        
     }
     
     @IBOutlet private var tableView: UITableView!
@@ -39,6 +44,34 @@ class ChatFeatureViewController: UIViewController {
         tableView.tableFooterView = UIView()
     }
     
+    private func presentSpecificChatDialogue() {
+        let alertController = UIAlertController(title: "Channel ID", message: nil, preferredStyle: .alert)
+        alertController.addTextField { textField in
+            textField.placeholder = "Insert channel id"
+        }
+        let ok = UIAlertAction(title: "OK", style: .default) { [weak self] action in
+            if
+                let textField = alertController.textFields?.first,
+                let channelId = textField.text,
+                !channelId.isEmpty
+            {
+                self?.presentChat(channelId: channelId)
+            }
+        }
+        let cancel = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
+        alertController.addAction(ok)
+        alertController.addAction(cancel)
+        present(alertController, animated: true, completion: nil)
+    }
+    
+    private func presentChat(channelId: String) {
+        var settings = AmityMessageListViewController.Settings()
+        settings.composeBarStyle = .textOnly
+        let vc = AmityMessageListViewController.make(channelId: channelId, settings: settings)
+        vc.dataSource = self
+        navigationController?.pushViewController(vc, animated: true)
+    }
+    
 }
 
 extension ChatFeatureViewController: UITableViewDelegate {
@@ -46,15 +79,17 @@ extension ChatFeatureViewController: UITableViewDelegate {
         tableView.deselectRow(at: indexPath, animated: true)
         switch FeatureList.allCases[indexPath.row] {
         case .chatHome:
-            let vc = EkoChatHomePageViewController.make()
+            let vc = AmityChatHomePageViewController.make()
             navigationController?.pushViewController(vc, animated: true)
         case .chatList:
-            let vc = EkoRecentChatViewController.make()
+            let vc = AmityRecentChatViewController.make()
             navigationController?.pushViewController(vc, animated: true)
         case .chatListCustomize:
-            let vc = EkoChatHomePageViewController.make()
+            let vc = AmityChatHomePageViewController.make()
             vc.messageDataSource = self
             navigationController?.pushViewController(vc, animated: true)
+        case .messageListWithTextOnlyKeyboard:
+            presentSpecificChatDialogue()
         }
     }
 }
@@ -71,10 +106,12 @@ extension ChatFeatureViewController: UITableViewDataSource {
     }
 }
 
-extension ChatFeatureViewController: EkoMessageListDataSource {
-    func cellForMessageTypes() -> [EkoMessageTypes : EkoMessageCellProtocol.Type] {
+extension ChatFeatureViewController: AmityMessageListDataSource {
+    
+    func cellForMessageTypes() -> [AmityMessageTypes : AmityMessageCellProtocol.Type] {
         return [
             .textIncoming: CustomMessageTextIncomingTableViewCell.self
         ]
     }
+    
 }

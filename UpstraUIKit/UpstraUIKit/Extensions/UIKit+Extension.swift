@@ -1,9 +1,9 @@
 //
 //  Foundation+Extension.swift
-//  UpstraUIKit
+//  AmityUIKit
 //
 //  Created by Nontapat Siengsanor on 23/9/2563 BE.
-//  Copyright © 2563 Upstra. All rights reserved.
+//  Copyright © 2563 Amity. All rights reserved.
 //
 
 import UIKit
@@ -18,7 +18,7 @@ extension Nibbable {
         guard let nibName = NSStringFromClass(Self.self).components(separatedBy: ".").last else {
             fatalError("Class name not found")
         }
-        return UINib(nibName: nibName, bundle: UpstraUIKitManager.bundle)
+        return UINib(nibName: nibName, bundle: AmityUIKitManager.bundle)
     }
     
 }

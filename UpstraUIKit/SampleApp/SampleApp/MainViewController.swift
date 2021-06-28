@@ -3,7 +3,7 @@
 //  SampleApp
 //
 //  Created by Nontapat Siengsanor on 22/6/2563 BE.
-//  Copyright © 2563 Eko. All rights reserved.
+//  Copyright © 2563 Amity. All rights reserved.
 //
 
 import UIKit
@@ -12,10 +12,10 @@ import EkoUIKit
 enum MainViewMenu: String, CaseIterable {
     case navigation = "EkoNavigation"
     case customUI = "EkoCustomUI"
-    case postUI = "EkoPostFeed"
+    case postUI = "AmityPostFeed"
 }
 
-class MainViewController: EkoViewController {
+class MainViewController: AmityViewController {
     
     @IBOutlet weak var tableView: UITableView!
     private let menus: [MainViewMenu] = MainViewMenu.allCases
@@ -40,17 +40,17 @@ class MainViewController: EkoViewController {
     }
     
     private func navigateToPost() {
-        let feedViewController = EkoPostFeedViewController()
-        let items: [EkoPostModel] = [
-            EkoPostModel(content: "\na\nb\nc\nd\ne\nf\nhttps://www.google.com\na\nb\nc\nd\ne\nf\ng\nh", images: [UIImage(named: "sample_feed_image", in: EkoUIKit.bundle, compatibleWith: nil)!,UIImage(named: "sample_feed_image", in: EkoUIKit.bundle, compatibleWith: nil)!,UIImage(named: "sample_feed_image", in: EkoUIKit.bundle, compatibleWith: nil)!], documents: []),
-            EkoPostModel(content: "a\nb\nc\nd\ne https://www.hackingwithswift.com to be detected", images: [UIImage(named: "sample_feed_image", in: EkoUIKit.bundle, compatibleWith: nil)!, UIImage(named: "sample_feed_image", in: EkoUIKit.bundle, compatibleWith: nil)!], documents: []),
-            EkoPostModel(content: "a\nb\nc\nd\ne\nf", images: [UIImage(named: "sample_feed_image", in: EkoUIKit.bundle, compatibleWith: nil)!], documents: []),
-            EkoPostModel(content: "afsdfsdf\nbsdfsdfsdf\ncsdfsfsfsf\ndfsdfsdf\ne\nf", images: [UIImage(named: "sample_feed_image", in: EkoUIKit.bundle, compatibleWith: nil)!], documents: []),
-            EkoPostModel(content: "กนกคนตลกชวนดวงกมลคนผอมรอชมภมรดมดอมดอกขจรสองคนชอบจอดรถตรงตรอกยอมทนอดนอนอดกรนรอยลภมรดมดอกหอมบนขอนตรงคลองมอญลมบนหวนสอบจนปอยผมปรกคอสองสมรสมพรคนจรพบสองอรชรสมพรปองสองสมรยอมลงคลองลอยคอมองสองอรชรมองอกมองคอมองผมมองจนสองคนฉงนสมพรบอกชวนสองคนถอนสมอลงชลลองวอนสองหนสองอรชรถอยหลบสมพรวอนจนพลพรรคสดสวยหมดสนกรกนกชวนดวงกมลชงนมผงรอชมภมรบนดอนฝนตกตลอดจนถนนปอนจอมปลวกตรงตรอกจอดรถถลอกปอกลงสองสมรมองนกปรอทจกมดจกปลวกจกหนอนลงคอสมพรคงลอยคอลอยวนบอกสอพลอคนสวยผสมบทสวดของขอมคนหนอคนสมพรสวดวนจนอรชรสองคนฉงนฉงวยงวยงงคอตกยอมนอนลงบนบกสมพรยกซองผงทองปลอมผสมลงนมชงของสองสมรสมพรถอนผมนวลลออสองคนปนผสมตอนหลอมรวมนมชงสมพรสวดบทขอมถอยวกวนหกหนขอวรรคตอนวอนผองชนจงอวยพร", images: [UIImage(named: "sample_feed_image", in: EkoUIKit.bundle, compatibleWith: nil)!,UIImage(named: "sample_feed_image", in: EkoUIKit.bundle, compatibleWith: nil)!,UIImage(named: "sample_feed_image", in: EkoUIKit.bundle, compatibleWith: nil)!,UIImage(named: "sample_feed_image", in: EkoUIKit.bundle, compatibleWith: nil)!], documents: []),
-            EkoPostModel(content: "s dflsdjf sdfjk sdnf jksdf ", images: [], documents: []),
-            EkoPostModel(content: "sdfaskdfs jdlfj skjdf sdf as;ldaflasj dflajsjkdf sldkf sjkd fskdjfl sdzfk jsd f", images: [UIImage(named: "sample_feed_image", in: EkoUIKit.bundle, compatibleWith: nil)!], documents: []),
-            EkoPostModel(content: "hello wpsdfk sdf; sldf ;lsd fpsld ;lfs;df ;l sdf sfs;ldf23operi ru oi34ur ois  io4r oeis  oru goirugoi fugo idufgo idufoig udofig dfg sdfaskdfs jdlfj skjdf sdf as;ldaflasj dflajsjkdf sldkf sjkd fskdjfl sdzfk jsd f\na\na\n111\n123123123123", images: [], documents: []),
-            EkoPostModel(content: "ahello world this is your captain speaking sdf; sldf ;lsd fpsld ;lfs;df ;l sdf sfs;ldf23operi ru oi34ur ois  io4r oeis  oru goirugoi fugo idufgo idufoig udofig dfg sdfaskdfs jdlfj skjdf sdf as;ldaflasj dflajsjkdf sldkf sjkd fskdjfl sdzfk jsd f\na\na\n111\n12312312312 sdkflk sdf lksdjf lksdjf lksdjf klsdjflksdj flskd jflskdsdkfmsdkfjskdfjksld f\n\n3", images: [], documents: [])
+        let feedViewController = AmityPostFeedViewController()
+        let items: [AmityPostModel] = [
+            AmityPostModel(content: "\na\nb\nc\nd\ne\nf\nhttps://www.google.com\na\nb\nc\nd\ne\nf\ng\nh", images: [UIImage(named: "sample_feed_image", in: EkoUIKit.bundle, compatibleWith: nil)!,UIImage(named: "sample_feed_image", in: EkoUIKit.bundle, compatibleWith: nil)!,UIImage(named: "sample_feed_image", in: EkoUIKit.bundle, compatibleWith: nil)!], documents: []),
+            AmityPostModel(content: "a\nb\nc\nd\ne https://www.hackingwithswift.com to be detected", images: [UIImage(named: "sample_feed_image", in: EkoUIKit.bundle, compatibleWith: nil)!, UIImage(named: "sample_feed_image", in: EkoUIKit.bundle, compatibleWith: nil)!], documents: []),
+            AmityPostModel(content: "a\nb\nc\nd\ne\nf", images: [UIImage(named: "sample_feed_image", in: EkoUIKit.bundle, compatibleWith: nil)!], documents: []),
+            AmityPostModel(content: "afsdfsdf\nbsdfsdfsdf\ncsdfsfsfsf\ndfsdfsdf\ne\nf", images: [UIImage(named: "sample_feed_image", in: EkoUIKit.bundle, compatibleWith: nil)!], documents: []),
+            AmityPostModel(content: "กนกคนตลกชวนดวงกมลคนผอมรอชมภมรดมดอมดอกขจรสองคนชอบจอดรถตรงตรอกยอมทนอดนอนอดกรนรอยลภมรดมดอกหอมบนขอนตรงคลองมอญลมบนหวนสอบจนปอยผมปรกคอสองสมรสมพรคนจรพบสองอรชรสมพรปองสองสมรยอมลงคลองลอยคอมองสองอรชรมองอกมองคอมองผมมองจนสองคนฉงนสมพรบอกชวนสองคนถอนสมอลงชลลองวอนสองหนสองอรชรถอยหลบสมพรวอนจนพลพรรคสดสวยหมดสนกรกนกชวนดวงกมลชงนมผงรอชมภมรบนดอนฝนตกตลอดจนถนนปอนจอมปลวกตรงตรอกจอดรถถลอกปอกลงสองสมรมองนกปรอทจกมดจกปลวกจกหนอนลงคอสมพรคงลอยคอลอยวนบอกสอพลอคนสวยผสมบทสวดของขอมคนหนอคนสมพรสวดวนจนอรชรสองคนฉงนฉงวยงวยงงคอตกยอมนอนลงบนบกสมพรยกซองผงทองปลอมผสมลงนมชงของสองสมรสมพรถอนผมนวลลออสองคนปนผสมตอนหลอมรวมนมชงสมพรสวดบทขอมถอยวกวนหกหนขอวรรคตอนวอนผองชนจงอวยพร", images: [UIImage(named: "sample_feed_image", in: EkoUIKit.bundle, compatibleWith: nil)!,UIImage(named: "sample_feed_image", in: EkoUIKit.bundle, compatibleWith: nil)!,UIImage(named: "sample_feed_image", in: EkoUIKit.bundle, compatibleWith: nil)!,UIImage(named: "sample_feed_image", in: EkoUIKit.bundle, compatibleWith: nil)!], documents: []),
+            AmityPostModel(content: "s dflsdjf sdfjk sdnf jksdf ", images: [], documents: []),
+            AmityPostModel(content: "sdfaskdfs jdlfj skjdf sdf as;ldaflasj dflajsjkdf sldkf sjkd fskdjfl sdzfk jsd f", images: [UIImage(named: "sample_feed_image", in: EkoUIKit.bundle, compatibleWith: nil)!], documents: []),
+            AmityPostModel(content: "hello wpsdfk sdf; sldf ;lsd fpsld ;lfs;df ;l sdf sfs;ldf23operi ru oi34ur ois  io4r oeis  oru goirugoi fugo idufgo idufoig udofig dfg sdfaskdfs jdlfj skjdf sdf as;ldaflasj dflajsjkdf sldkf sjkd fskdjfl sdzfk jsd f\na\na\n111\n123123123123", images: [], documents: []),
+            AmityPostModel(content: "ahello world this is your captain speaking sdf; sldf ;lsd fpsld ;lfs;df ;l sdf sfs;ldf23operi ru oi34ur ois  io4r oeis  oru goirugoi fugo idufgo idufoig udofig dfg sdfaskdfs jdlfj skjdf sdf as;ldaflasj dflajsjkdf sldkf sjkd fskdjfl sdzfk jsd f\na\na\n111\n12312312312 sdkflk sdf lksdjf lksdjf lksdjf klsdjflksdj flskd jflskdsdkfmsdkfjskdfjksld f\n\n3", images: [], documents: [])
         ]
         feedViewController.configure(items: items)
         navigationController?.pushViewController(feedViewController, animated: true)

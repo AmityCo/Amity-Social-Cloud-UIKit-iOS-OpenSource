@@ -1,17 +1,17 @@
 //
-//  EkoPostNotificationSettingsViewController.swift
-//  UpstraUIKit
+//  AmityPostNotificationSettingsViewController.swift
+//  AmityUIKit
 //
 //  Created by Nontapat Siengsanor on 22/3/2564 BE.
-//  Copyright © 2564 BE Upstra. All rights reserved.
+//  Copyright © 2564 BE Amity. All rights reserved.
 //
 
 import UIKit
 
-class EkoPostNotificationSettingsViewController: EkoViewController {
+class AmityPostNotificationSettingsViewController: EkoViewController {
     
-    private let tableView = EkoSettingsItemTableView()
-    private var screenViewModel: EkoPostNotificationSettingsScreenViewModelType!
+    private let tableView = AmitySettingsItemTableView()
+    private var screenViewModel: AmityPostNotificationSettingsScreenViewModelType!
     private var saveButton: UIBarButtonItem!
     
     override func viewDidLoad() {
@@ -21,22 +21,22 @@ class EkoPostNotificationSettingsViewController: EkoViewController {
         setupViewModel()
     }
     
-    static func make(communityId: String, type: EkoCommunityNotificationSettingsType) -> EkoPostNotificationSettingsViewController {
-        let userNotificationController = EkoUserNotificationSettingsController()
-        let communityNotificationController = EkoCommunityNotificationSettingsController(withCommunityId: communityId)
+    static func make(communityId: String, type: AmityCommunityNotificationSettingsType) -> AmityPostNotificationSettingsViewController {
+        let userNotificationController = AmityUserNotificationSettingsController()
+        let communityNotificationController = AmityCommunityNotificationSettingsController(withCommunityId: communityId)
         let screenViewModel = EkoSocialNotificationSettingsScreenViewModel(
             userNotificationController: userNotificationController,
             communityNotificationController: communityNotificationController,
             type: type)
         
-        let vc = EkoPostNotificationSettingsViewController()
+        let vc = AmityPostNotificationSettingsViewController()
         vc.screenViewModel = screenViewModel
         return vc
     }
     
     private func setupView() {
-        title = screenViewModel.type == .post ? EkoLocalizedStringSet.CommunityNotificationSettings.post.localizedString : EkoLocalizedStringSet.CommunityNotificationSettings.comment.localizedString
-        saveButton = UIBarButtonItem(title: EkoLocalizedStringSet.save.localizedString, style: .done, target: self, action: #selector(saveButtonDidTap))
+        title = screenViewModel.type == .post ? AmityLocalizedStringSet.CommunityNotificationSettings.post.localizedString : AmityLocalizedStringSet.CommunityNotificationSettings.comment.localizedString
+        saveButton = UIBarButtonItem(title: AmityLocalizedStringSet.save.localizedString, style: .done, target: self, action: #selector(saveButtonDidTap))
         saveButton.isEnabled = false
         
         tableView.translatesAutoresizingMaskIntoConstraints = false
@@ -52,7 +52,7 @@ class EkoPostNotificationSettingsViewController: EkoViewController {
     
     private func setupTableView() {
         tableView.isEmptyViewHidden = Reachability.isConnectedToNetwork()
-        tableView.updateEmptyView(title: EkoLocalizedStringSet.noInternetConnection.localizedString, subtitle: nil, image: EkoIconSet.noInternetConnection)
+        tableView.updateEmptyView(title: AmityLocalizedStringSet.noInternetConnection.localizedString, subtitle: nil, image: EkoIconSet.noInternetConnection)
         
         tableView.actionHandler = { [weak self] settingsItem in
             self?.handleActionItem(settingsItem: settingsItem)
@@ -69,7 +69,7 @@ class EkoPostNotificationSettingsViewController: EkoViewController {
         screenViewModel.action.saveNotificationSettings()
     }
     
-    private func handleActionItem(settingsItem: EkoSettingsItem) {
+    private func handleActionItem(settingsItem: AmitySettingsItem) {
         switch settingsItem {
         case .radioButtonContent(let content):
             guard let setting = CommunityNotificationSettingItem.settingItem(for: content.identifier) else  {
@@ -87,32 +87,32 @@ class EkoPostNotificationSettingsViewController: EkoViewController {
     }
 }
 
-extension EkoPostNotificationSettingsViewController: EkoSocialNotificationSettingsScreenViewModelDelgate {
+extension AmityPostNotificationSettingsViewController: EkoSocialNotificationSettingsScreenViewModelDelgate {
     
-    func screenViewModel(_ viewModel: EkoSocialNotificationSettingsScreenViewModel, didReceiveSettingItems items: [EkoSettingsItem]) {
+    func screenViewModel(_ viewModel: EkoSocialNotificationSettingsScreenViewModel, didReceiveSettingItems items: [AmitySettingsItem]) {
         tableView.settingsItems = items
         saveButton.isEnabled = screenViewModel.dataSource.isValueChanged
         navigationItem.rightBarButtonItem = items.count > 0 ? saveButton : nil
     }
     
     func screenViewModelDidUpdateSettingSuccess(_ viewModel: EkoSocialNotificationSettingsScreenViewModel) {
-        EkoHUD.show(.success(message: EkoLocalizedStringSet.saved.localizedString))
+        AmityHUD.show(.success(message: AmityLocalizedStringSet.saved.localizedString))
     }
     
     func screenViewModel(_ viewModel: EkoSocialNotificationSettingsScreenViewModel, didUpdateSettingFailWithError error: EkoError) {
-        EkoHUD.hide { [weak self] in
+        AmityHUD.hide { [weak self] in
             switch error {
             case .noPermission:
                 guard let self = self else { return }
                 EkoAlertController.present(
-                    title: EkoLocalizedStringSet.Community.alertUnableToPerformActionTitle.localizedString,
-                    message: EkoLocalizedStringSet.Community.alertUnableToPerformActionDesc.localizedString,
-                    actions: [.custom(title: EkoLocalizedStringSet.ok.localizedString, style: .default, handler: {
+                    title: AmityLocalizedStringSet.Community.alertUnableToPerformActionTitle.localizedString,
+                    message: AmityLocalizedStringSet.Community.alertUnableToPerformActionDesc.localizedString,
+                    actions: [.custom(title: AmityLocalizedStringSet.ok.localizedString, style: .default, handler: {
                         self.navigationController?.popToRootViewController(animated: true)
                     })],
                     from: self)
             default:
-                EkoHUD.show(.error(message: EkoLocalizedStringSet.HUD.somethingWentWrong.localizedString))
+                AmityHUD.show(.error(message: AmityLocalizedStringSet.HUD.somethingWentWrong.localizedString))
             }
         }
     }

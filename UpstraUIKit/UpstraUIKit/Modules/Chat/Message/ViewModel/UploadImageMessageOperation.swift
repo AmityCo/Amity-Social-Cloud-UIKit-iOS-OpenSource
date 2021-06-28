@@ -1,23 +1,23 @@
 //
 //  UploadImageMessageOperation.swift
-//  UpstraUIKit
+//  AmityUIKit
 //
 //  Created by Nutchaphon Rewik on 17/11/2563 BE.
-//  Copyright © 2563 Upstra. All rights reserved.
+//  Copyright © 2563 Amity. All rights reserved.
 //
 
 import UIKit
-import EkoChat
+import AmitySDK
 
 class UploadImageMessageOperation: AsyncOperation {
     
     private let channelId: String
-    private let image: EkoImage
-    private weak var repository: EkoMessageRepository?
+    private let image: AmityImage
+    private weak var repository: AmityMessageRepository?
     
-    private var token: EkoNotificationToken?
+    private var token: AmityNotificationToken?
     
-    init(channelId: String, image: EkoImage, repository: EkoMessageRepository) {
+    init(channelId: String, image: AmityImage, repository: AmityMessageRepository) {
         self.channelId = channelId
         self.image = image
         self.repository = repository
@@ -38,34 +38,34 @@ class UploadImageMessageOperation: AsyncOperation {
         
         // Perform actual task on main queue.
         DispatchQueue.main.async { [weak self] in
-            // Get image for uploading
-            self?.image.getImageForUploading { result in
-                switch result {
-                case .success(let image):
-                    self?.token = repository
-                        .createImageMessage(withChannelId: channelId, image: image, caption: nil, fullImage: true)
-                        .observe { (collection, error) in
-                            guard error == nil, let message = collection.object else {
-                                self?.token = nil
-                                self?.finish()
-                                return
-                            }
-                            switch message.syncState {
-                            case .syncing:
-                                EkoMediaService.shared.saveCacheImage(image, for: message.messageId)
-                            case .default:
-                                break
-                            case .synced, .error:
-                                self?.token = nil
-                                self?.finish()
-                            @unknown default:
-                                fatalError()
-                            }
-                    }
-                case .failure:
+            self?.image.getLocalURLForUploading(completion: { (url) in
+                guard let imageUrl = url else {
                     self?.finish()
+                    return
                 }
-            }
+
+                self?.token = repository
+                    .createImageMessage(withChannelId: channelId, imageFile: imageUrl, caption: nil, fullImage: true, tags: nil, parentId: nil)
+                    .observe { (liveObject, error) in
+                        
+                        guard error == nil, let message = liveObject.object else {
+                            self?.token = nil
+                            self?.finish()
+                            return
+                        }
+                        switch message.syncState {
+                        case .syncing, .default:
+                            // We don't cache local file URL as sdk handles itself
+                            break
+                        case .synced, .error:
+                            self?.token = nil
+                            self?.finish()
+                        @unknown default:
+                            fatalError()
+                        }
+                }
+            })
+
         }
         
     }

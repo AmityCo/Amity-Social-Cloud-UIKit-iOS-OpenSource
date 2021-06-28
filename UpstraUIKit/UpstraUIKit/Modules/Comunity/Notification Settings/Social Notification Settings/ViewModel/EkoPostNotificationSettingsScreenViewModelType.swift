@@ -1,43 +1,43 @@
 //
-//  EkoPostNotificationSettingsScreenViewModelType.swift
-//  UpstraUIKit
+//  AmityPostNotificationSettingsScreenViewModelType.swift
+//  AmityUIKit
 //
 //  Created by Nontapat Siengsanor on 22/3/2564 BE.
-//  Copyright © 2564 BE Upstra. All rights reserved.
+//  Copyright © 2564 BE Amity. All rights reserved.
 //
 
-import EkoChat
+import AmitySDK
 
-enum EkoCommunityNotificationSettingsType {
+enum AmityCommunityNotificationSettingsType {
     case post
     case comment
 }
 
 protocol EkoSocialNotificationSettingsScreenViewModelDelgate: class {
-    func screenViewModel(_ viewModel: EkoSocialNotificationSettingsScreenViewModel, didReceiveSettingItems items: [EkoSettingsItem])
+    func screenViewModel(_ viewModel: EkoSocialNotificationSettingsScreenViewModel, didReceiveSettingItems items: [AmitySettingsItem])
     func screenViewModelDidUpdateSettingSuccess(_ viewModel: EkoSocialNotificationSettingsScreenViewModel)
     func screenViewModel(_ viewModel: EkoSocialNotificationSettingsScreenViewModel, didUpdateSettingFailWithError error: EkoError)
 }
 
-protocol EkoPostNotificationSettingsScreenViewModelAction {
+protocol AmityPostNotificationSettingsScreenViewModelAction {
     func retrieveNotifcationSettings()
     func saveNotificationSettings()
     func updateSetting(setting: CommunityNotificationEventType, option: NotificationSettingOptionType)
 }
 
-protocol EkoPostNotificationSettingsScreenViewModelDataSource {
-    var type: EkoCommunityNotificationSettingsType { get }
-    var settingItems: [EkoSettingsItem] { get }
+protocol AmityPostNotificationSettingsScreenViewModelDataSource {
+    var type: AmityCommunityNotificationSettingsType { get }
+    var settingItems: [AmitySettingsItem] { get }
     var isValueChanged: Bool { get }
 }
 
-protocol EkoPostNotificationSettingsScreenViewModelType: EkoPostNotificationSettingsScreenViewModelAction, EkoPostNotificationSettingsScreenViewModelDataSource {
+protocol AmityPostNotificationSettingsScreenViewModelType: AmityPostNotificationSettingsScreenViewModelAction, AmityPostNotificationSettingsScreenViewModelDataSource {
     var delegate: EkoSocialNotificationSettingsScreenViewModelDelgate? { get set }
-    var action: EkoPostNotificationSettingsScreenViewModelAction { get }
-    var dataSource: EkoPostNotificationSettingsScreenViewModelDataSource { get }
+    var action: AmityPostNotificationSettingsScreenViewModelAction { get }
+    var dataSource: AmityPostNotificationSettingsScreenViewModelDataSource { get }
 }
 
-extension EkoPostNotificationSettingsScreenViewModelType {
-    var action: EkoPostNotificationSettingsScreenViewModelAction { return self }
-    var dataSource: EkoPostNotificationSettingsScreenViewModelDataSource { return self }
+extension AmityPostNotificationSettingsScreenViewModelType {
+    var action: AmityPostNotificationSettingsScreenViewModelAction { return self }
+    var dataSource: AmityPostNotificationSettingsScreenViewModelDataSource { return self }
 }

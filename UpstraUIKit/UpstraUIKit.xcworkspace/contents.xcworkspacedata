@@ -5,6 +5,6 @@
       location = "group:SampleApp/SampleApp.xcodeproj">
    </FileRef>
    <FileRef
-      location = "group:UpstraUIKit.xcodeproj">
+      location = "group:AmityUIKit.xcodeproj">
    </FileRef>
 </Workspace>

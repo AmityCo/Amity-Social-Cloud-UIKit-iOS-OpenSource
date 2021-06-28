@@ -1,9 +1,9 @@
 //
 //  UILabel+Extension.swift
-//  UpstraUIKit
+//  AmityUIKit
 //
 //  Created by Sarawoot Khunsri on 16/10/2563 BE.
-//  Copyright © 2563 Upstra. All rights reserved.
+//  Copyright © 2563 Amity. All rights reserved.
 //
 
 import UIKit
@@ -13,7 +13,7 @@ extension UILabel {
     func markAsMandatoryField() {
         guard let text = text else { return }
         let attributedText = NSMutableAttributedString(string: text, attributes: [.font: font, .foregroundColor: textColor])
-        let asterisk = NSAttributedString(string: "*", attributes: [.font: font, .foregroundColor: EkoColorSet.alert])
+        let asterisk = NSAttributedString(string: "*", attributes: [.font: font, .foregroundColor: AmityColorSet.alert])
         attributedText.append(asterisk)
         self.attributedText = attributedText
     }
@@ -41,7 +41,7 @@ extension UILabel {
             // Add image to mutable string
             if image != nil {
                 let imageLeftAttachment = NSTextAttachment()
-                imageLeftAttachment.image = image?.setTintColor(tintColor ?? EkoColorSet.base)
+                imageLeftAttachment.image = image?.setTintColor(tintColor ?? AmityColorSet.base)
                 imageLeftAttachment.bounds = CGRect(x: 0, y: imageOffsetY, width: imageLeftAttachment.image!.size.width, height: imageLeftAttachment.image!.size.height)
                 let attachmentLeftString = NSAttributedString(attachment: imageLeftAttachment)
                 completeText.append(attachmentLeftString)
@@ -60,7 +60,7 @@ extension UILabel {
             // Add image to mutable string
             if image != nil {
                 let imageRightAttachment = NSTextAttachment()
-                imageRightAttachment.image = image?.setTintColor(tintColor ?? EkoColorSet.base)
+                imageRightAttachment.image = image?.setTintColor(tintColor ?? AmityColorSet.base)
                 imageRightAttachment.bounds = CGRect(x: 0, y: imageOffsetY, width: size?.width ?? imageRightAttachment.image!.size.width, height: size?.height ?? imageRightAttachment.image!.size.height)
                 let attachmentRightString = NSAttributedString(attachment: imageRightAttachment)
                 completeText.append(attachmentRightString)
@@ -70,7 +70,7 @@ extension UILabel {
             // Add image to mutable string
             if imageLeft != nil {
                 let imageLeftAttachment = NSTextAttachment()
-                imageLeftAttachment.image = imageLeft?.setTintColor(tintColor ?? EkoColorSet.base)
+                imageLeftAttachment.image = imageLeft?.setTintColor(tintColor ?? AmityColorSet.base)
                 imageLeftAttachment.bounds = CGRect(x: 0, y: imageOffsetY, width: size?.width ?? imageLeftAttachment.image!.size.width, height: size?.height ?? imageLeftAttachment.image!.size.height)
                 let attachmentLeftString = NSAttributedString(attachment: imageLeftAttachment)
                 completeText.append(attachmentLeftString)
@@ -82,7 +82,7 @@ extension UILabel {
             // Add image to mutable string
             if imageRight != nil {
                 let imageRightAttachment = NSTextAttachment()
-                imageRightAttachment.image = imageRight?.setTintColor(tintColor ?? EkoColorSet.base)
+                imageRightAttachment.image = imageRight?.setTintColor(tintColor ?? AmityColorSet.base)
                 imageRightAttachment.bounds = CGRect(x: 0, y: imageOffsetY, width: size?.width ?? imageRightAttachment.image!.size.width, height: size?.height ?? imageRightAttachment.image!.size.height)
                 let attachmentRightString = NSAttributedString(attachment: imageRightAttachment)
                 completeText.append(attachmentRightString)

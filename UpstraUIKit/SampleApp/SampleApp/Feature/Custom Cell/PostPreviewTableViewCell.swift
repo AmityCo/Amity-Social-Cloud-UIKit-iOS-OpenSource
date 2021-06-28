@@ -1,9 +1,9 @@
 //
 //  PostPreviewTableViewCell.swift
-//  UpstraUIKit
+//  AmityUIKit
 //
 //  Created by Hamlet on 24.02.21.
-//  Copyright © 2021 Upstra. All rights reserved.
+//  Copyright © 2021 Amity. All rights reserved.
 //
 
 import UIKit

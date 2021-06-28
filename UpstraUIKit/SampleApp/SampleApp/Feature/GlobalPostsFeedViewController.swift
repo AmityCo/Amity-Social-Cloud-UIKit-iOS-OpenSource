@@ -3,10 +3,10 @@
 //  SampleApp
 //
 //  Created by Hamlet on 01.03.21.
-//  Copyright © 2021 Eko. All rights reserved.
+//  Copyright © 2021 Amity. All rights reserved.
 //
 import UIKit
-import UpstraUIKit
+import AmityUIKit
 
 class GlobalPostsFeedViewController: UIViewController {
     
@@ -18,7 +18,7 @@ class GlobalPostsFeedViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        dataSource = GlobalPostsDataSource(client: UpstraUIKitManager.client)
+        dataSource = GlobalPostsDataSource(client: AmityUIKitManager.client)
         
         activityIndicator.startAnimating()
         

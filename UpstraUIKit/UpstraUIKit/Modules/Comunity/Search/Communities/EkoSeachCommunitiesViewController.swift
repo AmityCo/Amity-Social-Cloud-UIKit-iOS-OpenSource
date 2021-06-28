@@ -1,9 +1,9 @@
 //
-//  EkoSeachCommunitiesViewController.swift
-//  UpstraUIKit
+//  AmitySeachCommunitiesViewController.swift
+//  AmityUIKit
 //
 //  Created by Sarawoot Khunsri on 23/9/2563 BE.
-//  Copyright © 2563 Upstra. All rights reserved.
+//  Copyright © 2563 Amity. All rights reserved.
 //
 
 import UIKit
@@ -17,17 +17,17 @@ final class EkoSearchCommunityViewController: EkoSearchViewController {
         super.viewDidLoad()
         
         router = EkoSearchCommunitiesRouter(viewController: self, viewModel: viewModel)
-        emptyText = EkoLocalizedStringSet.searchCommunityNotFound
+        emptyText = AmityLocalizedStringSet.searchCommunityNotFound
         
         
-        tableView.register(EkoMyCommunityTableViewCell.nib, forCellReuseIdentifier: EkoMyCommunityTableViewCell.identifier)
+        tableView.register(AmityMyCommunityTableViewCell.nib, forCellReuseIdentifier: AmityMyCommunityTableViewCell.identifier)
         tableView.delegate = self
         tableView.dataSource = self
         
         tableView.separatorInset.left = view.frame.width
 
         cellForRow { [weak self] (tableView, indexPath) -> UITableViewCell in
-            let cell = tableView.dequeueReusableCell(withIdentifier: EkoMyCommunityTableViewCell.identifier, for: indexPath)
+            let cell = tableView.dequeueReusableCell(withIdentifier: AmityMyCommunityTableViewCell.identifier, for: indexPath)
             self?.configure(tableView, for: cell, at: indexPath)
             return cell
         }
@@ -62,7 +62,7 @@ final class EkoSearchCommunityViewController: EkoSearchViewController {
     }
     
     private func configure(_ tableView: UITableView, for cell: UITableViewCell, at indexPath: IndexPath) {
-        if let cell = cell as? EkoMyCommunityTableViewCell {
+        if let cell = cell as? AmityMyCommunityTableViewCell {
             let community = viewModel.community(at: indexPath)
             cell.display(with: community)
             if tableView.isBottomReached {

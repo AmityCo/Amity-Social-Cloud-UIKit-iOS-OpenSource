@@ -36,7 +36,7 @@ struct BarPagerTabStripSettings {
     var style = Style()
 }
 
-class BarPagerTabStripViewController: EkoPagerTabViewController, PagerTabStripDataSource, PagerTabStripIsProgressiveDelegate {
+class BarPagerTabStripViewController: AmityPagerTabViewController, PagerTabStripDataSource, PagerTabStripIsProgressiveDelegate {
 
     var settings = BarPagerTabStripSettings()
 
@@ -60,7 +60,7 @@ class BarPagerTabStripViewController: EkoPagerTabViewController, PagerTabStripDa
             let barView = BarView(frame: CGRect(x: 0, y: 0, width: view.frame.size.width, height: settings.style.barHeight))
             barView.autoresizingMask = .flexibleWidth
             barView.backgroundColor = .black
-            barView.selectedBar.backgroundColor = EkoColorSet.backgroundColor
+            barView.selectedBar.backgroundColor = AmityColorSet.backgroundColor
             return barView
         }()
 
@@ -87,12 +87,12 @@ class BarPagerTabStripViewController: EkoPagerTabViewController, PagerTabStripDa
 
     // MARK: - PagerTabStripDelegate
 
-    func updateIndicator(for viewController: EkoPagerTabViewController, fromIndex: Int, toIndex: Int, withProgressPercentage progressPercentage: CGFloat, indexWasChanged: Bool) {
+    func updateIndicator(for viewController: AmityPagerTabViewController, fromIndex: Int, toIndex: Int, withProgressPercentage progressPercentage: CGFloat, indexWasChanged: Bool) {
 
         barView.move(fromIndex: fromIndex, toIndex: toIndex, progressPercentage: progressPercentage)
     }
 
-    func updateIndicator(for viewController: EkoPagerTabViewController, fromIndex: Int, toIndex: Int) {
+    func updateIndicator(for viewController: AmityPagerTabViewController, fromIndex: Int, toIndex: Int) {
         barView.moveTo(index: toIndex, animated: true)
     }
 }

@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="17701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17703"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="KGk-i7-Jjw" customClass="AmityTrendingCommunityTableViewCell" customModule="UpstraUIKit" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="82"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
+                <rect key="frame" x="0.0" y="0.0" width="320" height="82"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="jYq-PO-fEO">
+                        <rect key="frame" x="16" y="8" width="288" height="66"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Gic-yd-UUu" customClass="AmityAvatarView" customModule="UpstraUIKit" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="13" width="40" height="40"/>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="40" id="Q6g-lI-fno"/>
+                                    <constraint firstAttribute="width" constant="40" id="bgE-SK-iAU"/>
+                                </constraints>
+                            </view>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="1" verticalHuggingPriority="251" horizontalCompressionResistancePriority="1000" text="1" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="XTo-DO-Ov3">
+                                <rect key="frame" x="52" y="23" width="7.5" height="20.5"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" text="DisplayName" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="QRB-WP-osP">
+                                <rect key="frame" x="71.5" y="0.0" width="100.5" height="20.5"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon_badge_checkmark" translatesAutoresizingMaskIntoConstraints="NO" id="pLk-NE-Ydr">
+                                <rect key="frame" x="176" y="-1.5" width="24" height="24"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="24" id="3kz-9h-oJ5"/>
+                                    <constraint firstAttribute="width" constant="24" id="QJf-UB-hoz"/>
+                                </constraints>
+                            </imageView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" horizontalCompressionResistancePriority="749" verticalCompressionResistancePriority="749" text="Sports  long text may be with two lines" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="36l-G6-wnc">
+                                <rect key="frame" x="71.5" y="23.5" width="79.5" height="41"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="999" verticalHuggingPriority="251" text="• 150k members" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9vD-iD-Xmt">
+                                <rect key="frame" x="154" y="44" width="125" height="20.5"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="XTo-DO-Ov3" firstAttribute="leading" secondItem="Gic-yd-UUu" secondAttribute="trailing" constant="12" id="0gs-qI-1a0"/>
+                            <constraint firstItem="36l-G6-wnc" firstAttribute="leading" secondItem="QRB-WP-osP" secondAttribute="leading" id="7Y9-UJ-p2g"/>
+                            <constraint firstItem="XTo-DO-Ov3" firstAttribute="centerY" secondItem="jYq-PO-fEO" secondAttribute="centerY" id="BRd-sh-c5b"/>
+                            <constraint firstItem="9vD-iD-Xmt" firstAttribute="leading" secondItem="36l-G6-wnc" secondAttribute="trailing" constant="3" id="BVL-a9-xMM"/>
+                            <constraint firstItem="QRB-WP-osP" firstAttribute="centerY" secondItem="pLk-NE-Ydr" secondAttribute="centerY" id="DO6-KT-wov"/>
+                            <constraint firstItem="36l-G6-wnc" firstAttribute="bottom" secondItem="9vD-iD-Xmt" secondAttribute="bottom" id="NOX-Hf-nCY"/>
+                            <constraint firstItem="36l-G6-wnc" firstAttribute="top" secondItem="QRB-WP-osP" secondAttribute="bottom" constant="3" id="PDy-ke-58P"/>
+                            <constraint firstItem="QRB-WP-osP" firstAttribute="leading" secondItem="XTo-DO-Ov3" secondAttribute="trailing" constant="12" id="PUR-Jk-rNr"/>
+                            <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="36l-G6-wnc" secondAttribute="bottom" id="YNH-S0-AFQ"/>
+                            <constraint firstItem="QRB-WP-osP" firstAttribute="top" secondItem="jYq-PO-fEO" secondAttribute="top" id="dpO-G5-7WI"/>
+                            <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="pLk-NE-Ydr" secondAttribute="trailing" id="f8w-0J-dO1"/>
+                            <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="9vD-iD-Xmt" secondAttribute="trailing" id="fMt-As-NYJ"/>
+                            <constraint firstItem="Gic-yd-UUu" firstAttribute="leading" secondItem="jYq-PO-fEO" secondAttribute="leading" id="jkE-TC-dfQ"/>
+                            <constraint firstItem="pLk-NE-Ydr" firstAttribute="leading" secondItem="QRB-WP-osP" secondAttribute="trailing" constant="4" id="mwy-u5-idJ"/>
+                            <constraint firstItem="Gic-yd-UUu" firstAttribute="centerY" secondItem="jYq-PO-fEO" secondAttribute="centerY" id="p56-wO-cld"/>
+                        </constraints>
+                    </view>
+                </subviews>
+                <constraints>
+                    <constraint firstItem="jYq-PO-fEO" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="8" id="4rK-sU-AnU"/>
+                    <constraint firstItem="jYq-PO-fEO" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="16" id="Cbd-sZ-wcj"/>
+                    <constraint firstAttribute="trailing" secondItem="jYq-PO-fEO" secondAttribute="trailing" constant="16" id="gVh-aJ-wFU"/>
+                    <constraint firstAttribute="bottom" secondItem="jYq-PO-fEO" secondAttribute="bottom" constant="8" id="qiT-LU-n9B"/>
+                </constraints>
+            </tableViewCellContentView>
+            <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
+            <connections>
+                <outlet property="avatarView" destination="Gic-yd-UUu" id="MNY-wd-JCg"/>
+                <outlet property="categoryLabel" destination="36l-G6-wnc" id="ioo-Rj-Nhy"/>
+                <outlet property="displayNameLabel" destination="QRB-WP-osP" id="CsB-HM-hvX"/>
+                <outlet property="iconImageView" destination="pLk-NE-Ydr" id="TWk-jm-dFI"/>
+                <outlet property="iconImageViewWidthConstraint" destination="QJf-UB-hoz" id="lvj-6U-TrX"/>
+                <outlet property="membersLabel" destination="9vD-iD-Xmt" id="UY6-02-W0I"/>
+                <outlet property="numberLabel" destination="XTo-DO-Ov3" id="3TK-wW-56y"/>
+            </connections>
+            <point key="canvasLocation" x="137.68115942028987" y="114.50892857142857"/>
+        </tableViewCell>
+    </objects>
+    <resources>
+        <image name="icon_badge_checkmark" width="24" height="24"/>
+        <systemColor name="systemBackgroundColor">
+            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+    </resources>
+</document>

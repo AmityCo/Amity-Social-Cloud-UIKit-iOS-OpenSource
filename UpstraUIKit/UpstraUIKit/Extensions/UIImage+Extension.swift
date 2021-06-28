@@ -1,14 +1,15 @@
 //
 //  UIImage+Extension.swift
-//  UpstraUIKit
+//  AmityUIKit
 //
 //  Created by Nontapat Siengsanor on 20/7/2563 BE.
-//  Copyright © 2563 Eko Communication. All rights reserved.
+//  Copyright © 2563 Amity Communication. All rights reserved.
 //
 
 import UIKit
 
 extension UIImage {
+    
     class func imageWithColor(color: UIColor, size: CGSize = CGSize(width: 1, height: 1)) -> UIImage {
         UIGraphicsBeginImageContextWithOptions(size, false, 0)
         color.setFill()
@@ -50,26 +51,52 @@ extension UIImage {
         
         return thumbnail
     }
-}
-
-extension UIImageView {
     
-    // This can be expanded to support error image, placeholder and all
-    func setImage(withFileId id: String, placeholder: UIImage?) {
-        self.image = placeholder
-        EkoFileService.shared.loadImage(with: id, size: .medium) { [weak self] result in
-            switch result {
-            case .success(let image):
-                self?.image = image
-            case .failure(let error):
-                Log.add("Error while downloading image with file id: \(id) error: \(error)")
-            }
+    // Picking cameara photo sometime meets 90 degree rotation problem.
+    // call this function to correcting it.
+    // See more: https://stackoverflow.com/questions/38139850/imageview-rotating-when-using-imagepicker/51289712
+    func fixedOrientation() -> UIImage {
+        guard imageOrientation != .up else { return self }
+        
+        var transform: CGAffineTransform = .identity
+        switch imageOrientation {
+        case .down, .downMirrored:
+            transform = transform
+                .translatedBy(x: size.width, y: size.height).rotated(by: .pi)
+        case .left, .leftMirrored:
+            transform = transform
+                .translatedBy(x: size.width, y: 0).rotated(by: .pi)
+        case .right, .rightMirrored:
+            transform = transform
+                .translatedBy(x: 0, y: size.height).rotated(by: -.pi/2)
+        case .upMirrored:
+            transform = transform
+                .translatedBy(x: size.width, y: 0).scaledBy(x: -1, y: 1)
+        default:
+            break
         }
+        
+        guard
+            let cgImage = cgImage,
+            let colorSpace = cgImage.colorSpace,
+            let context = CGContext(
+                data: nil, width: Int(size.width), height: Int(size.height),
+                bitsPerComponent: cgImage.bitsPerComponent, bytesPerRow: 0,
+                space: colorSpace, bitmapInfo: cgImage.bitmapInfo.rawValue
+            )
+        else { return self }
+        context.concatenate(transform)
+        
+        var rect: CGRect
+        switch imageOrientation {
+        case .left, .leftMirrored, .right, .rightMirrored:
+            rect = CGRect(x: 0, y: 0, width: size.height, height: size.width)
+        default:
+            rect = CGRect(x: 0, y: 0, width: size.width, height: size.height)
+        }
+        
+        context.draw(cgImage, in: rect)
+        return context.makeImage().map { UIImage(cgImage: $0) } ?? self
     }
     
-    func setImageColor(color: UIColor) {
-        let templateImage = self.image?.withRenderingMode(.alwaysTemplate)
-        self.image = templateImage
-        self.tintColor = color
-    }
 }

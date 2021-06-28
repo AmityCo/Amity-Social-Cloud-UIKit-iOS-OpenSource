@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="17701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17703"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="AmityCommunityHomePageViewController" customModule="UpstraUIKit" customModuleProvider="target">
+            <connections>
+                <outlet property="buttonBarView" destination="tD9-4s-CmV" id="1cx-XA-A5d"/>
+                <outlet property="containerView" destination="a6k-gy-d2b" id="a3k-8D-5jR"/>
+                <outlet property="view" destination="iN0-l3-epB" id="RBd-3J-3sE"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="iN0-l3-epB">
+            <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="none" translatesAutoresizingMaskIntoConstraints="NO" id="tD9-4s-CmV" customClass="ButtonBarView" customModule="UpstraUIKit" customModuleProvider="target">
+                    <rect key="frame" x="0.0" y="0.0" width="414" height="44"/>
+                    <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="44" id="IWY-ee-UV6"/>
+                    </constraints>
+                    <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="17J-pq-ayH">
+                        <size key="itemSize" width="128" height="128"/>
+                        <size key="headerReferenceSize" width="0.0" height="0.0"/>
+                        <size key="footerReferenceSize" width="0.0" height="0.0"/>
+                        <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
+                    </collectionViewFlowLayout>
+                </collectionView>
+                <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="a6k-gy-d2b">
+                    <rect key="frame" x="0.0" y="44" width="414" height="852"/>
+                </scrollView>
+            </subviews>
+            <viewLayoutGuide key="safeArea" id="vUN-kp-3ea"/>
+            <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+            <constraints>
+                <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="tD9-4s-CmV" secondAttribute="trailing" id="09G-Wg-o8B"/>
+                <constraint firstItem="tD9-4s-CmV" firstAttribute="top" secondItem="vUN-kp-3ea" secondAttribute="top" id="2rM-X1-2ZJ"/>
+                <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="a6k-gy-d2b" secondAttribute="trailing" id="AYY-xr-vKa"/>
+                <constraint firstItem="a6k-gy-d2b" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" id="Ghe-zk-y08"/>
+                <constraint firstAttribute="bottom" secondItem="a6k-gy-d2b" secondAttribute="bottom" id="XLo-VH-Kk0"/>
+                <constraint firstItem="tD9-4s-CmV" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" id="epm-Tj-OcD"/>
+                <constraint firstItem="a6k-gy-d2b" firstAttribute="top" secondItem="tD9-4s-CmV" secondAttribute="bottom" id="yz2-yE-q3C"/>
+            </constraints>
+            <point key="canvasLocation" x="137.68115942028987" y="117.85714285714285"/>
+        </view>
+    </objects>
+    <resources>
+        <systemColor name="systemBackgroundColor">
+            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+    </resources>
+</document>

@@ -1,9 +1,9 @@
 //
 //  BottomSheetTitleView.swift
-//  UpstraUIKit
+//  AmityUIKit
 //
 //  Created by Nishan Niraula on 1/23/20.
-//  Copyright © 2020 Eko. All rights reserved.
+//  Copyright © 2020 Amity. All rights reserved.
 //
 
 import UIKit
@@ -28,7 +28,7 @@ public class BottomSheetTitleView: UIView, BottomSheetComponent {
     }
     
     private func setupViews() {
-        backgroundColor = EkoColorSet.backgroundColor
+        backgroundColor = AmityColorSet.backgroundColor
         addSubview(titleLabel)
         
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
@@ -41,7 +41,7 @@ public class BottomSheetTitleView: UIView, BottomSheetComponent {
         
         titleLabel.textAlignment = .center
         titleLabel.text = "Sheet Title"
-        titleLabel.font = EkoFontSet.title
+        titleLabel.font = AmityFontSet.title
     }
     
     public func setupRightButton() {

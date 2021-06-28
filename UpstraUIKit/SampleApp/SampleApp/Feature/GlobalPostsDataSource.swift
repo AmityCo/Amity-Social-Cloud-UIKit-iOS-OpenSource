@@ -3,23 +3,23 @@
 //  SampleApp
 //
 //  Created by Hamlet on 01.03.21.
-//  Copyright © 2021 Eko. All rights reserved.
+//  Copyright © 2021 Amity. All rights reserved.
 //
 
 import Foundation
-import EkoChat
+import AmitySDK
 
 class GlobalPostsDataSource {
     
-    let client: EkoClient
-    let feedRepository: EkoFeedRepository
+    let client: AmityClient
+    let feedRepository: AmityFeedRepository
     
-    var postCollection: EkoCollection<EkoPost>?
-    var feedCollectionToken: EkoNotificationToken?
+    var postCollection: AmityCollection<AmityPost>?
+    var feedCollectionToken: AmityNotificationToken?
     
-    init(client: EkoClient) {
+    init(client: AmityClient) {
         self.client = client
-        self.feedRepository = EkoFeedRepository(client: client)
+        self.feedRepository = AmityFeedRepository(client: client)
     }
     
     // MARK:- Feed Observer
@@ -74,7 +74,7 @@ struct PostPreviewModel {
         return "{\"date\":\"\(createdAt)\",\"title\":\"\(title)\",\"postId\":\"\(postId)\"}"
     }
     
-    init(post: EkoPost) {
+    init(post: AmityPost) {
         postId = post.postId
         userId = post.postedUserId
         title = "\(post.data?["title"] ?? "")"

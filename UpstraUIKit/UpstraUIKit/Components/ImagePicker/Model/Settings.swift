@@ -33,10 +33,10 @@ import Photos
         public lazy var backgroundColor: UIColor = .systemBackgroundColor
         
         /// What color to fill the circle with
-        public lazy var selectionFillColor: UIColor = EkoColorSet.primary
+        public lazy var selectionFillColor: UIColor = AmityColorSet.primary
         
         /// Color for the actual checkmark
-        public lazy var selectionStrokeColor: UIColor = EkoColorSet.baseInverse
+        public lazy var selectionStrokeColor: UIColor = AmityColorSet.baseInverse
         
         /// Shadow color for the circle
         public lazy var selectionShadowColor: UIColor = .systemShadowColor
@@ -50,17 +50,17 @@ import Photos
         public lazy var selectionStyle: SelectionStyle = .checked
         
         public lazy var previewTitleAttributes : [NSAttributedString.Key: Any] = [
-            NSAttributedString.Key.font: EkoFontSet.body,
+            NSAttributedString.Key.font: AmityFontSet.body,
             NSAttributedString.Key.foregroundColor: UIColor.systemPrimaryTextColor
         ]
         
         public lazy var previewSubtitleAttributes: [NSAttributedString.Key: Any] = [
-            NSAttributedString.Key.font: EkoFontSet.body,
+            NSAttributedString.Key.font: AmityFontSet.body,
             NSAttributedString.Key.foregroundColor: UIColor.systemSecondaryTextColor
         ]
         
         public lazy var albumTitleAttributes: [NSAttributedString.Key: Any] = [
-            NSAttributedString.Key.font: EkoFontSet.body,
+            NSAttributedString.Key.font: AmityFontSet.body,
             NSAttributedString.Key.foregroundColor: UIColor.systemPrimaryTextColor
         ]
     }

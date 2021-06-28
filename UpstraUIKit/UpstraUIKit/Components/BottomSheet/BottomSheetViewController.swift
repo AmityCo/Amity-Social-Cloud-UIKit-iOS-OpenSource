@@ -1,9 +1,9 @@
 //
 //  BottomSheetViewController.swift
-//  UpstraUIKit
+//  AmityUIKit
 //
 //  Created by Nishan Niraula on 1/23/20.
-//  Copyright © 2020 Eko. All rights reserved.
+//  Copyright © 2020 Amity. All rights reserved.
 //
 
 import UIKit
@@ -166,7 +166,7 @@ open class BottomSheetViewController: UIViewController {
             containerBottomConstraint
         ])
         
-        contentContainerView.backgroundColor = EkoColorSet.backgroundColor
+        contentContainerView.backgroundColor = AmityColorSet.backgroundColor
         contentContainerView.layer.cornerRadius = 16
         contentContainerView.layer.masksToBounds = true
     }

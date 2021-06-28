@@ -1,12 +1,12 @@
 //
 //  NotificationSettingsType.swift
-//  UpstraUIKit
+//  AmityUIKit
 //
 //  Created by Hamlet on 16.03.21.
-//  Copyright © 2021 Upstra. All rights reserved.
+//  Copyright © 2021 Amity. All rights reserved.
 //
 
-import EkoChat
+import AmitySDK
 
 enum CommunityNotificationEventType: String {
     case postReacted
@@ -15,7 +15,7 @@ enum CommunityNotificationEventType: String {
     case commentCreated
     case commentReplied
     
-    init?(eventType: EkoCommunityNotificationEventType) {
+    init?(eventType: AmityCommunityNotificationEventType) {
         switch eventType {
         case .postCreated: self = .postCreated
         case .postReacted: self = .postReacted
@@ -27,7 +27,7 @@ enum CommunityNotificationEventType: String {
         }
     }
     
-    var eventType: EkoCommunityNotificationEventType {
+    var eventType: AmityCommunityNotificationEventType {
         switch self {
         case .postCreated: return .postCreated
         case .postReacted: return .postReacted
@@ -39,21 +39,21 @@ enum CommunityNotificationEventType: String {
     
     var title: String {
         switch self {
-        case .postCreated: return EkoLocalizedStringSet.CommunityNotificationSettings.titleNewPosts.localizedString
-        case .postReacted: return EkoLocalizedStringSet.CommunityNotificationSettings.titleReactsPosts.localizedString
-        case .commentReacted: return EkoLocalizedStringSet.CommunityNotificationSettings.titleReactsComments.localizedString
-        case .commentReplied: return EkoLocalizedStringSet.CommunityNotificationSettings.titleReplies.localizedString
-        case .commentCreated: return EkoLocalizedStringSet.CommunityNotificationSettings.titleNewComments.localizedString
+        case .postCreated: return AmityLocalizedStringSet.CommunityNotificationSettings.titleNewPosts.localizedString
+        case .postReacted: return AmityLocalizedStringSet.CommunityNotificationSettings.titleReactsPosts.localizedString
+        case .commentReacted: return AmityLocalizedStringSet.CommunityNotificationSettings.titleReactsComments.localizedString
+        case .commentReplied: return AmityLocalizedStringSet.CommunityNotificationSettings.titleReplies.localizedString
+        case .commentCreated: return AmityLocalizedStringSet.CommunityNotificationSettings.titleNewComments.localizedString
         }
     }
     
     var description: String {
         switch self {
-        case .postCreated: return EkoLocalizedStringSet.CommunityNotificationSettings.descriptionNewPosts.localizedString
-        case .postReacted: return EkoLocalizedStringSet.CommunityNotificationSettings.descriptionReactsPosts.localizedString
-        case .commentReacted: return EkoLocalizedStringSet.CommunityNotificationSettings.descriptionReactsComments.localizedString
-        case .commentReplied: return EkoLocalizedStringSet.CommunityNotificationSettings.descriptionReplies.localizedString
-        case .commentCreated: return EkoLocalizedStringSet.CommunityNotificationSettings.descriptionNewComments.localizedString
+        case .postCreated: return AmityLocalizedStringSet.CommunityNotificationSettings.descriptionNewPosts.localizedString
+        case .postReacted: return AmityLocalizedStringSet.CommunityNotificationSettings.descriptionReactsPosts.localizedString
+        case .commentReacted: return AmityLocalizedStringSet.CommunityNotificationSettings.descriptionReactsComments.localizedString
+        case .commentReplied: return AmityLocalizedStringSet.CommunityNotificationSettings.descriptionReplies.localizedString
+        case .commentCreated: return AmityLocalizedStringSet.CommunityNotificationSettings.descriptionNewComments.localizedString
         }
     }
     

@@ -3,12 +3,12 @@
 //  SampleApp
 //
 //  Created by Sarawoot Khunsri on 15/7/2563 BE.
-//  Copyright © 2563 Eko. All rights reserved.
+//  Copyright © 2563 Amity. All rights reserved.
 //
 
 import UIKit
 import SwiftUI
-import UpstraUIKit
+import AmityUIKit
 
 @available(iOS 13.0, *)
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
@@ -18,13 +18,12 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
         // Use a UIHostingController as window root view controller.
         
-        guard let _ = (scene as? UIWindowScene) else { return }
-//        if let windowScene = scene as? UIWindowScene {
-//            let window = UIWindow(windowScene: windowScene)
-//            window.rootViewController = UIHostingController(rootView: RegisterView())
-//            self.window = window
-//            window.makeKeyAndVisible()
-//        }
+        if let windowScene = scene as? UIWindowScene {
+            let window = UIWindow(windowScene: windowScene)
+            window.rootViewController = AppManager.shared.startingPage()
+            self.window = window
+            window.makeKeyAndVisible()
+        }
     }
 
     func sceneDidDisconnect(_ scene: UIScene) {
@@ -60,7 +59,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         // Handler of opening external url from web browsing session.
         if userActivity.activityType == NSUserActivityTypeBrowsingWeb, let url = userActivity.webpageURL {
             // Parse url and be sure that it is a url of a post
-            let urlString = url.absoluteString //"https://upstra.co/post/124325135"
+            let urlString = url.absoluteString //"https://Amity.co/post/124325135"
             if urlString.contains("post/") {
                 if let range = urlString.range(of: "post/") {
                     // Detect id of the post
@@ -78,9 +77,9 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 extension SceneDelegate {
     func openPost(withId postId: String, scene: UIScene) {
         guard let _ = (scene as? UIWindowScene), let windowScene = scene as? UIWindowScene else { return }
-        UpstraUIKitManager.registerDevice(withUserId: "victimIOS", displayName: "victimIOS".uppercased())
+        AmityUIKitManager.registerDevice(withUserId: "victimIOS", displayName: "victimIOS".uppercased())
         let window = UIWindow(windowScene: windowScene)
-        let postDetailViewController = EkoPostDetailViewController.make(withPostId: "c1bb8697c88a01f6423765984a3e47ac")
+        let postDetailViewController = AmityPostDetailViewController.make(withPostId: "c1bb8697c88a01f6423765984a3e47ac")
             
         window.rootViewController = postDetailViewController
         self.window = window

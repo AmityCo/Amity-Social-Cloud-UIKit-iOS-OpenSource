@@ -1,9 +1,9 @@
 //
 //  PHAsset+Extension.swift
-//  UpstraUIKit
+//  AmityUIKit
 //
 //  Created by Nontapat Siengsanor on 15/10/2563 BE.
-//  Copyright © 2563 Upstra. All rights reserved.
+//  Copyright © 2563 Amity. All rights reserved.
 //
 
 import Photos
@@ -24,7 +24,7 @@ extension PHAsset {
                 if let result = result {
                     completion?(.success(result))
                 } else {
-                    completion?(.failure(EkoError.unknown))
+                    completion?(.failure(AmityError.unknown))
                 }
             }
         } else {
@@ -33,9 +33,24 @@ extension PHAsset {
                 if let result = result {
                     completion?(.success(result))
                 } else {
-                    completion?(.failure(EkoError.unknown))
+                    completion?(.failure(AmityError.unknown))
                 }
             }
+        }
+    }
+    
+    func getURL(completion: @escaping (_ responseURL : URL?) -> Void) {
+        if self.mediaType == .image {
+            let options: PHContentEditingInputRequestOptions = PHContentEditingInputRequestOptions()
+            options.isNetworkAccessAllowed = true
+            options.canHandleAdjustmentData = {(adjustmeta: PHAdjustmentData) -> Bool in
+                return true
+            }
+            self.requestContentEditingInput(with: options, completionHandler: {(contentEditingInput: PHContentEditingInput?, info: [AnyHashable : Any]) -> Void in
+                completion(contentEditingInput?.fullSizeImageURL as URL?)
+            })
+        } else {
+            completion(nil)
         }
     }
     

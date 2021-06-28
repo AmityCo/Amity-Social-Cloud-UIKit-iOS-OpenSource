@@ -37,7 +37,7 @@ import Photos
     ///   - cancel: Cancel callback
     ///   - finish: Finish callback
     ///   - completion: Presentation completion callback
-    public func presentImagePicker(_ imagePicker: EkoImagePickerController, animated: Bool = true, select: ((_ asset: PHAsset) -> Void)?, deselect: ((_ asset: PHAsset) -> Void)?, cancel: (([PHAsset]) -> Void)?, finish: (([PHAsset]) -> Void)?, completion: (() -> Void)? = nil) {
+    public func presentImagePicker(_ imagePicker: AmityImagePickerController, animated: Bool = true, select: ((_ asset: PHAsset) -> Void)?, deselect: ((_ asset: PHAsset) -> Void)?, cancel: (([PHAsset]) -> Void)?, finish: (([PHAsset]) -> Void)?, completion: (() -> Void)? = nil) {
         authorize { [weak self] in
             // Set closures
             imagePicker.onSelection = select
@@ -66,31 +66,31 @@ import Photos
     }
 }
 
-extension EkoImagePickerController {
+extension AmityImagePickerController {
     public static var currentAuthorization : PHAuthorizationStatus {
         return PHPhotoLibrary.authorizationStatus()
     }
 }
 
 /// ImagePickerControllerDelegate closure wrapper
-extension EkoImagePickerController: EkoImagePickerControllerDelegate {
-    public func imagePicker(_ imagePicker: EkoImagePickerController, didSelectAsset asset: PHAsset) {
+extension AmityImagePickerController: AmityImagePickerControllerDelegate {
+    public func imagePicker(_ imagePicker: AmityImagePickerController, didSelectAsset asset: PHAsset) {
         onSelection?(asset)
     }
 
-    public func imagePicker(_ imagePicker: EkoImagePickerController, didDeselectAsset asset: PHAsset) {
+    public func imagePicker(_ imagePicker: AmityImagePickerController, didDeselectAsset asset: PHAsset) {
         onDeselection?(asset)
     }
 
-    public func imagePicker(_ imagePicker: EkoImagePickerController, didFinishWithAssets assets: [PHAsset]) {
+    public func imagePicker(_ imagePicker: AmityImagePickerController, didFinishWithAssets assets: [PHAsset]) {
         onFinish?(assets)
     }
 
-    public func imagePicker(_ imagePicker: EkoImagePickerController, didCancelWithAssets assets: [PHAsset]) {
+    public func imagePicker(_ imagePicker: AmityImagePickerController, didCancelWithAssets assets: [PHAsset]) {
         onCancel?(assets)
     }
 
-    public func imagePicker(_ imagePicker: EkoImagePickerController, didReachSelectionLimit count: Int) {
+    public func imagePicker(_ imagePicker: AmityImagePickerController, didReachSelectionLimit count: Int) {
         
     }
 }

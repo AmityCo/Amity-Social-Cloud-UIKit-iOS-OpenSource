@@ -1,9 +1,9 @@
 //
 //  Reachability.swift
-//  UpstraUIKit
+//  AmityUIKit
 //
 //  Created by Nontapat Siengsanor on 26/3/2564 BE.
-//  Copyright © 2564 BE Upstra. All rights reserved.
+//  Copyright © 2564 BE Amity. All rights reserved.
 //
 
 import SystemConfiguration

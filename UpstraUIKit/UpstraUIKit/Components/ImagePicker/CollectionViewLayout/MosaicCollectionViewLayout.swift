@@ -1,9 +1,9 @@
 //
 //  MosaicCollectionViewLayout.swift
-//  UpstraUIKit
+//  AmityUIKit
 //
 //  Created by Nontapat Siengsanor on 22/7/2563 BE.
-//  Copyright © 2563 Eko Communication. All rights reserved.
+//  Copyright © 2563 Amity Communication. All rights reserved.
 //
 
 import UIKit

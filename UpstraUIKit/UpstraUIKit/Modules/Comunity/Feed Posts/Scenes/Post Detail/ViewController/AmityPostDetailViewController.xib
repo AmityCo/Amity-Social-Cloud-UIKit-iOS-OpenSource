@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="17701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17703"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="AmityPostDetailViewController" customModule="UpstraUIKit" customModuleProvider="target">
+            <connections>
+                <outlet property="commentComposeBarBottomConstraint" destination="UKz-Zi-AVg" id="cUz-oX-7ad"/>
+                <outlet property="commentComposeBarView" destination="gMP-ip-qOd" id="4qr-Wq-oNn"/>
+                <outlet property="tableView" destination="nxX-G7-dP4" id="xhW-BB-aco"/>
+                <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="i5M-Pr-FkT">
+            <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <tableView clipsSubviews="YES" contentMode="scaleToFill" ambiguous="YES" alwaysBounceVertical="YES" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="nxX-G7-dP4" customClass="AmityPostTableView" customModule="UpstraUIKit" customModuleProvider="target">
+                    <rect key="frame" x="0.0" y="44" width="414" height="784"/>
+                    <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                </tableView>
+                <view contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="gMP-ip-qOd" customClass="AmityPostDetailCompostView" customModule="UpstraUIKit" customModuleProvider="target">
+                    <rect key="frame" x="0.0" y="836" width="414" height="26"/>
+                    <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                </view>
+            </subviews>
+            <viewLayoutGuide key="safeArea" id="Wb0-7q-vLN"/>
+            <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+            <constraints>
+                <constraint firstItem="nxX-G7-dP4" firstAttribute="leading" secondItem="Wb0-7q-vLN" secondAttribute="leading" id="FUa-U5-VBJ"/>
+                <constraint firstItem="gMP-ip-qOd" firstAttribute="trailing" secondItem="Wb0-7q-vLN" secondAttribute="trailing" id="T46-Hg-UVd"/>
+                <constraint firstItem="gMP-ip-qOd" firstAttribute="bottom" secondItem="Wb0-7q-vLN" secondAttribute="bottom" id="UKz-Zi-AVg"/>
+                <constraint firstItem="gMP-ip-qOd" firstAttribute="leading" secondItem="Wb0-7q-vLN" secondAttribute="leading" id="k2S-06-qGU"/>
+                <constraint firstItem="nxX-G7-dP4" firstAttribute="top" secondItem="Wb0-7q-vLN" secondAttribute="top" id="qQI-fA-KRR"/>
+                <constraint firstItem="gMP-ip-qOd" firstAttribute="top" secondItem="nxX-G7-dP4" secondAttribute="bottom" id="vB3-bY-uTZ"/>
+                <constraint firstItem="nxX-G7-dP4" firstAttribute="trailing" secondItem="Wb0-7q-vLN" secondAttribute="trailing" id="yLf-Co-uxc"/>
+            </constraints>
+            <point key="canvasLocation" x="79.710144927536234" y="75"/>
+        </view>
+    </objects>
+    <resources>
+        <systemColor name="systemBackgroundColor">
+            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+    </resources>
+</document>

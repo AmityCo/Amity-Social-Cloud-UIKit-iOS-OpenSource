@@ -1,9 +1,9 @@
 //
-//  EkoFeedController.swift
-//  UpstraUIKit
+//  AmityFeedController.swift
+//  AmityUIKit
 //
 //  Created by Nontapat Siengsanor on 25/9/2563 BE.
-//  Copyright © 2563 Upstra. All rights reserved.
+//  Copyright © 2563 Amity. All rights reserved.
 //
 
 import UIKit
@@ -42,13 +42,13 @@ class EkoFeedController: NSObject {
             tableView.delegate = self
         }
         tableView.register(EkoEmptyStateHeaderFooterView.self, forHeaderFooterViewReuseIdentifier: EkoEmptyStateHeaderFooterView.identifier)
-        tableView.register(EkoPostFeedTableViewCell.nib, forCellReuseIdentifier: EkoPostFeedTableViewCell.identifier)
+        tableView.register(AmityPostFeedTableViewCell.nib, forCellReuseIdentifier: AmityPostFeedTableViewCell.identifier)
     }
     
     // MARK: - Navigation
     
     func presentCreatePost() {
-        let vc = EkoPostToViewController()
+        let vc = AmityPostToViewController()
         vc.delegate = self
         let nvc = UINavigationController(rootViewController: vc)
         nvc.modalPresentationStyle = .fullScreen
@@ -74,7 +74,7 @@ extension EkoFeedController: UITableViewDataSource {
         guard let item = screenViewModel.dataSource.item(at: indexPath) else {
             fatalError("Item not found")
         }
-        let cell: EkoPostFeedTableViewCell = tableView.dequeueReusableCell(for: indexPath)
+        let cell: AmityPostFeedTableViewCell = tableView.dequeueReusableCell(for: indexPath)
         cell.configure(item: item, shouldContentExpand: expandedIds.contains(item.id), isFirstCell: indexPath.row == 0)
         cell.contentLabel.delegate = self
         cell.actionDelegate = self
@@ -99,47 +99,47 @@ extension EkoFeedController: UITableViewDelegate {
     
 }
 
-extension EkoFeedController: EkoPostViewControllerDelegate {
+extension EkoFeedController: AmityPostViewControllerDelegate {
     
-    public func postViewController(_ viewController: UIViewController, didCreatePost post: EkoPostModel) {
+    public func postViewController(_ viewController: UIViewController, didCreatePost post: AmityPostModel) {
         reloadAndScroll()
     }
     
-    public func postViewController(_ viewController: UIViewController, didUpdatePost post: EkoPostModel) {
-        reloadAndScroll()
-    }
-}
-
-extension EkoFeedController: EkoPostToViewControllerDelegate {
-    
-    func postToViewController(_ viewController: EkoPostToViewController, didCreatePost post: EkoPostModel) {
-        reloadAndScroll()
-    }
-    
-    func postToViewController(_ viewController: EkoPostToViewController, didUpdatePost post: EkoPostModel) {
+    public func postViewController(_ viewController: UIViewController, didUpdatePost post: AmityPostModel) {
         reloadAndScroll()
     }
 }
 
-extension EkoFeedController: EkoExpandableLabelDelegate {
+extension EkoFeedController: AmityPostToViewControllerDelegate {
     
-    private func navigateToPostDetail(with post: EkoPostModel) {
-        let detailView = EkoPostDetailViewController.make(postId: post.id)
+    func postToViewController(_ viewController: AmityPostToViewController, didCreatePost post: AmityPostModel) {
+        reloadAndScroll()
+    }
+    
+    func postToViewController(_ viewController: AmityPostToViewController, didUpdatePost post: AmityPostModel) {
+        reloadAndScroll()
+    }
+}
+
+extension EkoFeedController: AmityExpandableLabelDelegate {
+    
+    private func navigateToPostDetail(with post: AmityPostModel) {
+        let detailView = AmityPostDetailViewController.make(postId: post.id)
         presenterViewController?.navigationController?.pushViewController(detailView, animated: true)
     }
     
-    public func expandableLabeldidTap(_ label: EkoExpandableLabel) {
-        guard let cell = label.superview(of: EkoPostFeedTableViewCell.self),
+    public func expandableLabeldidTap(_ label: AmityExpandableLabel) {
+        guard let cell = label.superview(of: AmityPostFeedTableViewCell.self),
             let indexPath = tableView?.indexPath(for: cell),
             let item = screenViewModel.dataSource.item(at: indexPath) else { return }
         navigateToPostDetail(with: item)
     }
     
-    public func willExpandLabel(_ label: EkoExpandableLabel) {
+    public func willExpandLabel(_ label: AmityExpandableLabel) {
         tableView?.beginUpdates()
     }
     
-    public func didExpandLabel(_ label: EkoExpandableLabel) {
+    public func didExpandLabel(_ label: AmityExpandableLabel) {
         let point = label.convert(CGPoint.zero, to: tableView)
         if let indexPath = tableView?.indexPathForRow(at: point) as IndexPath? {
             DispatchQueue.main.async { [weak self] in
@@ -149,11 +149,11 @@ extension EkoFeedController: EkoExpandableLabelDelegate {
         tableView?.endUpdates()
     }
     
-    public func willCollapseLabel(_ label: EkoExpandableLabel) {
+    public func willCollapseLabel(_ label: AmityExpandableLabel) {
         tableView?.beginUpdates()
     }
     
-    public func didCollapseLabel(_ label: EkoExpandableLabel) {
+    public func didCollapseLabel(_ label: AmityExpandableLabel) {
         let point = label.convert(CGPoint.zero, to: tableView)
         if let indexPath = tableView?.indexPathForRow(at: point) as IndexPath? {
             DispatchQueue.main.async { [weak self] in
@@ -165,21 +165,21 @@ extension EkoFeedController: EkoExpandableLabelDelegate {
     
 }
 
-extension EkoFeedController: EkoPostFeedTableViewCellDelegate {
+extension EkoFeedController: AmityPostFeedTableViewCellDelegate {
     
-    func postTableViewCellNeedLayout(_ cell: EkoPostFeedTableViewCell) {
+    func postTableViewCellNeedLayout(_ cell: AmityPostFeedTableViewCell) {
         guard let indexPath = tableView?.indexPath(for: cell) else { return }
         tableView?.beginUpdates()
         tableView?.reloadRows(at: [indexPath], with: .automatic)
         tableView?.endUpdates()
     }
     
-    func postTableViewCellDidTapAvatar(_ cell: EkoPostFeedTableViewCell, userId: String) {
-        let vc = EkoUserProfileViewController.make(withUserId: userId)
+    func postTableViewCellDidTapAvatar(_ cell: AmityPostFeedTableViewCell, userId: String) {
+        let vc = AmityUserProfileViewController.make(withUserId: userId)
         presenterViewController?.navigationController?.pushViewController(vc, animated: true)
     }
     
-    func postTableViewCellDidTapLike(_ cell: EkoPostFeedTableViewCell) {
+    func postTableViewCellDidTapLike(_ cell: AmityPostFeedTableViewCell) {
         guard let indexPath = tableView?.indexPath(for: cell),
             let item = screenViewModel.dataSource.item(at: indexPath) else { return }
         if item.isLiked {
@@ -189,30 +189,30 @@ extension EkoFeedController: EkoPostFeedTableViewCellDelegate {
         }
     }
     
-    func postTableViewCellDidTapComment(_ cell: EkoPostFeedTableViewCell) {
+    func postTableViewCellDidTapComment(_ cell: AmityPostFeedTableViewCell) {
         guard let indexPath = tableView?.indexPath(for: cell),
             let item = screenViewModel.dataSource.item(at: indexPath) else { return }
         navigateToPostDetail(with: item)
     }
     
-    func postTableViewCellDidTapViewAll(_ cell: EkoPostFeedTableViewCell) {
+    func postTableViewCellDidTapViewAll(_ cell: AmityPostFeedTableViewCell) {
         guard let indexPath = tableView?.indexPath(for: cell),
             let item = screenViewModel.dataSource.item(at: indexPath) else { return }
         navigateToPostDetail(with: item)
     }
     
-    func postTableViewCellDidTapOption(_ cell: EkoPostFeedTableViewCell) {
+    func postTableViewCellDidTapOption(_ cell: AmityPostFeedTableViewCell) {
         guard let indexPath = tableView?.indexPath(for: cell) else { return }
         let bottomSheet = BottomSheetViewController()
-        let editOption = TextItemOption(title: EkoLocalizedStringSet.edit)
-        let deleteOption = TextItemOption(title: EkoLocalizedStringSet.delete)
+        let editOption = TextItemOption(title: AmityLocalizedStringSet.edit)
+        let deleteOption = TextItemOption(title: AmityLocalizedStringSet.delete)
         let contentView = ItemOptionView<TextItemOption>()
         contentView.configure(items: [editOption, deleteOption], selectedItem: nil)
         contentView.didSelectItem = { action in
             bottomSheet.dismissBottomSheet { [weak self] in
                 if action == editOption {
                     guard let strongSelf = self else { return }
-                    var postTarget: EkoPostTarget
+                    var postTarget: AmityPostTarget
                     if indexPath.section == 0 {
                         postTarget = .myFeed
                     } else {
@@ -224,9 +224,9 @@ extension EkoFeedController: EkoPostFeedTableViewCellDelegate {
                     nvc.modalPresentationStyle = .overFullScreen
                     strongSelf.presenterViewController?.present(nvc, animated: true, completion: nil)
                 } else {
-                    let alert = UIAlertController(title: EkoLocalizedStringSet.postDetailDeletePostTitle, message: EkoLocalizedStringSet.postDetailDeletePostMessage, preferredStyle: .alert)
-                    alert.addAction(UIAlertAction(title: EkoLocalizedStringSet.cancel, style: .default, handler: nil))
-                    alert.addAction(UIAlertAction(title: EkoLocalizedStringSet.delete, style: .destructive, handler: { _ in
+                    let alert = UIAlertController(title: AmityLocalizedStringSet.postDetailDeletePostTitle, message: AmityLocalizedStringSet.postDetailDeletePostMessage, preferredStyle: .alert)
+                    alert.addAction(UIAlertAction(title: AmityLocalizedStringSet.cancel, style: .default, handler: nil))
+                    alert.addAction(UIAlertAction(title: AmityLocalizedStringSet.delete, style: .destructive, handler: { _ in
                         self?.screenViewModel.removeItem(at: indexPath)
                         self?.tableView?.reloadData()
                     }))
@@ -240,14 +240,14 @@ extension EkoFeedController: EkoPostFeedTableViewCellDelegate {
         presenterViewController?.present(bottomSheet, animated: false, completion: nil)
     }
     
-    func postTableViewCellDidTapImage(_ cell: EkoPostFeedTableViewCell, image: EkoImage) {
+    func postTableViewCellDidTapImage(_ cell: AmityPostFeedTableViewCell, image: EkoImage) {
         let viewController = EkoPhotoViewerController(referencedView: cell.imageView, imageModel: image)
         viewController.dataSource = cell
         viewController.delegate = cell
         presenterViewController?.present(viewController, animated: true, completion: nil)
     }
     
-    func postTableViewCell(_ cell: EkoPostFeedTableViewCell, didUpdate post: EkoPostModel) {
+    func postTableViewCell(_ cell: AmityPostFeedTableViewCell, didUpdate post: AmityPostModel) {
         reloadAndScroll()
     }
     

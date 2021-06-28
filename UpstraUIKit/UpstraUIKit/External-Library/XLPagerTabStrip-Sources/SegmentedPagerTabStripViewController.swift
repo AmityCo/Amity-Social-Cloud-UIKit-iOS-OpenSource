@@ -33,7 +33,7 @@ struct SegmentedPagerTabStripSettings {
     var style = Style()
 }
 
-class SegmentedPagerTabStripViewController: EkoPagerTabViewController, PagerTabStripDataSource, PagerTabStripDelegate {
+class SegmentedPagerTabStripViewController: AmityPagerTabViewController, PagerTabStripDataSource, PagerTabStripDelegate {
 
     @IBOutlet weak var segmentedControl: UISegmentedControl!
 
@@ -96,7 +96,7 @@ class SegmentedPagerTabStripViewController: EkoPagerTabViewController, PagerTabS
 
     // MARK: - PagerTabStripDelegate
 
-    func updateIndicator(for viewController: EkoPagerTabViewController, fromIndex: Int, toIndex: Int) {
+    func updateIndicator(for viewController: AmityPagerTabViewController, fromIndex: Int, toIndex: Int) {
         if shouldUpdateSegmentedControl {
             segmentedControl.selectedSegmentIndex = toIndex
         }

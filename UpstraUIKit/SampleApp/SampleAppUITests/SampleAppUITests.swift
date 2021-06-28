@@ -3,7 +3,7 @@
 //  SampleAppUITests
 //
 //  Created by Sarawoot Khunsri on 15/7/2563 BE.
-//  Copyright © 2563 Eko. All rights reserved.
+//  Copyright © 2563 Amity. All rights reserved.
 //
 
 import XCTest

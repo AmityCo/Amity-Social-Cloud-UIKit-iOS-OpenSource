@@ -53,7 +53,7 @@ final class ZoomAnimator : NSObject, UIViewControllerAnimatedTransitioning {
             
             // Setup scaling image
             let scalingFrame = containerView.convert(sourceImageView.frame, from: sourceImageView.superview)
-            let scalingImage = EkoImagePickerImageView(frame: scalingFrame)
+            let scalingImage = AmityImagePickerImageView(frame: scalingFrame)
             scalingImage.contentMode = sourceImageView.contentMode
             scalingImage.clipsToBounds = true
             

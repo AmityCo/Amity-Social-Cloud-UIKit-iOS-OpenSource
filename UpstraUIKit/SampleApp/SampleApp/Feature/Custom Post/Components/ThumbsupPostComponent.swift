@@ -3,22 +3,22 @@
 //  SampleApp
 //
 //  Created by sarawoot khunsri on 2/16/21.
-//  Copyright © 2021 Eko. All rights reserved.
+//  Copyright © 2021 Amity. All rights reserved.
 //
 
 import UIKit
-import UpstraUIKit
+import AmityUIKit
 
-struct ThumbsupPostComponent: EkoPostComposable {
+struct ThumbsupPostComponent: AmityPostComposable {
     
-    var post: EkoPostModel
+    var post: AmityPostModel
     
-    init(post: EkoPostModel) {
+    init(post: AmityPostModel) {
         self.post = post
     }
     
     func getComponentCount(for index: Int) -> Int {
-        switch post.displayType {
+        switch post.appearance.displayType {
         case .feed:
             return 2 + post.maximumLastestComments + post.viewAllCommentSection
         case .postDetail:
@@ -31,18 +31,18 @@ struct ThumbsupPostComponent: EkoPostComposable {
     func getComponentCell(_ tableView: UITableView, at indexPath: IndexPath) -> UITableViewCell {
         switch indexPath.row {
         case 0:
-            let cell = tableView.dequeueReusableCell(withIdentifier: "EkoPostThumbsupTableViewCell", for: indexPath) as! EkoPostThumbsupTableViewCell
+            let cell = tableView.dequeueReusableCell(withIdentifier: "AmityPostThumbsupTableViewCell", for: indexPath) as! AmityPostThumbsupTableViewCell
             cell.display(withPost: post)
             return cell
         case 1:
-            let cell = tableView.dequeueReusableCell(withIdentifier: "EkoPostFooterTableViewCell", for: indexPath) as! EkoPostFooterTableViewCell
+            let cell = tableView.dequeueReusableCell(withIdentifier: "AmityPostFooterTableViewCell", for: indexPath) as! AmityPostFooterTableViewCell
             cell.display(post: post)
             return cell
         case 2 + post.maximumLastestComments:
-            let cell = tableView.dequeueReusableCell(withIdentifier: "EkoPostViewAllCommentsTableViewCell", for: indexPath) as! EkoPostViewAllCommentsTableViewCell
+            let cell = tableView.dequeueReusableCell(withIdentifier: "AmityPostViewAllCommentsTableViewCell", for: indexPath) as! AmityPostViewAllCommentsTableViewCell
             return cell
         default:
-            let cell = tableView.dequeueReusableCell(withIdentifier: "EkoPostPreviewCommentTableViewCell", for: indexPath) as! EkoPostPreviewCommentTableViewCell
+            let cell = tableView.dequeueReusableCell(withIdentifier: "AmityPostPreviewCommentTableViewCell", for: indexPath) as! AmityPostPreviewCommentTableViewCell
             cell.display(post: post, comment: post.getComment(at: indexPath, totalComponent: 2))
             return cell
         }

@@ -24,7 +24,7 @@
 
 import Foundation
 import UIKit
-class BaseButtonBarPagerTabStripViewController<ButtonBarCellType: UICollectionViewCell>: EkoPagerTabViewController, PagerTabStripDataSource, PagerTabStripIsProgressiveDelegate, UICollectionViewDelegate, UICollectionViewDataSource {
+class BaseButtonBarPagerTabStripViewController<ButtonBarCellType: UICollectionViewCell>: AmityPagerTabViewController, PagerTabStripDataSource, PagerTabStripIsProgressiveDelegate, UICollectionViewDelegate, UICollectionViewDataSource {
 
     var settings = ButtonBarPagerTabStripSettings()
     var buttonBarItemSpec: ButtonBarItemSpec<ButtonBarCellType>!
@@ -172,7 +172,7 @@ class BaseButtonBarPagerTabStripViewController<ButtonBarCellType: UICollectionVi
         return calculateStretchedCellWidths(minimumCellWidths, suggestedStretchedCellWidth: newSuggestedStretchedCellWidth, previousNumberOfLargeCells: numberOfLargeCells)
     }
 
-    func updateIndicator(for viewController: EkoPagerTabViewController, fromIndex: Int, toIndex: Int) {
+    func updateIndicator(for viewController: AmityPagerTabViewController, fromIndex: Int, toIndex: Int) {
         guard shouldUpdateButtonBarView else { return }
         buttonBarView.moveTo(index: toIndex, animated: true, swipeDirection: toIndex < fromIndex ? .right : .left, pagerScroll: .yes)
 
@@ -183,7 +183,7 @@ class BaseButtonBarPagerTabStripViewController<ButtonBarCellType: UICollectionVi
         }
     }
 
-    func updateIndicator(for viewController: EkoPagerTabViewController, fromIndex: Int, toIndex: Int, withProgressPercentage progressPercentage: CGFloat, indexWasChanged: Bool) {
+    func updateIndicator(for viewController: AmityPagerTabViewController, fromIndex: Int, toIndex: Int, withProgressPercentage progressPercentage: CGFloat, indexWasChanged: Bool) {
         guard shouldUpdateButtonBarView else { return }
         buttonBarView.move(fromIndex: fromIndex, toIndex: toIndex, progressPercentage: progressPercentage, pagerScroll: .yes)
         if let changeCurrentIndexProgressive = changeCurrentIndexProgressive {

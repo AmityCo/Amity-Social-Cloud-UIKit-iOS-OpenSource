@@ -1,9 +1,9 @@
 //
 //  UIColor+Extension.swift
-//  UpstraUIKit
+//  AmityUIKit
 //
 //  Created by Sarawoot Khunsri on 2/6/2563 BE.
-//  Copyright © 2563 Eko Communication. All rights reserved.
+//  Copyright © 2563 Amity Communication. All rights reserved.
 //
 
 import UIKit

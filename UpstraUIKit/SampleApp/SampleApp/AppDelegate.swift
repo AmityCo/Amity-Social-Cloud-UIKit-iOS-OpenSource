@@ -3,12 +3,12 @@
 //  SampleApp
 //
 //  Created by Sarawoot Khunsri on 15/7/2563 BE.
-//  Copyright © 2563 Eko. All rights reserved.
+//  Copyright © 2563 Amity. All rights reserved.
 //
 
 import UIKit
-import EkoChat
-import UpstraUIKit
+import AmitySDK
+import AmityUIKit
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -21,19 +21,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // https://developer.apple.com/documentation/usernotifications/
         UNUserNotificationCenter.current().delegate = self
         
-        // Setup UpstraUIKit
-        UpstraUIKitManager.setup("API_KEY")
-        UpstraUIKitManager.set(eventHandler: CustomEventHandler())
-        
-        guard let preset = Preset(rawValue: UserDefaults.standard.theme ?? 0) else { return false }
-        UpstraUIKitManager.set(theme: preset.theme)
-        window = UIWindow()
-        let registerVC = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "RegisterViewController")
-        window?.rootViewController = registerVC
-        window?.makeKeyAndVisible()
-        
-        UpstraUIKitManager.feedUISettings.eventHandler = CustomFeedEventHandler()
-        UpstraUIKitManager.feedUISettings.setPostSharingSettings(settings: EkoPostSharingSettings())
+        // Setup AmityUIKit
+        AppManager.shared.setupAmityUIKit()
+
+        if #available(iOS 13.0, *) {
+            // on newer 13.0 version, the window setup finished on `SceneDelegate`
+        } else {
+            window = UIWindow()
+            window?.rootViewController = AppManager.shared.startingPage()
+            window?.makeKeyAndVisible()
+        }
         
         return true
     }
@@ -58,7 +55,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Handler of opening external url from web browsing session.
         if userActivity.activityType == NSUserActivityTypeBrowsingWeb, let url = userActivity.webpageURL {
 
-            let urlString = url.absoluteString //"https://upstra.co/post/124325135"
+            let urlString = url.absoluteString //"https://Amity.co/post/124325135"
             // Parse url and be sure that it is a url of a post
             if urlString.contains("post/") {
                 if let range = urlString.range(of: "post/") {
@@ -79,19 +76,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
         // https://developer.apple.com/documentation/usernotifications/registering_your_app_with_apns
         // Forward Tokens to Your Provider Server
-        sendDeviceTokenToServer(token: deviceToken)
+        AppManager.shared.registerDeviceToken(deviceToken)
     }
     
     func application(_ application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: Error) {
         print("Fail didFailToRegisterForRemoteNotificationsWithError: \(error.localizedDescription)")
     }
     
-    private func sendDeviceTokenToServer(token: Data) {
-        // Transform deviceToken into a raw string, before sending to EkoChatSDK server.
-        let tokenParts: [String] = token.map { data in String(format: "%02.2hhx", data) }
-        let tokenString: String = tokenParts.joined()
-        
-        UpstraUIKitManager.registerDeviceForPushNotification(tokenString)
+    func applicationDidBecomeActive(_ application: UIApplication) {
+        UIApplication.shared.applicationIconBadgeNumber = 0  // reset badge counter
     }
 
 }
@@ -114,9 +107,9 @@ extension AppDelegate {
     
     private func openPost(withId postId: String) {
         window = UIWindow()
-        UpstraUIKitManager.registerDevice(withUserId: "victimIOS", displayName: "victimIOS".uppercased())
+        AmityUIKitManager.registerDevice(withUserId: "victimIOS", displayName: "victimIOS".uppercased())
         
-        let postDetailViewController = EkoPostDetailViewController.make(withPostId: "c1bb8697c88a01f6423765984a3e47ac")
+        let postDetailViewController = AmityPostDetailViewController.make(withPostId: "POST_ID")
         window?.rootViewController = postDetailViewController
         window?.makeKeyAndVisible()
     }
