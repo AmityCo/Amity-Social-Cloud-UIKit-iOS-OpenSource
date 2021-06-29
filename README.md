@@ -9,9 +9,9 @@ AmityUIKit is a delightful networking library for iOS. It is extending the power
 
 ## Requirements
 
-| AmityUIKit Version | AmitySDK Version | Minimum iOS Target | Supported Language |
-| ------------------ | ---------------- | ------------------ | ------------------ |
-| 2.0.0              | 5.0.0            | iOS 12.0           |        Swift 5.3   |
+| Minimum iOS Target | Supported Language |
+| ------------------ | ------------------ |
+| iOS 12.0           |        Swift 5.3   |
 
 ## Dependencies
 
