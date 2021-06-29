@@ -1,19 +1,17 @@
 
-# AmityUIKit
+# AmityUIKit OpenSource
 
 <p align="center" >
   <img src="https://global-uploads.webflow.com/5eddccffdb3c6a27f79757c1/604f017e59681e734c3bd995_nav-logo.png" alt="Amity" title="AmityUIKit">
 </p>
 
-[![Carthage Compatible](https://img.shields.io/badge/Carthage-compatible-4BC51D.svg?style=flat)](https://github.com/Carthage/Carthage)
-
 AmityUIKit is a delightful networking library for iOS. It is extending the powerful high-level messaging abstractions provided by [Amity](https://www.amity.co). It has a scalable architecture with well-designed, feature-rich APIs that are a joy to use.
 
 ## Requirements
 
-| AmityUIKit Version | AmitySDK Version | Minimum iOS Target  | Swift Version | Xcode Version |
-
-| v2.0.0 | v5.0.0 | iOS 12.0 | Swift 5.3 | Xcode 12.2 |
+| AmityUIKit Version | AmitySDK Version | Minimum iOS Target | Supported Language |
+| ------------------ | ---------------- | ------------------ | ------------------ |
+| 2.0.0              | 5.0.0            | iOS 12.0           |        Swift 5.3   |
 
 ## Dependencies
 
