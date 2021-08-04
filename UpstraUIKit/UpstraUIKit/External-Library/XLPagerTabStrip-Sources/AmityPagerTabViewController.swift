@@ -32,7 +32,7 @@ protocol IndicatorInfoProvider {
 
 }
 
-protocol PagerTabStripDelegate: class {
+protocol PagerTabStripDelegate: AnyObject {
 
     func updateIndicator(for viewController: AmityPagerTabViewController, fromIndex: Int, toIndex: Int)
 }
@@ -42,7 +42,7 @@ protocol PagerTabStripIsProgressiveDelegate: PagerTabStripDelegate {
     func updateIndicator(for viewController: AmityPagerTabViewController, fromIndex: Int, toIndex: Int, withProgressPercentage progressPercentage: CGFloat, indexWasChanged: Bool)
 }
 
-protocol PagerTabStripDataSource: class {
+protocol PagerTabStripDataSource: AnyObject {
 
     func viewControllers(for pagerTabStripController: AmityPagerTabViewController) -> [UIViewController]
 }

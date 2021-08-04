@@ -24,8 +24,8 @@ final class AmityPostReviewSettingsViewController: AmityViewController {
         setupSettingsItems()
     }
     
-    static func make() -> AmityPostReviewSettingsViewController {
-        let viewModel = AmityPostReviewSettingsScreenViewModel()
+    static func make(communityId: String) -> AmityPostReviewSettingsViewController {
+        let viewModel = AmityPostReviewSettingsScreenViewModel(communityId: communityId)
         let vc = AmityPostReviewSettingsViewController(nibName: AmityPostReviewSettingsViewController.identifier, bundle: AmityUIKitManager.bundle)
         vc.screenViewModel = viewModel
         return vc
@@ -38,7 +38,7 @@ final class AmityPostReviewSettingsViewController: AmityViewController {
     
     private func setupViewModel() {
         screenViewModel.delegate = self
-        screenViewModel.action.retrieveMenu()
+        screenViewModel.action.getCommunity()
     }
     
     private func setupSettingsItems() {
@@ -53,19 +53,8 @@ final class AmityPostReviewSettingsViewController: AmityViewController {
             guard let item = AmityPostReviewSettingsItem(rawValue: content.identifier) else { return }
             switch item {
             case .approveMemberPost:
-                if content.isToggled {
-                    AmityAlertController.present(title: AmityLocalizedStringSet.PostReviewSettings.alertTitleTurnOffPostReview.localizedString,
-                                               message: AmityLocalizedStringSet.PostReviewSettings.alertDescTurnOffPostReview.localizedString,
-                                               actions: [.cancel(handler: {
-                                                content.isToggled = true
-                                               }),
-                                               .custom(title: AmityLocalizedStringSet.turnOff.localizedString,
-                                                       style: .destructive,
-                                                       handler: { [weak self] in
-                                                        self?.screenViewModel.action.turnOffApproveMemberPost(content: content)
-                                                       })
-                                               ],
-                                               from: self)
+                if !content.isToggled {
+                    screenViewModel.action.turnOffApproveMemberPost(content: content)
                 } else {
                     screenViewModel.action.turnOnApproveMemberPost(content: content)
                 }
@@ -79,7 +68,7 @@ final class AmityPostReviewSettingsViewController: AmityViewController {
 extension AmityPostReviewSettingsViewController: AmityPostReviewSettingsScreenViewModelDelegate {
     func screenViewModel(_ viewModel: AmityPostReviewSettingsScreenViewModelType, didFinishWithAction action: AmityPostReviewSettingsAction) {
         switch action {
-        case .retrieveMenu(let settingItem):
+        case .showMenu(let settingItem):
             settingTableView.settingsItems = settingItem
         case .turnOnApproveMemberPost(let content):
             content.isToggled = true
@@ -91,16 +80,20 @@ extension AmityPostReviewSettingsViewController: AmityPostReviewSettingsScreenVi
     
     func screenViewModel(_ viewModel: AmityPostReviewSettingsScreenViewModelType, didFailWithAction action: AmityPostReviewSettingsAction) {
         switch action {
-        case .turnOnApproveMemberPost:
+        case .turnOnApproveMemberPost(let content):
             AmityAlertController.present(title: AmityLocalizedStringSet.PostReviewSettings.alertFailTitleTurnOn.localizedString,
-                                       message: AmityLocalizedStringSet.somethingWentWrongWithTryAgain.localizedString,
-                                       actions: [.ok(handler: nil)],
-                                       from: self)
-        case .turnOffApproveMemberPost:
+                                         message: AmityLocalizedStringSet.somethingWentWrongWithTryAgain.localizedString,
+                                         actions: [.ok(handler: {
+                                            content.isToggled = false
+                                         })],
+                                         from: self)
+        case .turnOffApproveMemberPost(let content):
             AmityAlertController.present(title: AmityLocalizedStringSet.PostReviewSettings.alertFailTitleTurnOff.localizedString,
-                                       message: AmityLocalizedStringSet.somethingWentWrongWithTryAgain.localizedString,
-                                       actions: [.ok(handler: nil)],
-                                       from: self)
+                                         message: AmityLocalizedStringSet.somethingWentWrongWithTryAgain.localizedString,
+                                         actions: [.ok(handler: {
+                                            content.isToggled = true
+                                         })],
+                                         from: self)
         default:
             break
         }

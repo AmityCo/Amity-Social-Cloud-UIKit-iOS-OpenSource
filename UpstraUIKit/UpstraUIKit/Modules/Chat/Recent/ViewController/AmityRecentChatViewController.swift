@@ -47,12 +47,12 @@ public final class AmityRecentChatViewController: AmityViewController, Indicator
     
     public override func viewDidLoad() {
         super.viewDidLoad()
-        setupView()
         setupScreenViewModel()
+        setupView()
     }
     
-    public static func make() -> AmityRecentChatViewController {
-        let viewModel: AmityRecentChatScreenViewModelType = AmityRecentChatScreenViewModel()
+    public static func make(channelType: AmityChannelType = .conversation) -> AmityRecentChatViewController {
+        let viewModel: AmityRecentChatScreenViewModelType = AmityRecentChatScreenViewModel(channelType: channelType)
         return AmityRecentChatViewController(viewModel: viewModel)
     }
 }
@@ -68,6 +68,11 @@ private extension AmityRecentChatViewController {
 // MARK: - Setup View
 private extension AmityRecentChatViewController {
     func setupView() {
+        if screenViewModel.dataSource.isAddMemberBarButtonEnabled() {
+            let addImage = UIImage(named: "icon_chat_create", in: AmityUIKitManager.bundle, compatibleWith: nil)
+            let barButton = UIBarButtonItem(image: addImage, style: .plain, target: self, action: #selector(didClickAdd(_:)))
+            navigationItem.rightBarButtonItem = barButton
+        }
         setupTableView()
     }
     
@@ -81,6 +86,15 @@ private extension AmityRecentChatViewController {
         tableView.backgroundView = emptyView
         tableView.delegate = self
         tableView.dataSource = self
+    }
+    
+    @objc func didClickAdd(_ barButton: UIBarButtonItem) {
+        AmityChannelEventHandler.shared.channelCreateNewChat(
+            from: self,
+            completionHandler: { [weak self] storeUsers in
+                guard let weakSelf = self else { return }
+                weakSelf.screenViewModel.action.createChannel(users: storeUsers)
+        })
     }
 }
 
@@ -118,6 +132,14 @@ extension AmityRecentChatViewController: UITableViewDataSource {
 }
 
 extension AmityRecentChatViewController: AmityRecentChatScreenViewModelDelegate {
+    func screenViewModelDidCreateCommunity(channelId: String) {
+        AmityChannelEventHandler.shared.channelDidTap(from: self, channelId: channelId)
+    }
+    
+    func screenViewModelDidFailedCreateCommunity(error: String) {
+        AmityHUD.show(.error(message: AmityLocalizedStringSet.CommunityChannelCreation.failedToCreate.localizedString))
+    }
+    
     func screenViewModelDidGetChannel() {
         tableView.reloadData()
     }
@@ -136,10 +158,7 @@ extension AmityRecentChatViewController: AmityRecentChatScreenViewModelDelegate 
     func screenViewModelRoute(for route: AmityRecentChatScreenViewModel.Route) {
         switch route {
         case .messageView(let channelId):
-            messageListVC = AmityMessageListViewController.make(channelId: channelId)
-            guard let messageListVC = messageListVC else { return }
-            messageListVC.dataSource = messageDataSource
-            navigationController?.pushViewController(messageListVC, animated: true)
+            AmityChannelEventHandler.shared.channelDidTap(from: self, channelId: channelId)
         }
     }
     

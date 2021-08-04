@@ -8,7 +8,7 @@
 
 import UIKit
 
-protocol AmityCommunitySettingsScreenViewModelDelegate: class {
+protocol AmityCommunitySettingsScreenViewModelDelegate: AnyObject {
     func screenViewModel(_ viewModel: AmityCommunitySettingsScreenViewModelType, didGetSettingMenu settings: [AmitySettingsItem])
     func screenViewModel(_ viewModel: AmityCommunitySettingsScreenViewModelType, didGetCommunitySuccess community: AmityCommunityModel)
     func screenViewModelDidLeaveCommunity()
@@ -19,7 +19,8 @@ protocol AmityCommunitySettingsScreenViewModelDelegate: class {
 }
 
 protocol AmityCommunitySettingsScreenViewModelDataSource {
-    var community: AmityCommunityModel { get }
+    var community: AmityCommunityModel? { get }
+    var communityId: String { get }
 }
 
 protocol AmityCommunitySettingsScreenViewModelAction {

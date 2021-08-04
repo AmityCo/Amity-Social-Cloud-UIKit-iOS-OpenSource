@@ -36,7 +36,7 @@ enum PostDetailViewModel {
     
 }
 
-protocol AmityPostDetailScreenViewModelDelegate: class {
+protocol AmityPostDetailScreenViewModelDelegate: AnyObject {
     // MARK: Post
     func screenViewModelDidUpdateData(_ viewModel: AmityPostDetailScreenViewModelType)
     func screenViewModelDidUpdatePost(_ viewModel: AmityPostDetailScreenViewModelType)

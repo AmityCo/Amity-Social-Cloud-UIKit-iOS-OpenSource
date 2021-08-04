@@ -37,15 +37,6 @@ open class AmityEventHandler {
         source.navigationController?.pushViewController(viewController, animated: true)
     }
     
-    /// Event for channel
-    /// It will be triggered when channel list or chat button is tapped
-    ///
-    /// A default behavior is navigating to `AmityMessageListViewController`
-    open func channelDidTap(from source: AmityViewController, channelId: String) {
-        let viewController = AmityMessageListViewController.make(channelId: channelId)
-        source.navigationController?.pushViewController(viewController, animated: true)
-    }
-    
     /// Event for community channel
     /// It will be triggered when community  button tapped
     ///

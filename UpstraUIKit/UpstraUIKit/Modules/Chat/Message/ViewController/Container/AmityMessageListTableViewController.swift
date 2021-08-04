@@ -14,6 +14,13 @@ final class AmityMessageListTableViewController: UITableViewController {
     // MARK: - Properties
     private var screenViewModel: AmityMessageListScreenViewModelType!
     
+    struct Constant {
+        static let estimatedTextMessageCellHeight: CGFloat = 112
+        static let estimatedImageMessageCellHeight: CGFloat = 226
+    }
+    
+    private let estimatedCellHeight: CGFloat = 112
+    
     // MARK: - View lifecycle
     private convenience init(viewModel: AmityMessageListScreenViewModelType) {
         self.init(style: .plain)
@@ -69,6 +76,30 @@ extension AmityMessageListTableViewController {
         tableView.layoutIfNeeded()
         tableView.scrollToRow(at: indexPath, at: .bottom, animated: true)
     }
+    
+    func updateScrollPosition(to indexPath: IndexPath) {
+        let contentHeight = tableView.contentSize.height
+        let contentYOffset = tableView.contentOffset.y
+        let viewHeight = tableView.bounds.height
+        Log.add("Content Height: \(contentHeight), Content Offset: \(contentYOffset), ViewHeight: \(viewHeight)")
+        
+        // We update scroll position based on the view state. User can be in multiple view state.
+        //
+        // State 1:
+        // All message fits inside the visible part of the view. We don't need to scoll
+        if viewHeight >= contentHeight {
+            return
+        }
+
+        // State 2:
+        //
+        // User is seeing the latest message. So we just scroll to the bottom when new message appears
+        if contentYOffset + viewHeight >= contentHeight {
+            Log.add("Scrolling tableview to show latest message")
+            tableView.scrollToRow(at: indexPath, at: .bottom, animated: true)
+            return
+        }
+    }
 }
 
 // MARK: - Delegate
@@ -97,6 +128,20 @@ extension AmityMessageListTableViewController {
         let dateView = AmityMessageDateView()
         dateView.text = message.date
         return dateView
+    }
+    
+    override func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
+        guard let message = screenViewModel.dataSource.message(at: indexPath)else { return Constant.estimatedTextMessageCellHeight }
+        let messageType = message.messageType
+        
+        switch messageType {
+        case .text:
+            return Constant.estimatedTextMessageCellHeight
+        case .image:
+            return Constant.estimatedImageMessageCellHeight
+        default:
+            return 0
+        }
     }
 }
 

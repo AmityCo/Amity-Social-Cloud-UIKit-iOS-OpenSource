@@ -29,22 +29,40 @@ class AmityPostTextEditorScreenViewModel: AmityPostTextEditorScreenViewModelType
     
     // MARK: - Action
     
-    func createPost(text: String, images: [AmityImage], files: [AmityFile], communityId: String?) {
+    func createPost(text: String, medias: [AmityMedia], files: [AmityFile], communityId: String?) {
+        
         let targetType: AmityPostTargetType = communityId == nil ? .user : .community
         
-        if !images.isEmpty {
-            var imagesData = [AmityImageData]()
-            for image in images {
-                if case .uploaded(let data) = image.state {
+        if !medias.isEmpty {
+            
+            var imagesData: [AmityImageData] = []
+            var videosData: [AmityVideoData] = []
+            
+            for media in medias {
+                switch media.state {
+                case .uploadedImage(let data):
                     imagesData.append(data)
+                case .uploadedVideo(let data):
+                    videosData.append(data)
+                default:
+                    break
                 }
             }
             
-            Log.add("Creating image post with \(imagesData.count) images")
-            Log.add("FileIds: \(imagesData.map{ $0.fileId })")
-            self.createImagePost(text: text, imageData: imagesData, communityId: communityId, targetType: targetType)
+            if !imagesData.isEmpty {
+                Log.add("Creating image post with \(imagesData.count) images")
+                Log.add("FileIds: \(imagesData.map{ $0.fileId })")
+                createImagePost(text: text, imageData: imagesData, communityId: communityId, targetType: targetType)
+            } else if !videosData.isEmpty {
+                Log.add("Creating video post with \(videosData.count) images")
+                Log.add("FileIds: \(videosData.map{ $0.fileId })")
+                createVideoPost(text: text, videosData: videosData, communityId: communityId, targetType: targetType)
+            } else {
+                assertionFailure("Unsupport creating post containing both images and videos.")
+            }
             
         } else if !files.isEmpty {
+
             // Uploaded files data
             var filesData = [AmityFileData]()
             for file in files {
@@ -59,18 +77,21 @@ class AmityPostTextEditorScreenViewModel: AmityPostTextEditorScreenViewModelType
             self.createFilePost(text: text, fileData: filesData, communityId: communityId, targetType: targetType)
             
         } else {
+            
             // Text Post
             let postBuilder = AmityTextPostBuilder()
             postBuilder.setText(text)
             
             // Create it
-            repository.createPost(postBuilder, targetId: communityId, targetType: targetType) { [weak self] (success, error) in
+            repository.createPost(postBuilder, targetId: communityId, targetType: targetType) { [weak self] (post, error) in
                 
                 guard let strongSelf = self else { return }
+                let success = post != nil
                 Log.add("Text post created: \(success) Error: \(String(describing: error))")
-                strongSelf.delegate?.screenViewModelDidCreatePost(strongSelf, error: error)
+                strongSelf.delegate?.screenViewModelDidCreatePost(strongSelf, post: post, error: error)
                 NotificationCenter.default.post(name: NSNotification.Name.Post.didCreate, object: nil)
             }
+            
         }
     }
     
@@ -82,29 +103,54 @@ class AmityPostTextEditorScreenViewModel: AmityPostTextEditorScreenViewModelType
      - You cannot add extra images/files or replace images/files in image/file post
      */
     
-    func updatePost(oldPost: AmityPostModel, text: String, images: [AmityImage], files: [AmityFile]) {
+    func updatePost(oldPost: AmityPostModel, text: String, medias: [AmityMedia], files: [AmityFile]) {
         
-        if !oldPost.images.isEmpty {
+        if !oldPost.medias.isEmpty {
             
             // We determine which posts are added, which are removed and which remained same.
-            let oldPostImages: Set = Set(oldPost.images)
-            let newPostImages: Set = Set(images)
+            let oldPostMedias: Set = Set(oldPost.medias)
+            let newPostMedias: Set = Set(medias)
             
-            let unchangedImages = oldPostImages.intersection(newPostImages)
-            let addedImages = newPostImages.subtracting(oldPostImages)
-            let removedImages = oldPostImages.subtracting(newPostImages)
+            let unchangedMedias = oldPostMedias.intersection(newPostMedias)
+            let addedMedias = newPostMedias.subtracting(oldPostMedias)
+            let removedMedias = oldPostMedias.subtracting(newPostMedias)
             
-            Log.add("Unchanged Images: \(unchangedImages)")
-            Log.add("Added Images: \(addedImages)")
-            Log.add("Removed Images: \(removedImages)")
+            Log.add("Unchanged medias: \(unchangedMedias)")
+            Log.add("Added medias: \(addedMedias)")
+            Log.add("Removed medias: \(removedMedias)")
+            
+            let updateTextInPost: () -> Void = { [weak self] in
+                guard let strongSelf = self else { return }
+                switch oldPost.dataTypeInternal {
+                case .image:
+                    strongSelf.updateImagePost(postId: oldPost.postId, text: text, imageData: [])
+                case .video:
+                    strongSelf.updateVideoPost(postId: oldPost.postId, text: text)
+                default:
+                    assertionFailure("Unsupported case.")
+                    break
+                }
+            }
             
             // If existing images are removed
-            if removedImages.count > 0 {
-                var postIdToRemove = [String]()
-                removedImages.forEach { image in
-                    if case .downloadable(let fileId, _) = image.state {
-                        let childPostId = oldPost.getPostId(for: fileId)
-                        postIdToRemove.append(childPostId)
+            if removedMedias.count > 0 {
+                
+                var postIdToRemove: [String] = []
+                
+                for media in removedMedias {
+                    switch media.state {
+                    case .downloadableImage:
+                        if let imageInfo = media.image,
+                           let childPostId = oldPost.getPostId(forFileId: imageInfo.fileId) {
+                            postIdToRemove.append(childPostId)
+                        }
+                    case .downloadableVideo:
+                        if let videoInfo = media.video,
+                           let childPostId = oldPost.getPostId(forFileId: videoInfo.fileId) {
+                            postIdToRemove.append(childPostId)
+                        }
+                    default:
+                        break
                     }
                 }
                 
@@ -117,15 +163,14 @@ class AmityPostTextEditorScreenViewModel: AmityPostTextEditorScreenViewModelType
                     }
                 }
                 
-                // After child posts are removed, remove the
-                actionTracker.notify(queue: DispatchQueue.main) { [weak self] in
-                    guard let strongSelf = self else { return }
-                    // Call to update post
-                    strongSelf.updateImagePost(postId: oldPost.postId, text: text, imageData: [])
+                // After child posts are removed, remove the text
+                actionTracker.notify(queue: DispatchQueue.main) {
+                    updateTextInPost()
                 }
+                
             } else {
-                // If no images to remove, just update the text
-                updateImagePost(postId: oldPost.postId, text: text, imageData: [])
+                // If there is no child post to remove, just update text.
+                updateTextInPost()
             }
             
         } else if !oldPost.files.isEmpty {
@@ -145,15 +190,18 @@ class AmityPostTextEditorScreenViewModel: AmityPostTextEditorScreenViewModelType
             if removedFiles.count > 0 {
                 var postIdToRemove = [String]()
                 removedFiles.forEach { file in
-                    if case .downloadable(let fileData) = file.state {
-                        let childPostId = oldPost.getPostId(for: fileData.fileId)
-                        postIdToRemove.append(childPostId)
+                    switch file.state {
+                    case .downloadable(let fileData):
+                        if let childPostId = oldPost.getPostId(forFileId: fileData.fileId) {
+                            postIdToRemove.append(childPostId)
+                        }
+                    default:
+                        break
                     }
                 }
                 
                 for postId in postIdToRemove {
                     actionTracker.enter()
-                    
                     deleteChildPost(postId: postId, parentId: oldPost.postId) { [weak self] (isSuccess, error) in
                         self?.actionTracker.leave()
                     }
@@ -171,9 +219,9 @@ class AmityPostTextEditorScreenViewModel: AmityPostTextEditorScreenViewModelType
             let postBuilder = AmityTextPostBuilder()
             postBuilder.setText(text)
             
-            repository.updatePost(withPostId: oldPost.postId, builder: postBuilder) { [weak self] (success, error) in
+            repository.updatePost(withPostId: oldPost.postId, builder: postBuilder) { [weak self] (post, error) in
                 guard let strongSelf = self else { return }
-                
+                let success = post != nil
                 Log.add("Text post updated: \(success) Error: \(String(describing: error))")
                 strongSelf.delegate?.screenViewModelDidUpdatePost(strongSelf, error: error)
                 NotificationCenter.default.post(name: NSNotification.Name.Post.didUpdate, object: nil)
@@ -188,10 +236,21 @@ class AmityPostTextEditorScreenViewModel: AmityPostTextEditorScreenViewModelType
         postBuilder.setText(text)
         postBuilder.setImageData(imageData)
         
+        repository.updatePost(withPostId: postId, builder: postBuilder) { [weak self] (post, error) in
+            guard let strongSelf = self else { return }
+            let success = post != nil
+            Log.add("Image post updated: \(success) Error: \(String(describing: error))")
+            strongSelf.delegate?.screenViewModelDidUpdatePost(strongSelf, error: error)
+            NotificationCenter.default.post(name: NSNotification.Name.Post.didUpdate, object: nil)
+        }
+    }
+    
+    private func updateVideoPost(postId: String, text: String) {
+        let postBuilder = AmityVideoPostBuilder()
+        postBuilder.setText(text)
         repository.updatePost(withPostId: postId, builder: postBuilder) { [weak self] (success, error) in
             guard let strongSelf = self else { return }
-            
-            Log.add("Image post updated: \(success) Error: \(String(describing: error))")
+            Log.add("Video post updated: \(success) Error: \(String(describing: error))")
             strongSelf.delegate?.screenViewModelDidUpdatePost(strongSelf, error: error)
             NotificationCenter.default.post(name: NSNotification.Name.Post.didUpdate, object: nil)
         }
@@ -201,9 +260,9 @@ class AmityPostTextEditorScreenViewModel: AmityPostTextEditorScreenViewModelType
         let postBuilder = AmityFilePostBuilder()
         postBuilder.setText(text)
         
-        repository.updatePost(withPostId: postId, builder: postBuilder) { [weak self] (success, error) in
+        repository.updatePost(withPostId: postId, builder: postBuilder) { [weak self] (post, error) in
             guard let strongSelf = self else { return }
-            
+            let success = post != nil
             Log.add("File post updated: \(success) Error: \(String(describing: error))")
             strongSelf.delegate?.screenViewModelDidUpdatePost(strongSelf, error: error)
             NotificationCenter.default.post(name: NSNotification.Name.Post.didUpdate, object: nil)
@@ -212,17 +271,34 @@ class AmityPostTextEditorScreenViewModel: AmityPostTextEditorScreenViewModelType
     
     // MARK:- Create Helpers
     
+    private func createVideoPost(text: String, videosData: [AmityVideoData], communityId: String?, targetType: AmityPostTargetType) {
+        
+        let postBuilder = AmityVideoPostBuilder()
+        postBuilder.setText(text)
+        postBuilder.setVideos(videosData)
+        
+        repository.createPost(postBuilder, targetId: communityId, targetType: targetType) { [weak self] (post, error) in
+            guard let strongSelf = self else { return }
+            let success = post != nil
+            Log.add("Video Post Created: \(success) Error: \(String(describing: error))")
+            strongSelf.delegate?.screenViewModelDidCreatePost(strongSelf, post: post, error: error)
+            NotificationCenter.default.post(name: NSNotification.Name.Post.didCreate, object: nil)
+        }
+        
+    }
+    
     private func createImagePost(text: String, imageData: [AmityImageData], communityId: String?, targetType: AmityPostTargetType) {
         
         let postBuilder = AmityImagePostBuilder()
         postBuilder.setText(text)
         postBuilder.setImageData(imageData)
         
-        repository.createPost(postBuilder, targetId: communityId, targetType: targetType) { [weak self] (success, error) in
+        repository.createPost(postBuilder, targetId: communityId, targetType: targetType) { [weak self] (post, error) in
             
             guard let strongSelf = self else { return }
+            let success = post != nil
             Log.add("Image Post Created: \(success) Error: \(String(describing: error))")
-            strongSelf.delegate?.screenViewModelDidCreatePost(strongSelf, error: error)
+            strongSelf.delegate?.screenViewModelDidCreatePost(strongSelf, post: post, error: error)
             NotificationCenter.default.post(name: NSNotification.Name.Post.didCreate, object: nil)
         }
     }
@@ -233,11 +309,12 @@ class AmityPostTextEditorScreenViewModel: AmityPostTextEditorScreenViewModelType
         postBuilder.setText(text)
         postBuilder.setFileData(fileData)
         
-        repository.createPost(postBuilder, targetId: communityId, targetType: targetType) { [weak self] (success, error) in
+        repository.createPost(postBuilder, targetId: communityId, targetType: targetType) { [weak self] (post, error) in
             
             guard let strongSelf = self else { return }
+            let success = post != nil
             Log.add("File Post Created: \(success) Error: \(String(describing: error))")
-            strongSelf.delegate?.screenViewModelDidCreatePost(strongSelf, error: error)
+            strongSelf.delegate?.screenViewModelDidCreatePost(strongSelf, post: post, error: error)
             NotificationCenter.default.post(name: NSNotification.Name.Post.didCreate, object: nil)
         }
     }

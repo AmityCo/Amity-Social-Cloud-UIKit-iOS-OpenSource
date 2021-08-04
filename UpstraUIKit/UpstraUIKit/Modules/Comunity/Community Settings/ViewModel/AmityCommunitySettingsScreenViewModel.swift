@@ -23,18 +23,19 @@ final class AmityCommunitySettingsScreenViewModel: AmityCommunitySettingsScreenV
     private var menuViewModel: AmityCommunitySettingsCreateMenuViewModelProtocol?
     
     // MARK: - Properties
-    var community: AmityCommunityModel
+    private(set) var community: AmityCommunityModel?
+    let communityId: String
     private var isNotificationEnabled: Bool = false
     private var isSocialNetworkEnabled: Bool = false
     private var isSocialUserEnabled: Bool = false
     
-    init(community: AmityCommunityModel,
+    init(communityId: String,
          userNotificationController: AmityUserNotificationSettingsControllerProtocol,
          communityNotificationController: AmityCommunityNotificationSettingsControllerProtocol,
          communityLeaveController: AmityCommunityLeaveControllerProtocol,
          communityDeleteController: AmityCommunityDeleteControllerProtocol,
          communityInfoController: AmityCommunityInfoControllerProtocol) {
-        self.community = community
+        self.communityId = communityId
         self.userNotificationController = userNotificationController
         self.communityNotificationController = communityNotificationController
         self.communityLeaveController = communityLeaveController
@@ -93,6 +94,7 @@ extension AmityCommunitySettingsScreenViewModel {
     }
     
     func retrieveSettingsMenu() {
+        guard let community = community else { return }
         menuViewModel = AmityCommunitySettingsCreateMenuViewModel(community: community)
         menuViewModel?.createSettingsItems(shouldNotificationItemShow: isSocialUserEnabled && isSocialNetworkEnabled, isNotificationEnabled: isNotificationEnabled) { [weak self] (items) in
             guard let strongSelf = self else { return }

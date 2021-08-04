@@ -11,7 +11,7 @@ enum AmityPostFooterProtocolHandlerAction {
     case tapLike
     case tapComment
 }
-protocol AmityPostFooterProtocolHandlerDelegate: class {
+protocol AmityPostFooterProtocolHandlerDelegate: AnyObject {
     func footerProtocolHandlerDidPerformAction(_ handler: AmityPostFooterProtocolHandler, action: AmityPostFooterProtocolHandlerAction, withPost post: AmityPostModel)
 }
 

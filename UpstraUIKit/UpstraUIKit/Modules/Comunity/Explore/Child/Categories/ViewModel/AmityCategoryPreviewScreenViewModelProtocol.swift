@@ -9,7 +9,7 @@
 import UIKit
 import AmitySDK
 
-protocol AmityCategoryPreviewCommunityScreenViewModelDelegate: class {
+protocol AmityCategoryPreviewCommunityScreenViewModelDelegate: AnyObject {
     func screenViewModel(_ viewModel: AmityCategoryPreviewScreenViewModelType, didRetrieveCategory category: [AmityCommunityCategoryModel], isEmpty: Bool)
     func screenViewModel(_ viewModel: AmityCategoryPreviewScreenViewModelType, didFail error: AmityError)
 }

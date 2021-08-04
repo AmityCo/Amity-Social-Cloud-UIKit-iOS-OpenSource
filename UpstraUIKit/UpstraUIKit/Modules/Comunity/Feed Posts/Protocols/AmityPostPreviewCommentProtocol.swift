@@ -15,7 +15,7 @@ public protocol AmityPostPreviewCommentProtocol: UITableViewCell {
     func display(post: AmityPostModel, comment: AmityCommentModel?)
 }
 
-public protocol AmityPostPreviewCommentDelegate: class {
+public protocol AmityPostPreviewCommentDelegate: AnyObject {
     func didPerformAction(_ cell: AmityPostPreviewCommentProtocol, action: AmityPostPreviewCommentAction)
 }
 

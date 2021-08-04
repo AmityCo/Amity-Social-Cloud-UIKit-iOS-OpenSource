@@ -9,7 +9,7 @@
 import UIKit
 import AmitySDK
 
-protocol AmityCommunityMemberScreenViewModelDelegate: class {
+protocol AmityCommunityMemberScreenViewModelDelegate: AnyObject {
     func screenViewModelDidGetMember()
     func screenViewModel(_ viewModel: AmityCommunityMemberScreenViewModel, loadingState state: AmityLoadingState)
     func screenViewModel(_ viewModel: AmityCommunityMemberScreenViewModel, didRemoveUserAt indexPath: IndexPath)

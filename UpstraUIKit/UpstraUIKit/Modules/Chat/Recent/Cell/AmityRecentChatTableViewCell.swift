@@ -22,6 +22,9 @@ final class AmityRecentChatTableViewCell: UITableViewCell, Nibbable {
     @IBOutlet private var previewMessageLabel: UILabel!
     @IBOutlet private var dateTimeLabel: UILabel!
     
+    private var token: AmityNotificationToken?
+    private var repository: AmityUserRepository?
+    
     override func awakeFromNib() {
         super.awakeFromNib()
         setupView()
@@ -29,13 +32,16 @@ final class AmityRecentChatTableViewCell: UITableViewCell, Nibbable {
     
     override func prepareForReuse() {
         super.prepareForReuse()
-//        titleLabel.text = ""
-//        previewMessageLabel.text = ""
-//        dateTimeLabel.text = ""
-//        badgeView.badge = 0
+        titleLabel.text = ""
+        previewMessageLabel.text = ""
+        dateTimeLabel.text = ""
+        badgeView.badge = 0
+        avatarView.image = nil
     }
     
     private func setupView() {
+        repository = AmityUserRepository(client: AmityUIKitManagerInternal.shared.client)
+        
         containerDisplayNameView.backgroundColor = AmityColorSet.backgroundColor
         containerMessageView.backgroundColor = AmityColorSet.backgroundColor
         contentView.backgroundColor = AmityColorSet.backgroundColor
@@ -61,25 +67,48 @@ final class AmityRecentChatTableViewCell: UITableViewCell, Nibbable {
     }
     
     func display(with channel: AmityChannelModel) {
-        titleLabel.text = channel.channelId
         badgeView.badge = channel.unreadCount
+        memberLabel.text = ""
         dateTimeLabel.text = AmityDateFormatter.Chat.getDate(date: channel.lastActivity)
-        switch channel.channelType {
-        case .standard:
-            avatarView.placeholder = AmityIconSet.defaultGroupChat//channel.avatar == nil ? AmityIconSet.default_chat_group : UIImage()
-            memberLabel.text = "(\(channel.memberCount))"
-        case .conversation:
-            avatarView.placeholder = AmityIconSet.defaultAvatar//channel.avatar == nil ? AmityIconSet.default_chat_direct : UIImage()
-            memberLabel.text = nil
+        titleLabel.text = AmityLocalizedStringSet.General.anonymous.localizedString
+        avatarView.placeholder = AmityIconSet.defaultAvatar
+        
+        if channel.isDirectChat() {
+            token?.invalidate()
+            if !channel.getOtherUserId().isEmpty {
+                token = repository?.getUser(channel.getOtherUserId()).observe({ [weak self] user, error in
+                    guard let weakSelf = self else { return }
+                    if let userObject = user.object {
+                        weakSelf.titleLabel.text = userObject.displayName
+                        weakSelf.avatarView.setImage(withImageURL: userObject.avatarCustomUrl,
+                                                     placeholder: AmityIconSet.defaultAvatar)
+                        weakSelf.token?.invalidate()
+                    }
+
+                })
+            }
+        } else {
             titleLabel.text = channel.displayName
-        case .private:
-            break
-        case .broadcast:
-            break
-        case .byTypes:
-            break
-        @unknown default:
-            break
+            switch channel.channelType {
+            case .standard:
+                avatarView.setImage(withImageURL: channel.avatarURL, placeholder: AmityIconSet.defaultGroupChat)
+                memberLabel.text = "(\(channel.memberCount))"
+            case .conversation:
+                avatarView.setImage(withImageURL: channel.avatarURL, placeholder: AmityIconSet.defaultAvatar)
+                memberLabel.text = nil
+                titleLabel.text = channel.displayName
+            case .private:
+                break
+            case .broadcast:
+                break
+            case .byTypes:
+                break
+            case .community:
+                avatarView.setImage(withImageURL: channel.avatarURL, placeholder: AmityIconSet.defaultGroupChat)
+                memberLabel.text = "(\(channel.memberCount))"
+            @unknown default:
+                break
+            }
         }
     }
 }

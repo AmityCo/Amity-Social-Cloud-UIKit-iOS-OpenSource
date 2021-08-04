@@ -13,7 +13,7 @@ enum AmityCommunityNotificationSettingsType {
     case comment
 }
 
-protocol AmitySocialNotificationSettingsScreenViewModelDelgate: class {
+protocol AmitySocialNotificationSettingsScreenViewModelDelgate: AnyObject {
     func screenViewModel(_ viewModel: AmitySocialNotificationSettingsScreenViewModel, didReceiveSettingItems items: [AmitySettingsItem])
     func screenViewModelDidUpdateSettingSuccess(_ viewModel: AmitySocialNotificationSettingsScreenViewModel)
     func screenViewModel(_ viewModel: AmitySocialNotificationSettingsScreenViewModel, didUpdateSettingFailWithError error: AmityError)

@@ -8,7 +8,7 @@
 
 import UIKit
 
-protocol AmityMyCommunityPreviewScreenViewModelDelegate: class {
+protocol AmityMyCommunityPreviewScreenViewModelDelegate: AnyObject {
     func screenViewModel(_ viewModel: AmityMyCommunityPreviewScreenViewModelType, didRetrieveCommunityList communityList: [AmityCommunityModel])
 }
 

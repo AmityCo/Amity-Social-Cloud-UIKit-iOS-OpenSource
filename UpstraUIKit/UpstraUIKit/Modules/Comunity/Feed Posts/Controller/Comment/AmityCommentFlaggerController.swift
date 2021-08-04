@@ -12,7 +12,7 @@ import AmitySDK
 protocol AmityCommentFlaggerControllerProtocol {
     func report(withCommentId commentId: String, completion: AmityRequestCompletion?)
     func unreport(withCommentId commentId: String, completion: AmityRequestCompletion?)
-    func getReportStatus(withCommentId commentId: String, completion: @escaping (Bool) -> Void)
+    func getReportStatus(withCommentId commentId: String, completion: ((Bool) -> Void)?)
 }
 
 final class AmityCommentFlaggerController: AmityCommentFlaggerControllerProtocol {
@@ -29,8 +29,10 @@ final class AmityCommentFlaggerController: AmityCommentFlaggerControllerProtocol
         flagger?.unflag(completion: completion)
     }
     
-    func getReportStatus(withCommentId commentId: String, completion: @escaping (Bool) -> Void) {
+    func getReportStatus(withCommentId commentId: String, completion: ((Bool) -> Void)?) {
         flagger = AmityCommentFlagger(client: AmityUIKitManagerInternal.shared.client, commentId: commentId)
-        flagger?.isFlaggedByMe(completion: completion)
+        flagger?.isFlaggedByMe { flag in
+            completion?(flag)
+        }
     }
 }

@@ -47,6 +47,14 @@ class AmityEmptyStateHeaderFooterView: UITableViewHeaderFooterView {
         fatalError("init(coder:) has not been implemented")
     }
     
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        
+        imageView.image = nil
+        titleLabel.text = ""
+        subtitleLabel.text = ""
+    }
+    
     private func setupView() {
         contentView.backgroundColor = AmityColorSet.backgroundColor
         setupImageView()
@@ -105,6 +113,7 @@ class AmityEmptyStateHeaderFooterView: UITableViewHeaderFooterView {
         case .custom(let view):
             titleLabel.isHidden = true
             subtitleLabel.isHidden = true
+            stackView.arrangedSubviews.forEach({ $0.removeFromSuperview() })
             stackView.addArrangedSubview(view)
         }
     }

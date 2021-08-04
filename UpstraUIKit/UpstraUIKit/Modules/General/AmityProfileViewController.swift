@@ -22,19 +22,7 @@ public class AmityProfileViewController: AmityViewController, AmityProfileDataSo
     }
     
     func headerViewController() -> UIViewController {
-        let header = AmityViewController()
-        let customView = UIView()
-        customView.translatesAutoresizingMaskIntoConstraints = false
-        customView.backgroundColor = .red
-        header.view.addSubview(customView)
-        NSLayoutConstraint.activate([
-            customView.topAnchor.constraint(equalTo: header.view.topAnchor),
-            customView.bottomAnchor.constraint(equalTo: header.view.bottomAnchor),
-            customView.leadingAnchor.constraint(equalTo: header.view.leadingAnchor),
-            customView.trailingAnchor.constraint(equalTo: header.view.trailingAnchor),
-            customView.heightAnchor.constraint(equalToConstant: 500)
-        ])
-        return header
+        return UIViewController()
     }
     
     func bottomViewController() -> UIViewController & AmityProfilePagerAwareProtocol {
@@ -66,7 +54,7 @@ public class AmityProfileViewController: AmityViewController, AmityProfileDataSo
     @objc func handleRefreshControl() {
         (headerViewController() as? AmityRefreshable)?.handleRefreshing()
         (bottomViewController() as? AmityRefreshable)?.handleRefreshing()
-        
+        (self as? AmityRefreshable)?.handleRefreshing()
         DispatchQueue.main.asyncAfter(deadline: .now() + 1) { [weak self] in
             self?.refreshControl.endRefreshing()
         }
@@ -75,28 +63,6 @@ public class AmityProfileViewController: AmityViewController, AmityProfileDataSo
 }
 
 public class AmityProfileBottomViewController: AmityButtonPagerTabSViewController, AmityProfilePagerAwareProtocol {
-    private class MenuViewController: UIViewController, IndicatorInfoProvider {
-        let tableView = UITableView()
-        var pageIndex: Int = 0
-        var pageTitle: String?
-        
-        override func viewDidLoad() {
-            super.viewDidLoad()
-            tableView.translatesAutoresizingMaskIntoConstraints = false
-            view.addSubview(tableView)
-            
-            NSLayoutConstraint.activate([
-                tableView.topAnchor.constraint(equalTo: view.topAnchor),
-                tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-                tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-                tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
-            ])
-        }
-        
-        func indicatorInfo(for pagerTabStripController: AmityPagerTabViewController) -> IndicatorInfo {
-            return IndicatorInfo.init(title: pageTitle ?? "Tab \(pageIndex)")
-        }
-    }
     
     // MARK: - Properties
     weak var pageDelegate: AmityProfileBottomPageDelegate?
@@ -139,15 +105,7 @@ public class AmityProfileBottomViewController: AmityButtonPagerTabSViewControlle
     }
 
     override func viewControllers(for pagerTabStripController: AmityPagerTabViewController) -> [UIViewController] {
-        var _viewControllers: [UIViewController] = []
-        for index in 1...5 {
-            let vc = MenuViewController()
-            vc.pageTitle = "Page \(index)"
-            vc.pageIndex = index
-            vc.view.backgroundColor = index % 2 == 0 ? .red:.green
-            _viewControllers.append(vc)
-        }
-        return _viewControllers
+        return []
     }
     
     override func reloadPagerTabStripView() {

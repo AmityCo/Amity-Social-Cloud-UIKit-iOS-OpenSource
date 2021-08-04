@@ -148,8 +148,8 @@ public final class AmityPostDetailViewController: AmityViewController {
             let deleteOption = TextItemOption(title: AmityLocalizedStringSet.PostDetail.deletePost.localizedString) { [weak self] in
                 // delete option
                 let alert = UIAlertController(title: AmityLocalizedStringSet.PostDetail.deletePostTitle.localizedString, message: AmityLocalizedStringSet.PostDetail.deletePostMessage.localizedString, preferredStyle: .alert)
-                alert.addAction(UIAlertAction(title: AmityLocalizedStringSet.cancel.localizedString, style: .cancel, handler: nil))
-                alert.addAction(UIAlertAction(title: AmityLocalizedStringSet.delete.localizedString, style: .destructive, handler: { [weak self] _ in
+                alert.addAction(UIAlertAction(title: AmityLocalizedStringSet.General.cancel.localizedString, style: .cancel, handler: nil))
+                alert.addAction(UIAlertAction(title: AmityLocalizedStringSet.General.delete.localizedString, style: .destructive, handler: { [weak self] _ in
                     self?.screenViewModel.deletePost()
                     self?.navigationController?.popViewController(animated: true)
                 }))
@@ -415,8 +415,8 @@ extension AmityPostDetailViewController: AmityPostDetailCompostViewDelegate {
             let alertTitle = (self?.parentComment == nil) ? AmityLocalizedStringSet.PostDetail.discardCommentTitle.localizedString : AmityLocalizedStringSet.PostDetail.discardReplyTitle.localizedString
             let alertMessage = (self?.parentComment == nil) ? AmityLocalizedStringSet.PostDetail.discardCommentMessage.localizedString : AmityLocalizedStringSet.PostDetail.discardReplyMessage.localizedString
             let alertController = UIAlertController(title: alertTitle, message: alertMessage, preferredStyle: .alert)
-            let cancelAction = UIAlertAction(title: AmityLocalizedStringSet.cancel.localizedString, style: .cancel, handler: nil)
-            let discardAction = UIAlertAction(title: AmityLocalizedStringSet.discard.localizedString, style: .destructive) { _ in
+            let cancelAction = UIAlertAction(title: AmityLocalizedStringSet.General.cancel.localizedString, style: .cancel, handler: nil)
+            let discardAction = UIAlertAction(title: AmityLocalizedStringSet.General.discard.localizedString, style: .destructive) { _ in
                 editTextViewController?.dismiss(animated: true, completion: nil)
             }
             alertController.addAction(cancelAction)
@@ -553,8 +553,8 @@ extension AmityPostDetailViewController: AmityCommentTableViewCellDelegate {
                     let alertTitle = comment.isParent ? AmityLocalizedStringSet.PostDetail.discardCommentTitle.localizedString : AmityLocalizedStringSet.PostDetail.discardReplyTitle.localizedString
                     let alertMessage = comment.isParent ? AmityLocalizedStringSet.PostDetail.discardEditedCommentMessage.localizedString : AmityLocalizedStringSet.PostDetail.discardEditedReplyMessage.localizedString
                     let alertController = UIAlertController(title: alertTitle, message: alertMessage, preferredStyle: .alert)
-                    let cancelAction = UIAlertAction(title: AmityLocalizedStringSet.cancel.localizedString, style: .cancel, handler: nil)
-                    let discardAction = UIAlertAction(title: AmityLocalizedStringSet.discard.localizedString, style: .destructive) { _ in
+                    let cancelAction = UIAlertAction(title: AmityLocalizedStringSet.General.cancel.localizedString, style: .cancel, handler: nil)
+                    let discardAction = UIAlertAction(title: AmityLocalizedStringSet.General.discard.localizedString, style: .destructive) { _ in
                         editTextViewController?.dismiss(animated: true, completion: nil)
                     }
                     alertController.addAction(cancelAction)
@@ -569,8 +569,8 @@ extension AmityPostDetailViewController: AmityCommentTableViewCellDelegate {
                 let alertTitle = comment.isParent ? AmityLocalizedStringSet.PostDetail.deleteCommentTitle.localizedString : AmityLocalizedStringSet.PostDetail.deleteReplyTitle.localizedString
                 let alertMessage = comment.isParent ? AmityLocalizedStringSet.PostDetail.deleteCommentMessage.localizedString : AmityLocalizedStringSet.PostDetail.deleteReplyMessage.localizedString
                 let alert = UIAlertController(title: alertTitle, message: alertMessage, preferredStyle: .alert)
-                alert.addAction(UIAlertAction(title: AmityLocalizedStringSet.cancel.localizedString, style: .cancel, handler: nil))
-                alert.addAction(UIAlertAction(title: AmityLocalizedStringSet.delete.localizedString, style: .destructive) { [weak self] _ in
+                alert.addAction(UIAlertAction(title: AmityLocalizedStringSet.General.cancel.localizedString, style: .cancel, handler: nil))
+                alert.addAction(UIAlertAction(title: AmityLocalizedStringSet.General.delete.localizedString, style: .destructive) { [weak self] _ in
                     self?.screenViewModel.action.deleteComment(with: comment)
                 })
                 self?.present(alert, animated: true, completion: nil)

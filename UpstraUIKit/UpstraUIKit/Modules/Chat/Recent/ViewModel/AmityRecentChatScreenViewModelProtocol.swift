@@ -9,22 +9,26 @@
 import UIKit
 import AmitySDK
 
-protocol AmityRecentChatScreenViewModelDelegate: class {
+protocol AmityRecentChatScreenViewModelDelegate: AnyObject {
     func screenViewModelDidGetChannel()
     func screenViewModelLoadingState(for state: AmityLoadingState)
     func screenViewModelRoute(for route: AmityRecentChatScreenViewModel.Route)
     func screenViewModelEmptyView(isEmpty: Bool)
+    func screenViewModelDidCreateCommunity(channelId: String)
+    func screenViewModelDidFailedCreateCommunity(error: String)
 }
 
 protocol AmityRecentChatScreenViewModelDataSource {
     
     func channel(at indexPath: IndexPath) -> AmityChannelModel
     func numberOfRow(in section: Int) -> Int
+    func isAddMemberBarButtonEnabled() -> Bool
 }
 
 protocol AmityRecentChatScreenViewModelAction {
     func viewDidLoad()
     func join(at indexPath: IndexPath)
+    func createChannel(users: [AmitySelectMemberModel])
     func loadMore()
 }
 

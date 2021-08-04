@@ -9,7 +9,7 @@
 import UIKit
 import AmitySDK
 
-protocol AmityPostControllerProtocol: AmityPostFetchFeedControllerProtocol,
+protocol AmityPostControllerProtocol: AmityFeedRepositoryManagerProtocol,
                                       AmityPostFetchPostControllerProtocol,
                                       AmityPostDeleteControllerProtocol,
                                       AmityPostFlaggerControllerProtocol,
@@ -17,7 +17,7 @@ protocol AmityPostControllerProtocol: AmityPostFetchFeedControllerProtocol,
 
 final class AmityPostController: AmityPostControllerProtocol {
 
-    private let fetchFeedController: AmityPostFetchFeedControllerProtocol = AmityPostFetchFeedDataController()
+    private let feedRepositoryManager: AmityFeedRepositoryManagerProtocol = AmityFeedRepositoryManager()
     private let fetchPostController: AmityPostFetchPostControllerProtocol = AmityPostFetchPostController()
     private let deleteController: AmityPostDeleteControllerProtocol = AmityPostDeleteController()
     private let flaggerController: AmityPostFlaggerControllerProtocol = AmityPostFlaggerController()
@@ -27,12 +27,12 @@ final class AmityPostController: AmityPostControllerProtocol {
 
 // MARK: - Fetch feed
 extension AmityPostController {
-    func fetch(withFeedType type: AmityPostFeedType, completion: ((Result<[AmityPostModel], AmityError>) -> Void)?) {
-        fetchFeedController.fetch(withFeedType: type, completion: completion)
+    func retrieveFeed(withFeedType type: AmityPostFeedType, completion: ((Result<[AmityPostModel], AmityError>) -> Void)?) {
+        feedRepositoryManager.retrieveFeed(withFeedType: type, completion: completion)
     }
     
     func loadMore() -> Bool {
-        return fetchFeedController.loadMore()
+        return feedRepositoryManager.loadMore()
     }
 }
 
@@ -60,14 +60,14 @@ extension AmityPostController {
         flaggerController.unreport(withPostId: postId, completion: completion)
     }
     
-    func getReportStatus(withPostId postId: String, completion: @escaping (Bool) -> Void) {
+    func getReportStatus(withPostId postId: String, completion: ((Bool) -> Void)?) {
         flaggerController.getReportStatus(withPostId: postId, completion: completion)
     }
 }
 
 // MARK: - Post update
 extension AmityPostController {
-    func update(withPostId postId: String, text: String, completion: AmityRequestCompletion?) {
+    func update(withPostId postId: String, text: String, completion: AmityPostRequestCompletion?) {
         updateController.update(withPostId: postId, text: text, completion: completion)
     }
 }

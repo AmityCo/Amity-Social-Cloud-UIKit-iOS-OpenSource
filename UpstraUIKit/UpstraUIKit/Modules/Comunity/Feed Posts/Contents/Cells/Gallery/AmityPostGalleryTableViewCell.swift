@@ -30,7 +30,7 @@ public final class AmityPostGalleryTableViewCell: UITableViewCell, Nibbable, Ami
     
     public override func prepareForReuse() {
         super.prepareForReuse()
-        galleryCollectionView.configure(images: [])
+        galleryCollectionView.configure(medias: [])
         contentLabel.isExpanded = false
         contentLabel.text = nil
     }
@@ -38,7 +38,7 @@ public final class AmityPostGalleryTableViewCell: UITableViewCell, Nibbable, Ami
     public func display(post: AmityPostModel, indexPath: IndexPath) {
         self.post = post
         self.indexPath = indexPath
-        galleryCollectionView.configure(images: post.images)
+        galleryCollectionView.configure(medias: post.medias)
         
         contentLabel.text = post.text
         contentLabel.isExpanded = post.appearance.shouldContentExpand
@@ -84,8 +84,10 @@ extension AmityPostGalleryTableViewCell: AmityGalleryCollectionViewDelegate {
         
     }
     
-    func galleryView(_ view: AmityGalleryCollectionView, didTapImage image: AmityImage, reference: UIImageView) {
-        delegate?.didPerformAction(self, action: .tapImage(image: image))
+    func galleryView(_ view: AmityGalleryCollectionView, didTapMedia media: AmityMedia, reference: UIImageView) {
+        
+        delegate?.didPerformAction(self, action: .tapMedia(media: media))
+        
     }
 
 }
@@ -99,7 +101,19 @@ extension AmityPostGalleryTableViewCell: AmityPhotoViewerControllerDelegate {
 
     public func photoViewerController(_ photoViewerController: AmityPhotoViewerController, didScrollToPhotoAt index: Int) {
         galleryCollectionView.selectedImageIndex = index
-        photoViewerController.titleLabel.text = "\(index + 1)/\(galleryCollectionView.images.count)"
+        photoViewerController.titleLabel.text = "\(index + 1)/\(galleryCollectionView.medias.count)"
+    }
+    
+    public func photoViewerControllerDidReceiveTapGesture(_ photoViewerController: AmityPhotoViewerController) {
+        
+        let currentIndex = photoViewerController.currentPhotoIndex
+        let media = galleryCollectionView.medias[currentIndex]
+        
+        delegate?.didPerformAction(
+            self,
+            action: .tapMediaInside(media: media, photoViewer: photoViewerController)
+        )
+        
     }
 
     func simplePhotoViewerController(_ viewController: AmityPhotoViewerController, savePhotoAt index: Int) {
@@ -110,8 +124,20 @@ extension AmityPostGalleryTableViewCell: AmityPhotoViewerControllerDelegate {
 
 // MARK: AmityPhotoViewerControllerDataSource
 extension AmityPostGalleryTableViewCell: AmityPhotoViewerControllerDataSource {
+    
     public func photoViewerController(_ photoViewerController: AmityPhotoViewerController, configureCell cell: AmityPhotoCollectionViewCell, forPhotoAt index: Int) {
-        //
+        
+        let media = galleryCollectionView.medias[index]
+        
+        switch media.type {
+        case .image:
+            cell.zoomEnabled = true
+            cell.playImageView.isHidden = true
+        case .video:
+            cell.zoomEnabled = false
+            cell.playImageView.isHidden = false
+        }
+        
     }
     
     public func photoViewerController(_ photoViewerController: AmityPhotoViewerController, referencedViewForPhotoAt index: Int) -> UIView? {
@@ -119,18 +145,39 @@ extension AmityPostGalleryTableViewCell: AmityPhotoViewerControllerDataSource {
     }
     
     public func numberOfItems(in photoViewerController: AmityPhotoViewerController) -> Int {
-        return galleryCollectionView.images.count
+        return galleryCollectionView.medias.count
     }
     
     public func photoViewerController(_ photoViewerController: AmityPhotoViewerController, configurePhotoAt index: Int, withImageView imageView: UIImageView) {
-        let image = galleryCollectionView.images[index]
         
-        if case .downloadable(let fileURL, _) = image.state {
-            imageView.loadImage(with: fileURL, size: .full, placeholder: nil, optimisticLoad: true)
-        } else {
-            image.loadImage(to: imageView)
+        let media = galleryCollectionView.medias[index]
+        
+        switch media.state {
+        case .downloadableImage(let fileURL, _):
+            imageView.loadImage(
+                with: fileURL,
+                size: .full,
+                placeholder: nil,
+                optimisticLoad: true
+            )
+        case .downloadableVideo(_, let thumbnailUrl):
+            if let thumbnailUrl = thumbnailUrl {
+                imageView.loadImage(
+                    with: thumbnailUrl,
+                    size: .full,
+                    placeholder: AmityIconSet.videoThumbnailPlaceholder,
+                    optimisticLoad: true
+                )
+            } else {
+                imageView.image = AmityIconSet.videoThumbnailPlaceholder
+            }
+            
+        default:
+            media.loadImage(to: imageView)
         }
+        
     }
+    
 }
 
 extension AmityPostGalleryTableViewCell: AmityExpandableLabelDelegate {

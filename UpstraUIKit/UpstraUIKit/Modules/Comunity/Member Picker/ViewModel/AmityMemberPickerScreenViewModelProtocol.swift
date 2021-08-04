@@ -9,7 +9,7 @@
 import UIKit
 import AmitySDK
 
-protocol AmityMemberPickerScreenViewModelDelegate: class {
+protocol AmityMemberPickerScreenViewModelDelegate: AnyObject {
     func screenViewModelDidFetchUser()
     func screenViewModelDidSearchUser()
     func screenViewModelDidSelectUser(title: String, isEmpty: Bool)

@@ -9,9 +9,12 @@
 import Foundation
 
 enum AmityError: Int, Error {
+    
     case unknown = 99999
     case noPermission = 40301
     case bannedWord = 400308
+    case noUserAccessPermission = 400301
+    case fileServiceIsNotReady = 38528523
     
     init?(error: Error?) {
         guard let errorCode = error?._code,
@@ -20,7 +23,4 @@ enum AmityError: Int, Error {
         }
         self = _error
     }
-    
 }
-
-

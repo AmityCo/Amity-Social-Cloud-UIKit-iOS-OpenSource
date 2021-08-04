@@ -63,13 +63,6 @@ extension AmityPhotoViewerController: UICollectionViewDelegateFlowLayout {
     }
     
     //MARK: Helpers
-    private func _updateZoomScaleForSize(_ size: CGSize) {
-        let widthScale = size.width / imageView.bounds.width
-        let heightScale = size.height / imageView.bounds.height
-        let zoomScale = min(widthScale, heightScale)
-        
-        scrollView.maximumZoomScale = zoomScale
-    }
     
     private func zoomRectForScrollView(_ scrollView: UIScrollView, withScale scale: CGFloat, withCenter center: CGPoint) -> CGRect {
         var zoomRect = CGRect.zero

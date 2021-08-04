@@ -9,15 +9,17 @@
 import UIKit
 import Photos
 import AmitySDK
+import AVKit
+import MobileCoreServices
 
 public class AmityPostEditorSettings {
     public init() { }
     public var shouldCameraButtonHide: Bool = false
-    public var shouldPhotoButtonHide: Bool = false
+    public var shouldAlbumButtonHide: Bool = false
     public var shouldFileButtonHide: Bool = false
 }
 
-protocol AmityPostViewControllerDelegate: class {
+protocol AmityPostViewControllerDelegate: AnyObject {
     func postViewController(_ viewController: UIViewController, didCreatePost post: AmityPostModel)
     func postViewController(_ viewController: UIViewController, didUpdatePost post: AmityPostModel)
 }
@@ -53,7 +55,7 @@ public class AmityPostTextEditorViewController: AmityViewController {
     private var filePicker: AmityFilePicker!
     
     private var isValueChanged: Bool {
-        return !textView.text.isEmpty || !galleryView.images.isEmpty || !fileView.files.isEmpty
+        return !textView.text.isEmpty || !galleryView.medias.isEmpty || !fileView.files.isEmpty
     }
     
     weak var delegate: AmityPostViewControllerDelegate?
@@ -77,7 +79,7 @@ public class AmityPostTextEditorViewController: AmityViewController {
         filePicker = AmityFilePicker(presentationController: self, delegate: self)
         
         let isCreateMode = (postMode == .create)
-        postButton = UIBarButtonItem(title: isCreateMode ? AmityLocalizedStringSet.post.localizedString : AmityLocalizedStringSet.save.localizedString, style: .plain, target: self, action: #selector(onPostButtonTap))
+        postButton = UIBarButtonItem(title: isCreateMode ? AmityLocalizedStringSet.General.post.localizedString : AmityLocalizedStringSet.General.save.localizedString, style: .plain, target: self, action: #selector(onPostButtonTap))
         postButton.tintColor = AmityColorSet.primary
         navigationItem.rightBarButtonItem = postButton
         navigationItem.rightBarButtonItem?.isEnabled = false
@@ -188,8 +190,8 @@ public class AmityPostTextEditorViewController: AmityViewController {
     public override func didTapLeftBarButton() {
         if isValueChanged {
             let alertController = UIAlertController(title: AmityLocalizedStringSet.postCreationDiscardPostTitle.localizedString, message: AmityLocalizedStringSet.postCreationDiscardPostMessage.localizedString, preferredStyle: .alert)
-            let cancelAction = UIAlertAction(title: AmityLocalizedStringSet.cancel.localizedString, style: .cancel, handler: nil)
-            let discardAction = UIAlertAction(title: AmityLocalizedStringSet.discard.localizedString, style: .destructive) { [weak self] _ in
+            let cancelAction = UIAlertAction(title: AmityLocalizedStringSet.General.cancel.localizedString, style: .cancel, handler: nil)
+            let discardAction = UIAlertAction(title: AmityLocalizedStringSet.General.discard.localizedString, style: .destructive) { [weak self] _ in
                 self?.generalDismiss()
             }
             alertController.addAction(cancelAction)
@@ -202,7 +204,24 @@ public class AmityPostTextEditorViewController: AmityViewController {
     
     private func updateConstraints() {
         fileViewHeightConstraint.constant = AmityFileTableView.height(for: fileView.files.count, isEdtingMode: true, isExpanded: false)
-        galleryViewHeightConstraint.constant = AmityGalleryCollectionView.height(for: galleryView.contentSize.width, numberOfItems: galleryView.images.count)
+        galleryViewHeightConstraint.constant = AmityGalleryCollectionView.height(for: galleryView.contentSize.width, numberOfItems: galleryView.medias.count)
+    }
+    
+    private func presentAskMediaTypeDialogue(completion: @escaping (AmityMediaType?) -> Void) {
+        let controller = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+        let photo = UIAlertAction(title: "Photo", style: .default) { _ in
+            completion(.image)
+        }
+        let video = UIAlertAction(title: "Video", style: .default) { _ in
+            completion(.video)
+        }
+        let cancel = UIAlertAction(title: "Cancel", style: .cancel) { _ in
+            completion(nil)
+        }
+        controller.addAction(photo)
+        controller.addAction(video)
+        controller.addAction(cancel)
+        present(controller, animated: true, completion: nil)
     }
     
     @objc func adjustForKeyboard(notification: Notification) {
@@ -225,7 +244,7 @@ public class AmityPostTextEditorViewController: AmityViewController {
     
     @objc private func onPostButtonTap() {
         guard let text = textView.text else { return }
-        let images = galleryView.images
+        let medias = galleryView.medias
         let files = fileView.files
         
         view.endEditing(true)
@@ -233,14 +252,14 @@ public class AmityPostTextEditorViewController: AmityViewController {
         
         if let post = currentPost {
             // update post
-            screenViewModel.updatePost(oldPost: post, text: text, images: images, files: files)
+            screenViewModel.updatePost(oldPost: post, text: text, medias: medias, files: files)
         } else {
             // create post
             var communityId: String?
             if case .community(let community) = postTarget {
                 communityId = community.communityId
             }
-            screenViewModel.createPost(text: text, images: images, files: files, communityId: communityId)
+            screenViewModel.createPost(text: text, medias: medias, files: files, communityId: communityId)
         }
         
     }
@@ -248,16 +267,16 @@ public class AmityPostTextEditorViewController: AmityViewController {
     private func updateViewState() {
         
         // Update separater state
-        separaterLine.isHidden = galleryView.images.isEmpty && fileView.files.isEmpty
+        separaterLine.isHidden = galleryView.medias.isEmpty && fileView.files.isEmpty
         
         var isPostValid = textView.isValid
         
         // Update post button state
         var isImageValid = true
-        if !galleryView.images.isEmpty {
-            isImageValid = galleryView.images.filter({
+        if !galleryView.medias.isEmpty {
+            isImageValid = galleryView.medias.filter({
                 switch $0.state {
-                case .uploaded, .downloadable:
+                case .uploadedImage, .uploadedVideo , .downloadableImage, .downloadableVideo:
                     return false
                 default:
                     return true
@@ -280,16 +299,19 @@ public class AmityPostTextEditorViewController: AmityViewController {
         
         if let post = currentPost {
             let isTextChanged = textView.text != post.text
-            let isImageChanged = galleryView.images != post.images
+            let isImageChanged = galleryView.medias != post.medias
             let isDocumentChanged = fileView.files.map({ $0.id }) != post.files.map({ $0.id })
             let isPostChanged = isTextChanged || isImageChanged || isDocumentChanged
             postButton.isEnabled = isPostChanged && isPostValid
         } else {
             postButton.isEnabled = isPostValid
         }
+        
         postMenuView.isCameraButtonEnabled = fileView.files.isEmpty
-        postMenuView.isPhotoButtonEnabled = fileView.files.isEmpty
-        postMenuView.isFileButtonEnabled = galleryView.images.isEmpty
+        postMenuView.isAlbumButtonEnabled = fileView.files.isEmpty
+        
+        postMenuView.isFileButtonEnabled = galleryView.medias.isEmpty
+        
     }
     
     // MARK: Helper functions
@@ -297,45 +319,47 @@ public class AmityPostTextEditorViewController: AmityViewController {
     private func uploadImages() {
         let fileUploadFailedDispatchGroup = DispatchGroup()
         var isUploadFailed = false
-        for index in 0..<galleryView.images.count {
-            let image = galleryView.images[index]
-            // if file is uploading, skip checking task
-            guard case .idle = galleryView.viewState(for: image.id) else { continue }
-            
-            switch galleryView.imageState(for: image.id) {
+        for index in 0..<galleryView.medias.count {
+            let media = galleryView.medias[index]
+            guard case .idle = galleryView.viewState(for: media.id) else {
+                // If file is uploading, skip checking task
+                continue
+            }
+            switch galleryView.mediaState(for: media.id) {
             case .localAsset, .image:
-                
                 fileUploadFailedDispatchGroup.enter()
-                
+                // Start with 0% immediately.
+                galleryView.updateViewState(for: media.id, state: .uploading(progress: 0))
                 // get local image for uploading
-                image.getImageForUploading { [weak self] result in
+                media.getImageForUploading { [weak self] result in
                     switch result {
                     case .success(let img):
-                        AmityFileService.shared.uploadImage(image: img, progressHandler: { progress in
-                            self?.galleryView.updateViewState(for: image.id, state: .uploading(progress: progress))
+                        AmityUIKitManagerInternal.shared.fileService.uploadImage(image: img, progressHandler: { progress in
+                            self?.galleryView.updateViewState(for: media.id, state: .uploading(progress: progress))
                             Log.add("[UIKit]: Upload Progress \(progress)")
                         }, completion:  { [weak self] result in
                             switch result {
                             case .success(let imageData):
                                 Log.add("[UIKit]: Uploaded image data \(imageData.fileId)")
-                                image.state = .uploaded(data: imageData)
-                                self?.galleryView.updateViewState(for: image.id, state: .uploaded)
+                                media.state = .uploadedImage(data: imageData)
+                                self?.galleryView.updateViewState(for: media.id, state: .uploaded)
                             case .failure:
                                 Log.add("[UIKit]: Image upload failed")
-                                image.state = .error
-                                self?.galleryView.updateViewState(for: image.id, state: .error)
+                                media.state = .error
+                                self?.galleryView.updateViewState(for: media.id, state: .error)
                                 isUploadFailed = true
                             }
                             fileUploadFailedDispatchGroup.leave()
                             self?.updateViewState()
                         })
                     case .failure:
-                        image.state = .error
-                        self?.galleryView.updateViewState(for: image.id, state: .error)
+                        media.state = .error
+                        self?.galleryView.updateViewState(for: media.id, state: .error)
                         isUploadFailed = true
                     }
                 }
-            case .uploading, .uploaded, .downloadable, .error, .none, .localURL:
+            default:
+                assertionFailure("Unsupported media state for uploading.")
                 break
             }
         }
@@ -345,6 +369,64 @@ public class AmityPostTextEditorViewController: AmityViewController {
                 self?.showUploadFailureAlert()
             }
         }
+        
+    }
+    
+    private func uploadVideos() {
+        let dispatchGroup = DispatchGroup()
+        var isUploadFailed = false
+        for index in 0..<galleryView.medias.count {
+            let media = galleryView.medias[index]
+            guard case .idle = galleryView.viewState(for: media.id) else {
+                // If file is uploading, skip checking task
+                continue
+            }
+            switch galleryView.mediaState(for: media.id) {
+            case .localAsset, .localURL:
+                // Note:
+                // - .localUrl via camera
+                // - .localAsset via photo album picker
+                dispatchGroup.enter()
+                // Start with 0% immediately.
+                galleryView.updateViewState(for: media.id, state: .uploading(progress: 0))
+                // get local video url for uploading
+                media.getLocalURLForUploading { [weak self] url in
+                    guard let url = url else {
+                        media.state = .error
+                        self?.galleryView.updateViewState(for: media.id, state: .error)
+                        isUploadFailed = true
+                        return
+                    }
+                    AmityUIKitManagerInternal.shared.fileService.uploadVideo(url: url, progressHandler: { progress in
+                        self?.galleryView.updateViewState(for: media.id, state: .uploading(progress: progress))
+                        Log.add("[UIKit]: Upload Progress \(progress)")
+                    }, completion: { result in
+                        switch result {
+                        case .success(let videoData):
+                            Log.add("[UIKit]: Uploaded video \(videoData.fileId)")
+                            media.state = .uploadedVideo(data: videoData)
+                            self?.galleryView.updateViewState(for: media.id, state: .uploaded)
+                        case .failure:
+                            Log.add("[UIKit]: Video upload failed")
+                            media.state = .error
+                            self?.galleryView.updateViewState(for: media.id, state: .error)
+                            isUploadFailed = true
+                        }
+                        dispatchGroup.leave()
+                        self?.updateViewState()
+                    })
+                }
+            default:
+                break
+            }
+        }
+        
+        dispatchGroup.notify(queue: .main) { [weak self] in
+            if isUploadFailed && self?.presentedViewController == nil {
+                self?.showUploadFailureAlert()
+            }
+        }
+        
     }
     
     private func uploadFiles() {
@@ -358,7 +440,9 @@ public class AmityPostTextEditorViewController: AmityViewController {
                 if case .local = fileView.fileState(for: file.id), let fileUrl = file.fileURL, let fileData = try? Data(contentsOf: fileUrl) {
                     let fileToUpload = AmityUploadableFile(fileData: fileData, fileName: file.fileName)
                     fileUploadFailedDispatchGroup.enter()
-                    AmityFileService.shared.uploadFile(file: fileToUpload, progressHandler: { [weak self] progress in
+                    // Start with 0% immediately.
+                    fileView.updateViewState(for: file.id, state: .uploading(progress: 0))
+                    AmityUIKitManagerInternal.shared.fileService.uploadFile(file: fileToUpload, progressHandler: { [weak self] progress in
                         self?.fileView.updateViewState(for: file.id, state: .uploading(progress: progress))
                         Log.add("[UIKit]: File upload progress: \(progress)")
                     }) { [weak self] result in
@@ -391,28 +475,138 @@ public class AmityPostTextEditorViewController: AmityViewController {
                 self?.showUploadFailureAlert()
             }
         }
+        
     }
 
     private func showUploadFailureAlert() {
         let alertController = UIAlertController(title: AmityLocalizedStringSet.postCreationUploadIncompletTitle.localizedString, message: AmityLocalizedStringSet.postCreationUploadIncompletDescription.localizedString, preferredStyle: .alert)
-        let cancelAction = UIAlertAction(title: AmityLocalizedStringSet.ok.localizedString, style: .cancel, handler: nil)
+        let cancelAction = UIAlertAction(title: AmityLocalizedStringSet.General.ok.localizedString, style: .cancel, handler: nil)
         alertController.addAction(cancelAction)
         present(alertController, animated: true, completion: nil)
     }
+    
+    private func playVideo(for asset: PHAsset) {
+        guard asset.mediaType == .video else {
+            assertionFailure("Not a valid video media type")
+            return
+        }
+        PHCachingImageManager().requestAVAsset(forVideo: asset, options: nil) { [weak self] asset, max, info in
+            guard let asset = asset as? AVURLAsset else {
+                assertionFailure("Unable to convert asset to AVURLAsset")
+                return
+            }
+            DispatchQueue.main.async {
+                self?.presentVideoPlayer(at: asset.url)
+            }
+        }
+    }
+    
+    private func presentMaxNumberReachDialogue() {
+        let alertController = UIAlertController(
+            title: "Maximum number of images exceeded",
+            message: "Maximum number of images that can be uploaded is \(Constant.maximumNumberOfImages). The rest images will be discarded.",
+            preferredStyle: .alert
+        )
+        let cancelAction = UIAlertAction(
+            title: AmityLocalizedStringSet.General.ok.localizedString,
+            style: .cancel,
+            handler: nil
+        )
+        alertController.addAction(cancelAction)
+        present(alertController, animated: true, completion: nil)
+    }
+    
+    private func presentMediaPickerCamera(type: AmityMediaType) {
+        let cameraPicker = UIImagePickerController()
+        cameraPicker.sourceType = .camera
+        switch type {
+        case .image:
+            cameraPicker.mediaTypes = [kUTTypeImage as String]
+        case .video:
+            cameraPicker.mediaTypes = [kUTTypeMovie as String]
+        }
+        cameraPicker.delegate = self
+        present(cameraPicker, animated: true, completion: nil)
+    }
+    
+    private func presentMediaPickerAlbum(type: AmityMediaType) {
+        
+        let supportedMediaTypes: Set<Settings.Fetch.Assets.MediaTypes>
+        
+        // The closue to execute when picker finish picking the media.
+        let finish: ([PHAsset]) -> Void
+        
+        switch type {
+        case .image:
+            supportedMediaTypes = [.image]
+            finish = { [weak self] assets in
+                guard let strongSelf = self else { return }
+                let medias: [AmityMedia] = assets.map { asset in
+                    AmityMedia(state: .localAsset(asset), type: .image)
+                }
+                strongSelf.addMedias(medias, type: .image)
+            }
+        case .video:
+            supportedMediaTypes = [.video]
+            finish = { [weak self] assets in
+                guard let strongSelf = self else { return }
+                let medias: [AmityMedia] = assets.map { asset in
+                    let media = AmityMedia(state: .localAsset(asset), type: .video)
+                    media.localAsset = asset
+                    return media
+                }
+                strongSelf.addMedias(medias, type: .video)
+            }
+        }
+        
+        let maxNumberOfSelection: Int
+        switch postMode {
+        case .create:
+            maxNumberOfSelection = Constant.maximumNumberOfImages
+        case .edit:
+            maxNumberOfSelection = Constant.maximumNumberOfImages - galleryView.medias.count
+        }
+        
+        let imagePicker = AmityImagePickerController(selectedAssets: [])
+        imagePicker.settings.theme.selectionStyle = .numbered
+        imagePicker.settings.fetch.assets.supportedMediaTypes = supportedMediaTypes
+        imagePicker.settings.selection.max = maxNumberOfSelection
+        imagePicker.settings.selection.unselectOnReachingMax = false
+        presentImagePicker(imagePicker, select: nil, deselect: nil, cancel: nil, finish: finish, completion: nil)
+        
+    }
+    
 }
 
 extension AmityPostTextEditorViewController: AmityGalleryCollectionViewDelegate {
     
     func galleryView(_ view: AmityGalleryCollectionView, didRemoveImageAt index: Int) {
-        var _images = galleryView.images
-        _images.remove(at: index)
-        galleryView.configure(images: _images)
+        var medias = galleryView.medias
+        medias.remove(at: index)
+        galleryView.configure(medias: medias)
         updateViewState()
     }
     
-    func galleryView(_ view: AmityGalleryCollectionView, didTapImage image: AmityImage, reference: UIImageView) {
-        //
+    func galleryView(_ view: AmityGalleryCollectionView, didTapMedia media: AmityMedia, reference: UIImageView) {
+        
+        switch media.type {
+        case .video:
+            if let asset = media.localAsset {
+                // The video is picked from album.
+                playVideo(for: asset)
+            } else if let videoUrl = media.localUrl {
+                // The video is taken from camera.
+                presentVideoPlayer(at: videoUrl)
+            } else {
+                assertionFailure("Unsupported media when tapping at the video.")
+            }
+        case .image:
+            // Do nothing when tap at the image.
+            break
+        }
+        
     }
+    
 }
 
 extension AmityPostTextEditorViewController: AmityTextViewDelegate {
@@ -429,11 +623,12 @@ extension AmityPostTextEditorViewController: AmityFilePickerDelegate {
         fileView.configure(files: files)
         
         // file and images are not supported posting together
-        galleryView.configure(images: [])
+        galleryView.configure(medias: [])
         updateViewState()
         uploadFiles()
         updateConstraints()
     }
+    
 }
 
 extension AmityPostTextEditorViewController: AmityFileTableViewDelegate {
@@ -443,9 +638,6 @@ extension AmityPostTextEditorViewController: AmityFileTableViewDelegate {
     }
     
     func fileTableViewDidDeleteData(_ view: AmityFileTableView, at index: Int) {
-        var _files = fileView.files
-        _files.remove(at: index)
-        fileView.configure(files: _files)
         updateViewState()
     }
     
@@ -456,6 +648,7 @@ extension AmityPostTextEditorViewController: AmityFileTableViewDelegate {
     func fileTableViewDidTapViewAll(_ view: AmityFileTableView) {
         //
     }
+    
 }
 
 extension AmityPostTextEditorViewController: AmityPostTextEditorScreenViewModelDelegate {
@@ -464,68 +657,98 @@ extension AmityPostTextEditorViewController: AmityPostTextEditorScreenViewModelD
         // This will get call once when open with edit mode
         currentPost = AmityPostModel(post: post)
         fileView.configure(files: currentPost!.files)
-        galleryView.configure(images: currentPost!.images)
+        galleryView.configure(medias: currentPost!.medias)
         textView.text = currentPost!.text
         updateConstraints()
     }
     
-    func screenViewModelDidCreatePost(_ viewModel: AmityPostTextEditorScreenViewModel, error: Error?) {
-        postButton.isEnabled = true
-        dismiss(animated: true, completion: nil)
+    func screenViewModelDidCreatePost(_ viewModel: AmityPostTextEditorScreenViewModel, post: AmityPost?, error: Error?) {
+        if let post = post {
+            switch post.getFeedType() {
+            case .reviewing:
+                AmityAlertController.present(title: AmityLocalizedStringSet.postCreationSubmitTitle.localizedString,
+                                             message: AmityLocalizedStringSet.postCreationSubmitDesc.localizedString, actions: [.ok(style: .default, handler: { [weak self] in
+                                                self?.postButton.isEnabled = true
+                                                self?.dismiss(animated: true, completion: nil)
+                                             })], from: self)
+            case .published, .declined:
+                postButton.isEnabled = true
+                dismiss(animated: true, completion: nil)
+            @unknown default:
+                break
+            }
+        } else {
+            postButton.isEnabled = true
+            dismiss(animated: true, completion: nil)
+        }
     }
     
     func screenViewModelDidUpdatePost(_ viewModel: AmityPostTextEditorScreenViewModel, error: Error?) {
         postButton.isEnabled = true
         dismiss(animated: true, completion: nil)
     }
+    
 }
 
 extension AmityPostTextEditorViewController: AmityPostTextEditorMenuViewDelegate {
     
     func postMenuView(_ view: AmityPostTextEditorMenuView, didTap action: AmityPostMenuActionType) {
+        
         switch action {
         case .camera:
-            #warning("Redundancy: camera picker should be replaced with a singleton class")
-            let cameraPicker = UIImagePickerController()
-            cameraPicker.sourceType = .camera
-            cameraPicker.delegate = self
-            present(cameraPicker, animated: true, completion: nil)
-        case .photo:
-            let imagePicker = AmityImagePickerController(selectedAssets: [])
-            imagePicker.settings.theme.selectionStyle = .numbered
-            imagePicker.settings.fetch.assets.supportedMediaTypes = [.image]
-            imagePicker.settings.selection.max = (postMode == .create) ? Constant.maximumNumberOfImages : Constant.maximumNumberOfImages - galleryView.images.count
-            imagePicker.settings.selection.unselectOnReachingMax = false
-            presentImagePicker(imagePicker, select: nil, deselect: nil, cancel: nil, finish: { [weak self] assets in
-                guard let strongSelf = self else { return }
-                
-                let images: [AmityImage] = assets.map { AmityImage(state: .localAsset($0)) }
-                strongSelf.addImages(images)
-                }, completion: nil)
-            break
+            // Currently users can only select one media type when create a post.
+            // After users choose the media, we will not `presentAskMediaTypeDialogue` after that.
+            // We automatically choose media type based on last media pick.
+            let hasImage = galleryView.medias.contains { $0.type == .image }
+            let hasVideo = galleryView.medias.contains { $0.type == .video }
+            if hasImage {
+                presentMediaPickerCamera(type: .image)
+            } else if hasVideo {
+                presentMediaPickerCamera(type: .video)
+            } else {
+                presentAskMediaTypeDialogue { [weak self] type in
+                    guard let type = type else { return }
+                    self?.presentMediaPickerCamera(type: type)
+                }
+            }
+        case .album:
+            // Currently users can only select one media type when create a post.
+            // After users choose the media, we will not `presentAskMediaTypeDialogue` after that.
+            // We automatically choose media type based on last media pick.
+            let hasImage = galleryView.medias.contains { $0.type == .image }
+            let hasVideo = galleryView.medias.contains { $0.type == .video }
+            if hasImage {
+                presentMediaPickerAlbum(type: .image)
+            } else if hasVideo {
+                presentMediaPickerAlbum(type: .video)
+            } else {
+                presentAskMediaTypeDialogue { [weak self] type in
+                    guard let type = type else { return }
+                    self?.presentMediaPickerAlbum(type: type)
+                }
+            }
         case .file:
             filePicker.present(from: view, files: fileView.files)
-            break
         }
+        
     }
     
-    private func addImages(_ images: [AmityImage]) {
-        let sumNumberOfImages = galleryView.images.count + images.count
-        guard sumNumberOfImages <= Constant.maximumNumberOfImages else {
-            #warning("Localized")
-            let alertController = UIAlertController(title: "Maximum number of images exceeded", message: "Maximum number of images that can be uploaded is \(Constant.maximumNumberOfImages). The rest images will be discarded.", preferredStyle: .alert)
-            let cancelAction = UIAlertAction(title: AmityLocalizedStringSet.ok.localizedString, style: .cancel, handler: nil)
-            alertController.addAction(cancelAction)
-            present(alertController, animated: true, completion: nil)
+    private func addMedias(_ medias: [AmityMedia], type: AmityMediaType) {
+        let totalNumberOfMedias = galleryView.medias.count + medias.count
+        guard totalNumberOfMedias <= Constant.maximumNumberOfImages else {
+            presentMaxNumberReachDialogue()
             return
         }
-        
-        galleryView.addImage(images)
+        galleryView.addMedias(medias)
         fileView.configure(files: [])
-        
         // start uploading
         updateViewState()
-        uploadImages()
+        switch type {
+        case .image:
+            uploadImages()
+        case .video:
+            uploadVideos()
+        }
         updateConstraints()
     }
     
@@ -538,10 +761,72 @@ extension AmityPostTextEditorViewController: UIImagePickerControllerDelegate, UI
     }
 
     public func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
-        if let image = info[.originalImage] as? UIImage {
-            let _image = AmityImage(state: .image(image))
-            addImages([_image])
-            picker.dismiss(animated: true, completion: nil)
+        
+        guard let mediaType = info[.mediaType] as? String else {
+            return
         }
+        
+        switch mediaType {
+        case String(kUTTypeImage):
+            if let image = info[.originalImage] as? UIImage {
+                let media = AmityMedia(state: .image(image), type: .image)
+                addMedias([media], type: .image)
+            }
+        case String(kUTTypeMovie):
+            if let fileUrl = info[.mediaURL] as? URL {
+                let media = AmityMedia(state: .localURL(url: fileUrl), type: .video)
+                media.localUrl = fileUrl
+                // Generate thumbnail
+                let asset = AVAsset(url: fileUrl)
+                let assetImageGenerator = AVAssetImageGenerator(asset: asset)
+                assetImageGenerator.appliesPreferredTrackTransform = true
+                let time = CMTime(seconds: 1.0, preferredTimescale: 1)
+                var actualTime: CMTime = CMTime.zero
+                do {
+                    let imageRef = try assetImageGenerator.copyCGImage(at: time, actualTime: &actualTime)
+                    media.generatedThumbnailImage = UIImage(cgImage: imageRef)
+                } catch {
+                    print("Unable to generate thumbnail image for kUTTypeMovie.")
+                }
+                addMedias([media], type: .video)
+            }
+        default:
+            assertionFailure("Unsupported media type")
+            break
+        }
+        
+        picker.dismiss(animated: true, completion: nil)
+        
     }
+    
 }
+
+// MARK: - UIGestureRecognizerDelegate
+extension AmityPostTextEditorViewController {
+    
+    public override func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
+            guard isValueChanged else {
+                return super.gestureRecognizerShouldBegin(gestureRecognizer)
+            }
+            
+            if let view = gestureRecognizer.view,
+               let directions = (gestureRecognizer as? UIPanGestureRecognizer)?.direction(in: view),
+               directions.contains(.right) {
+                let alertController = UIAlertController(title: AmityLocalizedStringSet.postCreationDiscardPostTitle.localizedString, message: AmityLocalizedStringSet.postCreationDiscardPostMessage.localizedString, preferredStyle: .alert)
+                let cancelAction = UIAlertAction(title: AmityLocalizedStringSet.General.cancel.localizedString, style: .cancel, handler: nil)
+                let discardAction = UIAlertAction(title: AmityLocalizedStringSet.General.discard.localizedString, style: .destructive) { [weak self] _ in
+                    self?.generalDismiss()
+                }
+                alertController.addAction(cancelAction)
+                alertController.addAction(discardAction)
+                present(alertController, animated: true, completion: nil)
+
+                // prevents swiping back and present confirmation message
+                return false
+            }
+            
+            // falls back to normal behaviour, swipe back to previous page
+            return super.gestureRecognizerShouldBegin(gestureRecognizer)
+        }
+        
+    }

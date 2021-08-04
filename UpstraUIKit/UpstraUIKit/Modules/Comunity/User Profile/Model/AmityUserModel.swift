@@ -17,7 +17,7 @@ struct AmityUserModel {
     
     init(user: AmityUser) {
         userId = user.userId
-        displayName = user.displayName ?? AmityLocalizedStringSet.anonymous.localizedString
+        displayName = user.displayName ?? AmityLocalizedStringSet.General.anonymous.localizedString
         avatarURL = user.getAvatarInfo()?.fileURL ?? ""
         about = user.userDescription
     }

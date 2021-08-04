@@ -9,7 +9,7 @@
 import UIKit
 import AVFoundation
 
-protocol AmityAudioPlayerDelegate: class {
+protocol AmityAudioPlayerDelegate: AnyObject {
     func playing()
     func stopPlaying()
     func finishPlaying()

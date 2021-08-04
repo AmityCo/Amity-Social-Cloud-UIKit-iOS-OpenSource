@@ -20,26 +20,24 @@ final class AmityMessageListComposeBarViewController: UIViewController {
     @IBOutlet private var trailingStackView: UIStackView!
     
     // MARK: - Properties
-    private let screenViewModel: AmityMessageListScreenViewModelType
+    private var screenViewModel: AmityMessageListScreenViewModelType!
     let composeBarView = AmityKeyboardComposeBarViewController.make()
     
-    // MARK: - View lifecycle
-    private init(viewModel: AmityMessageListScreenViewModelType) {
-        screenViewModel = viewModel
-        super.init(nibName: AmityMessageListComposeBarViewController.identifier, bundle: AmityUIKitManager.bundle)
-    }
-    
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
+    // MARK: - Settings
+    private var setting = AmityMessageListViewController.Settings()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         setupView()
     }
     
-    static func make(viewModel: AmityMessageListScreenViewModelType) -> AmityMessageListComposeBarViewController {
-        return AmityMessageListComposeBarViewController(viewModel: viewModel)
+    static func make(viewModel: AmityMessageListScreenViewModelType, setting: AmityMessageListViewController.Settings) -> AmityMessageListComposeBarViewController {
+        let vc = AmityMessageListComposeBarViewController(
+            nibName: AmityMessageListComposeBarViewController.identifier,
+            bundle: AmityUIKitManager.bundle)
+        vc.screenViewModel = viewModel
+        vc.setting = setting
+        return vc
     }
     
 }
@@ -105,7 +103,7 @@ private extension AmityMessageListComposeBarViewController {
     }
     
     func setupLeftItems() {
-        showAudioButton.isHidden = false
+        showAudioButton.isHidden = setting.shouldHideAudioButton
         showAudioButton.setImage(AmityIconSet.Chat.iconVoiceMessageGrey, for: .normal)
         showAudioButton.tag = 0
         
@@ -155,13 +153,13 @@ extension AmityMessageListComposeBarViewController: AmityComposeBar {
             trailingStackView.isHidden = true
             textComposeBarView.isHidden = true
             recordButton.isHidden = false
-            showAudioButton.isHidden = true
+            showAudioButton.isHidden = setting.shouldHideAudioButton
             showDefaultKeyboardButton.isHidden = false
         } else {
             trailingStackView.isHidden = false
             textComposeBarView.isHidden = false
             recordButton.isHidden = true
-            showAudioButton.isHidden = false
+            showAudioButton.isHidden = setting.shouldHideAudioButton
             showDefaultKeyboardButton.isHidden = true
             if textComposeBarView.text != "" {
                 sendMessageButton.isHidden = false
@@ -216,7 +214,7 @@ extension AmityMessageListComposeBarViewController: AmityComposeBar {
             // for show keyboard default
             animationForRotation(with: 0, animation: { [weak self] in
                 guard let strongSelf = self else { return }
-                if strongSelf.screenViewModel.dataSource.getKeyboardVisible() {
+                if strongSelf.screenViewModel.dataSource.isKeyboardVisible() {
                     if strongSelf.textComposeBarView.inputView != nil {
                         strongSelf.textComposeBarView.inputView = nil
                         strongSelf.textComposeBarView.resignFirstResponder()

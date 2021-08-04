@@ -34,7 +34,7 @@ class AmityMessageImageTableViewCell: AmityMessageTableViewCell {
     override func display(message: AmityMessageModel) {
         if !message.isDeleted {
             let indexPath = self.indexPath
-            AmityMessageMediaService.shared.downloadImageForMessage(message: message.object, size: .medium) { [weak self] in
+            AmityUIKitManagerInternal.shared.messageMediaService.downloadImageForMessage(message: message.object, size: .medium) { [weak self] in
                 self?.messageImageView.image = AmityIconSet.defaultMessageImage
             } completion: { [weak self] result in
                 switch result {

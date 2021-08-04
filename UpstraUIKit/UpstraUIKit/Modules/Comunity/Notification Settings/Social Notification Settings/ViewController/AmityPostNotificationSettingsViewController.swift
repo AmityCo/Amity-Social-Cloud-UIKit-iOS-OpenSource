@@ -36,7 +36,7 @@ class AmityPostNotificationSettingsViewController: AmityViewController {
     
     private func setupView() {
         title = screenViewModel.type == .post ? AmityLocalizedStringSet.CommunityNotificationSettings.post.localizedString : AmityLocalizedStringSet.CommunityNotificationSettings.comment.localizedString
-        saveButton = UIBarButtonItem(title: AmityLocalizedStringSet.save.localizedString, style: .done, target: self, action: #selector(saveButtonDidTap))
+        saveButton = UIBarButtonItem(title: AmityLocalizedStringSet.General.save.localizedString, style: .done, target: self, action: #selector(saveButtonDidTap))
 
         saveButton.isEnabled = false
         
@@ -97,7 +97,7 @@ extension AmityPostNotificationSettingsViewController: AmitySocialNotificationSe
     }
 
     func screenViewModelDidUpdateSettingSuccess(_ viewModel: AmitySocialNotificationSettingsScreenViewModel) {
-        AmityHUD.show(.success(message: AmityLocalizedStringSet.saved.localizedString))
+        AmityHUD.show(.success(message: AmityLocalizedStringSet.General.saved.localizedString))
     }
     
     func screenViewModel(_ viewModel: AmitySocialNotificationSettingsScreenViewModel, didUpdateSettingFailWithError error: AmityError) {
@@ -108,7 +108,7 @@ extension AmityPostNotificationSettingsViewController: AmitySocialNotificationSe
                 AmityAlertController.present(
                     title: AmityLocalizedStringSet.Community.alertUnableToPerformActionTitle.localizedString,
                     message: AmityLocalizedStringSet.Community.alertUnableToPerformActionDesc.localizedString,
-                    actions: [.custom(title: AmityLocalizedStringSet.ok.localizedString, style: .default, handler: {
+                    actions: [.custom(title: AmityLocalizedStringSet.General.ok.localizedString, style: .default, handler: {
                         self.navigationController?.popToRootViewController(animated: true)
                     })],
                     from: self)

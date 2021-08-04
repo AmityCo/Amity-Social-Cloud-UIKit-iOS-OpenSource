@@ -177,6 +177,10 @@ extension AmityCreateCommunityScreenViewModel {
         if imageAvatar != nil {
             uploadAvatar { [weak self] (image) in
                 guard let strongSelf = self else { return }
+                guard let image = image else {
+                    strongSelf.delegate?.screenViewModel(strongSelf, failure: .unknown)
+                    return
+                }
                 builder.setAvatar(image)
                 strongSelf.repository.createCommunity(with: builder, completion: {(community, error) in
                     guard let strongSelf = self else { return }
@@ -263,6 +267,10 @@ extension AmityCreateCommunityScreenViewModel {
         if imageAvatar != nil {
             uploadAvatar { [weak self] (image) in
                 guard let strongSelf = self else { return }
+                guard let image = image else {
+                    strongSelf.delegate?.screenViewModel(strongSelf, failure: .unknown)
+                    return
+                }
                 builder.setAvatar(image)
                 strongSelf.repository.updateCommunity(withId: strongSelf.communityId, builder: builder) { (community, error) in
                     if let error = AmityError(error: error) {
@@ -291,16 +299,16 @@ extension AmityCreateCommunityScreenViewModel {
         imageAvatar = image
     }
     
-    private func uploadAvatar(completion: @escaping (AmityImageData) -> Void) {
+    private func uploadAvatar(completion: @escaping (AmityImageData?) -> Void) {
         guard let image = imageAvatar else { return }
-        AmityFileService.shared.uploadImage(image: image, progressHandler: { _ in
+        AmityUIKitManagerInternal.shared.fileService.uploadImage(image: image, progressHandler: { _ in
             
         }) { (result) in
             switch result {
             case .success(let _imageData):
                 completion(_imageData)
             case .failure:
-                break
+                completion(nil)
             }
         }
     }

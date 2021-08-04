@@ -15,7 +15,7 @@ protocol AmityPostTargetPickerScreenViewModelDataSource {
     func loadNext()
 }
 
-protocol AmityPostTargetPickerScreenViewModelDelegate: class {
+protocol AmityPostTargetPickerScreenViewModelDelegate: AnyObject {
     func screenViewModelDidUpdateItems(_ viewModel: AmityPostTargetPickerScreenViewModel)
 }
 

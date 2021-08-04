@@ -40,7 +40,8 @@ extension PHAsset {
     }
     
     func getURL(completion: @escaping (_ responseURL : URL?) -> Void) {
-        if self.mediaType == .image {
+        switch mediaType {
+        case .image:
             let options: PHContentEditingInputRequestOptions = PHContentEditingInputRequestOptions()
             options.isNetworkAccessAllowed = true
             options.canHandleAdjustmentData = {(adjustmeta: PHAdjustmentData) -> Bool in
@@ -49,7 +50,15 @@ extension PHAsset {
             self.requestContentEditingInput(with: options, completionHandler: {(contentEditingInput: PHContentEditingInput?, info: [AnyHashable : Any]) -> Void in
                 completion(contentEditingInput?.fullSizeImageURL as URL?)
             })
-        } else {
+        case .video:
+            PHCachingImageManager().requestAVAsset(forVideo: self, options: nil) { asset, audioMix, info in
+                if let asset = asset as? AVURLAsset {
+                    completion(asset.url)
+                } else {
+                    completion(nil)
+                }
+            }
+        default:
             completion(nil)
         }
     }

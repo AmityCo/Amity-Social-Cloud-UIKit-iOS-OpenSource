@@ -9,7 +9,7 @@
 import UIKit
 import AmitySDK
 
-protocol AmityFeedScreenViewModelDelegate: class {
+protocol AmityFeedScreenViewModelDelegate: AnyObject {
     func screenViewModelDidUpdateDataSuccess(_ viewModel: AmityFeedScreenViewModelType)
     func screenViewModelLoadingState(_ viewModel: AmityFeedScreenViewModelType, for loadingState: AmityLoadingState)
     func screenViewModelScrollToTop(_ viewModel: AmityFeedScreenViewModelType)
@@ -21,15 +21,19 @@ protocol AmityFeedScreenViewModelDelegate: class {
     func screenViewModelDidUnLikePostSuccess(_ viewModel: AmityFeedScreenViewModelType)
     func screenViewModelDidGetReportStatusPost(isReported: Bool)
     
-    // MARK: Commend
+    // MARK: Comment
     func screenViewModelDidLikeCommentSuccess(_ viewModel: AmityFeedScreenViewModelType)
     func screenViewModelDidUnLikeCommentSuccess(_ viewModel: AmityFeedScreenViewModelType)
     func screenViewModelDidDeleteCommentSuccess(_ viewModel: AmityFeedScreenViewModelType)
     func screenViewModelDidEditCommentSuccess(_ viewModel: AmityFeedScreenViewModelType)
+    
+    // MARK: User
+    func screenViewModelDidGetUserSettings(_ viewModel: AmityFeedScreenViewModelType)
 }
 
 protocol AmityFeedScreenViewModelDataSource {
     // MARK: PostComponents
+    var isPrivate: Bool { get }
     func postComponents(in section: Int) -> AmityPostComponent
     func numberOfPostComponents() -> Int
     func getFeedType() -> AmityPostFeedType
@@ -40,7 +44,6 @@ protocol AmityFeedScreenViewModelAction {
     // MARK: Fetch data
     func fetchPosts()
     func loadMore()
-    func reload()
     
     // MARK: PostId / CommentId
     func like(id: String, referenceType: AmityReactionReferenceType)
@@ -57,11 +60,14 @@ protocol AmityFeedScreenViewModelAction {
     func edit(withComment comment: AmityCommentModel, text: String)
     func report(withCommentId commentId: String)
     func unreport(withCommentId commentId: String)
-    func getReportStatus(withCommendId commendId: String, completion: @escaping (Bool) -> Void)
+    func getReportStatus(withCommendId commendId: String, completion: ((Bool) -> Void)?)
     
     // MARK: Observer
     func startObserveFeedUpdate()
     func stopObserveFeedUpdate()
+    
+    // MARK: User Settings
+    func fetchUserSettings()
 }
 
 protocol AmityFeedScreenViewModelType: AmityFeedScreenViewModelAction, AmityFeedScreenViewModelDataSource {

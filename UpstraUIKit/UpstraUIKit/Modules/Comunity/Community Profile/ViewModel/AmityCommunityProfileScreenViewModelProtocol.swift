@@ -2,48 +2,42 @@
 //  AmityCommunityProfileScreenViewModelProtocol.swift
 //  AmityUIKit
 //
-//  Created by sarawoot khunsri on 1/8/21.
-//  Copyright © 2021 Amity. All rights reserved.
+//  Created by Sarawoot Khunsri on 20/4/2564 BE.
+//  Copyright © 2564 BE Amity. All rights reserved.
 //
 
 import UIKit
-import AmitySDK
 
 enum AmityCommunityProfileRoute {
     case post
     case member
     case settings
     case editProfile
+    case pendingPosts
 }
 
-protocol AmityCommunityProfileScreenViewModelDelegate: class {
+protocol AmityCommunityProfileScreenViewModelDelegate: AnyObject {
     func screenViewModelDidGetCommunity(with community: AmityCommunityModel)
-    func screenViewModelDidJoinCommunitySuccess()
-    func screenViewModelDidJoinCommunity(_ status: AmityCommunityProfileScreenViewModel.CommunityJoinStatus)
     func screenViewModelFailure()
     func screenViewModelRoute(_ viewModel: AmityCommunityProfileScreenViewModel, route: AmityCommunityProfileRoute)
-    func screenViewModelShowCommunitySettingsModal(_ viewModel: AmityCommunityProfileScreenViewModel, withModel model: AmityDefaultModalModel)
-}
-
-protocol AmityCommunityProfileHeaderScreenViewModelDelegate: class {
-    
 }
 
 protocol AmityCommunityProfileScreenViewModelDataSource {
-    var getCommunityJoinStatus: AmityCommunityProfileScreenViewModel.CommunityJoinStatus { get }
-    var community: AmityCommunityModel? { get }
     var communityId: String { get }
-    var isModerator: Bool { get }
+    var community: AmityCommunityModel? { get }
+    var memberStatusCommunity: AmityMemberStatusCommunity { get }
+    var pendingPostCountForAdmin: Int { get }
+    var postCount: Int { get }
+    
+    func shouldShowPendingPostBannerForMember(_ completion: ((Bool) -> Void)?)
 }
 
 protocol AmityCommunityProfileScreenViewModelAction {
+    func retriveCommunity()
     
-    func getCommunity()
-    func getUserRole()
     func joinCommunity()
-    func route(_ route: AmityCommunityProfileRoute)
     
-    func showCommunitySettingsModal()
+    func route(_ route: AmityCommunityProfileRoute)
 }
 
 protocol AmityCommunityProfileScreenViewModelType: AmityCommunityProfileScreenViewModelAction, AmityCommunityProfileScreenViewModelDataSource {
@@ -56,5 +50,3 @@ extension AmityCommunityProfileScreenViewModelType {
     var action: AmityCommunityProfileScreenViewModelAction { return self }
     var dataSource: AmityCommunityProfileScreenViewModelDataSource { return self }
 }
-
-

@@ -25,10 +25,9 @@ final class AmitySearchEmptyView: AmityView {
     }
     
     private func setupView() {
-        titleLabel.text = AmityLocalizedStringSet.searchCommunityNotFound.localizedString
+        titleLabel.text = AmityLocalizedStringSet.searchResultNotFound.localizedString
         titleLabel.textColor = AmityColorSet.base.blend(.shade3)
         titleLabel.font = AmityFontSet.title
         titleLabel.textAlignment = .center
     }
-
 }

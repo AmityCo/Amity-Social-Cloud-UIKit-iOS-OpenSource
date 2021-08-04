@@ -24,7 +24,6 @@ final class AmityMyCommunityCollectionViewCell: UICollectionViewCell, Nibbable {
     override func prepareForReuse() {
         super.prepareForReuse()
         displayNameLabel.text = ""
-        avatarView.placeholder = AmityIconSet.defaultCommunity
         avatarView.image = nil
         privateBadgeImageView.isHidden = true
         badgeImageView.isHidden = true

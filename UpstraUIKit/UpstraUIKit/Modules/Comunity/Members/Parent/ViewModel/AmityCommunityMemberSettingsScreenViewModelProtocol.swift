@@ -8,7 +8,7 @@
 
 import UIKit
 
-protocol AmityCommunityMemberSettingsScreenViewModelDelegate: class {
+protocol AmityCommunityMemberSettingsScreenViewModelDelegate: AnyObject {
     func screenViewModelShouldShowAddButtonBarItem(status: Bool)
 }
 

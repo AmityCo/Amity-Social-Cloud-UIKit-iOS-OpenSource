@@ -12,12 +12,11 @@ import AmityUIKit
 class ChatFeatureViewController: UIViewController {
     
     enum FeatureList: CaseIterable {
-        
         case chatHome
         case chatList
         case chatListCustomize
         case messageListWithTextOnlyKeyboard
-        
+
         var text: String {
             switch self {
             case .chatHome:
@@ -82,7 +81,7 @@ extension ChatFeatureViewController: UITableViewDelegate {
             let vc = AmityChatHomePageViewController.make()
             navigationController?.pushViewController(vc, animated: true)
         case .chatList:
-            let vc = AmityRecentChatViewController.make()
+            let vc = AmityRecentChatViewController.make(channelType: .community)
             navigationController?.pushViewController(vc, animated: true)
         case .chatListCustomize:
             let vc = AmityChatHomePageViewController.make()
@@ -107,11 +106,9 @@ extension ChatFeatureViewController: UITableViewDataSource {
 }
 
 extension ChatFeatureViewController: AmityMessageListDataSource {
-    
     func cellForMessageTypes() -> [AmityMessageTypes : AmityMessageCellProtocol.Type] {
         return [
             .textIncoming: CustomMessageTextIncomingTableViewCell.self
         ]
     }
-    
 }

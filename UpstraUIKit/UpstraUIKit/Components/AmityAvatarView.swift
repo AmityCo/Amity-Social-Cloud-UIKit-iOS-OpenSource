@@ -35,9 +35,7 @@ public final class AmityAvatarView: AmityView {
     @IBOutlet private weak var overlayView: UIView!
     @IBOutlet private weak var activityIndicator: UIActivityIndicatorView!
     
-    // To prevent calling setup image multiple times.
-    // We can use `DispatchWorkItem` for make request cancellable.
-    private var pendingRequestWorkItem: DispatchWorkItem?
+    private var session = UUID().uuidString
     
     public var actionHandler: (() -> Void)?
     public var state: AmityAvatarState = .idle {
@@ -158,26 +156,29 @@ public final class AmityAvatarView: AmityView {
                          size: AmityMediaSize = .small,
                          placeholder: UIImage? = AmityIconSet.defaultAvatar,
                          completion: (() -> Void)? = nil) {
+        imageView.image = nil
         placeHolderImageView.image = placeholder
-        pendingRequestWorkItem?.cancel()
-        guard let imageURL = imageURL else { return }
+        session = UUID().uuidString
+        
+        guard let imageURL = imageURL, !imageURL.isEmpty else { return }
+        let _session = session
         
         // Wrap our request in a work item
-        let requestWorkItem = DispatchWorkItem {
-            AmityFileService.shared.loadImage(imageURL: imageURL, size: size) { [weak self] result in
-                switch result {
-                case .success(let image):
-                    self?.imageView.image = image
-                    completion?()
-                case .failure:
-                    self?.imageView.image = nil
-                    break
+        AmityUIKitManagerInternal.shared.fileService.loadImage(imageURL: imageURL, size: size) { [weak self] result in
+            switch result {
+            case .success(let image):
+                // To prevent diplaying the wrong image after cell is dequeued.
+                guard self?.session == _session else {
+                    // Cell has already dequeue.
+                    return
                 }
+                self?.imageView.image = image
+                completion?()
+            case .failure:
+                self?.imageView.image = nil
+                break
             }
         }
-        
-        pendingRequestWorkItem = requestWorkItem
-        DispatchQueue.main.async(execute: requestWorkItem)
     }
     
 }

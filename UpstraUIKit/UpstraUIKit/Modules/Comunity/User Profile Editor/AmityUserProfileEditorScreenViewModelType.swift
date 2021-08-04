@@ -17,7 +17,7 @@ protocol AmityUserProfileScreenEditorViewModelDataSource {
     var user: AmityUserModel? { get }
 }
 
-protocol AmityUserProfileEditorScreenViewModelDelegate: class {
+protocol AmityUserProfileEditorScreenViewModelDelegate: AnyObject {
     func screenViewModelDidUpdate(_ viewModel: AmityUserProfileEditorScreenViewModelType)
 }
 

@@ -9,7 +9,7 @@
 import UIKit
 import AmitySDK
 
-protocol AmityCommunityMemberSettingsTableViewCellDelegate: class {
+protocol AmityCommunityMemberSettingsTableViewCellDelegate: AnyObject {
     func didPerformAction(at indexPath: IndexPath, action: AmityCommunityMemberAction)
 }
 
@@ -41,6 +41,7 @@ final class AmityCommunityMemberSettingsTableViewCell: UITableViewCell, Nibbable
         let displayName = model.displayName
         displayNameLabel.text = displayName
         optionButton.isHidden = model.isCurrentUser || !isJoined
+        avatarView.setImage(withImageURL: model.avatarURL, placeholder: AmityIconSet.defaultAvatar)
     }
     
     func setIndexPath(with _indexPath: IndexPath) {

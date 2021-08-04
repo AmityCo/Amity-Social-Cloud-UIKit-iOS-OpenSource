@@ -58,7 +58,7 @@ extension AmityCommentController {
         flaggerController.unreport(withCommentId: commentId, completion: completion)
     }
     
-    func getReportStatus(withCommentId commentId: String, completion: @escaping (Bool) -> Void) {
+    func getReportStatus(withCommentId commentId: String, completion: ((Bool) -> Void)?) {
         flaggerController.getReportStatus(withCommentId: commentId, completion: completion)
     }
 }

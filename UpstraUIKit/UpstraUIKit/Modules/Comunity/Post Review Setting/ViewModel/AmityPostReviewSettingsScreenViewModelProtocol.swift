@@ -9,24 +9,24 @@
 import UIKit
 
 enum AmityPostReviewSettingsAction {
-    case retrieveMenu(settingItem: [AmitySettingsItem])
+    case showMenu(settingItem: [AmitySettingsItem])
     case turnOnApproveMemberPost(content: AmitySettingsItem.ToggleContent)
     case turnOffApproveMemberPost(content: AmitySettingsItem.ToggleContent)
 }
 
 
-protocol AmityPostReviewSettingsScreenViewModelDelegate: class {
+protocol AmityPostReviewSettingsScreenViewModelDelegate: AnyObject {
     func screenViewModel(_ viewModel: AmityPostReviewSettingsScreenViewModelType, didFinishWithAction action: AmityPostReviewSettingsAction)
     func screenViewModel(_ viewModel: AmityPostReviewSettingsScreenViewModelType, didFailWithAction action: AmityPostReviewSettingsAction)
     func screenViewModel(_ viewModel: AmityPostReviewSettingsScreenViewModelType, didFailWithError error: AmityError)
 }
 
 protocol AmityPostReviewSettingsScreenViewModelDataSource {
-    
+    var communityId: String { get }
 }
 
 protocol AmityPostReviewSettingsScreenViewModelAction {
-    func retrieveMenu()
+    func getCommunity()
     func turnOffApproveMemberPost(content: AmitySettingsItem.ToggleContent)
     func turnOnApproveMemberPost(content: AmitySettingsItem.ToggleContent)
 }

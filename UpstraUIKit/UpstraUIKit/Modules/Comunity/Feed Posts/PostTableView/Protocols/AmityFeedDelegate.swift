@@ -9,7 +9,7 @@
 import UIKit
 
 /// This protocol for providing to custom action of header/footer
-public protocol AmityFeedDelegate: class {
+public protocol AmityFeedDelegate: AnyObject {
     func didPerformActionLikePost()
     func didPerformActionUnLikePost()
     func didPerformActionLikeComment()

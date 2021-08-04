@@ -30,15 +30,15 @@ protocol AmityPostTextEditorScreenViewModelDataSource {
     func loadPost(for postId: String)
 }
 
-protocol AmityPostTextEditorScreenViewModelDelegate: class {
+protocol AmityPostTextEditorScreenViewModelDelegate: AnyObject {
     func screenViewModelDidLoadPost(_ viewModel: AmityPostTextEditorScreenViewModel, post: AmityPost)
-    func screenViewModelDidCreatePost(_ viewModel: AmityPostTextEditorScreenViewModel, error: Error?)
+    func screenViewModelDidCreatePost(_ viewModel: AmityPostTextEditorScreenViewModel, post: AmityPost?, error: Error?)
     func screenViewModelDidUpdatePost(_ viewModel: AmityPostTextEditorScreenViewModel, error: Error?)
 }
 
 protocol AmityPostTextEditorScreenViewModelAction {
-    func createPost(text: String, images: [AmityImage], files: [AmityFile], communityId: String?)
-    func updatePost(oldPost: AmityPostModel, text: String, images: [AmityImage], files: [AmityFile])
+    func createPost(text: String, medias: [AmityMedia], files: [AmityFile], communityId: String?)
+    func updatePost(oldPost: AmityPostModel, text: String, medias: [AmityMedia], files: [AmityFile])
 }
 
 protocol AmityPostTextEditorScreenViewModelType: AmityPostTextEditorScreenViewModelAction, AmityPostTextEditorScreenViewModelDataSource {

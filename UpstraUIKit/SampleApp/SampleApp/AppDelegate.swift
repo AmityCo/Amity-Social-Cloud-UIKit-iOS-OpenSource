@@ -109,7 +109,7 @@ extension AppDelegate {
         window = UIWindow()
         AmityUIKitManager.registerDevice(withUserId: "victimIOS", displayName: "victimIOS".uppercased())
         
-        let postDetailViewController = AmityPostDetailViewController.make(withPostId: "POST_ID")
+        let postDetailViewController = AmityPostDetailViewController.make(withPostId: "c1bb8697c88a01f6423765984a3e47ac")
         window?.rootViewController = postDetailViewController
         window?.makeKeyAndVisible()
     }

@@ -8,7 +8,7 @@
 
 import UIKit
 
-public protocol AmityMyCommunityPreviewViewControllerDelegate: class {
+public protocol AmityMyCommunityPreviewViewControllerDelegate: AnyObject {
     func viewController(_ viewController: AmityMyCommunityPreviewViewController, didPerformAction action: AmityMyCommunityPreviewViewController.ActionType)
     func viewController(_ viewController: AmityMyCommunityPreviewViewController, shouldShowMyCommunityPreview: Bool)
 }
@@ -30,10 +30,20 @@ final public class AmityMyCommunityPreviewViewController: UIViewController {
     private var screenViewModel: AmityMyCommunityPreviewScreenViewModelType!
     public weak var delegate: AmityMyCommunityPreviewViewControllerDelegate?
     
+    private var isVisible: Bool = true
+    // It will be marked as dirty when data source changed on view disappear.
+    private var isDataSourceDirty: Bool = false
+    private var shouldShowMyCommunityPreview: Bool = false
+    
     // MARK: - View lifecycle
     public override func viewDidLoad() {
         super.viewDidLoad()
         setupView()
+    }
+    
+    public override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        isVisible = false
     }
 
     public static func make() -> AmityMyCommunityPreviewViewController {
@@ -48,6 +58,20 @@ final public class AmityMyCommunityPreviewViewController: UIViewController {
     func retrieveCommunityList() {
         screenViewModel.delegate = self
         screenViewModel.action.retrieveMyCommunityList()
+        
+        // this vc are not added to other vc as a child vc
+        // as a result, view will appear are not working when this page present
+        // here is a workaround for fixing the issue above because
+        // `retrieveCommunityList` is surely called once view will appear
+        isVisible = true
+        if isDataSourceDirty {
+            isDataSourceDirty = false
+            
+            delegate?.viewController(self, shouldShowMyCommunityPreview: shouldShowMyCommunityPreview)
+            if shouldShowMyCommunityPreview {
+                collectionView?.reloadData()
+            }
+        }
     }
     
     // MARK: - Setup views
@@ -120,10 +144,32 @@ extension AmityMyCommunityPreviewViewController: UICollectionViewDataSource {
 extension AmityMyCommunityPreviewViewController: AmityMyCommunityPreviewScreenViewModelDelegate {
     
     func screenViewModel(_ viewModel: AmityMyCommunityPreviewScreenViewModelType, didRetrieveCommunityList communityList: [AmityCommunityModel]) {
-        delegate?.viewController(self, shouldShowMyCommunityPreview: communityList.count > 0)
-        if communityList.count > 0 {
+        
+        shouldShowMyCommunityPreview = !communityList.isEmpty
+        
+        // When view is invisible but data source request updates, mark it as a dirty data source.
+        // Then after view already appear, reload table view for refreshing data.
+        guard isVisible else {
+            isDataSourceDirty = true
+            return
+        }
+        
+        delegate?.viewController(self, shouldShowMyCommunityPreview: shouldShowMyCommunityPreview)
+        if shouldShowMyCommunityPreview {
             collectionView?.reloadData()
         }
+    }
+    
+}
+
+extension AmityMyCommunityPreviewViewController: FeedHeaderPresentable {
+    
+    public var headerView: UIView {
+        return view
+    }
+    
+    public var height: CGFloat {
+        return 130
     }
     
 }

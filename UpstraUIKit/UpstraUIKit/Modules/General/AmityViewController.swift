@@ -72,6 +72,7 @@ open class AmityViewController: UIViewController {
                 navigationItem.title = nil
                 titleLabel.text = title
             }
+            titleLabel.sizeToFit()
         }
     }
     
@@ -128,8 +129,10 @@ open class AmityViewController: UIViewController {
             break
         }
     }
-    
-    private func setupFullWidthBackGesture() {
+
+    // To support swipe back gesture
+    // setup swipe back gesture
+    func setupFullWidthBackGesture() {
         guard let interactivePopGestureRecognizer = navigationController?.interactivePopGestureRecognizer,
             let targets = interactivePopGestureRecognizer.value(forKey: "targets") else {
             return
@@ -139,6 +142,11 @@ open class AmityViewController: UIViewController {
         view.addGestureRecognizer(fullWidthBackGestureRecognizer)
     }
     
+    // remove swipe back gesture
+    func removeSwipeBackGesture() {
+        view.removeGestureRecognizer(fullWidthBackGestureRecognizer)
+    }
+
     // To support presenting confirmation dialog before dismissing.
     // We provide `didTapLeftBarButton` to be overriden.
     // Otherwise, the default behavior is to call `generalDismiss`.

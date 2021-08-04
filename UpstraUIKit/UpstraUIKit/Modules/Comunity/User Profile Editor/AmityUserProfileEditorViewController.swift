@@ -68,7 +68,7 @@ final public class AmityUserProfileEditorViewController: AmityViewController {
     }
     
     private func setupNavigationBar() {
-        saveBarButtonItem = UIBarButtonItem(title: AmityLocalizedStringSet.save.localizedString, style: .done, target: self, action: #selector(saveButtonTap))
+        saveBarButtonItem = UIBarButtonItem(title: AmityLocalizedStringSet.General.save.localizedString, style: .done, target: self, action: #selector(saveButtonTap))
         saveBarButtonItem.isEnabled = false
         navigationItem.rightBarButtonItem = saveBarButtonItem
     }
@@ -129,13 +129,17 @@ final public class AmityUserProfileEditorViewController: AmityViewController {
                 self?.uploadingAvatarImage = nil
                 self?.updateViewState()
             }
+        } else {
+            // when there is no image update
+            // directly show success message after updated
+            AmityHUD.show(.success(message: AmityLocalizedStringSet.HUD.successfullyUpdated.localizedString))
         }
     }
     
     @IBAction private func avatarButtonTap(_ sender: Any) {
         view.endEditing(true)
         // Show camera
-        var cameraOption = TextItemOption(title: AmityLocalizedStringSet.camera.localizedString)
+        var cameraOption = TextItemOption(title: AmityLocalizedStringSet.General.camera.localizedString)
         cameraOption.completion = { [weak self] in
             #warning("Redundancy: camera picker should be replaced with a singleton class")
             let cameraPicker = UIImagePickerController()
@@ -145,7 +149,7 @@ final public class AmityUserProfileEditorViewController: AmityViewController {
         }
         
         // Show image picker
-        var galleryOption = TextItemOption(title: AmityLocalizedStringSet.imageGallery.localizedString)
+        var galleryOption = TextItemOption(title: AmityLocalizedStringSet.General.imageGallery.localizedString)
         galleryOption.completion = { [weak self] in
             let imagePicker = AmityImagePickerController(selectedAssets: [])
             imagePicker.settings.theme.selectionStyle = .checked

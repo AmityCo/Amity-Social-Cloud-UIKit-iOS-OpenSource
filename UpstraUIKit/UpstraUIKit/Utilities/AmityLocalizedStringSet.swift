@@ -15,74 +15,84 @@ import UIKit
 /// You should modify the stringSet values in advance if you want to make changes to the screen
 /// # Customize the StringSet
 /// ```
-/// AmityLocalizedStringSet.OK = {CUSTOM_STRING}
+/// AmityLocalizedStringSet.General.ok = {CUSTOM_STRING}
 /// ```
 public struct AmityLocalizedStringSet {
     private init() { }
     
     enum General {
         static let report = "general_report"
-        static let undoReport = "genera_undo_report"
+        static let undoReport = "general_undo_report"
+        static let reportUser = "general_report_user"
+        static let unreportUser = "general_unreport_user"
+        static let settings = "general_settings"
+        static let accept = "general_accept"
+        static let decline = "general_decline"
+        static let close = "general_close"
+        static let save = "general_save"
+        static let saved = "general_saved"
+        static let cancel = "general_cancel"
+        static let delete = "general_delete"
+        static let edit = "general_edit"
+        static let done = "general_done"
+        static let post = "general_post"
+        static let discard = "general_discard"
+        static let leave = "general_leave"
+        static let like = "general_like"
+        static let liked = "general_liked"
+        static let reply = "general_reply"
+        static let viewReply = "general_view_reply"
+        static let remove = "general_remove"
+        static let turnOn = "general_turn_on"
+        static let turnOff = "general_turn_off"
+        static let follow = "general_follow"
+        static let camera = "general_camera"
+        static let on = "general_on"
+        static let off = "general_off"
+        static let file = "general_file"
+        static let location = "general_location"
+        static let album = "general_album"
+        static let anonymous = "general_anonymous"
+        static let general = "general_general"
+        static let ok = "general_ok"
+        static let search = "general_search"
+        static let imageGallery = "general_image_gallery"
+        static let moderator = "general_moderator"
+    }
+    
+    static let communitySettings = "community_settings"
+    static let skipForNow = "skip_for_now"
+    
+    enum Unit {
+        static let memberSingular = "unit_member_singular"
+        static let memberPlural = "unit_member_plural"
+        static let likeSingular = "unit_like_singular"
+        static let likePlural = "unit_like_plural"
+        static let commentSingular = "unit_comment_singular"
+        static let commentPlural = "unit_comment_plural"
+        static let postSingular = "unit_post_singular"
+        static let postPlural = "unit_post_plural"
+        static let sharesSingular = "unit_share_singular"
+        static let sharesPlural = "unit_share_plural"
     }
     
     static let titlePlaceholder = "title_placeholder"
     static let descriptionPlaceholder = "description_placeholder"
-    static let members = "members"
-    static let follow = "follow"
     static let chatTitle = "chat_title"
     static let recentTitle = "recent_title"
     static let directoryTitle = "directory_title"
     static let emptyChatList = "empty_chat_list"
-    static let camera = "camera"
-    static let imageGallery = "image_gallery"
-    static let moderator = "moderator"
-    static let file = "file"
-    static let location = "location"
-    static let album = "album"
-    
     static let editMessageTitle = "edit_message_title"
     static let viewAllCommentsTitle = "view_all_comments_title"
     static let viewAllFilesTitle = "view_all_files_title"
     
-    static let close = "close"
-    static let save = "save"
-    static let saved = "saved"
-    static let cancel = "cancel"
-    static let delete = "delete"
-    static let edit = "edit"
-    static let done = "done"
-    static let post = "post"
-    static let discard = "discard"
-    static let report = "report"
-    static let leave = "leave"
-    static let like = "like"
-    static let liked = "liked"
-    static let reply = "reply"
-    static let viewReply = "view_reply"
-    static let likesPlural = "likes_plural"
-    static let likesSingular = "likes_singular"
-    static let commentsPlural = "comments_plural"
-    static let commentsSingular = "comments_singular"
-    static let sharesPlural = "shares_plural"
-    static let sharesSingular = "shares_singular"
-    static let remove = "remove"
-    static let communitySettings = "community_settings"
-    static let skipForNow = "skip_for_now"
-    static let turnOn = "turn_on"
-    static let turnOff = "turn_off"
-    
-    static let on = "on"
-    static let off = "off"
-    
     static let textMessagePlaceholder = "text_message_placeholder"
     static let messageReadmore = "message_readmore"
-    static let anonymous = "anonymous"
-    static let general = "general"
-    static let ok = "ok"
     static let noUserFound = "no_user_found"
     static let searchResults = "search_results"
-    static let searchCommunityNotFound = "search_community_not_found"
-    static let search = "search"
+    static let searchResultNotFound = "search_result_not_found"
+    static let communities = "communities"
+    static let accounts = "accounts"
     
     static let somethingWentWrongWithTryAgain = "something_went_wrong_with_try_again"
     static let noInternetConnection = "no_internet_connection"
@@ -108,6 +118,10 @@ public struct AmityLocalizedStringSet {
     static let emptyNewsfeedCreateButton = "empty_newsfeed_create_button"
     static let emptyNewsfeedStartYourFirstPost = "empty_newsfeed_start_your_first_post"
     static let emptyTitleNoPosts = "empty_title_no_posts"
+    
+    // MARK: - User Feed
+    static let privateUserFeedTitle = "private_user_feed_title"
+    static let privateUserFeedSubtitle = "private_user_feed_subtitle"
     
     // MARK: - Create community
     static let editCommunityTitle = "edit_community_title"
@@ -150,11 +164,19 @@ public struct AmityLocalizedStringSet {
     public static let communityHomeTitle = "community_home_title"
     
     // MARK: - Community detail page
-    static let communityDetailPostCount = "community_detail_post_count"
-    static let communityDetailMemberCount = "community_detail_member_count"
     static let communityDetailJoinButton = "community_detail_join_button"
     static let communityDetailMessageButton = "community_detail_message_button"
     static let communityDetailEditProfileButton = "community_detail_edit_profile_button"
+    
+    // MARK: - User detail page
+    static let userDetailFollowingCount = "user_detail_following_count"
+    static let userDetailFollowersCount = "user_detail_followers_count"
+    static let userDetailFollowButtonFollow = "user_detail_follow_button_follow"
+    static let userDetailFollowButtonCancel = "user_detail_follow_button_cancel"
+    static let userDetailsPendingRequests = "user_details_pending_requests"
+    static let userDetailsPendingRequestsDescription = "user_details_pending_requests_description"
+    static let userDetailsUnableToFollow = "user_details_unable_to_follow"
+    
     // MARK: - Timeline
     public static let timelineTitle = "timeline_title"
     
@@ -165,9 +187,12 @@ public struct AmityLocalizedStringSet {
     static let postCreationDiscardPostTitle = "post_creation_discard_post_title"
     static let postCreationDiscardPostMessage = "post_creation_discard_post_message"
     static let postCreationSelectImageTitle = "post_creation_select_image"
+    static let postCreationSelectVideoTitle = "post_creation_select_video"
     static let postCreationUploadIncompletTitle = "post_creation_file_upload_icomplete_title"
     static let postCreationUploadIncompletDescription = "post_creation_file_upload_icomplete_description"
-
+    static let postCreationSubmitTitle = "post_craetion_submit_title"
+    static let postCreationSubmitDesc = "post_creation_submit_desc"
+    
     // MARK: - Post detail
     struct PostDetail {
         static let replyingTo = "post_detail_replying_to"
@@ -216,6 +241,9 @@ public struct AmityLocalizedStringSet {
     // MARK: - Category
     static let categoryTitle = "category_title"
     
+    // MARK: - Member title
+    static let memberTitle = "member_list_title"
+    
     // MARK: - Community Settings
     enum CommunitySettings {
         static let itemHeaderBasicInfo = "community_settings_item_header_basic_info"
@@ -257,6 +285,27 @@ public struct AmityLocalizedStringSet {
         static let onlyModerator = "community_notification_settings_only_moderator"
     }
     
+    // MARK: - User Settings
+    enum UserSettings {
+        static let itemHeaderManageInfo = "user_settings_item_header_manage"
+        static let itemHeaderBasicInfo = "user_settings_item_header_basic_info"
+        static let itemUnfollow = "user_settings_item_unfollow"
+        static let itemReportUser = "user_settings_item_report_user"
+        static let itemUnreportUser = "user_settings_item_unreport_user"
+        static let itemEditProfile = "user_settings_item_edit_profile"
+        
+        enum UserSettingsMessages {
+            static let unfollowMessage = "user_settings_unfollow_message"
+            static let unfollowFailTitle = "user_settings_unfollow_fail_title"
+        }
+
+        enum UserSettingsRemove {
+            static let removeUser = "user_settings_remove_user"
+            static let removeUserTitle = "user_settings_remove_user_title"
+            static let removeUserDescription = "user_settings_remove_user_description"
+        }
+    }
+    
     // MARK: - Not support role
     static let roleSupportAlertDesc = "role_permission_alert_desc"
     
@@ -280,7 +329,14 @@ public struct AmityLocalizedStringSet {
     // MARK: - Edit User Profile
     static let editUserProfileTitle = "edit_user_profile_title"
     static let editUserProfileDisplayNameTitle = "edit_user_profile_display_name_title"
+    static let editUserProfileEmailTitle = "edit_user_profile_email_title"
+    static let editUserProfilePhoneNumberTitle = "edit_user_profile_phone_number_title"
     static let editUserProfileDescriptionTitle = "edit_user_profile_description_title"
+    
+    // MARK: - Profile Option
+    static let profileOptionTitle = "profile_option_title"
+    static let profileOptionEdit = "profile_option_edit"
+    static let profileOptionLogout = "profile_option_logout"
     
     // MARK: - HUD Message
     struct HUD {
@@ -324,5 +380,56 @@ public struct AmityLocalizedStringSet {
     enum Modal {
         static let communitySettingsTitle = "modal_community_settings_title"
         static let communitySettingsDesc = "modal_community_settings_desc"
+    }
+    
+    // MARK: - Chat setting
+    enum ChatSettings {
+        static let leaveChannel = "chat_setting_leave_channel"
+        static let member = "chat_setting_member"
+        static let groupProfile = "chat_setting_group_profile"
+        static let reportUser = "chat_setting_report_user"
+        static let unReportUser = "chat_setting_unreport_user"
+        static let title = "chat_setting_title"
+        static let reportSent = "chat_setting_report_sent"
+        static let leaveChatTitle = "chat_setting_leave_chat_title"
+        static let leaveChatMessage = "chat_setting_leave_chat_message"
+        static let promoteToModerator = "chat_setting_promote_to_moderator"
+        static let dismissFromModerator = "chat_setting_dimiss_to_moderator"
+        static let removeFromGroupChat = "chat_setting_remove_from_group_chat"
+        static let report = "chat_setting_report"
+        static let memberTitle = "chat_setting_member_title"
+        static let moderatorTitle = "chat_setting_moderator_title"
+        static let navigationTitle = "chat_setting_member_detail_title"
+        static let removeMemberAlertTitle = "chat_setting_remove_member_alert_title"
+        static let removeMemberAlertBody = "chat_setting_remove_member_alert_body"
+    }
+    
+    enum CommunityChannelCreation {
+        static let failedToCreate = "chat_create_failed"
+    }
+    // MARK: - Follow
+    enum Follow {
+        static let followRequestsTitle = "follow_requests_title"
+        static let accept = "follow_accept"
+        static let decline = "follow_decline"
+        static let unavailableFollowRequest = "follow_unavailable_follow_request"
+        static let followers = "follow_followers"
+        static let following = "follow_following"
+        static let canNotRefreshFeed = "follow_can_not_refresh_feed"
+    }
+    
+    // MARK: - Pending posts
+    enum PendingPosts {
+        static let title = "pending_posts_title"
+        static let statusTitle = "pending_posts_status_title"
+        static let statusAdminDesc = "pending_posts_status_admin_desc"
+        static let statusMemberDesc = "pending_posts_status_member_desc"
+        static let headerTitle = "pending_posts_header_title"
+        static let emptyTitle = "pending_posts_empty_title"
+        static let alertDeleteTitle = "pending_posts_alert_delete_title"
+        static let alertDeleteDesc = "pending_posts_alert_delete_desc"
+        static let alertDeleteFailTitle = "pending_posts_alert_delete_fail_title"
+        static let postNotAvailable = "pending_posts_post_not_available"
+        static let alertDeleteFailApproveOrDecline = "pending_posts_alert_delete_fail_approve_or_decline"
     }
 }

@@ -9,7 +9,7 @@
 import AmitySDK
 import UIKit
 
-protocol AmityPostDetailCompostViewDelegate: class {
+protocol AmityPostDetailCompostViewDelegate: AnyObject {
     func composeView(_ view: AmityPostDetailCompostView, didPostText text: String)
     func composeViewDidTapExpand(_ view: AmityPostDetailCompostView)
     func composeViewDidTapReplyDismiss(_ view: AmityPostDetailCompostView)
@@ -85,16 +85,20 @@ class AmityPostDetailCompostView: UIView {
     }
     
     override func becomeFirstResponder() -> Bool {
+        super.becomeFirstResponder()
         return textView.becomeFirstResponder()
     }
     
     override func resignFirstResponder() -> Bool {
+        super.resignFirstResponder()
         return textView.resignFirstResponder()
     }
     
     func resetState() {
         textView.text = ""
         postButton.isEnabled = false
+        isOversized = false
+        textView.resignFirstResponder()
     }
     
     func configure(with post: AmityPostModel) {
@@ -143,7 +147,7 @@ class AmityPostDetailCompostView: UIView {
         textView.customTextViewDelegate = self
         textView.font = AmityFontSet.body
         postButton.translatesAutoresizingMaskIntoConstraints = false
-        postButton.setTitle(AmityLocalizedStringSet.post.localizedString, for: .normal)
+        postButton.setTitle(AmityLocalizedStringSet.General.post.localizedString, for: .normal)
         postButton.setTitleColor(AmityColorSet.primary, for: .normal)
         postButton.setTitleColor(AmityColorSet.primary.blend(.shade2), for: .disabled)
         postButton.addTarget(self, action: #selector(postButtonTap), for: .touchUpInside)

@@ -23,11 +23,11 @@ struct AmityCommunityMembershipModel {
     var isModerator: Bool = false
     
     init(member: AmityCommunityMember) {
-        self.user = member.user?.object
-        self.displayName = member.displayName == "" ? AmityLocalizedStringSet.anonymous.localizedString : member.displayName
+        self.user = member.user
+        self.displayName = member.displayName == "" ? AmityLocalizedStringSet.General.anonymous.localizedString : member.displayName
         self.userId = member.userId
         self.roles = member.roles
-        self.avatarURL = member.user?.object?.getAvatarInfo()?.fileURL ?? ""
+        self.avatarURL = member.user?.getAvatarInfo()?.fileURL ?? ""
     }
     
 }

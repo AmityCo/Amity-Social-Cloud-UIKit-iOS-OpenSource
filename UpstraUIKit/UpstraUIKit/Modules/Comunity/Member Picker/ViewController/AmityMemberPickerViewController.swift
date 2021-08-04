@@ -87,11 +87,11 @@ private extension AmityMemberPickerViewController {
             title = String.localizedStringWithFormat(AmityLocalizedStringSet.selectMemberListSelectedTitle.localizedString, "\(numberOfSelectedUseres)")
         }
         
-        doneButton = UIBarButtonItem(title: AmityLocalizedStringSet.done.localizedString, style: .plain, target: self, action: #selector(doneTap))
+        doneButton = UIBarButtonItem(title: AmityLocalizedStringSet.General.done.localizedString, style: .plain, target: self, action: #selector(doneTap))
         doneButton?.tintColor = AmityColorSet.primary
         doneButton?.isEnabled = !(numberOfSelectedUseres == 0)
         
-        let cancelButton = UIBarButtonItem(title: AmityLocalizedStringSet.cancel.localizedString, style: .plain, target: self, action: #selector(cancelTap))
+        let cancelButton = UIBarButtonItem(title: AmityLocalizedStringSet.General.cancel.localizedString, style: .plain, target: self, action: #selector(cancelTap))
         cancelButton.tintColor = AmityColorSet.base
         
         navigationItem.leftBarButtonItem = cancelButton

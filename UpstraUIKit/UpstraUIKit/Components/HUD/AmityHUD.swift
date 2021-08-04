@@ -8,7 +8,7 @@
 
 import UIKit
 
-enum HUDContentType {
+public enum HUDContentType {
     case success(message: String)
     case error(message: String)
     case loading
@@ -108,7 +108,7 @@ class AmityAlertViewController: UIViewController {
     
 }
 
-class AmityHUD {
+public class AmityHUD {
     
     private static let sharedHUD = AmityHUD()
     private let alertViewController = AmityAlertViewController()

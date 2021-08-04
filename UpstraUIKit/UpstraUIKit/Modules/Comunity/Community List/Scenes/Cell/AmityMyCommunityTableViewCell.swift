@@ -9,7 +9,7 @@
 import UIKit
 import AmitySDK
 
-protocol AmityMyCommunityTableViewCellDelegate: class {
+protocol AmityMyCommunityTableViewCellDelegate: AnyObject {
     func cellDidTapOnAvatar(_ cell: AmityMyCommunityTableViewCell)
 }
 

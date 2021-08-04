@@ -8,7 +8,7 @@
 
 import UIKit
 
-protocol AmityTrendingCommunityScreenViewModelDelegate: class {
+protocol AmityTrendingCommunityScreenViewModelDelegate: AnyObject {
     func screenViewModel(_ viewModel: AmityTrendingCommunityScreenViewModelType, didRetrieveTrending trending: [AmityCommunityModel], isEmpty: Bool)
     func screenViewModel(_ viewModel: AmityTrendingCommunityScreenViewModelType, didFail error: AmityError)
 }

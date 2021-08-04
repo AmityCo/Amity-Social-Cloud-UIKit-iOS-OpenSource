@@ -15,12 +15,13 @@ public protocol AmityPostProtocol: UITableViewCell {
     func display(post: AmityPostModel, indexPath: IndexPath)
 }
 
-public protocol AmityPostDelegate: class {
+public protocol AmityPostDelegate: AnyObject {
     func didPerformAction(_ cell: AmityPostProtocol, action: AmityPostAction)
 }
 
 public enum AmityPostAction {
-    case tapImage(image: AmityImage)
+    case tapMedia(media: AmityMedia)
+    case tapMediaInside(media: AmityMedia, photoViewer: AmityPhotoViewerController)
     case tapFile(file: AmityFile)
     case tapViewAll
     case tapExpandableLabel(label: AmityExpandableLabel)

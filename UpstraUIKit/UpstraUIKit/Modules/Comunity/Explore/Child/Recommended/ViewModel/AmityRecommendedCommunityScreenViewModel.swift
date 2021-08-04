@@ -42,8 +42,8 @@ extension AmityRecommendedCommunityScreenViewModel {
 extension AmityRecommendedCommunityScreenViewModel {
     func retrieveRecommended() {
         recommendedController.retrieve { [weak self] result in
-            guard let strongSelf = self else { return }
-            strongSelf.debouncer.run {
+            self?.debouncer.run {
+                guard let strongSelf = self else { return }
                 switch result {
                 case .success(let community):
                     strongSelf.communities = community

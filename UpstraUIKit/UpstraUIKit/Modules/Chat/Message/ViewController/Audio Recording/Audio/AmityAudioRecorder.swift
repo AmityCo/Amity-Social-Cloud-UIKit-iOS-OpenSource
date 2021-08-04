@@ -16,7 +16,7 @@ enum AmityAudioRecorderState {
     case timeTooShort
 }
 
-protocol AmityAudioRecorderDelegate: class {
+protocol AmityAudioRecorderDelegate: AnyObject {
     func requestRecordPermission(isAllowed: Bool)
     func displayDuration(_ duration: String)
     func finishRecording(state: AmityAudioRecorderState)
@@ -85,16 +85,16 @@ final class AmityAudioRecorder: NSObject {
     }
     
     func updateFilename(withFilename newFileName: String) {
-        AmityFileCache.shared.updateFile(for: .audioDireectory, originFilename: fileName, destinationFilename: newFileName + ".m4a")
+        AmityFileCache.shared.updateFile(for: .audioDirectory, originFilename: fileName, destinationFilename: newFileName + ".m4a")
     }
     
     func getAudioFileURL() -> URL? {
-        return AmityFileCache.shared.getCacheURL(for: .audioDireectory, fileName: fileName)
+        return AmityFileCache.shared.getCacheURL(for: .audioDirectory, fileName: fileName)
     }
     
     func getDataFile() -> Data? {
-        if let _ = AmityFileCache.shared.getCacheURL(for: .audioDireectory, fileName: fileName) {
-            return AmityFileCache.shared.convertToData(for: .audioDireectory, fileName: fileName)
+        if let _ = AmityFileCache.shared.getCacheURL(for: .audioDirectory, fileName: fileName) {
+            return AmityFileCache.shared.convertToData(for: .audioDirectory, fileName: fileName)
         }
         return nil
     }
@@ -106,7 +106,7 @@ private extension AmityAudioRecorder {
         isRecord = true
         switch session.recordPermission {
         case .granted:
-            let audioFilename = AmityFileCache.shared.getFileURL(for: .audioDireectory, fileName: fileName)
+            let audioFileUrl = AmityFileCache.shared.getFileURL(for: .audioDirectory, fileName: fileName)
             
             let settings = [
                 AVFormatIDKey: Int(kAudioFormatMPEG4AAC),
@@ -116,7 +116,7 @@ private extension AmityAudioRecorder {
             ]
             
             do {
-                recorder = try AVAudioRecorder(url: audioFilename, settings: settings)
+                recorder = try AVAudioRecorder(url: audioFileUrl, settings: settings)
                 recorder.delegate = self
                 recorder.isMeteringEnabled = true
                 recorder.record()
@@ -167,7 +167,7 @@ private extension AmityAudioRecorder {
     }
     
     func deleteFile() {
-        AmityFileCache.shared.deleteFile(for: .audioDireectory, fileName: fileName)
+        AmityFileCache.shared.deleteFile(for: .audioDirectory, fileName: fileName)
     }
 }
 

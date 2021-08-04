@@ -16,12 +16,15 @@ final class AmityMessageListHeaderView: AmityView {
     @IBOutlet private var displayNameLabel: UILabel!
     @IBOutlet private var backButton: UIButton!
     
+    // MARK: - Collections
+    private var repository: AmityUserRepository?
+    private var token: AmityNotificationToken?
+    
     // MARK: - Properties
     private var screenViewModel: AmityMessageListScreenViewModelType?
 
     convenience init(viewModel: AmityMessageListScreenViewModelType) {
         self.init(frame: .zero)
-        
         loadNibContent()
         screenViewModel = viewModel
         setupView()
@@ -37,6 +40,8 @@ private extension AmityMessageListHeaderView {
 
 private extension AmityMessageListHeaderView {
     func setupView() {
+        repository = AmityUserRepository(client: AmityUIKitManagerInternal.shared.client)
+        
         contentView.backgroundColor = AmityColorSet.backgroundColor
         
         backButton.tintColor = AmityColorSet.base
@@ -52,18 +57,33 @@ private extension AmityMessageListHeaderView {
 
 extension AmityMessageListHeaderView {
     
-    func updateViews(channel: AmityChannel) {
-        displayNameLabel.text = channel.displayName ?? AmityLocalizedStringSet.anonymous.localizedString
-        
-        switch channel.channelType {
-        case .standard:
-            avatarView.image = nil
-            avatarView.placeholder = AmityIconSet.defaultGroupChat
-        case .conversation:
-            guard let fileURL = channel.getAvatarInfo()?.fileURL else { return }
-            self.avatarView.setImage(withImageURL: fileURL, placeholder: AmityIconSet.defaultAvatar)
-        default:
-            break
+    func updateViews(channel: AmityChannelModel) {
+        if channel.isDirectChat() {
+            displayNameLabel.text = AmityLocalizedStringSet.General.anonymous.localizedString
+            token?.invalidate()
+            if !channel.getOtherUserId().isEmpty {
+                token = repository?.getUser(channel.getOtherUserId()).observeOnce({ [weak self] user, error in
+                    guard let weakSelf = self else { return }
+                    if let userObject = user.object {
+                        weakSelf.displayNameLabel.text = userObject.displayName
+                        weakSelf.avatarView.setImage(withImageURL: userObject.avatarCustomUrl,
+                                                     placeholder: AmityIconSet.defaultAvatar)
+                    }
+                    
+                })
+            }
+        } else {
+            displayNameLabel.text = channel.displayName
+            switch channel.channelType {
+            case .standard:
+                avatarView.setImage(withImageURL: channel.avatarURL, placeholder: AmityIconSet.defaultGroupChat)
+            case .conversation:
+                avatarView.setImage(withImageURL: channel.avatarURL, placeholder: AmityIconSet.defaultAvatar)
+            case .community:
+                avatarView.setImage(withImageURL: channel.avatarURL, placeholder: AmityIconSet.defaultGroupChat)
+            default:
+                break
+            }
         }
     }
 }

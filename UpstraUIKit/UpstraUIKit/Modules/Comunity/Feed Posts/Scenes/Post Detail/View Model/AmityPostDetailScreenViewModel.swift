@@ -79,9 +79,11 @@ extension AmityPostDetailScreenViewModel {
         case .text:
             return AmityPostComponent(component: AmityPostTextComponent(post: post))
         case .image:
-            return AmityPostComponent(component: AmityPostImageComponent(post: post))
+            return AmityPostComponent(component: AmityPostMediaComponent(post: post))
         case .file:
             return AmityPostComponent(component: AmityPostFileComponent(post: post))
+        case .video:
+            return AmityPostComponent(component: AmityPostMediaComponent(post: post))
         case .unknown:
             return AmityPostComponent(component: AmityPostPlaceHolderComponent(post: post))
         }
@@ -103,7 +105,7 @@ extension AmityPostDetailScreenViewModel {
         if let post = post {
             if let communityId = post.targetCommunity?.communityId {
                 let participation = AmityCommunityParticipation(client: AmityUIKitManagerInternal.shared.client, andCommunityId: communityId)
-                post.isModerator = participation.getMember(withId: post.postedUserId)?.communityRoles.contains(.moderator) ?? false
+                post.isModerator = participation.getMember(withId: post.postedUserId)?.roles.contains(AmityCommunityRole.moderator) ?? false
             }
             let component = prepareComponents(post: post)
             viewModels.append([.post(component)])
@@ -205,12 +207,12 @@ extension AmityPostDetailScreenViewModel {
     }
     
     func updatePost(withText text: String) {
-        postController.update(withPostId: postId, text: text) { [weak self] (success, error) in
+        postController.update(withPostId: postId, text: text) { [weak self] (post, error) in
             guard let strongSelf = self else { return }
-            if success {
-                strongSelf.delegate?.screenViewModelDidUpdatePost(strongSelf)
-            } else {
+            if let error = AmityError(error: error) {
                 strongSelf.delegate?.screenViewModel(strongSelf, didFinishWithError: AmityError(error: error) ?? .unknown)
+            } else {
+                strongSelf.delegate?.screenViewModelDidUpdatePost(strongSelf)
             }
         }
     }

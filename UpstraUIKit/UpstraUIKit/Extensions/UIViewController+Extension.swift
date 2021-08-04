@@ -7,8 +7,10 @@
 //
 
 import UIKit
+import AVKit
 
 extension UIViewController {
+    
     static var identifier: String {
         return String(describing: self)
     }
@@ -35,4 +37,14 @@ extension UIViewController {
         
         viewController.didMove(toParent: self)
     }
+    
+    func presentVideoPlayer(at url: URL) {
+        let player = AVPlayer(url: url)
+        let playerViewController = AVPlayerViewController()
+        playerViewController.player = player
+        present(playerViewController, animated: true) { [weak player] in
+            player?.play()
+        }
+    }
+    
 }

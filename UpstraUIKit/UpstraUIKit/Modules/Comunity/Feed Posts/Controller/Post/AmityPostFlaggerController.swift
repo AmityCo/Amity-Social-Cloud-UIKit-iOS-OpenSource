@@ -12,7 +12,7 @@ import AmitySDK
 protocol AmityPostFlaggerControllerProtocol {
     func report(withPostId postId: String, completion: AmityRequestCompletion?)
     func unreport(withPostId postId: String, completion: AmityRequestCompletion?)
-    func getReportStatus(withPostId postId: String, completion: @escaping (Bool) -> Void)
+    func getReportStatus(withPostId postId: String, completion: ((Bool) -> Void)?)
 }
 
 final class AmityPostFlaggerController: AmityPostFlaggerControllerProtocol {
@@ -28,8 +28,10 @@ final class AmityPostFlaggerController: AmityPostFlaggerControllerProtocol {
         flagger?.unflagPost(completion: completion)
     }
     
-    func getReportStatus(withPostId postId: String, completion: @escaping (Bool) -> Void) {
+    func getReportStatus(withPostId postId: String, completion: ((Bool) -> Void)?) {
         flagger = AmityPostFlagger(client: AmityUIKitManagerInternal.shared.client, postId: postId)
-        flagger?.isPostFlaggedByMe(completion: completion)
+        flagger?.isPostFlaggedByMe { (flag) in
+            completion?(flag)
+        }
     }
 }

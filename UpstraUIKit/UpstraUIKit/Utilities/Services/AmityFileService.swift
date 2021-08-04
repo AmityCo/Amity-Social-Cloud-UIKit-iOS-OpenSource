@@ -10,10 +10,7 @@ import AmitySDK
 
 class AmityFileService {
     
-    static let shared = AmityFileService()
-    private init() { }
-    
-    private let fileRepository = AmityFileRepository(client: AmityUIKitManagerInternal.shared.client)
+    var fileRepository: AmityFileRepository?
     
     // A path mapper for binding image path with a local path
     // Example:
@@ -30,8 +27,12 @@ class AmityFileService {
         return "\(imageURL)_\(size.description)"
     }
     
-    
     func uploadImage(image: UIImage, progressHandler: @escaping (Double) -> Void, completion: @escaping (Result<AmityImageData, Error>) -> Void) {
+        
+        guard let fileRepository = fileRepository else {
+            completion(.failure(AmityError.fileServiceIsNotReady))
+            return
+        }
         
         fileRepository.uploadImage(image, progress: { progress in
             progressHandler(progress)
@@ -42,9 +43,16 @@ class AmityFileService {
                 completion(.failure(AmityError.unknown))
             }
         }
+        
     }
     
     func uploadFile(file: AmityUploadableFile, progressHandler: @escaping (Double) -> Void, completion: @escaping (Result<AmityFileData, Error>) -> Void) {
+        
+        guard let fileRepository = fileRepository else {
+            completion(.failure(AmityError.fileServiceIsNotReady))
+            return
+        }
+        
         fileRepository.uploadFile(file, progress: { fileUploadProgress in
             progressHandler(fileUploadProgress)
         }) { fileData, error in
@@ -54,6 +62,30 @@ class AmityFileService {
                 completion(.failure(AmityError.unknown))
             }
         }
+        
+    }
+    
+    func uploadVideo(url: URL,
+                     progressHandler: @escaping (Double) -> Void,
+                     completion: @escaping (Result<AmityVideoData, Error>) -> Void) {
+        
+        guard let fileRepository = fileRepository else {
+            completion(.failure(AmityError.fileServiceIsNotReady))
+            return
+        }
+        
+        fileRepository.uploadVideo(with: url, progress: progressHandler) { videoData, error in
+            if let error = error {
+                completion(.failure(error))
+                return
+            }
+            if let data = videoData {
+                completion(.success(data))
+                return
+            }
+            completion(.failure(AmityError.unknown))
+        }
+        
     }
     
     func loadImage(imageURL: String, size: AmityMediaSize, optimisticLoad: Bool = false, completion: ((Result<UIImage, Error>) -> Void)?) {
@@ -84,6 +116,11 @@ class AmityFileService {
             }
         }
         
+        guard let fileRepository = fileRepository else {
+            completion?(.failure(AmityError.fileServiceIsNotReady))
+            return
+        }
+        
         fileRepository.downloadImage(fromURL: imageURL, size: size) { [weak self] (url, error) in
             if let imagePath = url?.path, // a local path returned from sdk
                let image = UIImage(contentsOfFile: imagePath) {
@@ -96,9 +133,16 @@ class AmityFileService {
                 completion?(.failure(error))
             }
         }
+        
     }
     
     func loadFile(fileURL: String, completion: ((Result<Data, Error>) -> Void)?) {
+        
+        guard let fileRepository = fileRepository else {
+            completion?(.failure(AmityError.fileServiceIsNotReady))
+            return
+        }
+        
         fileRepository.downloadFileAsData(fromURL: fileURL) { (data, error) in
             if let data = data {
                 completion?(.success(data))
@@ -109,5 +153,7 @@ class AmityFileService {
                 completion?(.failure(error))
             }
         }
+        
     }
+    
 }

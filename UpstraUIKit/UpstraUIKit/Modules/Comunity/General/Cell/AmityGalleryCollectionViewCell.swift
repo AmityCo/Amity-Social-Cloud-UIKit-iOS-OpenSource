@@ -10,7 +10,7 @@ import Photos
 import UIKit
 import AmitySDK
 
-protocol AmityGalleryCollectionViewCellDelegate: class {
+protocol AmityGalleryCollectionViewCellDelegate: AnyObject {
     func didTapCloseButton(_ cell: AmityGalleryCollectionViewCell)
 }
 
@@ -30,9 +30,17 @@ public class AmityGalleryCollectionViewCell: UICollectionViewCell {
     @IBOutlet weak var overlayView: UIView!
     @IBOutlet weak var exclamationImageView: UIImageView!
     @IBOutlet weak var exclamationBackgroundView: UIView!
+    @IBOutlet weak var playImageView: UIImageView!
     
     weak var delegate: AmityGalleryCollectionViewCellDelegate?
+    
     private(set) var viewState: ViewState = .idle
+    private var isEditable = false
+    private var numberText: String?
+    
+    private var shouldShowPlayButton = false
+    
+    private var session = UUID().uuidString
     
     @IBAction func tapClose(_ sender: Any) {
         delegate?.didTapCloseButton(self)
@@ -40,6 +48,7 @@ public class AmityGalleryCollectionViewCell: UICollectionViewCell {
     
     public override func awakeFromNib() {
         super.awakeFromNib()
+        
         numberLabel.isHidden = true
         imageView.contentMode = .scaleAspectFill
         imageView.clipsToBounds = true
@@ -67,81 +76,135 @@ public class AmityGalleryCollectionViewCell: UICollectionViewCell {
         exclamationBackgroundView.backgroundColor = AmityColorSet.secondary.withAlphaComponent(0.7)
         exclamationBackgroundView.layer.cornerRadius = 13
         exclamationBackgroundView.clipsToBounds = true
+        
+        playImageView.tintColor = .white
     }
     
     public override func prepareForReuse() {
         super.prepareForReuse()
         imageView.image = nil
         overlayView.isHidden = true
+        session = UUID().uuidString
     }
     
-    private var indexPath: IndexPath?
-    
-    func display(image: AmityImage?, isEditable: Bool, numberText: String?, indexPath: IndexPath) {
-        closeButton.isHidden = !isEditable
+    func display(media: AmityMedia?, isEditable: Bool, numberText: String?) {
+        
+        self.numberText = numberText
+        self.isEditable = isEditable
+        
         numberLabel.isHidden = numberText == nil
         numberLabel.text = numberText
-        self.indexPath = indexPath
         
         if numberText != nil {
             imageView.setImageColor(.lightGray)
         }
         
-        guard let selectedImage = image else {
-            return
+        if let media = media {
+            shouldShowPlayButton = (media.type == .video)
         }
         
-        switch selectedImage.state {
+        updateViewState(viewState)
+        
+        if let media = media {
+            tryLoadMediaThumbnail(media)
+        }
+        
+    }
+    
+    private func tryLoadMediaThumbnail(_ media: AmityMedia) {
+        switch media.state {
         case .image(let image):
             imageView.image = image
-        case .downloadable(let imageURL, _):
-            let indexPath = self.indexPath
-            AmityFileService.shared.loadImage(imageURL: imageURL, size: .medium, optimisticLoad: true) { [weak self] result in
-                switch result {
-                case .success(let image):
-                    // To check if the image going to assign has the correct index path.
-                    if indexPath == self?.indexPath {
-                        self?.imageView.image = image
-                    }
-                case .failure(let error):
-                    Log.add("Error while downloading image with file id: \(imageURL) error: \(error)")
-                }
+        case .downloadableImage(let imageURL, _):
+            loadThumbnailImage(at: imageURL)
+        case .downloadableVideo(_, let thumbnailUrl):
+            if let thumbnailUrl = thumbnailUrl {
+                loadThumbnailImage(at: thumbnailUrl)
+            } else {
+                imageView.image = AmityIconSet.videoThumbnailPlaceholder
             }
-        case .localAsset, .uploaded, .none:
-            selectedImage.loadImage(to: imageView, preferredSize: frame.size)
-        case .uploading, .error, .localURL:
+        case .localURL, .localAsset, .uploadedImage, .uploadedVideo, .none:
+            media.loadImage(to: imageView, preferredSize: frame.size)
+        case .uploading, .error:
             break
         }
     }
     
+    private func loadThumbnailImage(at imageURL: String) {
+        let _session = session
+        AmityUIKitManagerInternal.shared.fileService.loadImage(imageURL: imageURL, size: .medium, optimisticLoad: true) { [weak self] result in
+            guard let strongSelf = self else { return }
+            switch result {
+            case .success(let image):
+                // To prevent diplaying the wrong image after cell is dequeued.
+                guard strongSelf.session == _session else {
+                    // Cell has already dequeue.
+                    return
+                }
+                strongSelf.imageView.image = image
+            case .failure(let error):
+                Log.add("Error while downloading image with file id: \(imageURL) error: \(error)")
+            }
+        }
+    }
+    
     func updateViewState(_ viewState: ViewState) {
+        
+        let playButtonHidden: Bool
+        let closeButtonHidden: Bool
+        
+        closeButton.isHidden = !isEditable
         self.viewState = viewState
         switch viewState {
         case .idle:
-            closeButton.isHidden = false
-            overlayView.isHidden = false
-            progressView.isHidden = true
-            progressView.setProgress(0, animated: false)
-            exclamationBackgroundView.isHidden = true
-        case .uploading(let progress):
-            closeButton.isHidden = true
-            overlayView.isHidden = false
-            progressView.isHidden = false
-            progressView.setProgress(Float(progress), animated: true)
-            exclamationBackgroundView.isHidden = true
-        case .uploaded:
-            closeButton.isHidden = false
+            closeButtonHidden = false
             overlayView.isHidden = true
             progressView.isHidden = true
             progressView.setProgress(0, animated: false)
             exclamationBackgroundView.isHidden = true
+            playButtonHidden = false
+        case .uploading(let progress):
+            closeButtonHidden = true
+            overlayView.isHidden = false
+            progressView.isHidden = false
+            progressView.setProgress(Float(progress), animated: true)
+            exclamationBackgroundView.isHidden = true
+            playButtonHidden = true
+        case .uploaded:
+            closeButtonHidden = false
+            overlayView.isHidden = true
+            progressView.isHidden = true
+            progressView.setProgress(0, animated: false)
+            exclamationBackgroundView.isHidden = true
+            playButtonHidden = false
         case .error:
-            closeButton.isHidden = false
+            closeButtonHidden = false
             overlayView.isHidden = false
             progressView.isHidden = true
             progressView.setProgress(0, animated: false)
             exclamationBackgroundView.isHidden = false
+            playButtonHidden = true
         }
+        
+        if !isEditable {
+            closeButton.isHidden = true
+        } else {
+            closeButton.isHidden = closeButtonHidden
+        }
+        
+        let hasNumberText: Bool
+        if let numberText = numberText, !numberText.isEmpty {
+            hasNumberText = true
+        } else {
+            hasNumberText = false
+        }
+        
+        if shouldShowPlayButton, !playButtonHidden, !hasNumberText {
+            playImageView.isHidden = false
+        } else {
+            playImageView.isHidden = true
+        }
+        
     }
 
 }

@@ -8,7 +8,7 @@
 
 import UIKit
 
-public protocol AmityCommunityProfileEditorViewControllerDelegate: class {
+public protocol AmityCommunityProfileEditorViewControllerDelegate: AnyObject {
     func viewController(_ viewController: AmityCommunityProfileEditorViewController, didFinishCreateCommunity communityId: String)
     func viewController(_ viewController: AmityCommunityProfileEditorViewController, didFailWithNoPermission: Bool)
 }
@@ -306,7 +306,7 @@ public class AmityCommunityProfileEditorViewController: AmityViewController {
     
     private func setupUpdateButton() {
         if case .edit = viewType {
-            rightItem = UIBarButtonItem(title: AmityLocalizedStringSet.save.localizedString, style: .plain, target: self, action: #selector(updateProfile))
+            rightItem = UIBarButtonItem(title: AmityLocalizedStringSet.General.save.localizedString, style: .plain, target: self, action: #selector(updateProfile))
             rightItem?.tintColor = AmityColorSet.primary
             rightItem?.isEnabled = false
             navigationItem.rightBarButtonItem = rightItem
@@ -324,7 +324,7 @@ private extension AmityCommunityProfileEditorViewController {
     
     @IBAction func choosePhotoTap() {
         let bottomSheet = BottomSheetViewController()
-        var cameraOption = TextItemOption(title: AmityLocalizedStringSet.camera.localizedString)
+        var cameraOption = TextItemOption(title: AmityLocalizedStringSet.General.camera.localizedString)
         cameraOption.completion = { [weak self] in
             #warning("Redundancy: camera picker should be replaced with a singleton class")
             let cameraPicker = UIImagePickerController()
@@ -333,7 +333,7 @@ private extension AmityCommunityProfileEditorViewController {
             self?.present(cameraPicker, animated: true, completion: nil)
         }
         
-        var galleryOption = TextItemOption(title: AmityLocalizedStringSet.imageGallery.localizedString)
+        var galleryOption = TextItemOption(title: AmityLocalizedStringSet.General.imageGallery.localizedString)
         galleryOption.completion = { [weak self] in
             let imagePicker = AmityImagePickerController(selectedAssets: [])
             imagePicker.settings.theme.selectionStyle = .checked
@@ -470,7 +470,7 @@ extension AmityCommunityProfileEditorViewController: AmityCreateCommunityScreenV
         switch error {
         case .noPermission:
             let alert = UIAlertController(title: AmityLocalizedStringSet.Community.alertUnableToPerformActionTitle.localizedString, message: AmityLocalizedStringSet.Community.alertUnableToPerformActionDesc.localizedString, preferredStyle: .alert)
-            alert.addAction(UIAlertAction(title: AmityLocalizedStringSet.ok, style: .default, handler: { [weak self] _ in
+            alert.addAction(UIAlertAction(title: AmityLocalizedStringSet.General.ok, style: .default, handler: { [weak self] _ in
                 guard let strongSelf = self else { return }
                 strongSelf.dismiss(animated: true, completion: {
                     self?.delegate?.viewController(strongSelf, didFailWithNoPermission: true)
@@ -518,8 +518,8 @@ extension AmityCommunityProfileEditorViewController: AmityCreateCommunityScreenV
         case .onDismiss(let isChange):
             if isChange {
                 let alert = UIAlertController(title: AmityLocalizedStringSet.createCommunityAlertTitle.localizedString, message: AmityLocalizedStringSet.createCommunityAlertDesc.localizedString, preferredStyle: .alert)
-                alert.addAction(UIAlertAction(title: AmityLocalizedStringSet.cancel.localizedString, style: .cancel, handler: nil))
-                alert.addAction(UIAlertAction(title: AmityLocalizedStringSet.leave.localizedString, style: .destructive, handler: { [weak self] _ in
+                alert.addAction(UIAlertAction(title: AmityLocalizedStringSet.General.cancel.localizedString, style: .cancel, handler: nil))
+                alert.addAction(UIAlertAction(title: AmityLocalizedStringSet.General.leave.localizedString, style: .destructive, handler: { [weak self] _ in
                     self?.dismiss(animated: true, completion: nil)
                 }))
                 present(alert, animated: true, completion: nil)

@@ -70,7 +70,7 @@ public final class AmityMyCommunityViewController: AmityViewController {
     private func setupSearchController() {
         searchController.searchBar.delegate = self
         searchController.obscuresBackgroundDuringPresentation = false
-        searchController.searchBar.placeholder = AmityLocalizedStringSet.search.localizedString
+        searchController.searchBar.placeholder = AmityLocalizedStringSet.General.search.localizedString
         searchController.searchBar.tintColor = AmityColorSet.base
         searchController.searchBar.returnKeyType = .done
         searchController.searchBar.backgroundImage = UIImage()

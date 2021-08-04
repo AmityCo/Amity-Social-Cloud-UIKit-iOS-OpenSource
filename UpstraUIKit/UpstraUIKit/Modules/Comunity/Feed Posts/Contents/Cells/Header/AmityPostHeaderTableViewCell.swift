@@ -31,7 +31,6 @@ public final class AmityPostHeaderTableViewCell: UITableViewCell, Nibbable, Amit
     
     public override func prepareForReuse() {
         super.prepareForReuse()
-        avatarView.image = nil
         avatarView.placeholder = AmityIconSet.defaultAvatar
     }
     
@@ -48,13 +47,23 @@ public final class AmityPostHeaderTableViewCell: UITableViewCell, Nibbable, Amit
                                    shouldShowCommunityName: post.appearance.shouldShowCommunityName)
         displayNameLabel.delegate = self
         datetimeLabel.text = post.subtitle
-        optionButton.isHidden = !(post.appearance.shouldShowOption && post.isCommentable)
+        
 
+        switch post.feedType {
+        case .reviewing:
+            optionButton.isHidden = !post.isOwner
+        default:
+            optionButton.isHidden = !(post.appearance.shouldShowOption && post.isCommentable)
+        }
+        
         if post.isModerator {
             badgeStackView.isHidden = post.postAsModerator
         } else {
             badgeStackView.isHidden = true
         }
+        
+        displayNameLabel.delegate = self
+        datetimeLabel.text = post.subtitle
     }
 
     // MARK: - Setup views
@@ -63,10 +72,10 @@ public final class AmityPostHeaderTableViewCell: UITableViewCell, Nibbable, Amit
         backgroundColor = .clear
         contentView.backgroundColor = .clear
         containerView.backgroundColor = AmityColorSet.backgroundColor
-        displayNameLabel.configure(displayName: AmityLocalizedStringSet.anonymous.localizedString, communityName: nil, isOfficial: false, shouldShowCommunityName: false)
+        displayNameLabel.configure(displayName: AmityLocalizedStringSet.General.anonymous.localizedString, communityName: nil, isOfficial: false, shouldShowCommunityName: false)
         
         // badge
-        badgeLabel.text = AmityLocalizedStringSet.moderator.localizedString + " • "
+        badgeLabel.text = AmityLocalizedStringSet.General.moderator.localizedString + " • "
         badgeLabel.font = AmityFontSet.captionBold
         badgeLabel.textColor = AmityColorSet.base.blend(.shade1)
         badgeIconImageView.image = AmityIconSet.iconBadgeModerator

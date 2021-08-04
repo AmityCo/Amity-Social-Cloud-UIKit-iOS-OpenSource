@@ -10,7 +10,7 @@ import UIKit
 
 enum AmityCommentViewLayout {
     case comment(contentExpanded: Bool, shouldActionShow: Bool, shouldLineShow: Bool)
-    case commentPreview(shouldActionShow: Bool)
+    case commentPreview(contentExpanded: Bool, shouldActionShow: Bool)
     case reply(contentExpanded: Bool, shouldActionShow: Bool, shouldLineShow: Bool)
 }
 
@@ -22,7 +22,7 @@ enum AmityCommentViewAction {
     case viewReply
 }
 
-protocol AmityCommentViewDelegate: class {
+protocol AmityCommentViewDelegate: AnyObject {
     func commentView(_ view: AmityCommentView, didTapAction action: AmityCommentViewAction)
 }
 
@@ -64,7 +64,7 @@ class AmityCommentView: AmityView {
         contentLabel.numberOfLines = 8
         separatorLineView.backgroundColor  = AmityColorSet.secondary.blend(.shade4)
         
-        likeButton.setTitle(AmityLocalizedStringSet.like.localizedString, for: .normal)
+        likeButton.setTitle(AmityLocalizedStringSet.General.like.localizedString, for: .normal)
         likeButton.setTitleFont(AmityFontSet.captionBold)
         likeButton.setImage(AmityIconSet.iconLike, for: .normal)
         likeButton.setImage(AmityIconSet.iconLikeFill, for: .selected)
@@ -74,7 +74,7 @@ class AmityCommentView: AmityView {
         likeButton.setTintColor(AmityColorSet.base.blend(.shade2), for: .normal)
         likeButton.addTarget(self, action: #selector(likeButtonTap), for: .touchUpInside)
         likeButton.setInsets(forContentPadding: .zero, imageTitlePadding: 4)
-        replyButton.setTitle(AmityLocalizedStringSet.reply.localizedString, for: .normal)
+        replyButton.setTitle(AmityLocalizedStringSet.General.reply.localizedString, for: .normal)
         replyButton.setTitleFont(AmityFontSet.captionBold)
         replyButton.setImage(AmityIconSet.iconReply, for: .normal)
         replyButton.tintColor = AmityColorSet.base.blend(.shade2)
@@ -84,7 +84,7 @@ class AmityCommentView: AmityView {
         replyButton.setInsets(forContentPadding: .zero, imageTitlePadding: 4)
         optionButton.addTarget(self, action: #selector(optionButtonTap), for: .touchUpInside)
         optionButton.tintColor = AmityColorSet.base.blend(.shade2)
-        viewReplyButton.setTitle(AmityLocalizedStringSet.viewReply.localizedString, for: .normal)
+        viewReplyButton.setTitle(AmityLocalizedStringSet.General.viewReply.localizedString, for: .normal)
         viewReplyButton.setTitleFont(AmityFontSet.captionBold)
         viewReplyButton.setTitleColor(AmityColorSet.base.blend(.shade1), for: .normal)
         viewReplyButton.setTintColor(AmityColorSet.base.blend(.shade1), for: .normal)
@@ -113,7 +113,7 @@ class AmityCommentView: AmityView {
         if comment.reactionsCount > 0 {
             likeButton.setTitle(comment.reactionsCount.formatUsingAbbrevation(), for: .normal)
         } else {
-            likeButton.setTitle(AmityLocalizedStringSet.like.localizedString, for: .normal)
+            likeButton.setTitle(AmityLocalizedStringSet.General.like.localizedString, for: .normal)
         }
         
         switch layout {
@@ -124,8 +124,8 @@ class AmityCommentView: AmityView {
             replyButton.isHidden = false
             topAvatarImageViewConstraint.constant = 16
             leadingAvatarImageViewConstraint.constant = 16
-        case .commentPreview(let shouldActionShow):
-            contentLabel.isExpanded = false
+        case .commentPreview(let contentExpanded, let shouldActionShow):
+            contentLabel.isExpanded = contentExpanded
             actionStackView.isHidden = !shouldActionShow
             viewReplyButton.isHidden = !comment.isChildrenExisted
             replyButton.isHidden = false

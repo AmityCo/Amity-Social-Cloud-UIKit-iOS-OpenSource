@@ -18,7 +18,7 @@ public class AmityNewsfeedViewController: AmityViewController, IndicatorInfoProv
     var pageTitle: String?
     
     private let emptyView = AmityNewsfeedEmptyView()
-    private var headerView: AmityMyCommunityPreviewViewController?
+    private var headerView = AmityMyCommunityPreviewViewController.make()
     private let createPostButton: AmityFloatingButton = AmityFloatingButton()
     private let feedViewController = AmityFeedViewController.make(feedType: .globalFeed)
     
@@ -32,7 +32,7 @@ public class AmityNewsfeedViewController: AmityViewController, IndicatorInfoProv
     
     public override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        headerView?.retrieveCommunityList()
+        headerView.retrieveCommunityList()
     }
     
     public static func make() -> AmityNewsfeedViewController {
@@ -51,13 +51,12 @@ private extension AmityNewsfeedViewController {
         }
         
         feedViewController.pullRefreshHandler = { [weak self] in
-            self?.headerView?.retrieveCommunityList()
+            self?.headerView.retrieveCommunityList()
         }
     }
     
     private func setupHeaderView() {
-        headerView = AmityMyCommunityPreviewViewController.make()
-        headerView?.delegate = self
+        headerView.delegate = self
     }
     
     private func setupEmptyView() {
@@ -112,8 +111,7 @@ extension AmityNewsfeedViewController: AmityMyCommunityPreviewViewControllerDele
 
     public func viewController(_ viewController: AmityMyCommunityPreviewViewController, shouldShowMyCommunityPreview: Bool) {
         if shouldShowMyCommunityPreview {
-            feedViewController.headerView = nil
-            feedViewController.headerView = headerView?.view
+            feedViewController.headerView = headerView
         } else {
             feedViewController.headerView = nil
         }

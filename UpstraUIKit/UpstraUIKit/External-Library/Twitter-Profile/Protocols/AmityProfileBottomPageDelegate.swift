@@ -1,5 +1,5 @@
 import UIKit
 
-protocol AmityProfileBottomPageDelegate: class {
+protocol AmityProfileBottomPageDelegate: AnyObject {
     func pageViewController(_ currentViewController: UIViewController?, didSelectPageAt index: Int)
 }

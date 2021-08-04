@@ -16,12 +16,30 @@ public final class AmityUIKitManager {
     
     // MARK: - Setup Authentication
     
-    public static func setup(_ apiKey: String) {
-        AmityUIKitManagerInternal.shared.setup(apiKey)
+    /// Setup AmityClient
+    ///
+    /// - Parameters:
+    ///   - apiKey: API key provided by Amity.
+    ///   - httpUrl: Custom url to be used as base url.
+    ///   - socketUrl: Custom url to be used as base url.
+    public static func setup(apiKey: String, httpUrl: String? = nil, socketUrl: String? = nil) {
+        if let httpUrl = httpUrl, let socketUrl = socketUrl {
+            AmityUIKitManagerInternal.shared.setup(apiKey, httpUrl: httpUrl, socketUrl: socketUrl)
+        } else if let httpUrl = httpUrl {
+            AmityUIKitManagerInternal.shared.setup(apiKey, httpUrl: httpUrl)
+        } else if let socketUrl = socketUrl {
+            AmityUIKitManagerInternal.shared.setup(apiKey, socketUrl: socketUrl)
+        } else {
+            AmityUIKitManagerInternal.shared.setup(apiKey)
+        }
     }
     
-    public static func registerDevice(withUserId userId: String, displayName: String?, authToken: String? = nil) {
-        AmityUIKitManagerInternal.shared.registerDevice(userId, displayName: displayName, authToken: authToken)
+    public static func registerDevice(
+        withUserId userId: String,
+        displayName: String?,
+        authToken: String? = nil,
+        completion: AmityRequestCompletion? = nil) {
+        AmityUIKitManagerInternal.shared.registerDevice(userId, displayName: displayName, authToken: authToken, completion: completion)
     }
     public static func unregisterDevice() {
         AmityUIKitManagerInternal.shared.unregisterDevice()
@@ -66,15 +84,24 @@ public final class AmityUIKitManager {
     public static func set(eventHandler: AmityEventHandler) {
         AmityEventHandler.shared = eventHandler
     }
+    
+    public static func set(channelEventHandler: AmityChannelEventHandler) {
+        AmityChannelEventHandler.shared = channelEventHandler
+    }
 }
 
 final class AmityUIKitManagerInternal: NSObject {
     
     // MARK: - Properties
     
-    private var apiKey: String = ""
     public static let shared = AmityUIKitManagerInternal()
     private var _client: AmityClient?
+    private var apiKey: String = ""
+    private var httpUrl: String = ""
+    private var socketUrl: String = ""
+    
+    private(set) var fileService = AmityFileService()
+    private(set) var messageMediaService = AmityMessageMediaService()
     
     var currentUserId: String { return client.currentUserId ?? "" }
     
@@ -93,29 +120,43 @@ final class AmityUIKitManagerInternal: NSObject {
     
     // MARK: - Setup functions
 
-    func setup(_ apiKey: String) {
+    func setup(_ apiKey: String, httpUrl: String = "", socketUrl: String = "") {
         self.apiKey = apiKey
+        self.httpUrl = httpUrl
+        self.socketUrl = socketUrl
     }
 
-    func registerDevice(_ userId: String, displayName: String?, authToken: String?) {
+    func registerDevice(_ userId: String,
+                        displayName: String?,
+                        authToken: String?,
+                        completion: AmityRequestCompletion?) {
         
         // clear current client before setting up a new one
         unregisterDevice()
         self._client = nil
         
-        guard let _client = AmityClient(apiKey: apiKey) else {
+        // Passing empty string over `httpUrl` and `socketUrl` is acceptable.
+        // `AmityClient` will be using the default endpoint instead.
+        guard let client = AmityClient(apiKey: apiKey, httpUrl: httpUrl, socketUrl: socketUrl) else {
             assertionFailure("Something went wrong. API key is invalid.")
             return
         }
         
-        _client.clientErrorDelegate = self
-        _client.registerDevice(withUserId: userId, displayName: displayName, authToken: authToken)
-        self._client = _client
+        client.clientErrorDelegate = self
+        client.registerDevice(withUserId: userId, displayName: displayName, authToken: authToken, completion: completion)
+        self._client = client
+        didUpdateClient()
     }
     
     func unregisterDevice() {
         AmityFileCache.shared.clearCache()
         self._client?.unregisterDevice()
+    }
+    
+    func didUpdateClient() {
+        // Update file repository to use in file service.
+        fileService.fileRepository = AmityFileRepository(client: client)
+        messageMediaService.fileRepository = AmityFileRepository(client: client)
     }
     
     func registerDeviceForPushNotification(_ deviceToken: String, completion: AmityRequestCompletion? = nil) {

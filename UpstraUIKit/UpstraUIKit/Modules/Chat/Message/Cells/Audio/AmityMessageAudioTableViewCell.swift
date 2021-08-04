@@ -73,7 +73,7 @@ extension AmityMessageAudioTableViewCell {
     @IBAction func playTap(_ sender: UIButton) {
         if !message.isDeleted && message.syncState == .synced {
             sender.isEnabled = false
-            AmityMessageMediaService.shared.download(for: message.object) { [weak self] in
+            AmityUIKitManagerInternal.shared.messageMediaService.download(for: message.object) { [weak self] in
                 self?.durationLabel.alpha = 0
                 self?.activityIndicatorView.startAnimating()
             } completion: { [weak self] (result) in

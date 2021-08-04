@@ -17,7 +17,7 @@ public protocol AmityPostHeaderProtocol: UITableViewCell {
 }
 
 /// A default delegate of header post
-public protocol AmityPostHeaderDelegate: class {
+public protocol AmityPostHeaderDelegate: AnyObject {
     func didPerformAction(_ cell: AmityPostHeaderProtocol, action: AmityPostHeaderAction)
 }
 

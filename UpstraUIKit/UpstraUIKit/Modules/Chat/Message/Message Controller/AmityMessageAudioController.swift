@@ -25,7 +25,7 @@ final class AmityMessageAudioController {
     
     func create(completion: @escaping () -> Void) {
         guard let audioURL = AmityAudioRecorder.shared.getAudioFileURL() else {
-            print("› [AmityUIKit]: Audio file not found")
+            Log.add("Audio file not found")
             return
         }
         
@@ -35,6 +35,7 @@ final class AmityMessageAudioController {
                 self?.token = nil
                 return
             }
+            
             AmityAudioRecorder.shared.updateFilename(withFilename: message.messageId)
             completion()
         }

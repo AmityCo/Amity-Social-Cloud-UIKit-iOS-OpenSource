@@ -14,7 +14,7 @@ protocol AmityCategoryPickerViewModelDataSource {
     func loadNext()
 }
 
-protocol AmityCategoryPickerScreenViewModelDelegate: class {
+protocol AmityCategoryPickerScreenViewModelDelegate: AnyObject {
     func screenViewModelDidUpdateData(_ viewModel: AmityCategoryPickerScreenViewModel)
 }
 

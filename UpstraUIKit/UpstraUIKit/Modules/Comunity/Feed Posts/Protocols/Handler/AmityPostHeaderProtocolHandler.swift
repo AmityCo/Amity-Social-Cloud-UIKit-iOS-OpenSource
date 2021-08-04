@@ -15,7 +15,7 @@ enum AmityPostProtocolHeaderHandlerAction {
     case tapUnreport
 }
 
-protocol AmityPostHeaderProtocolHandlerDelegate: class {
+protocol AmityPostHeaderProtocolHandlerDelegate: AnyObject {
     func headerProtocolHandlerDidPerformAction(_ handler: AmityPostHeaderProtocolHandler, action: AmityPostProtocolHeaderHandlerAction, withPost post: AmityPostModel)
 }
 
@@ -56,39 +56,51 @@ final class AmityPostHeaderProtocolHandler: AmityPostHeaderDelegate {
         bottomSheet.sheetContentView = contentView
         bottomSheet.modalPresentationStyle = .overFullScreen
         
+        let deleteOption = TextItemOption(title: AmityLocalizedStringSet.PostDetail.deletePost.localizedString) { [weak self] in
+            guard let strongSelf = self else { return }
+            // delete option
+            let alert = UIAlertController(title: AmityLocalizedStringSet.PostDetail.deletePostTitle.localizedString, message: AmityLocalizedStringSet.PostDetail.deletePostMessage.localizedString, preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: AmityLocalizedStringSet.General.cancel.localizedString, style: .default, handler: nil))
+            alert.addAction(UIAlertAction(title: AmityLocalizedStringSet.General.delete.localizedString, style: .destructive, handler: { _ in
+                strongSelf.delegate?.headerProtocolHandlerDidPerformAction(strongSelf, action: .tapDelete, withPost: post)
+            }))
+            viewController.present(alert, animated: true, completion: nil)
+        }
+        
+        let editOption = TextItemOption(title: AmityLocalizedStringSet.PostDetail.editPost.localizedString) {
+            AmityEventHandler.shared.editPostDidTap(from: viewController, postId: post.postId)
+        }
+        
+        let unreportOption = TextItemOption(title: AmityLocalizedStringSet.General.undoReport.localizedString) { [weak self] in
+            guard let strongSelf = self else { return }
+            strongSelf.delegate?.headerProtocolHandlerDidPerformAction(strongSelf, action: .tapUnreport, withPost: post)
+        }
+        
+        let reportOption = TextItemOption(title: AmityLocalizedStringSet.General.report.localizedString) { [weak self] in
+            guard let strongSelf = self else { return }
+            strongSelf.delegate?.headerProtocolHandlerDidPerformAction(strongSelf, action: .tapReport, withPost: post)
+        }
+        
         if post.isOwner {
-            let editOption = TextItemOption(title: AmityLocalizedStringSet.PostDetail.editPost.localizedString) {
-                AmityEventHandler.shared.editPostDidTap(from: viewController, postId: post.postId)
-            }
-            let deleteOption = TextItemOption(title: AmityLocalizedStringSet.PostDetail.deletePost.localizedString) { [weak self] in
-                guard let strongSelf = self else { return }
-                // delete option
-                let alert = UIAlertController(title: AmityLocalizedStringSet.PostDetail.deletePostTitle.localizedString, message: AmityLocalizedStringSet.PostDetail.deletePostMessage.localizedString, preferredStyle: .alert)
-                alert.addAction(UIAlertAction(title: AmityLocalizedStringSet.cancel.localizedString, style: .default, handler: nil))
-                alert.addAction(UIAlertAction(title: AmityLocalizedStringSet.delete.localizedString, style: .destructive, handler: { _ in
-                    strongSelf.delegate?.headerProtocolHandlerDidPerformAction(strongSelf, action: .tapDelete, withPost: post)
-                }))
-                viewController.present(alert, animated: true, completion: nil)
-            }
-            
             contentView.configure(items: [editOption, deleteOption], selectedItem: nil)
             viewController.present(bottomSheet, animated: false, completion: nil)
         } else {
-            if isReported {
-                let unreportOption = TextItemOption(title: AmityLocalizedStringSet.General.undoReport.localizedString) { [weak self] in
-                    guard let strongSelf = self else { return }
-                    strongSelf.delegate?.headerProtocolHandlerDidPerformAction(strongSelf, action: .tapUnreport, withPost: post)
+            // if it is in community feed, check permission before options
+            if let communityId = post.targetCommunity?.communityId {
+                var items: [TextItemOption] = isReported ? [unreportOption] : [reportOption]
+                AmityUIKitManagerInternal.shared.client.hasPermission(.editCommunity, forCommunity: communityId) { [weak self] (hasPermission) in
+                    if hasPermission {
+                        items.insert(deleteOption, at: 0)
+                    }
+                    contentView.configure(items: items, selectedItem: nil)
+                    self?.viewController?.present(bottomSheet, animated: false, completion: nil)
                 }
-                contentView.configure(items: [unreportOption], selectedItem: nil)
             } else {
-                let reportOption = TextItemOption(title: AmityLocalizedStringSet.General.report.localizedString) { [weak self] in
-                    guard let strongSelf = self else { return }
-                    strongSelf.delegate?.headerProtocolHandlerDidPerformAction(strongSelf, action: .tapReport, withPost: post)
-                }
-                contentView.configure(items: [reportOption], selectedItem: nil)
+                let items: [TextItemOption] = isReported ? [unreportOption] : [reportOption]
+                contentView.configure(items: items, selectedItem: nil)
+                viewController.present(bottomSheet, animated: false, completion: nil)
             }
-            viewController.present(bottomSheet, animated: false, completion: nil)
-            
         }
+        
     }
 }

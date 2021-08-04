@@ -71,7 +71,7 @@ final class AmityCommunitySettingsCreateMenuViewModel: AmityCommunitySettingsCre
         
         // MARK: Create notification item
         if shouldNotificationItemShow {
-            let itemNotificationDesc = isNotificationEnabled ? AmityLocalizedStringSet.on : AmityLocalizedStringSet.off
+            let itemNotificationDesc = isNotificationEnabled ? AmityLocalizedStringSet.General.on : AmityLocalizedStringSet.General.off
             let itemNotificationContent = AmitySettingsItem.NavigationContent(identifier: AmityCommunitySettingsItem.notification.identifier,
                                                                             icon: AmityCommunitySettingsItem.notification.icon,
                                                                             title: AmityCommunitySettingsItem.notification.title,
@@ -79,6 +79,19 @@ final class AmityCommunitySettingsCreateMenuViewModel: AmityCommunitySettingsCre
             settingsItems.append(.navigationContent(content: itemNotificationContent))
             // add separator
             settingsItems.append(.separator)
+        }
+        
+        // MARK: Create Community Permission
+        if shouldShowEditProfileItem || self.community.isCreator {
+            let communityPermissionHeader = AmitySettingsItem.HeaderContent(title: AmityCommunitySettingsItem.communityPermissionHeader.title)
+            settingsItems.append(.header(content: communityPermissionHeader))
+            
+            // MARK: Create post review item
+            let itemPostReviewContent = AmitySettingsItem.NavigationContent(identifier: AmityCommunitySettingsItem.postReview.identifier,
+                                                                      icon: AmityCommunitySettingsItem.postReview.icon,
+                                                                      title: AmityCommunitySettingsItem.postReview.title,
+                                                                      description: AmityCommunitySettingsItem.postReview.description)
+            settingsItems.append(.navigationContent(content: itemPostReviewContent))
         }
         
         // MARK: Create leave community item

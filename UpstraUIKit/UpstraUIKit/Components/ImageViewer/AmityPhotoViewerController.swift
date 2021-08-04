@@ -261,12 +261,32 @@ public class AmityPhotoViewerController: UIViewController {
         collectionView.contentInsetAdjustmentBehavior = .never
     }
     
-    public convenience init(referencedView: UIView?, imageModel: AmityImage) {
+    public convenience init(referencedView: UIView?, media: AmityMedia) {
         self.init(referencedView: referencedView, image: nil)
-        imageModel.loadImage(to: imageView)
-        
-        if case .downloadable(let fileURL, _) = imageModel.state {
-            imageView.loadImage(with: fileURL, size: .full, placeholder: nil)
+        // Normal size
+        media.loadImage(to: imageView)
+        // Full size
+        switch media.state {
+        case .downloadableImage(let fileURL, _):
+            imageView.loadImage(
+                with: fileURL,
+                size: .full,
+                placeholder: nil,
+                optimisticLoad: true
+            )
+        case .downloadableVideo(_, let thumbnailUrl):
+            if let thumbnailUrl = thumbnailUrl {
+                imageView.loadImage(
+                    with: thumbnailUrl,
+                    size: .full,
+                    placeholder: AmityIconSet.videoThumbnailPlaceholder,
+                    optimisticLoad: true
+                )
+            } else {
+                imageView.image = AmityIconSet.videoThumbnailPlaceholder
+            }
+        default:
+            break
         }
     }
     
@@ -370,26 +390,26 @@ public class AmityPhotoViewerController: UIViewController {
     
     open override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        
+        // Only perform presenting animation logic when really appear, because of presenting.
+        guard isBeingPresented else {
+            return
+        }
         if !animated {
             presentingAnimation()
             presentationAnimationDidFinish()
-        }
-        else {
+        } else {
             presentationAnimationWillStart()
         }
     }
     
-    open override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-    }
-    
     open override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        // Only perform dismiss animation logic when really disappear, because of dismiss.
+        guard isBeingDismissed else {
+            return
+        }
         // Update image view before animation
         updateImageView(scrollView: scrollView)
-        
-        super.viewWillDisappear(animated)
-        
         if !animated {
             dismissingAnimation()
             dismissalAnimationDidFinish()
@@ -448,31 +468,54 @@ public class AmityPhotoViewerController: UIViewController {
     }
     
     @objc func _handleTapGesture(_ gesture: UITapGestureRecognizer) {
-        didReceiveTapGesture()
+        
+        let indexPath = IndexPath(item: currentPhotoIndex, section: 0)
+        
+        guard let cell = collectionView.cellForItem(at: indexPath) as? AmityPhotoCollectionViewCell else {
+            assertionFailure("Unhandled cell type")
+            return
+        }
+        
         delegate?.photoViewerControllerDidReceiveTapGesture?(self)
+        
+        if cell.zoomEnabled {
+            reverseInfoOverlayViewDisplayStatus()
+        }
+        
     }
     
     @objc func _handleDoubleTapGesture(_ gesture: UITapGestureRecognizer) {
+        
+        let indexPath = IndexPath(item: currentPhotoIndex, section: 0)
+        
+        guard let cell = collectionView.cellForItem(at: indexPath) as? AmityPhotoCollectionViewCell else {
+            assertionFailure("Unhandled cell type")
+            return
+        }
+        
+        guard cell.zoomEnabled else {
+            // Only perform double tap, if cell.zoomEnabled == true.
+            return
+        }
+        
         didReceiveDoubleTapGesture()
         delegate?.photoViewerControllerDidReceiveDoubleTapGesture?(self)
-        let indexPath = IndexPath(item: currentPhotoIndex, section: 0)
-        if let cell = collectionView.cellForItem(at: indexPath) as? AmityPhotoCollectionViewCell {
-            // Double tap
-            // imageViewerControllerDidDoubleTapImageView()
-            if (cell.scrollView.zoomScale == cell.scrollView.minimumZoomScale) {
-                let location = gesture.location(in: view)
-                let center = cell.imageView.convert(location, from: view)
-                
-                // Zoom in
-                cell.minimumZoomScale = 1.0
-                let rect = zoomRect(for: cell.imageView, withScale: cell.scrollView.maximumZoomScale, withCenter: center)
-                cell.scrollView.zoom(to: rect, animated: true)
-            } else {
-                // Zoom out
-                cell.minimumZoomScale = 1.0
-                cell.scrollView.setZoomScale(cell.scrollView.minimumZoomScale, animated: true)
-            }
+        
+        // Toggle Zoom in/out for double tap
+        if (cell.scrollView.zoomScale == cell.scrollView.minimumZoomScale) {
+            let location = gesture.location(in: view)
+            let center = cell.imageView.convert(location, from: view)
+            
+            // Zoom in
+            cell.minimumZoomScale = 1.0
+            let rect = zoomRect(for: cell.imageView, withScale: cell.scrollView.maximumZoomScale, withCenter: center)
+            cell.scrollView.zoom(to: rect, animated: true)
+        } else {
+            // Zoom out
+            cell.minimumZoomScale = 1.0
+            cell.scrollView.setZoomScale(cell.scrollView.minimumZoomScale, animated: true)
         }
+        
     }
     
     private func frameForReferencedView() -> CGRect {
@@ -513,13 +556,6 @@ public class AmityPhotoViewerController: UIViewController {
     }
     
     // Update zoom inside UICollectionViewCell
-    private func _updateZoomScaleForSize(cell: AmityPhotoCollectionViewCell, size: CGSize) {
-        let widthScale = size.width / cell.imageView.bounds.width
-        let heightScale = size.height / cell.imageView.bounds.height
-        let zoomScale = min(widthScale, heightScale)
-        
-        cell.maximumZoomScale = zoomScale
-    }
     
     private func zoomRect(for imageView: UIImageView, withScale scale: CGFloat, withCenter center: CGPoint) -> CGRect {
         var zoomRect = CGRect.zero
@@ -697,10 +733,6 @@ public class AmityPhotoViewerController: UIViewController {
     
     open func willZoomOnPhoto(at index: Int) {
          hideInfoOverlayView(false)
-    }
-    
-    open func didReceiveTapGesture() {
-        reverseInfoOverlayViewDisplayStatus()
     }
     
     open func didReceiveDoubleTapGesture() {

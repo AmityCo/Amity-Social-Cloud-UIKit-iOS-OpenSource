@@ -181,7 +181,7 @@ class AmitySocialNotificationSettingsScreenViewModel: AmityPostNotificationSetti
                 case .off :
                     let offOption = AmitySettingsItem.RadionButtonContent(
                         identifier: settingItem.identifier,
-                        title: AmityLocalizedStringSet.off.localizedString,
+                        title: AmityLocalizedStringSet.General.off.localizedString,
                         isSelected: setting.selectedOption == .off)
                     items.append(.radioButtonContent(content: offOption))
                 }

@@ -26,6 +26,7 @@ struct AmityCommunityModel {
     let category: String
     var categoryId: String?
     let avatarURL: String
+    let isPostReviewEnabled: Bool
     var isCreator: Bool {
         return AmityUIKitManagerInternal.shared.client.currentUserId == userId
     }
@@ -48,9 +49,10 @@ struct AmityCommunityModel {
         self.metadata = object.metadata as? [String : String]
         self.userId = object.userId
         self.tags = object.tags ?? []
-        self.category = object.categories.first?.name ?? AmityLocalizedStringSet.general.localizedString
+        self.category = object.categories.first?.name ?? AmityLocalizedStringSet.General.general.localizedString
         self.categoryId = object.categoryIds.first
         self.avatarURL = object.avatar?.fileURL ?? ""
         self.participation = object.participation
+        self.isPostReviewEnabled = object.isPostReviewEnabled
     }
 }

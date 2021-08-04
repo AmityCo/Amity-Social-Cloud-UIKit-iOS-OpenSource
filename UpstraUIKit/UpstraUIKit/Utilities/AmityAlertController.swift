@@ -21,9 +21,9 @@ struct AmityAlertController {
         private var title: String {
             switch self {
             case .ok:
-                return AmityLocalizedStringSet.ok.localizedString
+                return AmityLocalizedStringSet.General.ok.localizedString
             case .cancel:
-                return AmityLocalizedStringSet.cancel.localizedString
+                return AmityLocalizedStringSet.General.cancel.localizedString
             case .custom(let title, _, _):
                 return title
             }

@@ -24,7 +24,7 @@ import Foundation
 import Photos
 
 /// Delegate of the image picker
-public protocol AmityImagePickerControllerDelegate: class {
+public protocol AmityImagePickerControllerDelegate: AnyObject {
     /// An asset was selected
     /// - Parameter imagePicker: The image picker that asset was selected in
     /// - Parameter asset: selected asset

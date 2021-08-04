@@ -13,7 +13,7 @@ typealias LineIndexTuple = (line: CTLine, index: Int)
 /**
  * The delegate of AmityExpandableLabel.
  */
-public protocol AmityExpandableLabelDelegate: class {
+public protocol AmityExpandableLabelDelegate: AnyObject {
     func willExpandLabel(_ label: AmityExpandableLabel)
     func didExpandLabel(_ label: AmityExpandableLabel)
     func willCollapseLabel(_ label: AmityExpandableLabel)

@@ -50,7 +50,7 @@ public class AmityCommunityHomePageViewController: AmityPageViewController {
 // MARK: - Action
 private extension AmityCommunityHomePageViewController {
     @objc func searchTap() {
-        let searchVC = AmityCommunitySearchViewController.make()
+        let searchVC = AmitySearchViewController.make()
         let nav = UINavigationController(rootViewController: searchVC)
         nav.modalPresentationStyle = .fullScreen
         nav.modalTransitionStyle = .crossDissolve

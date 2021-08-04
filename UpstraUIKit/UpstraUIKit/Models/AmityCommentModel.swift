@@ -31,7 +31,7 @@ public struct AmityCommentModel {
     
     init(comment: AmityComment) {
         id = comment.commentId
-        displayName = comment.user?.displayName ?? AmityLocalizedStringSet.anonymous.localizedString
+        displayName = comment.user?.displayName ?? AmityLocalizedStringSet.General.anonymous.localizedString
         fileURL = comment.user?.getAvatarInfo()?.fileURL ?? ""
         text = comment.data?["text"] as? String ?? ""
         isDeleted = comment.isDeleted

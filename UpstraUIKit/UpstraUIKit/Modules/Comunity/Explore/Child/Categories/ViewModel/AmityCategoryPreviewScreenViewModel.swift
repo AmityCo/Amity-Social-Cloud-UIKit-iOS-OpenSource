@@ -43,8 +43,8 @@ extension AmityCategoryPreviewScreenViewModel {
 
     func retrieveCategory() {
         categoryController.retrieve { [weak self] (result) in
-            guard let strongSelf = self else { return }
-            strongSelf.debouncer.run {
+            self?.debouncer.run {
+                guard let strongSelf = self else { return }
                 switch result {
                 case .success(let category):
                     strongSelf.categories = category

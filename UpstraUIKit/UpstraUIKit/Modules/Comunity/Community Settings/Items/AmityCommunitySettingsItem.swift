@@ -13,6 +13,7 @@ enum AmityCommunitySettingsItem: String {
     case editProfile
     case members
     case notification
+    case communityPermissionHeader
     case postReview
     case leaveCommunity
     case closeCommunity
@@ -31,6 +32,8 @@ enum AmityCommunitySettingsItem: String {
             return AmityLocalizedStringSet.CommunitySettings.itemTitleMembers.localizedString
         case .notification:
             return AmityLocalizedStringSet.CommunitySettings.itemTitleNotifications.localizedString
+        case .communityPermissionHeader:
+            return AmityLocalizedStringSet.CommunitySettings.itemHeaderCommunityPermissions.localizedString
         case .postReview:
             return AmityLocalizedStringSet.CommunitySettings.itemTitlePostReview.localizedString
         case .leaveCommunity:

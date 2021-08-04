@@ -35,9 +35,6 @@ class AmityMessageTextTableViewCell: AmityMessageTableViewCell {
         
     override func display(message: AmityMessageModel) {
         super.display(message: message)
-        
-        Log.add("Text Message Refresh...")
-        
         if message.isOwner {
             textMessageView.textColor = AmityColorSet.baseInverse
             textMessageView.readmoreTextColor = AmityColorSet.baseInverse

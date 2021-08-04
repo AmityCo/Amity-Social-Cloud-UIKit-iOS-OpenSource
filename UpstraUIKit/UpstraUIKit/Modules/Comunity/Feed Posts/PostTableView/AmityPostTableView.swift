@@ -8,7 +8,7 @@
 
 import UIKit
 
-protocol AmityPostTableViewDelegate: class {
+protocol AmityPostTableViewDelegate: AnyObject {
     func tableView(_ tableView: AmityPostTableView, didSelectRowAt indexPath: IndexPath)
     func tableView(_ tableView: AmityPostTableView, heightForRowAt indexPath: IndexPath) -> CGFloat
     func tableView(_ tableView: AmityPostTableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat
@@ -31,7 +31,7 @@ extension AmityPostTableViewDelegate {
     }
 }
 
-protocol AmityPostTableViewDataSource: class {
+protocol AmityPostTableViewDataSource: AnyObject {
     func numberOfSections(in tableView: AmityPostTableView) -> Int
     func tableView(_ tableView: AmityPostTableView, numberOfRowsInSection section: Int) -> Int
     func tableView(_ tableView: AmityPostTableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell

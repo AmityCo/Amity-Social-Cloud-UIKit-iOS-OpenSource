@@ -52,7 +52,7 @@ enum AmityCommunityNotificationSettingsItem: String {
     
 }
 
-protocol AmityCommunityNotificationSettingsViewModelDelegate: class {
+protocol AmityCommunityNotificationSettingsViewModelDelegate: AnyObject {
     func screenViewModel(_ viewModel: AmityCommunityNotificationSettingsScreenViewModelType, didUpdateSettingItem settings: [AmitySettingsItem])
     func screenViewModel(_ viewModel: AmityCommunityNotificationSettingsScreenViewModelType, didUpdateLoadingState state: AmityLoadingState)
     func screenViewModel(_ viewModel: AmityCommunityNotificationSettingsScreenViewModelType, didFailWithError error: AmityError)

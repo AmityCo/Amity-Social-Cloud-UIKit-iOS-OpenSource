@@ -8,7 +8,7 @@
 
 import UIKit
 
-protocol AmityFeedDisplayNameLabelDelegate: class {
+protocol AmityFeedDisplayNameLabelDelegate: AnyObject {
     func labelDidTapUserDisplayName(_ label: AmityFeedDisplayNameLabel)
     func labelDidTapCommunityName(_ label: AmityFeedDisplayNameLabel)
 }
@@ -40,6 +40,7 @@ class AmityFeedDisplayNameLabel: UILabel {
         let attributeString = NSMutableAttributedString()
         attributeString.append(NSAttributedString(string: displayName))
         
+        // configure community displayname
         if shouldShowCommunityName, let communityName = communityName {
             attributeString.append(NSAttributedString(string: " ‣ "))
             attributeString.append(NSAttributedString(string: communityName))
@@ -48,7 +49,8 @@ class AmityFeedDisplayNameLabel: UILabel {
         attributeString.addAttributes(attributes, range: NSRange(location: 0, length: attributeString.string.count) )
         attributedText = attributeString
         
-        let shouldShowBadge = (communityName != nil && isOfficial)
+        // configure official badge
+        let shouldShowBadge = (shouldShowCommunityName && isOfficial)
         setImageWithText(position: .right(image: shouldShowBadge ? AmityIconSet.iconBadgeCheckmark : nil), size: CGSize(width: 18, height: 18), tintColor: AmityColorSet.highlight)
     }
     

@@ -9,7 +9,7 @@
 import UIKit
 
 /// This protocol for providing to custom post
-public protocol AmityFeedDataSource: class {
+public protocol AmityFeedDataSource: AnyObject {
     func getUIComponentForPost(post: AmityPostModel, at index: Int) -> AmityPostComposable?
 }
 

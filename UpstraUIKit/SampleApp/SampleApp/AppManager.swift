@@ -28,10 +28,11 @@ class AppManager {
     
     func setupAmityUIKit() {
         // setup api key
-        AmityUIKitManager.setup("API_KEY")
+        AmityUIKitManager.setup(apiKey: "YOUR_API_KEY")
         
         // setup event handlers and page settings
         AmityUIKitManager.set(eventHandler: CustomEventHandler())
+        AmityUIKitManager.set(channelEventHandler: CustomChannelEventHandler())
         AmityUIKitManager.feedUISettings.eventHandler = CustomFeedEventHandler()
         AmityUIKitManager.feedUISettings.setPostSharingSettings(settings: AmityPostSharingSettings())
         
@@ -47,7 +48,12 @@ class AppManager {
     }
     
     func register(withUserId userId: String) {
-        AmityUIKitManager.registerDevice(withUserId: userId, displayName: userId.uppercased())
+        AmityUIKitManager.registerDevice(withUserId: userId, displayName: nil) { success, error in
+            print("[Sample App] register device with userId '\(userId)' \(success ? "successfully" : "failed")")
+            if let error = error {
+                print("[Sample App] register device failed \(error.localizedDescription)")
+            }
+        }
         UserDefaults.standard.setValue(userId, forKey: UserDefaultsKey.userId)
         
         UIApplication.shared.windows.first?.rootViewController = TabbarViewController()

@@ -8,7 +8,7 @@
 
 import UIKit
 
-protocol AmityRecommendedCommunityCollectionViewCellDelegate: class {
+protocol AmityRecommendedCommunityCollectionViewCellDelegate: AnyObject {
     func cellDidTapOnAvatar(_ cell: AmityRecommendedCommunityCollectionViewCell)
 }
 
@@ -44,8 +44,10 @@ final class AmityRecommendedCommunityCollectionViewCell: UICollectionViewCell, N
         avatarView.setImage(withImageURL: model.avatarURL, placeholder: AmityIconSet.defaultCommunity)
         displayNameLabel.text = model.displayName
         categoryLabel.text = model.category
-        memberLabel.text = String.localizedStringWithFormat(AmityLocalizedStringSet.members.localizedString, "\(model.membersCount)")
-        descLabel.text = model.description == "" ? "-":model.description
+        
+        let memberCountPrefix = model.membersCount == 1 ? AmityLocalizedStringSet.Unit.memberSingular.localizedString : AmityLocalizedStringSet.Unit.memberPlural.localizedString
+        memberLabel.text = String.localizedStringWithFormat(memberCountPrefix, model.membersCount.formatUsingAbbrevation())
+        descLabel.text = model.description == "" ? "-" : model.description
         badgeImageView.isHidden = !model.isOfficial
     }
 }

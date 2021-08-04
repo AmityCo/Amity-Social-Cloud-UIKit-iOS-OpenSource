@@ -71,7 +71,7 @@ public class AmityEditTextViewController: AmityViewController {
     }
     
     private func setupView() {
-        let buttonTitle = (editMode == .create) ? AmityLocalizedStringSet.post.localizedString : AmityLocalizedStringSet.save.localizedString
+        let buttonTitle = (editMode == .create) ? AmityLocalizedStringSet.General.post.localizedString : AmityLocalizedStringSet.General.save.localizedString
         saveBarButton = UIBarButtonItem(title: buttonTitle, style: .plain, target: self, action: #selector(saveTap))
         saveBarButton.tintColor = AmityColorSet.primary
         navigationItem.rightBarButtonItem = saveBarButton

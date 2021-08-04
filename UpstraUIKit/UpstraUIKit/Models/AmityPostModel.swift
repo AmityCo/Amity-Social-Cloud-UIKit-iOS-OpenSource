@@ -80,6 +80,7 @@ public class AmityPostModel {
         case text
         case image
         case file
+        case video
         case unknown
     }
     
@@ -167,7 +168,7 @@ public class AmityPostModel {
      * Posted user display name
      */
     public var displayName: String {
-        return postedUser?.displayName ?? AmityLocalizedStringSet.anonymous.localizedString
+        return postedUser?.displayName ?? AmityLocalizedStringSet.General.anonymous.localizedString
     }
     
     /**
@@ -203,8 +204,9 @@ public class AmityPostModel {
     let latestComments: [AmityCommentModel]
     let postAsModerator: Bool = false
     private(set) var text: String = ""
-    private(set) var images: [AmityImage] = []
+    private(set) var medias: [AmityMedia] = []
     private(set) var files: [AmityFile] = []
+    private let post: AmityPost
     private let childrenPosts: [AmityPost]
     
     // Maps fileId to PostId for child post
@@ -214,9 +216,12 @@ public class AmityPostModel {
         return myReactions.contains(.like)
     }
     
+    private(set) var feedType: AmityFeedType = .published
+    
     // MARK: - Initializer
     
     public init(post: AmityPost) {
+        self.post = post
         postId = post.postId
         latestComments = post.latestComments.map(AmityCommentModel.init)
         dataType = post.dataType
@@ -226,7 +231,7 @@ public class AmityPostModel {
         parentPostId = post.parentPostId
         postedUser = Author(
             avatarURL: post.postedUser?.getAvatarInfo()?.fileURL,
-            displayName: post.postedUser?.displayName ?? AmityLocalizedStringSet.anonymous.localizedString)
+            displayName: post.postedUser?.displayName ?? AmityLocalizedStringSet.General.anonymous.localizedString)
         subtitle = post.isEdited ? String.localizedStringWithFormat(AmityLocalizedStringSet.PostDetail.postDetailCommentEdit.localizedString, post.createdAt.relativeTime) : post.createdAt.relativeTime
         postedUserId = post.postedUserId
         sharedCount = Int(post.sharedCount)
@@ -234,6 +239,7 @@ public class AmityPostModel {
         allCommentCount = Int(post.commentsCount)
         allReactions = post.myReactions as? [String] ?? []
         myReactions = allReactions.compactMap(AmityReactionType.init)
+        feedType = post.getFeedType()
         data = post.data ?? [:]
         appearance = AmityPostAppearance()
         extractPostData()
@@ -256,9 +262,12 @@ public class AmityPostModel {
     }
     
     // Returns post id for file id
-    func getPostId(for fileId: String) -> String {
-        let postId = fileMap[fileId]
-        return postId ?? ""
+    func getPostId(forFileId fileId: String) -> String? {
+        guard let postId = fileMap[fileId] else {
+            assertionFailure("A fileId must exist")
+            return nil
+        }
+        return postId
     }
     
     // Each post has a property called childrenPosts. This contains an array of AmityPost object.
@@ -271,23 +280,41 @@ public class AmityPostModel {
         
         // Get images/files for post if any
         
-        for eachChild in childrenPosts {
-            switch eachChild.dataType {
+        for aChild in childrenPosts {
+            switch aChild.dataType {
             case "image":
                 let placeholder = AmityColorSet.base.blend(.shade4).asImage()
-                let imageInfo = eachChild.getImageInfo()
-                guard let imageURL = imageInfo?.fileURL, let imageId = imageInfo?.fileId else { continue }
-                let tempImage = AmityImage(state: .downloadable(fileURL: imageURL, placeholder: placeholder))
-
-                images.append(tempImage)
-                fileMap[imageId] = eachChild.postId
-                dataTypeInternal = .image
+                if let imageInfo = aChild.getImageInfo() {
+                    let state = AmityMediaState.downloadableImage(
+                        fileURL: imageInfo.fileURL,
+                        placeholder: placeholder
+                    )
+                    let media = AmityMedia(state: state, type: .image)
+                    media.image = imageInfo
+                    medias.append(media)
+                    fileMap[imageInfo.fileId] = aChild.postId
+                    dataTypeInternal = .image
+                }
             case "file":
-                if let fileData = eachChild.getFileInfo() {
+                if let fileData = aChild.getFileInfo() {
                     let tempFile = AmityFile(state: .downloadable(fileData: fileData))
                     files.append(tempFile)
-                    fileMap[fileData.fileId] = eachChild.postId
+                    fileMap[fileData.fileId] = aChild.postId
                     dataTypeInternal = .file
+                }
+            case "video":
+                if let videoData = aChild.getVideoInfo(for: .original) {
+                    let thumbnail = aChild.getVideoThumbnailInfo()
+                    let state = AmityMediaState.downloadableVideo(
+                        videoURL: videoData.fileURL,
+                        thumbnailUrl: thumbnail?.fileURL
+                    )
+                    let media = AmityMedia(state: state, type: .video)
+                    media.video = videoData
+                    //
+                    medias.append(media)
+                    fileMap[videoData.fileId] = aChild.postId
+                    dataTypeInternal = .video
                 }
             default:
                 dataTypeInternal = .unknown

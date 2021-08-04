@@ -15,7 +15,12 @@ public protocol AmityPhotoCollectionViewCellDelegate: NSObjectProtocol {
 open class AmityPhotoCollectionViewCell: UICollectionViewCell {
     
     public private(set) var scrollView: AmityPhotoScrollView!
+    
     public private(set) var imageView: UIImageView!
+    
+    public var zoomEnabled = true
+    public private(set) var playImageView: UIImageView!
+    
     lazy var extraLabel: UILabel = {
         let label = UILabel()
         label.textAlignment = .right
@@ -71,12 +76,18 @@ open class AmityPhotoCollectionViewCell: UICollectionViewCell {
     }
     
     private func commonInit() {
-        backgroundColor = UIColor.clear
+        
+        backgroundColor = .clear
+        
         isUserInteractionEnabled = true
+        
+        // Scroll View
         scrollView = AmityPhotoScrollView(frame: .zero)
         scrollView.minimumZoomScale = minimumZoomScale
         scrollView.maximumZoomScale = 1.0 // Not allow zooming when there is no image
+        scrollView.delegate = self
         
+        // Image View
         let imageView = AmityPhotoImageView(frame: CGRect.zero)
         // Layout subviews every time getting new image
         imageView.imageChangeBlock = { [weak self] image in
@@ -96,13 +107,24 @@ open class AmityPhotoCollectionViewCell: UICollectionViewCell {
         
         imageView.contentMode = .scaleAspectFit
         self.imageView = imageView
-        scrollView.delegate = self
-        contentView.addSubview(scrollView)
-        scrollView.addSubview(imageView)
         
-        if #available(iOS 11.0, *) {
-            scrollView.contentInsetAdjustmentBehavior = .never
+        // Play Image View
+        playImageView = UIImageView()
+        playImageView.contentMode = .scaleAspectFit
+        if #available(iOS 13.0, *) {
+            playImageView.image = UIImage(systemName: "play.fill")
+        } else {
+            // Fallback on earlier versions
         }
+        playImageView.tintColor = .white
+        
+        // Views Hierarchy
+        scrollView.addSubview(imageView)
+        contentView.addSubview(scrollView)
+        contentView.addSubview(playImageView)
+        
+        scrollView.contentInsetAdjustmentBehavior = .never
+        
     }
     
     private func correctCurrentZoomScaleIfNeeded() {
@@ -170,6 +192,13 @@ open class AmityPhotoCollectionViewCell: UICollectionViewCell {
             }
         }
         
+        // Align playImageView to center.
+        playImageView.frame = CGRect(x: 0, y: 0, width: 60, height: 60)
+        playImageView.center = CGPoint(
+            x: contentView.bounds.width * 0.5,
+            y: contentView.bounds.height * 0.5
+        )
+        
         let insets: UIEdgeInsets
 
         if #available(iOS 11.0, *) {
@@ -180,14 +209,19 @@ open class AmityPhotoCollectionViewCell: UICollectionViewCell {
 
         let width: CGFloat = 200
         extraLabel.frame = CGRect(x: bounds.size.width - width - 20 - insets.right, y: insets.top, width: width, height: 30)
+        
     }
+    
 }
 
 //MARK: - UIScrollViewDelegate
 extension AmityPhotoCollectionViewCell: UIScrollViewDelegate {
     
     public func viewForZooming(in scrollView: UIScrollView) -> UIView? {
-        return imageView
+        if zoomEnabled {
+            return imageView
+        }
+        return nil
     }
     
     public func scrollViewWillBeginZooming(_ scrollView: UIScrollView, with view: UIView?) {

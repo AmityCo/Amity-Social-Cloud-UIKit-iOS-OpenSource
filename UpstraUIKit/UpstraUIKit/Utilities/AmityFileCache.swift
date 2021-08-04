@@ -8,29 +8,36 @@
 
 import UIKit
 
+// Note: Every cachable file should be under this directory .../Caches/com.amity.amityuikit/...
 final class AmityFileCache {
+    
     private init() { }
+    
     static let shared = AmityFileCache()
+    
     private let fileManager = FileManager.default
-    private static let directory = "com.Amity.amityuikit"
+    private let amityCacheFolder = "com.amity.amityuikit"
     
     enum Directory: String {
-        case audioDireectory, imageDirectory
+        case audioDirectory, imageDirectory
         var rawValue: String {
             switch self {
-            case .audioDireectory:
-                return directory + ".audio"
+            case .audioDirectory:
+                return "audio"
             case .imageDirectory:
-                return directory + ".image"
+                return "image"
             }
         }
     }
     
+    // Note:
+    // This generates directory ../Caches/com.amity.amityuikit/<audio/image>/
+    //
     private func documentDireectory(for directory: Directory) -> URL {
         let paths = NSSearchPathForDirectoriesInDomains(.cachesDirectory, .userDomainMask, true)
         let path = paths[0]
         let url = URL(string: path)!
-        let urlPath = url.appendingPathComponent(directory.rawValue)
+        let urlPath = url.appendingPathComponent("\(amityCacheFolder)/\(directory.rawValue)")
         
         if !fileManager.fileExists(atPath: urlPath.absoluteString) {
             do {
@@ -96,9 +103,10 @@ final class AmityFileCache {
                 return file
             }
             return nil
-        case .audioDireectory:
+        case .audioDirectory:
             if fileExists(file: file) {
-                return URL(fileURLWithPath: file.absoluteString)
+                let audioCacheUrl = URL(fileURLWithPath: file.absoluteString)
+                return audioCacheUrl
             }
             return nil
         }
@@ -109,14 +117,18 @@ final class AmityFileCache {
     }
     
     func clearCache() {
-        let cacheURL = fileManager.urls(for: .cachesDirectory, in: .userDomainMask)[0]
+        // We only remove everything related to UIKit from the cache folder i.e ../Caches/com.amity.amityuikit/...
         do {
-            let directoryContents = try fileManager.contentsOfDirectory(at: cacheURL, includingPropertiesForKeys: nil, options: [])
+            let defaultCacheDirectory = try fileManager.url(for: .cachesDirectory, in: .userDomainMask, appropriateFor: nil, create: false)
+            let uikitDirectory = defaultCacheDirectory.appendingPathComponent(amityCacheFolder, isDirectory: true)
+            
+            let directoryContents = try fileManager.contentsOfDirectory(at: uikitDirectory, includingPropertiesForKeys: nil, options: [])
             for file in directoryContents {
+                
                 do {
                     try fileManager.removeItem(at: file)
                 } catch {
-                    Log.add(error.localizedDescription)
+                    Log.add("Error when deleting file from cache directory")
                 }
             }
         } catch {
@@ -187,7 +199,7 @@ extension AmityFileCache {
     func generateDestinationURLForFile(withId id: String) throws -> URL {
         do {
             let cacheDirectory = try FileManager.default.url(for: .cachesDirectory, in: .userDomainMask, appropriateFor: nil, create: false)
-            let fileDirectory = cacheDirectory.appendingPathComponent("com.amity.amityuikit/\(id)", isDirectory: true)
+            let fileDirectory = cacheDirectory.appendingPathComponent("\(amityCacheFolder)/\(id)", isDirectory: true)
             return fileDirectory
         } catch let error {
             throw error

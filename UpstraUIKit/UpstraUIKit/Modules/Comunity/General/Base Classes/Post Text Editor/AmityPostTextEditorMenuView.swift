@@ -8,13 +8,13 @@
 
 import UIKit
 
-protocol AmityPostTextEditorMenuViewDelegate: class {
+protocol AmityPostTextEditorMenuViewDelegate: AnyObject {
     func postMenuView(_ view: AmityPostTextEditorMenuView, didTap action: AmityPostMenuActionType)
 }
 
 enum AmityPostMenuActionType {
     case camera
-    case photo
+    case album
     case file
 }
 
@@ -26,7 +26,7 @@ class AmityPostTextEditorMenuView: UIView {
     private let stackView = UIStackView(frame: .zero)
     private let topLineView = UIView(frame: .zero)
     private let cameraButton = AmityButton(frame: .zero)
-    private let photoGalleryButton = AmityButton(frame: .zero)
+    private let albumButton = AmityButton(frame: .zero)
     private let fileButton = AmityButton(frame: .zero)
     
     weak var delegate: AmityPostTextEditorMenuViewDelegate?
@@ -39,12 +39,12 @@ class AmityPostTextEditorMenuView: UIView {
         }
     }
     
-    var isPhotoButtonEnabled: Bool {
+    var isAlbumButtonEnabled: Bool {
         get {
-            return photoGalleryButton.isEnabled
+            return albumButton.isEnabled
         }
         set {
-            photoGalleryButton.isEnabled = newValue
+            albumButton.isEnabled = newValue
         }
     }
     
@@ -78,7 +78,7 @@ class AmityPostTextEditorMenuView: UIView {
         stackView.distribution = .fillEqually
         stackView.alignment = .fill
         stackView.addArrangedSubview(cameraButton)
-        stackView.addArrangedSubview(photoGalleryButton)
+        stackView.addArrangedSubview(albumButton)
         stackView.addArrangedSubview(fileButton)
         topLineView.translatesAutoresizingMaskIntoConstraints = false
         topLineView.backgroundColor = AmityColorSet.secondary.blend(.shade4)
@@ -88,10 +88,10 @@ class AmityPostTextEditorMenuView: UIView {
         cameraButton.setTintColor(AmityColorSet.base.blend(.shade4), for: .disabled)
         cameraButton.addTarget(self, action: #selector(tapCamera), for: .touchUpInside)
         
-        photoGalleryButton.setImage(AmityIconSet.iconPhoto, for: .normal)
-        photoGalleryButton.setTintColor(AmityColorSet.base, for: .normal)
-        photoGalleryButton.setTintColor(AmityColorSet.base.blend(.shade4), for: .disabled)
-        photoGalleryButton.addTarget(self, action: #selector(tapPhoto), for: .touchUpInside)
+        albumButton.setImage(AmityIconSet.iconPhoto, for: .normal)
+        albumButton.setTintColor(AmityColorSet.base, for: .normal)
+        albumButton.setTintColor(AmityColorSet.base.blend(.shade4), for: .disabled)
+        albumButton.addTarget(self, action: #selector(tapPhoto), for: .touchUpInside)
         
         fileButton.setImage(AmityIconSet.iconAttach, for: .normal)
         fileButton.setTintColor(AmityColorSet.base, for: .normal)
@@ -114,7 +114,7 @@ class AmityPostTextEditorMenuView: UIView {
         
         // settings
         cameraButton.isHidden = settings.shouldCameraButtonHide
-        photoGalleryButton.isHidden = settings.shouldPhotoButtonHide
+        albumButton.isHidden = settings.shouldAlbumButtonHide
         fileButton.isHidden = settings.shouldFileButtonHide
     }
     
@@ -125,7 +125,7 @@ class AmityPostTextEditorMenuView: UIView {
     }
     
     @objc private func tapPhoto() {
-        delegate?.postMenuView(self, didTap: .photo)
+        delegate?.postMenuView(self, didTap: .album)
     }
     
     @objc private func tapFile() {

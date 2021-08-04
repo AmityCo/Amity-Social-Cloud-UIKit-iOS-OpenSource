@@ -28,8 +28,10 @@ public final class AmityPostPreviewCommentTableViewCell: UITableViewCell, Nibbab
         guard let comment = comment else { return }
         self.post = post
         let shouldActionShow = post.isCommentable
-        commentView.configure(with: comment, layout: .commentPreview(shouldActionShow: shouldActionShow))
+        commentView.configure(with: comment, layout: .commentPreview(contentExpanded: post.appearance.shouldContentExpand, shouldActionShow: shouldActionShow))
+        
         commentView.delegate = self
+        commentView.contentLabel.delegate = self
     }
 
     private func setupView() {

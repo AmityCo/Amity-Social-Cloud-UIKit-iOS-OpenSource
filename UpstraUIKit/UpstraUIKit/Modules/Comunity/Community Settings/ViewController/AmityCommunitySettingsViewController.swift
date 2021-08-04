@@ -30,13 +30,13 @@ final class AmityCommunitySettingsViewController: AmityViewController {
         screenViewModel.action.retrieveNotifcationSettings()
     }
     
-    static func make(community: AmityCommunityModel) -> AmityCommunitySettingsViewController {
+    static func make(communityId: String) -> AmityCommunitySettingsViewController {
         let userNotificationController = AmityUserNotificationSettingsController()
-        let communityNotificationController = AmityCommunityNotificationSettingsController(withCommunityId: community.communityId)
-        let communityLeaveController = AmityCommunityLeaveController(withCommunityId: community.communityId)
-        let communityDeleteController = AmityCommunityDeleteController(withCommunityId: community.communityId)
-        let communityInfoController = AmityCommunityInfoController(communityId: community.communityId)
-        let viewModel: AmityCommunitySettingsScreenViewModelType = AmityCommunitySettingsScreenViewModel(community: community,
+        let communityNotificationController = AmityCommunityNotificationSettingsController(withCommunityId: communityId)
+        let communityLeaveController = AmityCommunityLeaveController(withCommunityId: communityId)
+        let communityDeleteController = AmityCommunityDeleteController(withCommunityId: communityId)
+        let communityInfoController = AmityCommunityInfoController(communityId: communityId)
+        let viewModel: AmityCommunitySettingsScreenViewModelType = AmityCommunitySettingsScreenViewModel(communityId: communityId,
                                                                                                      userNotificationController: userNotificationController,
                                                                                                      communityNotificationController: communityNotificationController,
                                                                                                      communityLeaveController: communityLeaveController,
@@ -49,7 +49,6 @@ final class AmityCommunitySettingsViewController: AmityViewController {
     
     // MARK: - Setup view
     private func setupView() {
-        title = screenViewModel.dataSource.community.displayName
         view.backgroundColor = AmityColorSet.backgroundColor
     }
     
@@ -60,24 +59,25 @@ final class AmityCommunitySettingsViewController: AmityViewController {
     }
     
     private func handleActionItem(settingsItem: AmitySettingsItem) {
+        guard let community = screenViewModel.dataSource.community else { return }
         switch settingsItem {
         case .navigationContent(let content):
             guard let item = AmityCommunitySettingsItem(rawValue: content.identifier) else { return }
             switch item {
             case .editProfile:
-                let vc = AmityCommunityEditorViewController.make(withCommunityId: screenViewModel.dataSource.community.communityId)
+                let vc = AmityCommunityEditorViewController.make(withCommunityId: community.communityId)
                 vc.delegate = self
                 let nav = UINavigationController(rootViewController: vc)
                 nav.modalPresentationStyle = .fullScreen
                 present(nav, animated: true, completion: nil)
             case .members:
-                let vc = AmityCommunityMemberSettingsViewController.make(community: screenViewModel.dataSource.community.object)
+                let vc = AmityCommunityMemberSettingsViewController.make(community: community.object)
                 navigationController?.pushViewController(vc, animated: true)
             case .notification:
-                let vc = AmityCommunityNotificationSettingsViewController.make(community: screenViewModel.dataSource.community)
+                let vc = AmityCommunityNotificationSettingsViewController.make(community: community)
                 navigationController?.pushViewController(vc, animated: true)
             case .postReview:
-                let vc = AmityPostReviewSettingsViewController.make()
+                let vc = AmityPostReviewSettingsViewController.make(communityId: community.communityId)
                 navigationController?.pushViewController(vc, animated: true)
             default:
                 break
@@ -90,7 +90,7 @@ final class AmityCommunitySettingsViewController: AmityViewController {
                     title: AmityLocalizedStringSet.CommunitySettings.alertTitleLeave.localizedString,
                     message: AmityLocalizedStringSet.CommunitySettings.alertDescLeave.localizedString,
                     actions: [.cancel(handler: nil),
-                              .custom(title: AmityLocalizedStringSet.leave.localizedString,
+                              .custom(title: AmityLocalizedStringSet.General.leave.localizedString,
                                       style: .destructive, handler: { [weak self] in
                                         self?.screenViewModel.action.leaveCommunity()
                                       })],
@@ -100,7 +100,7 @@ final class AmityCommunitySettingsViewController: AmityViewController {
                     title: AmityLocalizedStringSet.CommunitySettings.alertTitleClose.localizedString,
                     message: AmityLocalizedStringSet.CommunitySettings.alertDescClose.localizedString,
                     actions: [.cancel(handler: nil),
-                              .custom(title: AmityLocalizedStringSet.close.localizedString,
+                              .custom(title: AmityLocalizedStringSet.General.close.localizedString,
                                       style: .destructive,
                                       handler: { [weak self] in
                                         self?.screenViewModel.action.closeCommunity()

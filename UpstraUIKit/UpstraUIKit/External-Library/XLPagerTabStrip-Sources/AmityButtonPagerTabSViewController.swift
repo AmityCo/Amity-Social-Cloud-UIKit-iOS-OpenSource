@@ -215,6 +215,11 @@ public class AmityButtonPagerTabSViewController: AmityPagerTabViewController, Pa
         buttonBarView.moveTo(index: currentIndex, animated: false, swipeDirection: .none, pagerScroll: .yes)
     }
     
+    public func setButtonBarHidden(hidden: Bool) {
+        buttonBarView.isHidden = hidden
+        bottomLineView.isHidden = hidden
+    }
+    
     func setCurrentIndex(_ index: Int) {
         guard 0..<buttonBarView.numberOfItems(inSection: 0) ~= index else { return }
         moveToViewController(at: index)

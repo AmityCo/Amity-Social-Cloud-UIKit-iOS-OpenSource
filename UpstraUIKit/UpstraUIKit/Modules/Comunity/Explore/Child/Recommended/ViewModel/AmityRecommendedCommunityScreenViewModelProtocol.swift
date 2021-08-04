@@ -8,7 +8,7 @@
 
 import UIKit
 
-protocol AmityRecommendedCommunityScreenViewModelDelegate: class {
+protocol AmityRecommendedCommunityScreenViewModelDelegate: AnyObject {
     func screenViewModel(_ viewModel: AmityRecommendedCommunityScreenViewModelType, didRetrieveRecommended recommended: [AmityCommunityModel], isEmpty: Bool)
     func screenViewModel(_ viewModel: AmityRecommendedCommunityScreenViewModelType, didFail error: AmityError)
 }

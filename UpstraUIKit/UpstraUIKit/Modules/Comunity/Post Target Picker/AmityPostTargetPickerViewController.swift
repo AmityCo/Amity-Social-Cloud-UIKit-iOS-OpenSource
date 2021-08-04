@@ -8,7 +8,7 @@
 
 import UIKit
 
-protocol AmityPostTargetPickerViewControllerDelegate: class {
+protocol AmityPostTargetPickerViewControllerDelegate: AnyObject {
     func postTargetSelectionViewController(_ viewController: AmityPostTargetPickerViewController, didCreatePost post: AmityPostModel)
     func postTargetSelectionViewController(_ viewController: AmityPostTargetPickerViewController, didUpdatePost post: AmityPostModel)
 }

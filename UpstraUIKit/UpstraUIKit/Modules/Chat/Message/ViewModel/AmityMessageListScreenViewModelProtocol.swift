@@ -10,10 +10,10 @@ import UIKit
 import Photos
 import AmitySDK
 
-protocol AmityMessageListScreenViewModelDelegate: class {
+protocol AmityMessageListScreenViewModelDelegate: AnyObject {
     func screenViewModelRoute(route: AmityMessageListScreenViewModel.Route)
-    func screenViewModelDidGetChannel(channel: AmityChannel)
-    func screenViewMdoelScrollToBottom(for indexPath: IndexPath)
+    func screenViewModelDidGetChannel(channel: AmityChannelModel)
+    func screenViewModelScrollToBottom(for indexPath: IndexPath)
     func screenViewModelDidTextChange(text: String)
     func screenViewModelLoadingState(for state: AmityLoadingState)
     func screenViewModelEvents(for events: AmityMessageListScreenViewModel.Events)
@@ -21,6 +21,8 @@ protocol AmityMessageListScreenViewModelDelegate: class {
     func screenViewModelKeyboardInputEvents(for events: AmityMessageListScreenViewModel.KeyboardInputEvents)
     func screenViewModelToggleDefaultKeyboardAndAudioKeyboard(for events: AmityMessageListScreenViewModel.KeyboardInputEvents)
     func screenViewModelAudioRecordingEvents(for events: AmityMessageListScreenViewModel.AudioRecordingEvents)
+    
+    func screenViewModelShouldUpdateScrollPosition(to indexPath: IndexPath)
 }
 
 protocol AmityMessageListScreenViewModelDataSource {
@@ -29,7 +31,9 @@ protocol AmityMessageListScreenViewModelDataSource {
     func message(at indexPath: IndexPath) -> AmityMessageModel?
     func numberOfSection() -> Int
     func numberOfMessage(in section: Int) -> Int
-    func getKeyboardVisible() -> Bool
+    func getChannelId() -> String
+    func getCommunityId() -> String
+    func isKeyboardVisible() -> Bool
 }
 
 protocol AmityMessageListScreenViewModelAction {
@@ -39,7 +43,7 @@ protocol AmityMessageListScreenViewModelAction {
     func getMessage()
     
     func send(withText text: String?)
-    func send(withImages images: [AmityImage])
+    func send(withMedias medias: [AmityMedia])
     func sendAudio()
     
     func editText(with text: String, messageId: String)

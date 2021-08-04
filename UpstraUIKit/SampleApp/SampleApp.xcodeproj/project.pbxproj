@@ -24,8 +24,7 @@
 		721AF3C426088849005BA15F /* CustomEventHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 721AF3C326088849005BA15F /* CustomEventHandler.swift */; };
 		721AF3CA26088884005BA15F /* CustomFeedEventHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 721AF3C926088884005BA15F /* CustomFeedEventHandler.swift */; };
 		7288E96C2630139E004535DD /* AppManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7288E96B2630139E004535DD /* AppManager.swift */; };
-		A052EAEE2577A6B700FF9312 /* Realm.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = A052EAEB2577A6B700FF9312 /* Realm.xcframework */; };
-		A052EAEF2577A6B700FF9312 /* Realm.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = A052EAEB2577A6B700FF9312 /* Realm.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		97F101F526A69FBF00AD84A1 /* CustomChannelEventHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97F101F426A69FBF00AD84A1 /* CustomChannelEventHandler.swift */; };
 		B72861D924C573B100ECC563 /* TabbarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B72861D824C573B100ECC563 /* TabbarViewController.swift */; };
 		B72CDA3B256B9BEB00F7CAC3 /* CustomMessageTextIncomingTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B72CDA39256B9BEB00F7CAC3 /* CustomMessageTextIncomingTableViewCell.swift */; };
 		B72CDA3C256B9BEB00F7CAC3 /* CustomMessageTextIncomingTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = B72CDA3A256B9BEB00F7CAC3 /* CustomMessageTextIncomingTableViewCell.xib */; };
@@ -44,6 +43,8 @@
 		B78DA4B324BEDBD100EE902B /* ChatFeatureViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B78DA4B224BEDBD100EE902B /* ChatFeatureViewController.swift */; };
 		B78FC54024CAAA2F0083CBB4 /* UserDefault.swift in Sources */ = {isa = PBXBuildFile; fileRef = B78FC53D24CAAA2F0083CBB4 /* UserDefault.swift */; };
 		B78FC54124CAAA2F0083CBB4 /* Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = B78FC53F24CAAA2F0083CBB4 /* Theme.swift */; };
+		D45B3A94264A840300F6FF52 /* Realm.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = D45B3A93264A840300F6FF52 /* Realm.xcframework */; };
+		D45B3A95264A840300F6FF52 /* Realm.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = D45B3A93264A840300F6FF52 /* Realm.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		D45D45B826204253008F7C2C /* AmitySDK.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = D45D45B726204253008F7C2C /* AmitySDK.xcframework */; };
 		D45D45B926204253008F7C2C /* AmitySDK.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = D45D45B726204253008F7C2C /* AmitySDK.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		D478D16926240A5E006EA140 /* AmityUIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D478D153262409E5006EA140 /* AmityUIKit.framework */; };
@@ -81,7 +82,7 @@
 			files = (
 				D45D45B926204253008F7C2C /* AmitySDK.xcframework in Embed Frameworks */,
 				D478D16A26240A5E006EA140 /* AmityUIKit.framework in Embed Frameworks */,
-				A052EAEF2577A6B700FF9312 /* Realm.xcframework in Embed Frameworks */,
+				D45B3A95264A840300F6FF52 /* Realm.xcframework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -107,7 +108,7 @@
 		721AF3C926088884005BA15F /* CustomFeedEventHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomFeedEventHandler.swift; sourceTree = "<group>"; };
 		72363461260877D600CEB2B5 /* SampleApp.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = SampleApp.entitlements; sourceTree = "<group>"; };
 		7288E96B2630139E004535DD /* AppManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppManager.swift; sourceTree = "<group>"; };
-		A052EAEB2577A6B700FF9312 /* Realm.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = Realm.xcframework; path = ../Distribution/Realm.xcframework; sourceTree = "<group>"; };
+		97F101F426A69FBF00AD84A1 /* CustomChannelEventHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomChannelEventHandler.swift; sourceTree = "<group>"; };
 		B72861D824C573B100ECC563 /* TabbarViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabbarViewController.swift; sourceTree = "<group>"; };
 		B72CDA39256B9BEB00F7CAC3 /* CustomMessageTextIncomingTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomMessageTextIncomingTableViewCell.swift; sourceTree = "<group>"; };
 		B72CDA3A256B9BEB00F7CAC3 /* CustomMessageTextIncomingTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CustomMessageTextIncomingTableViewCell.xib; sourceTree = "<group>"; };
@@ -132,6 +133,7 @@
 		B78DA4B224BEDBD100EE902B /* ChatFeatureViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatFeatureViewController.swift; sourceTree = "<group>"; };
 		B78FC53D24CAAA2F0083CBB4 /* UserDefault.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserDefault.swift; sourceTree = "<group>"; };
 		B78FC53F24CAAA2F0083CBB4 /* Theme.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Theme.swift; sourceTree = "<group>"; };
+		D45B3A93264A840300F6FF52 /* Realm.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = Realm.xcframework; path = ../Shared/Realm.xcframework; sourceTree = "<group>"; };
 		D45D45B726204253008F7C2C /* AmitySDK.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = AmitySDK.xcframework; path = ../Shared/AmitySDK.xcframework; sourceTree = "<group>"; };
 		D478D153262409E5006EA140 /* AmityUIKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = AmityUIKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		D495077325E637C1005C033F /* DataListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataListViewController.swift; sourceTree = "<group>"; };
@@ -148,7 +150,7 @@
 			files = (
 				D45D45B826204253008F7C2C /* AmitySDK.xcframework in Frameworks */,
 				D478D16926240A5E006EA140 /* AmityUIKit.framework in Frameworks */,
-				A052EAEE2577A6B700FF9312 /* Realm.xcframework in Frameworks */,
+				D45B3A94264A840300F6FF52 /* Realm.xcframework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -250,6 +252,7 @@
 			children = (
 				721AF3C326088849005BA15F /* CustomEventHandler.swift */,
 				721AF3C926088884005BA15F /* CustomFeedEventHandler.swift */,
+				97F101F426A69FBF00AD84A1 /* CustomChannelEventHandler.swift */,
 			);
 			path = EventHandler;
 			sourceTree = "<group>";
@@ -325,9 +328,9 @@
 		B78DA4A824BED83100EE902B /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				D45B3A93264A840300F6FF52 /* Realm.xcframework */,
 				D478D153262409E5006EA140 /* AmityUIKit.framework */,
 				D45D45B726204253008F7C2C /* AmitySDK.xcframework */,
-				A052EAEB2577A6B700FF9312 /* Realm.xcframework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -525,6 +528,7 @@
 				0D8FFC2925DCBFD900943538 /* AmityCustomFooterTableViewCell.swift in Sources */,
 				7214C9D72632C0AD00192BB3 /* NotificationModuleTableViewCell.swift in Sources */,
 				B78FC54024CAAA2F0083CBB4 /* UserDefault.swift in Sources */,
+				97F101F526A69FBF00AD84A1 /* CustomChannelEventHandler.swift in Sources */,
 				0D73ACA825DB9423000D73CA /* NewJoinerPostComponent.swift in Sources */,
 				7214C9DB2632C0D500192BB3 /* SwitchTableViewCell.swift in Sources */,
 				B72CDA3B256B9BEB00F7CAC3 /* CustomMessageTextIncomingTableViewCell.swift in Sources */,
@@ -712,7 +716,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = SampleApp/SampleApp.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 2;
 				DEVELOPMENT_TEAM = 37Z583JR6K;
 				"EXCLUDED_ARCHS[sdk=iphonesimulator*]" = arm64;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -724,7 +728,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 2.0.4;
+				MARKETING_VERSION = 2.4.3;
 				PRODUCT_BUNDLE_IDENTIFIER = com.ekoapp.sample;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_INCLUDE_PATHS = "";
@@ -739,7 +743,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = SampleApp/SampleApp.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 2;
 				DEVELOPMENT_TEAM = 37Z583JR6K;
 				"EXCLUDED_ARCHS[sdk=iphonesimulator*]" = arm64;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -751,7 +755,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 2.0.4;
+				MARKETING_VERSION = 2.4.3;
 				PRODUCT_BUNDLE_IDENTIFIER = com.ekoapp.sample;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = RELEASE;

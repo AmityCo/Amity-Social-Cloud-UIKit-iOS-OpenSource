@@ -23,7 +23,7 @@ final class AmityPostProtocolHandler {
         switch file.state {
         case .downloadable(let fileData):
             AmityHUD.show(.loading)
-            AmityFileService.shared.loadFile(fileURL: fileData.fileURL) { result in
+            AmityUIKitManagerInternal.shared.fileService.loadFile(fileURL: fileData.fileURL) { result in
                 switch result {
                 case .success(let data):
                     AmityHUD.hide {
@@ -40,6 +40,14 @@ final class AmityPostProtocolHandler {
             break
         }
     }
+    
+    private func presentPhotoViewer(media: AmityMedia, from cell: AmityPostGalleryTableViewCell) {
+        let photoViewerVC = AmityPhotoViewerController(referencedView: cell.imageView, media: media)
+        photoViewerVC.dataSource = cell
+        photoViewerVC.delegate = cell
+        viewController?.present(photoViewerVC, animated: true, completion: nil)
+    }
+    
 }
 
 extension AmityPostProtocolHandler: AmityPostDelegate {
@@ -50,11 +58,25 @@ extension AmityPostProtocolHandler: AmityPostDelegate {
         switch action {
         case .tapFile(let file):
             handleFile(file: file)
-        case .tapImage(let image):
-            let photoViewerVC = AmityPhotoViewerController(referencedView: cell.imageView, imageModel: image)
-            photoViewerVC.dataSource = (cell as? AmityPostGalleryTableViewCell)
-            photoViewerVC.delegate = (cell as? AmityPostGalleryTableViewCell)
-            viewController.present(photoViewerVC, animated: true, completion: nil)
+        case .tapMedia(let media):
+            guard let cell = cell as? AmityPostGalleryTableViewCell else {
+                assertionFailure("Unsupported cell type")
+                return
+            }
+            switch media.type {
+            case .image, .video:
+                presentPhotoViewer(media: media, from: cell)
+            }
+        case .tapMediaInside(let media, let photoViewer):
+            switch media.type {
+            case .video:
+                if let video = media.video,
+                   let url = URL(string: video.fileURL) {
+                    photoViewer.presentVideoPlayer(at: url)
+                }
+            case .image:
+                break
+            }
         case .tapViewAll:
             AmityEventHandler.shared.postDidtap(from: viewController, postId: post.postId)
         case .tapExpandableLabel:

@@ -8,7 +8,7 @@
 
 import UIKit
 
-protocol AmityTrendingCommunityTableViewCellDelegate: class {
+protocol AmityTrendingCommunityTableViewCellDelegate: AnyObject {
     func cellDidTapOnAvatar(_ cell: AmityTrendingCommunityTableViewCell)
 }
 
@@ -20,7 +20,7 @@ final class AmityTrendingCommunityTableViewCell: UITableViewCell, Nibbable {
     @IBOutlet private var iconImageView: UIImageView!
     @IBOutlet private var categoryLabel: UILabel!
     @IBOutlet private var membersLabel: UILabel!
-    @IBOutlet private weak var iconImageViewWidthConstraint: NSLayoutConstraint!
+    @IBOutlet private var iconImageViewWidthConstraint: NSLayoutConstraint!
     
     weak var delegate: AmityTrendingCommunityTableViewCellDelegate?
     
@@ -37,7 +37,6 @@ final class AmityTrendingCommunityTableViewCell: UITableViewCell, Nibbable {
         super.prepareForReuse()
         avatarView.image = nil
         displayNameLabel.text = nil
-        iconImageView.image = nil
         categoryLabel.text = nil
         numberLabel.text = nil
         membersLabel.text = nil

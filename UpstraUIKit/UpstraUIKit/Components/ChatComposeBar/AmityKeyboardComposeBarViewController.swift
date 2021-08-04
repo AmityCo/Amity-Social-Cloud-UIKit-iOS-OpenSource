@@ -19,8 +19,8 @@ struct AmityKeyboardComposeBarModel {
     
     static func menuList() -> [AmityKeyboardComposeBarModel] {
         return [
-            AmityKeyboardComposeBarModel(name: AmityLocalizedStringSet.camera.localizedString, image: AmityIconSet.iconCameraFill, menuType: .camera),
-            AmityKeyboardComposeBarModel(name: AmityLocalizedStringSet.album.localizedString, image: AmityIconSet.iconAlbumFill, menuType: .album),
+            AmityKeyboardComposeBarModel(name: AmityLocalizedStringSet.General.camera.localizedString, image: AmityIconSet.iconCameraFill, menuType: .camera),
+            AmityKeyboardComposeBarModel(name: AmityLocalizedStringSet.General.album.localizedString, image: AmityIconSet.iconAlbumFill, menuType: .album),
 //            AmityKeyboardComposeBarModel(name: AmityLocalizedStringSet.file.localizedString, image: AmityIconSet.iconFileFill, menuType: .file),
 //            AmityKeyboardComposeBarModel(name: AmityLocalizedStringSet.location.localizedString, image: AmityIconSet.iconLocationFill, menuType: .location)
         ]

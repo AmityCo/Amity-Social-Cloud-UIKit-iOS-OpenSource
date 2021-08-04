@@ -8,7 +8,7 @@
 
 import UIKit
 
-protocol AmitySettingsItemToggleContentCellDelegate: class {
+protocol AmitySettingsItemToggleContentCellDelegate: AnyObject {
     func didPerformActionToggleContent(withContent content: AmitySettingsItem.ToggleContent)
 }
 

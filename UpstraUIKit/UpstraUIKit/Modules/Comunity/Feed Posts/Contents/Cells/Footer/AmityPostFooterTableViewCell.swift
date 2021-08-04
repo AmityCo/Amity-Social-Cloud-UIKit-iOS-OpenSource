@@ -42,12 +42,11 @@ public final class AmityPostFooterTableViewCell: UITableViewCell, Nibbable, Amit
         self.post = post
         likeButton.isSelected = post.isLiked
         likeLabel.isHidden = post.reactionsCount == 0
-        let reactionsPrefix = post.reactionsCount > 1 ? AmityLocalizedStringSet.likesPlural.localizedString : AmityLocalizedStringSet.likesSingular.localizedString
+        let reactionsPrefix = post.reactionsCount == 1 ? AmityLocalizedStringSet.Unit.likeSingular.localizedString : AmityLocalizedStringSet.Unit.likePlural.localizedString
         likeLabel.text = String.localizedStringWithFormat(reactionsPrefix,
                                                           post.reactionsCount.formatUsingAbbrevation())
         commentLabel.isHidden = post.allCommentCount == 0
-        let commentPrefix = post.allCommentCount > 1 ? AmityLocalizedStringSet.commentsPlural.localizedString :
-            AmityLocalizedStringSet.commentsSingular.localizedString
+        let commentPrefix = post.allCommentCount == 1 ? AmityLocalizedStringSet.Unit.commentSingular.localizedString : AmityLocalizedStringSet.Unit.commentPlural.localizedString
         commentLabel.text = String.localizedStringWithFormat(commentPrefix,
                                                              post.allCommentCount.formatUsingAbbrevation())
         
@@ -58,8 +57,8 @@ public final class AmityPostFooterTableViewCell: UITableViewCell, Nibbable, Amit
         
         shareButton.isHidden = !AmityPostSharePermission.canSharePost(post: post)
         shareLabel.isHidden = post.sharedCount == 0
-        let sharePrefix = post.sharedCount > 1 ? AmityLocalizedStringSet.sharesPlural.localizedString :
-            AmityLocalizedStringSet.sharesSingular.localizedString
+        let sharePrefix = post.sharedCount > 1 ? AmityLocalizedStringSet.Unit.sharesPlural.localizedString :
+            AmityLocalizedStringSet.Unit.sharesSingular.localizedString
         shareLabel.text = String.localizedStringWithFormat(sharePrefix, post.sharedCount)
     }
     
@@ -82,8 +81,8 @@ public final class AmityPostFooterTableViewCell: UITableViewCell, Nibbable, Amit
     
     private func setupLikeButton() {
         // like button
-        likeButton.setTitle(AmityLocalizedStringSet.liked.localizedString, for: .selected)
-        likeButton.setTitle(AmityLocalizedStringSet.like.localizedString, for: .normal)
+        likeButton.setTitle(AmityLocalizedStringSet.General.liked.localizedString, for: .selected)
+        likeButton.setTitle(AmityLocalizedStringSet.General.like.localizedString, for: .normal)
         likeButton.setTitleColor(AmityColorSet.primary, for: .selected)
         likeButton.setTitleColor(AmityColorSet.base.blend(.shade2), for: .normal)
         likeButton.setImage(AmityIconSet.iconLike, for: .normal)

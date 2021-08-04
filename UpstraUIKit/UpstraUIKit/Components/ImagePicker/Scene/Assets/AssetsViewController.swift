@@ -23,14 +23,16 @@
 import UIKit
 import Photos
 
-protocol AssetsViewControllerDelegate: class {
+protocol AssetsViewControllerDelegate: AnyObject {
     func assetsViewController(_ assetsViewController: AssetsViewController, didSelectAsset asset: PHAsset)
     func assetsViewController(_ assetsViewController: AssetsViewController, didDeselectAsset asset: PHAsset)
     func assetsViewController(_ assetsViewController: AssetsViewController, didLongPressCell cell: AssetCollectionViewCell, displayingAsset asset: PHAsset)
 }
 
 class AssetsViewController: UIViewController {
+    
     weak var delegate: AssetsViewControllerDelegate?
+    
     var settings: Settings! {
         didSet { dataSource.settings = settings }
     }
@@ -69,7 +71,20 @@ class AssetsViewController: UIViewController {
 
         // Set an empty title to get < back button
         title = " "
-
+        
+        // Header Title
+        let pageHeaderTitle: String
+        let mediaTypes = settings.fetch.assets.supportedMediaTypes
+        if mediaTypes.contains(.image) {
+            pageHeaderTitle = AmityLocalizedStringSet.postCreationSelectImageTitle.localizedString
+        } else if mediaTypes.contains(.video) {
+            pageHeaderTitle = AmityLocalizedStringSet.postCreationSelectVideoTitle.localizedString
+        } else {
+            assertionFailure("AssetsViewController only support either .image or .video, but not both")
+            pageHeaderTitle = ""
+        }
+        navigationItem.title = pageHeaderTitle
+        
         collectionView.allowsMultipleSelection = true
         collectionView.bounces = true
         collectionView.alwaysBounceVertical = true
@@ -88,8 +103,10 @@ class AssetsViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         updateCollectionViewLayout(for: traitCollection)
-        
-        self.title = AmityLocalizedStringSet.postCreationSelectImageTitle.localizedString
+    }
+    
+    func setPageTitle(title: String) {
+        navigationItem.title = title
     }
 
     func showAssets(in album: PHAssetCollection) {

@@ -2,15 +2,15 @@
 //  AmityCommunityProfileHeaderViewController.swift
 //  AmityUIKit
 //
-//  Created by Sarawoot Khunsri on 14/9/2563 BE.
-//  Copyright © 2563 Amity. All rights reserved.
+//  Created by Sarawoot Khunsri on 20/4/2564 BE.
+//  Copyright © 2564 BE Amity. All rights reserved.
 //
 
 import UIKit
-import AmitySDK
+//import AmitySDK
 
-final class AmityCommunityProfileHeaderViewController: AmityViewController {
-    
+final class AmityCommunityProfileHeaderViewController: UIViewController {
+
     // MARK: - IBOutlet Properties
     @IBOutlet private var avatarView: AmityAvatarView!
     @IBOutlet private var displayNameLabel: UILabel!
@@ -23,35 +23,23 @@ final class AmityCommunityProfileHeaderViewController: AmityViewController {
     @IBOutlet private var actionButton: AmityButton!
     @IBOutlet private var chatButton: AmityButton!
     @IBOutlet private var actionStackView: UIStackView!
-    // MARK: - Properties
     
-    private let settings: AmityCommunityProfilePageSettings
-    private let screenViewModel: AmityCommunityProfileScreenViewModelType
+    @IBOutlet private var pendingPostsStatusView: UIView!
+    @IBOutlet private var pendingPostsContainerView: UIView!
+    @IBOutlet private var pendingPostsTitleLabel: UILabel!
+    @IBOutlet private var pendingPostsDescriptionLabel: UILabel!
+    
+    // MARK: - Properties
+    private var settings: AmityCommunityProfilePageSettings!
+    private var screenViewModel: AmityCommunityProfileScreenViewModelType!
+    private weak var rootViewController: AmityCommunityProfilePageViewController?
     
     // MARK: - Callback
+    var didUpdatePostBanner: (() -> Void)?
     
     // MARK: - View lifecycle
-    private init(viewModel: AmityCommunityProfileScreenViewModelType, settings: AmityCommunityProfilePageSettings) {
-        self.screenViewModel = viewModel
-        self.settings = settings
-        super.init(nibName: AmityCommunityProfileHeaderViewController.identifier, bundle: AmityUIKitManager.bundle)
-    }
-    
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    
     override func viewDidLoad() {
         super.viewDidLoad()
-        setupView()
-    }
-    
-    static func make(with viewModel: AmityCommunityProfileScreenViewModelType, settings: AmityCommunityProfilePageSettings) -> AmityCommunityProfileHeaderViewController {
-        let vc = AmityCommunityProfileHeaderViewController(viewModel: viewModel, settings: settings)
-        return vc
-    }
-    
-    private func setupView() {
         setupDisplayName()
         setupBadgeView()
         setupSubTitleLabel()
@@ -59,9 +47,18 @@ final class AmityCommunityProfileHeaderViewController: AmityViewController {
         setupMemberButton()
         setupDescription()
         setupActionButton()
-        setupChatButton()
+        setupPendingPosts()
     }
     
+    static func make(rootViewController: AmityCommunityProfilePageViewController?, viewModel: AmityCommunityProfileScreenViewModelType, settings: AmityCommunityProfilePageSettings) -> AmityCommunityProfileHeaderViewController {
+        let vc = AmityCommunityProfileHeaderViewController(nibName: AmityCommunityProfileHeaderViewController.identifier, bundle: AmityUIKitManager.bundle)
+        vc.rootViewController = rootViewController
+        vc.screenViewModel = viewModel
+        vc.settings = settings
+        return vc
+    }
+    
+    // MARK: - Setup views
     private func setupDisplayName() {
         avatarView.placeholder = AmityIconSet.defaultCommunity
         displayNameLabel.text = ""
@@ -88,11 +85,14 @@ final class AmityCommunityProfileHeaderViewController: AmityViewController {
     }
     
     private func setupPostButton() {
+        let title = String.localizedStringWithFormat(AmityLocalizedStringSet.Unit.commentPlural.localizedString, "0")
         let attribute = AmityAttributedString()
         attribute.setBoldFont(for: AmityFontSet.captionBold)
         attribute.setNormalFont(for: AmityFontSet.caption)
         attribute.setColor(for: AmityColorSet.base)
+        attribute.setTitle(title)
         postsButton.attributedString = attribute
+        postsButton.setAttributedTitle()
     }
     
     private func setupMemberButton() {
@@ -112,6 +112,7 @@ final class AmityCommunityProfileHeaderViewController: AmityViewController {
     }
     
     private func setupActionButton() {
+        actionButton.isHidden = true
         actionButton.setTitleShadowColor(AmityColorSet.baseInverse, for: .normal)
         actionButton.setTitleFont(AmityFontSet.bodyBold)
         actionButton.addTarget(self, action: #selector(actionTap), for: .touchUpInside)
@@ -127,68 +128,60 @@ final class AmityCommunityProfileHeaderViewController: AmityViewController {
         chatButton.addTarget(self, action: #selector(chatTap), for: .touchUpInside)
     }
     
-    func update(with community: AmityCommunityModel) {
+    private func setupPendingPosts() {
+        pendingPostsContainerView.isHidden = true
+        pendingPostsContainerView.layer.cornerRadius = 4
+        pendingPostsContainerView.backgroundColor = AmityColorSet.base.blend(.shade4)
+        
+        pendingPostsStatusView.backgroundColor = AmityColorSet.primary
+        pendingPostsStatusView.layer.cornerRadius = pendingPostsStatusView.frame.height / 2
+        
+        pendingPostsTitleLabel.text = AmityLocalizedStringSet.PendingPosts.statusTitle.localizedString
+        pendingPostsTitleLabel.font = AmityFontSet.bodyBold
+        pendingPostsTitleLabel.textColor = AmityColorSet.base
+        
+        pendingPostsDescriptionLabel.font = AmityFontSet.caption
+        pendingPostsDescriptionLabel.textColor = AmityColorSet.base.blend(.shade1)
+    }
+    
+    // MARK: - Update views
+    func updateView() {
+
+        guard let community = screenViewModel.dataSource.community else { return }
         avatarView.setImage(withImageURL: community.avatarURL, placeholder: AmityIconSet.defaultCommunity)
         displayNameLabel.text = community.displayName
         descriptionLabel.text = community.description
         descriptionLabel.isHidden = community.description == ""
-        updatePostsCount(with: Int(community.postsCount))
         updateMembersCount(with: Int(community.membersCount))
         categoryLabel.text = community.category
         privateBadgeImageView.isHidden = community.isPublic
         officialBadgeImageView.isHidden = !community.isOfficial
         updateActionButton()
+        shouldShowPendingsPostBanner()
     }
     
-    
-    private func updatePostsCount(with postCount: Int) {
+    func updatePostsCount() {
+        let postCount = screenViewModel.dataSource.postCount
+        let format = postCount == 1 ? AmityLocalizedStringSet.Unit.postSingular.localizedString : AmityLocalizedStringSet.Unit.postPlural.localizedString
         let value = postCount.formatUsingAbbrevation()
-        let string = String.localizedStringWithFormat(AmityLocalizedStringSet.communityDetailPostCount.localizedString, value)
+        let string = String.localizedStringWithFormat(format, value)
         postsButton.attributedString.setTitle(string)
         postsButton.attributedString.setBoldText(for: [value])
         postsButton.setAttributedTitle()
     }
     
     private func updateMembersCount(with memberCount: Int) {
+        let format = memberCount == 1 ? AmityLocalizedStringSet.Unit.memberSingular.localizedString : AmityLocalizedStringSet.Unit.memberPlural.localizedString
         let value = memberCount.formatUsingAbbrevation()
-        let string = String.localizedStringWithFormat(AmityLocalizedStringSet.communityDetailMemberCount.localizedString, value)
+        let string = String.localizedStringWithFormat(format, value)
         membersButton.attributedString.setTitle(string)
         membersButton.attributedString.setBoldText(for: [value])
         membersButton.setAttributedTitle()
     }
-}
-
-// MARK: - Action
-private extension AmityCommunityProfileHeaderViewController {
-    @objc func actionTap(_ sender: AmityButton) {
-        switch screenViewModel.dataSource.getCommunityJoinStatus {
-        case .notJoin:
-            AmityHUD.show(.loading)
-            screenViewModel.action.joinCommunity()
-        case .joinNotCreator:
-            break
-        case .joinAndCreator:
-            screenViewModel.action.route(.editProfile)
-        }
-    }
     
-    @objc func chatTap() {
-        AmityEventHandler.shared.communityChannelDidTap(from: self, channelId: screenViewModel.dataSource.communityId)
-    }
-    
-    @objc func memberTap() {
-        screenViewModel.action.route(.member)
-    }
-}
-
-private extension AmityCommunityProfileHeaderViewController {
-    func updateActionButton() {
-        #warning("UI-Adjustment")
-        // As the requirement has been change. I have to added temporary logic for hide some components
-        // See more: https://ekoapp.atlassian.net/browse/UKT-737
-        
-        switch screenViewModel.dataSource.getCommunityJoinStatus {
-        case .notJoin:
+    private func updateActionButton() {
+        switch screenViewModel.dataSource.memberStatusCommunity {
+        case .guest:
             chatButton.isHidden = true
             actionButton.setTitle(AmityLocalizedStringSet.communityDetailJoinButton.localizedString, for: .normal)
             actionButton.setImage(AmityIconSet.iconAdd, position: .left)
@@ -197,7 +190,7 @@ private extension AmityCommunityProfileHeaderViewController {
             actionButton.layer.cornerRadius = 4
             actionButton.tag = 0
             actionButton.isHidden = false
-        case .joinNotCreator:
+        case .member:
             chatButton.isHidden = settings.shouldChatButtonHide
             actionButton.setTitle(AmityLocalizedStringSet.communityDetailMessageButton.localizedString, for: .normal)
             actionButton.setImage(AmityIconSet.iconChat, position: .left)
@@ -208,7 +201,7 @@ private extension AmityCommunityProfileHeaderViewController {
             actionButton.layer.cornerRadius = 4
             actionButton.tag = 1
             actionButton.isHidden = true
-        case .joinAndCreator:
+        case .admin:
             chatButton.isHidden = settings.shouldChatButtonHide
             actionButton.setTitle(AmityLocalizedStringSet.communityDetailEditProfileButton.localizedString, for: .normal)
             actionButton.setImage(AmityIconSet.iconEdit, position: .left)
@@ -221,5 +214,53 @@ private extension AmityCommunityProfileHeaderViewController {
             actionButton.isHidden = false
         }
         actionStackView.isHidden = chatButton.isHidden && actionButton.isHidden
+    }
+    
+    private func shouldShowPendingsPostBanner() {
+        switch screenViewModel.dataSource.memberStatusCommunity {
+        case .guest:
+            pendingPostsContainerView.isHidden = true
+        case .member:
+            screenViewModel.dataSource.shouldShowPendingPostBannerForMember { [weak self] shouldShowPendingPostBanner in
+                self?.pendingPostsContainerView.isHidden = !shouldShowPendingPostBanner
+                self?.pendingPostsDescriptionLabel.text = AmityLocalizedStringSet.PendingPosts.statusMemberDesc.localizedString
+                self?.didUpdatePostBanner?()
+            }
+        case .admin:
+            let pendingPostCount = screenViewModel.dataSource.pendingPostCountForAdmin
+            pendingPostsContainerView.isHidden = pendingPostCount == 0
+            pendingPostsDescriptionLabel.text = String.localizedStringWithFormat(AmityLocalizedStringSet.PendingPosts.statusAdminDesc.localizedString, pendingPostCount)
+            didUpdatePostBanner?()
+        }
+    }
+    
+}
+
+// MARK: - Action
+private extension AmityCommunityProfileHeaderViewController {
+    
+    @objc func actionTap(_ sender: AmityButton) {
+        switch screenViewModel.dataSource.memberStatusCommunity {
+        case .guest:
+            AmityHUD.show(.loading)
+            screenViewModel.action.joinCommunity()
+        case .member:
+            break
+        case .admin:
+            screenViewModel.action.route(.editProfile)
+        }
+    }
+    
+    @objc func chatTap() {
+        guard let rootViewController = rootViewController else { return }
+        AmityEventHandler.shared.communityChannelDidTap(from: rootViewController, channelId: screenViewModel.dataSource.communityId)
+    }
+    
+    @objc func memberTap() {
+        screenViewModel.action.route(.member)
+    }
+    
+    @IBAction func pendingPostsTap() {
+        screenViewModel.action.route(.pendingPosts)
     }
 }

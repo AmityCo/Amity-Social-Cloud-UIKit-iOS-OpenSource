@@ -52,9 +52,10 @@ final class AmityMessageListScreenViewModel: AmityMessageListScreenViewModelType
     weak var delegate: AmityMessageListScreenViewModelDelegate?
         
     // MARK: - Repository
-    private let membershipParticipation: AmityChannelParticipation!
+    private var membershipParticipation: AmityChannelParticipation?
     private let channelRepository: AmityChannelRepository!
     private var messageRepository: AmityMessageRepository!
+    private var userRepository: AmityUserRepository!
     private var editor: AmityMessageEditor?
     
     // MARK: - Collection
@@ -64,6 +65,7 @@ final class AmityMessageListScreenViewModel: AmityMessageListScreenViewModelType
     private var channelNotificationToken: AmityNotificationToken?
     private var messagesNotificationToken: AmityNotificationToken?
     private var createMessageNotificationToken: AmityNotificationToken?
+    private var userNotificationToken: AmityNotificationToken?
     
     private var messageAudio: AmityMessageAudioController?
     
@@ -91,12 +93,14 @@ final class AmityMessageListScreenViewModel: AmityMessageListScreenViewModelType
     
     private(set) var allCells: [String: UINib] = [:]
     
+    private var messageQueue = DispatchQueue(label: "group.message.queue", qos: .background)
+    
     func message(at indexPath: IndexPath) -> AmityMessageModel? {
         guard !messages.isEmpty else { return nil }
         return messages[indexPath.section][indexPath.row]
     }
     
-    func getKeyboardVisible() -> Bool {
+    func isKeyboardVisible() -> Bool {
         return keyboardVisible
     }
     
@@ -106,6 +110,14 @@ final class AmityMessageListScreenViewModel: AmityMessageListScreenViewModelType
     
     func numberOfMessage(in section: Int) -> Int {
         return messages[section].count
+    }
+    
+    func getChannelId() -> String {
+        return channelId
+    }
+    
+    func getCommunityId() -> String {
+        return channelId
     }
 }
 
@@ -142,15 +154,16 @@ extension AmityMessageListScreenViewModel {
     func getChannel(){
         channelNotificationToken?.invalidate()
         channelNotificationToken = channelRepository.getChannel(channelId).observe { [weak self] (channel, error) in
-            guard let model = channel.object else { return }
-            self?.delegate?.screenViewModelDidGetChannel(channel: model)
+            guard let object = channel.object else { return }
+            let channelModel = AmityChannelModel(object: object)
+            self?.delegate?.screenViewModelDidGetChannel(channel: channelModel)
         }
     }
     
     func getMessage() {
         messagesCollection = messageRepository.getMessages(channelId: channelId, includingTags: [], excludingTags: [], filterByParentId: false, parentId: nil, reverse: true)
-        messagesNotificationToken = messagesCollection?.observe { [weak self] (_messages, change, error) in
-            self?.groupingMessages(with: _messages)
+        messagesNotificationToken = messagesCollection?.observe { [weak self] (liveCollection, change, error) in
+            self?.groupMessages(in: liveCollection)
         }
     }
     
@@ -171,10 +184,9 @@ extension AmityMessageListScreenViewModel {
         guard !textMessage.isEmpty else { return }
         
         editor = AmityMessageEditor(client: AmityUIKitManagerInternal.shared.client, messageId: messageId)
-        editor?.editText(textMessage, completion: { [weak self] (status, error) in
-            if let error = error {
-                return
-            }
+        editor?.editText(textMessage, completion: { [weak self] (isSuccess, error) in
+            guard isSuccess else { return }
+            
             self?.delegate?.screenViewModelEvents(for: .didEditText)
             self?.editor = nil
         })
@@ -186,7 +198,7 @@ extension AmityMessageListScreenViewModel {
             guard error == nil , status else { return }
             switch message.messageType {
             case .audio:
-                AmityFileCache.shared.deleteFile(for: .audioDireectory, fileName: message.messageId + ".m4a")
+                AmityFileCache.shared.deleteFile(for: .audioDirectory, fileName: message.messageId + ".m4a")
             default:
                 break
             }
@@ -197,12 +209,8 @@ extension AmityMessageListScreenViewModel {
     
     
     func deleteErrorMessage(with messageId: String, at indexPath: IndexPath) {
-        messageRepository.deleteFailedMessage(messageId) { [weak self] (status, error) in
-            if let error = error {
-                return
-            }
-                
-            if status {
+        messageRepository.deleteFailedMessage(messageId) { [weak self] (isSuccess, error) in
+            if isSuccess {
                 self?.delegate?.screenViewModelEvents(for: .didDeeleteErrorMessage(indexPath: indexPath))
                 self?.delegate?.screenViewModelEvents(for: .updateMessages)
             }
@@ -210,16 +218,17 @@ extension AmityMessageListScreenViewModel {
     }
     
     func startReading() {
-        membershipParticipation.startReading()
+        membershipParticipation?.startReading()
     }
     
     func stopReading() {
-        membershipParticipation.stopReading()
+        membershipParticipation?.stopReading()
+        membershipParticipation = nil
     }
     
     func scrollToBottom() {
         guard let indexPath = lastIndexMessage() else { return }
-        delegate?.screenViewMdoelScrollToBottom(for: indexPath)
+        delegate?.screenViewModelScrollToBottom(for: indexPath)
     }
     
     func inputSource(for event: KeyboardInputEvents) {
@@ -279,29 +288,43 @@ private extension AmityMessageListScreenViewModel {
         return IndexPath(item: messageCount, section: lastSection)
     }
     
-    func groupingMessages(with collection: AmityCollection<AmityMessage>?) {
-        guard let collection = collection else { return }
-        var storeMessages: [AmityMessageModel] = []
+    /*
+     TODO: Refactor this
+     
+     Now we loop through whole collection and update the tableview for messages. The observer block also
+     provides collection `change` object which can be used to track which indexpaths to add/remove/change.
+     */
+    func groupMessages(in collection: AmityCollection<AmityMessage>) {
+        
+        // First we get message from the collection
+        var storedMessages: [AmityMessageModel] = []
         for index in 0..<collection.count() {
             guard let message = collection.object(at: UInt(index)) else { return }
-            let model = AmityMessageModel(object: message)
-            let index = storeMessages.firstIndex(where: { $0.messageId == model.messageId })
-            if let index = index {
-                storeMessages[index] = model
-            } else {
-                storeMessages.append(model)
-            }
+            storedMessages.append(AmityMessageModel(object: message))
         }
-        let queue = DispatchQueue(label: "group.message.queue", qos: .background, attributes: .concurrent)
-        queue.async { [weak self] in
+        
+        // Then we group message as per date. This method gets called everytime observer is triggered with changes.
+        // We want to handle the changes in the same order it gets triggered.
+        messageQueue.sync { [weak self] in
             guard let strongSelf = self else { return }
+            let groupedMessage = storedMessages.groupSort(byDate: { $0.createdAtDate })
+            
+            // We then ask view to update
             DispatchQueue.main.async {
-                strongSelf.messages = storeMessages.groupSort(byDate: { $0.createdAtDate })
+                strongSelf.messages = groupedMessage
                 strongSelf.delegate?.screenViewModelLoadingState(for: .loaded)
                 strongSelf.delegate?.screenViewModelEvents(for: .updateMessages)
+                                
                 if strongSelf.canScrollToBottom {
+                    // If this screen is opened for first time, we want to scroll to bottom.
                     strongSelf.scrollToBottom()
                     strongSelf.canScrollToBottom = false
+                } else {
+                    // Determining when to scroll or not when receiving message
+                    // depends upon the view state.
+                    if let messageIndex = self?.lastIndexMessage() {
+                        strongSelf.delegate?.screenViewModelShouldUpdateScrollPosition(to: messageIndex)
+                    }
                 }
             }
         }
@@ -311,8 +334,8 @@ private extension AmityMessageListScreenViewModel {
 // MARK: - Send Image
 extension AmityMessageListScreenViewModel {
     
-    func send(withImages images: [AmityImage]) {
-        let operations = images.map { UploadImageMessageOperation(channelId: channelId, image: $0, repository: messageRepository) }
+    func send(withMedias medias: [AmityMedia]) {
+        let operations = medias.map { UploadImageMessageOperation(channelId: channelId, media: $0, repository: messageRepository) }
         
         // Define serial dependency A <- B <- C <- ... <- Z
         for (left, right) in zip(operations, operations.dropFirst()) {

@@ -8,7 +8,7 @@
 
 import UIKit
 
-protocol AmityMyCommunityScreenViewModelDelegate: class {
+protocol AmityMyCommunityScreenViewModelDelegate: AnyObject {
     func screenViewModelDidRetrieveAllCommunity(_ viewModel: AmityMyCommunityScreenViewModelType)
     func screenViewModelDidSearch(_ viewModel: AmityMyCommunityScreenViewModelType)
     func screenViewModelDidSearchNotFound(_ viewModel: AmityMyCommunityScreenViewModelType)

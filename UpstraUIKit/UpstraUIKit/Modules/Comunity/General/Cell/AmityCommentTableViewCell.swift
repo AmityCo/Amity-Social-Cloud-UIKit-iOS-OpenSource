@@ -8,7 +8,7 @@
 
 import UIKit
 
-protocol AmityCommentTableViewCellDelegate: class {
+protocol AmityCommentTableViewCellDelegate: AnyObject {
     func commentCellDidTapReadMore(_ cell: AmityCommentTableViewCell)
     func commentCellDidTapLike(_ cell: AmityCommentTableViewCell)
     func commentCellDidTapReply(_ cell: AmityCommentTableViewCell)

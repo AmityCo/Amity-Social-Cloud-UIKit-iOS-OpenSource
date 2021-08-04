@@ -44,7 +44,7 @@ protocol AmityCreateCommunityScreenViewModelDataSource {
     func user(at indexPath: IndexPath) -> AmitySelectMemberModel?
 }
 
-protocol AmityCreateCommunityScreenViewModelDelegate: class {
+protocol AmityCreateCommunityScreenViewModelDelegate: AnyObject {
     func screenViewModel(_ viewModel: AmityCreateCommunityScreenViewModel, state: AmityCreateCommunityState)
     func screenViewModel(_ viewModel: AmityCreateCommunityScreenViewModel, failure error: AmityError)
 }

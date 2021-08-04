@@ -19,7 +19,8 @@ public extension AmityMessageListViewController {
     struct Settings {
         /// Set compose bar style. The default value is `ComposeBarStyle.default`.
         public var composeBarStyle = ComposeBarStyle.default
-        
+        public var shouldHideAudioButton: Bool = false
+        public var shouldShowChatSettingBarButton: Bool = false
         public init() {
             // Intentionally left empty
         }
@@ -47,30 +48,20 @@ public final class AmityMessageListViewController: AmityViewController {
     @IBOutlet private var bottomConstraint: NSLayoutConstraint!
     
     // MARK: - Properties
-    private var screenViewModel: AmityMessageListScreenViewModelType
+    private var screenViewModel: AmityMessageListScreenViewModelType!
     
     // MARK: - Container View
     private var navigationHeaderViewController: AmityMessageListHeaderView!
     private var messageViewController: AmityMessageListTableViewController!
     private var composeBar: AmityComposeBar!
 
-    private var audioRecordingViewController = AmityMessageListRecordingViewController.make()
+    private var audioRecordingViewController: AmityMessageListRecordingViewController?
     
     private let circular = AmityCircularTransition()
     
     private var settings = Settings()
     
     // MARK: - View lifecyle
-    
-    private init(viewModel: AmityMessageListScreenViewModelType) {
-        screenViewModel = viewModel
-        super.init(nibName: AmityMessageListViewController.identifier, bundle: AmityUIKitManager.bundle)
-    }
-    
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    
     public override func viewDidLoad() {
         super.viewDidLoad()
         setupView()
@@ -87,6 +78,8 @@ public final class AmityMessageListViewController: AmityViewController {
     public override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         AmityKeyboardService.shared.delegate = nil
+        bottomConstraint.constant = .zero
+        screenViewModel.action.toggleKeyboardVisible(visible: false)
         screenViewModel.action.stopReading()
         AmityAudioPlayer.shared.stop()
     }
@@ -100,12 +93,11 @@ public final class AmityMessageListViewController: AmityViewController {
         channelId: String,
         settings: AmityMessageListViewController.Settings = .init()
     ) -> AmityMessageListViewController {
-        
         let viewModel = AmityMessageListScreenViewModel(channelId: channelId)
-        let vc = AmityMessageListViewController(viewModel: viewModel)
+        let vc = AmityMessageListViewController(nibName: AmityMessageListViewController.identifier, bundle: AmityUIKitManager.bundle)
+        vc.screenViewModel = viewModel
         vc.settings = settings
         return vc
-        
     }
     
     private func shouldCellOverride() {
@@ -136,8 +128,8 @@ private extension AmityMessageListViewController {
         imagePicker.settings.selection.unselectOnReachingMax = false
         imagePicker.settings.theme.selectionStyle = .numbered
         presentImagePicker(imagePicker, select: nil, deselect: nil, cancel: nil, finish: { [weak self] assets in
-            let images = assets.map { AmityImage(state: .localAsset($0)) }
-            self?.screenViewModel.action.send(withImages: images)
+            let medias = assets.map { AmityMedia(state: .localAsset($0), type: .image) }
+            self?.screenViewModel.action.send(withMedias: medias)
         })
     }
     
@@ -164,9 +156,22 @@ private extension AmityMessageListViewController {
         navigationBarType = .custom
         navigationHeaderViewController = AmityMessageListHeaderView(viewModel: screenViewModel)
         
-        // Just using the view form this
-        let item = UIBarButtonItem(customView: navigationHeaderViewController)
-        navigationItem.leftBarButtonItem = item
+        if settings.shouldShowChatSettingBarButton {
+            // Just using the view form this
+            let item = UIBarButtonItem(customView: navigationHeaderViewController)
+            navigationItem.leftBarButtonItem = item
+            let image = AmityIconSet.Chat.iconSetting
+            let barButton = UIBarButtonItem(image: image,
+                                            style: .plain,
+                                            target: self,
+                                            action: #selector(didTapSetting))
+            navigationItem.rightBarButtonItem = barButton
+        }
+    }
+    
+    @objc func didTapSetting() {
+        let vc = AmityChatSettingsViewController.make(channelId: screenViewModel.dataSource.getChannelId())
+        navigationController?.pushViewController(vc, animated: true)
     }
     
     func setupMessageContainer() {
@@ -175,12 +180,11 @@ private extension AmityMessageListViewController {
     }
     
     func setupComposeBarContainer() {
-        
         // Switch compose bar view controller based on styling.
         let composeBarViewController: UIViewController & AmityComposeBar
         switch settings.composeBarStyle {
         case .default:
-            composeBarViewController = AmityMessageListComposeBarViewController.make(viewModel: screenViewModel)
+            composeBarViewController = AmityMessageListComposeBarViewController.make(viewModel: screenViewModel, setting: settings)
         case .textOnly:
             composeBarViewController = AmityComposeBarOnlyTextViewController.make(viewModel: screenViewModel)
         }
@@ -210,13 +214,14 @@ private extension AmityMessageListViewController {
     func setupAudioRecordingView() {
         
         let screenSize = UIScreen.main.bounds
-        
+        audioRecordingViewController = AmityMessageListRecordingViewController.make()
+        audioRecordingViewController?.presenter = self
         circular.duration = 0.3
         circular.startingPoint = CGPoint(x: screenSize.width / 2, y: screenSize.height)
         circular.circleColor = UIColor.black.withAlphaComponent(0.70)
-        circular.presentedView = audioRecordingViewController.view
+        circular.presentedView = audioRecordingViewController?.view
         
-        audioRecordingViewController.finishRecordingHandler = { [weak self] state in
+        audioRecordingViewController?.finishRecordingHandler = { [weak self] state in
             switch state {
             case .finish:
                 self?.screenViewModel.action.sendAudio()
@@ -232,7 +237,7 @@ private extension AmityMessageListViewController {
             }
         }
         
-        composeBar.deletingTarget = audioRecordingViewController.deleteButton
+        composeBar.deletingTarget = audioRecordingViewController?.deleteButton
         
     }
     
@@ -248,12 +253,13 @@ private extension AmityMessageListViewController {
 
 extension AmityMessageListViewController: AmityKeyboardServiceDelegate {
     func keyboardWillChange(service: AmityKeyboardService, height: CGFloat, animationDuration: TimeInterval) {
+        
         let offset = height > 0 ? view.safeAreaInsets.bottom : 0
         bottomConstraint.constant = -height + offset
-        messageViewController.tableView.setBottomInset(to: height > 0 ? 0:1)
+        messageViewController.tableView.setBottomInset(to: height > 0 ? 0 : 1)
         view.setNeedsUpdateConstraints()
         view.layoutIfNeeded()
-
+        
         if height == 0 {
             screenViewModel.action.toggleKeyboardVisible(visible: false)
             screenViewModel.action.inputSource(for: .default)
@@ -276,13 +282,15 @@ extension AmityMessageListViewController: UIImagePickerControllerDelegate & UINa
         picker.dismiss(animated: true) { [weak self] in
             do {
                 try image.fixedOrientation().pngData()?.write(to: imageURL)
-                let amityImage = AmityImage(state: .localURL(url: imageURL))
-                self?.screenViewModel.action.send(withImages: [amityImage])
+                let media = AmityMedia(state: .localURL(url: imageURL), type: .image)
+                self?.screenViewModel.action.send(withMedias: [media])
             } catch {
                 Log.add(error.localizedDescription)
             }
         }
+        
     }
+    
 }
 
 extension AmityMessageListViewController: AmityMessageListScreenViewModelDelegate {
@@ -294,17 +302,17 @@ extension AmityMessageListViewController: AmityMessageListScreenViewModelDelegat
             circular.show(for: window)
         case .hide:
             circular.hide()
-            audioRecordingViewController.stopRecording()
+            audioRecordingViewController?.stopRecording()
         case .deleting:
-            audioRecordingViewController.deletingRecording()
+            audioRecordingViewController?.deletingRecording()
         case .cancelingDelete:
-            audioRecordingViewController.cancelingDelete()
+            audioRecordingViewController?.cancelingDelete()
         case .delete:
             circular.hide()
-            audioRecordingViewController.deleteRecording()
+            audioRecordingViewController?.deleteRecording()
         case .record:
             circular.hide()
-            audioRecordingViewController.stopRecording()
+            audioRecordingViewController?.stopRecording()
         case .timeoutRecord:
             circular.hide()
             screenViewModel.action.sendAudio()
@@ -319,11 +327,15 @@ extension AmityMessageListViewController: AmityMessageListScreenViewModelDelegat
         }
     }
     
-    func screenViewModelDidGetChannel(channel: AmityChannel) {
+    func screenViewModelShouldUpdateScrollPosition(to indexPath: IndexPath) {
+        messageViewController.updateScrollPosition(to: indexPath)
+    }
+    
+    func screenViewModelDidGetChannel(channel: AmityChannelModel) {
         navigationHeaderViewController.updateViews(channel: channel)
     }
     
-    func screenViewMdoelScrollToBottom(for indexPath: IndexPath) {
+    func screenViewModelScrollToBottom(for indexPath: IndexPath) {
         messageViewController.scrollToBottom(indexPath: indexPath)
     }
     
@@ -369,7 +381,7 @@ extension AmityMessageListViewController: AmityMessageListScreenViewModelDelegat
             AmityHUD.show(.success(message: AmityLocalizedStringSet.HUD.delete.localizedString))
         case .didSendAudio:
             circular.hide()
-            audioRecordingViewController.stopRecording()
+            audioRecordingViewController?.stopRecording()
         }
     }
     
@@ -395,8 +407,8 @@ extension AmityMessageListViewController: AmityMessageListScreenViewModelDelegat
             guard let message = screenViewModel.dataSource.message(at: indexPath) else { return }
             let alertViewController = UIAlertController(title: AmityLocalizedStringSet.MessageList.alertDeleteTitle.localizedString,
                                                         message: AmityLocalizedStringSet.MessageList.alertDeleteDesc.localizedString, preferredStyle: .alert)
-            let cancel = UIAlertAction(title: AmityLocalizedStringSet.cancel.localizedString, style: .cancel, handler: nil)
-            let delete = UIAlertAction(title: AmityLocalizedStringSet.delete.localizedString, style: .destructive, handler: { [weak self] _ in
+            let cancel = UIAlertAction(title: AmityLocalizedStringSet.General.cancel.localizedString, style: .cancel, handler: nil)
+            let delete = UIAlertAction(title: AmityLocalizedStringSet.General.delete.localizedString, style: .destructive, handler: { [weak self] _ in
                 self?.screenViewModel.action.delete(withMessage: message, at: indexPath)
             })
             alertViewController.addAction(cancel)
@@ -406,8 +418,8 @@ extension AmityMessageListViewController: AmityMessageListScreenViewModelDelegat
             guard let message = screenViewModel.dataSource.message(at: indexPath) else { return }
             let alertViewController = UIAlertController(title: AmityLocalizedStringSet.MessageList.alertErrorMessageTitle.localizedString,
                                                         message: nil, preferredStyle: .actionSheet)
-            let cancel = UIAlertAction(title: AmityLocalizedStringSet.cancel.localizedString, style: .cancel, handler: nil)
-            let delete = UIAlertAction(title: AmityLocalizedStringSet.delete.localizedString, style: .destructive, handler: { [weak self] _ in
+            let cancel = UIAlertAction(title: AmityLocalizedStringSet.General.cancel.localizedString, style: .cancel, handler: nil)
+            let delete = UIAlertAction(title: AmityLocalizedStringSet.General.delete.localizedString, style: .destructive, handler: { [weak self] _ in
                 self?.screenViewModel.action.deleteErrorMessage(with: message.messageId, at: indexPath)
             })
             alertViewController.addAction(cancel)
@@ -418,7 +430,7 @@ extension AmityMessageListViewController: AmityMessageListScreenViewModelDelegat
             AmityHUD.show(.success(message: AmityLocalizedStringSet.HUD.reportSent.localizedString))
         case .imageViewer(let indexPath, let imageView):
             guard let message = screenViewModel.dataSource.message(at: indexPath) else { return }
-            AmityMessageMediaService.shared.downloadImageForMessage(message: message.object, size: .full, progress: nil) { [weak self] (result) in
+            AmityUIKitManagerInternal.shared.messageMediaService.downloadImageForMessage(message: message.object, size: .full, progress: nil) { [weak self] (result) in
                 switch result {
                 case .success(let image):
                     let photoViewerVC = AmityPhotoViewerController(referencedView: imageView, image: image)
@@ -437,7 +449,6 @@ extension AmityMessageListViewController: AmityMessageListScreenViewModelDelegat
             composeBar.showRecordButton(show: false)
         case .audio:
             composeBar.showRecordButton(show: true)
-            view.endEditing(true)
             view.endEditing(true)
         default:
             break

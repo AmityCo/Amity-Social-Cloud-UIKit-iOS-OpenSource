@@ -9,9 +9,9 @@
 import UIKit
 import AmitySDK
 
-protocol AmityGalleryCollectionViewDelegate: class {
+protocol AmityGalleryCollectionViewDelegate: AnyObject {
     func galleryView(_ view: AmityGalleryCollectionView, didRemoveImageAt index: Int)
-    func galleryView(_ view: AmityGalleryCollectionView, didTapImage image: AmityImage, reference: UIImageView)
+    func galleryView(_ view: AmityGalleryCollectionView, didTapMedia media: AmityMedia, reference: UIImageView)
 }
 
 class AmityGalleryCollectionView: UICollectionView {
@@ -23,7 +23,7 @@ class AmityGalleryCollectionView: UICollectionView {
     }
     
     weak var actionDelegate: AmityGalleryCollectionViewDelegate?
-    private(set) var images: [AmityImage] = []
+    private(set) var medias: [AmityMedia] = []
     var selectedImageIndex: Int = 0
     
     var isEditable: Bool = false {
@@ -86,37 +86,38 @@ class AmityGalleryCollectionView: UICollectionView {
         }
     }
     
-    public func configure(images: [AmityImage]) {
-        self.images = images
+    public func configure(medias: [AmityMedia]) {
+        self.medias = medias
         reloadData()
     }
     
-    public func addImage(_ images: [AmityImage]) {
-        self.images += images
+    public func addMedias(_ medias: [AmityMedia]) {
+        self.medias += medias
         reloadData()
     }
     
     func updateViewState(for imageId: String, state: AmityGalleryCollectionViewCell.ViewState) {
-        guard let index = images.firstIndex(where: { $0.id == imageId }),
+        guard
+            let index = medias.firstIndex(where: { $0.id == imageId }),
             let cell = cellForItem(at: IndexPath(row: index, section: 0)) as? AmityGalleryCollectionViewCell else {
                 return
         }
         cell.updateViewState(state)
     }
     
-    func viewState(for imageId: String) -> AmityGalleryCollectionViewCell.ViewState {
-        guard let index = images.firstIndex(where: { $0.id == imageId }),
+    func viewState(for mediaId: String) -> AmityGalleryCollectionViewCell.ViewState {
+        guard let index = medias.firstIndex(where: { $0.id == mediaId }),
             let cell = cellForItem(at: IndexPath(row: index, section: 0)) as? AmityGalleryCollectionViewCell else {
                 return .idle
         }
         return cell.viewState
     }
     
-    func imageState(for fileId: String) -> AmityImageState {
-        guard let image = images.first(where: { $0.id == fileId }) else {
+    func mediaState(for mediaId: String) -> AmityMediaState {
+        guard let media = medias.first(where: { $0.id == mediaId }) else {
             return .error
         }
-        return image.state
+        return media.state
     }
     
     public static func height(for contentWidth: CGFloat, numberOfItems: Int) -> CGFloat {
@@ -140,9 +141,9 @@ extension AmityGalleryCollectionView: UICollectionViewDataSource {
     
     public func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         if isEditable {
-            return images.count
+            return medias.count
         }
-        return min(images.count, Constant.maxNumberOfItems)
+        return min(medias.count, Constant.maxNumberOfItems)
     }
     
     public func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -154,23 +155,40 @@ extension AmityGalleryCollectionView: UICollectionViewDataSource {
 extension AmityGalleryCollectionView: UICollectionViewDelegateFlowLayout {
     
     func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
-        guard let cell = cell as? AmityGalleryCollectionViewCell else { return }
+        
+        guard let cell = cell as? AmityGalleryCollectionViewCell else {
+            assertionFailure("Unhandle cell type")
+            return
+        }
+        
+        let media = medias[indexPath.item]
+        
         if isEditable {
-            cell.display(image: images[indexPath.item], isEditable: isEditable, numberText: nil, indexPath: indexPath)
+            cell.display(media: media, isEditable: isEditable, numberText: nil)
             cell.delegate = self
         } else {
-            let shouldShowNumber = (images.count - Constant.maxNumberOfItems > 0) && (indexPath.row == Constant.maxNumberOfItems - 1)
-            let numberText: String? = shouldShowNumber ? "+ \(images.count - Constant.maxNumberOfItems + 1)" : nil
-            cell.display(image: images[indexPath.item], isEditable: isEditable, numberText: numberText, indexPath: indexPath)
+            let shouldShowNumber = (medias.count - Constant.maxNumberOfItems > 0) && (indexPath.row == Constant.maxNumberOfItems - 1)
+            let numberText: String? = shouldShowNumber ? "+ \(medias.count - Constant.maxNumberOfItems + 1)" : nil
+            cell.display(media: media, isEditable: isEditable, numberText: numberText)
         }
         
     }
     
     public func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        if let cell = collectionView.cellForItem(at: indexPath) as? AmityGalleryCollectionViewCell {
-            selectedImageIndex = indexPath.item
-            actionDelegate?.galleryView(self, didTapImage: images[indexPath.item], reference: cell.imageView)
+        
+        guard let cell = collectionView.cellForItem(at: indexPath) as? AmityGalleryCollectionViewCell else {
+            assertionFailure("Unsupported cell type")
+            return
         }
+        
+        selectedImageIndex = indexPath.item
+        
+        actionDelegate?.galleryView(
+            self,
+            didTapMedia: medias[indexPath.item],
+            reference: cell.imageView
+        )
+        
     }
     
 }

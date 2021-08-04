@@ -41,7 +41,7 @@ import Photos
     // Figure out why. Until then, expose the variable for users to set to whatever they want it localized to
     // TODO: Fix this ^^
     /// Title to use for button
-    public var doneButtonTitle = AmityLocalizedStringSet.done.localizedString
+    public var doneButtonTitle = AmityLocalizedStringSet.General.done.localizedString
 
     // MARK: Internal properties
     var assetStore: AssetStore

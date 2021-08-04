@@ -9,7 +9,7 @@
 
 import UIKit
 
-protocol AmitySettingsItemTableViewDelegate: class {
+protocol AmitySettingsItemTableViewDelegate: AnyObject {
     func didPerformAction(item: AmitySettingsItem)
 }
 

@@ -19,15 +19,32 @@ final class AmityMessageListRecordingViewController: UIViewController {
     
     // MARK: - Properties
     var finishRecordingHandler: ((AmityAudioRecorderState) -> Void)?
-    // MARK: - View lifecycle
-    static func make() -> AmityMessageListRecordingViewController {
-        return AmityMessageListRecordingViewController(nibName: AmityMessageListRecordingViewController.identifier, bundle: AmityUIKitManager.bundle)
-    }
     
+    // this vc doesn't support swipe back gesture
+    // it requires setting a presenter to define who is using this vc
+    // and then temporarily disable the gesture
+    weak var presenter: AmityViewController?
+    
+    // MARK: - View lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
         AmityAudioRecorder.shared.delegate = self
         setupView()
+    }
+    
+    static func make() -> AmityMessageListRecordingViewController {
+        let vc = AmityMessageListRecordingViewController(nibName: AmityMessageListRecordingViewController.identifier, bundle: AmityUIKitManager.bundle)
+        return vc
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        presenter?.removeSwipeBackGesture()
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        presenter?.setupFullWidthBackGesture()
     }
     
     override func viewDidAppear(_ animated: Bool) {

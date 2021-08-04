@@ -32,9 +32,9 @@ class AmityMessageTableViewCell: UITableViewCell, AmityMessageCellProtocol {
     var message: AmityMessageModel!
     
     var indexPath: IndexPath!
-    let editMenuItem = UIMenuItem(title: AmityLocalizedStringSet.edit.localizedString, action: #selector(editTap))
-    let deleteMenuItem = UIMenuItem(title: AmityLocalizedStringSet.delete.localizedString, action: #selector(deleteTap))
-    let reportMenuItem = UIMenuItem(title: AmityLocalizedStringSet.report.localizedString, action: #selector(reportTap))
+    let editMenuItem = UIMenuItem(title: AmityLocalizedStringSet.General.edit.localizedString, action: #selector(editTap))
+    let deleteMenuItem = UIMenuItem(title: AmityLocalizedStringSet.General.delete.localizedString, action: #selector(deleteTap))
+    let reportMenuItem = UIMenuItem(title: AmityLocalizedStringSet.General.report.localizedString, action: #selector(reportTap))
     
     override var canBecomeFirstResponder: Bool {
         return true
@@ -97,6 +97,7 @@ class AmityMessageTableViewCell: UITableViewCell, AmityMessageCellProtocol {
             }
         } else {
             avatarView.placeholder = AmityIconSet.defaultAvatar
+            setAvatarImage(message)
             containerView.layer.maskedCorners = setRoundCorner(isOwner: message.isOwner)
             
             switch message.messageType {
@@ -154,6 +155,19 @@ class AmityMessageTableViewCell: UITableViewCell, AmityMessageCellProtocol {
     
     private func setDisplayName(_ name: String?) {
         displayNameLabel.text = name
+    }
+    
+    private func setAvatarImage(_ messageModel: AmityMessageModel) {
+        if let customURL = messageModel.object.user?.avatarCustomUrl,
+           !customURL.isEmpty {
+            avatarView.setImage(withImageURL: customURL,
+                                placeholder: AmityIconSet.defaultAvatar)
+        } else if
+            let url = messageModel.object.user?.getAvatarInfo()?.fileURL,
+            !url.isEmpty {
+            avatarView.setImage(withImageURL: url,
+                                placeholder: AmityIconSet.defaultAvatar)
+        }
     }
 }
 

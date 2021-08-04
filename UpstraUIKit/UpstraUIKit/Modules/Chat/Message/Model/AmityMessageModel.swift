@@ -31,7 +31,7 @@ public final class AmityMessageModel {
         self.object = object
         self.messageId = object.messageId
         self.userId = object.userId
-        self.displayName = object.user?.displayName ?? AmityLocalizedStringSet.anonymous.localizedString
+        self.displayName = object.user?.displayName ?? AmityLocalizedStringSet.General.anonymous.localizedString
         self.syncState = object.syncState
         self.isDeleted = object.isDeleted
         self.isEdited = AmityMessageModel.isEdited(createdAtDate: object.createdAtDate, editedAtDate: object.editedAtDate)

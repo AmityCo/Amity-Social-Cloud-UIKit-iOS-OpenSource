@@ -9,7 +9,7 @@
 import UIKit
 import AmitySDK
 
-protocol AmityFileTableViewCellDelegate: class {
+protocol AmityFileTableViewCellDelegate: AnyObject {
     func didTapClose(_ cell: AmityFileTableViewCell)
 }
 

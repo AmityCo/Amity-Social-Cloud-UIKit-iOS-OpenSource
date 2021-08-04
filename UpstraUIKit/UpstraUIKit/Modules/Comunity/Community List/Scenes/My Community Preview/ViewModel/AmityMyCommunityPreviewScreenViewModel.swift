@@ -10,6 +10,7 @@ import UIKit
 
 final class AmityMyCommunityPreviewScreenViewModel: AmityMyCommunityPreviewScreenViewModelType {
     private let maximumItems = 8
+    private let debouncer = Debouncer(delay: 0.3)
     
     weak var delegate: AmityMyCommunityPreviewScreenViewModelDelegate?
     
@@ -46,9 +47,9 @@ extension AmityMyCommunityPreviewScreenViewModel {
 extension AmityMyCommunityPreviewScreenViewModel {
     func retrieveMyCommunityList() {
         communityListRepositoryManager.search(withText: "", filter: .userIsMember) { [weak self] (communityList) in
-            guard let strongSelf = self else { return }
-            strongSelf.communityList = communityList
-            strongSelf.delegate?.screenViewModel(strongSelf, didRetrieveCommunityList: communityList)
+            self?.debouncer.run {
+                self?.prepareData(communityList: communityList)
+            }
         }
     }
     
@@ -60,3 +61,12 @@ extension AmityMyCommunityPreviewScreenViewModel {
     }
 }
 
+// MARK: - Helpers
+extension AmityMyCommunityPreviewScreenViewModel {
+    
+    private func prepareData(communityList: [AmityCommunityModel]) {
+        self.communityList = communityList
+        delegate?.screenViewModel(self, didRetrieveCommunityList: communityList)
+    }
+    
+}

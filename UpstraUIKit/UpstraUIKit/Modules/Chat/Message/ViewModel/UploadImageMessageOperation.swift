@@ -12,14 +12,14 @@ import AmitySDK
 class UploadImageMessageOperation: AsyncOperation {
     
     private let channelId: String
-    private let image: AmityImage
+    private let media: AmityMedia
     private weak var repository: AmityMessageRepository?
     
     private var token: AmityNotificationToken?
     
-    init(channelId: String, image: AmityImage, repository: AmityMessageRepository) {
+    init(channelId: String, media: AmityMedia, repository: AmityMessageRepository) {
         self.channelId = channelId
-        self.image = image
+        self.media = media
         self.repository = repository
     }
     
@@ -38,7 +38,7 @@ class UploadImageMessageOperation: AsyncOperation {
         
         // Perform actual task on main queue.
         DispatchQueue.main.async { [weak self] in
-            self?.image.getLocalURLForUploading(completion: { (url) in
+            self?.media.getLocalURLForUploading(completion: { (url) in
                 guard let imageUrl = url else {
                     self?.finish()
                     return

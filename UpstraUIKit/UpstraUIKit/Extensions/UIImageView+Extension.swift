@@ -16,7 +16,7 @@ extension UIImageView {
         if let placeholder = placeholder {
             image = placeholder
         }
-        AmityFileService.shared.loadImage(imageURL: url, size: size, optimisticLoad: optimisticLoad) { [weak self] result in
+        AmityUIKitManagerInternal.shared.fileService.loadImage(imageURL: url, size: size, optimisticLoad: optimisticLoad) { [weak self] result in
             switch result {
             case .success(let image):
                 self?.image = image

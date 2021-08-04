@@ -9,7 +9,7 @@
 import UIKit
 import AmitySDK
 
-protocol AmityCategoryPreviewCollectionViewCellDelegate: class {
+protocol AmityCategoryPreviewCollectionViewCellDelegate: AnyObject {
     func cellDidTapOnAvatar(_ cell: AmityCategoryPreviewCollectionViewCell)
 }
 

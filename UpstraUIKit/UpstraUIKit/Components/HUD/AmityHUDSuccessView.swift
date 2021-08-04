@@ -45,12 +45,14 @@ class AmityHUDSuccessView: UIView {
         
         NSLayoutConstraint.activate([
             imageView.centerXAnchor.constraint(equalTo: centerXAnchor),
-            imageView.topAnchor.constraint(equalTo: topAnchor, constant: 32),
+            imageView.topAnchor.constraint(equalTo: topAnchor, constant: 34),
             imageView.widthAnchor.constraint(equalToConstant: 24),
             imageView.heightAnchor.constraint(equalToConstant: 24),
-            label.topAnchor.constraint(equalTo: imageView.bottomAnchor, constant: 24),
+            label.topAnchor.constraint(equalTo: imageView.bottomAnchor, constant: 14),
             label.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 12),
             label.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -12),
-            label.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -18) ])
+            label.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -26),
+            heightAnchor.constraint(greaterThanOrEqualToConstant: 120),
+            widthAnchor.constraint(greaterThanOrEqualToConstant: 120)])
     }
 }

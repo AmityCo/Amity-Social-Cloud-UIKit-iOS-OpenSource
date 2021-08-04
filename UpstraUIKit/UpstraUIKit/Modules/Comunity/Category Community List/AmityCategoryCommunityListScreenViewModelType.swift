@@ -14,7 +14,7 @@ protocol AmityCategoryCommunityListScreenViewModelDataSource {
     func loadNext()
 }
 
-protocol AmityCategoryCommunityListScreenViewModelDelegate: class {
+protocol AmityCategoryCommunityListScreenViewModelDelegate: AnyObject {
     func screenViewModelDidUpdateData(_ viewModel: AmityCategoryCommunityListScreenViewModelType)
 }
 

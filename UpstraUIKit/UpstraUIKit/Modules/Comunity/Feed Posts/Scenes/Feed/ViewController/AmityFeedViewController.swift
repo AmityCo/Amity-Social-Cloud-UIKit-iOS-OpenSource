@@ -8,6 +8,11 @@
 
 import UIKit
 
+public protocol FeedHeaderPresentable {
+    var headerView: UIView { get }
+    var height: CGFloat { get }
+}
+
 public final class AmityFeedViewController: AmityViewController, AmityRefreshable {
     
     var pageTitle: String?
@@ -25,10 +30,12 @@ public final class AmityFeedViewController: AmityViewController, AmityRefreshabl
     private var postPostProtocolHandler: AmityPostProtocolHandler?
 
     private let refreshControl = UIRefreshControl()
-    var headerView: UIView? {
+    public var headerView: FeedHeaderPresentable? {
         didSet {
-            DispatchQueue.main.async { [weak self] in
-                self?.tableView.reloadData()
+            debouncer.run { [weak self] in
+                DispatchQueue.main.async { [weak self] in
+                    self?.reloadTableViewAndClearHeightCaches()
+                }
             }
         }
     }
@@ -37,10 +44,18 @@ public final class AmityFeedViewController: AmityViewController, AmityRefreshabl
     var emptyViewHandler: ((UIView?) -> Void)?
     var pullRefreshHandler: (() -> Void)?
     
+    // Due to cells are rendering with automatic dimension.
+    // it starts shrinking when we open other page and go back.
+    // this problem can be solved with cell height calculation.
     private var cellHeights = [IndexPath: CGFloat]()
-    private var isVisible: Bool = false
+    
+    // To determine if the vc is visible or not
+    private var isVisible: Bool = true
+    
     // It will be marked as dirty when data source changed on view disappear.
     private var isDataSourceDirty: Bool = false
+    
+    private let debouncer = Debouncer(delay: 0.3)
     
     // MARK: - View lifecycle
     deinit {
@@ -60,7 +75,7 @@ public final class AmityFeedViewController: AmityViewController, AmityRefreshabl
         
         if isDataSourceDirty {
             isDataSourceDirty = false
-            tableView.reloadData()
+            reloadTableViewAndClearHeightCaches()
         }
     }
     
@@ -97,6 +112,7 @@ public final class AmityFeedViewController: AmityViewController, AmityRefreshabl
     private func setupScreenViewModel() {
         screenViewModel.delegate = self
         screenViewModel.action.startObserveFeedUpdate()
+        screenViewModel.action.fetchUserSettings()
         screenViewModel.action.fetchPosts()
     }
     
@@ -125,8 +141,15 @@ public final class AmityFeedViewController: AmityViewController, AmityRefreshabl
         tableView.refreshControl = refreshControl
     }
     
+    private func reloadTableViewAndClearHeightCaches() {
+        tableView.reloadData()
+        
+        // remove all for reassigning the exact value later
+        cellHeights.removeAll()
+    }
+    
     // MARK: SrollToTop
-    func scrollToTop() {
+    private func scrollToTop() {
         guard tableView.numberOfRows(inSection: 0) > 0 else { return }
         
         let topRow = IndexPath(row: 0, section: 0)
@@ -137,12 +160,12 @@ public final class AmityFeedViewController: AmityViewController, AmityRefreshabl
     
     // MARK: - Refreshing
     func handleRefreshing() {
-        screenViewModel.action.reload()
+        screenViewModel.action.fetchPosts()
     }
     
     @objc private func handleRefreshingControl() {
         pullRefreshHandler?()
-        screenViewModel.action.reload()
+        screenViewModel.action.fetchPosts()
     }
 }
 
@@ -154,7 +177,7 @@ extension AmityFeedViewController: AmityPostTableViewDelegate {
         
         switch cell.self {
         case is AmityFeedHeaderTableViewCell:
-            (cell as? AmityFeedHeaderTableViewCell)?.set(headerView: headerView)
+            (cell as? AmityFeedHeaderTableViewCell)?.set(headerView: headerView?.headerView)
             break
         default:
             (cell as? AmityPostHeaderProtocol)?.delegate = postHeaderProtocolHandler
@@ -165,9 +188,12 @@ extension AmityFeedViewController: AmityPostTableViewDelegate {
         }
     }
 
-    func tableView(_ tableView: AmityPostTableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
+    func tableView(_ tableView: AmityPostTableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         if indexPath.section == 0 {
-            return cellHeights[indexPath] ?? UITableView.automaticDimension
+            guard let headerView = headerView else {
+                return 0
+            }
+            return headerView.height
         } else {
             if cellHeights.isEmpty {
                 let singleComponent = screenViewModel.dataSource.postComponents(in: indexPath.section)
@@ -177,7 +203,7 @@ extension AmityFeedViewController: AmityPostTableViewDelegate {
                 return cellHeights[indexPath] ?? UITableView.automaticDimension
             }
             return cellHeights[indexPath] ?? UITableView.automaticDimension
-        }   
+        }
     }
     
     func tableView(_ tableView: AmityPostTableView, didEndDisplaying cell: UITableViewCell, forRowAt indexPath: IndexPath) {
@@ -207,7 +233,11 @@ extension AmityFeedViewController: AmityPostTableViewDelegate {
         } else {
             switch screenViewModel.dataSource.getFeedType() {
             case .userFeed:
-                bottomView.setLayout(layout: .label(title: AmityLocalizedStringSet.emptyTitleNoPosts.localizedString, subtitle: nil, image: AmityIconSet.emptyNoPosts))
+                if screenViewModel.dataSource.isPrivate {
+                    bottomView.setLayout(layout: .custom(AmityPrivateAccountView(frame: .zero)))
+                } else {
+                    bottomView.setLayout(layout: .label(title: AmityLocalizedStringSet.emptyTitleNoPosts.localizedString, subtitle: nil, image: AmityIconSet.emptyNoPosts))
+                }
             default:
                 emptyViewHandler?(bottomView)
                 return bottomView
@@ -244,8 +274,6 @@ extension AmityFeedViewController: AmityPostTableViewDataSource {
         }
         
         let singleComponent = screenViewModel.dataSource.postComponents(in: indexPath.section)
-        // extract post info
-//        singleComponent._composable.post.extractPostInfo()
         
         if let clientComponent = tableView.feedDataSource?.getUIComponentForPost(post: singleComponent._composable.post, at: indexPath.section) {
             return clientComponent.getComponentCell(tableView, at: indexPath)
@@ -264,7 +292,9 @@ extension AmityFeedViewController: AmityFeedScreenViewModelDelegate {
             isDataSourceDirty = true
             return
         }
-        tableView.reloadData()
+        debouncer.run { [weak self] in
+            self?.reloadTableViewAndClearHeightCaches()
+        }
         dataDidUpdateHandler?(screenViewModel.dataSource.numberOfPostComponents())
         refreshControl.endRefreshing()
     }
@@ -292,12 +322,16 @@ extension AmityFeedViewController: AmityFeedScreenViewModelDelegate {
         switch error {
         case .unknown:
             AmityHUD.show(.error(message: AmityLocalizedStringSet.HUD.somethingWentWrong.localizedString))
+        case .noUserAccessPermission:
+            debouncer.run { [weak self] in
+                self?.reloadTableViewAndClearHeightCaches()
+            }
         default:
             break
         }
     }
     
-    // MARK: Post
+    // MARK: - Post
     func screenViewModelDidLikePostSuccess(_ viewModel: AmityFeedScreenViewModelType) {
         tableView.feedDelegate?.didPerformActionLikePost()
     }
@@ -310,7 +344,7 @@ extension AmityFeedViewController: AmityFeedScreenViewModelDelegate {
         postHeaderProtocolHandler?.showOptions(withReportStatus: isReported)
     }
     
-    // MARK: Commend
+    // MARK: - Comment
     func screenViewModelDidLikeCommentSuccess(_ viewModel: AmityFeedScreenViewModelType) {
         tableView.feedDelegate?.didPerformActionLikeComment()
     }
@@ -327,6 +361,11 @@ extension AmityFeedViewController: AmityFeedScreenViewModelDelegate {
         // Do something with success
     }
     
+    func screenViewModelDidGetUserSettings(_ viewModel: AmityFeedScreenViewModelType) {
+        debouncer.run { [weak self] in
+            self?.reloadTableViewAndClearHeightCaches()
+        }
+    }
 }
 
 // MARK: - AmityPostHeaderProtocolHandlerDelegate
@@ -385,6 +424,10 @@ extension AmityFeedViewController: AmityPostPreviewCommentDelegate {
         case .tapExpandableLabel:
             AmityEventHandler.shared.postDidtap(from: self, postId: post.postId)
         case .willExpandExpandableLabel:
+            if let indexPath = tableView.indexPath(for: cell) {
+                // remove height cache for recalculating afterward
+                cellHeights.removeValue(forKey: indexPath)
+            }
             tableView.beginUpdates()
         case .didExpandExpandableLabel(let label):
             let point = label.convert(CGPoint.zero, to: tableView)
@@ -414,52 +457,65 @@ extension AmityFeedViewController: AmityPostPreviewCommentDelegate {
         bottomSheet.isTitleHidden = true
         bottomSheet.modalPresentationStyle = .overFullScreen
         
+        let editOption = TextItemOption(title: AmityLocalizedStringSet.PostDetail.editComment.localizedString) { [weak self] in
+            guard let strongSelf = self else { return }
+            let editTextViewController = AmityCommentEditorViewController.make(text: comment.text)
+            editTextViewController.title = AmityLocalizedStringSet.PostDetail.editComment.localizedString
+            editTextViewController.editHandler = { [weak self] text in
+                self?.screenViewModel.action.edit(withComment: comment, text: text)
+                editTextViewController.dismiss(animated: true, completion: nil)
+            }
+            editTextViewController.dismissHandler = {
+                editTextViewController.dismiss(animated: true, completion: nil)
+            }
+            let nvc = UINavigationController(rootViewController: editTextViewController)
+            nvc.modalPresentationStyle = .fullScreen
+            strongSelf.present(nvc, animated: true, completion: nil)
+        }
+        
+        let deleteOption = TextItemOption(title: AmityLocalizedStringSet.PostDetail.deleteComment.localizedString) { [weak self] in
+            let alert = UIAlertController(title: AmityLocalizedStringSet.PostDetail.deleteCommentTitle.localizedString, message: AmityLocalizedStringSet.PostDetail.deleteCommentMessage.localizedString, preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: AmityLocalizedStringSet.General.cancel.localizedString, style: .cancel, handler: nil))
+            alert.addAction(UIAlertAction(title: AmityLocalizedStringSet.General.delete.localizedString, style: .destructive) { [weak self] _ in
+                self?.screenViewModel.action.delete(withComment: comment)
+            })
+            self?.present(alert, animated: true, completion: nil)
+        }
+        
+        let unreportOption = TextItemOption(title: AmityLocalizedStringSet.General.undoReport.localizedString) { [weak self] in
+            self?.screenViewModel.action.unreport(withCommentId: comment.id)
+        }
+        
+        let reportOption = TextItemOption(title: AmityLocalizedStringSet.General.report.localizedString) { [weak self] in
+            self?.screenViewModel.action.report(withCommentId: comment.id)
+        }
+        
         // Comment options
         if comment.isOwner {
-            
-            let editOption = TextItemOption(title: AmityLocalizedStringSet.PostDetail.editComment.localizedString) { [weak self] in
-                guard let strongSelf = self else { return }
-                let editTextViewController = AmityCommentEditorViewController.make(text: comment.text)
-                editTextViewController.title = AmityLocalizedStringSet.PostDetail.editComment.localizedString
-                editTextViewController.editHandler = { [weak self] text in
-                    self?.screenViewModel.action.edit(withComment: comment, text: text)
-                    editTextViewController.dismiss(animated: true, completion: nil)
-                }
-                editTextViewController.dismissHandler = {
-                    editTextViewController.dismiss(animated: true, completion: nil)
-                }
-                let nvc = UINavigationController(rootViewController: editTextViewController)
-                nvc.modalPresentationStyle = .fullScreen
-                strongSelf.present(nvc, animated: true, completion: nil)
-            }
-            let deleteOption = TextItemOption(title: AmityLocalizedStringSet.PostDetail.deleteComment.localizedString) { [weak self] in
-                let alert = UIAlertController(title: AmityLocalizedStringSet.PostDetail.deleteCommentTitle.localizedString, message: AmityLocalizedStringSet.PostDetail.deleteCommentMessage.localizedString, preferredStyle: .alert)
-                alert.addAction(UIAlertAction(title: AmityLocalizedStringSet.cancel.localizedString, style: .cancel, handler: nil))
-                alert.addAction(UIAlertAction(title: AmityLocalizedStringSet.delete.localizedString, style: .destructive) { [weak self] _ in
-                    self?.screenViewModel.action.delete(withComment: comment)
-                })
-                self?.present(alert, animated: true, completion: nil)
-            }
-            
             contentView.configure(items: [editOption, deleteOption], selectedItem: nil)
             present(bottomSheet, animated: false, completion: nil)
         } else {
             screenViewModel.action.getReportStatus(withCommendId: comment.id) { [weak self] (isReported) in
-                if isReported {
-                    let unreportOption = TextItemOption(title: AmityLocalizedStringSet.General.undoReport.localizedString) {
-                        self?.screenViewModel.action.unreport(withCommentId: comment.id)
+                
+                var items: [TextItemOption] = isReported ? [unreportOption] : [reportOption]
+                contentView.configure(items: items, selectedItem: nil)
+                
+                // if it is in community feed, check permission before options
+                if case .communityFeed(let communityId) = self?.screenViewModel.dataSource.getFeedType() {
+                    AmityUIKitManagerInternal.shared.client.hasPermission(.editCommunity, forCommunity: communityId) { [weak self] (hasPermission) in
+                        if hasPermission {
+                            items.insert(deleteOption, at: 0)
+                        }
+                        contentView.configure(items: items, selectedItem: nil)
+                        self?.present(bottomSheet, animated: false, completion: nil)
                     }
-                    contentView.configure(items: [unreportOption], selectedItem: nil)
                 } else {
-                    let reportOption = TextItemOption(title: AmityLocalizedStringSet.General.report.localizedString) {
-                        self?.screenViewModel.action.report(withCommentId: comment.id)
-                    }
-                    contentView.configure(items: [reportOption], selectedItem: nil)
+                    self?.present(bottomSheet, animated: false, completion: nil)
                 }
-                self?.present(bottomSheet, animated: false, completion: nil)
             }
             
         }
+        
     }
 }
 

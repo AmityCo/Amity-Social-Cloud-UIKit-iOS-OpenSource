@@ -20,7 +20,7 @@ public extension AmityMessageCellProtocol {
     }
 }
 
-protocol AmityMessageCellDelegate: class {
+protocol AmityMessageCellDelegate: AnyObject {
     func performEvent(_ cell: AmityMessageTableViewCell, events: AmityMessageCellEvents)
 }
 

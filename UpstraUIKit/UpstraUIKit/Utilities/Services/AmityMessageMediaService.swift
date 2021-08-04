@@ -10,30 +10,32 @@ import UIKit
 import AmitySDK
 
 final class AmityMessageMediaService {
-    static let shared = AmityMessageMediaService()
-    private init() { }
-    private let repository = AmityFileRepository(client: AmityUIKitManagerInternal.shared.client)
+    
+    var fileRepository: AmityFileRepository?
     
     func download(for message: AmityMessage, progress: ((() -> Void)?) = nil, completion: @escaping (Result<URL, Error>) -> Void) {
         #warning("the implementation should be moved to AmityFileService")
         switch message.messageType {
         case .audio:
             let fileName = message.messageId + ".m4a"
-            if let url = AmityFileCache.shared.getCacheURL(for: .audioDireectory, fileName: fileName) {
+            if let url = AmityFileCache.shared.getCacheURL(for: .audioDirectory, fileName: fileName) {
                 completion(.success(url))
             } else {
+                guard let fileRepository = fileRepository else {
+                    completion(.failure(AmityError.fileServiceIsNotReady))
+                    return
+                }
+                
                 progress?()
-                
                 guard let messageInfo = message.getFileInfo() else { return }
-                
-                repository.downloadFileAsData(fromURL: messageInfo.fileURL, completion: { (data, error) in
+                fileRepository.downloadFileAsData(fromURL: messageInfo.fileURL, completion: { (data, error) in
                     guard error == nil, let data = data else {
                         if let error = error {
                             completion(.failure(error))
                         }
                         return
                     }
-                    AmityFileCache.shared.cacheData(for: .audioDireectory, data: data, fileName: fileName, completion: { url in
+                    AmityFileCache.shared.cacheData(for: .audioDirectory, data: data, fileName: fileName, completion: { url in
                         completion(.success(url))
                     })
                 })
@@ -69,6 +71,12 @@ final class AmityMessageMediaService {
             }
             
         case .synced:
+            
+            guard let fileRepository = fileRepository else {
+                completion(.failure(AmityError.fileServiceIsNotReady))
+                return
+            }
+            
             // In this case, the fileURL returned by imageInfo would be server URL. so we
             // grab image from that URL here and display it
             let fileURL = imageInfo.fileURL
@@ -85,7 +93,7 @@ final class AmityMessageMediaService {
             }
             
             // Else downlaod it from server
-            repository.downloadImage(fromURL: fileURL, size: size, completion: { [weak self] (url, error) in
+            fileRepository.downloadImage(fromURL: fileURL, size: size, completion: { [weak self] (url, error) in
                 if let err = error {
                     Log.add("Error while downloading image \(String(describing: url)) \(err)")
                     return
