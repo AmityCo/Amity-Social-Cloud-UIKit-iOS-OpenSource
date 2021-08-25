@@ -85,6 +85,11 @@ class AmityPostTextEditorScreenViewModel: AmityPostTextEditorScreenViewModelType
             // Create it
             repository.createPost(postBuilder, targetId: communityId, targetType: targetType) { [weak self] (post, error) in
                 
+                if let error = error {
+                    // handle error here
+                    AmityHUD.show(.error(message: error.localizedDescription))
+                }
+                
                 guard let strongSelf = self else { return }
                 let success = post != nil
                 Log.add("Text post created: \(success) Error: \(String(describing: error))")
@@ -220,6 +225,12 @@ class AmityPostTextEditorScreenViewModel: AmityPostTextEditorScreenViewModelType
             postBuilder.setText(text)
             
             repository.updatePost(withPostId: oldPost.postId, builder: postBuilder) { [weak self] (post, error) in
+                
+                if let error = error {
+                    // handle error here
+                    AmityHUD.show(.error(message: error.localizedDescription))
+                }
+                
                 guard let strongSelf = self else { return }
                 let success = post != nil
                 Log.add("Text post updated: \(success) Error: \(String(describing: error))")
@@ -237,6 +248,12 @@ class AmityPostTextEditorScreenViewModel: AmityPostTextEditorScreenViewModelType
         postBuilder.setImageData(imageData)
         
         repository.updatePost(withPostId: postId, builder: postBuilder) { [weak self] (post, error) in
+            
+            if let error = error {
+                // handle error here
+                AmityHUD.show(.error(message: error.localizedDescription))
+            }
+            
             guard let strongSelf = self else { return }
             let success = post != nil
             Log.add("Image post updated: \(success) Error: \(String(describing: error))")
@@ -249,6 +266,12 @@ class AmityPostTextEditorScreenViewModel: AmityPostTextEditorScreenViewModelType
         let postBuilder = AmityVideoPostBuilder()
         postBuilder.setText(text)
         repository.updatePost(withPostId: postId, builder: postBuilder) { [weak self] (success, error) in
+            
+            if let error = error {
+                // handle error here
+                AmityHUD.show(.error(message: error.localizedDescription))
+            }
+            
             guard let strongSelf = self else { return }
             Log.add("Video post updated: \(success) Error: \(String(describing: error))")
             strongSelf.delegate?.screenViewModelDidUpdatePost(strongSelf, error: error)
@@ -261,6 +284,12 @@ class AmityPostTextEditorScreenViewModel: AmityPostTextEditorScreenViewModelType
         postBuilder.setText(text)
         
         repository.updatePost(withPostId: postId, builder: postBuilder) { [weak self] (post, error) in
+            
+            if let error = error {
+                // handle error here
+                AmityHUD.show(.error(message: error.localizedDescription))
+            }
+            
             guard let strongSelf = self else { return }
             let success = post != nil
             Log.add("File post updated: \(success) Error: \(String(describing: error))")
@@ -278,6 +307,12 @@ class AmityPostTextEditorScreenViewModel: AmityPostTextEditorScreenViewModelType
         postBuilder.setVideos(videosData)
         
         repository.createPost(postBuilder, targetId: communityId, targetType: targetType) { [weak self] (post, error) in
+            
+            if let error = error {
+                // handle error here
+                AmityHUD.show(.error(message: error.localizedDescription))
+            }
+            
             guard let strongSelf = self else { return }
             let success = post != nil
             Log.add("Video Post Created: \(success) Error: \(String(describing: error))")
@@ -295,6 +330,11 @@ class AmityPostTextEditorScreenViewModel: AmityPostTextEditorScreenViewModelType
         
         repository.createPost(postBuilder, targetId: communityId, targetType: targetType) { [weak self] (post, error) in
             
+            if let error = error {
+                // handle error here
+                AmityHUD.show(.error(message: error.localizedDescription))
+            }
+            
             guard let strongSelf = self else { return }
             let success = post != nil
             Log.add("Image Post Created: \(success) Error: \(String(describing: error))")
@@ -310,6 +350,11 @@ class AmityPostTextEditorScreenViewModel: AmityPostTextEditorScreenViewModelType
         postBuilder.setFileData(fileData)
         
         repository.createPost(postBuilder, targetId: communityId, targetType: targetType) { [weak self] (post, error) in
+            
+            if let error = error {
+                // handle error here
+                AmityHUD.show(.error(message: error.localizedDescription))
+            }
             
             guard let strongSelf = self else { return }
             let success = post != nil
