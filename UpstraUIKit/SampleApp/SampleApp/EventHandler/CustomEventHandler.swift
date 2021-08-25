@@ -36,7 +36,7 @@ class CustomEventHandler: AmityEventHandler {
     override func createPostDidTap(from source: AmityViewController, postTarget: AmityPostTarget) {
         
         let settings = AmityPostEditorSettings()
-        settings.shouldFileButtonHide = false
+        settings.shouldFileButtonHide = true
         
         if source is AmityPostTargetPickerViewController {
             let viewController = AmityPostCreatorViewController.make(postTarget: postTarget, settings: settings)

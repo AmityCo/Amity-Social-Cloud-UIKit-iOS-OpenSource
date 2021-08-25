@@ -16,7 +16,7 @@ public class AmityPostEditorSettings {
     public init() { }
     public var shouldCameraButtonHide: Bool = false
     public var shouldAlbumButtonHide: Bool = false
-    public var shouldFileButtonHide: Bool = false
+    public var shouldFileButtonHide: Bool = true
 }
 
 protocol AmityPostViewControllerDelegate: AnyObject {

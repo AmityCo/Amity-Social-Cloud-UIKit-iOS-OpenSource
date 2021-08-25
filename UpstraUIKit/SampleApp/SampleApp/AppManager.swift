@@ -28,7 +28,7 @@ class AppManager {
     
     func setupAmityUIKit() {
         // setup api key
-        AmityUIKitManager.setup(apiKey: "YOUR_API_KEY")
+        AmityUIKitManager.setup(apiKey: "b0ecba5c3a8af830443f8a1a515e1edbd50088e3b330667d")
         
         // setup event handlers and page settings
         AmityUIKitManager.set(eventHandler: CustomEventHandler())
