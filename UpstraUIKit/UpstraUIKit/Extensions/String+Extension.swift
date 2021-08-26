@@ -27,7 +27,11 @@ extension String {
     }
     
     var localizedString: String {
-            return NSLocalizedString(self, tableName: "AmityLocalizable", bundle: AmityUIKitManager.bundle, value: "", comment: "")
+        if Locale.components(fromIdentifier: Locale.preferredLanguages.first!)["kCFLocaleLanguageCodeKey"] == "th" {
+            return NSLocalizedString(self, tableName: "LocalizedThai", bundle: AmityUIKitManager.bundle, value: "", comment: "")
+        } else {
+            return NSLocalizedString(self, tableName: "LocalizedEnglish", bundle: AmityUIKitManager.bundle, value: "", comment: "")
+        }
     }
     
     func height(withConstrainedWidth width: CGFloat, font: UIFont) -> CGFloat {
