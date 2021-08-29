@@ -44,6 +44,9 @@
 "general_location" = "Location";
 "general_image_gallery" = "Image Gallery";
 "general_moderator" = "Moderator";
+"general_comment" = "Comment";
+"general_share" = "Share";
+"general_search" = "Search";
 
 "title_placeholder" = "Title";
 "description_placeholder" = "Description";

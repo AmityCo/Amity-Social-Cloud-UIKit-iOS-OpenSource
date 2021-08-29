@@ -44,6 +44,9 @@
 "general_location" = "สถานที่";
 "general_image_gallery" = "แกลเลอรี";
 "general_moderator" = "ผู้ดูแล";
+"general_comment" = "ความคิดเห็น";
+"general_share" = "แชร์";
+"general_search" = "ค้นหา";
 
 "title_placeholder" = "Title";
 "description_placeholder" = "Description";

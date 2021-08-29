@@ -98,6 +98,7 @@ public final class AmityPostFooterTableViewCell: UITableViewCell, Nibbable, Amit
     }
     private func setupCommentButton() {
         // comment button
+        commentButton.setTitle(AmityLocalizedStringSet.General.comment.localizedString, for: .normal)
         commentButton.tintColor = AmityColorSet.base.blend(.shade2)
         commentButton.setTitleColor(AmityColorSet.base.blend(.shade2), for: .normal)
         commentButton.setImage(AmityIconSet.iconComment, for: .normal)
@@ -112,6 +113,7 @@ public final class AmityPostFooterTableViewCell: UITableViewCell, Nibbable, Amit
     
     private func setupShareButton() {
         // share button
+        shareButton.setTitle(AmityLocalizedStringSet.General.share.localizedString, for: .normal)
         shareButton.setInsets(forContentPadding: .zero, imageTitlePadding: 4)
         shareButton.setTitleFont(AmityFontSet.bodyBold)
         
