@@ -86,6 +86,7 @@ public class AmitySearchViewController: AmityPageViewController {
         
         cancelButton.setTitleColor(AmityColorSet.base, for: .normal)
         cancelButton.titleLabel?.font = AmityFontSet.body
+        cancelButton.setTitle(AmityLocalizedStringSet.General.cancel.localizedString, for: .normal)
         
         searchIcon.image = AmityIconSet.iconSearch?.withRenderingMode(.alwaysTemplate)
         searchIcon.tintColor = AmityColorSet.base.blend(.shade1)

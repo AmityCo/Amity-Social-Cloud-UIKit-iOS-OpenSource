@@ -434,4 +434,17 @@ public struct AmityLocalizedStringSet {
         static let postNotAvailable = "pending_posts_post_not_available"
         static let alertDeleteFailApproveOrDecline = "pending_posts_alert_delete_fail_approve_or_decline"
     }
+    
+    // MARK: - Relative Time
+    struct RelativeTime {
+        static let year = "relative_time_year"
+        static let month = "relative_time_month"
+        static let week = "relative_time_week"
+        static let Yesterday = "relative_time_yesterday"
+        static let day = "relative_time_day"
+        static let hour = "relative_time_hour"
+        static let minute = "relative_time_minute"
+        static let justNow = "relative_time_just_now"
+        static let ago = "relative_time_ago"
+    }
 }

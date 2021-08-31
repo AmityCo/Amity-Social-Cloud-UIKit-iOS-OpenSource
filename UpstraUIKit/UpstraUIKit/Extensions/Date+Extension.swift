@@ -34,27 +34,37 @@ extension Date {
         return Calendar.current.dateComponents([.second], from: self, to: Date()).second!
     }
     var relativeTime: String {
+        
+        let plural = Locale.components(fromIdentifier: Locale.preferredLanguages.first!)["kCFLocaleLanguageCodeKey"] == "th" ? "" : "s"
+        
         if yearsFromNow > 0 {
-            return "\(yearsFromNow) year" + (yearsFromNow > 1 ? "s" : "") + " ago"
+//            return "\(yearsFromNow) year" + (yearsFromNow > 1 ? "s" : "") + " ago"
+            return "\(yearsFromNow) \(AmityLocalizedStringSet.RelativeTime.year.localizedString)" + (yearsFromNow > 1 ? "\(plural)" : "") + "\(AmityLocalizedStringSet.RelativeTime.ago.localizedString)"
         }
         if monthsFromNow > 0 {
-            return "\(monthsFromNow) month" + (monthsFromNow > 1 ? "s" : "") + " ago"
+//            return "\(monthsFromNow) month" + (monthsFromNow > 1 ? "s" : "") + " ago"
+            return "\(monthsFromNow) \(AmityLocalizedStringSet.RelativeTime.month.localizedString)" + (monthsFromNow > 1 ? "\(plural)" : "") + "\(AmityLocalizedStringSet.RelativeTime.ago.localizedString)"
         }
         if weeksFromNow > 0 {
-            return "\(weeksFromNow) week" + (weeksFromNow > 1 ? "s" : "") + " ago"
+//            return "\(weeksFromNow) week" + (weeksFromNow > 1 ? "s" : "") + " ago"
+            return "\(weeksFromNow) \(AmityLocalizedStringSet.RelativeTime.week.localizedString)" + (weeksFromNow > 1 ? "\(plural)" : "") + "\(AmityLocalizedStringSet.RelativeTime.ago.localizedString)"
         }
         if isInYesterday {
-            return "Yesterday"
+//            return "Yesterday"
+            return "\(AmityLocalizedStringSet.RelativeTime.Yesterday.localizedString)"
         }
         if daysFromNow > 0 {
-            return "\(daysFromNow) day" + (daysFromNow > 1 ? "s" : "") + " ago"
+//            return "\(daysFromNow) day" + (daysFromNow > 1 ? "s" : "") + " ago"
+            return "\(daysFromNow) \(AmityLocalizedStringSet.RelativeTime.day.localizedString)" + (daysFromNow > 1 ? "\(plural)" : "") + "\(AmityLocalizedStringSet.RelativeTime.ago.localizedString)"
         }
         if hoursFromNow > 0 {
-            return "\(hoursFromNow) hour" + (hoursFromNow > 1 ? "s" : "") + " ago"
+//            return "\(hoursFromNow) hour" + (hoursFromNow > 1 ? "s" : "") + " ago"
+            return "\(hoursFromNow) \(AmityLocalizedStringSet.RelativeTime.hour.localizedString)" + (hoursFromNow > 1 ? "\(plural)" : "") + "\(AmityLocalizedStringSet.RelativeTime.ago.localizedString)"
         }
         if minutesFromNow > 0 {
-            return "\(minutesFromNow) minute" + (minutesFromNow > 1 ? "s" : "") + " ago"
+//            return "\(minutesFromNow) minute" + (minutesFromNow > 1 ? "s" : "") + " ago"
+            return "\(minutesFromNow) \(AmityLocalizedStringSet.RelativeTime.minute.localizedString)" + (minutesFromNow > 1 ? "\(plural)" : "") + "\(AmityLocalizedStringSet.RelativeTime.ago.localizedString)"
         }
-        return "Just now"
+        return "\(AmityLocalizedStringSet.RelativeTime.justNow.localizedString)"
     }
 }

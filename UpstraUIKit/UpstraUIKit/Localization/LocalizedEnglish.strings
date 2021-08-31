@@ -388,3 +388,15 @@
 "pending_posts_alert_delete_fail_title" = "Unable to delete post";
 "pending_posts_post_not_available" = "Post is not available";
 "pending_posts_alert_delete_fail_approve_or_decline" = "Your post has been reviewed.\nCheck your feed if it got approved";
+
+// MARK: - Relative Time
+"relative_time_year" = "year";
+"relative_time_month" = "month";
+"relative_time_week" = "week";
+"relative_time_yesterday" = "Yesterday";
+"relative_time_day" = "day";
+"relative_time_hour" = "hour";
+"relative_time_minute" = "minute";
+"relative_time_just_now" = "Just now";
+"relative_time_ago" = " ago";
+
