@@ -15,6 +15,13 @@ struct AmityUtilities {
         UIApplication.topViewController()?.present(alertController, animated: true, completion: nil)
     }
     
+    static func showAlert(title: String?, message: String?, viewController: UIViewController, callBackOK:((UIAlertAction) -> Void)?) {
+        let alertController = UIAlertController(title: title, message: message, preferredStyle: .alert)
+        let okAlert = UIAlertAction(title: AmityLocalizedStringSet.General.ok.localizedString, style: .default, handler: callBackOK)
+        alertController.addAction(okAlert)
+        viewController.present(alertController, animated: true, completion: nil)
+    }
+    
     static func UINibs(nibName: String) -> UINib {
         return UINib(nibName: nibName, bundle: AmityUIKitManager.bundle)
     }

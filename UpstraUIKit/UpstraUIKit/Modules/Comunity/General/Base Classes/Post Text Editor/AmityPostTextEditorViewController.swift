@@ -485,6 +485,31 @@ public class AmityPostTextEditorViewController: AmityViewController {
         present(alertController, animated: true, completion: nil)
     }
     
+    private func handleCreatePostError(_ error: AmityError) {
+        switch error {
+        case .bannedWord:
+            let message = AmityLocalizedStringSet.ErrorHandling.errorMessageCommentBanword.localizedString
+            let title = AmityLocalizedStringSet.ErrorHandling.errorMessageTitle.localizedString
+            showError(title: title, message: message)
+        case .linkNotAllowed:
+            let message = AmityLocalizedStringSet.ErrorHandling.errorMessageLinkNotAllowedDetail.localizedString
+            let title = AmityLocalizedStringSet.ErrorHandling.errorMessageLinkNotAllowed.localizedString
+            showError(title: title, message: message)
+        case .userIsBanned, .userIsGlobalBanned:
+            let message = AmityLocalizedStringSet.ErrorHandling.errorMessageUserIsBanned.localizedString
+            showError(title: "", message: message)
+        default:
+            let message = AmityLocalizedStringSet.ErrorHandling.errorMessageDefault.localizedString + " (\(error.rawValue))"
+            showError(title: "", message: message)
+        }
+    }
+    
+    private func showError(title: String, message: String) {
+        AmityUtilities.showAlert(title: title, message: message, viewController: self) { _ in
+            self.postButton.isEnabled = true
+        }
+    }
+    
     private func playVideo(for asset: PHAsset) {
         guard asset.mediaType == .video else {
             assertionFailure("Not a valid video media type")
@@ -686,6 +711,12 @@ extension AmityPostTextEditorViewController: AmityPostTextEditorScreenViewModelD
     func screenViewModelDidUpdatePost(_ viewModel: AmityPostTextEditorScreenViewModel, error: Error?) {
         postButton.isEnabled = true
         dismiss(animated: true, completion: nil)
+    }
+    
+    func screenViewModelDidCreatePostFailure(error: AmityError?) {
+        if let error = error {
+            handleCreatePostError(error)
+        }
     }
     
 }

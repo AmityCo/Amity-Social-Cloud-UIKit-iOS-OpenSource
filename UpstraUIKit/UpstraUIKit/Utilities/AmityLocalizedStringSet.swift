@@ -447,4 +447,19 @@ public struct AmityLocalizedStringSet {
         static let justNow = "relative_time_just_now"
         static let ago = "relative_time_ago"
     }
+    
+    // MARK: - Error Handling
+    struct ErrorHandling {
+        static let errorTitle = "error_title"
+        static let errorMessageTitle = "error_message_title"
+        static let errorMessagePostBanword = "error_message_post_banword"
+        static let errorMessageCommentBanword = "error_message_comment_banword"
+        static let errorMessageUserIsBanned = "error_message_user_is_banned"
+        static let errorMessageLinkNotAllowed = "error_message_link_not_allowed"
+        static let errorMessageLinkNotAllowedDetail = "error_message_link_not_allowed_detail"
+        static let errorMessageDefault = "error_message_default"
+        static let errorMessageConnectionError = "error_message_connection_error"
+    }
+    
+    
 }
