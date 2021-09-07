@@ -31,7 +31,7 @@ class AppManager {
         AmityUIKitManager.setup(apiKey: "b0ecba5c3a8af830443f8a1a515e1edbd50088e3b330667d")
         
         // setup event handlers and page settings
-        AmityUIKitManager.set(eventHandler: CustomEventHandler())
+        AmityUIKitManager.set(eventHandler: AmityCustomEventHandler())
         AmityUIKitManager.set(channelEventHandler: CustomChannelEventHandler())
         AmityUIKitManager.feedUISettings.eventHandler = CustomFeedEventHandler()
         AmityUIKitManager.feedUISettings.setPostSharingSettings(settings: AmityPostSharingSettings())

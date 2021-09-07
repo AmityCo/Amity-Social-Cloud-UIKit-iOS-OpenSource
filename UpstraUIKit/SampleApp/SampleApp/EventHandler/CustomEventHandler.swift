@@ -9,7 +9,7 @@
 import UIKit
 import AmityUIKit
 
-class CustomEventHandler: AmityEventHandler {
+class AmityCustomEventHandler: AmityEventHandler {
     
     override func userDidTap(from source: AmityViewController, userId: String) {
 

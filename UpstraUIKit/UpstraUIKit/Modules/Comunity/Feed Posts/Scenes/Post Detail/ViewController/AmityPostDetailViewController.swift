@@ -28,6 +28,8 @@ public final class AmityPostDetailViewController: AmityViewController {
     private var referenceId: String?
     private var expandedIds: [String] = []
     private var showReplyIds: [String] = []
+    private var isFromEditTextViewController: Bool = false
+    private var editTextViewController: AmityEditTextViewController?
     
     private var parentComment: AmityCommentModel? {
         didSet {
@@ -292,6 +294,9 @@ extension AmityPostDetailViewController: AmityPostDetailScreenViewModelDelegate 
     // MARK: Comment
     func screenViewModelDidCreateComment(_ viewModel: AmityPostDetailScreenViewModelType) {
         // Do something with success
+        if isFromEditTextViewController {
+            editTextViewController?.dismiss(animated: true, completion: nil)
+        }
     }
     
     func screenViewModelDidDeleteComment(_ viewModel: AmityPostDetailScreenViewModelType) {
@@ -335,13 +340,11 @@ extension AmityPostDetailViewController: AmityPostDetailScreenViewModelDelegate 
     }
     
     func screenViewModel(_ viewModel: AmityPostDetailScreenViewModelType, didFinishWithError error: AmityError) {
-        switch error {
-        case .unknown:
-            AmityHUD.show(.error(message: AmityLocalizedStringSet.HUD.somethingWentWrong.localizedString))
-        case .bannedWord:
-            AmityHUD.show(.error(message: AmityLocalizedStringSet.PostDetail.banndedCommentErrorMessage.localizedString))
-        default:
-            break
+        if isFromEditTextViewController {
+//            editTextViewController?.handleCreatePostError(error)
+            handleCreatePostError(error)
+        } else {
+            handleCreatePostError(error)
         }
     }
     
@@ -406,6 +409,7 @@ extension AmityPostDetailViewController: AmityPostDetailCompostViewDelegate {
             editTextViewController.title = AmityLocalizedStringSet.PostDetail.createComment.localizedString
         }
         editTextViewController.editHandler = { [weak self, weak editTextViewController] text in
+            self?.isFromEditTextViewController = true
             self?.screenViewModel.action.createComment(withText: text, parentId: self?.parentComment?.id)
             self?.parentComment = nil
             self?.commentComposeBarView.resetState()
@@ -429,6 +433,7 @@ extension AmityPostDetailViewController: AmityPostDetailCompostViewDelegate {
     }
     
     func composeView(_ view: AmityPostDetailCompostView, didPostText text: String) {
+        isFromEditTextViewController = false
         screenViewModel.action.createComment(withText: text, parentId: parentComment?.id)
         parentComment = nil
         commentComposeBarView.resetState()
@@ -546,6 +551,7 @@ extension AmityPostDetailViewController: AmityCommentTableViewCellDelegate {
                 let editTextViewController = AmityCommentEditorViewController.make(text: comment.text)
                 editTextViewController.title = comment.isParent ? AmityLocalizedStringSet.PostDetail.editComment.localizedString : AmityLocalizedStringSet.PostDetail.editReply.localizedString
                 editTextViewController.editHandler = { [weak self] text in
+                    self?.isFromEditTextViewController = true
                     self?.screenViewModel.action.editComment(with: comment, text: text)
                     editTextViewController.dismiss(animated: true, completion: nil)
                 }
@@ -581,6 +587,37 @@ extension AmityPostDetailViewController: AmityCommentTableViewCellDelegate {
         } else {
             // get report status for comment and then trigger didReceiveCommentReportStatus on delegate
             screenViewModel.action.getCommentReportStatus(with: comment)
+        }
+    }
+    
+}
+
+
+// MARK: handle popup
+extension AmityPostDetailViewController {
+    
+    private func handleCreatePostError(_ error: AmityError) {
+        switch error {
+        case .bannedWord:
+            let message = AmityLocalizedStringSet.ErrorHandling.errorMessageCommentBanword.localizedString
+            let title = AmityLocalizedStringSet.ErrorHandling.errorMessageTitle.localizedString
+            showError(title: title, message: message)
+        case .linkNotAllowed:
+            let message = AmityLocalizedStringSet.ErrorHandling.errorMessageLinkNotAllowedDetail.localizedString
+            let title = AmityLocalizedStringSet.ErrorHandling.errorMessageLinkNotAllowed.localizedString
+            showError(title: title, message: message)
+        case .userIsBanned, .userIsGlobalBanned:
+            let message = AmityLocalizedStringSet.ErrorHandling.errorMessageUserIsBanned.localizedString
+            showError(title: "", message: message)
+        default:
+            let message = AmityLocalizedStringSet.ErrorHandling.errorMessageDefault.localizedString + " (\(error.rawValue))"
+            showError(title: "", message: message)
+        }
+    }
+    
+    private func showError(title: String, message: String) {
+        AmityUtilities.showAlert(title: title, message: message, viewController: self) { _ in
+            
         }
     }
     
