@@ -17,6 +17,7 @@ class CommunityFeatureViewController: UIViewController {
         case newsfeed
         case globalFeed
         case myFeed
+        case homeByDeeplink
         
         var text: String {
             switch self {
@@ -28,6 +29,8 @@ class CommunityFeatureViewController: UIViewController {
                 return "GlobalFeed"
             case .myFeed:
                 return "MyFeed"
+            case .homeByDeeplink:
+                return "Home by deep link"
             }
         }
     }
@@ -75,6 +78,19 @@ extension CommunityFeatureViewController: UITableViewDelegate {
         case .myFeed:
             let feedViewController = AmityUserFeedViewController.makeMyFeed()
             navigationController?.pushViewController(feedViewController, animated: true)
+        case .homeByDeeplink:
+//            let home = AmityCommunityHomePageViewController.make(deeplinksType:.community(id: "d737b412fcd28aef5bafdcbb4d1a262d"), fromDeeplinks: true)
+//            navigationController?.pushViewController(home, animated: true)
+//            https://amity.co/posts/8b4d22a96f4847ed1e6b76750ee63d7c
+//            https://amity.co/posts/8b4d22a96f4847ed1e6b76750ee63d7c
+//            let home = AmityCommunityHomePageViewController.make(deeplinksType: .post(id: "8b4d22a96f4847ed1e6b76750ee63d7c", communityId: "d737b412fcd28aef5bafdcbb4d1a262d"), fromDeeplinks: true)
+//            navigationController?.pushViewController(home, animated: true)
+//            let home = AmityCommunityHomePageViewController.make(deeplinksType: .post(id: "", communityId: "d737b412fcd28aef5bafdcbb4d1a262d"), fromDeeplinks: true)
+//            navigationController?.pushViewController(home, animated: true)
+//            dca95af263fbf131ff02ec6dc734d7e7
+            let home = AmityCommunityHomePageViewController.make(deeplinksType: .category(id: "dca95af263fbf131ff02ec6dc734d7e7"), fromDeeplinks: true)
+            navigationController?.pushViewController(home, animated: true)
+        
         }
     }
 }

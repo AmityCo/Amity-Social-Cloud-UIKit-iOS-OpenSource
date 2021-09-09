@@ -14,7 +14,12 @@ public class AmityCommunityHomePageViewController: AmityPageViewController {
     public let newsFeedVC = AmityNewsfeedViewController.make()
     public let exploreVC = AmityCommunityExplorerViewController.make()
     
-    private init() {
+    private var screenViewModel: AmityCommunityHomePageScreenViewModelType
+    private var initialized: Bool = false
+    private var deeplinkFinished: Bool = false
+    
+    private init(deeplinksType: DeeplinksType?, fromDeeplinks: Bool) {
+        screenViewModel = AmityCommunityHomePageScreenViewModel(deeplinksType: deeplinksType, fromDeeplinks: fromDeeplinks)
         super.init(nibName: AmityCommunityHomePageViewController.identifier, bundle: AmityUIKitManager.bundle)
         title = AmityLocalizedStringSet.communityHomeTitle.localizedString
     }
@@ -26,10 +31,17 @@ public class AmityCommunityHomePageViewController: AmityPageViewController {
     public override func viewDidLoad() {
         super.viewDidLoad()
         setupNavigationBar()
+        
+        fetchCategories()
     }
     
-    public static func make() -> AmityCommunityHomePageViewController {
-        return AmityCommunityHomePageViewController()
+    public override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        runDeeplinksRouter()
+    }
+    
+    public static func make(deeplinksType: DeeplinksType? = nil, fromDeeplinks: Bool = false) -> AmityCommunityHomePageViewController {
+        return AmityCommunityHomePageViewController(deeplinksType: deeplinksType, fromDeeplinks: fromDeeplinks)
     }
     
     override func viewControllers(for pagerTabStripController: AmityPagerTabViewController) -> [UIViewController] {
@@ -55,6 +67,76 @@ private extension AmityCommunityHomePageViewController {
         nav.modalPresentationStyle = .fullScreen
         nav.modalTransitionStyle = .crossDissolve
         present(nav, animated: true, completion: nil)
+    }
+}
+
+// MARK: - Action
+private extension AmityCommunityHomePageViewController {
+    func checkEkoConnection() {
+//        if UpstraUIKitManagerInternal.shared.client.currentUser?.object?.userId == nil {
+//            let message = EkoLocalizedStringSet.errorMessageConnectionError.localizedString
+//            EkoUtilities.showAlert(with: "", message: message, viewController: self) { [weak self] _ in
+//                self?.dismiss(animated: true, completion: nil)
+//            }
+//        }
+    }
+
+    // Waiting for the best solution to popup user is banned
+    func checkUserIsBannned() {
+        // If user is banned, userId will be nil
+//        if UpstraUIKitManagerInternal.shared.client.currentUser?.object?.userId == nil {
+//            let message = EkoLocalizedStringSet.errorMessageUserIsBanned.localizedString
+//            EkoUtilities.showAlert(with: "", message: message, viewController: self) { [weak self] _ in
+//                self?.dismiss(animated: true, completion: nil)
+//            }
+//        }
+    }
+    
+    func fetchCommunities() {
+//        if initialized { return }
+//
+//        screenViewModel.fetchCommunities()
+    }
+    
+    func fetchProfileImage() {
+//        screenViewModel.fetchProfileImage(with: UpstraUIKitManagerInternal.shared.client.currentUser?.object?.userId ?? "")
+    }
+    
+    func fetchCategories() {
+        screenViewModel.fetchCategories()
+    }
+    
+    func setCurrentPage() {
+//        if initialized { return }
+//
+//        let page = screenViewModel.dataSource.baseOnJoinPage
+//        setCurrentIndex(page.rawValue)
+    }
+    
+    func runDeeplinksRouter() {
+        if deeplinkFinished { return }
+        
+        if !screenViewModel.dataSource.fromDeeplinks { return }
+        
+        guard let deeplinksType = screenViewModel.dataSource.deeplinksType else { return }
+        
+        deeplinkFinished = true
+        
+        switch deeplinksType {
+        case .community(let id):
+            let viewController = AmityCommunityProfilePageViewController.make(withCommunityId: id)
+            navigationController?.pushViewController(viewController, animated: true)
+        case .post(let id, let communityId):
+            let viewController = AmityCommunityProfilePageViewController.make(withCommunityId: communityId, postId: id, fromDeeplinks: screenViewModel.dataSource.fromDeeplinks)
+            navigationController?.pushViewController(viewController, animated: true)
+        break
+        case .category(let id):
+            if let item = screenViewModel.getCategoryItemBy(categoryId: id) {
+                let viewController = AmityCategoryCommunityListViewController.make(categoryId: item.categoryId)
+                viewController.title = item.name
+                navigationController?.pushViewController(viewController, animated: true)
+            }
+        }
     }
 }
 

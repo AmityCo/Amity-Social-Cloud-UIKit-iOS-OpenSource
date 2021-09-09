@@ -28,7 +28,10 @@ public final class AmityCommunityProfilePageViewController: AmityProfileViewCont
     
     public override func viewDidLoad() {
         super.viewDidLoad()
+        screenViewModel.delegate = self
         setupFeed()
+        
+        routeToDeeplinksPostIfNeed()
     }
     
     public override func viewWillAppear(_ animated: Bool) {
@@ -42,10 +45,11 @@ public final class AmityCommunityProfilePageViewController: AmityProfileViewCont
         showCommunitySettingModal()
     }
     
-    public static func make(withCommunityId communityId: String, settings: AmityCommunityProfilePageSettings = AmityCommunityProfilePageSettings()) -> AmityCommunityProfilePageViewController {
+    public static func make(withCommunityId communityId: String, postId: String? = nil, fromDeeplinks: Bool = false, settings: AmityCommunityProfilePageSettings = AmityCommunityProfilePageSettings()) -> AmityCommunityProfilePageViewController {
         let communityRepositoryManager = AmityCommunityRepositoryManager(communityId: communityId)
-        let viewModel: AmityCommunityProfileScreenViewModelType = AmityCommunityProfileScreenViewModel(communityId: communityId,
-                                                                                                       communityRepositoryManager: communityRepositoryManager)
+        
+        let viewModel: AmityCommunityProfileScreenViewModelType = AmityCommunityProfileScreenViewModel(communityId: communityId, postId: postId, fromDeeplinks: fromDeeplinks, communityRepositoryManager: communityRepositoryManager)
+        
         let vc = AmityCommunityProfilePageViewController()
         vc.screenViewModel = viewModel
         vc.header = AmityCommunityProfileHeaderViewController.make(rootViewController: vc, viewModel: viewModel, settings: settings)
@@ -161,20 +165,23 @@ extension AmityCommunityProfilePageViewController: AmityCommunityProfileScreenVi
     }
     
     func screenViewModelRoute(_ viewModel: AmityCommunityProfileScreenViewModel, route: AmityCommunityProfileRoute) {
-        guard let community = viewModel.community else { return }
         switch route {
         case .post:
+            guard let community = viewModel.community else { return }
             let vc = AmityPostCreatorViewController.make(postTarget: .community(object: community.object))
             let nav = UINavigationController(rootViewController: vc)
             nav.modalPresentationStyle = .fullScreen
             present(nav, animated: true, completion: nil)
         case .member:
+            guard let community = viewModel.community else { return }
             let vc = AmityCommunityMemberSettingsViewController.make(community: community.object)
             navigationController?.pushViewController(vc, animated: true)
         case .settings:
+            guard let community = viewModel.community else { return }
             let vc = AmityCommunitySettingsViewController.make(communityId: community.communityId)
             navigationController?.pushViewController(vc, animated: true)
         case .editProfile:
+            guard let community = viewModel.community else { return }
             let vc = AmityCommunityEditorViewController.make(withCommunityId: community.communityId)
             vc.delegate = self
             let nav = UINavigationController(rootViewController: vc)
@@ -183,6 +190,9 @@ extension AmityCommunityProfilePageViewController: AmityCommunityProfileScreenVi
         case .pendingPosts:
             let vc = AmityPendingPostsViewController.make(communityId: viewModel.communityId)
             navigationController?.pushViewController(vc, animated: true)
+        case .deeplinksPost(id: let id):
+            let viewController = AmityPostDetailViewController.make(withPostId: id)
+            navigationController?.pushViewController(viewController, animated: true)
         }
     }
 
@@ -207,4 +217,15 @@ extension AmityCommunityProfilePageViewController: AmityCommunityProfileEditorVi
         navigationController?.popToRootViewController(animated: true)
     }
 
+}
+
+//MARK: NCC
+private extension AmityCommunityProfilePageViewController {
+    func routeToDeeplinksPostIfNeed() {
+        if !screenViewModel.dataSource.fromDeeplinks { return }
+        
+        guard let postId = screenViewModel.dataSource.postId else { return }
+        
+        screenViewModel.action.route(.deeplinksPost(id: postId))
+    }
 }

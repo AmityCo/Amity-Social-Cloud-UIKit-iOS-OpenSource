@@ -26,6 +26,9 @@ final class AmityCommunityProfileScreenViewModel: AmityCommunityProfileScreenVie
     let communityId: String
     private(set) var community: AmityCommunityModel?
     private(set) var memberStatusCommunity: AmityMemberStatusCommunity = .guest
+    var isModerator: Bool = false
+    var postId: String?
+    var fromDeeplinks: Bool
     
     var pendingPostCountForAdmin: Int {
         return getPostCountForAdmin(by: .reviewing)
@@ -35,10 +38,12 @@ final class AmityCommunityProfileScreenViewModel: AmityCommunityProfileScreenVie
         return getPostCountForAdmin(by: .published)
     }
     
-    init(communityId: String,
+    init(communityId: String, postId: String? = nil, fromDeeplinks: Bool = false,
          communityRepositoryManager: AmityCommunityRepositoryManagerProtocol) {
         self.communityId = communityId
         self.communityRepositoryManager = communityRepositoryManager
+        self.postId = postId
+        self.fromDeeplinks = fromDeeplinks
     }
     
 }

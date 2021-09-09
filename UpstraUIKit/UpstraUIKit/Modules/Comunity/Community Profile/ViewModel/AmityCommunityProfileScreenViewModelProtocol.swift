@@ -14,6 +14,7 @@ enum AmityCommunityProfileRoute {
     case settings
     case editProfile
     case pendingPosts
+    case deeplinksPost(id: String)
 }
 
 protocol AmityCommunityProfileScreenViewModelDelegate: AnyObject {
@@ -30,6 +31,9 @@ protocol AmityCommunityProfileScreenViewModelDataSource {
     var postCount: Int { get }
     
     func shouldShowPendingPostBannerForMember(_ completion: ((Bool) -> Void)?)
+    
+    var fromDeeplinks: Bool { get set }
+    var postId: String? { get set }
 }
 
 protocol AmityCommunityProfileScreenViewModelAction {
