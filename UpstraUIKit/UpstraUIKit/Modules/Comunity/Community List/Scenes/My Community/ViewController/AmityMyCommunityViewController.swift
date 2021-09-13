@@ -50,11 +50,11 @@ public final class AmityMyCommunityViewController: AmityViewController {
     // MARK: - Setup views
     private func setupView() {
         title = AmityLocalizedStringSet.myCommunityTitle.localizedString
-        if communityCreationButtonVisible() {
-            let rightItem = UIBarButtonItem(image: AmityIconSet.iconAdd, style: .plain, target: self, action: #selector(createCommunityTap))
-            rightItem.tintColor = AmityColorSet.base
-            navigationItem.rightBarButtonItem = rightItem
-        }
+//        if communityCreationButtonVisible() {
+//            let rightItem = UIBarButtonItem(image: AmityIconSet.iconAdd, style: .plain, target: self, action: #selector(createCommunityTap))
+//            rightItem.tintColor = AmityColorSet.base
+//            navigationItem.rightBarButtonItem = rightItem
+//        }
     }
     
     private func communityCreationButtonVisible() -> Bool {
