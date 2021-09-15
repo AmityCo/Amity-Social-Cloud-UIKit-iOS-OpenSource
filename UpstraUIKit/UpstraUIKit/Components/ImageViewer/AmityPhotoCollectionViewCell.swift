@@ -123,8 +123,9 @@ open class AmityPhotoCollectionViewCell: UICollectionViewCell {
         contentView.addSubview(scrollView)
         contentView.addSubview(playImageView)
         
-        scrollView.contentInsetAdjustmentBehavior = .never
+        playImageView.isHidden = true
         
+        scrollView.contentInsetAdjustmentBehavior = .never
     }
     
     private func correctCurrentZoomScaleIfNeeded() {

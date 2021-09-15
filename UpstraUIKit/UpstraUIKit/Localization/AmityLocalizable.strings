@@ -43,7 +43,12 @@
 "general_album" = "Album";
 "general_location" = "Location";
 "general_image_gallery" = "Image Gallery";
+"general_upload_image" = "Upload Image";
 "general_moderator" = "Moderator";
+"general_search" = "Search";
+"general_video" = "Video";
+"general_photo" = "Photo";
+"general_attachment" = "Attachment";
 
 "title_placeholder" = "Title";
 "description_placeholder" = "Description";
@@ -72,7 +77,6 @@
 "search_results" = "Search results";
 "search_result_not_found" = "No results found";
 "search_account_not_found" = "No account found";
-"search" = "Search";
 "communities" = "Communities";
 "accounts" = "Accounts";
 

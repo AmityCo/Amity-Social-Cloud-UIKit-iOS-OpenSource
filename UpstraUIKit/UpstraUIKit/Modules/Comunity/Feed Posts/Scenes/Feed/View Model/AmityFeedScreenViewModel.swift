@@ -90,24 +90,24 @@ extension AmityFeedScreenViewModel {
             switch result {
             case .success(let posts):
                 strongSelf.debouncer.run {
-                    self?.prepareComponents(posts: posts)
+                    strongSelf.prepareComponents(posts: posts)
                 }
+                
             case .failure(let error):
                 if let amityError = AmityError(error: error), amityError == .noUserAccessPermission {
                     switch strongSelf.feedType {
                     case .userFeed:
                         strongSelf.isPrivate = true
-                        strongSelf.postComponents = []
                     default:
                         strongSelf.isPrivate = false
                     }
-                    
+                    strongSelf.debouncer.run {
+                        strongSelf.prepareComponents(posts: [])
+                    }
                     strongSelf.delegate?.screenViewModelDidFail(strongSelf, failure: amityError)
                 } else {
                     strongSelf.delegate?.screenViewModelDidFail(strongSelf, failure: AmityError(error: error) ?? .unknown)
                 }
-                
-                break
             }
         }
     }

@@ -87,7 +87,9 @@ public final class AmityPostDetailViewController: AmityViewController {
         postFooterProtocolHandler = AmityPostFooterProtocolHandler(viewController: self)
         postFooterProtocolHandler?.delegate = self
         
-        postProtocolHandler = AmityPostProtocolHandler(viewController: self, tableView: tableView)
+        postProtocolHandler = AmityPostProtocolHandler()
+        postProtocolHandler?.viewController = self
+        postProtocolHandler?.tableView = tableView
     }
     
     // MARK: - Setup ViewModel

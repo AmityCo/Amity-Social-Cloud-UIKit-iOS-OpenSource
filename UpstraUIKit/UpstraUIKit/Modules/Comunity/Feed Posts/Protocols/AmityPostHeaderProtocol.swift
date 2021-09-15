@@ -9,7 +9,7 @@
 import UIKit
 
 /// A default protocol of header post
-public protocol AmityPostHeaderProtocol: UITableViewCell {
+public protocol AmityPostHeaderProtocol: UITableViewCell, AmityCellIdentifiable {
     var delegate: AmityPostHeaderDelegate? { get set }
     var post: AmityPostModel? { get }
     

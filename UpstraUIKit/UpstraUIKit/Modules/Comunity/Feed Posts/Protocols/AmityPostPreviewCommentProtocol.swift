@@ -8,7 +8,7 @@
 
 import UIKit
 
-public protocol AmityPostPreviewCommentProtocol: UITableViewCell {
+public protocol AmityPostPreviewCommentProtocol: UITableViewCell, AmityCellIdentifiable {
     var delegate: AmityPostPreviewCommentDelegate? { get set }
     var post: AmityPostModel? { get }
     

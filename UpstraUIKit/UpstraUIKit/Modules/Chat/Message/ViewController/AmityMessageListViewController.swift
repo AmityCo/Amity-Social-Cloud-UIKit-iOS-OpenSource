@@ -256,7 +256,6 @@ extension AmityMessageListViewController: AmityKeyboardServiceDelegate {
         
         let offset = height > 0 ? view.safeAreaInsets.bottom : 0
         bottomConstraint.constant = -height + offset
-        messageViewController.tableView.setBottomInset(to: height > 0 ? 0 : 1)
         view.setNeedsUpdateConstraints()
         view.layoutIfNeeded()
         
@@ -265,6 +264,11 @@ extension AmityMessageListViewController: AmityKeyboardServiceDelegate {
             screenViewModel.action.inputSource(for: .default)
         } else {
             screenViewModel.action.toggleKeyboardVisible(visible: true)
+        }
+        
+        // scroll to bottom
+        if let lastIndexPath = messageViewController.tableView.lastIndexPath {
+            messageViewController.tableView.scrollToRow(at: lastIndexPath, at: .bottom, animated: false)
         }
     }
 }

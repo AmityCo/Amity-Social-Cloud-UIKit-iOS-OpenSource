@@ -8,7 +8,7 @@
 
 import UIKit
 
-public protocol AmityPostProtocol: UITableViewCell {
+public protocol AmityPostProtocol: UITableViewCell, AmityCellIdentifiable {
     var delegate: AmityPostDelegate? { get set }
     var post: AmityPostModel? { get }
     var indexPath: IndexPath? { get }

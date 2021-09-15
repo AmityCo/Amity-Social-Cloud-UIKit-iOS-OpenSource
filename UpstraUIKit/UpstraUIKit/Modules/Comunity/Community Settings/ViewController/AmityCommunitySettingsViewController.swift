@@ -127,7 +127,7 @@ extension AmityCommunitySettingsViewController: AmityCommunitySettingsScreenView
         
     func screenViewModelDidLeaveCommunity() {
         AmityHUD.hide()
-        navigationController?.popViewController(animated: true)
+        AmityEventHandler.shared.leaveCommunityDidTap(from: self, communityId: screenViewModel.communityId)
     }
     
     func screenViewModelDidCloseCommunity() {

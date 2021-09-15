@@ -107,7 +107,7 @@ final class AmityUIKitManagerInternal: NSObject {
     
     var client: AmityClient {
         guard let client = _client else {
-            fatalError("Something went wrong. Please call `AmityUIKitManager.setup(:_)` for setting an apiKey.")
+            fatalError("Something went wrong. Please ensure `AmityUIKitManager.setup(:_)` get called before accessing client.")
         }
         return client
     }
@@ -124,6 +124,15 @@ final class AmityUIKitManagerInternal: NSObject {
         self.apiKey = apiKey
         self.httpUrl = httpUrl
         self.socketUrl = socketUrl
+        
+        // Passing empty string over `httpUrl` and `socketUrl` is acceptable.
+        // `AmityClient` will be using the default endpoint instead.
+        guard let client = AmityClient(apiKey: apiKey, httpUrl: httpUrl, socketUrl: socketUrl) else {
+            assertionFailure("Something went wrong. API key is invalid.")
+            return
+        }
+        _client = client
+        _client?.clientErrorDelegate = self
     }
 
     func registerDevice(_ userId: String,
@@ -133,18 +142,8 @@ final class AmityUIKitManagerInternal: NSObject {
         
         // clear current client before setting up a new one
         unregisterDevice()
-        self._client = nil
         
-        // Passing empty string over `httpUrl` and `socketUrl` is acceptable.
-        // `AmityClient` will be using the default endpoint instead.
-        guard let client = AmityClient(apiKey: apiKey, httpUrl: httpUrl, socketUrl: socketUrl) else {
-            assertionFailure("Something went wrong. API key is invalid.")
-            return
-        }
-        
-        client.clientErrorDelegate = self
         client.registerDevice(withUserId: userId, displayName: displayName, authToken: authToken, completion: completion)
-        self._client = client
         didUpdateClient()
     }
     

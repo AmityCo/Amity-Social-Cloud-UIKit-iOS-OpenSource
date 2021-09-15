@@ -35,9 +35,9 @@ public class AmityCommunityProfileEditorViewController: AmityViewController {
     @IBOutlet private var scrollView: UIScrollView!
     
     // MARK: - Community Display
-    @IBOutlet private var avatarView: AmityAvatarView!
-    @IBOutlet private var cameraImageView: UIImageView!
-    @IBOutlet private var cameraBackgroundView: UIView!
+    @IBOutlet private var avatarView: AmityImageView!
+    @IBOutlet private weak var overlayView: UIView!
+    @IBOutlet private weak var uploadPhotoButton: UIButton!
     
     // MARK: - Community Name
     @IBOutlet private var communityNameTitleLabel: UILabel!
@@ -139,18 +139,27 @@ public class AmityCommunityProfileEditorViewController: AmityViewController {
         case .create:
             title = title ?? AmityLocalizedStringSet.createCommunityTitle.localizedString
         case .edit:
-            title = title ?? AmityLocalizedStringSet.editMessageTitle.localizedString
+            title = title ?? AmityLocalizedStringSet.editCommunityTitle.localizedString
         }
     }
     
     private func setupCommunityDisplay() {
-        avatarView.placeholder = AmityIconSet.defaultCommunity
+        avatarView.placeholder = AmityIconSet.defaultCommunityAvatar
+        avatarView.contentMode = .scaleAspectFill
         
-        cameraBackgroundView.layer.borderColor = AmityColorSet.backgroundColor.cgColor
-        cameraBackgroundView.layer.borderWidth = 1
-        cameraBackgroundView.backgroundColor = AmityColorSet.secondary.blend(.shade4)
-        cameraBackgroundView.layer.cornerRadius = cameraBackgroundView.frame.height / 2
-        cameraImageView.image = AmityIconSet.iconCamera
+        overlayView.backgroundColor = UIColor.black.withAlphaComponent(0.4)
+        
+        let attributedString = NSAttributedString(string: AmityLocalizedStringSet.General.uploadImage.localizedString,
+                                                  attributes: [.font: AmityFontSet.bodyBold,
+                                                               .foregroundColor: AmityColorSet.baseInverse])
+        uploadPhotoButton.setAttributedTitle(attributedString, for: .normal)
+        uploadPhotoButton.setImage(AmityIconSet.iconCameraFill, for: .normal)
+        uploadPhotoButton.tintColor = AmityColorSet.baseInverse
+        uploadPhotoButton.backgroundColor = .clear
+        uploadPhotoButton.layer.borderColor = AmityColorSet.baseInverse.cgColor
+        uploadPhotoButton.layer.borderWidth = 1
+        uploadPhotoButton.layer.cornerRadius = 4
+        uploadPhotoButton.setInsets(forContentPadding: UIEdgeInsets(top: 12, left: 40, bottom: 12, right: 40), imageTitlePadding: 8)
     }
     
     private func setupCommunityName() {
@@ -425,7 +434,7 @@ private extension AmityCommunityProfileEditorViewController {
                 self?.communityNameTextfield.text = community?.displayName
                 self?.communityAboutTextView.text = community?.description
                 self?.updateCommunityCategoryName(community?.category)
-                self?.avatarView.setImage(withImageURL: community?.avatarURL ?? "", placeholder: AmityIconSet.defaultCommunity) {
+                self?.avatarView.setImage(withImageURL: community?.avatarURL ?? "", size: .medium, placeholder: AmityIconSet.defaultCommunityAvatar) {
                     self?.avatarView.state = .idle
                 }
             }
@@ -520,11 +529,11 @@ extension AmityCommunityProfileEditorViewController: AmityCreateCommunityScreenV
                 let alert = UIAlertController(title: AmityLocalizedStringSet.createCommunityAlertTitle.localizedString, message: AmityLocalizedStringSet.createCommunityAlertDesc.localizedString, preferredStyle: .alert)
                 alert.addAction(UIAlertAction(title: AmityLocalizedStringSet.General.cancel.localizedString, style: .cancel, handler: nil))
                 alert.addAction(UIAlertAction(title: AmityLocalizedStringSet.General.leave.localizedString, style: .destructive, handler: { [weak self] _ in
-                    self?.dismiss(animated: true, completion: nil)
+                    self?.generalDismiss()
                 }))
                 present(alert, animated: true, completion: nil)
             } else {
-                dismiss(animated: true, completion: nil)
+                generalDismiss()
             }
         case .communityAlreadyExist:
             createCommunityButton.isEnabled = false

@@ -9,7 +9,7 @@
 import UIKit
 
 /// A default protocol of footer post
-public protocol AmityPostFooterProtocol: UITableViewCell {
+public protocol AmityPostFooterProtocol: UITableViewCell, AmityCellIdentifiable {
     var delegate: AmityPostFooterDelegate? { get set }
     var post: AmityPostModel? { get }
     

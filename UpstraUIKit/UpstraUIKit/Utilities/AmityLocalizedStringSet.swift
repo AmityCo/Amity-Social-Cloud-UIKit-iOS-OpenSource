@@ -57,7 +57,11 @@ public struct AmityLocalizedStringSet {
         static let ok = "general_ok"
         static let search = "general_search"
         static let imageGallery = "general_image_gallery"
+        static let uploadImage = "general_upload_image"
         static let moderator = "general_moderator"
+        static let generalVideo = "general_video";
+        static let generalPhoto = "general_photo";
+        static let generalAttachment = "general_attachment";
     }
     
     static let communitySettings = "community_settings"

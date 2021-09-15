@@ -8,6 +8,16 @@
 
 import UIKit
 
+public protocol AmityCellIdentifiable: AnyObject {
+    static var cellIdentifier: String { get }
+}
+
+extension AmityCellIdentifiable {
+    public static var cellIdentifier: String {
+        return String(describing: self)
+    }
+}
+
 protocol Nibbable: AnyObject {
     static var nib: UINib { get }
 }

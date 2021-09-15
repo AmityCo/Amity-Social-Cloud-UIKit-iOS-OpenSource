@@ -16,7 +16,7 @@ class CommunityFeatureViewController: UIViewController {
         case home
         case newsfeed
         case globalFeed
-        case myFeed
+        case myProfile
         
         var text: String {
             switch self {
@@ -26,8 +26,8 @@ class CommunityFeatureViewController: UIViewController {
                 return "Newsfeed (GlobalFeed + MyCommunity)"
             case .globalFeed:
                 return "GlobalFeed"
-            case .myFeed:
-                return "MyFeed"
+            case .myProfile:
+                return "My Profile"
             }
         }
     }
@@ -72,9 +72,9 @@ extension CommunityFeatureViewController: UITableViewDelegate {
         case .globalFeed:
             let feedViewController = AmityGlobalFeedViewController.make()
             navigationController?.pushViewController(feedViewController, animated: true)
-        case .myFeed:
-            let feedViewController = AmityUserFeedViewController.makeMyFeed()
-            navigationController?.pushViewController(feedViewController, animated: true)
+        case .myProfile:
+            let myUserProfileViewController = AmityUserProfilePageViewController.make(withUserId: AmityUIKitManager.client.currentUserId ?? "")
+            navigationController?.pushViewController(myUserProfileViewController, animated: true)
         }
     }
 }

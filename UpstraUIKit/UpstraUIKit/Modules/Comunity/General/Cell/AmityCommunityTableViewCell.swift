@@ -41,11 +41,13 @@ class AmityCommunityTableViewCell: UITableViewCell, Nibbable {
         switch type {
         case .myFeed:
             avatarView.setImage(withImageURL: AmityUIKitManagerInternal.shared.client.currentUser?.object?.getAvatarInfo()?.fileURL ?? "", placeholder: AmityIconSet.defaultAvatar)
+            avatarView.placeholderPostion = .center
             titleLabel.text = AmityLocalizedStringSet.postCreationMyTimelineTitle.localizedString
             badgeImageView.isHidden = true
             privateBadgeImageView.isHidden = true
         case .community(let community):
             avatarView.setImage(withImageURL: community.avatarURL, placeholder: AmityIconSet.defaultCommunity)
+            avatarView.placeholderPostion = .fullSize
             titleLabel.text = community.displayName
             badgeImageView.isHidden = !community.isOfficial
             privateBadgeImageView.isHidden = community.isPublic
@@ -54,7 +56,9 @@ class AmityCommunityTableViewCell: UITableViewCell, Nibbable {
     
     override func prepareForReuse() {
         super.prepareForReuse()
+        avatarView.placeholderPostion = .fullSize
         avatarView.placeholder = AmityIconSet.defaultCommunity
+        avatarView.contentMode = .scaleAspectFill
         titleLabel.text = ""
         avatarView.image = nil
         badgeImageView.isHidden = true

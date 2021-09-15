@@ -15,8 +15,6 @@
                 <outlet property="addMemberLineView" destination="6Vi-bH-53Y" id="Oa4-pC-fhI"/>
                 <outlet property="adminRuleLineView" destination="GHC-lY-pHC" id="yiw-xJ-wrS"/>
                 <outlet property="avatarView" destination="nFf-MO-rk6" id="Oth-qa-gRl"/>
-                <outlet property="cameraBackgroundView" destination="Fpd-jU-46D" id="3vQ-YH-GXD"/>
-                <outlet property="cameraImageView" destination="iGw-Je-dIr" id="VEo-dt-UWH"/>
                 <outlet property="categoryLineView" destination="Kal-3k-e6Y" id="S4F-QH-eBe"/>
                 <outlet property="commnuityCategoryArrowImageView" destination="DmE-oe-7L9" id="CNr-bd-Vnr"/>
                 <outlet property="communityAboutClearButton" destination="qIz-nV-PhL" id="pkq-vt-A6V"/>
@@ -44,8 +42,10 @@
                 <outlet property="createCommunityButton" destination="vPV-ln-HFk" id="7iK-vx-I2M"/>
                 <outlet property="errorNameLabel" destination="0nX-Kb-3aQ" id="bkt-jN-oc7"/>
                 <outlet property="nameLineView" destination="GA1-JN-gLP" id="AVU-TZ-tA3"/>
+                <outlet property="overlayView" destination="gBl-XX-p5d" id="YcB-Z1-9gQ"/>
                 <outlet property="scrollView" destination="4m2-xJ-cho" id="Ijt-yF-JGa"/>
                 <outlet property="seperatorLineView" destination="lKn-Wu-R4u" id="438-Xc-vWn"/>
+                <outlet property="uploadPhotoButton" destination="gwK-ob-Egj" id="gKr-4y-YLX"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
                 <outletCollection property="communityTypeBackgroundView" destination="Oeg-8j-gYJ" collectionClass="NSMutableArray" id="IdH-LL-NsH"/>
                 <outletCollection property="communityTypeBackgroundView" destination="v0e-EF-upU" collectionClass="NSMutableArray" id="00i-nt-Ryd"/>
@@ -60,36 +60,27 @@
                     <rect key="frame" x="0.0" y="44" width="414" height="1422"/>
                     <subviews>
                         <stackView opaque="NO" contentMode="scaleToFill" ambiguous="YES" axis="vertical" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="GLb-h0-okF">
-                            <rect key="frame" x="0.0" y="0.0" width="414" height="1521.5"/>
+                            <rect key="frame" x="0.0" y="0.0" width="414" height="1736"/>
                             <subviews>
                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="uic-5e-PGy" userLabel="Community Picture">
-                                    <rect key="frame" x="0.0" y="0.0" width="414" height="96"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="414" height="310.5"/>
                                     <subviews>
-                                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="nFf-MO-rk6" customClass="AmityAvatarView" customModule="AmityUIKit" customModuleProvider="target">
-                                            <rect key="frame" x="175" y="16" width="64" height="64"/>
-                                            <color key="backgroundColor" systemColor="systemRedColor"/>
+                                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="nFf-MO-rk6" customClass="AmityImageView" customModule="AmityUIKit" customModuleProvider="target">
+                                            <rect key="frame" x="0.0" y="0.0" width="414" height="310.5"/>
                                             <constraints>
-                                                <constraint firstAttribute="width" constant="64" id="7i9-tP-mjm"/>
-                                                <constraint firstAttribute="height" constant="64" id="TwX-BF-sls"/>
+                                                <constraint firstAttribute="width" secondItem="nFf-MO-rk6" secondAttribute="height" multiplier="4:3" id="ghC-oA-QlY"/>
                                             </constraints>
                                         </view>
-                                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Fpd-jU-46D">
-                                            <rect key="frame" x="216" y="60" width="28" height="28"/>
-                                            <subviews>
-                                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon_camera" translatesAutoresizingMaskIntoConstraints="NO" id="iGw-Je-dIr">
-                                                    <rect key="frame" x="6" y="5.5" width="16" height="17"/>
-                                                </imageView>
-                                            </subviews>
+                                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="gBl-XX-p5d" userLabel="Overlay View">
+                                            <rect key="frame" x="0.0" y="0.0" width="414" height="310.5"/>
                                             <color key="backgroundColor" systemColor="systemBackgroundColor"/>
-                                            <constraints>
-                                                <constraint firstItem="iGw-Je-dIr" firstAttribute="centerX" secondItem="Fpd-jU-46D" secondAttribute="centerX" id="bx6-i9-C64"/>
-                                                <constraint firstAttribute="width" constant="28" id="ddn-EX-JE6"/>
-                                                <constraint firstAttribute="height" constant="28" id="gqX-N6-dyZ"/>
-                                                <constraint firstItem="iGw-Je-dIr" firstAttribute="centerY" secondItem="Fpd-jU-46D" secondAttribute="centerY" id="y2h-BD-AZ3"/>
-                                            </constraints>
                                         </view>
+                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="gwK-ob-Egj" userLabel="Upload photo button">
+                                            <rect key="frame" x="184" y="140.5" width="46" height="30"/>
+                                            <state key="normal" title="Button"/>
+                                        </button>
                                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="zIp-4D-q93">
-                                            <rect key="frame" x="175" y="16" width="64" height="64"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="414" height="310.5"/>
                                             <connections>
                                                 <action selector="choosePhotoTap" destination="-1" eventType="touchUpInside" id="ScD-wk-bfy"/>
                                             </connections>
@@ -98,18 +89,23 @@
                                     <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                     <constraints>
                                         <constraint firstItem="zIp-4D-q93" firstAttribute="height" secondItem="nFf-MO-rk6" secondAttribute="height" id="4oc-P8-Kib"/>
+                                        <constraint firstItem="gBl-XX-p5d" firstAttribute="leading" secondItem="uic-5e-PGy" secondAttribute="leading" id="6kF-Y4-vVz"/>
                                         <constraint firstItem="zIp-4D-q93" firstAttribute="width" secondItem="nFf-MO-rk6" secondAttribute="width" id="803-bF-QSh"/>
-                                        <constraint firstItem="nFf-MO-rk6" firstAttribute="top" secondItem="uic-5e-PGy" secondAttribute="top" constant="16" id="9pX-tT-tON"/>
-                                        <constraint firstItem="nFf-MO-rk6" firstAttribute="centerX" secondItem="uic-5e-PGy" secondAttribute="centerX" id="B5X-QU-D5L"/>
-                                        <constraint firstItem="Fpd-jU-46D" firstAttribute="bottom" secondItem="nFf-MO-rk6" secondAttribute="bottom" constant="8" id="LJx-wv-wAc"/>
-                                        <constraint firstItem="Fpd-jU-46D" firstAttribute="trailing" secondItem="nFf-MO-rk6" secondAttribute="trailing" constant="5" id="XxH-XW-xuA"/>
+                                        <constraint firstItem="nFf-MO-rk6" firstAttribute="top" secondItem="uic-5e-PGy" secondAttribute="top" id="9pX-tT-tON"/>
+                                        <constraint firstAttribute="trailing" secondItem="nFf-MO-rk6" secondAttribute="trailing" id="Iar-tJ-hp9"/>
+                                        <constraint firstAttribute="trailing" secondItem="gBl-XX-p5d" secondAttribute="trailing" id="Sha-9j-xGm"/>
+                                        <constraint firstAttribute="bottom" secondItem="gBl-XX-p5d" secondAttribute="bottom" id="cMO-4p-ttM"/>
                                         <constraint firstItem="zIp-4D-q93" firstAttribute="centerY" secondItem="nFf-MO-rk6" secondAttribute="centerY" id="caY-r4-RFE"/>
-                                        <constraint firstAttribute="bottom" secondItem="nFf-MO-rk6" secondAttribute="bottom" constant="16" id="hIk-rr-3AT"/>
+                                        <constraint firstItem="nFf-MO-rk6" firstAttribute="leading" secondItem="uic-5e-PGy" secondAttribute="leading" id="f6Q-SQ-nb8"/>
+                                        <constraint firstAttribute="bottom" secondItem="nFf-MO-rk6" secondAttribute="bottom" id="hIk-rr-3AT"/>
+                                        <constraint firstItem="gBl-XX-p5d" firstAttribute="top" secondItem="uic-5e-PGy" secondAttribute="top" id="kMM-ah-1nG"/>
+                                        <constraint firstItem="gwK-ob-Egj" firstAttribute="centerY" secondItem="uic-5e-PGy" secondAttribute="centerY" id="qKR-FA-D6f"/>
                                         <constraint firstItem="zIp-4D-q93" firstAttribute="centerX" secondItem="nFf-MO-rk6" secondAttribute="centerX" id="sSv-pM-lO3"/>
+                                        <constraint firstItem="gwK-ob-Egj" firstAttribute="centerX" secondItem="uic-5e-PGy" secondAttribute="centerX" id="uIX-rr-bAo"/>
                                     </constraints>
                                 </view>
                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="eql-FW-n8Z" userLabel="Community Name">
-                                    <rect key="frame" x="0.0" y="116" width="414" height="209"/>
+                                    <rect key="frame" x="0.0" y="330.5" width="414" height="209"/>
                                     <subviews>
                                         <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="eVP-Gs-Xtx">
                                             <rect key="frame" x="16" y="0.0" width="382" height="209"/>
@@ -169,7 +165,7 @@
                                     </constraints>
                                 </view>
                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="byC-0u-D95" userLabel="Community About">
-                                    <rect key="frame" x="0.0" y="345" width="414" height="150"/>
+                                    <rect key="frame" x="0.0" y="559.5" width="414" height="150"/>
                                     <subviews>
                                         <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="12" translatesAutoresizingMaskIntoConstraints="NO" id="rfT-cm-ZLW">
                                             <rect key="frame" x="16" y="0.0" width="382" height="150"/>
@@ -241,7 +237,7 @@
                                     </constraints>
                                 </view>
                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="eOV-6V-3NG" userLabel="Community Category">
-                                    <rect key="frame" x="0.0" y="515" width="414" height="255"/>
+                                    <rect key="frame" x="0.0" y="729.5" width="414" height="255"/>
                                     <subviews>
                                         <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="16" translatesAutoresizingMaskIntoConstraints="NO" id="9EA-DZ-JtL">
                                             <rect key="frame" x="16" y="0.0" width="382" height="255"/>
@@ -347,7 +343,7 @@
                                     </constraints>
                                 </view>
                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="8jQ-Yh-u6M" userLabel="Community Types">
-                                    <rect key="frame" x="0.0" y="790" width="414" height="242"/>
+                                    <rect key="frame" x="0.0" y="1004.5" width="414" height="242"/>
                                     <subviews>
                                         <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="32" translatesAutoresizingMaskIntoConstraints="NO" id="XEt-Jp-vhT">
                                             <rect key="frame" x="16" y="0.0" width="382" height="242"/>
@@ -479,7 +475,7 @@
                                     </constraints>
                                 </view>
                                 <view contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="sFb-xq-Ix7" userLabel="Community Add Member">
-                                    <rect key="frame" x="0.0" y="1052" width="414" height="388.5"/>
+                                    <rect key="frame" x="0.0" y="1266.5" width="414" height="388.5"/>
                                     <subviews>
                                         <stackView opaque="NO" contentMode="scaleToFill" ambiguous="YES" axis="vertical" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="5o8-OG-cOy">
                                             <rect key="frame" x="16" y="0.0" width="382" height="388.5"/>
@@ -519,14 +515,14 @@
                                     </constraints>
                                 </view>
                                 <view contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="lKn-Wu-R4u">
-                                    <rect key="frame" x="0.0" y="1460.5" width="414" height="1"/>
+                                    <rect key="frame" x="0.0" y="1675" width="414" height="1"/>
                                     <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                     <constraints>
                                         <constraint firstAttribute="height" constant="1" id="Jkz-1S-sjg"/>
                                     </constraints>
                                 </view>
                                 <stackView opaque="NO" contentMode="scaleToFill" ambiguous="YES" axis="vertical" alignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="N9Z-G5-G2m">
-                                    <rect key="frame" x="0.0" y="1481.5" width="414" height="40"/>
+                                    <rect key="frame" x="0.0" y="1696" width="414" height="40"/>
                                     <subviews>
                                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="vPV-ln-HFk" userLabel="Create">
                                             <rect key="frame" x="16" y="0.0" width="382" height="40"/>
@@ -574,7 +570,6 @@
         </view>
     </objects>
     <resources>
-        <image name="icon_camera" width="16" height="17"/>
         <image name="icon_close_with_background" width="16" height="16"/>
         <image name="icon_private" width="24" height="24"/>
         <image name="icon_public" width="18" height="18"/>
@@ -584,9 +579,6 @@
         </systemColor>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-        </systemColor>
-        <systemColor name="systemRedColor">
-            <color red="1" green="0.23137254901960785" blue="0.18823529411764706" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
     </resources>
 </document>

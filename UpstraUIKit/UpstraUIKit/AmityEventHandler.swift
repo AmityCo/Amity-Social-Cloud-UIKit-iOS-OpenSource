@@ -37,6 +37,22 @@ open class AmityEventHandler {
         source.navigationController?.pushViewController(viewController, animated: true)
     }
     
+    /// Event for leave community
+    /// It will be triggered when leave community button tapped
+    ///
+    /// A default behavior is popping to `AmityCommunityHomePageViewController`, `AmityNewsfeedViewController`.or `AmityFeedViewController`.
+    /// If any of them doesn't exsist, popping to previous page.
+    open func leaveCommunityDidTap(from source: AmityViewController, communityId: String) {
+        if let vc = source.navigationController?
+            .viewControllers.last(where: { $0.isKind(of: AmityCommunityHomePageViewController.self)
+                                    || $0.isKind(of: AmityNewsfeedViewController.self)
+                                    || $0.isKind(of: AmityFeedViewController.self) }) {
+            source.navigationController?.popToViewController(vc, animated: true)
+            return
+        }
+        source.navigationController?.popViewController(animated: true)
+    }
+    
     /// Event for community channel
     /// It will be triggered when community  button tapped
     ///

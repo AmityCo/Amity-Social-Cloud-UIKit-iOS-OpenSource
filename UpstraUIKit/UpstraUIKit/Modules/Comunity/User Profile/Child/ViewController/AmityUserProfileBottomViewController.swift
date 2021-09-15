@@ -12,26 +12,40 @@ class AmityUserProfileBottomViewController: AmityProfileBottomViewController {
     
     // MARK: - Properties
     
-    private let userId: String
-    
-    private init(userId: String) {
-        self.userId = userId
-        super.init()
-    }
-    
-    required init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
+    private var timelineVC: AmityFeedViewController?
+    private var galleryVC: AmityPostGalleryViewController?
     
     static func make(withUserId userId: String) -> AmityUserProfileBottomViewController {
-        return AmityUserProfileBottomViewController(userId: userId)
-    }
-
-    override func viewControllers(for pagerTabStripController: AmityPagerTabViewController) -> [UIViewController] {
+        
+        // 1. Timeline
         let timelineVC = AmityFeedViewController.make(feedType: .userFeed(userId: userId))
         timelineVC.pageTitle = AmityLocalizedStringSet.timelineTitle.localizedString
         timelineVC.pageIndex = 0
-        return [timelineVC]
+        
+        // 2. Gallery
+        let galleryVC = AmityPostGalleryViewController.make(targetType: .user, targetId: userId)
+        
+        // The VC
+        let vc = AmityUserProfileBottomViewController()
+        vc.timelineVC = timelineVC
+        vc.galleryVC = galleryVC
+        
+        return vc
+    }
+
+    override func viewControllers(for pagerTabStripController: AmityPagerTabViewController) -> [UIViewController] {
+        
+        var viewControllers: [UIViewController] = []
+        // 0. Timeline
+        if let timelineVC = timelineVC {
+            viewControllers.append(timelineVC)
+        }
+        // 1. Media Gallery
+        if let galleryVC = galleryVC {
+            viewControllers.append(galleryVC)
+        }
+        return viewControllers
+        
     }
     
 }
