@@ -55,7 +55,8 @@ public final class AmityPostFooterTableViewCell: UITableViewCell, Nibbable, Amit
         warningLabel.isHidden = post.isCommentable
         topContainerView.isHidden = isReactionExisted
         
-        shareButton.isHidden = !AmityPostSharePermission.canSharePost(post: post)
+//        shareButton.isHidden = !AmityPostSharePermission.canSharePost(post: post)
+        shareButton.isHidden = !AmityPostSharePermission.canSharePostOnlyPublicCommunity(post: post)
         shareLabel.isHidden = post.sharedCount == 0
         let sharePrefix = post.sharedCount > 1 ? AmityLocalizedStringSet.Unit.sharesPlural.localizedString :
             AmityLocalizedStringSet.Unit.sharesSingular.localizedString

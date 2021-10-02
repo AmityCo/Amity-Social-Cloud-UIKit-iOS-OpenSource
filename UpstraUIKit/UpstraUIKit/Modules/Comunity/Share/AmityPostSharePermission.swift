@@ -40,4 +40,11 @@ class AmityPostSharePermission {
             return []
         }
     }
+    
+    /// TrueID Project
+    /// Check Show button share in AmityPostFooterTableViewCell
+    static func canSharePostOnlyPublicCommunity(post: AmityPostModel) -> Bool {
+        let isPublic = post.targetCommunity?.isPublic ?? false
+        return (post.postTargetType == .community && isPublic) ? true : false
+    }
 }

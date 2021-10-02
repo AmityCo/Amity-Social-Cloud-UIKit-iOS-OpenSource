@@ -56,3 +56,46 @@ struct AmityCommunityModel {
         self.isPostReviewEnabled = object.isPostReviewEnabled
     }
 }
+
+public struct AmityCommunityModelExternal {
+    public let communityId: String
+    public let description: String
+    public let displayName: String
+    public let isPublic: Bool
+    public let isOfficial: Bool
+    public var isJoined: Bool = false
+    public let channelId: String
+    public let postsCount: Int
+    public var membersCount: Int
+    public let createdAt: Date
+    public let metadata: [String: Any]?
+    public let userId: String
+    public let tags: [String]
+    public let category: String
+    public var categoryId: String?
+    public let avatarURL: String
+    public var isCreator: Bool {
+        return AmityUIKitManagerInternal.shared.client.currentUserId == userId
+    }
+//    public let participation: EkoCommunityParticipation
+    
+    init(object: AmityCommunityModel) {
+        self.communityId = object.communityId
+        self.description = object.description
+        self.displayName = object.displayName
+        self.isPublic = object.isPublic
+        self.isOfficial = object.isOfficial
+        self.isJoined = object.isJoined
+        self.channelId = object.channelId
+        self.postsCount = object.postsCount
+        self.membersCount = object.membersCount
+        self.createdAt = object.createdAt
+        self.metadata = object.metadata
+        self.userId = object.userId
+        self.tags = object.tags
+        self.category = object.category
+        self.categoryId = object.categoryId
+        self.avatarURL = object.avatarURL
+//        self.participation = object.participation
+    }
+}

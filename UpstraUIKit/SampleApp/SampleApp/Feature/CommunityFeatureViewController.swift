@@ -83,13 +83,15 @@ extension CommunityFeatureViewController: UITableViewDelegate {
 //            navigationController?.pushViewController(home, animated: true)
 //            https://amity.co/posts/8b4d22a96f4847ed1e6b76750ee63d7c
 //            https://amity.co/posts/8b4d22a96f4847ed1e6b76750ee63d7c
-//            let home = AmityCommunityHomePageViewController.make(deeplinksType: .post(id: "8b4d22a96f4847ed1e6b76750ee63d7c", communityId: "d737b412fcd28aef5bafdcbb4d1a262d"), fromDeeplinks: true)
-//            navigationController?.pushViewController(home, animated: true)
+            //            let home = AmityCommunityHomePageViewController.make(deeplinksType: .post(id: "8b4d22a96f4847ed1e6b76750ee63d7c", communityId: "d737b412fcd28aef5bafdcbb4d1a262d"), fromDeeplinks: true)
+            //            navigationController?.pushViewController(home, animated: true)
+            let home = AmityCommunityHomePageViewController.make(deeplinksType: .post(id: "c9e9ea353ca77d24478f44f8564fcc66", communityId: "d737b412fcd28aef5bafdcbb4d1a262d"), fromDeeplinks: true)
+            navigationController?.pushViewController(home, animated: true)
 //            let home = AmityCommunityHomePageViewController.make(deeplinksType: .post(id: "", communityId: "d737b412fcd28aef5bafdcbb4d1a262d"), fromDeeplinks: true)
 //            navigationController?.pushViewController(home, animated: true)
 //            dca95af263fbf131ff02ec6dc734d7e7
-            let home = AmityCommunityHomePageViewController.make(deeplinksType: .category(id: "dca95af263fbf131ff02ec6dc734d7e7"), fromDeeplinks: true)
-            navigationController?.pushViewController(home, animated: true)
+//            let home = AmityCommunityHomePageViewController.make(deeplinksType: .category(id: "dca95af263fbf131ff02ec6dc734d7e7"), fromDeeplinks: true)
+//            navigationController?.pushViewController(home, animated: true)
         
         }
     }

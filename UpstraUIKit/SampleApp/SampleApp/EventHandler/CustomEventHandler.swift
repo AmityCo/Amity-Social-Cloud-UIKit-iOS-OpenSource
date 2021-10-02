@@ -48,4 +48,15 @@ class AmityCustomEventHandler: AmityEventHandler {
             source.present(navigationController, animated: true, completion: nil)
         }
     }
+    
+    override func shareCommunityPostDidTap(from source: UIViewController, title: String?, postId: String, communityId: String) {
+        debugPrint(postId as Any)
+        debugPrint(communityId as Any)
+    }
+    
+    override func shareCommunityProfileDidTap(from source: UIViewController, communityModelExternal: AmityCommunityModelExternal) {
+        debugPrint(communityModelExternal.communityId)
+    }
+    
+    
 }

@@ -102,4 +102,8 @@ open class AmityEventHandler {
         navigationController.modalPresentationStyle = .overFullScreen
         source.present(navigationController, animated: true, completion: nil)
     }
+    
+    /// TrueID Project
+    open func shareCommunityPostDidTap(from source: UIViewController, title: String?, postId: String, communityId: String) {}
+    open func shareCommunityProfileDidTap(from source: UIViewController, communityModelExternal: AmityCommunityModelExternal) {}
 }

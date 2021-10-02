@@ -101,7 +101,15 @@ public final class AmityCommunityProfilePageViewController: AmityProfileViewCont
     private func setupNavigationItemOption(show isJoined: Bool) {
         let item = UIBarButtonItem(image: AmityIconSet.iconOption, style: .plain, target: self, action: #selector(optionTap))
         item.tintColor = AmityColorSet.base
-        navigationItem.rightBarButtonItem = isJoined ? item : nil
+        
+        let shareItem = UIBarButtonItem(image: AmityIconSet.iconShare, style: .plain, target: self, action: #selector(shareCommunityProfile))
+        item.tintColor = AmityColorSet.base
+        
+        var items: [UIBarButtonItem] = []
+        if isJoined { items.append(item) }
+        items.append(shareItem)
+        
+        navigationItem.rightBarButtonItems = items
     }
     
     private func showCommunitySettingModal() {
@@ -142,6 +150,13 @@ public final class AmityCommunityProfilePageViewController: AmityProfileViewCont
 private extension AmityCommunityProfilePageViewController {
     @objc func optionTap() {
         screenViewModel.action.route(.settings)
+    }
+    
+    @objc func shareCommunityProfile() {
+        if let communityModel: AmityCommunityModel = screenViewModel.dataSource.community {
+            let communityModelExternal: AmityCommunityModelExternal = AmityCommunityModelExternal(object: communityModel)
+            AmityEventHandler.shared.shareCommunityProfileDidTap(from: self, communityModelExternal: communityModelExternal)
+        }
     }
     
     func postAction() {

@@ -384,6 +384,10 @@ extension AmityPostDetailViewController: AmityPostFooterProtocolHandlerDelegate 
             if post.isGroupMember {
                 _ = commentComposeBarView.becomeFirstResponder()
             }
+        case .tapShare:
+            if let communityId = post.communityId {
+                AmityEventHandler.shared.shareCommunityPostDidTap(from: self, title: nil, postId: post.postId, communityId: communityId)
+            }
         }
     }
     

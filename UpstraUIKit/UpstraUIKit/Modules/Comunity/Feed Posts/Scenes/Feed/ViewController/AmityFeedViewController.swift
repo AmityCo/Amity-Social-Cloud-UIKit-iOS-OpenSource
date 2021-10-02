@@ -399,6 +399,10 @@ extension AmityFeedViewController: AmityPostFooterProtocolHandlerDelegate {
             }
         case .tapComment:
             AmityEventHandler.shared.postDidtap(from: self, postId: post.postId)
+        case .tapShare:
+            if let communityId = post.communityId {
+                AmityEventHandler.shared.shareCommunityPostDidTap(from: self, title: nil, postId: post.postId, communityId: communityId)
+            }
         }
     }
 }

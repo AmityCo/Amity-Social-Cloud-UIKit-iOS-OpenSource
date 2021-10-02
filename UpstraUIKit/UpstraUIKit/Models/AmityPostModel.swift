@@ -216,6 +216,10 @@ public class AmityPostModel {
         return myReactions.contains(.like)
     }
     
+    var communityId: String? {
+        return post.targetCommunity?.communityId
+    }
+    
     private(set) var feedType: AmityFeedType = .published
     
     // MARK: - Initializer
