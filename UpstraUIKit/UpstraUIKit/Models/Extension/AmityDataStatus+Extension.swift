@@ -10,13 +10,17 @@ import AmitySDK
 
 extension AmityDataStatus {
     
-    var title: String {
+    var description: String {
         switch self {
-        case .error: return "Error"
-        case .fresh: return "Fresh"
-        case .local: return "Local"
-        case .notExist: return "notExist"
-        @unknown default:
+        case .notExist:
+            return "notExist"
+        case .local:
+            return "local"
+        case .fresh:
+            return "fresh"
+        case .error:
+            return "error"
+        default:
             return ""
         }
     }

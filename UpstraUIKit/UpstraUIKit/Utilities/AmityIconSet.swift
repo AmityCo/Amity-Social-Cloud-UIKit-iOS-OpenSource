@@ -62,6 +62,8 @@ public struct AmityIconSet {
     public static var iconRadioOn = UIImage(named: "icon_radio_on", in: AmityUIKitManager.bundle, compatibleWith: nil)
     public static var iconRadioOff = UIImage(named: "icon_radio_off", in: AmityUIKitManager.bundle, compatibleWith: nil)
     public static var iconRadioCheck = UIImage(named: "icon_radio_check", in: AmityUIKitManager.bundle, compatibleWith: nil)
+    public static var iconDownChevron = UIImage(named: "Icon_down_chevron", in: AmityUIKitManager.bundle, compatibleWith: nil)
+    public static var iconPlayVideo = UIImage(named: "icon_play_video", in: AmityUIKitManager.bundle, compatibleWith: nil)
     
     public struct File {
         public static var iconFileAudio = UIImage(named: "icon_file_audio", in: AmityUIKitManager.bundle, compatibleWith: nil)
@@ -104,6 +106,7 @@ public struct AmityIconSet {
     // MARK: - User Feed
     public static var privateUserFeed = UIImage(named: "private_user_feed", in: AmityUIKitManager.bundle, compatibleWith: nil)
     public static var defaultCommunity = UIImage(named: "default_community", in: AmityUIKitManager.bundle, compatibleWith: nil)
+    public static var defaultCommunityAvatar = UIImage(named: "default_community", in: AmityUIKitManager.bundle, compatibleWith: nil)
     
     // MARK: - Message
     public static var defaultMessageImage = UIImage(named: "default_message_image", in: AmityUIKitManager.bundle, compatibleWith: nil)

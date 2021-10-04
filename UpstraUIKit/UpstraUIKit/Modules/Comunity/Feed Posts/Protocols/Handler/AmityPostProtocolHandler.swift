@@ -10,13 +10,8 @@ import UIKit
 
 final class AmityPostProtocolHandler {
     
-    private weak var viewController: AmityViewController?
-    private let tableView: UITableView
-    
-    init(viewController: AmityViewController, tableView: UITableView) {
-        self.viewController = viewController
-        self.tableView = tableView
-    }
+    weak var viewController: AmityViewController?
+    weak var tableView: UITableView?
     
     private func handleFile(file: AmityFile) {
         guard let viewController = viewController else { return }
@@ -54,7 +49,6 @@ extension AmityPostProtocolHandler: AmityPostDelegate {
     
     func didPerformAction(_ cell: AmityPostProtocol, action: AmityPostAction) {
         guard let post = cell.post else { return }
-        guard let viewController = viewController else { return }
         switch action {
         case .tapFile(let file):
             handleFile(file: file)
@@ -77,33 +71,33 @@ extension AmityPostProtocolHandler: AmityPostDelegate {
             case .image:
                 break
             }
-        case .tapViewAll:
-            AmityEventHandler.shared.postDidtap(from: viewController, postId: post.postId)
-        case .tapExpandableLabel:
-            AmityEventHandler.shared.postDidtap(from: viewController, postId: post.postId)
+        case .tapViewAll, .tapExpandableLabel:
+            if let viewController = viewController {
+                AmityEventHandler.shared.postDidtap(from: viewController, postId: post.postId)
+            }
         case .willExpandExpandableLabel:
-            tableView.beginUpdates()
+            tableView?.beginUpdates()
         case .didExpandExpandableLabel:
             guard let section = cell.indexPath?.section else { return }
             // mark post flag to display with expanding
             post.appearance.isExpanding = true
             let indexPath = IndexPath(row: 0, section: section)
             DispatchQueue.main.async { [weak self] in
-                self?.tableView.scrollToRow(at: indexPath, at: .top, animated: true)
+                self?.tableView?.scrollToRow(at: indexPath, at: .top, animated: true)
             }
-            tableView.endUpdates()
+            tableView?.endUpdates()
         case .willCollapseExpandableLabel:
-            tableView.beginUpdates()
+            tableView?.beginUpdates()
         case .didCollapseExpandableLabel(let label):
             // mark post flag to display with collapsing
             post.appearance.isExpanding = false
             let point = label.convert(CGPoint.zero, to: tableView)
-            if let indexPath = tableView.indexPathForRow(at: point) as IndexPath? {
+            if let indexPath = tableView?.indexPathForRow(at: point) as IndexPath? {
                 DispatchQueue.main.async { [weak self] in
-                    self?.tableView.scrollToRow(at: indexPath, at: .top, animated: true)
+                    self?.tableView?.scrollToRow(at: indexPath, at: .top, animated: true)
                 }
             }
-            tableView.endUpdates()
+            tableView?.endUpdates()
         }
     }
     

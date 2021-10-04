@@ -9,7 +9,7 @@
 import UIKit
 import AmitySDK
 
-enum AmityMemberStatusCommunity {
+enum AmityMemberStatusCommunity: String {
     case guest
     case member
     case admin
@@ -30,12 +30,8 @@ final class AmityCommunityProfileScreenViewModel: AmityCommunityProfileScreenVie
     var postId: String?
     var fromDeeplinks: Bool
     
-    var pendingPostCountForAdmin: Int {
-        return getPostCountForAdmin(by: .reviewing)
-    }
-    
     var postCount: Int {
-        return getPostCountForAdmin(by: .published)
+        return community?.object.getPostCount(feedType: .published) ?? 0
     }
     
     init(communityId: String, postId: String? = nil, fromDeeplinks: Bool = false,
@@ -51,23 +47,22 @@ final class AmityCommunityProfileScreenViewModel: AmityCommunityProfileScreenVie
 // MARK: - DataSource
 extension AmityCommunityProfileScreenViewModel {
     
-    private func getPostCountForAdmin(by feedType: AmityFeedType) -> Int {
-        guard let community = community, community.isPostReviewEnabled else { return 0 }
-        return community.object.getPostCount(feedType: feedType)
+    func getPendingPostCount(completion: ((Int) -> Void)?) {
+        getPendingPostCount(with: .reviewing, completion: completion)
     }
     
-    func shouldShowPendingPostBannerForMember(_ completion: ((Bool) -> Void)?) {
+    private func getPendingPostCount(with feedType: AmityFeedType, completion: ((Int) -> Void)?) {
         guard let community = community, community.isPostReviewEnabled else {
-            completion?(false)
+            completion?(0)
             return
         }
         
-        communityRepositoryManager.getPendingPostsCount(by: .reviewing) { (result) in
+        communityRepositoryManager.getPendingPostsCount(by: feedType) { (result) in
             switch result {
             case .success(let postCount):
-                completion?(postCount != 0)
-            case .failure(let error):
-                completion?(false)
+                completion?(postCount)
+            case .failure(_):
+                completion?(0)
             }
         }
     }

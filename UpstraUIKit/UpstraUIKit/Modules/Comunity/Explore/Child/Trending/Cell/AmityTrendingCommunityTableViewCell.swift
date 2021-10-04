@@ -68,7 +68,9 @@ private extension AmityTrendingCommunityTableViewCell {
     }
     
     func setupAvatarView() {
+        avatarView.placeholderPostion = .fullSize
         avatarView.placeholder = AmityIconSet.defaultCommunity
+        avatarView.contentMode = .scaleAspectFill
         
         avatarView.actionHandler = { [weak self] in
             self?.avatarTap()

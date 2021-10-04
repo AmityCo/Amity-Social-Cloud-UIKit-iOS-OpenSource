@@ -39,7 +39,7 @@ final class AmityAudioRecorder: NSObject {
         }
     }
     private var timer: Timer?
-    private var isRecord = false
+    private var isRecording = false
     // MARK: - Delegatee
     weak var delegate: AmityAudioRecorderDelegate?
     
@@ -60,17 +60,23 @@ final class AmityAudioRecorder: NSObject {
                 }
             } catch {
                 delegate?.requestRecordPermission(isAllowed: false)
-                print(error.localizedDescription)
+                Log.add("Error while preparing audio session \(error.localizedDescription)")
             }
         }
-        
     }
     
     func startRecording() {
-        recording()
+        isRecording = true
+        switch session.recordPermission {
+        case .granted:
+            prepare()
+        default:
+            delegate?.requestRecordPermission(isAllowed: false)
+        }
     }
     
     func stopRecording(withDelete isDelete: Bool = false) {
+        
         if isDelete {
             deleteFile()
             finishRecording(state: .notFinish)
@@ -98,44 +104,39 @@ final class AmityAudioRecorder: NSObject {
         }
         return nil
     }
-}
-
-private extension AmityAudioRecorder {
     
-    func recording() {
-        isRecord = true
-        switch session.recordPermission {
-        case .granted:
-            let audioFileUrl = AmityFileCache.shared.getFileURL(for: .audioDirectory, fileName: fileName)
+    // MARK: - Helper functions
+    private func prepare() {
+        let audioFileUrl = AmityFileCache.shared.getFileURL(for: .audioDirectory, fileName: fileName)
+        
+        let settings = [
+            AVFormatIDKey: Int(kAudioFormatMPEG4AAC),
+            AVSampleRateKey: 12000,
+            AVNumberOfChannelsKey: 1,
+            AVEncoderAudioQualityKey: AVAudioQuality.high.rawValue
+        ]
+        
+        do {
+            try session.setCategory(.record)
+            recorder = try AVAudioRecorder(url: audioFileUrl, settings: settings)
+            recorder.delegate = self
+            recorder.isMeteringEnabled = true
+            recorder.updateMeters()
+            recorder.record()
             
-            let settings = [
-                AVFormatIDKey: Int(kAudioFormatMPEG4AAC),
-                AVSampleRateKey: 12000,
-                AVNumberOfChannelsKey: 1,
-                AVEncoderAudioQualityKey: AVAudioQuality.high.rawValue
-            ]
+            timer?.invalidate()
+            timer = Timer.scheduledTimer(withTimeInterval: 1, repeats: true, block: { [weak self] (timer) in
+                self?.recorder?.updateMeters()
+                self?.duration += timer.timeInterval
+                self?.monitoring()
+            })
             
-            do {
-                recorder = try AVAudioRecorder(url: audioFileUrl, settings: settings)
-                recorder.delegate = self
-                recorder.isMeteringEnabled = true
-                recorder.record()
-                
-                timer = Timer.scheduledTimer(withTimeInterval: 1, repeats: true, block: { [weak self] (timer) in
-                    self?.recorder.updateMeters()
-                    self?.duration += timer.timeInterval
-                    self?.monitoring()
-                })
-                
-            } catch {
-                finishRecording(state: .notFinish)
-            }
-        default:
-            delegate?.requestRecordPermission(isAllowed: false)
+        } catch {
+            finishRecording(state: .notFinish)
         }
     }
     
-    func monitoring() {
+    private func monitoring() {
         delegate?.voiceMonitoring(radius: normalizeSoundLevel(level: recorder.averagePower(forChannel: 0)))
         if Int(duration) == maximumTimeout {
             finishRecording(state: .finishWithMaximumTime)
@@ -149,15 +150,15 @@ private extension AmityAudioRecorder {
     
     func finishRecording(state: AmityAudioRecorderState) {
         if recorder != nil {
+            isRecording = false
             recorder.stop()
-            recorder = nil
-            isRecord = false
             timer?.invalidate()
             delegate?.finishRecording(state: state)
             duration = 0
+            recorder = nil
         }
     }
- 
+    
     func displayDuration() {
         let time = Int(duration)
         let minutes = Int(time) / 60 % 60
@@ -177,7 +178,13 @@ extension AmityAudioRecorder: AVAudioRecorderDelegate {
     }
     
     func audioRecorderEncodeErrorDidOccur(_ recorder: AVAudioRecorder, error: Error?) {
-        print("Error while recording audio \(error!.localizedDescription)")
+        if let error = error {
+            Log.add("Error while encoding audio \(error.localizedDescription)")
+        }
+    }
+    
+    func audioRecorderBeginInterruption(_ recorder: AVAudioRecorder) {
+        Log.add("AudioRecorder begins interruption")
     }
 }
 

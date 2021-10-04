@@ -12,7 +12,10 @@ final public class AmityCommunityFeedViewController: AmityProfileBottomViewContr
     
     // MARK: - Properties
     private var timelineVC: AmityFeedViewController?
+    private var galleryVC: AmityPostGalleryViewController?
+    
     private var communityId: String = ""
+    
     var dataDidUpdateHandler: (() -> Void)?
     
     // MARK: - View lifecycle
@@ -29,15 +32,30 @@ final public class AmityCommunityFeedViewController: AmityProfileBottomViewContr
     public static func make(communityId: String) -> AmityCommunityFeedViewController {
         let vc = AmityCommunityFeedViewController()
         vc.communityId = communityId
+        // Timeline
         vc.timelineVC = AmityFeedViewController.make(feedType: .communityFeed(communityId: communityId))
         vc.timelineVC?.pageTitle = AmityLocalizedStringSet.timelineTitle.localizedString
         vc.timelineVC?.pageIndex = 0
+        // Gallery
+        vc.galleryVC = AmityPostGalleryViewController.make(
+            targetType: .community,
+            targetId: communityId
+        )
         return vc
     }
 
     override func viewControllers(for pagerTabStripController: AmityPagerTabViewController) -> [UIViewController] {
-        guard let timelineVC = timelineVC else { return [] }
-        return [timelineVC]
+        
+        var viewControllers: [UIViewController] = []
+        // 0. Timeline
+        if let timelineVC = timelineVC {
+            viewControllers.append(timelineVC)
+        }
+        // 1. Media Gallery
+        if let galleryVC = galleryVC {
+            viewControllers.append(galleryVC)
+        }
+        return viewControllers
     }
     
     private func setupFeed() {

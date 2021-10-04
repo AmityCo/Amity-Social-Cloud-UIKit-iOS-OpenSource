@@ -28,7 +28,6 @@ public class AmityPostTextEditorViewController: AmityViewController {
     
     enum Constant {
         static let maximumNumberOfImages: Int = 10
-        static let toolBarHeight: CGFloat = 44.0
     }
     
     // MARK: - Properties
@@ -56,6 +55,12 @@ public class AmityPostTextEditorViewController: AmityViewController {
     
     private var isValueChanged: Bool {
         return !textView.text.isEmpty || !galleryView.medias.isEmpty || !fileView.files.isEmpty
+    }
+    
+    private var attachmentType: AmityPostAttachmentType = .none {
+        didSet {
+            postMenuView.attachmentType = attachmentType
+        }
     }
     
     weak var delegate: AmityPostViewControllerDelegate?
@@ -88,7 +93,7 @@ public class AmityPostTextEditorViewController: AmityViewController {
         scrollView.translatesAutoresizingMaskIntoConstraints = false
         scrollView.keyboardDismissMode = .onDrag
         scrollView.backgroundColor = AmityColorSet.backgroundColor
-        scrollView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: Constant.toolBarHeight, right: 0)
+        scrollView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: AmityPostTextEditorMenuView.defaultHeight, right: 0)
         view.addSubview(scrollView)
         
         textView.translatesAutoresizingMaskIntoConstraints = false
@@ -136,7 +141,7 @@ public class AmityPostTextEditorViewController: AmityViewController {
             scrollView.bottomAnchor.constraint(equalTo: view.layoutMarginsGuide.bottomAnchor),
             postMenuView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             postMenuView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            postMenuView.heightAnchor.constraint(equalToConstant: postMode == .create ? Constant.toolBarHeight : 0),
+            postMenuView.heightAnchor.constraint(equalToConstant: postMode == .create ? AmityPostTextEditorMenuView.defaultHeight : 0),
             postMenuViewBottomConstraints,
             comunityPanelView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             comunityPanelView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
@@ -209,13 +214,13 @@ public class AmityPostTextEditorViewController: AmityViewController {
     
     private func presentAskMediaTypeDialogue(completion: @escaping (AmityMediaType?) -> Void) {
         let controller = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
-        let photo = UIAlertAction(title: "Photo", style: .default) { _ in
+        let photo = UIAlertAction(title: AmityLocalizedStringSet.General.generalPhoto.localizedString, style: .default) { _ in
             completion(.image)
         }
-        let video = UIAlertAction(title: "Video", style: .default) { _ in
+        let video = UIAlertAction(title: AmityLocalizedStringSet.General.generalVideo.localizedString, style: .default) { _ in
             completion(.video)
         }
-        let cancel = UIAlertAction(title: "Cancel", style: .cancel) { _ in
+        let cancel = UIAlertAction(title: AmityLocalizedStringSet.General.cancel.localizedString, style: .cancel) { _ in
             completion(nil)
         }
         controller.addAction(photo)
@@ -229,10 +234,10 @@ public class AmityPostTextEditorViewController: AmityViewController {
         let keyboardScreenEndFrame = keyboardValue.size
         let comunityPanelHeight = comunityPanelView.isHidden ? 0.0 : AmityComunityPanelView.defaultHeight
         if notification.name == UIResponder.keyboardWillHideNotification {
-            scrollView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: Constant.toolBarHeight + comunityPanelHeight, right: 0)
+            scrollView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: AmityPostTextEditorMenuView.defaultHeight + comunityPanelHeight, right: 0)
             postMenuViewBottomConstraints.constant = view.layoutMargins.bottom
         } else {
-            scrollView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: keyboardScreenEndFrame.height - view.safeAreaInsets.bottom + Constant.toolBarHeight + comunityPanelHeight, right: 0)
+            scrollView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: keyboardScreenEndFrame.height - view.safeAreaInsets.bottom + AmityPostTextEditorMenuView.defaultHeight + comunityPanelHeight, right: 0)
             postMenuViewBottomConstraints.constant = view.layoutMargins.bottom - keyboardScreenEndFrame.height
         }
         scrollView.scrollIndicatorInsets = scrollView.contentInset
@@ -307,10 +312,15 @@ public class AmityPostTextEditorViewController: AmityViewController {
             postButton.isEnabled = isPostValid
         }
         
-        postMenuView.isCameraButtonEnabled = fileView.files.isEmpty
-        postMenuView.isAlbumButtonEnabled = fileView.files.isEmpty
-        
-        postMenuView.isFileButtonEnabled = galleryView.medias.isEmpty
+        if !fileView.files.isEmpty {
+            attachmentType = .file
+        } else if galleryView.medias.contains(where: { $0.type == .image }) {
+            attachmentType = .image
+        } else if galleryView.medias.contains(where: { $0.type == .video }) {
+            attachmentType = .video
+        } else {
+            attachmentType = .none
+        }
         
     }
     
@@ -359,7 +369,7 @@ public class AmityPostTextEditorViewController: AmityViewController {
                     }
                 }
             default:
-                assertionFailure("Unsupported media state for uploading.")
+                Log.add("[UIKit]: Unsupported media state for uploading.")
                 break
             }
         }
@@ -541,14 +551,23 @@ public class AmityPostTextEditorViewController: AmityViewController {
         present(alertController, animated: true, completion: nil)
     }
     
-    private func presentMediaPickerCamera(type: AmityMediaType) {
+    private func presentMediaPickerCamera() {
         let cameraPicker = UIImagePickerController()
         cameraPicker.sourceType = .camera
-        switch type {
+        
+        // Currently users can only select one media type when create a post.
+        // After users choose the media, we will not `presentAskMediaTypeDialogue` after that.
+        // We automatically choose media type based on last media pick.
+        switch attachmentType {
+        case .none:
+            cameraPicker.mediaTypes = [kUTTypeImage, kUTTypeMovie] as [String]
         case .image:
             cameraPicker.mediaTypes = [kUTTypeImage as String]
         case .video:
             cameraPicker.mediaTypes = [kUTTypeMovie as String]
+        case .file:
+            Log.add("Type mismatch")
+            break
         }
         cameraPicker.delegate = self
         present(cameraPicker, animated: true, completion: nil)
@@ -727,41 +746,88 @@ extension AmityPostTextEditorViewController: AmityPostTextEditorMenuViewDelegate
         
         switch action {
         case .camera:
-            // Currently users can only select one media type when create a post.
-            // After users choose the media, we will not `presentAskMediaTypeDialogue` after that.
-            // We automatically choose media type based on last media pick.
-            let hasImage = galleryView.medias.contains { $0.type == .image }
-            let hasVideo = galleryView.medias.contains { $0.type == .video }
-            if hasImage {
-                presentMediaPickerCamera(type: .image)
-            } else if hasVideo {
-                presentMediaPickerCamera(type: .video)
-            } else {
-                presentAskMediaTypeDialogue { [weak self] type in
-                    guard let type = type else { return }
-                    self?.presentMediaPickerCamera(type: type)
-                }
-            }
+            presentMediaPickerCamera()
         case .album:
-            // Currently users can only select one media type when create a post.
-            // After users choose the media, we will not `presentAskMediaTypeDialogue` after that.
-            // We automatically choose media type based on last media pick.
-            let hasImage = galleryView.medias.contains { $0.type == .image }
-            let hasVideo = galleryView.medias.contains { $0.type == .video }
-            if hasImage {
-                presentMediaPickerAlbum(type: .image)
-            } else if hasVideo {
-                presentMediaPickerAlbum(type: .video)
-            } else {
-                presentAskMediaTypeDialogue { [weak self] type in
-                    guard let type = type else { return }
-                    self?.presentMediaPickerAlbum(type: type)
-                }
-            }
+            presentMediaPickerAlbum(type: .image)
+        case .video:
+            presentMediaPickerAlbum(type: .video)
         case .file:
             filePicker.present(from: view, files: fileView.files)
+        case .expand:
+            presentBottomSheetMenus()
         }
         
+    }
+    
+    private func presentBottomSheetMenus() {
+        let bottomSheet = BottomSheetViewController()
+        let contentView = ItemOptionView<ImageItemOption>()
+        let imageBackgroundColor = AmityColorSet.base.blend(.shade4)
+        let disabledColor = AmityColorSet.base.blend(.shade3)
+        
+        var cameraOption = ImageItemOption(title: AmityLocalizedStringSet.General.camera.localizedString,
+                                           image: AmityIconSet.iconCameraSmall,
+                                           imageBackgroundColor: imageBackgroundColor) { [weak self] in
+            self?.presentMediaPickerCamera()
+        }
+        
+        var galleryOption = ImageItemOption(title: AmityLocalizedStringSet.General.generalPhoto.localizedString,
+                                            image: AmityIconSet.iconPhoto,
+                                            imageBackgroundColor: imageBackgroundColor) { [weak self] in
+            self?.presentMediaPickerAlbum(type: .image)
+        }
+        
+        var videoOption = ImageItemOption(title: AmityLocalizedStringSet.General.generalVideo.localizedString,
+                                          image: AmityIconSet.iconPlayVideo,
+                                          imageBackgroundColor: imageBackgroundColor) { [weak self] in
+            self?.presentMediaPickerAlbum(type: .video)
+        }
+        
+        var fileOption = ImageItemOption(title: AmityLocalizedStringSet.General.generalAttachment.localizedString,
+                                         image: AmityIconSet.iconAttach,
+                                         imageBackgroundColor: imageBackgroundColor)
+        fileOption.completion = { [weak self] in
+            guard let strongSelf = self else { return }
+            strongSelf.filePicker.present(from: strongSelf.postMenuView, files: strongSelf.fileView.files)
+        }
+        
+        switch attachmentType {
+        case .none:
+            break
+        case .image:
+            videoOption.image = AmityIconSet.iconPlayVideo?.setTintColor(disabledColor)
+            videoOption.textColor = disabledColor
+            videoOption.completion = nil
+            fileOption.image = AmityIconSet.iconAttach?.setTintColor(disabledColor)
+            fileOption.textColor = disabledColor
+            fileOption.completion = nil
+        case .video:
+            galleryOption.image = AmityIconSet.iconPhoto?.setTintColor(disabledColor)
+            galleryOption.textColor = disabledColor
+            galleryOption.completion = nil
+            fileOption.image = AmityIconSet.iconAttach?.setTintColor(disabledColor)
+            fileOption.textColor = disabledColor
+            fileOption.completion = nil
+        case .file:
+            cameraOption.image = AmityIconSet.iconCameraSmall?.setTintColor(disabledColor)
+            cameraOption.textColor = disabledColor
+            cameraOption.completion = nil
+            galleryOption.image = AmityIconSet.iconPhoto?.setTintColor(disabledColor)
+            galleryOption.textColor = disabledColor
+            galleryOption.completion = nil
+            videoOption.image = AmityIconSet.iconPlayVideo?.setTintColor(disabledColor)
+            videoOption.textColor = disabledColor
+            videoOption.completion = nil
+        }
+        
+        contentView.configure(items: [cameraOption, galleryOption, videoOption, fileOption], selectedItem: nil)
+        contentView.didSelectItem = { _ in
+            bottomSheet.dismissBottomSheet()
+        }
+        bottomSheet.sheetContentView = contentView
+        bottomSheet.isTitleHidden = true
+        bottomSheet.modalPresentationStyle = .overFullScreen
+        present(bottomSheet, animated: false, completion: nil)
     }
     
     private func addMedias(_ medias: [AmityMedia], type: AmityMediaType) {
@@ -797,11 +863,12 @@ extension AmityPostTextEditorViewController: UIImagePickerControllerDelegate, UI
             return
         }
         
+        var selectedMedia: AmityMedia?
+        
         switch mediaType {
         case String(kUTTypeImage):
             if let image = info[.originalImage] as? UIImage {
-                let media = AmityMedia(state: .image(image), type: .image)
-                addMedias([media], type: .image)
+                selectedMedia = AmityMedia(state: .image(image), type: .image)
             }
         case String(kUTTypeMovie):
             if let fileUrl = info[.mediaURL] as? URL {
@@ -819,15 +886,19 @@ extension AmityPostTextEditorViewController: UIImagePickerControllerDelegate, UI
                 } catch {
                     print("Unable to generate thumbnail image for kUTTypeMovie.")
                 }
-                addMedias([media], type: .video)
+                selectedMedia = media
             }
         default:
             assertionFailure("Unsupported media type")
             break
         }
         
-        picker.dismiss(animated: true, completion: nil)
-        
+        // We want to process selected media only after the default ui for selecting media
+        // dismisses completely. Otherwise we see `Attempt to present ....` error
+        picker.dismiss(animated: true) { [weak self] in
+            guard let media = selectedMedia else { return }
+            self?.addMedias([media], type: media.type)
+        }
     }
     
 }

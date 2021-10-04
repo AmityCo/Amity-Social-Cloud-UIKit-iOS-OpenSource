@@ -39,7 +39,7 @@ final class AmityAudioPlayer: NSObject {
     }
     
     func play() {
-        invalidate()
+        resetTimer()
         if player == nil {
             playAudio()
         } else {
@@ -60,24 +60,22 @@ final class AmityAudioPlayer: NSObject {
         if player != nil {
             player.stop()
             player = nil
-            invalidate()
+            resetTimer()
             delegate?.stopPlaying()
         }
     }
-}
-
-private extension AmityAudioPlayer {
     
-    func playAudio() {
+    // MARK: - Helper functions
+    
+    private func playAudio() {
         _fileName = fileName
         prepare()
     }
     
-    func prepare() {
+    private func prepare() {
         guard let url = path else { return }
         do {
             try AVAudioSession.sharedInstance().setCategory(.playback)
-            
             player = try AVAudioPlayer(contentsOf: url)
             player.delegate = self
             player.prepareToPlay()
@@ -91,12 +89,12 @@ private extension AmityAudioPlayer {
             RunLoop.main.add(timer, forMode: .common)
             delegate?.playing()
         } catch {
-            print(error.localizedDescription)
+            Log.add("Error while playing audio \(error.localizedDescription)")
             player = nil
         }
     }
     
-    func displayDuration() {
+    private func displayDuration() {
         let time = Int(duration)
         let minutes = Int(time) / 60 % 60
         let seconds = Int(time) % 60
@@ -104,7 +102,7 @@ private extension AmityAudioPlayer {
         delegate?.displayDuration(display)
     }
     
-    func invalidate() {
+    private func resetTimer() {
         duration = 0
         timer?.invalidate()
     }
@@ -114,11 +112,13 @@ extension AmityAudioPlayer: AVAudioPlayerDelegate {
     func audioPlayerDidFinishPlaying(_ player: AVAudioPlayer, successfully flag: Bool) {
         self.player = nil
         fileName = nil
-        invalidate()
+        resetTimer()
         delegate?.finishPlaying()
     }
     
     func audioPlayerDecodeErrorDidOccur(_ player: AVAudioPlayer, error: Error?) {
-        print("Error while playing audio \(error!.localizedDescription)")
+        if let error = error {
+            Log.add("Error while decoding \(error.localizedDescription)")
+        }
     }
 }

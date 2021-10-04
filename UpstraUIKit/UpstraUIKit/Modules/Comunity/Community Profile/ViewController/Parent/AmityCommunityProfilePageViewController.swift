@@ -45,17 +45,23 @@ public final class AmityCommunityProfilePageViewController: AmityProfileViewCont
         showCommunitySettingModal()
     }
     
-    public static func make(withCommunityId communityId: String, postId: String? = nil, fromDeeplinks: Bool = false, settings: AmityCommunityProfilePageSettings = AmityCommunityProfilePageSettings()) -> AmityCommunityProfilePageViewController {
+    public static func make(
+        withCommunityId communityId: String,
+        settings: AmityCommunityProfilePageSettings = .init()
+    ) -> AmityCommunityProfilePageViewController {
+        
         let communityRepositoryManager = AmityCommunityRepositoryManager(communityId: communityId)
-        
-        let viewModel: AmityCommunityProfileScreenViewModelType = AmityCommunityProfileScreenViewModel(communityId: communityId, postId: postId, fromDeeplinks: fromDeeplinks, communityRepositoryManager: communityRepositoryManager)
-        
+        let viewModel = AmityCommunityProfileScreenViewModel(
+            communityId: communityId,
+            communityRepositoryManager: communityRepositoryManager
+        )
         let vc = AmityCommunityProfilePageViewController()
         vc.screenViewModel = viewModel
         vc.header = AmityCommunityProfileHeaderViewController.make(rootViewController: vc, viewModel: viewModel, settings: settings)
         vc.bottom = AmityCommunityFeedViewController.make(communityId: communityId)
         vc.settings = settings
         return vc
+        
     }
     
     override func headerViewController() -> UIViewController {

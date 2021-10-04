@@ -12,13 +12,14 @@ import UIKit
 final class AmityCommunityProfileHeaderViewController: UIViewController {
 
     // MARK: - IBOutlet Properties
-    @IBOutlet private var avatarView: AmityAvatarView!
+    @IBOutlet private var avatarView: AmityImageView!
     @IBOutlet private var displayNameLabel: UILabel!
     @IBOutlet private var privateBadgeImageView: UIImageView!
     @IBOutlet private var officialBadgeImageView: UIImageView!
     @IBOutlet private var categoryLabel: UILabel!
-    @IBOutlet private var postsButton: AmityButton!
-    @IBOutlet private var membersButton: AmityButton!
+    @IBOutlet private var postLabel: UILabel!
+    @IBOutlet private var separatorView: UIView!
+    @IBOutlet private var memberLabel: UILabel!
     @IBOutlet private var descriptionLabel: UILabel!
     @IBOutlet private var actionButton: AmityButton!
     @IBOutlet private var chatButton: AmityButton!
@@ -33,6 +34,9 @@ final class AmityCommunityProfileHeaderViewController: UIViewController {
     private var settings: AmityCommunityProfilePageSettings!
     private var screenViewModel: AmityCommunityProfileScreenViewModelType!
     private weak var rootViewController: AmityCommunityProfilePageViewController?
+    private let gradient = CAGradientLayer()
+    
+    var isUpdateInProgress = false
     
     // MARK: - Callback
     var didUpdatePostBanner: (() -> Void)?
@@ -43,8 +47,8 @@ final class AmityCommunityProfileHeaderViewController: UIViewController {
         setupDisplayName()
         setupBadgeView()
         setupSubTitleLabel()
-        setupPostButton()
-        setupMemberButton()
+        updatePostLabel(postCount: 0)
+        updateMemberLabel(memberCount: 0)
         setupDescription()
         setupActionButton()
         setupPendingPosts()
@@ -61,47 +65,69 @@ final class AmityCommunityProfileHeaderViewController: UIViewController {
     // MARK: - Setup views
     private func setupDisplayName() {
         avatarView.placeholder = AmityIconSet.defaultCommunity
+        avatarView.contentMode = .scaleAspectFill
+        gradient.colors = [UIColor.clear.cgColor, AmityColorSet.base.withAlphaComponent(0.8).cgColor]
+        gradient.locations = [0, 1]
+        avatarView.layer.addSublayer(gradient)
+        
         displayNameLabel.text = ""
         displayNameLabel.font = AmityFontSet.headerLine
-        displayNameLabel.textColor = AmityColorSet.base
+        displayNameLabel.textColor = AmityColorSet.baseInverse
         displayNameLabel.numberOfLines = 0
+        
+        separatorView.backgroundColor = AmityColorSet.base.blend(.shade3)
+    }
+    
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        gradient.frame = avatarView.frame
     }
     
     private func setupBadgeView() {
         privateBadgeImageView.image = AmityIconSet.iconPrivate
-        privateBadgeImageView.tintColor = AmityColorSet.base
+        privateBadgeImageView.tintColor = AmityColorSet.baseInverse
         privateBadgeImageView.isHidden = true
         privateBadgeImageView.image = AmityIconSet.iconPrivate
         officialBadgeImageView.image = AmityIconSet.iconBadgeCheckmark
-        officialBadgeImageView.tintColor = AmityColorSet.highlight
+        officialBadgeImageView.tintColor = AmityColorSet.baseInverse
         officialBadgeImageView.isHidden = true
     }
     
     private func setupSubTitleLabel() {
         categoryLabel.text = ""
-        categoryLabel.font = AmityFontSet.caption
-        categoryLabel.textColor = AmityColorSet.base.blend(.shade1)
+        categoryLabel.font = AmityFontSet.body
+        categoryLabel.textColor = AmityColorSet.baseInverse
         categoryLabel.numberOfLines = 1
     }
     
-    private func setupPostButton() {
-        let title = String.localizedStringWithFormat(AmityLocalizedStringSet.Unit.commentPlural.localizedString, "0")
-        let attribute = AmityAttributedString()
-        attribute.setBoldFont(for: AmityFontSet.captionBold)
-        attribute.setNormalFont(for: AmityFontSet.caption)
-        attribute.setColor(for: AmityColorSet.base)
-        attribute.setTitle(title)
-        postsButton.attributedString = attribute
-        postsButton.setAttributedTitle()
+    private func updatePostLabel(postCount: Int) {
+        var format = postCount == 1 ? AmityLocalizedStringSet.Unit.postSingular.localizedString : AmityLocalizedStringSet.Unit.postPlural.localizedString
+        format = format.replacingOccurrences(of: " ", with: "\n") // adjust a format of localized string... "%@ posts" -> "%@\nposts"
+        let value = postCount.formatUsingAbbrevation()
+        let string = String.localizedStringWithFormat(format, value)
+        
+        let attribute = NSMutableAttributedString(string: string,
+                                                  attributes: [.font : AmityFontSet.body,
+                                                               .foregroundColor: AmityColorSet.base.blend(.shade1)])
+        let range = NSString(string: string).range(of: value)
+        attribute.addAttributes([.font : AmityFontSet.bodyBold,
+                                 .foregroundColor: AmityColorSet.base], range: range)
+        postLabel.attributedText = attribute
     }
     
-    private func setupMemberButton() {
-        let attribute = AmityAttributedString()
-        attribute.setBoldFont(for: AmityFontSet.captionBold)
-        attribute.setNormalFont(for: AmityFontSet.caption)
-        attribute.setColor(for: AmityColorSet.base)
-        membersButton.attributedString = attribute
-        membersButton.addTarget(self, action: #selector(memberTap), for: .touchUpInside)
+    private func updateMemberLabel(memberCount: Int) {
+        var  format = memberCount == 1 ? AmityLocalizedStringSet.Unit.memberSingular.localizedString : AmityLocalizedStringSet.Unit.memberPlural.localizedString
+        format = format.replacingOccurrences(of: " ", with: "\n") // adjust a format of localized string... "%@ members" -> "%@\nmembers"
+        let value = memberCount.formatUsingAbbrevation()
+        let string = String.localizedStringWithFormat(format, value)
+        
+        let attribute = NSMutableAttributedString(string: string,
+                                                  attributes: [.font : AmityFontSet.body,
+                                                               .foregroundColor: AmityColorSet.base.blend(.shade1)])
+        let range = NSString(string: string).range(of: value)
+        attribute.addAttributes([.font : AmityFontSet.bodyBold,
+                                 .foregroundColor: AmityColorSet.base], range: range)
+        memberLabel.attributedText = attribute
     }
     
     private func setupDescription() {
@@ -146,13 +172,15 @@ final class AmityCommunityProfileHeaderViewController: UIViewController {
     
     // MARK: - Update views
     func updateView() {
-
-        guard let community = screenViewModel.dataSource.community else { return }
-        avatarView.setImage(withImageURL: community.avatarURL, placeholder: AmityIconSet.defaultCommunity)
+        guard let community = screenViewModel.dataSource.community, !isUpdateInProgress else { return }
+        isUpdateInProgress = true
+        avatarView.setImage(withImageURL: community.avatarURL,
+                            size: .large,
+                            placeholder: AmityIconSet.defaultCommunity)
         displayNameLabel.text = community.displayName
         descriptionLabel.text = community.description
         descriptionLabel.isHidden = community.description == ""
-        updateMembersCount(with: Int(community.membersCount))
+        updateMemberLabel(memberCount: Int(community.membersCount))
         categoryLabel.text = community.category
         privateBadgeImageView.isHidden = community.isPublic
         officialBadgeImageView.isHidden = !community.isOfficial
@@ -161,22 +189,7 @@ final class AmityCommunityProfileHeaderViewController: UIViewController {
     }
     
     func updatePostsCount() {
-        let postCount = screenViewModel.dataSource.postCount
-        let format = postCount == 1 ? AmityLocalizedStringSet.Unit.postSingular.localizedString : AmityLocalizedStringSet.Unit.postPlural.localizedString
-        let value = postCount.formatUsingAbbrevation()
-        let string = String.localizedStringWithFormat(format, value)
-        postsButton.attributedString.setTitle(string)
-        postsButton.attributedString.setBoldText(for: [value])
-        postsButton.setAttributedTitle()
-    }
-    
-    private func updateMembersCount(with memberCount: Int) {
-        let format = memberCount == 1 ? AmityLocalizedStringSet.Unit.memberSingular.localizedString : AmityLocalizedStringSet.Unit.memberPlural.localizedString
-        let value = memberCount.formatUsingAbbrevation()
-        let string = String.localizedStringWithFormat(format, value)
-        membersButton.attributedString.setTitle(string)
-        membersButton.attributedString.setBoldText(for: [value])
-        membersButton.setAttributedTitle()
+        updatePostLabel(postCount: screenViewModel.dataSource.postCount)
     }
     
     private func updateActionButton() {
@@ -216,21 +229,26 @@ final class AmityCommunityProfileHeaderViewController: UIViewController {
         actionStackView.isHidden = chatButton.isHidden && actionButton.isHidden
     }
     
+    
     private func shouldShowPendingsPostBanner() {
         switch screenViewModel.dataSource.memberStatusCommunity {
         case .guest:
             pendingPostsContainerView.isHidden = true
+            self.isUpdateInProgress = false
         case .member:
-            screenViewModel.dataSource.shouldShowPendingPostBannerForMember { [weak self] shouldShowPendingPostBanner in
-                self?.pendingPostsContainerView.isHidden = !shouldShowPendingPostBanner
+            screenViewModel.action.getPendingPostCount { [weak self] pendingPostsCount in
+                self?.pendingPostsContainerView.isHidden = pendingPostsCount == 0
                 self?.pendingPostsDescriptionLabel.text = AmityLocalizedStringSet.PendingPosts.statusMemberDesc.localizedString
                 self?.didUpdatePostBanner?()
+                self?.isUpdateInProgress = false
             }
         case .admin:
-            let pendingPostCount = screenViewModel.dataSource.pendingPostCountForAdmin
-            pendingPostsContainerView.isHidden = pendingPostCount == 0
-            pendingPostsDescriptionLabel.text = String.localizedStringWithFormat(AmityLocalizedStringSet.PendingPosts.statusAdminDesc.localizedString, pendingPostCount)
-            didUpdatePostBanner?()
+            screenViewModel.action.getPendingPostCount { [weak self] pendingPostsCount in
+                self?.pendingPostsContainerView.isHidden = pendingPostsCount == 0
+                self?.pendingPostsDescriptionLabel.text = String.localizedStringWithFormat(AmityLocalizedStringSet.PendingPosts.statusAdminDesc.localizedString, pendingPostsCount)
+                self?.didUpdatePostBanner?()
+                self?.isUpdateInProgress = false
+            }
         }
     }
     
@@ -256,7 +274,11 @@ private extension AmityCommunityProfileHeaderViewController {
         AmityEventHandler.shared.communityChannelDidTap(from: rootViewController, channelId: screenViewModel.dataSource.communityId)
     }
     
-    @objc func memberTap() {
+    @IBAction func postButtonTapped(_ sender: UIButton) {
+        // intentionally left empty
+    }
+    
+    @IBAction func memberButtonTapped(_ sender: UIButton) {
         screenViewModel.action.route(.member)
     }
     

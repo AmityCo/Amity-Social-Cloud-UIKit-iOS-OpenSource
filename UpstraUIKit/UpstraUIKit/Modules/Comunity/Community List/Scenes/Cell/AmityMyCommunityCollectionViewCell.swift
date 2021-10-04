@@ -31,7 +31,9 @@ final class AmityMyCommunityCollectionViewCell: UICollectionViewCell, Nibbable {
     
     private func setupView() {
         containerView.backgroundColor = AmityColorSet.backgroundColor
+        avatarView.placeholderPostion = .fullSize
         avatarView.placeholder = AmityIconSet.defaultCommunity
+        avatarView.contentMode = .scaleAspectFill
         avatarView.isUserInteractionEnabled = false
         displayNameLabel.text = ""
         displayNameLabel.textAlignment = .center

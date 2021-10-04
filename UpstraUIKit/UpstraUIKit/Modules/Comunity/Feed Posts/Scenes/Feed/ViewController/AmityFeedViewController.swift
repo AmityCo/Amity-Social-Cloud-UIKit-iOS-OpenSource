@@ -44,11 +44,6 @@ public final class AmityFeedViewController: AmityViewController, AmityRefreshabl
     var emptyViewHandler: ((UIView?) -> Void)?
     var pullRefreshHandler: (() -> Void)?
     
-    // Due to cells are rendering with automatic dimension.
-    // it starts shrinking when we open other page and go back.
-    // this problem can be solved with cell height calculation.
-    private var cellHeights = [IndexPath: CGFloat]()
-    
     // To determine if the vc is visible or not
     private var isVisible: Bool = true
     
@@ -105,7 +100,9 @@ public final class AmityFeedViewController: AmityViewController, AmityRefreshabl
         postFooterProtocolHandler = AmityPostFooterProtocolHandler(viewController: self)
         postFooterProtocolHandler?.delegate = self
         
-        postPostProtocolHandler = AmityPostProtocolHandler(viewController: self, tableView: tableView)
+        postPostProtocolHandler = AmityPostProtocolHandler()
+        postPostProtocolHandler?.viewController = self
+        postPostProtocolHandler?.tableView = tableView
     }
     
     // MARK: - Setup ViewModel
@@ -143,9 +140,6 @@ public final class AmityFeedViewController: AmityViewController, AmityRefreshabl
     
     private func reloadTableViewAndClearHeightCaches() {
         tableView.reloadData()
-        
-        // remove all for reassigning the exact value later
-        cellHeights.removeAll()
     }
     
     // MARK: SrollToTop
@@ -164,6 +158,11 @@ public final class AmityFeedViewController: AmityViewController, AmityRefreshabl
     }
     
     @objc private func handleRefreshingControl() {
+        guard Reachability.isConnectedToNetwork() else {
+            dataDidUpdateHandler?(0)
+            refreshControl.endRefreshing()
+            return
+        }
         pullRefreshHandler?()
         screenViewModel.action.fetchPosts()
     }
@@ -173,8 +172,6 @@ public final class AmityFeedViewController: AmityViewController, AmityRefreshabl
 extension AmityFeedViewController: AmityPostTableViewDelegate {
     
     func tableView(_ tableView: AmityPostTableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-        cellHeights[indexPath] = cell.frame.size.height
-        
         switch cell.self {
         case is AmityFeedHeaderTableViewCell:
             (cell as? AmityFeedHeaderTableViewCell)?.set(headerView: headerView?.headerView)
@@ -195,14 +192,7 @@ extension AmityFeedViewController: AmityPostTableViewDelegate {
             }
             return headerView.height
         } else {
-            if cellHeights.isEmpty {
-                let singleComponent = screenViewModel.dataSource.postComponents(in: indexPath.section)
-                if let component = tableView.feedDataSource?.getUIComponentForPost(post: singleComponent._composable.post, at: indexPath.section) {
-                    return component.getComponentHeight(indexPath: indexPath)
-                }
-                return cellHeights[indexPath] ?? UITableView.automaticDimension
-            }
-            return cellHeights[indexPath] ?? UITableView.automaticDimension
+            return UITableView.automaticDimension
         }
     }
     
@@ -424,10 +414,6 @@ extension AmityFeedViewController: AmityPostPreviewCommentDelegate {
         case .tapExpandableLabel:
             AmityEventHandler.shared.postDidtap(from: self, postId: post.postId)
         case .willExpandExpandableLabel:
-            if let indexPath = tableView.indexPath(for: cell) {
-                // remove height cache for recalculating afterward
-                cellHeights.removeValue(forKey: indexPath)
-            }
             tableView.beginUpdates()
         case .didExpandExpandableLabel(let label):
             let point = label.convert(CGPoint.zero, to: tableView)

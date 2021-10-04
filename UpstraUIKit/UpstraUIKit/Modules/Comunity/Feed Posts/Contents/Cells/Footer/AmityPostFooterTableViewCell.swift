@@ -9,7 +9,7 @@
 import UIKit
 
 /// `AmityPostFooterTableViewCell` for providing a footer of `Post`
-public final class AmityPostFooterTableViewCell: UITableViewCell, Nibbable, AmityPostFooterProtocol {
+public final class AmityPostFooterTableViewCell: UITableViewCell, Nibbable, AmityCellIdentifiable, AmityPostFooterProtocol {
     
     public weak var delegate: AmityPostFooterDelegate?
 

@@ -46,7 +46,7 @@ open class AmityExpandableLabel: UILabel {
         return expandedText != collapsedText
     }
 
-    /// Set 'true' if the label should be collapsed or 'false' for expanded.
+    /// Set 'true' if the label should be expanded or 'false' for collapsed.
     public var isExpanded: Bool = true {
         didSet {
             super.attributedText = (isExpanded) ? self.expandedText : self.collapsedText
@@ -81,11 +81,7 @@ open class AmityExpandableLabel: UILabel {
 
     /// Set the ellipsis that appears just after the text and before the link.
     /// The default value is "...". Can be nil.
-    open var ellipsis: NSAttributedString? {
-        didSet {
-            self.ellipsis = ellipsis?.copyWithAddedFontAttribute(font)
-        }
-    }
+    open var ellipsis: NSAttributedString?
 
     /// Set a view to animate changes of the label collapsed state with. If this value is nil, no animation occurs.
     /// Usually you assign the superview of this label or a UIScrollView in which this label sits.
@@ -369,23 +365,13 @@ extension AmityExpandableLabel {
         let lines = text.lines(for: frame.size.width)
         return collapsedNumberOfLines > 0 && collapsedNumberOfLines < lines.count
     }
-
-    private func textClicked(touches: Set<UITouch>?, event: UIEvent?) -> Bool {
-        let touch = event?.allTouches?.first
-        let location = touch?.location(in: self)
-        let textRect = self.attributedText?.boundingRect(for: self.frame.width)
-        if let location = location, let textRect = textRect {
-            let finger = CGRect(x: location.x-touchSize.width/2, y: location.y-touchSize.height/2, width: touchSize.width, height: touchSize.height)
-            if finger.intersects(textRect) {
-                return true
-            }
-        }
-        return false
-    }
     
     private func check(touch: UITouch, isInRange targetRange: NSRange) -> Bool {
         let touchPoint = touch.location(in: self)
-        let unwantedRange = isExpanded ? 0 : truncateText.count + readMoreText.count
+        
+        // if text is expandable and it doesn't expand yet, add a reserved range for "...Read More".
+        // other cases mean text is showing at the full size and no need to a range.
+        let unwantedRange = isExpandable && !isExpanded ? truncateText.count + readMoreText.count : 0
         let index = characterIndex(at: touchPoint) - unwantedRange
         return NSLocationInRange(index, targetRange)
     }

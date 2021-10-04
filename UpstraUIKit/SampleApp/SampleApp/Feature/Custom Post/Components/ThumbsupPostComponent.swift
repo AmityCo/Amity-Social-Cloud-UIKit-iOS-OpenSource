@@ -35,17 +35,21 @@ struct ThumbsupPostComponent: AmityPostComposable {
             cell.display(withPost: post)
             return cell
         case 1:
-            let cell = tableView.dequeueReusableCell(withIdentifier: "AmityPostFooterTableViewCell", for: indexPath) as! AmityPostFooterTableViewCell
+            let cell = tableView.dequeueReusableCell(withIdentifier: AmityPostFooterTableViewCell.cellIdentifier, for: indexPath) as! AmityPostFooterTableViewCell
             cell.display(post: post)
             return cell
         case 2 + post.maximumLastestComments:
-            let cell = tableView.dequeueReusableCell(withIdentifier: "AmityPostViewAllCommentsTableViewCell", for: indexPath) as! AmityPostViewAllCommentsTableViewCell
+            let cell = tableView.dequeueReusableCell(withIdentifier: AmityPostViewAllCommentsTableViewCell.cellIdentifier, for: indexPath) as! AmityPostViewAllCommentsTableViewCell
             return cell
         default:
-            let cell = tableView.dequeueReusableCell(withIdentifier: "AmityPostPreviewCommentTableViewCell", for: indexPath) as! AmityPostPreviewCommentTableViewCell
+            let cell = tableView.dequeueReusableCell(withIdentifier: AmityPostPreviewCommentTableViewCell.cellIdentifier, for: indexPath) as! AmityPostPreviewCommentTableViewCell
             cell.display(post: post, comment: post.getComment(at: indexPath, totalComponent: 2))
             return cell
         }
+        
+    }
+    
+    public func displayCell(_ tableView: UITableView, at indexPath: IndexPath) {
         
     }
     

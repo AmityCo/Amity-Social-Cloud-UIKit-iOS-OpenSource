@@ -32,6 +32,7 @@ class AmityCommentView: AmityView {
     @IBOutlet private weak var titleLabel: UILabel!
     @IBOutlet private weak var timeLabel: UILabel!
     @IBOutlet weak var contentLabel: AmityExpandableLabel!
+    @IBOutlet private var labelContainerView: UIView!
     @IBOutlet private weak var actionStackView: UIStackView!
     @IBOutlet private weak var likeButton: AmityButton!
     @IBOutlet private weak var replyButton: AmityButton!
@@ -63,6 +64,9 @@ class AmityCommentView: AmityView {
         contentLabel.font = AmityFontSet.body
         contentLabel.numberOfLines = 8
         separatorLineView.backgroundColor  = AmityColorSet.secondary.blend(.shade4)
+        labelContainerView.backgroundColor = AmityColorSet.base.blend(.shade4)
+        labelContainerView.layer.cornerRadius = 12
+        labelContainerView.layer.maskedCorners = [.layerMinXMaxYCorner, .layerMaxXMinYCorner, .layerMaxXMaxYCorner]
         
         likeButton.setTitle(AmityLocalizedStringSet.General.like.localizedString, for: .normal)
         likeButton.setTitleFont(AmityFontSet.captionBold)
