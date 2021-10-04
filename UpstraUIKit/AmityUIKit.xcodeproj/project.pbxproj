@@ -614,6 +614,7 @@
 		FC24020326E9E844003B800D /* DeeplinksType.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC24020226E9E844003B800D /* DeeplinksType.swift */; };
 		FC24020726E9EC56003B800D /* AmityCommunityHomePageScreenViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC24020526E9EC56003B800D /* AmityCommunityHomePageScreenViewModel.swift */; };
 		FC24020826E9EC56003B800D /* AmityCommunityHomePageScreenViewModelType.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC24020626E9EC56003B800D /* AmityCommunityHomePageScreenViewModelType.swift */; };
+		FCE5FDE9270AF9C700977DDA /* LocalizedThai.strings in Resources */ = {isa = PBXBuildFile; fileRef = FCE5FDE8270AF9C700977DDA /* LocalizedThai.strings */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -1222,6 +1223,7 @@
 		FC24020226E9E844003B800D /* DeeplinksType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeeplinksType.swift; sourceTree = "<group>"; };
 		FC24020526E9EC56003B800D /* AmityCommunityHomePageScreenViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AmityCommunityHomePageScreenViewModel.swift; sourceTree = "<group>"; };
 		FC24020626E9EC56003B800D /* AmityCommunityHomePageScreenViewModelType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AmityCommunityHomePageScreenViewModelType.swift; sourceTree = "<group>"; };
+		FCE5FDE8270AF9C700977DDA /* LocalizedThai.strings */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; path = LocalizedThai.strings; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -2070,6 +2072,7 @@
 			isa = PBXGroup;
 			children = (
 				72A3508724EA820700DA9D46 /* LocalizedEnglish.strings */,
+				FCE5FDE8270AF9C700977DDA /* LocalizedThai.strings */,
 			);
 			path = Localization;
 			sourceTree = "<group>";
@@ -4257,6 +4260,7 @@
 				72A3510E24EA820800DA9D46 /* AmityAvatarView.xib in Resources */,
 				72A3515124EA820800DA9D46 /* AmityMessageImageIncomingTableViewCell.xib in Resources */,
 				B760ED5125148F9400BE6648 /* AmityCommunityHomePageViewController.xib in Resources */,
+				FCE5FDE9270AF9C700977DDA /* LocalizedThai.strings in Resources */,
 				97D723DA2695B133000735F5 /* AmityFollowRequestsViewController.xib in Resources */,
 				72887A1A2537F78D00188FAD /* AmityUserProfileEditorViewController.xib in Resources */,
 				78C1C4EA25F3F45400D6F092 /* AmitySettingsItemToggleContentTableViewCell.xib in Resources */,
