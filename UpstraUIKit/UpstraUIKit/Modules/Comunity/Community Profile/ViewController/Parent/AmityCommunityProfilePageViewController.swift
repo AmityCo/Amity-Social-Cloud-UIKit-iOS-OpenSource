@@ -46,13 +46,14 @@ public final class AmityCommunityProfilePageViewController: AmityProfileViewCont
     }
     
     public static func make(
-        withCommunityId communityId: String,
-        settings: AmityCommunityProfilePageSettings = .init()
+        withCommunityId communityId: String, postId: String? = nil, fromDeeplinks: Bool = false, settings: AmityCommunityProfilePageSettings = .init()
     ) -> AmityCommunityProfilePageViewController {
         
         let communityRepositoryManager = AmityCommunityRepositoryManager(communityId: communityId)
         let viewModel = AmityCommunityProfileScreenViewModel(
             communityId: communityId,
+            postId: postId,
+            fromDeeplinks: fromDeeplinks,
             communityRepositoryManager: communityRepositoryManager
         )
         let vc = AmityCommunityProfilePageViewController()

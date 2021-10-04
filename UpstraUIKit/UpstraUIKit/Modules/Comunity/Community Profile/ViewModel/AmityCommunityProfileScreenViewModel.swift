@@ -66,6 +66,22 @@ extension AmityCommunityProfileScreenViewModel {
             }
         }
     }
+    
+    func shouldShowPendingPostBannerForMember(_ completion: ((Bool) -> Void)?) {
+        guard let community = community, community.isPostReviewEnabled else {
+            completion?(false)
+            return
+        }
+        
+        communityRepositoryManager.getPendingPostsCount(by: .reviewing) { (result) in
+            switch result {
+            case .success(let postCount):
+                completion?(postCount != 0)
+            case .failure(_):
+                completion?(false)
+            }
+        }
+    }
 }
 
 // MARK: - Action
