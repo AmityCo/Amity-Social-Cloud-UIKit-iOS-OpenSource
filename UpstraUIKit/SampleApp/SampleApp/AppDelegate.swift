@@ -21,19 +21,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // https://developer.apple.com/documentation/usernotifications/
         UNUserNotificationCenter.current().delegate = self
         
-        // Setup UpstraUIKit
-        UpstraUIKitManager.setup("API_KEY")
-        UpstraUIKitManager.set(eventHandler: CustomEventHandler())
-        
-        guard let preset = Preset(rawValue: UserDefaults.standard.theme ?? 0) else { return false }
-        UpstraUIKitManager.set(theme: preset.theme)
-        window = UIWindow()
-        let registerVC = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "RegisterViewController")
-        window?.rootViewController = registerVC
-        window?.makeKeyAndVisible()
-        
-        UpstraUIKitManager.feedUISettings.eventHandler = CustomFeedEventHandler()
-        UpstraUIKitManager.feedUISettings.setPostSharingSettings(settings: EkoPostSharingSettings())
+        // Setup AmityUIKit
+        AppManager.shared.setupAmityUIKit()
+
+        if #available(iOS 13.0, *) {
+            // on newer 13.0 version, the window setup finished on `SceneDelegate`
+        } else {
+            window = UIWindow()
+            window?.rootViewController = AppManager.shared.startingPage()
+            window?.makeKeyAndVisible()
+        }
         
         return true
     }
@@ -79,19 +76,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
         // https://developer.apple.com/documentation/usernotifications/registering_your_app_with_apns
         // Forward Tokens to Your Provider Server
-        sendDeviceTokenToServer(token: deviceToken)
+        AppManager.shared.registerDeviceToken(deviceToken)
     }
     
     func application(_ application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: Error) {
         print("Fail didFailToRegisterForRemoteNotificationsWithError: \(error.localizedDescription)")
-    }
-    
-    private func sendDeviceTokenToServer(token: Data) {
-        // Transform deviceToken into a raw string, before sending to EkoChatSDK server.
-        let tokenParts: [String] = token.map { data in String(format: "%02.2hhx", data) }
-        let tokenString: String = tokenParts.joined()
-        
-        UpstraUIKitManager.registerDeviceForPushNotification(tokenString)
     }
 
 }

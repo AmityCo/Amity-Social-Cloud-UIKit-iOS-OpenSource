@@ -14,12 +14,11 @@ protocol EkoCommunityMemberSettingsScreenViewModelDelegate: class {
 
 protocol EkoCommunityMemberSettingsScreenViewModelDataSource {
     var community: EkoCommunityModel { get }
-    var isModerator: Bool { get }
     var shouldShowAddMemberButton: Bool { get }
 }
 
 protocol EkoCommunityMemberSettingsScreenViewModelAction {
-    func getUserRoles()
+    func getUserPermission()
 }
 
 protocol EkoCommunityMemberSettingsScreenViewModelType: EkoCommunityMemberSettingsScreenViewModelAction, EkoCommunityMemberSettingsScreenViewModelDataSource {

@@ -46,7 +46,6 @@ private extension EkoCategoryPreviewCollectionViewCell {
     
     func setupAvatarView() {
         avatarView.placeholder = EkoIconSet.defaultCategory
-        avatarView.backgroundColor = EkoColorSet.secondary.blend(.shade3)
         
         avatarView.actionHandler = { [weak self] in
             self?.avatarTap()

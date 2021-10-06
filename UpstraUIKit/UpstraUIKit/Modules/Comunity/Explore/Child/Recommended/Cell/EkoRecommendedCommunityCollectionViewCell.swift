@@ -68,7 +68,6 @@ private extension EkoRecommendedCommunityCollectionViewCell {
     
     func setupAvatarView() {
         avatarView.placeholder = EkoIconSet.defaultCommunity
-        avatarView.backgroundColor = EkoColorSet.secondary.blend(.shade3)
         avatarView.actionHandler = { [weak self] in
             self?.avatarTap()
         }

@@ -47,7 +47,6 @@ final class EkoMyCommunityCollectionViewCell: UICollectionViewCell {
     func display(with community: EkoCommunityModel) {
         displayNameLabel.text = community.displayName
         avatarView.setImage(withImageId: community.avatarId, placeholder: EkoIconSet.defaultCommunity)
-        avatarView.backgroundColor = EkoColorSet.primary.blend(.shade3)
         badgeImageView.isHidden = !community.isOfficial
         privateBadgeImageView.isHidden = community.isPublic
     }

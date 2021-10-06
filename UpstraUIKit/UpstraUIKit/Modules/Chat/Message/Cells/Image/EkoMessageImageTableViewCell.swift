@@ -33,7 +33,7 @@ class EkoMessageImageTableViewCell: EkoMessageTableViewCell {
     
     override func display(message: EkoMessageModel) {
         if !message.isDeleted {
-            EkoMessageMediaService.shared.download(for: message.object) { [weak self] in
+            UpstraUIKitManagerInternal.shared.messageMediaService.download(for: message.object) { [weak self] in
                 self?.messageImageView.image = EkoIconSet.defaultMessageImage
             } completion: { [weak self] (result) in
                 switch result {

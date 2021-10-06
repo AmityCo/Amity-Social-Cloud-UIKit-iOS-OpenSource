@@ -59,7 +59,7 @@ final class EkoCreateCommunityScreenViewModel: EkoCreateCommunityScreenViewModel
         repository = EkoCommunityRepository(client: UpstraUIKitManagerInternal.shared.client)
     }
     
-    private var isValueChanged: Bool {
+    private var isRequiredFieldExisted: Bool {
         let isRequiredFieldExisted = !displayName.trimmingCharacters(in: .whitespaces).isEmpty && selectedCategoryId != nil
         
         if let community = community.value {
@@ -78,7 +78,7 @@ final class EkoCreateCommunityScreenViewModel: EkoCreateCommunityScreenViewModel
     }
     
     private func validate() {
-        delegate?.screenViewModel(self, state: .validateField(status: isValueChanged))
+        delegate?.screenViewModel(self, state: .validateField(status: isRequiredFieldExisted))
     }
 }
 
@@ -177,31 +177,63 @@ extension EkoCreateCommunityScreenViewModel {
         if imageAvatar != nil {
             uploadAvatar { [weak self] (image) in
                 guard let strongSelf = self else { return }
+                guard let image = image else {
+                    strongSelf.delegate?.screenViewModel(strongSelf, failure: .unknown)
+                    return
+                }
                 builder.setAvatar(image)
                 strongSelf.repository.createCommunity(builder, completion: {(community, error) in
                     guard let strongSelf = self else { return }
-                    
-                    if let error = EkoError(error: error), community == nil {
-                        strongSelf.delegate?.screenViewModel(strongSelf, failure: error)
-                    } else if let community = community {
-                        strongSelf.updateRole(withCommunityId: community.communityId)
-                    }
+                    strongSelf.createResponseHandler(community: community, error: error)
                 })
             }
         } else {
             repository.createCommunity(builder, completion: { [weak self] (community, error) in
                 guard let strongSelf = self else { return }
-                
-                if let error = EkoError(error: error), community == nil {
-                    strongSelf.delegate?.screenViewModel(strongSelf, failure: error)
-                } else if let community = community {
-                    strongSelf.updateRole(withCommunityId: community.communityId)
-                }
+                strongSelf.createResponseHandler(community: community, error: error)
             })
         }
     }
     
-    func dismiss() {
+    private func createResponseHandler(community: EkoCommunity?, error: Error?) {
+        if error != nil {
+            if let error = EkoError(error: error) {
+                delegate?.screenViewModel(self, failure: error)
+            } else {
+                delegate?.screenViewModel(self, failure: .unknown)
+            }
+        } else {
+            guard let community = community else {
+                delegate?.screenViewModel(self, failure: .unknown)
+                return
+            }
+            updateRole(withCommunityId: community.communityId)
+        }
+    }
+    
+    func performDismiss() {
+        var isValueChanged: Bool = false
+        
+        if imageAvatar != nil {
+            isValueChanged = true
+        }
+        
+        if !displayName.trimmingCharacters(in: .whitespaces).isEmpty {
+            isValueChanged = true
+        }
+        
+        if !description.isEmpty {
+            isValueChanged = true
+        }
+        
+        if selectedCategoryId != nil {
+            isValueChanged = true
+        }
+         
+        if !isPublic || !storeUsers.isEmpty {
+            isValueChanged = true
+        }
+        
         delegate?.screenViewModel(self, state: .onDismiss(isChange: isValueChanged))
     }
     
@@ -241,6 +273,10 @@ extension EkoCreateCommunityScreenViewModel {
         if imageAvatar != nil {
             uploadAvatar { [weak self] (image) in
                 guard let strongSelf = self else { return }
+                guard let image = image else {
+                    strongSelf.delegate?.screenViewModel(strongSelf, failure: .unknown)
+                    return
+                }
                 builder.setAvatar(image)
                 strongSelf.repository.updateCommunity(withId: strongSelf.communityId, builder: builder) { (community, error) in
                     if let error = EkoError(error: error) {
@@ -269,16 +305,16 @@ extension EkoCreateCommunityScreenViewModel {
         imageAvatar = image
     }
     
-    private func uploadAvatar(completion: @escaping (EkoImageData) -> Void) {
+    private func uploadAvatar(completion: @escaping (EkoImageData?) -> Void) {
         guard let image = imageAvatar else { return }
-        EkoFileService.shared.uploadImage(image: image, progressHandler: { _ in
+        UpstraUIKitManagerInternal.shared.fileService.uploadImage(image: image, progressHandler: { _ in
             
         }) { (result) in
             switch result {
             case .success(let _imageData):
                 completion(_imageData)
             case .failure:
-                break
+                completion(nil)
             }
         }
     }

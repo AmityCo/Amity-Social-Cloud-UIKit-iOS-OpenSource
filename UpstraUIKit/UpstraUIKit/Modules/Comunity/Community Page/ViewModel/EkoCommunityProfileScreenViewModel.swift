@@ -13,8 +13,8 @@ final class EkoCommunityProfileScreenViewModel: EkoCommunityProfileScreenViewMod
     
     enum CommunityJoinStatus {
         case notJoin
-        case joinNotCreator
-        case joinAndCreator
+        case joinAsMember
+        case joinAsModerator
     }
     
     weak var delegate: EkoCommunityProfileScreenViewModelDelegate?
@@ -27,7 +27,7 @@ final class EkoCommunityProfileScreenViewModel: EkoCommunityProfileScreenViewMod
     // MARK: - Properties
     var communityId: String = ""
     var community: EkoCommunityModel?
-    var isModerator: Bool = false
+    private var hasEditPermission: Bool = false
     
     private var communityJoinStatus: CommunityJoinStatus = .notJoin {
         didSet {
@@ -86,8 +86,11 @@ extension EkoCommunityProfileScreenViewModel {
 // MARK: - Get community info
 extension EkoCommunityProfileScreenViewModel {
     
-    func getUserRole() {
-        isModerator = userRolesController.getUserRoles(withUserId: UpstraUIKitManagerInternal.shared.currentUserId, role: .moderator)
+    func getUserPermission() {
+        UpstraUIKitManagerInternal.shared.client.hasPermission(.editCommunity, forCommunity: communityId) { [weak self] (hasEditPermission) in
+            self?.hasEditPermission = hasEditPermission
+            self?.checkJoiningStatus()
+        }
     }
     
     func getCommunity() {
@@ -95,20 +98,20 @@ extension EkoCommunityProfileScreenViewModel {
             switch result {
             case .success(let community):
                 self?.community = community
-                self?.checkingJoinStatus(community: community)
                 self?.delegate?.screenViewModelDidGetCommunity(with: community)
+                self?.checkJoiningStatus()
             case .failure:
                 break
             }
         }
     }
     
-    private func checkingJoinStatus(community: EkoCommunityModel) {
-        if community.isJoined {
-            if (community.isCreator) || isModerator {
-                communityJoinStatus = .joinAndCreator
+    private func checkJoiningStatus() {
+        if community?.isJoined ?? false {
+            if hasEditPermission || (community?.isCreator ?? false) {
+                communityJoinStatus = .joinAsModerator
             } else {
-                communityJoinStatus = .joinNotCreator
+                communityJoinStatus = .joinAsMember
             }
         } else {
             communityJoinStatus = .notJoin
@@ -120,7 +123,7 @@ extension EkoCommunityProfileScreenViewModel {
 extension EkoCommunityProfileScreenViewModel {
     func joinCommunity() {
         communityJoinController.join { [weak self] (error) in
-            if let error = error {
+            if let _ = error {
                 self?.delegate?.screenViewModelFailure()
             } else {
                 self?.delegate?.screenViewModelDidJoinCommunitySuccess()

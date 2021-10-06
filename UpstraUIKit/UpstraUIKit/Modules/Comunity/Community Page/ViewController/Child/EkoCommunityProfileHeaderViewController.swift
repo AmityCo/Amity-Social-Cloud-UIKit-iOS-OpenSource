@@ -165,9 +165,9 @@ private extension EkoCommunityProfileHeaderViewController {
         case .notJoin:
             EkoHUD.show(.loading)
             screenViewModel.action.joinCommunity()
-        case .joinNotCreator:
+        case .joinAsMember:
             break
-        case .joinAndCreator:
+        case .joinAsModerator:
             screenViewModel.action.route(.editProfile)
         }
     }
@@ -197,7 +197,7 @@ private extension EkoCommunityProfileHeaderViewController {
             actionButton.layer.cornerRadius = 4
             actionButton.tag = 0
             actionButton.isHidden = false
-        case .joinNotCreator:
+        case .joinAsMember:
             chatButton.isHidden = settings.shouldChatButtonHide
             actionButton.setTitle(EkoLocalizedStringSet.communityDetailMessageButton.localizedString, for: .normal)
             actionButton.setImage(EkoIconSet.iconChat, position: .left)
@@ -208,7 +208,7 @@ private extension EkoCommunityProfileHeaderViewController {
             actionButton.layer.cornerRadius = 4
             actionButton.tag = 1
             actionButton.isHidden = true
-        case .joinAndCreator:
+        case .joinAsModerator:
             chatButton.isHidden = settings.shouldChatButtonHide
             actionButton.setTitle(EkoLocalizedStringSet.communityDetailEditProfileButton.localizedString, for: .normal)
             actionButton.setImage(EkoIconSet.iconEdit, position: .left)

@@ -10,8 +10,8 @@ import UIKit
 import EkoChat
 
 final class EkoMessageMediaService {
-    static let shared = EkoMessageMediaService()
-    weak var repository: EkoMessageRepository?
+    
+    var messageRepository: EkoMessageRepository?
     
     func download(for message: EkoMessage, progress: ((() -> Void)?) = nil, completion: @escaping (Result<URL, Error>) -> Void) {
         
@@ -22,7 +22,7 @@ final class EkoMessageMediaService {
                 completion(.success(url))
             } else {
                 progress?()
-                repository?.downloadFile(for: message, completion: { (data, error) in
+                messageRepository?.downloadFile(for: message, completion: { (data, error) in
                     guard error == nil, let data = data else {
                         if let error = error {
                             completion(.failure(error))
@@ -40,7 +40,7 @@ final class EkoMessageMediaService {
                 completion(.success(url))
             } else {
                 progress?()
-                repository?.downloadImage(for: message, size: .medium, completion: { (data, error) in
+                messageRepository?.downloadImage(for: message, size: .medium, completion: { (data, error) in
                     guard error == nil, let data = data else {
                         if let error = error {
                             completion(.failure(error))

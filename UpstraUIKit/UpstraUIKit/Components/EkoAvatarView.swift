@@ -116,7 +116,8 @@ public final class EkoAvatarView: EkoView {
     }
     
     private func updateViews() {
-        backgroundColor = EkoColorSet.primary.blend(.shade3)
+        // We'll hardcode to set background color of avatar
+        backgroundColor = UIColor(hex: "#D9E5FC")
 
         updateAvatarShape()
     }
@@ -160,7 +161,7 @@ public final class EkoAvatarView: EkoView {
         
         // Wrap our request in a work item
         let requestWorkItem = DispatchWorkItem {
-            EkoFileService.shared.loadImage(with: imageId, size: size) { [weak self] result in
+            UpstraUIKitManagerInternal.shared.fileService.loadImage(with: imageId, size: size) { [weak self] result in
                 switch result {
                 case .success(let image):
                     self?.imageView.image = image

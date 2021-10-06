@@ -66,6 +66,7 @@ public class EkoProfileViewController: EkoViewController, EkoProfileDataSource, 
     @objc func handleRefreshControl() {
         (headerViewController() as? EkoRefreshable)?.handleRefreshing()
         (bottomViewController() as? EkoRefreshable)?.handleRefreshing()
+        (self as? EkoRefreshable)?.handleRefreshing()
         
         DispatchQueue.main.asyncAfter(deadline: .now() + 1) { [weak self] in
             self?.refreshControl.endRefreshing()

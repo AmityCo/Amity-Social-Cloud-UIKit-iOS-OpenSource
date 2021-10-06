@@ -22,7 +22,7 @@ public final class EkoCommunityMemberSettingsViewController: EkoPageViewControll
         super.viewDidLoad()
         title = EkoLocalizedStringSet.CommunityMembreSetting.title.localizedString
         screenViewModel.delegate = self
-        screenViewModel.action.getUserRoles()
+        
     }
     
     public static func make(community: EkoCommunityModel) -> EkoCommunityMemberSettingsViewController {
@@ -40,10 +40,15 @@ public final class EkoCommunityMemberSettingsViewController: EkoPageViewControll
         memberVC = EkoCommunityMemberViewController.make(pageTitle: EkoLocalizedStringSet.CommunityMembreSetting.title.localizedString,
                                                          viewType: .member,
                                                          community: screenViewModel.dataSource.community)
-        
+        memberVC?.didGetMemberHandler = { [weak self] in
+            self?.screenViewModel.action.getUserPermission()
+        }
         moderatorVC = EkoCommunityMemberViewController.make(pageTitle: EkoLocalizedStringSet.CommunityMembreSetting.moderatorTitle.localizedString,
                                                             viewType: .moderator,
                                                             community: screenViewModel.dataSource.community)
+        moderatorVC?.didGetMemberHandler = { [weak self] in
+            self?.screenViewModel.action.getUserPermission()
+        }
         return [memberVC!, moderatorVC!]
     }
 

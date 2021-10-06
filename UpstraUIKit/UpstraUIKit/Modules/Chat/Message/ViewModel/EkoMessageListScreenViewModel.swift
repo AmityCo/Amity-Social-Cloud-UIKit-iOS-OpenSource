@@ -76,7 +76,7 @@ final class EkoMessageListScreenViewModel: EkoMessageListScreenViewModelType {
         membershipParticipation = EkoChannelParticipation(client: UpstraUIKitManagerInternal.shared.client, andChannel: channelId)
         channelRepository = EkoChannelRepository(client: UpstraUIKitManagerInternal.shared.client)
         messageRepository = EkoMessageRepository(client: UpstraUIKitManagerInternal.shared.client)
-        EkoMessageMediaService.shared.repository = messageRepository
+//        EkoMessageMediaService.shared.repository = messageRepository
     }
     
     // MARK: - DataSource
@@ -157,8 +157,9 @@ extension EkoMessageListScreenViewModel {
     }
     
     func send(withText text: String?) {
-        guard let text = text else { return }
-        createMessageNotificationToken = messageRepository.createTextMessage(withChannelId: channelId, text: text)
+        let textMessage = text?.trimmingCharacters(in: .whitespacesAndNewlines) ?? ""
+        guard !textMessage.isEmpty else { return }
+        createMessageNotificationToken = messageRepository.createTextMessage(withChannelId: channelId, text: textMessage)
             .observe { [weak self] (_message, error) in
                 self?.text = ""
                 self?.delegate?.screenViewModelEvents(for: .didSendText)
@@ -167,8 +168,10 @@ extension EkoMessageListScreenViewModel {
     }
     
     func editText(with text: String, messageId: String) {
+        let textMessage = text.trimmingCharacters(in: .whitespacesAndNewlines)
+        guard !textMessage.isEmpty else { return }
         editor = EkoMessageEditor(client: UpstraUIKitManagerInternal.shared.client, messageId: messageId)
-        editor?.editText(text, completion: { [weak self] (status, error) in
+        editor?.editText(textMessage, completion: { [weak self] (status, error) in
             if let error = error {
                 return
             }

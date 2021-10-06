@@ -36,7 +36,6 @@ public final class EkoCommunityProfilePageViewController: EkoProfileViewControll
         super.viewWillAppear(animated)
         navigationController?.setBackgroundColor(with: .white)
         screenViewModel.action.getCommunity()
-        screenViewModel.action.getUserRole()
     }
     
     override func headerViewController() -> UIViewController {
@@ -74,6 +73,7 @@ private extension EkoCommunityProfilePageViewController {
     }
     
     func setupPostButton() {
+        postButton.isHidden = true
         postButton.image = EkoIconSet.iconCreatePost
         postButton.add(to: view, position: .bottomRight)
         postButton.actionHandler = { [weak self] button in
@@ -111,8 +111,8 @@ extension EkoCommunityProfilePageViewController: EkoRefreshable {
 // MARK: - Screen ViewModel Delegate
 extension EkoCommunityProfilePageViewController: EkoCommunityProfileScreenViewModelDelegate {
     func screenViewModelDidGetCommunity(with community: EkoCommunityModel) {
+        screenViewModel.action.getUserPermission()
         setupNavigationItem(with: community.isJoined)
-        header.update(with: community)
     }
     
     /// Routing to another scenes
@@ -150,6 +150,9 @@ extension EkoCommunityProfilePageViewController: EkoCommunityProfileScreenViewMo
     
     func screenViewModelDidJoinCommunity(_ status: EkoCommunityProfileScreenViewModel.CommunityJoinStatus) {
         postButton.isHidden = status == .notJoin
+        if let community = screenViewModel.dataSource.community {
+            header.update(with: community)
+        }
     }
     
     func screenViewModelFailure() {

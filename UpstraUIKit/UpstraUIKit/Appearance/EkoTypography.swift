@@ -12,6 +12,7 @@ import UIKit
 // See more:
 // https://developer.apple.com/design/human-interface-guidelines/ios/visual-design/typography/
 // https://uxdesign.cc/a-five-minute-guide-to-better-typography-for-ios-4e3c2715ceb4
+// https://docs.sendbird.com/ios/ui_kit_themes#3_fontset_4_customize_font
 
 public struct EkoTypography {
     let headerLine: UIFont

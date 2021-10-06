@@ -18,7 +18,6 @@ final class EkoCommunityMemberSettingsScreenViewModel: EkoCommunityMemberSetting
     
     // MARK: - Properties
     var community: EkoCommunityModel
-    var isModerator: Bool = false
     var shouldShowAddMemberButton: Bool = false
     
     // MARK: - initial
@@ -36,8 +35,14 @@ extension EkoCommunityMemberSettingsScreenViewModel {
 
 // MARK: - Action
 extension EkoCommunityMemberSettingsScreenViewModel {
-    func getUserRoles() {
-        isModerator = userRolesController.getUserRoles(withUserId: UpstraUIKitManagerInternal.shared.currentUserId, role: .moderator)
-        delegate?.screenViewModelShouldShowAddButtonBarItem(status: community.isCreator || isModerator)
+    func getUserPermission() {
+        UpstraUIKitManagerInternal.shared.client.hasPermission(.editCommunity, forCommunity: community.communityId) { [weak self] (hasEditPermission) in
+            guard let strongSelf = self else { return }
+            if strongSelf.community.isJoined {
+                self?.delegate?.screenViewModelShouldShowAddButtonBarItem(status: hasEditPermission)
+            } else {
+                self?.delegate?.screenViewModelShouldShowAddButtonBarItem(status: false)
+            }
+        }
     }
 }

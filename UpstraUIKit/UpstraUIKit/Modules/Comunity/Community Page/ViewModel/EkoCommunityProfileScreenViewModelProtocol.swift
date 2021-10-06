@@ -33,13 +33,12 @@ protocol EkoCommunityProfileScreenViewModelDataSource {
     var getCommunityJoinStatus: EkoCommunityProfileScreenViewModel.CommunityJoinStatus { get }
     var community: EkoCommunityModel? { get }
     var communityId: String { get }
-    var isModerator: Bool { get }
 }
 
 protocol EkoCommunityProfileScreenViewModelAction {
     
     func getCommunity()
-    func getUserRole()
+    func getUserPermission()
     func joinCommunity()
     func route(_ route: EkoCommunityProfileRoute)
     

@@ -54,6 +54,9 @@ extension EkoCommunitiesScreenViewModel {
         case .searchCommunities:
             filter = .all
             guard let text = text, !text.isEmpty else {
+                communities = []
+                loadingState = .loaded
+                delegate?.screenViewModel(self, didUpdateCommunities: communities)
                 return
             }
         case .myCommunities:

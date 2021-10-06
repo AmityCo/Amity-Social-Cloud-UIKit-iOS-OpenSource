@@ -53,6 +53,10 @@ private extension EkoNewsfeedViewController {
         feedViewController.dataDidUpdateHandler = { [weak self] itemCount in
             self?.createPostButton.isHidden = (itemCount == 0)
         }
+        
+        feedViewController.pullRefreshhHandler = { [weak self] in
+            self?.communityViewModel.action.search(with: "")
+        }
     }
     
     private func setupHeaderView() {

@@ -57,7 +57,7 @@ extension UIImageView {
     // This can be expanded to support error image, placeholder and all
     func setImage(withFileId id: String, placeholder: UIImage?) {
         self.image = placeholder
-        EkoFileService.shared.loadImage(with: id, size: .medium) { [weak self] result in
+        UpstraUIKitManagerInternal.shared.fileService.loadImage(with: id, size: .medium) { [weak self] result in
             switch result {
             case .success(let image):
                 self?.image = image

@@ -338,6 +338,11 @@
 		78D9444325F9402D003C32A5 /* EkoCommunitySettingsItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78D9444225F9402D003C32A5 /* EkoCommunitySettingsItem.swift */; };
 		A052EAD62577A0FF00FF9312 /* Realm.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = A052EAD42577A0FF00FF9312 /* Realm.xcframework */; };
 		A052EAD82577A0FF00FF9312 /* EkoChat.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = A052EAD52577A0FF00FF9312 /* EkoChat.xcframework */; };
+		A0A05EBB26724210000A1BA0 /* EkoComposeBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0A05EBA26724210000A1BA0 /* EkoComposeBar.swift */; };
+		A0A05EC5267242C6000A1BA0 /* EkoMessageListComposeBarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0A05EC3267242C6000A1BA0 /* EkoMessageListComposeBarViewController.swift */; };
+		A0A05EC6267242C6000A1BA0 /* EkoMessageListComposeBarViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = A0A05EC4267242C6000A1BA0 /* EkoMessageListComposeBarViewController.xib */; };
+		A0A05ECD267242CC000A1BA0 /* EkoComposeBarOnlyTextViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0A05ECB267242CC000A1BA0 /* EkoComposeBarOnlyTextViewController.swift */; };
+		A0A05ECE267242CC000A1BA0 /* EkoComposeBarOnlyTextViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = A0A05ECC267242CC000A1BA0 /* EkoComposeBarOnlyTextViewController.xib */; };
 		B704D1432578CB2F0038BA78 /* EkoPulseAnimation.swift in Sources */ = {isa = PBXBuildFile; fileRef = B704D1422578CB2F0038BA78 /* EkoPulseAnimation.swift */; };
 		B704D1492578E23A0038BA78 /* EkoAudioPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = B704D1482578E23A0038BA78 /* EkoAudioPlayer.swift */; };
 		B704D14E2578E2570038BA78 /* EkoAudioRecorder.swift in Sources */ = {isa = PBXBuildFile; fileRef = B704D14D2578E2570038BA78 /* EkoAudioRecorder.swift */; };
@@ -479,8 +484,6 @@
 		B7ED344E2538B900005E33A7 /* EkoLoadingState.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7ED344D2538B900005E33A7 /* EkoLoadingState.swift */; };
 		B7ED34522538BE23005E33A7 /* UILabel+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7ED34512538BE23005E33A7 /* UILabel+Extension.swift */; };
 		B7FC321A254C0C2200FBC10A /* EkoMessageListTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7FC3219254C0C2200FBC10A /* EkoMessageListTableViewController.swift */; };
-		B7FC321D254C0C4F00FBC10A /* EkoMessageListComposeBarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7FC321B254C0C4F00FBC10A /* EkoMessageListComposeBarViewController.swift */; };
-		B7FC321E254C0C4F00FBC10A /* EkoMessageListComposeBarViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = B7FC321C254C0C4F00FBC10A /* EkoMessageListComposeBarViewController.xib */; };
 		D404015525FF88FE00311C83 /* EkoCommunityNotificationSettingsViewModelProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = D404014A25FF88FE00311C83 /* EkoCommunityNotificationSettingsViewModelProtocol.swift */; };
 		D404015925FF88FE00311C83 /* EkoCommunityNotificationSettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D404014F25FF88FE00311C83 /* EkoCommunityNotificationSettingsViewController.swift */; };
 		D404015A25FF88FE00311C83 /* EkoCommunityNotificationSettingsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = D404015025FF88FE00311C83 /* EkoCommunityNotificationSettingsViewController.xib */; };
@@ -826,6 +829,11 @@
 		78D9444225F9402D003C32A5 /* EkoCommunitySettingsItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EkoCommunitySettingsItem.swift; sourceTree = "<group>"; };
 		A052EAD42577A0FF00FF9312 /* Realm.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = Realm.xcframework; path = Shared/Realm.xcframework; sourceTree = "<group>"; };
 		A052EAD52577A0FF00FF9312 /* EkoChat.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = EkoChat.xcframework; path = Shared/EkoChat.xcframework; sourceTree = "<group>"; };
+		A0A05EBA26724210000A1BA0 /* EkoComposeBar.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EkoComposeBar.swift; sourceTree = "<group>"; };
+		A0A05EC3267242C6000A1BA0 /* EkoMessageListComposeBarViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EkoMessageListComposeBarViewController.swift; sourceTree = "<group>"; };
+		A0A05EC4267242C6000A1BA0 /* EkoMessageListComposeBarViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = EkoMessageListComposeBarViewController.xib; sourceTree = "<group>"; };
+		A0A05ECB267242CC000A1BA0 /* EkoComposeBarOnlyTextViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EkoComposeBarOnlyTextViewController.swift; sourceTree = "<group>"; };
+		A0A05ECC267242CC000A1BA0 /* EkoComposeBarOnlyTextViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = EkoComposeBarOnlyTextViewController.xib; sourceTree = "<group>"; };
 		B704D1422578CB2F0038BA78 /* EkoPulseAnimation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EkoPulseAnimation.swift; sourceTree = "<group>"; };
 		B704D1482578E23A0038BA78 /* EkoAudioPlayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EkoAudioPlayer.swift; sourceTree = "<group>"; };
 		B704D14D2578E2570038BA78 /* EkoAudioRecorder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EkoAudioRecorder.swift; sourceTree = "<group>"; };
@@ -967,8 +975,6 @@
 		B7ED344D2538B900005E33A7 /* EkoLoadingState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EkoLoadingState.swift; sourceTree = "<group>"; };
 		B7ED34512538BE23005E33A7 /* UILabel+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UILabel+Extension.swift"; sourceTree = "<group>"; };
 		B7FC3219254C0C2200FBC10A /* EkoMessageListTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EkoMessageListTableViewController.swift; sourceTree = "<group>"; };
-		B7FC321B254C0C4F00FBC10A /* EkoMessageListComposeBarViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EkoMessageListComposeBarViewController.swift; sourceTree = "<group>"; };
-		B7FC321C254C0C4F00FBC10A /* EkoMessageListComposeBarViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = EkoMessageListComposeBarViewController.xib; sourceTree = "<group>"; };
 		D404014A25FF88FE00311C83 /* EkoCommunityNotificationSettingsViewModelProtocol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EkoCommunityNotificationSettingsViewModelProtocol.swift; sourceTree = "<group>"; };
 		D404014F25FF88FE00311C83 /* EkoCommunityNotificationSettingsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EkoCommunityNotificationSettingsViewController.swift; sourceTree = "<group>"; };
 		D404015025FF88FE00311C83 /* EkoCommunityNotificationSettingsViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = EkoCommunityNotificationSettingsViewController.xib; sourceTree = "<group>"; };
@@ -2481,6 +2487,26 @@
 			path = Items;
 			sourceTree = "<group>";
 		};
+		A0A05EC2267242C6000A1BA0 /* Default */ = {
+			isa = PBXGroup;
+			children = (
+				A0A05EC3267242C6000A1BA0 /* EkoMessageListComposeBarViewController.swift */,
+				A0A05EC4267242C6000A1BA0 /* EkoMessageListComposeBarViewController.xib */,
+			);
+			name = Default;
+			path = ComposeBar/Default;
+			sourceTree = "<group>";
+		};
+		A0A05ECA267242CC000A1BA0 /* Only Text */ = {
+			isa = PBXGroup;
+			children = (
+				A0A05ECB267242CC000A1BA0 /* EkoComposeBarOnlyTextViewController.swift */,
+				A0A05ECC267242CC000A1BA0 /* EkoComposeBarOnlyTextViewController.xib */,
+			);
+			name = "Only Text";
+			path = "ComposeBar/Only Text";
+			sourceTree = "<group>";
+		};
 		B704D13E2578CA420038BA78 /* Animation */ = {
 			isa = PBXGroup;
 			children = (
@@ -2800,8 +2826,9 @@
 		B789C0C0254F1D8F00C1DB05 /* ComposeBar */ = {
 			isa = PBXGroup;
 			children = (
-				B7FC321B254C0C4F00FBC10A /* EkoMessageListComposeBarViewController.swift */,
-				B7FC321C254C0C4F00FBC10A /* EkoMessageListComposeBarViewController.xib */,
+				A0A05EBA26724210000A1BA0 /* EkoComposeBar.swift */,
+				A0A05EC2267242C6000A1BA0 /* Default */,
+				A0A05ECA267242CC000A1BA0 /* Only Text */,
 			);
 			name = ComposeBar;
 			sourceTree = "<group>";
@@ -3202,7 +3229,6 @@
 				7219CA642539514800169A35 /* EkoCategoryCommunityListViewEmptyView.xib in Resources */,
 				78C1C51F25F4160A00D6F092 /* EkoSettingsItemRadioButtonContentTableViewCell.xib in Resources */,
 				B735CD67254937A100A98B95 /* EkoKeyboardComposeBarCollectionViewCell.xib in Resources */,
-				B7FC321E254C0C4F00FBC10A /* EkoMessageListComposeBarViewController.xib in Resources */,
 				0D41DA3825D0EF7B0061A46D /* EkoPostGalleryTableViewCell.xib in Resources */,
 				B7A7F7BD252C3F07000F07DF /* EkoCategoryPreviewCollectionViewCell.xib in Resources */,
 				72A3519C24EA820800DA9D46 /* EkoFileTableViewCell.xib in Resources */,
@@ -3251,6 +3277,7 @@
 				0D44379A25CD0A8B00C03616 /* EkoPostHeaderTableViewCell.xib in Resources */,
 				B750672224FC061B00DD17B4 /* EkoSelectMemberListTableViewCell.xib in Resources */,
 				72A3516224EA820800DA9D46 /* EkoRecentChatViewController.xib in Resources */,
+				A0A05ECE267242CC000A1BA0 /* EkoComposeBarOnlyTextViewController.xib in Resources */,
 				B71AD6582537F9E400AFB3D0 /* EkoCommunityMemberSettingsTableViewCell.xib in Resources */,
 				723B6A85251B3A6200EAE8D3 /* EkoCommentView.xib in Resources */,
 				7218BEE025D3E783002F5132 /* EkoDeletedReplyTableViewCell.xib in Resources */,
@@ -3272,6 +3299,7 @@
 				72A3515424EA820800DA9D46 /* EkoMessageTextIncomingTableViewCell.xib in Resources */,
 				72A3512824EA820800DA9D46 /* EkoGalleryCollectionViewCell.xib in Resources */,
 				B7B02630256FB4D900CD9242 /* EkoMessageListRecordingViewController.xib in Resources */,
+				A0A05EC6267242C6000A1BA0 /* EkoMessageListComposeBarViewController.xib in Resources */,
 				78C1C4C425F3EEAE00D6F092 /* EkoSettingsItemSeparatorContentTableViewCell.xib in Resources */,
 				7211553F25505D180081CC23 /* EkoSelectCategoryListViewController.xib in Resources */,
 				B750672A24FC0AB600DD17B4 /* EkoSelectMemberListHeaderView.xib in Resources */,
@@ -3373,6 +3401,7 @@
 				0D95689025D5907100DE98FD /* EkoPostImageComponent.swift in Sources */,
 				72A3514C24EA820800DA9D46 /* EkoMessageListScreenViewModelProtocol.swift in Sources */,
 				782EDA6F25F3E3790056FC48 /* EkoSettingsTableView.swift in Sources */,
+				A0A05EBB26724210000A1BA0 /* EkoComposeBar.swift in Sources */,
 				B797ED1024F6C3C500F3B411 /* NSMutableAttributedString+Extension.swift in Sources */,
 				0D43B17225D82EAF00E6B604 /* EkoReactionController.swift in Sources */,
 				7271C23F252369F800E13F9D /* EkoUserProfilePageViewController.swift in Sources */,
@@ -3428,7 +3457,6 @@
 				B7157AE4257F217900A28771 /* EkoCircularProgressBarView.swift in Sources */,
 				72A3518824EA820800DA9D46 /* DropdownPresentationController.swift in Sources */,
 				72A3517724EA820800DA9D46 /* LivePreviewViewController.swift in Sources */,
-				B7FC321D254C0C4F00FBC10A /* EkoMessageListComposeBarViewController.swift in Sources */,
 				7236EB3D255922D60006F785 /* EkoUserFeedViewController.swift in Sources */,
 				B735CD6B254937C200A98B95 /* EkoKeyboardComposeBarViewController.swift in Sources */,
 				0DB11FDF25A7FB7D006A3C80 /* EkoCommunityJoinController.swift in Sources */,
@@ -3546,6 +3574,7 @@
 				1A95A5242514C0A70018888F /* EkoFile.swift in Sources */,
 				7221E42825499FEA00756E61 /* UICollectionView+Extension.swift in Sources */,
 				72931CBB24F7A27A008D6DBD /* EkoPostToScreenViewModelType.swift in Sources */,
+				A0A05ECD267242CC000A1BA0 /* EkoComposeBarOnlyTextViewController.swift in Sources */,
 				720D599C2525BF77009734EF /* EkoImage.swift in Sources */,
 				72A3510F24EA820800DA9D46 /* EkoBadgeView.swift in Sources */,
 				725849582608D94A006AC65F /* EkoPostNotificationSettingsViewController.swift in Sources */,
@@ -3558,6 +3587,7 @@
 				B7B31C58250F4ACF000AC6E4 /* EkoProfileProgressDelegate.swift in Sources */,
 				0DBC356325A32EE00064D138 /* EkoSearchUserController.swift in Sources */,
 				7250713A251CCAF700200A24 /* EkoCategoryListScreenViewModelType.swift in Sources */,
+				A0A05EC5267242C6000A1BA0 /* EkoMessageListComposeBarViewController.swift in Sources */,
 				0DD94A6825A783340066FA0B /* EkoCommunityProfileScreenViewModelProtocol.swift in Sources */,
 				0D12BD3325D4307800D3E4BC /* EkoPostFooterProtocol.swift in Sources */,
 				72D58B0525D55195000F3BB2 /* EkoCommentChildrenController.swift in Sources */,
@@ -3904,7 +3934,7 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.12.0;
+				MARKETING_VERSION = 1.12.5;
 				PRODUCT_BUNDLE_IDENTIFIER = com.upstra.upstrauikit;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
@@ -3938,7 +3968,7 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.12.0;
+				MARKETING_VERSION = 1.12.5;
 				PRODUCT_BUNDLE_IDENTIFIER = com.upstra.upstrauikit;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;

@@ -9,6 +9,7 @@
 import UIKit
 
 // Note
+// See more: https://docs.sendbird.com/ios/ui_kit_common_components#3_stringset
 /// The `EkoLocalizedStringSet` contains the common strings that are used to compose the screen. The following table shows all the elements of the `EkoLocalizedStringSet`
 /// # Note:
 /// You should modify the stringSet values in advance if you want to make changes to the screen

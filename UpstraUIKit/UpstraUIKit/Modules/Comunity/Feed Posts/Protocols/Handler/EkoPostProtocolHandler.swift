@@ -23,7 +23,7 @@ final class EkoPostProtocolHandler {
         switch file.state {
         case .downloadable(let fileData):
             EkoHUD.show(.loading)
-            EkoFileService.shared.loadFile(with: fileData.fileId) { result in
+            UpstraUIKitManagerInternal.shared.fileService.loadFile(with: fileData.fileId) { result in
                 switch result {
                 case .success(let data):
                     EkoHUD.hide {

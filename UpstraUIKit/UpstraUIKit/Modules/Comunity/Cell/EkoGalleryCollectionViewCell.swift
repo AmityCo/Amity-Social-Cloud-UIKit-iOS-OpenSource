@@ -89,8 +89,15 @@ public class EkoGalleryCollectionViewCell: UICollectionViewCell {
         switch selectedImage.state {
         case .image(let image):
             imageView.image = image
-        case .downloadable(let fileId, let placeholder):
-            imageView.setImage(withFileId: fileId, placeholder: placeholder)
+        case .downloadable(let imageURL, _):
+            UpstraUIKitManagerInternal.shared.fileService.loadImage(with: imageURL, size: .medium) { [weak self] result in
+                switch result {
+                case .success(let image):
+                    self?.imageView.image = image
+                case .failure(let error):
+                    Log.add("Error while downloading image with file id: \(imageURL) error: \(error)")
+                }
+            }
         case .localAsset, .uploaded, .none:
             selectedImage.loadImage(to: imageView, preferredSize: frame.size)
         case .uploading, .error:

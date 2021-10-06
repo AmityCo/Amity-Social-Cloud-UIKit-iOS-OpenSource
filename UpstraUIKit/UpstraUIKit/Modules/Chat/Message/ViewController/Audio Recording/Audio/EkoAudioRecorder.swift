@@ -118,7 +118,7 @@ private extension EkoAudioRecorder {
                 recorder.record()
                 
                 timer = Timer.scheduledTimer(withTimeInterval: 1, repeats: true, block: { [weak self] (timer) in
-                    self?.recorder.updateMeters()
+                    self?.recorder?.updateMeters()
                     self?.duration += timer.timeInterval
                     self?.monitoring()
                 })

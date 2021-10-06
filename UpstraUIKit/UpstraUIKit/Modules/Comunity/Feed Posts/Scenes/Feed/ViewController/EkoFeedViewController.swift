@@ -36,7 +36,7 @@ public final class EkoFeedViewController: EkoViewController, EkoRefreshable {
     var emptyView: UIView?
     var dataDidUpdateHandler: ((Int) -> Void)?
     var emptyViewHandler: ((UIView?) -> Void)?
-    
+    var pullRefreshhHandler: (() -> Void)?
     private var cellHeights = [IndexPath: CGFloat]()
     private var isVisible: Bool = false
     // It will be marked as dirty when data source changed on view disappear.
@@ -141,6 +141,7 @@ public final class EkoFeedViewController: EkoViewController, EkoRefreshable {
     }
     
     @objc private func handleRefreshingControl() {
+        pullRefreshhHandler?()
         screenViewModel.action.reload()
     }
 }

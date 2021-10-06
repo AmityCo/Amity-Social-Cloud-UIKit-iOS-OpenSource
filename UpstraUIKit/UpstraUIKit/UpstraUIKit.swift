@@ -20,8 +20,8 @@ public final class UpstraUIKitManager {
         UpstraUIKitManagerInternal.shared.setup(apiKey)
     }
     
-    public static func registerDevice(withUserId userId: String, displayName: String?, authToken: String? = nil) {
-        UpstraUIKitManagerInternal.shared.registerDevice(userId, displayName: displayName, authToken: authToken)
+    public static func registerDevice(withUserId userId: String, displayName: String?, authToken: String? = nil, completion: EkoRequestCompletion? = nil) {
+        UpstraUIKitManagerInternal.shared.registerDevice(userId, displayName: displayName, authToken: authToken, completion: completion)
     }
     public static func unregisterDevice() {
         UpstraUIKitManagerInternal.shared.unregisterDevice()
@@ -33,6 +33,10 @@ public final class UpstraUIKitManager {
     
     public static func unregisterDevicePushNotification() {
         UpstraUIKitManagerInternal.shared.unregisterDevicePushNotification()
+    }
+    
+    public static func setEnvironment(_ env: [String: Any]) {
+        UpstraUIKitManagerInternal.shared.env = env
     }
     
     // MARK: - Variable
@@ -72,6 +76,9 @@ final class UpstraUIKitManagerInternal: NSObject {
     public static let shared = UpstraUIKitManagerInternal()
     private var _client: EkoClient?
     
+    private(set) var fileService = EkoFileService()
+    private(set) var messageMediaService = EkoMessageMediaService()
+    
     var currentUserId: String { return client.currentUserId ?? "" }
     
     var client: EkoClient {
@@ -81,36 +88,46 @@ final class UpstraUIKitManagerInternal: NSObject {
         return client
     }
     
+    var env: [String: Any] = [:]
+    
     // MARK: - Initializer
     
     private override init() { }
     
     // MARK: - Setup functions
-
+    
     func setup(_ apiKey: String) {
         self.apiKey = apiKey
-    }
-
-    func registerDevice(_ userId: String, displayName: String?, authToken: String?) {
         
-        // clear current client before setting up a new one
-        unregisterDevice()
-        self._client = nil
-        
-        guard let _client = EkoClient(apiKey: apiKey) else {
+        guard let client = EkoClient(apiKey: apiKey) else {
             assertionFailure("Something went wrong. API key is invalid.")
             return
         }
-        
-        _client.clientErrorDelegate = self
-        _client.registerDevice(withUserId: userId, displayName: displayName, authToken: authToken)
-        _client.unregisterDevicePushNotification(forUserId: userId, completion: nil)
-        self._client = _client
+        _client = client
+        _client?.clientErrorDelegate = self
+    }
+
+    func registerDevice(_ userId: String,
+                        displayName: String?,
+                        authToken: String?,
+                        completion: EkoRequestCompletion?) {
+            
+        // clear current client before setting up a new one
+        unregisterDevice()
+            
+        client.registerDevice(withUserId: userId, displayName: displayName, authToken: authToken, completion: completion)
+        didUpdateClient()
     }
     
     func unregisterDevice() {
         EkoFileCache.shared.clearCache()
         self._client?.unregisterDevice()
+    }
+    
+    func didUpdateClient() {
+        // Update file repository to use in file service.
+        fileService.fileRepository = EkoFileRepository(client: client)
+        messageMediaService.messageRepository = EkoMessageRepository(client: client)
     }
     
     func registerDeviceForPushNotification(_ deviceToken: String, completion: EkoRequestCompletion? = nil) {

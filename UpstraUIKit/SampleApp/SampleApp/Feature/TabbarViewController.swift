@@ -10,10 +10,15 @@ import UpstraUIKit
 import UIKit
 
 class TabbarViewController: UITabBarController {
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        setupViewControllers()
+        registerForPushNotifications()
+    }
+    
+    private func setupViewControllers() {
         let feature = UINavigationController(rootViewController: UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "FeatureViewController"))
         feature.tabBarItem.title = "Feature"
         
@@ -22,12 +27,10 @@ class TabbarViewController: UITabBarController {
         
         viewControllers = [ feature,
                             setting,
-                           /* UINavigationController(rootViewController: EkoCommunityHomePageViewController.make()) */]
-        
-        registerForPushNotifications()
+                           /* UINavigationController(rootViewController: AmityCommunityHomePageViewController.make()) */]
     }
     
-    func registerForPushNotifications() {
+    private func registerForPushNotifications() {
         UNUserNotificationCenter.current()
             .requestAuthorization(options: [.alert, .sound, .badge]) { granted, _ in
                 guard granted else { return }
@@ -36,5 +39,4 @@ class TabbarViewController: UITabBarController {
                 }
             }
     }
-    
 }

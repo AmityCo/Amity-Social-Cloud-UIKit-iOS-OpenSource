@@ -26,7 +26,7 @@ final class EkoMessageListComposeBarViewController: UIViewController {
     // MARK: - View lifecycle
     private init(viewModel: EkoMessageListScreenViewModelType) {
         screenViewModel = viewModel
-        super.init(nibName: EkoMessageListComposeBarViewController.identifier, bundle: UpstraUIKitManager.bundle)
+        super.init(nibName: "EkoMessageListComposeBarViewController", bundle: UpstraUIKitManager.bundle)
     }
     
     required init?(coder: NSCoder) {
@@ -46,6 +46,7 @@ final class EkoMessageListComposeBarViewController: UIViewController {
 
 // MARK: - Action
 private extension EkoMessageListComposeBarViewController {
+
     @IBAction func sendMessageTap() {
         screenViewModel.action.send(withText: textComposeBarView.text)
     }
@@ -68,6 +69,7 @@ private extension EkoMessageListComposeBarViewController {
 
 // MARK: - Setup View
 private extension EkoMessageListComposeBarViewController {
+
     func setupView() {
         setupTextComposeBarView()
         setupSendMessageButton()
@@ -140,8 +142,8 @@ private extension EkoMessageListComposeBarViewController {
     }
 }
 
-// MARK: - Update views
-extension EkoMessageListComposeBarViewController {
+extension EkoMessageListComposeBarViewController: EkoComposeBar {
+    
     func updateViewDidTextChanged(_ text: String) {
         sendMessageButton.isEnabled = !text.isEmpty
         showKeyboardComposeBarButton.isHidden = !text.isEmpty
@@ -170,10 +172,37 @@ extension EkoMessageListComposeBarViewController {
             }
         }
     }
-}
-
-
-extension EkoMessageListComposeBarViewController {
+    
+    func clearText() {
+        textComposeBarView.clearText()
+    }
+    
+    var deletingTarget: UIView? {
+        get {
+            recordButton.deletingTarget
+        }
+        set {
+            recordButton.deletingTarget = newValue
+        }
+    }
+    
+    var isTimeout: Bool {
+        get {
+            recordButton.isTimeout
+        }
+        set {
+            recordButton.isTimeout = newValue
+        }
+    }
+    
+    var selectedMenuHandler: ((EkoKeyboardComposeBarModel.MenuType) -> Void)? {
+        get {
+            composeBarView.selectedMenuHandler
+        }
+        set {
+            composeBarView.selectedMenuHandler = newValue
+        }
+    }
     
     func rotateMoreButton(canRotate rotate: Bool) {
         if rotate {
@@ -209,9 +238,6 @@ extension EkoMessageListComposeBarViewController {
             animation()
         })
     }
-}
-
-extension EkoMessageListComposeBarViewController: UIPopoverPresentationControllerDelegate {
     
     func showPopoverMessage() {
         let vc = EkoPopoverMessageViewController.make()
@@ -225,6 +251,10 @@ extension EkoMessageListComposeBarViewController: UIPopoverPresentationControlle
         popover?.sourceRect = recordButton.bounds
         present(vc, animated: true, completion: nil)
     }
+    
+}
+
+extension EkoMessageListComposeBarViewController: UIPopoverPresentationControllerDelegate {
     
     func adaptivePresentationStyle(for controller: UIPresentationController) -> UIModalPresentationStyle {
         return .none

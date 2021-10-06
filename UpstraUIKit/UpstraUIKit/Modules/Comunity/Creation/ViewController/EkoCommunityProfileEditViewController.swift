@@ -112,7 +112,7 @@ public final class EkoCommunityProfileEditViewController: EkoViewController {
     }
     
     override func didTapLeftBarButton() {
-        screenViewModel.action.dismiss()
+        screenViewModel.action.performDismiss()
     }
 
     private func setupView() {
@@ -375,6 +375,7 @@ private extension EkoCommunityProfileEditViewController {
     }
     
     @IBAction func chooseCategoryTap() {
+        view.endEditing(true)
         let vc = EkoSelectCategoryListViewController.make(referenceCategoryId: screenViewModel.dataSource.selectedCategoryId)
         vc.completionHandler = { [weak self] in
             self?.screenViewModel.updateSelectedCategory(categoryId: $0?.categoryId)
@@ -390,6 +391,7 @@ private extension EkoCommunityProfileEditViewController {
     }
     
     @IBAction func chooseCommunityTypesTap(_ sender: UIButton) {
+        view.endEditing(true)
         screenViewModel.action.selectCommunityType(sender.tag)
     }
     
@@ -409,7 +411,8 @@ private extension EkoCommunityProfileEditViewController {
         screenViewModel.action.removeUser(at: indexPath)
     }
     
-    @IBAction func createCommunityTap() {
+    @IBAction func createCommunityTap(_ sender: UIButton) {
+        sender.isEnabled = false
         EkoHUD.show(.loading)
         screenViewModel.action.create()
     }
@@ -466,6 +469,7 @@ extension EkoCommunityProfileEditViewController: EkoCreateCommunityScreenViewMod
     }
     
     func screenViewModel(_ viewModel: EkoCreateCommunityScreenViewModel, failure error: EkoError) {
+        createCommunityButton.isEnabled = true
         switch error {
         case .noPermission:
             let alert = UIAlertController(title: EkoLocalizedStringSet.Community.alertUnableToPerformActionTitle.localizedString, message: EkoLocalizedStringSet.Community.alertUnableToPerformActionDesc.localizedString, preferredStyle: .alert)

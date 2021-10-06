@@ -28,6 +28,7 @@ class EkoCommunityMemberViewController: EkoViewController {
     private var pageTitle: String!
     private var screenViewModel: EkoCommunityMemberScreenViewModelType!
     private var viewType: EkoCommunityMemberViewType = .member
+    var didGetMemberHandler: (() -> Void)?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -121,6 +122,7 @@ extension EkoCommunityMemberViewController: EkoCommunityMemberScreenViewModelDel
     
     func screenViewModelDidGetMember() {
         tableView.reloadData()
+        didGetMemberHandler?()
     }
     
     func screenViewModel(_ viewModel: EkoCommunityMemberScreenViewModel, loadingState state: EkoLoadingState) {

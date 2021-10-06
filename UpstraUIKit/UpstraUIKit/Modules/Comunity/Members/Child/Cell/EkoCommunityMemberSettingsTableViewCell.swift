@@ -59,7 +59,6 @@ private extension EkoCommunityMemberSettingsTableViewCell {
     }
     
     func setupAvatarView() {
-        avatarView.backgroundColor = EkoColorSet.secondary.blend(.shade4)
         avatarView.placeholder = EkoIconSet.defaultAvatar
         avatarView.actionHandler = { [weak self] in
             self?.avatarTap()

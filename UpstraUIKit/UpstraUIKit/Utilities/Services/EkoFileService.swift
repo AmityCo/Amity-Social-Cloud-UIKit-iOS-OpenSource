@@ -10,13 +10,15 @@ import EkoChat
 
 class EkoFileService {
     
-    static let shared = EkoFileService()
-    
-    private let fileRepository = EkoFileRepository(client: UpstraUIKitManagerInternal.shared.client)
-    private init() { }
+    var fileRepository: EkoFileRepository?
     private let cache = EkoImageCache()
     
     func uploadImage(image: UIImage, progressHandler: @escaping (Double) -> Void, completion: @escaping (Result<EkoImageData, Error>) -> Void) {
+        
+        guard let fileRepository = fileRepository else {
+            completion(.failure(EkoError.fileServiceIsNotReady))
+            return
+        }
         
         fileRepository.uploadImage(image, progress: { progress in
             progressHandler(progress)
@@ -31,6 +33,12 @@ class EkoFileService {
     }
     
     func uploadFile(file: UploadableFile, progressHandler: @escaping (Double) -> Void, completion: @escaping (Result<EkoFileData, Error>) -> Void) {
+        
+        guard let fileRepository = fileRepository else {
+            completion(.failure(EkoError.fileServiceIsNotReady))
+            return
+        }
+        
         fileRepository.uploadFile(file, progress: { fileUploadProgress in
             progressHandler(fileUploadProgress)
         }) { fileData, error in
@@ -43,6 +51,11 @@ class EkoFileService {
     }
     
     func loadImage(with imageId: String, size: EkoMediaSize, completion: ((Result<UIImage, Error>) -> Void)?) {
+        
+        guard let fileRepository = fileRepository else {
+            completion?(.failure(EkoError.fileServiceIsNotReady))
+            return
+        }
         
         guard !imageId.isEmpty else {
             completion?(.failure(EkoError.unknown))
@@ -68,6 +81,11 @@ class EkoFileService {
     }
     
     func loadFile(with fileId: String, completion: ((Result<Data, Error>) -> Void)?) {
+        guard let fileRepository = fileRepository else {
+            completion?(.failure(EkoError.fileServiceIsNotReady))
+            return
+        }
+        
         fileRepository.downloadFile(fileId) { (data, error) in
             if let data = data {
                 completion?(.success(data))

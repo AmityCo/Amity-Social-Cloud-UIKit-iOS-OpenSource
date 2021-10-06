@@ -58,7 +58,7 @@ protocol EkoCreateCommunityScreenViewModelAction {
     func removeUser(at indexPath: IndexPath)
     func updateSelectedCategory(categoryId: String?)
     func create()
-    func dismiss()
+    func performDismiss()
     func getInfo(communityId: String)
     func update()
     

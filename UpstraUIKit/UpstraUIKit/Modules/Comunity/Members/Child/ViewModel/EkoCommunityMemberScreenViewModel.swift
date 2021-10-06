@@ -178,13 +178,20 @@ extension EkoCommunityMemberScreenViewModel {
 extension EkoCommunityMemberScreenViewModel {
     func removeUser(at indexPath: IndexPath) {
         // remove user role and remove user from community
-        removeRole(at: indexPath)
-        removeMemberController.remove(users: members, at: indexPath) { [weak self] (error) in
+        let userId = member(at: indexPath).userId
+        roleController.remove(role: .moderator, userIds: [userId]) { [weak self] error in
             guard let strongSelf = self else { return }
             if let error = error {
                 strongSelf.delegate?.screenViewModel(strongSelf, failure: error)
             } else {
-                strongSelf.delegate?.screenViewModelDidRemoveRoleSuccess()
+                strongSelf.removeMemberController.remove(users: strongSelf.members, at: indexPath) { [weak self] (error) in
+                    guard let strongSelf = self else { return }
+                    if let error = error {
+                        strongSelf.delegate?.screenViewModel(strongSelf, failure: error)
+                    } else {
+                        strongSelf.delegate?.screenViewModelDidRemoveRoleSuccess()
+                    }
+                }
             }
         }
     }

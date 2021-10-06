@@ -16,13 +16,14 @@ class RegisterViewController: UIViewController {
     @IBOutlet private var versionLabel: UILabel!
     @IBOutlet private var textField: UITextField!
     @IBOutlet private var tableView: UITableView!
-    private let IDENTIFIER_KEY = "userIDs"
+    
+    private let cellIdentifier = "cell"
     private let defaultUser = "victimIOS"
     private var users: [String] {
         get {
-            return userDefault.value(forKey: IDENTIFIER_KEY) as? [String] ?? []
+            return AppManager.shared.getUsers()
         } set {
-            userDefault.set(newValue, forKey: IDENTIFIER_KEY)
+            AppManager.shared.updateUsers(withUserIds: newValue)
             tableView.reloadData()
         }
     }
@@ -43,7 +44,7 @@ class RegisterViewController: UIViewController {
         versionLabel.text = "\(version) build \(build)"
         
         tableView.keyboardDismissMode = .onDrag
-        tableView.register(UITableViewCell.self, forCellReuseIdentifier: IDENTIFIER_KEY)
+        tableView.register(UITableViewCell.self, forCellReuseIdentifier: cellIdentifier)
         tableView.delegate = self
         tableView.dataSource = self
     }
@@ -67,9 +68,7 @@ class RegisterViewController: UIViewController {
     
     private func register(index: Int) {
         let userId = users[index]
-        UpstraUIKitManager.registerDevice(withUserId: userId, displayName: userId.uppercased())
-        UIApplication.shared.windows.first?.rootViewController = TabbarViewController()
-        UIApplication.shared.windows.first?.makeKeyAndVisible()
+        AppManager.shared.register(withUserId: userId)
     }
     
 }
@@ -103,7 +102,7 @@ extension RegisterViewController: UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: IDENTIFIER_KEY, for: indexPath)
+        let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier, for: indexPath)
         cell.textLabel?.text = users[indexPath.row]
         cell.accessoryType = .disclosureIndicator
         return cell

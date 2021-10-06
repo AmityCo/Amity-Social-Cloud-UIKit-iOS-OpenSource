@@ -67,8 +67,12 @@ class EkoFileTableView: UITableView {
     }
     
     func configure(files: [EkoFile]) {
-        self.files = files
-        reloadData()
+        if isEditingMode {
+            handleFileChanges(newFiles: files)
+        } else {
+            self.files = files
+            reloadData()
+        }
     }
     
     func updateViewState(for fileId: String, state: EkoFileTableViewCell.ViewState) {
@@ -165,9 +169,35 @@ extension EkoFileTableView: EkoFileTableViewCellDelegate {
     
     func didTapClose(_ cell: EkoFileTableViewCell) {
         guard let indexPath = indexPath(for: cell) else { return }
+        
+        // Remove the row instead of reloading the data
+        files.remove(at: indexPath.row)
+        deleteRows(at: [indexPath], with: .none)
+        
         actionDelegate?.fileTableViewDidDeleteData(self, at: indexPath.row)
         actionDelegate?.fileTableViewDidUpdateData(self)
         reloadData()
     }
     
+}
+
+private extension EkoFileTableView {
+    func handleFileChanges(newFiles: [EkoFile]) {
+        // newFiles array contains currentFiles plus new attachments
+        // Append only non existing files to the files array
+        let currentFilesId = files.map { $0.id }
+        let newFilesId = newFiles.map { $0.id }
+        
+        // Create a set to find the difference between current files and new files
+        let currentFilesSet = Set(currentFilesId)
+        let newFilesSet = Set(newFilesId)
+        let difference = Array(newFilesSet.symmetricDifference(currentFilesSet))
+        
+        for item in newFiles {
+            if difference.contains(item.id) {
+                files.append(item)
+                insertRows(at: [IndexPath(row: files.count - 1, section: 0)], with: .none)
+            }
+        }
+    }
 }

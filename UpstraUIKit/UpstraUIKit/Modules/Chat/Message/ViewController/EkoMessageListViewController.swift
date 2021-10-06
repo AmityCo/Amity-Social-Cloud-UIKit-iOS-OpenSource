@@ -9,14 +9,36 @@
 import UIKit
 import EkoChat
 
-public protocol EkoMessageListDataSource {
+public protocol EkoMessageListDataSource: AnyObject {
     func cellForMessageTypes() -> [EkoMessageTypes: EkoMessageCellProtocol.Type]
 }
 
-/// Eko Message List
+public extension EkoMessageListViewController {
+    
+    /// The settings of `EkoMessageListViewController`, you can specify this in `.make(...).
+    struct Settings {
+        /// Set compose bar style. The default value is `ComposeBarStyle.default`.
+        public var composeBarStyle = ComposeBarStyle.default
+        
+        public init() {
+            // Intentionally left empty
+        }
+        
+    }
+    
+    /// This enum represent compose bar style.
+    enum ComposeBarStyle {
+        /// The default compose bar that support text / media / audio record input.
+        case `default`
+        /// The compose bar that support only text input.
+        case textOnly
+    }
+    
+}
+
 public final class EkoMessageListViewController: EkoViewController {
     
-    public var dataSource: EkoMessageListDataSource?
+    public weak var dataSource: EkoMessageListDataSource?
     
     // MARK: - IBOutlet Properties
     @IBOutlet private var messageContainerView: UIView!
@@ -29,11 +51,13 @@ public final class EkoMessageListViewController: EkoViewController {
     // MARK: - Container View
     private var navigationHeaderViewController: EkoMessageListHeaderView!
     private var messageViewController: EkoMessageListTableViewController!
-    private var composeBarViewController: EkoMessageListComposeBarViewController!
+    private var composeBar: EkoComposeBar!
 
     private var audioRecordingViewController = EkoMessageListRecordingViewController.make()
     
     private let circular = EkoCircularTransition()
+    
+    private var settings = Settings()
     
     // MARK: - View lifecyle
     
@@ -66,10 +90,21 @@ public final class EkoMessageListViewController: EkoViewController {
         EkoAudioPlayer.shared.stop()
     }
     
-    public static func make(channelId: String) -> EkoMessageListViewController {
+    /// Create `EkoMessageListViewController` instance.
+    /// - Parameters:
+    ///   - channelId: The channel id.
+    ///   - settings: Specify the custom settings, or leave to use the default settings.
+    /// - Returns: An instance of `EkoMessageListViewController`.
+    public static func make(
+        channelId: String,
+        settings: EkoMessageListViewController.Settings = .init()
+    ) -> EkoMessageListViewController {
+        
         let viewModel = EkoMessageListScreenViewModel(channelId: channelId)
         let vc = EkoMessageListViewController(viewModel: viewModel)
+        vc.settings = settings
         return vc
+        
     }
     
     private func shouldCellOverride() {
@@ -138,10 +173,23 @@ private extension EkoMessageListViewController {
     }
     
     func setupComposeBarContainer() {
-        composeBarViewController = EkoMessageListComposeBarViewController.make(viewModel: screenViewModel)
+        
+        // Switch compose bar view controller based on styling.
+        let composeBarViewController: UIViewController & EkoComposeBar
+        switch settings.composeBarStyle {
+        case .default:
+            composeBarViewController = EkoMessageListComposeBarViewController.make(viewModel: screenViewModel)
+        case .textOnly:
+            composeBarViewController = EkoComposeBarOnlyTextViewController.make(viewModel: screenViewModel)
+        }
+        
+        // Manage view controller
         addContainerView(composeBarViewController, to: composeBarContainerView)
         
-        composeBarViewController.composeBarView.selectedMenuHandler = { [weak self] menu in
+        // Keep reference to the EkoComposeBar
+        composeBar = composeBarViewController
+        
+        composeBar.selectedMenuHandler = { [weak self] menu in
             self?.view.endEditing(true)
             switch menu {
             case .camera:
@@ -154,10 +202,13 @@ private extension EkoMessageListViewController {
                 self?.locationTap()
             }
         }
+        
     }
     
     func setupAudioRecordingView() {
+        
         let screenSize = UIScreen.main.bounds
+        
         circular.duration = 0.3
         circular.startingPoint = CGPoint(x: screenSize.width / 2, y: screenSize.height)
         circular.circleColor = UIColor.black.withAlphaComponent(0.70)
@@ -175,12 +226,14 @@ private extension EkoMessageListViewController {
                 Log.add("notFinish")
             case .timeTooShort:
                 Log.add("timeTooShort")
-                self?.composeBarViewController.showPopoverMessage()
+                self?.composeBar.showPopoverMessage()
             }
         }
         
-        composeBarViewController.recordButton.deletingTarget = audioRecordingViewController.deleteButton
+        composeBar.deletingTarget = audioRecordingViewController.deleteButton
+        
     }
+    
 }
 
 // MARK: - Binding ViewModel
@@ -224,7 +277,7 @@ extension EkoMessageListViewController: EkoMessageListScreenViewModelDelegate {
     func screenViewModelAudioRecordingEvents(for events: EkoMessageListScreenViewModel.AudioRecordingEvents) {
         switch events {
         case .show:
-            composeBarViewController.recordButton.isTimeout = false
+            composeBar.isTimeout = false
             guard let window = UIApplication.shared.keyWindow else { return }
             circular.show(for: window)
         case .hide:
@@ -243,7 +296,7 @@ extension EkoMessageListViewController: EkoMessageListScreenViewModelDelegate {
         case .timeoutRecord:
             circular.hide()
             screenViewModel.action.sendAudio()
-            composeBarViewController.recordButton.isTimeout = true
+            composeBar.isTimeout = true
         }
     }
     
@@ -263,15 +316,15 @@ extension EkoMessageListViewController: EkoMessageListScreenViewModelDelegate {
     }
     
     func screenViewModelDidTextChange(text: String) {
-        composeBarViewController.updateViewDidTextChanged(text)
+        composeBar.updateViewDidTextChanged(text)
     }
     
     func screenViewModelKeyboardInputEvents(for events: EkoMessageListScreenViewModel.KeyboardInputEvents) {
         switch events {
         case .default:
-            composeBarViewController.rotateMoreButton(canRotate: false)
+            composeBar.rotateMoreButton(canRotate: false)
         case .composeBarMenu:
-            composeBarViewController.rotateMoreButton(canRotate: true)
+            composeBar.rotateMoreButton(canRotate: true)
         default:
             break
         }
@@ -291,7 +344,7 @@ extension EkoMessageListViewController: EkoMessageListScreenViewModelDelegate {
         case .updateMessages:
             messageViewController.tableView.reloadData()
         case .didSendText:
-            composeBarViewController.textComposeBarView.clearText()
+            composeBar.clearText()
         case .didEditText:
             break
         case .didDelete(let indexPath):
@@ -361,9 +414,9 @@ extension EkoMessageListViewController: EkoMessageListScreenViewModelDelegate {
     func screenViewModelToggleDefaultKeyboardAndAudioKeyboard(for events: EkoMessageListScreenViewModel.KeyboardInputEvents) {
         switch events {
         case .default:
-            composeBarViewController.showRecordButton(show: false)
+            composeBar.showRecordButton(show: false)
         case .audio:
-            composeBarViewController.showRecordButton(show: true)
+            composeBar.showRecordButton(show: true)
             view.endEditing(true)
             view.endEditing(true)
         default:

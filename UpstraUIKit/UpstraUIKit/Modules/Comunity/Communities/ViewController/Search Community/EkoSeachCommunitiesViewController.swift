@@ -45,15 +45,32 @@ final class EkoSearchCommunityViewController: EkoSearchViewController {
         tableView.delegate = self
         tableView.dataSource = self
         tableView.separatorInset.left = view.frame.width
-        
         if searchType == .inTableView {
+            // Title
             title = EkoLocalizedStringSet.myCommunityTitle.localizedString
-            let rightItem = UIBarButtonItem(image: EkoIconSet.iconAdd, style: .plain, target: self, action: #selector(createCommunityTap))
-            rightItem.tintColor = EkoColorSet.base
-            navigationItem.rightBarButtonItem = rightItem
+            // Create Community Button
+            if communityCreationButtonVisible() {
+                let rightItem = UIBarButtonItem(image: EkoIconSet.iconAdd, style: .plain, target: self, action: #selector(createCommunityTap))
+                rightItem.tintColor = EkoColorSet.base
+                navigationItem.rightBarButtonItem = rightItem
+            } else {
+                navigationItem.rightBarButtonItem = nil
+            }
+            // Reset Appearance
             navigationController?.reset()
         }
     }
+    
+    private func communityCreationButtonVisible() -> Bool {
+        // The default visibility of this button.
+        var visible = true
+        // If someone override this env, we then force visibility to be that value.
+        if let overrideVisible = UpstraUIKitManagerInternal.shared.env["amity_uikit_social_community_creation_button_visible"] as? Bool {
+            visible = overrideVisible
+        }
+        return visible
+    }
+    
 }
 
 // MARK: - Action

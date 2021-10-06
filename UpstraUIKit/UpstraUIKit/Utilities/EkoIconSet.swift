@@ -9,6 +9,7 @@
 import UIKit
 
 // Note
+// See more: https://docs.sendbird.com/ios/ui_kit_common_components#3_iconset
 /// The `EkoIconSet` contains the icons that are used to compose the screen. The following table shows all the elements of the `EkoIconSet`
 /// # Note:
 /// You should modify the iconSet values in advance if you want to use different icons.

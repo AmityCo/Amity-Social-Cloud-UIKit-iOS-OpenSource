@@ -316,7 +316,7 @@ public class EkoPostTextEditorViewController: EkoViewController {
                 image.getImageForUploading { [weak self] result in
                     switch result {
                     case .success(let img):
-                        EkoFileService.shared.uploadImage(image: img, progressHandler: { progress in
+                        UpstraUIKitManagerInternal.shared.fileService.uploadImage(image: img, progressHandler: { progress in
                             self?.galleryView.updateViewState(for: image.id, state: .uploading(progress: progress))
                             Log.add("[UIKit]: Upload Progress \(progress)")
                         }, completion:  { [weak self] result in
@@ -363,7 +363,7 @@ public class EkoPostTextEditorViewController: EkoViewController {
                 if case .local = fileView.fileState(for: file.id), let fileUrl = file.fileURL, let fileData = try? Data(contentsOf: fileUrl) {
                     let fileToUpload = UploadableFile(fileData: fileData, fileName: file.fileName)
                     fileUploadFailedDispatchGroup.enter()
-                    EkoFileService.shared.uploadFile(file: fileToUpload, progressHandler: { [weak self] progress in
+                    UpstraUIKitManagerInternal.shared.fileService.uploadFile(file: fileToUpload, progressHandler: { [weak self] progress in
                         self?.fileView.updateViewState(for: file.id, state: .uploading(progress: progress))
                         Log.add("[UIKit]: File upload progress: \(progress)")
                     }) { [weak self] result in
@@ -448,9 +448,6 @@ extension EkoPostTextEditorViewController: EkoFileTableViewDelegate {
     }
     
     func fileTableViewDidDeleteData(_ view: EkoFileTableView, at index: Int) {
-        var _files = fileView.files
-        _files.remove(at: index)
-        fileView.configure(files: _files)
         updateViewState()
     }
     
