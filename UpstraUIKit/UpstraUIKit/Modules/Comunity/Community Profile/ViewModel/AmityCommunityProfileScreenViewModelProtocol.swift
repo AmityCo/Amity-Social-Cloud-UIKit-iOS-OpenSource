@@ -27,7 +27,6 @@ protocol AmityCommunityProfileScreenViewModelDataSource {
     var communityId: String { get }
     var community: AmityCommunityModel? { get }
     var memberStatusCommunity: AmityMemberStatusCommunity { get }
-    var pendingPostCountForAdmin: Int { get }
     var postCount: Int { get }
     
     func shouldShowPendingPostBannerForMember(_ completion: ((Bool) -> Void)?)
@@ -38,7 +37,7 @@ protocol AmityCommunityProfileScreenViewModelDataSource {
 
 protocol AmityCommunityProfileScreenViewModelAction {
     func retriveCommunity()
-    
+    func getPendingPostCount(completion: ((Int) -> Void)?)
     func joinCommunity()
     
     func route(_ route: AmityCommunityProfileRoute)

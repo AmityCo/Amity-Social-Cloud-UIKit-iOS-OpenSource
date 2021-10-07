@@ -8,7 +8,7 @@
 
 import UIKit
 
-public class AmityPostViewAllCommentsTableViewCell: UITableViewCell, Nibbable {
+public class AmityPostViewAllCommentsTableViewCell: UITableViewCell, Nibbable, AmityCellIdentifiable {
 
     @IBOutlet weak var titleLabel: UILabel!
     

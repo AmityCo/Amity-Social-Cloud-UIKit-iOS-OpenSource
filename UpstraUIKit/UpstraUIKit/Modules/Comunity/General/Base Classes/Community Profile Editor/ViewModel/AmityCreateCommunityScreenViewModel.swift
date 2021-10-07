@@ -160,48 +160,38 @@ extension AmityCreateCommunityScreenViewModel {
     }
     
     func create() {
-        let builder = AmityCommunityCreationDataBuilder()
-        builder.setDisplayName(displayName)
-        builder.setCommunityDescription(description)
-        builder.setIsPublic(isPublic)
-        
-        if !isPublic {
-            let userIds = storeUsers.map { $0.userId }
-            builder.setUserIds(userIds)
-        }
-        
-        if let selectedCategoryId = selectedCategoryId {
-            builder.setCategoryIds([selectedCategoryId])
-        }
-        
-        if imageAvatar != nil {
-            uploadAvatar { [weak self] (image) in
+        if let image = imageAvatar {
+            // create community with avatar
+            AmityUIKitManagerInternal.shared.fileService.uploadImage(image: image, progressHandler: { _ in }) { [weak self] (result) in
                 guard let strongSelf = self else { return }
-                guard let image = image else {
-                    strongSelf.delegate?.screenViewModel(strongSelf, failure: .unknown)
-                    return
+                switch result {
+                case .success(let image):
+                    strongSelf.createCommunity(image: image)
+                case .failure(let error):
+                    AmityHUD.hide()
+                    strongSelf.delegate?.screenViewModel(strongSelf, failure: AmityError(error: error) ?? .unknown)
                 }
-                builder.setAvatar(image)
-                strongSelf.repository.createCommunity(with: builder, completion: {(community, error) in
-                    guard let strongSelf = self else { return }
-                    
-                    if let error = AmityError(error: error), community == nil {
-                        strongSelf.delegate?.screenViewModel(strongSelf, failure: error)
-                    } else if let community = community {
-                        strongSelf.updateRole(withCommunityId: community.communityId)
-                    }
-                })
             }
         } else {
-            repository.createCommunity(with: builder, completion: { [weak self] (community, error) in
+            createCommunity(image: nil)
+        }
+    }
+    
+    func update() {
+        if let image = imageAvatar {
+            // update community with avatar
+            AmityUIKitManagerInternal.shared.fileService.uploadImage(image: image, progressHandler: { _ in }) { [weak self] (result) in
                 guard let strongSelf = self else { return }
-                
-                if let error = AmityError(error: error), community == nil {
-                    strongSelf.delegate?.screenViewModel(strongSelf, failure: error)
-                } else if let community = community {
-                    strongSelf.updateRole(withCommunityId: community.communityId)
+                switch result {
+                case .success(let image):
+                    strongSelf.updateCommunity(image: image)
+                case .failure(let error):
+                    AmityHUD.hide()
+                    strongSelf.delegate?.screenViewModel(strongSelf, failure: AmityError(error: error) ?? .unknown)
                 }
-            })
+            }
+        } else {
+            updateCommunity(image: nil)
         }
     }
     
@@ -244,74 +234,10 @@ extension AmityCreateCommunityScreenViewModel {
         }
     }
     
-    private func showProfile(model: AmityCommunityModel) {
-        updateDisplayName(text: model.displayName)
-        updateDescription(text: model.description)
-        selectedCategoryId = model.categoryId
-        isPublic = model.isPublic
-        selectCommunityType(model.isPublic ? 0 : 1)
-    }
-    
-    func update() {
-        let builder = AmityCommunityUpdateDataBuilder()
-        builder.setDisplayName(displayName)
-        builder.setCommunityDescription(description)
-        builder.setIsPublic(isPublic)
-        if let imageData = imageData {
-            builder.setAvatar(imageData)
-        }
-        if let selectedCategoryId = selectedCategoryId {
-            builder.setCategoryIds([selectedCategoryId])
-        }
-        
-        if imageAvatar != nil {
-            uploadAvatar { [weak self] (image) in
-                guard let strongSelf = self else { return }
-                guard let image = image else {
-                    strongSelf.delegate?.screenViewModel(strongSelf, failure: .unknown)
-                    return
-                }
-                builder.setAvatar(image)
-                strongSelf.repository.updateCommunity(withId: strongSelf.communityId, builder: builder) { (community, error) in
-                    if let error = AmityError(error: error) {
-                        AmityHUD.hide()
-                        strongSelf.delegate?.screenViewModel(strongSelf, failure: error)
-                    } else {
-                        strongSelf.delegate?.screenViewModel(strongSelf, state: .updateSuccess)
-                    }
-                }
-            }
-        } else {
-            repository.updateCommunity(withId: communityId, builder: builder) { [weak self] (community, error) in
-                guard let strongSelf = self else { return }
-                if let error = AmityError(error: error) {
-                    AmityHUD.hide()
-                    strongSelf.delegate?.screenViewModel(strongSelf, failure: error)
-                } else {
-                    strongSelf.delegate?.screenViewModel(strongSelf, state: .updateSuccess)
-                }
-            }
-        }
-        
-    }
-    
     func setImage(for image: UIImage) {
         imageAvatar = image
     }
     
-    private func uploadAvatar(completion: @escaping (AmityImageData?) -> Void) {
-        guard let image = imageAvatar else { return }
-        AmityUIKitManagerInternal.shared.fileService.uploadImage(image: image, progressHandler: { _ in
-            
-        }) { (result) in
-            switch result {
-            case .success(let _imageData):
-                completion(_imageData)
-            case .failure:
-                completion(nil)
-            }
-        }
-    }
 }
 
 private extension AmityCreateCommunityScreenViewModel {
@@ -334,6 +260,71 @@ private extension AmityCreateCommunityScreenViewModel {
                     AmityUtilities.showError()
                     return
                 }
+            }
+        }
+    }
+    
+    private func showProfile(model: AmityCommunityModel) {
+        updateDisplayName(text: model.displayName)
+        updateDescription(text: model.description)
+        selectedCategoryId = model.categoryId
+        isPublic = model.isPublic
+        selectCommunityType(model.isPublic ? 0 : 1)
+    }
+    
+    private func createCommunity(image: AmityImageData?) {
+        let builder = AmityCommunityCreationDataBuilder()
+        builder.setDisplayName(displayName)
+        builder.setCommunityDescription(description)
+        builder.setIsPublic(isPublic)
+        
+        if !isPublic {
+            let userIds = storeUsers.map { $0.userId }
+            builder.setUserIds(userIds)
+        }
+        
+        if let selectedCategoryId = selectedCategoryId {
+            builder.setCategoryIds([selectedCategoryId])
+        }
+        
+        if let image = image {
+            builder.setAvatar(image)
+        }
+        
+        repository.createCommunity(with: builder) { [weak self] (community, error) in
+            guard let strongSelf = self else { return }
+            
+            if let community = community {
+                strongSelf.updateRole(withCommunityId: community.communityId)
+            } else {
+                strongSelf.delegate?.screenViewModel(strongSelf, failure: AmityError(error: error) ?? .unknown)
+            }
+        }
+    }
+    
+    private func updateCommunity(image: AmityImageData?) {
+        let builder = AmityCommunityUpdateDataBuilder()
+        builder.setDisplayName(displayName)
+        builder.setCommunityDescription(description)
+        builder.setIsPublic(isPublic)
+        if let imageData = imageData {
+            builder.setAvatar(imageData)
+        }
+        
+        if let selectedCategoryId = selectedCategoryId {
+            builder.setCategoryIds([selectedCategoryId])
+        }
+        
+        if let image = image {
+            builder.setAvatar(image)
+        }
+        
+        repository.updateCommunity(withId: communityId, builder: builder) { [weak self] (community, error) in
+            guard let strongSelf = self else { return }
+            if let error = error {
+                strongSelf.delegate?.screenViewModel(strongSelf, failure: AmityError(error: error) ?? .unknown)
+            } else {
+                strongSelf.delegate?.screenViewModel(strongSelf, state: .updateSuccess)
             }
         }
     }

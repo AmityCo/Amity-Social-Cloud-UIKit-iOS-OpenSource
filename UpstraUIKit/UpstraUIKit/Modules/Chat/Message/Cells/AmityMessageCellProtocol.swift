@@ -9,15 +9,8 @@
 import UIKit
 import AmitySDK
 
-public protocol AmityMessageCellProtocol: UITableViewCell {
-    static var cellIdentifier: String { get }
+public protocol AmityMessageCellProtocol: UITableViewCell, AmityCellIdentifiable {
     func display(message: AmityMessageModel)
-}
-
-public extension AmityMessageCellProtocol {
-    static var cellIdentifier: String {
-        return String(describing: self)
-    }
 }
 
 protocol AmityMessageCellDelegate: AnyObject {

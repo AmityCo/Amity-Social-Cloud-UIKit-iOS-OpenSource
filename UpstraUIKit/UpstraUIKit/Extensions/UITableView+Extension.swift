@@ -14,6 +14,17 @@ extension UITableView {
         return contentOffset.y >= (contentSize.height - frame.size.height)
     }
     
+    var lastIndexPath: IndexPath? {
+        let lastSection = numberOfSections - 1
+        if lastSection >= 0 {
+            let lastRow = numberOfRows(inSection: lastSection) - 1
+            if lastRow >= 0 {
+                return IndexPath(row: lastRow, section: lastSection)
+            }
+        }
+        return nil
+    }
+    
     /// Variables-height UITableView tableHeaderView with autolayout
     func layoutTableHeaderView() {
         

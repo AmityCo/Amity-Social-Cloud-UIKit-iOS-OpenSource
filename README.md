@@ -15,7 +15,7 @@ AmityUIKit is a delightful networking library for iOS. It is extending the power
 
 ## Dependencies
 
-AmityUIKit has dependencies with Realm. Currently we are only able to work with Realm version 5.5.0.
+AmityUIKit has dependencies with Realm. Currently we are only able to work with Realm version 10.12.0.
 
 ## Framework Building
 

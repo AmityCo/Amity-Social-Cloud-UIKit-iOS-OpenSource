@@ -47,7 +47,7 @@ private extension AmityNewsfeedViewController {
     private func setupFeedView() {
         addChild(viewController: feedViewController)
         feedViewController.dataDidUpdateHandler = { [weak self] itemCount in
-            self?.createPostButton.isHidden = (itemCount == 0)
+            self?.emptyView.setNeedsUpdateState()
         }
         
         feedViewController.pullRefreshHandler = { [weak self] in

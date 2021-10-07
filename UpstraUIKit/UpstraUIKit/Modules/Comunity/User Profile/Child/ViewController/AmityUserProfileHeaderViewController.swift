@@ -57,6 +57,12 @@ class AmityUserProfileHeaderViewController: AmityViewController, AmityRefreshabl
         setupFollowRequestsView()
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        screenViewModel.action.fetchUserData()
+        screenViewModel.action.fetchFollowInfo()
+    }
+    
     // MARK: - Refreshable
     
     func handleRefreshing() {
@@ -108,8 +114,6 @@ class AmityUserProfileHeaderViewController: AmityViewController, AmityRefreshabl
     
     private func setupViewModel() {
         screenViewModel.delegate = self
-        screenViewModel.action.fetchUserData()
-        screenViewModel.action.fetchFollowInfo()
     }
     
     private func setupPostsButton() {

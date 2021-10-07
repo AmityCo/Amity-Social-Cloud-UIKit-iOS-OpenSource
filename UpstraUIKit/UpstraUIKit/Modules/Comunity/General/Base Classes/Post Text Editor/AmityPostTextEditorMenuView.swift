@@ -15,45 +15,36 @@ protocol AmityPostTextEditorMenuViewDelegate: AnyObject {
 enum AmityPostMenuActionType {
     case camera
     case album
+    case video
     case file
+    case expand
+}
+
+enum AmityPostAttachmentType {
+    case image
+    case video
+    case file
+    case none
 }
 
 class AmityPostTextEditorMenuView: UIView {
     
-    static let defaultHeight: CGFloat = 41
+    static let defaultHeight: CGFloat = 60
     
     private let settings: AmityPostEditorSettings
     private let stackView = UIStackView(frame: .zero)
     private let topLineView = UIView(frame: .zero)
     private let cameraButton = AmityButton(frame: .zero)
     private let albumButton = AmityButton(frame: .zero)
+    private let videoButton = AmityButton(frame: .zero)
     private let fileButton = AmityButton(frame: .zero)
+    private let expandButton = AmityButton(frame: .zero)
     
     weak var delegate: AmityPostTextEditorMenuViewDelegate?
-    var isCameraButtonEnabled: Bool {
-        get {
-            return cameraButton.isEnabled
-        }
-        set {
-            cameraButton.isEnabled = newValue
-        }
-    }
     
-    var isAlbumButtonEnabled: Bool {
-        get {
-            return albumButton.isEnabled
-        }
-        set {
-            albumButton.isEnabled = newValue
-        }
-    }
-    
-    var isFileButtonEnabled: Bool {
-        get {
-            return fileButton.isEnabled
-        }
-        set {
-            fileButton.isEnabled = newValue
+    var attachmentType: AmityPostAttachmentType = .none {
+        didSet {
+            updateButtonState()
         }
     }
     
@@ -73,30 +64,41 @@ class AmityPostTextEditorMenuView: UIView {
     
     private func commonInit() {
         backgroundColor = AmityColorSet.backgroundColor
+        layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
+        layer.cornerRadius = 16
+        layer.borderColor = AmityColorSet.secondary.blend(.shade4).cgColor
+        layer.borderWidth = 1
+        clipsToBounds = true
         
         stackView.translatesAutoresizingMaskIntoConstraints = false
-        stackView.distribution = .fillEqually
-        stackView.alignment = .fill
-        stackView.addArrangedSubview(cameraButton)
-        stackView.addArrangedSubview(albumButton)
-        stackView.addArrangedSubview(fileButton)
+        stackView.distribution = .equalSpacing
+        stackView.alignment = .center
         topLineView.translatesAutoresizingMaskIntoConstraints = false
-        topLineView.backgroundColor = AmityColorSet.secondary.blend(.shade4)
+        topLineView.backgroundColor = .clear
         
         cameraButton.setImage(AmityIconSet.iconCameraSmall, for: .normal)
-        cameraButton.setTintColor(AmityColorSet.base, for: .normal)
-        cameraButton.setTintColor(AmityColorSet.base.blend(.shade4), for: .disabled)
         cameraButton.addTarget(self, action: #selector(tapCamera), for: .touchUpInside)
-        
         albumButton.setImage(AmityIconSet.iconPhoto, for: .normal)
-        albumButton.setTintColor(AmityColorSet.base, for: .normal)
-        albumButton.setTintColor(AmityColorSet.base.blend(.shade4), for: .disabled)
         albumButton.addTarget(self, action: #selector(tapPhoto), for: .touchUpInside)
-        
+        videoButton.setImage(AmityIconSet.iconPlayVideo, for: .normal)
+        videoButton.addTarget(self, action: #selector(tapVideo), for: .touchUpInside)
         fileButton.setImage(AmityIconSet.iconAttach, for: .normal)
-        fileButton.setTintColor(AmityColorSet.base, for: .normal)
-        fileButton.setTintColor(AmityColorSet.base.blend(.shade4), for: .disabled)
         fileButton.addTarget(self, action: #selector(tapFile), for: .touchUpInside)
+        expandButton.setImage(AmityIconSet.iconDownChevron, for: .normal)
+        expandButton.addTarget(self, action: #selector(tapExpand), for: .touchUpInside)
+        
+        // setup buttons
+        for button in [cameraButton, albumButton, videoButton, fileButton, expandButton] {
+            button.translatesAutoresizingMaskIntoConstraints = false
+            button.widthAnchor.constraint(equalToConstant: 32).isActive = true
+            button.heightAnchor.constraint(equalToConstant: 32).isActive = true
+            button.layer.cornerRadius = 16
+            button.clipsToBounds = true
+            button.backgroundColor = (button == expandButton) ? .clear : AmityColorSet.base.blend(.shade4)
+            button.setTintColor(AmityColorSet.base, for: .normal)
+            button.setTintColor(AmityColorSet.base.blend(.shade3), for: .disabled)
+            stackView.addArrangedSubview(button)
+        }
         
         addSubview(topLineView)
         addSubview(stackView)
@@ -106,16 +108,41 @@ class AmityPostTextEditorMenuView: UIView {
             topLineView.trailingAnchor.constraint(equalTo: trailingAnchor),
             topLineView.topAnchor.constraint(equalTo: topAnchor),
             topLineView.heightAnchor.constraint(equalToConstant: Constant.topLineViewHeight),
-            stackView.leadingAnchor.constraint(equalTo: leadingAnchor),
-            stackView.trailingAnchor.constraint(equalTo: trailingAnchor),
-            stackView.topAnchor.constraint(equalTo: topLineView.bottomAnchor),
-            stackView.bottomAnchor.constraint(equalTo: bottomAnchor),
+            stackView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 16),
+            stackView.trailingAnchor.constraint(equalTo: trailingAnchor,  constant: -16),
+            stackView.topAnchor.constraint(equalTo: topLineView.bottomAnchor, constant: 8),
+            stackView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -8),
         ])
         
         // settings
         cameraButton.isHidden = settings.shouldCameraButtonHide
         albumButton.isHidden = settings.shouldAlbumButtonHide
         fileButton.isHidden = settings.shouldFileButtonHide
+    }
+    
+    private func updateButtonState() {
+        switch attachmentType {
+        case .image:
+            cameraButton.isEnabled = true
+            albumButton.isEnabled = true
+            videoButton.isEnabled = false
+            fileButton.isEnabled = false
+        case .video:
+            cameraButton.isEnabled = true
+            albumButton.isEnabled = false
+            videoButton.isEnabled = true
+            fileButton.isEnabled = false
+        case .file:
+            cameraButton.isEnabled = false
+            albumButton.isEnabled = false
+            videoButton.isEnabled = false
+            fileButton.isEnabled = true
+        case .none:
+            cameraButton.isEnabled = true
+            albumButton.isEnabled = true
+            videoButton.isEnabled = true
+            fileButton.isEnabled = true
+        }
     }
     
     // MARK: - Private function
@@ -128,8 +155,16 @@ class AmityPostTextEditorMenuView: UIView {
         delegate?.postMenuView(self, didTap: .album)
     }
     
+    @objc private func tapVideo() {
+        delegate?.postMenuView(self, didTap: .video)
+    }
+    
     @objc private func tapFile() {
         delegate?.postMenuView(self, didTap: .file)
+    }
+    
+    @objc private func tapExpand() {
+        delegate?.postMenuView(self, didTap: .expand)
     }
 
 }

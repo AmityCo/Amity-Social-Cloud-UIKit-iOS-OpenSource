@@ -13,6 +13,12 @@ protocol ItemOption: Equatable {
     var title: String { get }
     var textColor: UIColor { get }
     var completion: (() -> Void)? { get set }
+    var height: CGFloat { get set }
+}
+
+protocol ImageRepresentableOption {
+    var image: UIImage? { get set }
+    var imageBackgroundColor: UIColor? { get set }
 }
 
 struct TextItemOption: ItemOption {
@@ -24,6 +30,22 @@ struct TextItemOption: ItemOption {
     var tintColor: UIColor = AmityColorSet.base
     var textColor: UIColor = AmityColorSet.base
     var completion: (() -> Void)? = nil
+    var height: CGFloat = 44.0
+}
+
+struct ImageItemOption: ItemOption, ImageRepresentableOption {
+    
+    static func == (lhs: ImageItemOption, rhs: ImageItemOption) -> Bool {
+        return lhs.title == rhs.title
+    }
+    
+    let title: String
+    var tintColor: UIColor = AmityColorSet.base
+    var textColor: UIColor = AmityColorSet.base
+    var image: UIImage?
+    var imageBackgroundColor: UIColor?
+    var completion: (() -> Void)?
+    var height: CGFloat = 56.0
 }
 
 final class ItemOptionView<T: ItemOption>: UIView, BottomSheetComponent, UITableViewDataSource, UITableViewDelegate {
@@ -47,10 +69,11 @@ final class ItemOptionView<T: ItemOption>: UIView, BottomSheetComponent, UITable
     private func setupViews() {
         backgroundColor = AmityColorSet.backgroundColor
         tableView.translatesAutoresizingMaskIntoConstraints = false
-        tableView.register(UITableViewCell.self, forCellReuseIdentifier: String(describing: UITableViewCell.self))
+        tableView.register(ItemOptionTableViewCell.nib, forCellReuseIdentifier: ItemOptionTableViewCell.identifier)
         tableView.dataSource = self
         tableView.delegate = self
         tableView.separatorStyle = .none
+        tableView.backgroundColor = AmityColorSet.backgroundColor
         addSubview(tableView)
         
         NSLayoutConstraint.activate([
@@ -64,14 +87,14 @@ final class ItemOptionView<T: ItemOption>: UIView, BottomSheetComponent, UITable
     func configure(items: [T], selectedItem: T?) {
         self.items = items
         self.selectedItem = selectedItem
-        contentHeight = defaultCellHeight * CGFloat(items.count)
+        contentHeight = items.map({ $0.height }).reduce(0, +)
         tableView.reloadData()
     }
     
     // Table View DataSource
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        return tableView.dequeueReusableCell(withIdentifier: String(describing: UITableViewCell.self), for: indexPath)
+        return tableView.dequeueReusableCell(withIdentifier: ItemOptionTableViewCell.identifier, for: indexPath)
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -79,19 +102,27 @@ final class ItemOptionView<T: ItemOption>: UIView, BottomSheetComponent, UITable
     }
     
     func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        guard let cell = cell as? ItemOptionTableViewCell else { return }
         let item = items[indexPath.row]
         cell.accessibilityIdentifier = item.title.lowercased().replacingOccurrences(of: " ", with: "_")
         cell.selectionStyle = .none
-        cell.textLabel?.text = item.title
-        cell.tintColor = item.tintColor
-        cell.textLabel?.textColor = item.textColor
         cell.backgroundColor = AmityColorSet.backgroundColor
+        cell.titleLabel.text = item.title
+        cell.titleLabel.tintColor = item.tintColor
+        cell.titleLabel.textColor = item.textColor
+        cell.titleLabel.font = AmityFontSet.bodyBold
+        
+        if let imageItem = item as? ImageRepresentableOption {
+            cell.iconImageView.image = imageItem.image
+            cell.imageBackgroundView.isHidden = imageItem.image == nil
+            cell.imageBackgroundView.backgroundColor = imageItem.imageBackgroundColor
+        }
     }
     
     // Table View Delegate
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return defaultCellHeight
+        return items[indexPath.row].height
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
