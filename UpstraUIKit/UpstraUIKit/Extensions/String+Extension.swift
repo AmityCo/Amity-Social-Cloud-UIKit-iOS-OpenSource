@@ -27,9 +27,10 @@ extension String {
     }
     
     var localizedString: String {
-        if Locale.components(fromIdentifier: Locale.preferredLanguages.first!)["kCFLocaleLanguageCodeKey"] == "th" {
+        switch AmityUIKitManagerInternal.shared.amityLanguage {
+        case .th:
             return NSLocalizedString(self, tableName: "LocalizedThai", bundle: AmityUIKitManager.bundle, value: "", comment: "")
-        } else {
+        case .en:
             return NSLocalizedString(self, tableName: "LocalizedEnglish", bundle: AmityUIKitManager.bundle, value: "", comment: "")
         }
     }
