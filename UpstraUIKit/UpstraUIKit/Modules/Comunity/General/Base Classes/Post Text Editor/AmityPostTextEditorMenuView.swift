@@ -64,17 +64,13 @@ class AmityPostTextEditorMenuView: UIView {
     
     private func commonInit() {
         backgroundColor = AmityColorSet.backgroundColor
-        layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
-        layer.cornerRadius = 16
-        layer.borderColor = AmityColorSet.secondary.blend(.shade4).cgColor
-        layer.borderWidth = 1
         clipsToBounds = true
-        
+
         stackView.translatesAutoresizingMaskIntoConstraints = false
-        stackView.distribution = .equalSpacing
+        stackView.distribution = .fillEqually
         stackView.alignment = .center
         topLineView.translatesAutoresizingMaskIntoConstraints = false
-        topLineView.backgroundColor = .clear
+        topLineView.backgroundColor = AmityColorSet.secondary.blend(.shade4)
         
         cameraButton.setImage(AmityIconSet.iconCameraSmall, for: .normal)
         cameraButton.addTarget(self, action: #selector(tapCamera), for: .touchUpInside)
@@ -90,16 +86,11 @@ class AmityPostTextEditorMenuView: UIView {
         // setup buttons
         for button in [cameraButton, albumButton, videoButton, fileButton, expandButton] {
             button.translatesAutoresizingMaskIntoConstraints = false
-            button.widthAnchor.constraint(equalToConstant: 32).isActive = true
-            button.heightAnchor.constraint(equalToConstant: 32).isActive = true
-            button.layer.cornerRadius = 16
-            button.clipsToBounds = true
-            button.backgroundColor = (button == expandButton) ? .clear : AmityColorSet.base.blend(.shade4)
             button.setTintColor(AmityColorSet.base, for: .normal)
             button.setTintColor(AmityColorSet.base.blend(.shade3), for: .disabled)
             stackView.addArrangedSubview(button)
         }
-        
+
         addSubview(topLineView)
         addSubview(stackView)
         
@@ -118,6 +109,8 @@ class AmityPostTextEditorMenuView: UIView {
         cameraButton.isHidden = settings.shouldCameraButtonHide
         albumButton.isHidden = settings.shouldAlbumButtonHide
         fileButton.isHidden = settings.shouldFileButtonHide
+        expandButton.isHidden = settings.shouldExpandButtonHide
+        videoButton.isHidden = settings.shouldVideoButtonHide
     }
     
     private func updateButtonState() {

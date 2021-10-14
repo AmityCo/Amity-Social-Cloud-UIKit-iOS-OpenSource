@@ -150,8 +150,11 @@ final class AmityUIKitManagerInternal: NSObject {
         // clear current client before setting up a new one
         unregisterDevice()
         
-        client.registerDevice(withUserId: userId, displayName: displayName, authToken: authToken, completion: completion)
-        didUpdateClient()
+        client.registerDevice(withUserId: userId, displayName: displayName, authToken: authToken) { [weak self] status, error in
+            self?.didUpdateClient()
+            completion?(status, error)
+        }
+        
     }
     
     func unregisterDevice() {
