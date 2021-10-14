@@ -89,7 +89,7 @@ public final class AmityUIKitManager {
         AmityChannelEventHandler.shared = channelEventHandler
     }
     
-    public static func setLanguage(language: AmityLanguageType) {
+    public static func setLanguage(language: String) {
         AmityUIKitManagerInternal.shared.setLanguage(language: language)
     }
 }
@@ -103,7 +103,7 @@ final class AmityUIKitManagerInternal: NSObject {
     private var apiKey: String = ""
     private var httpUrl: String = ""
     private var socketUrl: String = ""
-    private var language: AmityLanguageType = .en
+    private var language: String = ""
     
     private(set) var fileService = AmityFileService()
     private(set) var messageMediaService = AmityMessageMediaService()
@@ -117,7 +117,7 @@ final class AmityUIKitManagerInternal: NSObject {
         return client
     }
     
-    var amityLanguage: AmityLanguageType { return language }
+    var amityLanguage: String { return language }
     
     var env: [String: Any] = [:]
     
@@ -174,8 +174,8 @@ final class AmityUIKitManagerInternal: NSObject {
         client.unregisterDeviceForPushNotification(forUserId: currentUserId, completion: nil)
     }
     
-    func setLanguage(language: AmityLanguageType) {
-        self.language = language
+    func setLanguage(language: String) {
+        self.language = language.lowercased()
     }
     
 }

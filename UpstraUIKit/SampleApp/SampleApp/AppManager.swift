@@ -28,8 +28,8 @@ class AppManager {
     
     func setupAmityUIKit() {
         // setup api key
-        AmityUIKitManager.setup(apiKey: "b0ecba5c3a8af830443f8a1a515e1edbd50088e3b330667d")
-        AmityUIKitManager.setLanguage(language: .th)
+        AmityUIKitManager.setup(apiKey: "b0eceb5e68ddf36545308f4e000b12dcd90985e2bf3d6a2e")
+        AmityUIKitManager.setLanguage(language: "en")
         
         // setup event handlers and page settings
         AmityUIKitManager.set(eventHandler: AmityCustomEventHandler())
@@ -49,7 +49,7 @@ class AppManager {
     }
     
     func register(withUserId userId: String) {
-        AmityUIKitManager.registerDevice(withUserId: userId, displayName: nil) { success, error in
+        AmityUIKitManager.registerDevice(withUserId: "Thavorn", displayName: "Thavorn") { success, error in
             print("[Sample App] register device with userId '\(userId)' \(success ? "successfully" : "failed")")
             if let error = error {
                 print("[Sample App] register device failed \(error.localizedDescription)")
