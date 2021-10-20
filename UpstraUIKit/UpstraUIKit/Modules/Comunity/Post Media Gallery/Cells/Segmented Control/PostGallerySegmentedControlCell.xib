@@ -33,17 +33,28 @@
                             <action selector="videoDidTouch" destination="gTV-IL-0wX" eventType="touchUpInside" id="NkF-GR-fB9"/>
                         </connections>
                     </button>
+                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="sn5-QM-k8F" userLabel="Live Stream Button">
+                        <rect key="frame" x="159" y="15" width="107" height="34"/>
+                        <inset key="contentEdgeInsets" minX="12" minY="8" maxX="12" maxY="8"/>
+                        <state key="normal" title="Livestreams"/>
+                        <connections>
+                            <action selector="livestreamDidTouch" destination="gTV-IL-0wX" eventType="touchUpInside" id="cSx-xv-Zmw"/>
+                        </connections>
+                    </button>
                 </subviews>
             </view>
             <viewLayoutGuide key="safeArea" id="ZTg-uK-7eu"/>
             <constraints>
+                <constraint firstItem="sn5-QM-k8F" firstAttribute="centerY" secondItem="gTV-IL-0wX" secondAttribute="centerY" id="1WP-vO-GCi"/>
                 <constraint firstItem="dFq-dA-8rr" firstAttribute="centerY" secondItem="gTV-IL-0wX" secondAttribute="centerY" id="Ksg-nP-O8C"/>
+                <constraint firstItem="sn5-QM-k8F" firstAttribute="leading" secondItem="dFq-dA-8rr" secondAttribute="trailing" constant="8" symbolic="YES" id="QVo-81-tsZ"/>
                 <constraint firstItem="2g6-xz-Ujz" firstAttribute="centerY" secondItem="gTV-IL-0wX" secondAttribute="centerY" id="ZAL-LV-f8J"/>
                 <constraint firstItem="2g6-xz-Ujz" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" id="ZFl-x3-SdX"/>
                 <constraint firstItem="dFq-dA-8rr" firstAttribute="leading" secondItem="2g6-xz-Ujz" secondAttribute="trailing" constant="8" id="rOD-CU-0yG"/>
             </constraints>
             <size key="customSize" width="344" height="83"/>
             <connections>
+                <outlet property="livestreamButton" destination="sn5-QM-k8F" id="w6o-0U-iPs"/>
                 <outlet property="photoButton" destination="2g6-xz-Ujz" id="d9d-iO-og0"/>
                 <outlet property="videoButton" destination="dFq-dA-8rr" id="RGf-f9-yOx"/>
             </connections>

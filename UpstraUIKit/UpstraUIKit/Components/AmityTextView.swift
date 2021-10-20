@@ -20,15 +20,15 @@ import UIKit
     @objc optional func textView(_ textView: AmityTextView, shouldInteractWith textAttachment: NSTextAttachment, in characterRange: NSRange, interaction: UITextItemInteraction) -> Bool
 }
 
-final class AmityTextView: UITextView {
+open class AmityTextView: UITextView {
     
-    override var text: String! {
+    open override var text: String! {
         didSet {
             placeholderLabel.isHidden = !text.isEmpty
         }
     }
     
-    override var bounds: CGRect {
+    open override var bounds: CGRect {
         didSet {
             resizePlaceholder()
         }
@@ -103,7 +103,7 @@ final class AmityTextView: UITextView {
     
     // MARK: - Initializer
     
-    required init?(coder aDecoder: NSCoder) {
+    required public init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         commonInit()
         textContainerInset = UIEdgeInsets(top: padding.top, left: padding.left, bottom: padding.bottom, right: padding.right)
@@ -197,40 +197,40 @@ final class AmityTextView: UITextView {
 extension AmityTextView: UITextViewDelegate {
     
     //MARK: - Delegate
-    func textViewDidBeginEditing(_ textView: UITextView) {
+    public func textViewDidBeginEditing(_ textView: UITextView) {
         customTextViewDelegate?.textViewDidBeginEditing?(self)
     }
     
-    func textViewDidEndEditing(_ textView: UITextView) {
+    public func textViewDidEndEditing(_ textView: UITextView) {
         customTextViewDelegate?.textViewDidEndEditing?(self)
     }
     
-    func textViewShouldBeginEditing(_ textView: UITextView) -> Bool {
+    public func textViewShouldBeginEditing(_ textView: UITextView) -> Bool {
         return customTextViewDelegate?.textViewShouldBeginEditing?(self) ?? true
     }
     
-    func textViewShouldEndEditing(_ textView: UITextView) -> Bool {
+    public func textViewShouldEndEditing(_ textView: UITextView) -> Bool {
         return customTextViewDelegate?.textViewShouldEndEditing?(self) ?? true
     }
     
-    func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
+    public func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
         return customTextViewDelegate?.textView?(self, shouldChangeTextIn: range, replacementText: text) ?? (maxCharacters > 0 ? textView.text.utf16.count + (text.utf16.count - range.length) <= maxCharacters : true)
     }
     
-    func textViewDidChange(_ textView: UITextView) {
+    public func textViewDidChange(_ textView: UITextView) {
         placeholderLabel.isHidden = !text.isEmpty
         customTextViewDelegate?.textViewDidChange?(self)
     }
     
-    func textViewDidChangeSelection(_ textView: UITextView) {
+    public func textViewDidChangeSelection(_ textView: UITextView) {
         customTextViewDelegate?.textViewDidChangeSelection?(self)
     }
     
-    func textView(_ textView: UITextView, shouldInteractWith URL: URL, in characterRange: NSRange, interaction: UITextItemInteraction) -> Bool {
+    public func textView(_ textView: UITextView, shouldInteractWith URL: URL, in characterRange: NSRange, interaction: UITextItemInteraction) -> Bool {
         return customTextViewDelegate?.textView?(self, shouldInteractWith: URL, in: characterRange, interaction: interaction) ?? false
     }
     
-    func textView(_ textView: UITextView, shouldInteractWith textAttachment: NSTextAttachment, in characterRange: NSRange, interaction: UITextItemInteraction) -> Bool {
+    public func textView(_ textView: UITextView, shouldInteractWith textAttachment: NSTextAttachment, in characterRange: NSRange, interaction: UITextItemInteraction) -> Bool {
         return customTextViewDelegate?.textView?(self, shouldInteractWith: textAttachment, in: characterRange, interaction: interaction) ?? false
     }
     

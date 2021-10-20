@@ -60,9 +60,10 @@ class AmityMessageTableViewCell: UITableViewCell, AmityMessageCellProtocol {
     
     override func prepareForReuse() {
         super.prepareForReuse()
-        statusMetadataImageView.isHidden = true
-        containerMessageView.isHidden = false
-        metadataLabel.isHidden = false
+        statusMetadataImageView?.isHidden = true
+        containerMessageView?.isHidden = false
+        metadataLabel?.isHidden = false
+        errorButton?.isHidden = true
     }
     
     func setViewModel(with viewModel: AmityMessageListScreenViewModelType) {
@@ -130,7 +131,6 @@ class AmityMessageTableViewCell: UITableViewCell, AmityMessageCellProtocol {
             fullString.append(NSAttributedString(string: editMessage, attributes: style))
         } else {
             if message.isOwner {
-                errorButton.isHidden = true
                 switch message.syncState {
                 case .error:
                     errorButton.isHidden = false
@@ -146,7 +146,7 @@ class AmityMessageTableViewCell: UITableViewCell, AmityMessageCellProtocol {
                 fullString.append(NSAttributedString(string: message.time, attributes: style))
             }
         }
-        metadataLabel.attributedText = fullString
+        metadataLabel?.attributedText = fullString
     }
     
     private func setDisplayName(for message: AmityMessageModel) {
@@ -204,10 +204,11 @@ private extension AmityMessageTableViewCell {
     private func setupView() {
         selectionStyle = .none
         
-        statusMetadataImageView.isHidden = true
-        containerView.backgroundColor = UIColor.gray.withAlphaComponent(0.25)
-        containerView.layer.cornerRadius = 4
-        containerView.menuItems = [editMenuItem, deleteMenuItem, reportMenuItem]
+        statusMetadataImageView?.isHidden = true
+        containerView?.backgroundColor = UIColor.gray.withAlphaComponent(0.25)
+        containerView?.layer.cornerRadius = 4
+        containerView?.menuItems = [editMenuItem, deleteMenuItem, reportMenuItem]
+        errorButton?.isHidden = true
         
         contentView.backgroundColor = AmityColorSet.backgroundColor
     }

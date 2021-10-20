@@ -167,7 +167,7 @@ open class BottomSheetViewController: UIViewController {
         ])
         
         contentContainerView.backgroundColor = AmityColorSet.backgroundColor
-        contentContainerView.layer.cornerRadius = 16
+        contentContainerView.layer.cornerRadius = 6
         contentContainerView.layer.masksToBounds = true
     }
     

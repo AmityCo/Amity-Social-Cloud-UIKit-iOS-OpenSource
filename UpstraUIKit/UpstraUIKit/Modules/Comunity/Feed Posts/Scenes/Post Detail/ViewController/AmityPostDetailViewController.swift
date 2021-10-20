@@ -9,7 +9,7 @@
 import UIKit
 
 /// A view controller for providing post and relevant comments.
-public final class AmityPostDetailViewController: AmityViewController {
+open class AmityPostDetailViewController: AmityViewController {
     
     // MARK: - IBOutlet Properties
     @IBOutlet private var tableView: AmityPostTableView!
@@ -36,7 +36,7 @@ public final class AmityPostDetailViewController: AmityViewController {
     }
     
     // MARK: - Initializer
-    init(withPostId postId: String) {
+    required public init(withPostId postId: String) {
         let postController = AmityPostController()
         let commentController = AmityCommentController()
         let reactionController = AmityReactionController()
@@ -49,12 +49,12 @@ public final class AmityPostDetailViewController: AmityViewController {
         super.init(nibName: AmityPostDetailViewController.identifier, bundle: AmityUIKitManager.bundle)
     }
     
-    required init?(coder: NSCoder) {
+    required public init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
-    public static func make(withPostId postId: String) -> AmityPostDetailViewController {
-        return AmityPostDetailViewController(withPostId: postId)
+    public class func make(withPostId postId: String) -> Self {
+        return self.init(withPostId: postId)
     }
     
     // MARK: - View Lifecycle
@@ -88,6 +88,7 @@ public final class AmityPostDetailViewController: AmityViewController {
         postFooterProtocolHandler?.delegate = self
         
         postProtocolHandler = AmityPostProtocolHandler()
+        postProtocolHandler?.delegate = self
         postProtocolHandler?.viewController = self
         postProtocolHandler?.tableView = tableView
     }
@@ -124,6 +125,7 @@ public final class AmityPostDetailViewController: AmityViewController {
         tableView.tableFooterView = UIView()
         tableView.postDelegate = self
         tableView.postDataSource = self
+        tableView.contentInsetAdjustmentBehavior = .never
     }
     
     private func setupComposeBarView() {
@@ -137,16 +139,19 @@ public final class AmityPostDetailViewController: AmityViewController {
             return
         }
         if post.isOwner {
+            
             let bottomSheet = BottomSheetViewController()
             let contentView = ItemOptionView<TextItemOption>()
             bottomSheet.isTitleHidden = true
             bottomSheet.sheetContentView = contentView
             bottomSheet.modalPresentationStyle = .overFullScreen
             
+            
             let editOption = TextItemOption(title: AmityLocalizedStringSet.PostDetail.editPost.localizedString) { [weak self] in
                 guard let strongSelf = self else { return }
                 AmityEventHandler.shared.editPostDidTap(from: strongSelf, postId: post.postId)
             }
+            
             let deleteOption = TextItemOption(title: AmityLocalizedStringSet.PostDetail.deletePost.localizedString) { [weak self] in
                 // delete option
                 let alert = UIAlertController(title: AmityLocalizedStringSet.PostDetail.deletePostTitle.localizedString, message: AmityLocalizedStringSet.PostDetail.deletePostMessage.localizedString, preferredStyle: .alert)
@@ -158,11 +163,40 @@ public final class AmityPostDetailViewController: AmityViewController {
                 self?.present(alert, animated: true, completion: nil)
             }
             
-            contentView.configure(items: [editOption, deleteOption], selectedItem: nil)
+            switch post.dataTypeInternal {
+            case .poll:
+                let closePoll = TextItemOption(title: AmityLocalizedStringSet.Poll.Option.closeTitle.localizedString) { [weak self] in
+                    guard let strongSelf = self else { return }
+                    let cancel = AmityAlertController.Action.cancel(style: .default, handler: nil)
+                    let close = AmityAlertController.Action.custom(title: AmityLocalizedStringSet.Poll.Option.closeTitle.lowercased(), style: .destructive) {
+                        
+                    }
+                    AmityAlertController.present(title: AmityLocalizedStringSet.Poll.Option.alertCloseTitle.localizedString, message: AmityLocalizedStringSet.Poll.Option.alertCloseDesc.localizedString, actions: [cancel, close], from: strongSelf)
+                    
+                }
+                let deletePoll = TextItemOption(title: AmityLocalizedStringSet.Poll.Option.deleteTitle.localizedString) { [weak self] in
+                    guard let strongSelf = self else { return }
+                    let cancel = AmityAlertController.Action.cancel(style: .default, handler: nil)
+                    let delete = AmityAlertController.Action.custom(title: AmityLocalizedStringSet.General.delete.localizedString, style: .destructive, handler: {
+                        self?.screenViewModel.deletePost()
+                        self?.navigationController?.popViewController(animated: true)
+                    })
+                    AmityAlertController.present(title: AmityLocalizedStringSet.Poll.Option.alertDeleteTitle.localizedString, message: AmityLocalizedStringSet.Poll.Option.alertDeleteDesc.localizedString, actions: [cancel, delete], from: strongSelf)
+                }
+                
+                contentView.configure(items: [closePoll, deletePoll], selectedItem: nil)
+            case .file, .image, .text, .video, .unknown:
+                contentView.configure(items: [editOption, deleteOption], selectedItem: nil)
+            case .liveStream:
+                // Currently we don't support edit live stream post.
+                contentView.configure(items: [deleteOption], selectedItem: nil)
+            }
             present(bottomSheet, animated: false, completion: nil)
+            
         } else {
             screenViewModel.action.getPostReportStatus()
         }
+        
     }
     
 }
@@ -244,8 +278,7 @@ extension AmityPostDetailViewController: AmityPostTableViewDataSource {
             let cell: AmityViewMoreReplyTableViewCell = tableView.dequeueReusableCell(for: indexPath)
             return cell
         }
-    }
-    
+    }   
 }
 
 extension AmityPostDetailViewController: AmityPostDetailScreenViewModelDelegate {
@@ -362,10 +395,22 @@ extension AmityPostDetailViewController: AmityPostHeaderProtocolHandlerDelegate 
             screenViewModel.action.reportPost()
         case .tapUnreport:
             screenViewModel.action.reportPost()
+        case .tapClosePoll:
+            screenViewModel.action.close(withPollId: post.poll?.id)
         }
     }
     
 }
+
+// MARK: - AmityPostProtocolHandlerDelegate
+extension AmityPostDetailViewController: AmityPostProtocolHandlerDelegate {
+    func amityPostProtocolHandlerDidTapSubmit(_ cell: AmityPostProtocol) {
+        if let cell = cell as? AmityPostPollTableViewCell {
+            screenViewModel.action.vote(withPollId: cell.post?.poll?.id, answerIds: cell.selectedAnswerIds)
+        }
+    }
+}
+
 
 // MARK: - AmityPostFooterProtocolHandlerDelegate
 extension AmityPostDetailViewController: AmityPostFooterProtocolHandlerDelegate {

@@ -11,8 +11,19 @@ import AmitySDK
 
 class PostGalleryItemCell: UICollectionViewCell, Nibbable {
     
+    @IBOutlet private weak var darkOverlayView: UIView!
+    
     @IBOutlet private weak var durationView: UIStackView!
     @IBOutlet private weak var durationLabel: UILabel!
+    
+    @IBOutlet private weak var streamStateContainer: UIView!
+    @IBOutlet private weak var streamStateLabel: UILabel!
+    
+    @IBOutlet private weak var mediaTitleLabel: UILabel!
+    
+    @IBOutlet private weak var streamEndView: UIView!
+    @IBOutlet private weak var streamEndTitleLabel: UILabel!
+    @IBOutlet private weak var streamEndDescriptionLabel: UILabel!
     
     @IBOutlet weak var imageView: UIImageView!
     
@@ -40,6 +51,18 @@ class PostGalleryItemCell: UICollectionViewCell, Nibbable {
         durationView.layer.cornerRadius = 4
         durationLabel.font = AmityFontSet.caption
         durationLabel.textColor = AmityThemeManager.currentTheme.baseInverse
+        //
+        streamStateContainer.clipsToBounds = true
+        streamStateContainer.layer.cornerRadius = 4
+        //
+        streamStateLabel.font = AmityFontSet.captionBold
+        streamStateLabel.textColor = .white
+        //
+        mediaTitleLabel.font = AmityFontSet.bodyBold
+        mediaTitleLabel.textColor = .white
+        //
+        // This view will be shown only when we show stream item for certain states.
+        streamEndView.isHidden = true
     }
     
     override func prepareForReuse() {
@@ -49,22 +72,26 @@ class PostGalleryItemCell: UICollectionViewCell, Nibbable {
     
     func configure(with post: AmityPost) {
         
+        // Properties to render
         let durationText: String?
+        let streamStatus: AmityStreamStatus?
+        let mediaTitle: String?
+        let imageUrl: String?
+        let placeholder: UIImage?
         
+        // Find properties value from post.
         switch post.dataType {
         case "image":
-            asyncLoadImage(
-                urlString: post.getImageInfo()?.fileURL,
-                placeholder: nil
-            )
+            imageUrl = post.getImageInfo()?.fileURL
+            placeholder = nil
             durationText = nil
+            mediaTitle = nil
+            streamStatus = nil
         case "video":
             let thumbnailInfo = post.getVideoThumbnailInfo()
             let videoInfo = post.getVideoInfo(for: .original)
-            asyncLoadImage(
-                urlString: thumbnailInfo?.fileURL,
-                placeholder: nil
-            )
+            imageUrl = thumbnailInfo?.fileURL
+            placeholder = nil
             // Extract duration from video meta
             let duration: TimeInterval
             if let attributes = videoInfo?.attributes,
@@ -76,17 +103,102 @@ class PostGalleryItemCell: UICollectionViewCell, Nibbable {
                 duration = .zero
             }
             durationText = PostGalleryItemCell.durationFormatter.string(from: duration)
-        default:
-            imageView.image = nil
+            mediaTitle = nil
+            streamStatus = nil
+        case "liveStream":
+            let livestreamPlaceholder = UIImage(named: "default_livestream", in: AmityUIKitManager.bundle, compatibleWith: nil)
+            if let streamInfo = post.getLiveStreamInfo() {
+                // We treat deleted stream as .idle
+                if streamInfo.isDeleted {
+                    streamStatus = .idle
+                } else {
+                    streamStatus = streamInfo.status
+                }
+                mediaTitle = streamInfo.title
+                imageUrl = streamInfo.thumbnail?.fileURL
+                placeholder = livestreamPlaceholder
+            } else {
+                streamStatus = nil
+                mediaTitle = nil
+                imageUrl = nil
+                placeholder = livestreamPlaceholder
+            }
             durationText = nil
+        default:
+            durationText = nil
+            streamStatus = nil
+            mediaTitle = nil
+            imageUrl = nil
+            placeholder = nil
         }
         
+        // Render UI from properties above.
+        
+        // imageUrl, placeholder
+        asyncLoadImage(urlString: imageUrl, placeholder: placeholder)
+        
+        // durationText
         if let durationText = durationText {
             durationView.isHidden = false
             durationLabel.text = durationText
         } else {
             durationView.isHidden = true
         }
+        
+        // streamEndView
+        if let streamStatus = streamStatus {
+            
+            streamEndTitleLabel.font = AmityFontSet.title
+            streamEndDescriptionLabel.font = AmityFontSet.body
+            
+            streamStateLabel.font = AmityFontSet.captionBold
+            streamStateLabel.textColor = .white
+            
+            switch streamStatus {
+            case .idle:
+                streamEndView.isHidden = false
+                streamEndTitleLabel.text = "The stream is currently unavailable."
+                streamEndDescriptionLabel.text = nil
+                streamEndDescriptionLabel.isHidden = true
+            case .ended:
+                streamEndView.isHidden = false
+                streamEndTitleLabel.text = "This livestream has ended."
+                streamEndDescriptionLabel.text = "Playback will be available for you to watch shortly."
+                streamEndDescriptionLabel.isHidden = false
+            default:
+                streamEndView.isHidden = true
+            }
+        } else {
+            streamEndView.isHidden = true
+        }
+        
+        // streamStatus
+        if let streamStatus = streamStatus {
+            switch streamStatus {
+            case .live:
+                streamStateContainer.isHidden = false
+                streamStateContainer.backgroundColor = UIColor(hex: "FF305A")
+                streamStateLabel.text = "LIVE"
+            case .recorded:
+                streamStateContainer.isHidden = false
+                streamStateContainer.backgroundColor = UIColor.black.withAlphaComponent(0.7)
+                streamStateLabel.text = "RECORDED"
+            default:
+                streamStateContainer.isHidden = true
+            }
+        } else {
+            streamStateContainer.isHidden = true
+        }
+        
+        // mediaTitle
+        if let mediaTitle = mediaTitle {
+            mediaTitleLabel.isHidden = false
+            mediaTitleLabel.text = mediaTitle
+        } else {
+            mediaTitleLabel.isHidden = true
+        }
+        
+        darkOverlayView.isHidden = (mediaTitleLabel.isHidden && streamStateContainer.isHidden)
         
     }
     

@@ -8,13 +8,11 @@
 
 import UIKit
 
-protocol AmityPostTargetPickerViewControllerDelegate: AnyObject {
-    func postTargetSelectionViewController(_ viewController: AmityPostTargetPickerViewController, didCreatePost post: AmityPostModel)
-    func postTargetSelectionViewController(_ viewController: AmityPostTargetPickerViewController, didUpdatePost post: AmityPostModel)
-}
-
 final public class AmityPostTargetPickerViewController: AmityViewController {
     
+    /// Set this variable to indicate post type to create.
+    var postContentType: AmityPostContentType = .post
+
     private let tableView = UITableView(frame: .zero, style: .plain)
     private let screenViewModel = AmityPostTargetPickerScreenViewModel()
     
@@ -27,8 +25,10 @@ final public class AmityPostTargetPickerViewController: AmityViewController {
         fatalError("init(coder:) has not been implemented")
     }
     
-    public static func make() -> AmityPostTargetPickerViewController {
-        return AmityPostTargetPickerViewController()
+    public static func make(postContentType: AmityPostContentType = .post) -> AmityPostTargetPickerViewController {
+        let vc = AmityPostTargetPickerViewController()
+        vc.postContentType = postContentType
+        return vc
     }
 
     public override func viewDidLoad() {
@@ -122,15 +122,15 @@ extension AmityPostTargetPickerViewController: UITableViewDelegate {
     }
     
     public func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        var postarget: AmityPostTarget
+        var postTarget: AmityPostTarget
         if indexPath.section == 0 {
-            postarget = .myFeed
+            postTarget = .myFeed
         } else {
             guard let community = screenViewModel.community(at: indexPath) else { return }
-            postarget = .community(object: community)
+            postTarget = .community(object: community)
         }
         
-        AmityEventHandler.shared.createPostDidTap(from: self, postTarget: postarget)
+        AmityEventHandler.shared.postTargetDidSelect(from: self, postTarget: postTarget, postContentType: self.postContentType)
     }
     
 }

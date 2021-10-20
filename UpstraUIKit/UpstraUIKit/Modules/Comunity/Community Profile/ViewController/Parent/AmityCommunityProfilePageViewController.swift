@@ -171,10 +171,7 @@ extension AmityCommunityProfilePageViewController: AmityCommunityProfileScreenVi
         guard let community = viewModel.community else { return }
         switch route {
         case .post:
-            let vc = AmityPostCreatorViewController.make(postTarget: .community(object: community.object))
-            let nav = UINavigationController(rootViewController: vc)
-            nav.modalPresentationStyle = .fullScreen
-            present(nav, animated: true, completion: nil)
+            AmityEventHandler.shared.createPostBeingPrepared(from: self, postTarget: .community(object: community.object))
         case .member:
             let vc = AmityCommunityMemberSettingsViewController.make(community: community.object)
             navigationController?.pushViewController(vc, animated: true)

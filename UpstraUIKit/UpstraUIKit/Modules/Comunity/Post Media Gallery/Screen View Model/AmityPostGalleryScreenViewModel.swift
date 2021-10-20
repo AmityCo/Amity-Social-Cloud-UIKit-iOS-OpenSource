@@ -18,6 +18,8 @@ class AmityPostGalleryScreenViewModel {
         case post(AmityPost)
         /// Show empty view post item
         case fakePost
+        ///
+        case empty
     }
 
     
@@ -51,13 +53,26 @@ class AmityPostGalleryScreenViewModel {
         //      1. First section
         var firstSection: [AmityPostGalleryScreenViewModel.Item] = []
         firstSection.append(.segmentedControl)
-        firstSection.append(
-            contentsOf: allPosts.map { .post($0) }
-        )
+        if !allPosts.isEmpty {
+            firstSection.append(
+                contentsOf: allPosts.map { .post($0) }
+            )
+        } else {
+            firstSection.append(.empty)
+        }
         if allPosts.count % 2 != 0 {
             // Fake blank post, to align layout in 2 collumn for each row.
             firstSection.append(.fakePost)
         }
+        
+        // HACK: To increase content size, we add fake post.
+        // This make gallery page scrollable, even if there's no item to scroll.
+        //
+        let minimItemToMakeTheScreenScrollableProperly = max(0, 10 - allPosts.count)
+        (0..<minimItemToMakeTheScreenScrollableProperly).forEach { _ in
+            firstSection.append(.fakePost)
+        }
+        
         newItems.append(firstSection)
         // Update datasource and notify
         items = newItems

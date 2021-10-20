@@ -57,6 +57,7 @@ final class AmityMessageListScreenViewModel: AmityMessageListScreenViewModelType
     private var messageRepository: AmityMessageRepository!
     private var userRepository: AmityUserRepository!
     private var editor: AmityMessageEditor?
+    private var messageFlagger: AmityMessageFlagger?
     
     // MARK: - Collection
     private var messagesCollection: AmityCollection<AmityMessage>?
@@ -71,7 +72,9 @@ final class AmityMessageListScreenViewModel: AmityMessageListScreenViewModelType
     
     // MARK: - Properties
     private let channelId: String
-    private var canScrollToBottom: Bool = true
+    private var isFirstTimeLoaded: Bool = true
+    private let debouncer = Debouncer(delay: 0.3)
+    
     init(channelId: String) {
         self.channelId = channelId
         
@@ -163,7 +166,9 @@ extension AmityMessageListScreenViewModel {
     func getMessage() {
         messagesCollection = messageRepository.getMessages(channelId: channelId, includingTags: [], excludingTags: [], filterByParentId: false, parentId: nil, reverse: true)
         messagesNotificationToken = messagesCollection?.observe { [weak self] (liveCollection, change, error) in
-            self?.groupMessages(in: liveCollection)
+            self?.debouncer.run {
+                self?.groupMessages(in: liveCollection)
+            }
         }
     }
     
@@ -175,7 +180,7 @@ extension AmityMessageListScreenViewModel {
             .observe { [weak self] (_message, error) in
                 self?.text = ""
                 self?.delegate?.screenViewModelEvents(for: .didSendText)
-                self?.scrollToBottom()
+                self?.shouldScrollToBottom(force: true)
         }
     }
     
@@ -226,9 +231,17 @@ extension AmityMessageListScreenViewModel {
         membershipParticipation = nil
     }
     
-    func scrollToBottom() {
+    func shouldScrollToBottom(force: Bool) {
         guard let indexPath = lastIndexMessage() else { return }
-        delegate?.screenViewModelScrollToBottom(for: indexPath)
+        
+        if force {
+            // Forcely scroll to bottom regardless of current view state.
+            delegate?.screenViewModelScrollToBottom(for: indexPath)
+        } else {
+            // Determining when to scroll or not when receiving message
+            // depends upon the view state.
+            delegate?.screenViewModelShouldUpdateScrollPosition(to: indexPath)
+        }
     }
     
     func inputSource(for event: KeyboardInputEvents) {
@@ -277,6 +290,22 @@ extension AmityMessageListScreenViewModel {
             delegate?.screenViewModelToggleDefaultKeyboardAndAudioKeyboard(for: .default)
         }
     }
+    
+    func reportMessage(at indexPath: IndexPath) {
+        getReportMessageStatus(at: indexPath) { [weak self] isFlaggedByMe in
+            guard let message = self?.message(at: indexPath) else { return }
+            self?.messageFlagger = AmityMessageFlagger(client: AmityUIKitManagerInternal.shared.client, messageId: message.messageId)
+            if isFlaggedByMe {
+                self?.messageFlagger?.unflag { [weak self] success, error in
+                    self?.handleReportResponse(at: indexPath, isSuccess: success, error: error)
+                }
+            } else {
+                self?.messageFlagger?.flag { [weak self] success, error in
+                    self?.handleReportResponse(at: indexPath, isSuccess: success, error: error)
+                }
+            }
+        }
+    }
 }
 
 private extension AmityMessageListScreenViewModel {
@@ -302,7 +331,6 @@ private extension AmityMessageListScreenViewModel {
             guard let message = collection.object(at: UInt(index)) else { return }
             storedMessages.append(AmityMessageModel(object: message))
         }
-        
         // Then we group message as per date. This method gets called everytime observer is triggered with changes.
         // We want to handle the changes in the same order it gets triggered.
         messageQueue.sync { [weak self] in
@@ -315,18 +343,30 @@ private extension AmityMessageListScreenViewModel {
                 strongSelf.delegate?.screenViewModelLoadingState(for: .loaded)
                 strongSelf.delegate?.screenViewModelEvents(for: .updateMessages)
                                 
-                if strongSelf.canScrollToBottom {
+                if strongSelf.isFirstTimeLoaded {
                     // If this screen is opened for first time, we want to scroll to bottom.
-                    strongSelf.scrollToBottom()
-                    strongSelf.canScrollToBottom = false
+                    strongSelf.shouldScrollToBottom(force: true)
+                    strongSelf.isFirstTimeLoaded = false
                 } else {
-                    // Determining when to scroll or not when receiving message
-                    // depends upon the view state.
-                    if let messageIndex = self?.lastIndexMessage() {
-                        strongSelf.delegate?.screenViewModelShouldUpdateScrollPosition(to: messageIndex)
-                    }
+                    strongSelf.shouldScrollToBottom(force: false)
                 }
             }
+        }
+    }
+    
+    func getReportMessageStatus(at indexPath: IndexPath, completion: ((Bool) -> Void)?) {
+        guard let message = message(at: indexPath) else { return }
+        messageFlagger = AmityMessageFlagger(client: AmityUIKitManagerInternal.shared.client, messageId: message.messageId)
+        messageFlagger?.isFlaggedByMe {
+            completion?($0)
+        }
+    }
+    
+    func handleReportResponse(at indexPath: IndexPath, isSuccess: Bool, error: Error?) {
+        if isSuccess {
+            delegate?.screenViewModelDidReportMessage(at: indexPath)
+        } else {
+            delegate?.screenViewModelDidFailToReportMessage(at: indexPath, with: error)
         }
     }
 }
@@ -355,7 +395,7 @@ extension AmityMessageListScreenViewModel {
             self?.messageAudio = nil
             self?.delegate?.screenViewModelEvents(for: .updateMessages)
             self?.delegate?.screenViewModelEvents(for: .didSendAudio)
-            self?.scrollToBottom()
+            self?.shouldScrollToBottom(force: true)
         }
     }
 

@@ -62,6 +62,10 @@ protocol AmityFeedScreenViewModelAction {
     func unreport(withCommentId commentId: String)
     func getReportStatus(withCommendId commendId: String, completion: ((Bool) -> Void)?)
     
+    // MARK: Poll
+    func vote(withPollId pollId: String?, answerIds: [String])
+    func close(withPollId pollId: String?)
+    
     // MARK: Observer
     func startObserveFeedUpdate()
     func stopObserveFeedUpdate()

@@ -36,11 +36,28 @@ public final class AmityPostTextTableViewCell: UITableViewCell, Nibbable, AmityP
     }
     
     public func display(post: AmityPostModel, indexPath: IndexPath) {
+        
         self.post = post
         self.indexPath = indexPath
         
-        contentLabel.text = post.text
+        if let liveStream = post.liveStream {
+            // We picky back to render title/description for live stream post here.
+            // By getting post.liveStream
+            var texts: [String] = []
+            if let title = liveStream.title {
+                texts.append(title)
+            }
+            if let description = liveStream.streamDescription {
+                texts.append(description)
+            }
+            contentLabel.text = texts.joined(separator: "\n")
+        } else {
+            // The default render behaviour just to grab text from post.text
+            contentLabel.text = post.text
+        }
+        
         contentLabel.isExpanded = post.appearance.shouldContentExpand
+        
     }
     
     // MARK: - Setup views

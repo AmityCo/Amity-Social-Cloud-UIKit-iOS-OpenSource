@@ -42,32 +42,11 @@ public final class AmityMessageModel {
         self.data = object.data
     }
     
-    
-    class Readmore {
-        var shouldShowReadmore: Bool?
-        var isExpanded: Bool?
-        
-        private init() { }
-        
-        init(shouldShowReadmore: Bool? = nil, isExpanded: Bool? = nil) {
-            self.shouldShowReadmore = shouldShowReadmore
-            self.isExpanded = isExpanded
-        }
+    var text: String? {
+        return data?["text"] as? String
     }
     
     static func isEdited(createdAtDate: Date, editedAtDate: Date) -> Bool {
         return editedAtDate > createdAtDate
-    }
-}
-
-public class AmityMessageReadmoreModel {
-    public var shouldShowReadmore: Bool?
-    public var isExpanded: Bool?
-    public var messageId: String
-    
-    public init(messageId: String, shouldShowReadmore: Bool? = nil, isExpanded: Bool? = nil) {
-        self.messageId = messageId
-        self.shouldShowReadmore = shouldShowReadmore
-        self.isExpanded = isExpanded
     }
 }

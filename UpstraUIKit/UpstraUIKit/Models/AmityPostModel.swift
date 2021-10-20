@@ -11,6 +11,55 @@ import UIKit
 
 extension AmityPostModel {
     
+    public class Poll {
+        
+        // Public
+        public let id: String
+        public let question: String
+        public let answers: [Answer]
+        public let isMultipleVoted: Bool
+        public let status: String
+        public let isClosed: Bool
+        public let isVoted: Bool
+        public let closedIn: UInt64 // This time is in milliseconds.
+        public let voteCount: Int
+        public let createdAt: Date
+        
+        public init(poll: AmityPoll) {
+            self.id = poll.pollId
+            self.question = poll.question
+            self.isMultipleVoted = poll.isMultipleVote
+            self.status = poll.status
+            self.isClosed = poll.isClosed
+            self.isVoted = poll.isVoted
+            self.closedIn = UInt64(poll.closedIn)
+            self.voteCount = Int(poll.voteCount)
+            self.answers = poll.answers.map { Answer(answer: $0) }
+            self.createdAt = poll.createdAt
+        }
+        
+        public class Answer {
+            public let id: String
+            public let dataType: String
+            public let text: String
+            public let isVotedByUser: Bool
+            public let voteCount: Int
+            var isSelected: Bool = false
+            
+            public init(answer: AmityPollAnswer) {
+                self.id = answer.answerId
+                self.dataType = answer.dataType
+                self.text = answer.text
+                self.isVotedByUser = answer.isVotedByUser
+                self.voteCount = Int(answer.voteCount)
+            }
+        }
+    }
+
+}
+
+extension AmityPostModel {
+    
     public enum PostDisplayType {
         case feed
         case postDetail
@@ -81,6 +130,8 @@ public class AmityPostModel {
         case image
         case file
         case video
+        case poll
+        case liveStream
         case unknown
     }
     
@@ -196,6 +247,8 @@ public class AmityPostModel {
      */
     public var appearance: AmityPostAppearance
     
+    public var poll: Poll?
+    
     // MARK: - Internal variables
     
     var dataTypeInternal: DataType = .unknown
@@ -206,6 +259,7 @@ public class AmityPostModel {
     private(set) var text: String = ""
     private(set) var medias: [AmityMedia] = []
     private(set) var files: [AmityFile] = []
+    private(set) var liveStream: AmityStream?
     private let post: AmityPost
     private let childrenPosts: [AmityPost]
     
@@ -242,6 +296,7 @@ public class AmityPostModel {
         feedType = post.getFeedType()
         data = post.data ?? [:]
         appearance = AmityPostAppearance()
+        poll = post.getPollInfo().map(Poll.init)
         extractPostData()
     }
     
@@ -311,10 +366,16 @@ public class AmityPostModel {
                     )
                     let media = AmityMedia(state: state, type: .video)
                     media.video = videoData
-                    //
                     medias.append(media)
                     fileMap[videoData.fileId] = aChild.postId
                     dataTypeInternal = .video
+                }
+            case "poll":
+                dataTypeInternal = .poll
+            case "liveStream":
+                if let liveStreamData = aChild.getLiveStreamInfo() {
+                    liveStream = liveStreamData
+                    dataTypeInternal = .liveStream
                 }
             default:
                 dataTypeInternal = .unknown

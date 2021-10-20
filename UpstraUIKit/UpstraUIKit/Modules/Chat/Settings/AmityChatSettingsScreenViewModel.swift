@@ -207,7 +207,7 @@ extension AmityChatSettingsScreenViewModel {
             isUserReported = false
             return
         }
-        flagger = AmityUserFlagger(client: AmityUIKitManagerInternal.shared.client, user: user)
+        flagger = AmityUserFlagger(client: AmityUIKitManagerInternal.shared.client, userId: user.userId)
         flagger?.isFlaggedByMe {
             self.isUserReported = $0
         }
@@ -241,7 +241,7 @@ extension AmityChatSettingsScreenViewModel {
     
     private func reportUser() {
         if let user = otherUser {
-            flagger = AmityUserFlagger(client: AmityUIKitManagerInternal.shared.client, user: user)
+            flagger = AmityUserFlagger(client: AmityUIKitManagerInternal.shared.client, userId: user.userId)
             flagger?.flag { [weak self] (success, error) in
                 guard let weakSelf = self else { return }
                 weakSelf.isUserReported = success
@@ -252,7 +252,7 @@ extension AmityChatSettingsScreenViewModel {
     
     private func unreportUser() {
         if let user = otherUser {
-            flagger = AmityUserFlagger(client: AmityUIKitManagerInternal.shared.client, user: user)
+            flagger = AmityUserFlagger(client: AmityUIKitManagerInternal.shared.client, userId: user.userId)
             flagger?.unflag { [weak self] (success, error) in
                 guard let weakSelf = self else { return }
                 /// we have to take the opposite value of success

@@ -13,6 +13,7 @@ enum AmityPostProtocolHeaderHandlerAction {
     case tapDelete
     case tapReport
     case tapUnreport
+    case tapClosePoll
 }
 
 protocol AmityPostHeaderProtocolHandlerDelegate: AnyObject {
@@ -82,7 +83,34 @@ final class AmityPostHeaderProtocolHandler: AmityPostHeaderDelegate {
         }
         
         if post.isOwner {
-            contentView.configure(items: [editOption, deleteOption], selectedItem: nil)
+            switch post.dataTypeInternal {
+            case .poll:
+                let closePoll = TextItemOption(title: AmityLocalizedStringSet.Poll.Option.closeTitle.localizedString) { [weak self] in
+                    guard let strongSelf = self else { return }
+                    let cancel = AmityAlertController.Action.cancel(style: .default, handler: nil)
+                    let close = AmityAlertController.Action.custom(title: AmityLocalizedStringSet.Poll.Option.closeTitle.localizedString, style: .destructive) {
+                        strongSelf.delegate?.headerProtocolHandlerDidPerformAction(strongSelf, action: .tapClosePoll, withPost: post)
+                    }
+                    AmityAlertController.present(title: AmityLocalizedStringSet.Poll.Option.alertCloseTitle.localizedString, message: AmityLocalizedStringSet.Poll.Option.alertCloseDesc.localizedString, actions: [cancel, close], from: viewController)
+                    
+                }
+                let deletePoll = TextItemOption(title: AmityLocalizedStringSet.Poll.Option.deleteTitle.localizedString) { [weak self] in
+                    guard let strongSelf = self else { return }
+                    let cancel = AmityAlertController.Action.cancel(style: .default, handler: nil)
+                    let delete = AmityAlertController.Action.custom(title: AmityLocalizedStringSet.General.delete.localizedString, style: .destructive, handler: {
+                        strongSelf.delegate?.headerProtocolHandlerDidPerformAction(strongSelf, action: .tapDelete, withPost: post)
+                    })
+                    AmityAlertController.present(title: AmityLocalizedStringSet.Poll.Option.alertDeleteTitle.localizedString, message: AmityLocalizedStringSet.Poll.Option.alertDeleteDesc.localizedString, actions: [cancel, delete], from: viewController)
+                }
+                
+                contentView.configure(items: [closePoll, deletePoll], selectedItem: nil)
+                
+            case .file, .image, .text, .video, .unknown:
+                contentView.configure(items: [editOption, deleteOption], selectedItem: nil)
+            case .liveStream:
+                // Currently we don't support edit live stream post.
+                contentView.configure(items: [deleteOption], selectedItem: nil)
+            }
             viewController.present(bottomSheet, animated: false, completion: nil)
         } else {
             // if it is in community feed, check permission before options

@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import AmitySDK
 
 public protocol AmityPostProtocol: UITableViewCell, AmityCellIdentifiable {
     var delegate: AmityPostDelegate? { get set }
@@ -20,6 +21,7 @@ public protocol AmityPostDelegate: AnyObject {
 }
 
 public enum AmityPostAction {
+    case tapLiveStream(stream: AmityStream)
     case tapMedia(media: AmityMedia)
     case tapMediaInside(media: AmityMedia, photoViewer: AmityPhotoViewerController)
     case tapFile(file: AmityFile)
@@ -29,4 +31,5 @@ public enum AmityPostAction {
     case didExpandExpandableLabel(label: AmityExpandableLabel)
     case willCollapseExpandableLabel(label: AmityExpandableLabel)
     case didCollapseExpandableLabel(label: AmityExpandableLabel)
+    case submit
 }
