@@ -110,6 +110,7 @@ final public class AmityUserProfileEditorViewController: AmityViewController {
     }
     
     @objc private func saveButtonTap() {
+        AmityEventHandler.shared.communitySaveEditProfileButtonTracking()
         view.endEditing(true)
         
         // Update display name and about

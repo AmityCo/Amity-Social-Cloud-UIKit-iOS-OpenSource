@@ -184,6 +184,7 @@ public class AmityPostTextEditorViewController: AmityViewController {
                 title = comunity.displayName
                 comunityPanelView.isHidden = true
             case .myFeed:
+                AmityEventHandler.shared.communityCreatePostButtonTracking(screenName: ScreenName.userProfile.rawValue)
                 title = AmityLocalizedStringSet.postCreationMyTimelineTitle.localizedString
                 comunityPanelView.isHidden = true
             }

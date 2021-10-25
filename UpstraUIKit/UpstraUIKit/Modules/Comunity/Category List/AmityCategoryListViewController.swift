@@ -39,6 +39,11 @@ public class AmityCategoryListViewController: AmityViewController {
         setupTableView()
     }
     
+    public override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        AmityEventHandler.shared.communityCategoryListTracking()
+    }
+    
     // MARK: - Private functions
     
     private func setupTableView() {
@@ -84,6 +89,8 @@ extension AmityCategoryListViewController: UITableViewDelegate {
         let vc = AmityCategoryCommunityListViewController.make(categoryId: item.categoryId)
         vc.title = item.name
         navigationController?.pushViewController(vc, animated: true)
+        AmityEventHandler.shared.communityCategoryButtonTracking(screenName: ScreenName.categoryListing.rawValue,
+                                                               categoryName: item.name)
     }
     
     public func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {

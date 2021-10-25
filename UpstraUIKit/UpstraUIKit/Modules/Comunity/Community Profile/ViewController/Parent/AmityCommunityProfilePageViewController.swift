@@ -36,6 +36,7 @@ public final class AmityCommunityProfilePageViewController: AmityProfileViewCont
     
     public override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        AmityEventHandler.shared.communityPageToTimelineTracking()
         setupViewModel()
         setupPostButton()
     }
@@ -167,6 +168,7 @@ private extension AmityCommunityProfilePageViewController {
     }
     
     func postAction() {
+        AmityEventHandler.shared.communityCreatePostButtonTracking(screenName: ScreenName.communityProfile.rawValue)
         screenViewModel.action.route(.post)
     }
 }

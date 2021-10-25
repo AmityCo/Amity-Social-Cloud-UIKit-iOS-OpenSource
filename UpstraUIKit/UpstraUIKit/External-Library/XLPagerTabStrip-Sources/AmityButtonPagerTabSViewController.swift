@@ -323,6 +323,8 @@ public class AmityButtonPagerTabSViewController: AmityPagerTabViewController, Pa
             }
         }
         moveToViewController(at: indexPath.item)
+        viewControllers[indexPath.item].isKind(of: AmityNewsfeedViewController.self) ? AmityEventHandler.shared.communityHomeButtonBarPagerTracking(tabName: AmityLocalizedStringSet.newsfeedTitle.getLocalizedStringEN.lowercased()) : AmityEventHandler.shared.communityHomeButtonBarPagerTracking(tabName: AmityLocalizedStringSet.exploreTitle.getLocalizedStringEN.lowercased())
+        
     }
 
     // MARK: - UICollectionViewDataSource

@@ -39,6 +39,7 @@ public final class AmityCommunityExplorerViewController: AmityViewController, In
     
     public override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        AmityEventHandler.shared.communityToExploreTracking()
         reloadData()
     }
     
@@ -103,9 +104,13 @@ private extension AmityCommunityExplorerViewController {
             let vc = AmityCategoryCommunityListViewController.make(categoryId: category.categoryId)
             vc.title = category.name
             self?.navigationController?.pushViewController(vc, animated: true)
+            AmityEventHandler.shared.communityCategoryButtonTracking(screenName: ScreenName.explore.rawValue,
+                                                                   categoryName: category.name)
         }
         
         categoryVC.selectedCategoriesHandler = { [weak self] in
+            AmityEventHandler.shared.communityCategorySeeMoreButtonTracking(titleOfSelf: AmityLocalizedStringSet.categoryTitle.getLocalizedStringEN.lowercased())
+            AmityEventHandler.shared.communityAllCategoryButtonTracking()
             let categoryVC = AmityCategoryListViewController.make()
             self?.navigationController?.pushViewController(categoryVC, animated: true)
         }

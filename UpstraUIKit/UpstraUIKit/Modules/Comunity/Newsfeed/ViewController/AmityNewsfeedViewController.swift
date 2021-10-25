@@ -32,6 +32,7 @@ public class AmityNewsfeedViewController: AmityViewController, IndicatorInfoProv
     
     public override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        AmityEventHandler.shared.communityToNewsfeedTracking()
         headerView.retrieveCommunityList()
     }
     
@@ -61,6 +62,7 @@ private extension AmityNewsfeedViewController {
     
     private func setupEmptyView() {
         emptyView.exploreHandler = { [weak self] in
+            AmityEventHandler.shared.communityExploreButtonTracking()
             guard let parent = self?.parent as? AmityCommunityHomePageViewController else { return }
             // Switch to explore tap which is an index 1.
             parent.setCurrentIndex(1)
@@ -80,6 +82,7 @@ private extension AmityNewsfeedViewController {
         createPostButton.add(to: view, position: .bottomRight)
         createPostButton.image = AmityIconSet.iconCreatePost
         createPostButton.actionHandler = { [weak self] _ in
+            AmityEventHandler.shared.communityCreatePostButtonTracking(screenName: ScreenName.newsfeed.rawValue)
             let vc = AmityPostTargetPickerViewController.make()
             let nvc = UINavigationController(rootViewController: vc)
             nvc.modalPresentationStyle = .fullScreen
@@ -102,6 +105,7 @@ extension AmityNewsfeedViewController: AmityMyCommunityPreviewViewControllerDele
     public func viewController(_ viewController: AmityMyCommunityPreviewViewController, didPerformAction action: AmityMyCommunityPreviewViewController.ActionType) {
         switch action {
         case .seeAll:
+            AmityEventHandler.shared.communityMyCommunitySectionTracking()
             let vc = AmityMyCommunityViewController.make()
             navigationController?.pushViewController(vc, animated: true)
         case .communityItem(let communityId):

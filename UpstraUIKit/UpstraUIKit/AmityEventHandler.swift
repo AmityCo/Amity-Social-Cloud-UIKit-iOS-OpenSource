@@ -122,4 +122,29 @@ open class AmityEventHandler {
     /// TrueID Project
     open func shareCommunityPostDidTap(from source: UIViewController, title: String?, postId: String, communityId: String) {}
     open func shareCommunityProfileDidTap(from source: UIViewController, communityModelExternal: AmityCommunityModelExternal) {}
+    
+    //MARK: - AnalyticNCCEvent
+    open func communityTopbarSearchTracking() {}
+    open func communityTopbarProfileTracking() {}
+    open func communityExploreButtonTracking() {}
+    open func communityMyCommunitySectionTracking() {}
+    open func communityCreatePostButtonTracking(screenName: String) {}
+    open func communityJoinButtonTracking(screenName: String) {}
+    open func communityDetailSectionTracking(screenName: String) {}
+    open func communityAllCategoryButtonTracking() {}
+    open func communityCategoryButtonTracking(screenName: String, categoryName: String) {}
+    open func communityRecommendSectionTracking() {}
+    open func communityEditProfileButtonTracking() {}
+    open func communitySaveEditProfileButtonTracking() {}
+    open func communityHomeButtonBarPagerTracking(tabName: String) {}
+    open func communityCategorySeeMoreButtonTracking(titleOfSelf: String) {}
+    
+    // MARK: - AnalyticNCCScreen
+    open func communityToExploreTracking() {}
+    open func communityToNewsfeedTracking() {}
+    open func communityCategoryListTracking() {}
+    open func communityPageToTimelineTracking() {}
+    open func communityUserProfileToTimelineTracking() {}
+    open func communityCategoryNameListTracking(categoryName: String) {}
+    
 }

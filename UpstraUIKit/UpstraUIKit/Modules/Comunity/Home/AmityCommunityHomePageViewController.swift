@@ -62,6 +62,7 @@ public class AmityCommunityHomePageViewController: AmityPageViewController {
 // MARK: - Action
 private extension AmityCommunityHomePageViewController {
     @objc func searchTap() {
+        AmityEventHandler.shared.communityTopbarSearchTracking()
         let searchVC = AmitySearchViewController.make()
         let nav = UINavigationController(rootViewController: searchVC)
         nav.modalPresentationStyle = .fullScreen

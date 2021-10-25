@@ -59,6 +59,7 @@ class AmityUserProfileHeaderViewController: AmityViewController, AmityRefreshabl
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        AmityEventHandler.shared.communityUserProfileToTimelineTracking()
         screenViewModel.action.fetchUserData()
         screenViewModel.action.fetchFollowInfo()
     }
@@ -250,6 +251,7 @@ class AmityUserProfileHeaderViewController: AmityViewController, AmityRefreshabl
     }
     
     @IBAction func editButtonTap(_ sender: Any) {
+        AmityEventHandler.shared.communityEditProfileButtonTracking()
         AmityEventHandler.shared.editUserDidTap(from: self, userId: screenViewModel.userId)
     }
     
