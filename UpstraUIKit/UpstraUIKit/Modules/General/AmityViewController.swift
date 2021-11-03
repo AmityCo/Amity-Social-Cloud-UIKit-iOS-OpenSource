@@ -94,6 +94,11 @@ open class AmityViewController: UIViewController {
         setupFullWidthBackGesture()
     }
 
+    open override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        updateNavigationBarLayout()
+    }
+
     #if DEBUG
     @objc func titleDoubleTap() {
         navigationController?.popViewController(animated: true)
