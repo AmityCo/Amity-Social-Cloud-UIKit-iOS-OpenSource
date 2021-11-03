@@ -79,14 +79,17 @@ private extension AmityNewsfeedViewController {
     }
     
     private func setupPostButton() {
+        // setup button
         createPostButton.add(to: view, position: .bottomRight)
         createPostButton.image = AmityIconSet.iconCreatePost
         createPostButton.actionHandler = { [weak self] _ in
-            AmityEventHandler.shared.communityCreatePostButtonTracking(screenName: ScreenName.newsfeed.rawValue)
+//            AmityEventHandler.shared.communityCreatePostButtonTracking(screenName: ScreenName.newsfeed.rawValue)
             let vc = AmityPostTargetPickerViewController.make()
             let nvc = UINavigationController(rootViewController: vc)
             nvc.modalPresentationStyle = .fullScreen
             self?.present(nvc, animated: true, completion: nil)
+//            guard let strongSelf = self else { return }
+//            AmityEventHandler.shared.createPostBeingPrepared(from: strongSelf)
         }
     }
     

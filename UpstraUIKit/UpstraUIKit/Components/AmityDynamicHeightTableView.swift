@@ -8,18 +8,21 @@
 
 import UIKit
 
+// Note:
+// Use this tableview subclass when you want your tableview height
+// to be equal to its content size height.
+//
+// By using this you lose cell reuse advantage for tableview.
+// So use this with caution!!
 class AmityDynamicHeightTableView: UITableView {
-
-    override func layoutSubviews() {
-        super.layoutSubviews()
-        if bounds.size != self.intrinsicContentSize {
-            self.invalidateIntrinsicContentSize()
+    override var contentSize: CGSize {
+        didSet {
+            invalidateIntrinsicContentSize()
         }
     }
-    
+
     override var intrinsicContentSize: CGSize {
-        return contentSize
+        layoutIfNeeded()
+        return CGSize(width: UIView.noIntrinsicMetric, height: contentSize.height)
     }
 }
-
-

@@ -63,10 +63,14 @@ public final class AmityUserProfilePageViewController: AmityProfileViewControlle
         postButton.image = AmityIconSet.iconCreatePost
         postButton.add(to: view, position: .bottomRight)
         postButton.actionHandler = { [weak self] _ in
+            guard let strongSelf = self else { return }
+            
             let vc = AmityPostCreatorViewController.make(postTarget: .myFeed)
             let nav = UINavigationController(rootViewController: vc)
             nav.modalPresentationStyle = .overFullScreen
-            self?.present(nav, animated: true, completion: nil)
+            strongSelf.present(nav, animated: true, completion: nil)
+//
+//            AmityEventHandler.shared.createPostBeingPrepared(from: strongSelf, postTarget: .myFeed)
         }
         postButton.isHidden = !screenViewModel.isCurrentUser
     }

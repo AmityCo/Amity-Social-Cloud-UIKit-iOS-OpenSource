@@ -7,9 +7,15 @@
 //
 
 import UIKit
+import AmitySDK
+
+protocol AmityPostProtocolHandlerDelegate: AnyObject {
+    func amityPostProtocolHandlerDidTapSubmit(_ cell: AmityPostProtocol)
+}
 
 final class AmityPostProtocolHandler {
     
+    weak var delegate: AmityPostProtocolHandlerDelegate?
     weak var viewController: AmityViewController?
     weak var tableView: UITableView?
     
@@ -78,12 +84,13 @@ extension AmityPostProtocolHandler: AmityPostDelegate {
         case .willExpandExpandableLabel:
             tableView?.beginUpdates()
         case .didExpandExpandableLabel:
-            guard let section = cell.indexPath?.section else { return }
-            // mark post flag to display with expanding
-            post.appearance.isExpanding = true
-            let indexPath = IndexPath(row: 0, section: section)
-            DispatchQueue.main.async { [weak self] in
-                self?.tableView?.scrollToRow(at: indexPath, at: .top, animated: true)
+            if let section = cell.indexPath?.section {
+                // mark post flag to display with expanding
+                post.appearance.isExpanding = true
+                let indexPath = IndexPath(row: 0, section: section)
+                DispatchQueue.main.async { [weak self] in
+                    self?.tableView?.scrollToRow(at: indexPath, at: .top, animated: true)
+                }
             }
             tableView?.endUpdates()
         case .willCollapseExpandableLabel:
@@ -98,7 +105,27 @@ extension AmityPostProtocolHandler: AmityPostDelegate {
                 }
             }
             tableView?.endUpdates()
+        case .submit:
+            delegate?.amityPostProtocolHandlerDidTapSubmit(cell)
+
+        case .tapLiveStream(let stream):
+            switch stream.status {
+            case .recorded:
+                AmityEventHandler.shared.openRecordedLiveStreamPlayer(
+                    from: viewController!,
+                    postId: post.postId,
+                    streamId: stream.streamId,
+                    recordedData: stream.recordingData
+                )
+            default:
+                AmityEventHandler.shared.openLiveStreamPlayer(
+                    from: viewController!,
+                    postId: post.postId,
+                    streamId: stream.streamId
+                )
+            }
         }
+        
     }
     
 }

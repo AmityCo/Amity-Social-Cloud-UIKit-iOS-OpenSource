@@ -47,10 +47,12 @@ public class AmityGlobalFeedViewController: AmityViewController {
         createPostButton.image = AmityIconSet.iconCreatePost
         createPostButton.add(to: view, position: .bottomRight)
         createPostButton.actionHandler = { [weak self] button in
+            guard let strongSelf = self else { return }
+//            AmityEventHandler.shared.createPostBeingPrepared(from: strongSelf)
             let vc = AmityPostTargetPickerViewController.make()
             let nav = UINavigationController(rootViewController: vc)
             nav.modalPresentationStyle = .overFullScreen
-            self?.present(nav, animated: true, completion: nil)
+            strongSelf.present(nav, animated: true, completion: nil)
         }
     }
     

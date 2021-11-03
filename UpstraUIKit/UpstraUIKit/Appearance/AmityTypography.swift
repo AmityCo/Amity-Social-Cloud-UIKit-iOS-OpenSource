@@ -15,6 +15,7 @@ import UIKit
 // https://docs.sendbird.com/ios/ui_kit_themes#3_fontset_4_customize_font
 
 public struct AmityTypography {
+    
     let headerLine: UIFont
     let title: UIFont
     let bodyBold: UIFont
@@ -37,27 +38,36 @@ public struct AmityTypography {
     }
 }
 
-class AmityFontSet {
+public class AmityFontSet {
+    
     static private(set) var currentTypography: AmityTypography = AmityTypography()
+    
     static func set(typography: AmityTypography) {
         currentTypography = typography
     }
-    static var headerLine: UIFont {
+    
+    public static var headerLine: UIFont {
         return currentTypography.headerLine
     }
-    static var title: UIFont {
+    
+    public static var title: UIFont {
         return currentTypography.title
     }
-    static var bodyBold: UIFont {
+    
+    public static var bodyBold: UIFont {
         return currentTypography.bodyBold
     }
-    static var body: UIFont {
+    
+    public static var body: UIFont {
         return currentTypography.body
     }
-    static var captionBold: UIFont {
+    
+    public static var captionBold: UIFont {
         return currentTypography.captionBold
     }
-    static var caption: UIFont {
+    
+    public static var caption: UIFont {
         return currentTypography.caption
     }
+    
 }

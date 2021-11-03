@@ -55,7 +55,7 @@ extension AmityUserSettingsScreenViewModel {
     
     func reportUser() {
         guard let user = user else { return }
-        flagger = AmityUserFlagger(client: AmityUIKitManagerInternal.shared.client, user: user)
+        flagger = AmityUserFlagger(client: AmityUIKitManagerInternal.shared.client, userId: user.userId)
         flagger?.flag { [weak self] (success, error) in
             guard let strongSelf = self else { return }
             
@@ -71,7 +71,7 @@ extension AmityUserSettingsScreenViewModel {
 
     func unreportUser() {
         guard let user = user else { return }
-        flagger = AmityUserFlagger(client: AmityUIKitManagerInternal.shared.client, user: user)
+        flagger = AmityUserFlagger(client: AmityUIKitManagerInternal.shared.client, userId: user.userId)
         flagger?.unflag { [weak self] (success, error) in
             guard let strongSelf = self else { return }
             
@@ -110,7 +110,7 @@ extension AmityUserSettingsScreenViewModel {
 private extension AmityUserSettingsScreenViewModel {
     func getReportUserStatus(completion: (() -> Void)?) {
         guard let user = user else { return }
-        flagger = AmityUserFlagger(client: AmityUIKitManagerInternal.shared.client, user: user)
+        flagger = AmityUserFlagger(client: AmityUIKitManagerInternal.shared.client, userId: user.userId)
         flagger?.isFlaggedByMe(completion: { [weak self] isFlaggedByMe in
             self?.isFlaggedByMe = isFlaggedByMe
             completion?()

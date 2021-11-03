@@ -52,6 +52,7 @@ final class AmityCommunityProfileHeaderViewController: UIViewController {
         setupDescription()
         setupActionButton()
         setupPendingPosts()
+        setupChatButton()
     }
     
     static func make(rootViewController: AmityCommunityProfilePageViewController?, viewModel: AmityCommunityProfileScreenViewModelType, settings: AmityCommunityProfilePageSettings) -> AmityCommunityProfileHeaderViewController {
@@ -272,7 +273,7 @@ private extension AmityCommunityProfileHeaderViewController {
     
     @objc func chatTap() {
         guard let rootViewController = rootViewController else { return }
-        AmityEventHandler.shared.communityChannelDidTap(from: rootViewController, channelId: screenViewModel.dataSource.communityId)
+        AmityEventHandler.shared.communityChannelDidTap(from: rootViewController, channelId: screenViewModel.dataSource.community?.channelId ?? "")
     }
     
     @IBAction func postButtonTapped(_ sender: UIButton) {

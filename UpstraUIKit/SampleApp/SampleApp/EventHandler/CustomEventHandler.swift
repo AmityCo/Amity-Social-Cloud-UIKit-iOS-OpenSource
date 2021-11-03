@@ -8,13 +8,17 @@
 
 import UIKit
 import AmityUIKit
+import AmitySDK
+#if canImport(AmityUIKitLiveStream)
+import AmityUIKitLiveStream
+#endif
 
 class AmityCustomEventHandler: AmityEventHandler {
     
     override func userDidTap(from source: AmityViewController, userId: String) {
 
         let settings = AmityUserProfilePageSettings()
-        settings.shouldChatButtonHide = true
+        settings.shouldChatButtonHide = false
         
         let viewController = AmityUserProfilePageViewController.make(withUserId: userId, settings: settings)
         source.navigationController?.pushViewController(viewController, animated: true)
@@ -23,32 +27,69 @@ class AmityCustomEventHandler: AmityEventHandler {
     override func communityDidTap(from source: AmityViewController, communityId: String) {
         
         let settings = AmityCommunityProfilePageSettings()
-        settings.shouldChatButtonHide = true
+        settings.shouldChatButtonHide = false
         
         let viewController = AmityCommunityProfilePageViewController.make(withCommunityId: communityId, settings: settings)
         source.navigationController?.pushViewController(viewController, animated: true)
     }
     
     override func communityChannelDidTap(from source: AmityViewController, channelId: String) {
-        print("Channel id: \(channelId)")
+        var settings = AmityMessageListViewController.Settings()
+        settings.shouldShowChatSettingBarButton = true
+        let viewController = AmityMessageListViewController.make(channelId: channelId, settings: settings)
+        source.navigationController?.pushViewController(viewController, animated: true)
     }
     
-    override func createPostDidTap(from source: AmityViewController, postTarget: AmityPostTarget) {
+    override func createPostDidTap(from source: AmityViewController, postTarget: AmityPostTarget, postContentType: AmityPostContentType = .post) {
+        var viewController: AmityViewController
+        switch postContentType {
+        case .post:
+            let settings = AmityPostEditorSettings()
+            viewController = AmityPostCreatorViewController.make(postTarget: postTarget, settings: settings)
+        case .poll:
+            viewController = AmityPollCreatorViewController.make(postTarget: postTarget)
+
+        @unknown default:
+            super.createPostDidTap(from: source, postTarget: postTarget, postContentType: postContentType)
+            return
+        }
         
-        let settings = AmityPostEditorSettings()
-        settings.shouldFileButtonHide = true
-        
-        if source is AmityPostTargetPickerViewController {
-            let viewController = AmityPostCreatorViewController.make(postTarget: postTarget, settings: settings)
+        if source.isModalPresentation {
             source.navigationController?.pushViewController(viewController, animated: true)
         } else {
-            let viewController = AmityPostCreatorViewController.make(postTarget: postTarget, settings: settings)
             let navigationController = UINavigationController(rootViewController: viewController)
             navigationController.modalPresentationStyle = .overFullScreen
             source.present(navigationController, animated: true, completion: nil)
         }
     }
     
+    override func createLiveStreamPost(
+        from source: AmityViewController,
+        targetId: String?,
+        targetType: AmityPostTargetType,
+        destinationToUnwindBackAfterFinish: UIViewController
+    ) {
+        
+        #if canImport(AmityUIKitLiveStream)
+        let liveStreamBroadcastViewController =
+            LiveStreamBroadcastViewController(client: AmityUIKitManager.client, targetId: targetId, targetType: targetType)
+        liveStreamBroadcastViewController.destinationToUnwindBackAfterFinish = destinationToUnwindBackAfterFinish
+        liveStreamBroadcastViewController.modalPresentationStyle = .fullScreen
+        source.present(liveStreamBroadcastViewController, animated: true, completion: nil)
+        #else
+        print("To broadcast live stream, please install AmityUIKitLiveStream, see also `SampleApp/INSTALLATION.md`")
+        #endif
+        
+    }
+    
+    override func openLiveStreamPlayer(from source: AmityViewController, postId: String, streamId: String) {
+        #if canImport(AmityUIKitLiveStream)
+        let liveStreamPlayerVC = LiveStreamPlayerViewController(streamIdToWatch: streamId)
+        source.present(liveStreamPlayerVC, animated: true, completion: nil)
+        #else
+        print("To watch live stream, please install AmityUIKitLiveStream, see also `SampleApp/INSTALLATION.md`")
+        #endif
+    }
     override func shareCommunityPostDidTap(from source: UIViewController, title: String?, postId: String, communityId: String) {
         debugPrint(postId as Any)
         debugPrint(communityId as Any)

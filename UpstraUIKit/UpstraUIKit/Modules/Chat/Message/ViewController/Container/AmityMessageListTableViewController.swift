@@ -51,7 +51,7 @@ extension AmityMessageListTableViewController {
     func setupView() {
         tableView.separatorInset.left = UIScreen.main.bounds.width
         tableView.tableFooterView = UIView()
-        tableView.keyboardDismissMode = .onDrag
+        tableView.keyboardDismissMode = .interactive
         tableView.backgroundColor = AmityColorSet.backgroundColor
         screenViewModel.dataSource.allCells.forEach {
             tableView.register($0.value, forCellReuseIdentifier: $0.key)
@@ -74,13 +74,15 @@ extension AmityMessageListTableViewController {
     
     func scrollToBottom(indexPath: IndexPath) {
         tableView.layoutIfNeeded()
-        tableView.scrollToRow(at: indexPath, at: .bottom, animated: true)
+        tableView.scrollToRow(at: indexPath, at: .bottom, animated: false)
     }
     
     func updateScrollPosition(to indexPath: IndexPath) {
+        
         let contentHeight = tableView.contentSize.height
         let contentYOffset = tableView.contentOffset.y
         let viewHeight = tableView.bounds.height
+        
         Log.add("Content Height: \(contentHeight), Content Offset: \(contentYOffset), ViewHeight: \(viewHeight)")
         
         // We update scroll position based on the view state. User can be in multiple view state.
@@ -96,10 +98,13 @@ extension AmityMessageListTableViewController {
         // User is seeing the latest message. So we just scroll to the bottom when new message appears
         if contentYOffset + viewHeight >= contentHeight {
             Log.add("Scrolling tableview to show latest message")
-            tableView.scrollToRow(at: indexPath, at: .bottom, animated: true)
+            tableView.layoutIfNeeded()
+            tableView.scrollToRow(at: indexPath, at: .bottom, animated: false)
             return
         }
+        
     }
+    
 }
 
 // MARK: - Delegate
@@ -165,6 +170,52 @@ extension AmityMessageListTableViewController {
         configure(for: cell, at: indexPath)
         return cell
     }
+}
+
+extension AmityMessageListTableViewController: AmityMessageCellDelegate {
+    func performEvent(_ cell: AmityMessageTableViewCell, events: AmityMessageCellEvents) {
+        
+        switch cell.message.messageType {
+        case .audio:
+            switch events {
+            case .audioPlaying:
+                tableView.reloadData()
+            case .audioFinishPlaying:
+                tableView.reloadRows(at: [cell.indexPath], with: .none)
+            default:
+                break
+            }
+        default:
+            break
+        }
+    }
+}
+
+extension AmityMessageListTableViewController: AmityExpandableLabelDelegate {
+    
+    public func expandableLabeldidTap(_ label: AmityExpandableLabel) {
+        // Intentionally left empty
+    }
+    
+    public func willExpandLabel(_ label: AmityExpandableLabel) {
+        tableView.beginUpdates()
+    }
+    
+    public func didExpandLabel(_ label: AmityExpandableLabel) {
+        tableView.endUpdates()
+    }
+    
+    public func willCollapseLabel(_ label: AmityExpandableLabel) {
+        tableView.beginUpdates()
+    }
+    
+    public func didCollapseLabel(_ label: AmityExpandableLabel) {
+        tableView.endUpdates()
+    }
+}
+
+// MARK: - Private functions
+extension AmityMessageListTableViewController {
     
     private func configure(for cell: UITableViewCell, at indexPath: IndexPath) {
         guard let message = screenViewModel.dataSource.message(at: indexPath) else { return }
@@ -172,6 +223,7 @@ extension AmityMessageListTableViewController {
             cell.delegate = self
             cell.setViewModel(with: screenViewModel)
             cell.setIndexPath(with: indexPath)
+            (cell as? AmityMessageTextTableViewCell)?.textDelegate = self
         }
         
         (cell as? AmityMessageCellProtocol)?.display(message: message)
@@ -195,25 +247,6 @@ extension AmityMessageListTableViewController {
             return AmityMessageTypes.audioIncoming.identifier
         default:
             return nil
-        }
-    }
-}
-
-extension AmityMessageListTableViewController: AmityMessageCellDelegate {
-    func performEvent(_ cell: AmityMessageTableViewCell, events: AmityMessageCellEvents) {
-        
-        switch cell.message.messageType {
-        case .audio:
-            switch events {
-            case .audioPlaying:
-                tableView.reloadData()
-            case .audioFinishPlaying:
-                tableView.reloadRows(at: [cell.indexPath], with: .none)
-            default:
-                break
-            }
-        default:
-            break
         }
     }
 }

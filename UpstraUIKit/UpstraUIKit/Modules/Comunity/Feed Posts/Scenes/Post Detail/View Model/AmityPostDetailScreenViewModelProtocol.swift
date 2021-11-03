@@ -87,6 +87,10 @@ protocol AmityPostDetailScreenViewModelAction {
     func unreportComment(withCommentId commentId: String)
     func getCommentReportStatus(with comment: AmityCommentModel)
     func getReplyComments(at section: Int)
+    
+    // MARK: Poll
+    func vote(withPollId pollId: String?, answerIds: [String])
+    func close(withPollId pollId: String?)
 }
 
 protocol AmityPostDetailScreenViewModelType: AmityPostDetailScreenViewModelAction, AmityPostDetailScreenViewModelDataSource {

@@ -23,6 +23,9 @@ protocol AmityMessageListScreenViewModelDelegate: AnyObject {
     func screenViewModelAudioRecordingEvents(for events: AmityMessageListScreenViewModel.AudioRecordingEvents)
     
     func screenViewModelShouldUpdateScrollPosition(to indexPath: IndexPath)
+    
+    func screenViewModelDidReportMessage(at indexPath: IndexPath)
+    func screenViewModelDidFailToReportMessage(at indexPath: IndexPath, with error: Error?)
 }
 
 protocol AmityMessageListScreenViewModelDataSource {
@@ -52,7 +55,7 @@ protocol AmityMessageListScreenViewModelAction {
     func startReading()
     func stopReading()
     
-    func scrollToBottom()
+    func shouldScrollToBottom(force: Bool)
     
     func registerCell()
     func register(items: [AmityMessageTypes:AmityMessageCellProtocol.Type])
@@ -69,6 +72,7 @@ protocol AmityMessageListScreenViewModelAction {
     
     func performAudioRecordingEvents(for event: AmityMessageListScreenViewModel.AudioRecordingEvents)
     
+    func reportMessage(at indexPath: IndexPath)
 }
 
 protocol AmityMessageListScreenViewModelType: AmityMessageListScreenViewModelAction, AmityMessageListScreenViewModelDataSource {

@@ -51,7 +51,7 @@ extension AmityCommunityMemberScreenViewModel {
 
     func getReportUserStatus(at indexPath: IndexPath, completion: ((Bool) -> Void)?) {
         guard let user = member(at: indexPath).user else { return }
-        flagger = AmityUserFlagger(client: AmityUIKitManagerInternal.shared.client, user: user)
+        flagger = AmityUserFlagger(client: AmityUIKitManagerInternal.shared.client, userId: user.userId)
         flagger?.isFlaggedByMe {
             completion?($0)
         }
@@ -150,7 +150,7 @@ extension AmityCommunityMemberScreenViewModel {
 extension AmityCommunityMemberScreenViewModel {
     func reportUser(at indexPath: IndexPath) {
         guard let user = member(at: indexPath).user else { return }
-        flagger = AmityUserFlagger(client: AmityUIKitManagerInternal.shared.client, user: user)
+        flagger = AmityUserFlagger(client: AmityUIKitManagerInternal.shared.client, userId: user.userId)
         flagger?.flag { (success, error) in
             if let error = error {
                 AmityHUD.show(.error(message: error.localizedDescription))
@@ -162,7 +162,7 @@ extension AmityCommunityMemberScreenViewModel {
     
     func unreportUser(at indexPath: IndexPath) {
         guard let user = member(at: indexPath).user else { return }
-        flagger = AmityUserFlagger(client: AmityUIKitManagerInternal.shared.client, user: user)
+        flagger = AmityUserFlagger(client: AmityUIKitManagerInternal.shared.client, userId: user.userId)
         flagger?.unflag { (success, error) in
             if let error = error {
                 AmityHUD.show(.error(message: error.localizedDescription))

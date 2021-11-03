@@ -46,7 +46,7 @@ class AmityFeedDisplayNameLabel: UILabel {
             attributeString.append(NSAttributedString(string: communityName))
         }
         let attributes: [NSAttributedString.Key : Any] = [.foregroundColor: AmityColorSet.base, .font: AmityFontSet.bodyBold]
-        attributeString.addAttributes(attributes, range: NSRange(location: 0, length: attributeString.string.count) )
+        attributeString.addAttributes(attributes, range: NSRange(location: 0, length: attributeString.string.utf16.count) )
         attributedText = attributeString
         
         // configure official badge

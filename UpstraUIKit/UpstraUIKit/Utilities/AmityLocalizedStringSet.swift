@@ -59,6 +59,10 @@ public struct AmityLocalizedStringSet {
         static let imageGallery = "general_image_gallery"
         static let uploadImage = "general_upload_image"
         static let moderator = "general_moderator"
+        static let poll = "general_poll"
+        static let day = "general_day"
+        static let days = "general_days"
+        static let textInputLimitCharactor = "genera_text_input_limit_charactor"
         static let generalVideo = "general_video";
         static let generalPhoto = "general_photo";
         static let generalAttachment = "general_attachment";
@@ -80,6 +84,12 @@ public struct AmityLocalizedStringSet {
         static let postPlural = "unit_post_plural"
         static let sharesSingular = "unit_share_singular"
         static let sharesPlural = "unit_share_plural"
+        static let daySingular = "unit_day_singular"
+        static let dayPlural = "unit_day_plural"
+        static let hourSingular = "unit_hour_singular"
+        static let hourPlural = "unit_hour_plural"
+        static let minuteSingular = "unit_minute_singular"
+        static let minutePlural = "unit_minute_plural"
     }
     
     static let titlePlaceholder = "title_placeholder"
@@ -116,7 +126,7 @@ public struct AmityLocalizedStringSet {
         static let deleteMessage = "message_delete"
         static let editMessage = "message_edit"
     }
-
+    
     // MARK: - Empty Newsfeed
     static let emptyNewsfeedTitle = "empty_newsfeed_title"
     static let emptyNewsfeedSubtitle = "empty_newsfeed_subtitle"
@@ -270,7 +280,7 @@ public struct AmityLocalizedStringSet {
         static let alertFailTitleTurnNotificationOn = "community_settings_alert_fail_title_notification_on"
         static let alertFailTitleTurnNotificationOff = "community_settings_alert_fail_title_notification_off"
     }
-
+    
     // MARK: - Notification Settings
     enum CommunityNotificationSettings {
         static let titleNotifications = "community_notification_settings_title_notifications"
@@ -304,7 +314,7 @@ public struct AmityLocalizedStringSet {
             static let unfollowMessage = "user_settings_unfollow_message"
             static let unfollowFailTitle = "user_settings_unfollow_fail_title"
         }
-
+        
         enum UserSettingsRemove {
             static let removeUser = "user_settings_remove_user"
             static let removeUserTitle = "user_settings_remove_user_title"
@@ -437,6 +447,45 @@ public struct AmityLocalizedStringSet {
         static let alertDeleteFailTitle = "pending_posts_alert_delete_fail_title"
         static let postNotAvailable = "pending_posts_post_not_available"
         static let alertDeleteFailApproveOrDecline = "pending_posts_alert_delete_fail_approve_or_decline"
+    }
+    
+    // MARK: - Polls
+    enum Poll {
+        
+        enum Create {
+            static let questionTitle = "poll_create_question_title"
+            static let questionPlaceholder = "poll_create_question_placeholder"
+            static let answerTitle = "poll_create_answer_title"
+            static let answerDesc = "poll_create_answer_desc"
+            static let answerPlaceholder = "poll_create_answer_placeholder"
+            static let answerButton = "poll_create_answer_button"
+            static let multipleSelectionTitle = "poll_create_multiple_selection_title"
+            static let multipleSelectionDesc = "poll_create_multiple_selection_desc"
+            static let scheduleTitle = "poll_create_schedule_title"
+            static let scheduleDesc = "poll_create_schedule_desc"
+            static let chooseTimeFrameTitle = "poll_create_choose_time_frame_title"
+            static let alertTitle = "poll_create_alert_title"
+            static let alertDesc = "poll_create_alert_desc"
+        }
+        
+        enum Option {
+            static let closeTitle = "poll_close_title"
+            static let deleteTitle = "poll_delete_title"
+            static let moreOption = "more options";
+            static let viewFullResult = "poll_view_full_result"
+            static let alertCloseTitle = "poll_alert_close_title"
+            static let alertCloseDesc = "poll_alert_close_desc"
+            static let alertDeleteTitle = "poll_alert_delete_title"
+            static let alertDeleteDesc = "poll_alert_delete_desc"
+            static let submitVoteTitle = "poll_submit_vote_title"
+            static let voteCountTitle = "poll_vote_count_title"
+            static let finalResult = "poll_final_result"
+            static let openForVoting = "poll_open_for_voting"
+            
+            static let pollEndDurationDays = "poll_ends_in_days"
+            static let pollEndDurationMinutes = "poll_ends_in_minutes"
+            static let pollEndDurationHours = "poll_ends_in_hours"
+        }
     }
     
     // MARK: - Relative Time

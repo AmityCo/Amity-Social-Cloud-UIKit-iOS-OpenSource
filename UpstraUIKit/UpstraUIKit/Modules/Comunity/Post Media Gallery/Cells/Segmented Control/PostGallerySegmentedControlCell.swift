@@ -22,6 +22,7 @@ class PostGallerySegmentedControlCell: UICollectionViewCell, Nibbable {
     enum Section {
         case image
         case video
+        case livestream
     }
     
     weak var delegate: PostGallerySegmentedControlCellDelegate?
@@ -30,15 +31,19 @@ class PostGallerySegmentedControlCell: UICollectionViewCell, Nibbable {
     
     @IBOutlet private weak var photoButton: UIButton!
     @IBOutlet private weak var videoButton: UIButton!
+    @IBOutlet private weak var livestreamButton: UIButton!
     
     override func awakeFromNib() {
         super.awakeFromNib()
         configureButton(photoButton, isHighlighted: false)
         configureButton(videoButton, isHighlighted: false)
+        configureButton(livestreamButton, isHighlighted: false)
+        // TODO: Uncomment this in the next release.
+        livestreamButton.isHidden = true
     }
     override func layoutSubviews() {
         super.layoutSubviews()
-        for button in [photoButton, videoButton] {
+        for button in [photoButton, videoButton, livestreamButton] {
             button!.layer.cornerRadius = button!.bounds.height * 0.5
             button!.clipsToBounds = true
         }
@@ -103,6 +108,8 @@ class PostGallerySegmentedControlCell: UICollectionViewCell, Nibbable {
             return photoButton
         case .video:
             return videoButton
+        case .livestream:
+            return livestreamButton
         }
     }
     
@@ -112,6 +119,10 @@ class PostGallerySegmentedControlCell: UICollectionViewCell, Nibbable {
     
     @IBAction private func videoDidTouch() {
         delegate?.postGallerySegmentedControlCell(self, didTouchSection: .video)
+    }
+    
+    @IBAction func livestreamDidTouch() {
+        delegate?.postGallerySegmentedControlCell(self, didTouchSection: .livestream)
     }
     
     static var height: CGFloat {

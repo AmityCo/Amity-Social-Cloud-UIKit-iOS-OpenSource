@@ -46,6 +46,10 @@
 "general_upload_image" = "Upload Image";
 "general_moderator" = "Moderator";
 "general_search" = "Search";
+"general_poll" = "Poll";
+"general_day" = "Day";
+"general_days" = "Days";
+"genera_text_input_limit_charactor" = "You have reached %@ characters limit.";
 "general_video" = "Video";
 "general_photo" = "Photo";
 "general_attachment" = "Attachment";
@@ -68,6 +72,13 @@
 "unit_post_plural" = "%@ posts";
 "unit_share_singular" = "%@ share";
 "unit_share_plural" = "%@ shares";
+
+"unit_day_singular" = "%@ day";
+"unit_day_plural" = "%@ days";
+"unit_hour_singular" = "%@ hour";
+"unit_hour_plural" = "%@ hours";
+"unit_minute_singular" = "%@ minute";
+"unit_minute_plural" = "%@ minutes";
 
 "chat_title" = "Chat";
 "recent_title" = "Recent";
@@ -395,6 +406,36 @@
 "pending_posts_post_not_available" = "Post is not available";
 "pending_posts_alert_delete_fail_approve_or_decline" = "Your post has been reviewed.\nCheck your feed if it got approved";
 
+// MARK: - Poll
+"poll_create_question_title" = "Poll question";
+"poll_create_question_placeholder" = "What's your poll question";
+"poll_create_answer_title" = "Options";
+"poll_create_answer_desc" = "Create at least 2 options";
+"poll_create_answer_placeholder" = "Add option";
+"poll_create_answer_button" = "Add option";
+"poll_create_multiple_selection_title" = "Multiple selection";
+"poll_create_multiple_selection_desc" = "Turn on to allow others to vote more than one option";
+"poll_create_schedule_title" = "Schedule poll (Optional)";
+"poll_create_schedule_desc" = "Poll will be automatically closed at the end of chosen time frame (UTC)";
+"poll_create_choose_time_frame_title" = "Choose time frame";
+"poll_create_alert_title" = "Leave without finishing?";
+"poll_create_alert_desc" = "Your progress won’t be saved and poll won’t be created.";
+
+"poll_close_title" = "Close poll";
+"poll_delete_title" = "Delete poll";
+"poll_more_options" = "more options";
+"poll_view_full_result" = "View full results";
+"poll_alert_close_title" = "Close poll";
+"poll_alert_close_desc" = "Schedule you’ve set will be removed and poll will be closed immediately.";
+"poll_alert_delete_title" = "Delete this poll";
+"poll_alert_delete_desc" = "This poll will be permanently deleted. You’ll no longer to see and find this poll";
+"poll_submit_vote_title" = "Submit vote";
+"poll_vote_count_title" = "votes";
+"poll_final_result" = "Final results";
+"poll_open_for_voting" = "Open for voting";
+"poll_ends_in_days" = "Poll ends in %@";
+"poll_ends_in_minutes" = "Poll ends in %@";
+"poll_ends_in_hours" = "Poll ends in %@";
 // MARK: - Relative Time
 "relative_time_year" = "year";
 "relative_time_month" = "month";

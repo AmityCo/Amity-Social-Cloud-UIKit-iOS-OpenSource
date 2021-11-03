@@ -16,7 +16,7 @@ public final class AmityUIKitManager {
     
     // MARK: - Setup Authentication
     
-    /// Setup AmityClient
+    /// Setup AmityUIKit instance. Internally it creates AmityClient instance from AmitySDK.
     ///
     /// - Parameters:
     ///   - apiKey: API key provided by Amity.
@@ -34,6 +34,18 @@ public final class AmityUIKitManager {
         }
     }
     
+    /// Registers current user with server. This is analogous to "login" process. If the user is already registered, local
+    /// information is used. It is okay to call this method multiple times.
+    ///
+    /// Note:
+    /// You do not need to call `unregisterDevice` before calling this method. If new user is being registered, then sdk handles unregistering process automatically.
+    /// So simply call `registerDevice` with new user information.
+    ///
+    /// - Parameters:
+    ///   - userId: Id of the user
+    ///   - displayName: Display name of the user. If display name is not provided, user id would be set as display name.
+    ///   - authToken: Auth token for this user if you are using secure mode.
+    ///   - completion: Completion handler.
     public static func registerDevice(
         withUserId userId: String,
         displayName: String?,
@@ -41,14 +53,24 @@ public final class AmityUIKitManager {
         completion: AmityRequestCompletion? = nil) {
         AmityUIKitManagerInternal.shared.registerDevice(userId, displayName: displayName, authToken: authToken, completion: completion)
     }
+    
+    /// Unregisters current user. This removes all data related to current user & terminates conenction with server. This is analogous to "logout" process.
+    /// Once this method is called, the only way to re-establish connection would be to call `registerDevice` method again.
+    ///
+    /// Note:
+    /// You do not need to call this method before calling `registerDevice`.
     public static func unregisterDevice() {
         AmityUIKitManagerInternal.shared.unregisterDevice()
     }
     
-    public static func registerDeviceForPushNotification(_ deviceToken: String) {
-        AmityUIKitManagerInternal.shared.registerDeviceForPushNotification(deviceToken)
+    
+    /// Registers this device for receiving apple push notification
+    /// - Parameter deviceToken: Correct apple push notificatoin token received from the app.
+    public static func registerDeviceForPushNotification(_ deviceToken: String, completion: AmityRequestCompletion? = nil) {
+        AmityUIKitManagerInternal.shared.registerDeviceForPushNotification(deviceToken, completion: completion)
     }
     
+    /// Unregisters this device for receiving push notification related to AmitySDK.
     public static func unregisterDevicePushNotification() {
         AmityUIKitManagerInternal.shared.unregisterDevicePushNotification()
     }
@@ -59,6 +81,7 @@ public final class AmityUIKitManager {
     
     // MARK: - Variable
     
+    /// Public instance of `AmityClient` from `AmitySDK`. If you are using both`AmitySDK` & `AmityUIKit` in a same project, we recommend to have only one instance of `AmityClient`. You can use this instance instead.
     public static var client: AmityClient {
         return AmityUIKitManagerInternal.shared.client
     }
@@ -172,9 +195,9 @@ final class AmityUIKitManagerInternal: NSObject {
         self._client?.registerDeviceForPushNotification(withDeviceToken: deviceToken, completion: completion)
     }
     
-    func unregisterDevicePushNotification() {
+    func unregisterDevicePushNotification(completion: AmityRequestCompletion? = nil) {
         guard let currentUserId = self._client?.currentUserId else { return }
-        client.unregisterDeviceForPushNotification(forUserId: currentUserId, completion: nil)
+        client.unregisterDeviceForPushNotification(forUserId: currentUserId, completion: completion)
     }
     
     func setLanguage(language: String) {

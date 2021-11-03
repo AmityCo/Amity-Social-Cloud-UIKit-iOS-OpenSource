@@ -270,11 +270,11 @@ private extension AmityRecentChatScreenViewModel {
             break
         }
         channelsToken = channelsCollection?.observe { [weak self] (collection, change, error) in
-                self?.prepareDataSource()
+            self?.prepareDataSource()
         }
     }
     
-    func prepareDataSource() {
+    private func prepareDataSource() {
         AmityHUD.hide()
         guard let collection = channelsCollection else {
             return

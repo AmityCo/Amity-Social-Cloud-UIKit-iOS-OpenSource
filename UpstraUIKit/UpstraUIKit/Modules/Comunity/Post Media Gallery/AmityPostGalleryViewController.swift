@@ -45,6 +45,7 @@ public class AmityPostGalleryViewController: AmityViewController {
         collectionView.register(PostGallerySegmentedControlCell.self)
         collectionView.register(PostGalleryItemCell.self)
         collectionView.register(PostGalleryFakeItemCell.self)
+        collectionView.register(PostGalleryEmptyStateCell.self)
         collectionView.dataSource = self
         collectionView.delegate = self
     }
@@ -72,6 +73,8 @@ public class AmityPostGalleryViewController: AmityViewController {
             filterPostTypes = ["image"]
         case .video:
             filterPostTypes = ["video"]
+        case .livestream:
+            filterPostTypes = ["liveStream"]
         }
         
         let queryOptions = AmityPostQueryOptions(
@@ -127,6 +130,8 @@ extension AmityPostGalleryViewController: UICollectionViewDataSource {
             return (collectionView.dequeueReusableCell(for: indexPath) as PostGalleryItemCell)
         case .fakePost:
             return (collectionView.dequeueReusableCell(for: indexPath) as PostGalleryFakeItemCell)
+        case .empty:
+            return (collectionView.dequeueReusableCell(for: indexPath) as PostGalleryEmptyStateCell)
         }
         
     }
@@ -151,6 +156,20 @@ extension AmityPostGalleryViewController: UICollectionViewDelegateFlowLayout {
             itemCell.configure(with: postObject)
         case .fakePost:
             return
+        case .empty:
+            // Note: The view model just tell that the datasource is empty.
+            // The view controller determine which type is currently empty from `currentSection`.
+            let emptyStateCell = cell as! PostGalleryEmptyStateCell
+            switch currentSection {
+            case .image:
+                emptyStateCell.configure(image: UIImage(named: "empty_post_gallery_image", in: AmityUIKitManager.bundle, compatibleWith: nil), text: "No photo yet")
+            case .video:
+                emptyStateCell.configure(image: UIImage(named: "empty_post_gallery_video", in: AmityUIKitManager.bundle, compatibleWith: nil), text: "No video yet")
+            case .livestream:
+                emptyStateCell.configure(image: UIImage(named: "empty_post_gallery_video", in: AmityUIKitManager.bundle, compatibleWith: nil), text: "No livestream yet")
+            case .none:
+                assertionFailure("currentSection must already have a value at this point.")
+            }
         }
         
     }
@@ -173,6 +192,8 @@ extension AmityPostGalleryViewController: UICollectionViewDelegateFlowLayout {
             // We maintain recntangle ratio.
             let cellHeight = cellWidth
             return CGSize(width: cellWidth, height: cellHeight)
+        case .empty:
+            return CGSize(width: collectionView.bounds.width, height: PostGalleryEmptyStateCell.height)
         }
         
     }
@@ -216,6 +237,33 @@ extension AmityPostGalleryViewController: UICollectionViewDelegateFlowLayout {
                     )
                 } else {
                     print("unable to find image url for post: \(postObject.postId)")
+                }
+            case "liveStream":
+                guard let stream = postObject.getLiveStreamInfo() else {
+                    print("unable to find stream for post: \(postObject.postId)")
+                    return
+                }
+                guard !stream.isDeleted else {
+                    return
+                }
+                switch stream.status {
+                case .recorded:
+                    AmityEventHandler.shared.openRecordedLiveStreamPlayer(
+                        from: self,
+                        postId: postObject.postId,
+                        streamId: stream.streamId,
+                        recordedData: stream.recordingData
+                    )
+                case .live:
+                    AmityEventHandler.shared.openLiveStreamPlayer(
+                        from: self,
+                        postId: postObject.postId,
+                        streamId: stream.streamId
+                    )
+                case .ended, .idle:
+                    break
+                @unknown default:
+                    break
                 }
             default:
                 assertionFailure("Not implement")

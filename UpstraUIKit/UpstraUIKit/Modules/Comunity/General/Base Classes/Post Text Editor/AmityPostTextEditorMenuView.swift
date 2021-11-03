@@ -20,18 +20,18 @@ enum AmityPostMenuActionType {
     case expand
 }
 
-enum AmityPostAttachmentType {
+public enum AmityPostAttachmentType: CaseIterable {
     case image
     case video
     case file
-    case none
 }
 
 class AmityPostTextEditorMenuView: UIView {
     
     static let defaultHeight: CGFloat = 60
     
-    private let settings: AmityPostEditorSettings
+    private let allowPostAttachments: Set<AmityPostAttachmentType>
+    
     private let stackView = UIStackView(frame: .zero)
     private let topLineView = UIView(frame: .zero)
     private let cameraButton = AmityButton(frame: .zero)
@@ -40,20 +40,20 @@ class AmityPostTextEditorMenuView: UIView {
     private let fileButton = AmityButton(frame: .zero)
     private let expandButton = AmityButton(frame: .zero)
     
-    weak var delegate: AmityPostTextEditorMenuViewDelegate?
-    
-    var attachmentType: AmityPostAttachmentType = .none {
+    var currentAttachmentState: AmityPostAttachmentType? {
         didSet {
             updateButtonState()
         }
     }
     
+    weak var delegate: AmityPostTextEditorMenuViewDelegate?
+    
     private enum Constant {
         static let topLineViewHeight: CGFloat = 1.0
     }
     
-    init(settings: AmityPostEditorSettings) {
-        self.settings = settings
+    init(allowPostAttachments: Set<AmityPostAttachmentType>) {
+        self.allowPostAttachments = allowPostAttachments
         super.init(frame: .zero)
         commonInit()
     }
@@ -63,11 +63,12 @@ class AmityPostTextEditorMenuView: UIView {
     }
     
     private func commonInit() {
+        
         backgroundColor = AmityColorSet.backgroundColor
         clipsToBounds = true
 
         stackView.translatesAutoresizingMaskIntoConstraints = false
-        stackView.distribution = .fillEqually
+        stackView.distribution = .fillProportionally
         stackView.alignment = .center
         topLineView.translatesAutoresizingMaskIntoConstraints = false
         topLineView.backgroundColor = AmityColorSet.secondary.blend(.shade4)
@@ -83,14 +84,38 @@ class AmityPostTextEditorMenuView: UIView {
         expandButton.setImage(AmityIconSet.iconDownChevron, for: .normal)
         expandButton.addTarget(self, action: #selector(tapExpand), for: .touchUpInside)
         
-        // setup buttons
-        for button in [cameraButton, albumButton, videoButton, fileButton, expandButton] {
+        // Setup arrangedSubview in stackview
+        
+        let buttonsToAdd = [cameraButton, albumButton, videoButton, fileButton]
+        for button in buttonsToAdd {
             button.translatesAutoresizingMaskIntoConstraints = false
+//            NSLayoutConstraint.activate([
+//                button.widthAnchor.constraint(equalToConstant: 32),
+//                button.heightAnchor.constraint(equalToConstant: 32)
+//            ])
+//            button.layer.cornerRadius = 16
+//            button.clipsToBounds = true
+//            button.backgroundColor = (button == expandButton) ? .clear : AmityColorSet.base.blend(.shade4)
             button.setTintColor(AmityColorSet.base, for: .normal)
             button.setTintColor(AmityColorSet.base.blend(.shade3), for: .disabled)
             stackView.addArrangedSubview(button)
         }
-
+        
+        // Set buttons visibility based on allowPostAttachments.
+        cameraButton.isHidden = allowPostAttachments.isDisjoint(with: [.image, .video])
+        albumButton.isHidden = allowPostAttachments.isDisjoint(with: [.image])
+        videoButton.isHidden = allowPostAttachments.isDisjoint(with: [.video])
+        fileButton.isHidden = allowPostAttachments.isDisjoint(with: [])
+        
+        // At empty view, at beginning, and the end of the stackview.
+        // This logic works together with stackView.distribution = .equalCentering
+        // To create buttons position arrangment, and also create negative space at left and right side.
+        let visibleButtons = stackView.arrangedSubviews.filter { !$0.isHidden }
+        if visibleButtons.count < 4 {
+            stackView.insertArrangedSubview(UIView(frame: .zero), at: 0)
+            stackView.addArrangedSubview(UIView(frame: .zero))
+        }
+        
         addSubview(topLineView)
         addSubview(stackView)
         
@@ -106,15 +131,15 @@ class AmityPostTextEditorMenuView: UIView {
         ])
         
         // settings
-        cameraButton.isHidden = settings.shouldCameraButtonHide
-        albumButton.isHidden = settings.shouldAlbumButtonHide
-        fileButton.isHidden = settings.shouldFileButtonHide
-        expandButton.isHidden = settings.shouldExpandButtonHide
-        videoButton.isHidden = settings.shouldVideoButtonHide
+//        cameraButton.isHidden = settings.shouldCameraButtonHide
+//        albumButton.isHidden = settings.shouldAlbumButtonHide
+//        fileButton.isHidden = settings.shouldFileButtonHide
+//        expandButton.isHidden = settings.shouldExpandButtonHide
+//        videoButton.isHidden = settings.shouldVideoButtonHide
     }
     
     private func updateButtonState() {
-        switch attachmentType {
+        switch currentAttachmentState {
         case .image:
             cameraButton.isEnabled = true
             albumButton.isEnabled = true

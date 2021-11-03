@@ -8,25 +8,32 @@
 
 import UIKit
 
-final class AmityTextField: UITextField {
+public class AmityTextField: UITextField {
     
-    enum ValueType: Int {
+    public enum ValueType: Int {
+        
         case none
         case onlyLetters
         case onlyNumbers
-        case phoneNumber   // Allowed "+0123456789"
+        
+        /// Allowed "+0123456789"
+        case phoneNumber
+        
         case alphaNumeric
-        case fullName       // Allowed letters and space
+        
+        /// Allowed letters and space
+        case fullName
+        
     }
     
-    var maxLength: Int = 0 // Max character length
-    var valueType: ValueType = ValueType.none // Allowed characters
+    public var maxLength: Int = 0 // Max character length
+    public var valueType: ValueType = ValueType.none // Allowed characters
 
     /************* Added new feature ***********************/
     // Accept only given character in string, this is case sensitive
-    var allowedCharInString: String = ""
+    public var allowedCharInString: String = ""
 
-    func verifyFields(shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+    public func verifyFields(shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
         
         switch valueType {
         case .none:
@@ -66,7 +73,7 @@ final class AmityTextField: UITextField {
         
         if let text = self.text, let textRange = Range(range, in: text) {
             let finalText = text.replacingCharacters(in: textRange, with: string)
-            if maxLength > 0, maxLength < finalText.utf16.count {
+            if maxLength > 0, maxLength < finalText.count {
                 return false
             }
         }
@@ -80,6 +87,8 @@ final class AmityTextField: UITextField {
         }
         
         return true
+        
     }
+    
 }
 

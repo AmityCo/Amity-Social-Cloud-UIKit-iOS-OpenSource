@@ -15,6 +15,13 @@ extension UIViewController {
         return String(describing: self)
     }
     
+    public var isModalPresentation: Bool {
+        let presentingIsModal = presentingViewController != nil
+        let presentingIsNavigation = navigationController?.presentingViewController?.presentedViewController == navigationController
+        let presentingIsTabBar = tabBarController?.presentingViewController is UITabBarController
+        return presentingIsModal || presentingIsNavigation || presentingIsTabBar
+    }
+    
     func addChild(viewController: UIViewController, at frame: CGRect? = nil) {
         addChild(viewController)
         viewController.view.frame = frame ?? view.frame

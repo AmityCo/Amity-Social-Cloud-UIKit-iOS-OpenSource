@@ -10,4 +10,13 @@ import Foundation
 import AmityUIKit
 
 class CustomChannelEventHandler: AmityChannelEventHandler {
+    
+    override func channelDidTap(from source: AmityViewController,
+                                channelId: String) {
+        var settings = AmityMessageListViewController.Settings()
+        settings.shouldShowChatSettingBarButton = true
+        let viewController = AmityMessageListViewController.make(channelId: channelId, settings: settings)
+        source.navigationController?.pushViewController(viewController, animated: true)
+    }
+    
 }

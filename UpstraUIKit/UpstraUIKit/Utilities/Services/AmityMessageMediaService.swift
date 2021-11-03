@@ -80,9 +80,6 @@ final class AmityMessageMediaService {
             // In this case, the fileURL returned by imageInfo would be server URL. so we
             // grab image from that URL here and display it
             let fileURL = imageInfo.fileURL
-            
-            // Notify about progress
-            progress?()
                         
             // If image is present in cache, we load it from cache directly
             if let cachedURL = AmityFileCache.shared.getCachedDownloadedFile(id: messageId) {
@@ -91,6 +88,9 @@ final class AmityMessageMediaService {
                 }
                 return
             }
+            
+            // Notify about progress, telling that the file is downloading.
+            progress?()
             
             // Else downlaod it from server
             fileRepository.downloadImage(fromURL: fileURL, size: size, completion: { [weak self] (url, error) in

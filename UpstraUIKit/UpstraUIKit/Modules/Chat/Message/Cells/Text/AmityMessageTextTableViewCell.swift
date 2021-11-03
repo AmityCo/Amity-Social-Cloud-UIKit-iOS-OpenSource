@@ -11,10 +11,14 @@ import AmitySDK
 
 class AmityMessageTextTableViewCell: AmityMessageTableViewCell {
     
-    @IBOutlet private var textMessageView: AmityTextMessageView!
+    weak var textDelegate: AmityExpandableLabelDelegate? {
+        didSet {
+            textMessageView.delegate = textDelegate
+        }
+    }
     
-    var messageReadmore: AmityMessageReadmoreModel!
-    var readmoreHandler: (() -> Void)?
+    @IBOutlet private var textMessageView: AmityExpandableLabel!
+    
     override func awakeFromNib() {
         super.awakeFromNib()
         setupView()
@@ -23,32 +27,29 @@ class AmityMessageTextTableViewCell: AmityMessageTableViewCell {
     private func setupView() {
         textMessageView.text = ""
         textMessageView.textAlignment = .left
-        textMessageView.numberOfLines = 0
-        textMessageView.textFont = AmityFontSet.body
+        textMessageView.numberOfLines = 8
+        textMessageView.isExpanded = false
+        textMessageView.font = AmityFontSet.body
         textMessageView.backgroundColor = .clear
-        textMessageView.contentView.backgroundColor = .clear
-        textMessageView.readmoreHandler = { [weak self] in
-            guard let self = self else { return }
-            self.readmoreHandler?()
-        }
     }
         
     override func display(message: AmityMessageModel) {
         super.display(message: message)
         if message.isOwner {
             textMessageView.textColor = AmityColorSet.baseInverse
-            textMessageView.readmoreTextColor = AmityColorSet.baseInverse
+            textMessageView.readMoreColor = AmityColorSet.baseInverse
+            textMessageView.preferredMaxLayoutWidth = UIScreen.main.bounds.width - 108 // [Large Spacing + Text Padding + Spacing] -> [72 + 24 + 12]
         } else {
             textMessageView.textColor = AmityColorSet.base
-            textMessageView.readmoreTextColor = AmityColorSet.base
+            textMessageView.readMoreColor = AmityColorSet.highlight
+            textMessageView.preferredMaxLayoutWidth = UIScreen.main.bounds.width - 160 // [Spacing + Avatar + Text Padding + Large Spacing] -> [12 + 40 + 24 + 72]
         }
         setText(message)
     }
     
     private func setText(_ message: AmityMessageModel) {
         if message.messageType == .text {
-            textMessageView.message = message
-            textMessageView.messageReadmore = messageReadmore
+            textMessageView.text = message.text
         }
     }
 }

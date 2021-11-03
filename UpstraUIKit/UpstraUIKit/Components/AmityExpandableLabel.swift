@@ -74,6 +74,22 @@ open class AmityExpandableLabel: UILabel {
             self.collapsedAttributedLink = collapsedAttributedLink.copyWithAddedFontAttribute(font)
         }
     }
+    
+    /// Set a color for readmore label
+    /// The default value is 'AmityColorSet.highlight'.
+    open var readMoreColor: UIColor = AmityColorSet.highlight {
+        didSet {
+            updateReadMoreAttributes()
+        }
+    }
+    
+    /// Set a font for readmore label
+    /// The default value is 'AmityFontSet.bodyBold'.
+    open var readMoreFont: UIFont = AmityFontSet.bodyBold {
+        didSet {
+            updateReadMoreAttributes()
+        }
+    }
 
     /// Set the link name (and attributes) that is shown when expanded.
     /// The default value is "Less". Can be nil.
@@ -231,9 +247,12 @@ extension AmityExpandableLabel {
         isUserInteractionEnabled = true
         lineBreakMode = .byClipping
         collapsedNumberOfLines = numberOfLines
-        expandedAttributedLink = nil
-        collapsedAttributedLink = NSAttributedString(string: readMoreText, attributes: [.font: AmityFontSet.bodyBold, .foregroundColor: AmityColorSet.highlight])
-        ellipsis = NSAttributedString(string: truncateText, attributes: [.font: AmityFontSet.bodyBold, .foregroundColor: AmityColorSet.highlight])
+        updateReadMoreAttributes()
+    }
+    
+    private func updateReadMoreAttributes() {
+        collapsedAttributedLink = NSAttributedString(string: readMoreText, attributes: [.font: AmityFontSet.bodyBold, .foregroundColor: readMoreColor])
+        ellipsis = NSAttributedString(string: truncateText, attributes: [.font: AmityFontSet.bodyBold, .foregroundColor: readMoreColor])
     }
 
     private func textReplaceWordWithLink(_ lineIndex: LineIndexTuple, text: NSAttributedString, linkName: NSAttributedString) -> NSAttributedString {
@@ -300,7 +319,7 @@ extension AmityExpandableLabel {
 
     private func getCollapsedText(for text: NSAttributedString?, link: NSAttributedString) -> NSAttributedString? {
         guard let text = text else { return nil }
-        let lines = text.lines(for: frame.size.width)
+        let lines = text.lines(for: preferredMaxLayoutWidth > 0 ? preferredMaxLayoutWidth : frame.size.width)
         if collapsedNumberOfLines > 0 && collapsedNumberOfLines < lines.count {
             let lastLineRef = lines[collapsedNumberOfLines-1] as CTLine
             var lineIndex: LineIndexTuple?

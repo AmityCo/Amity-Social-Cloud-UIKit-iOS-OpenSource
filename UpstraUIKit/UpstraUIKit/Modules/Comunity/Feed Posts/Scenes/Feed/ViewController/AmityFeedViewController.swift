@@ -101,8 +101,10 @@ public final class AmityFeedViewController: AmityViewController, AmityRefreshabl
         postFooterProtocolHandler?.delegate = self
         
         postPostProtocolHandler = AmityPostProtocolHandler()
+        postPostProtocolHandler?.delegate = self
         postPostProtocolHandler?.viewController = self
         postPostProtocolHandler?.tableView = tableView
+        
     }
     
     // MARK: - Setup ViewModel
@@ -371,11 +373,21 @@ extension AmityFeedViewController: AmityPostHeaderProtocolHandlerDelegate {
             screenViewModel.action.report(withPostId: postId)
         case .tapUnreport:
             screenViewModel.action.unreport(withPostId: postId)
+        case .tapClosePoll:
+            screenViewModel.action.close(withPollId: post.poll?.id)
         }
     }
     
 }
 
+// MARK: - AmityPostProtocolHandlerDelegate
+extension AmityFeedViewController: AmityPostProtocolHandlerDelegate {
+    func amityPostProtocolHandlerDidTapSubmit(_ cell: AmityPostProtocol) {
+        if let cell = cell as? AmityPostPollTableViewCell {
+            screenViewModel.action.vote(withPollId: cell.post?.poll?.id, answerIds: cell.selectedAnswerIds)
+        }
+    }
+}
 
 // MARK: - AmityPostFooterProtocolHandlerDelegate
 extension AmityFeedViewController: AmityPostFooterProtocolHandlerDelegate {

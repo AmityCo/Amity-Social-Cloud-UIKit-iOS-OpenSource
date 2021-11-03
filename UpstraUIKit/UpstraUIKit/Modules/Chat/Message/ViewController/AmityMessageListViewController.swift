@@ -153,11 +153,10 @@ private extension AmityMessageListViewController {
     }
     
     func setupCustomNavigationBar() {
-        navigationBarType = .custom
-        navigationHeaderViewController = AmityMessageListHeaderView(viewModel: screenViewModel)
-        
         if settings.shouldShowChatSettingBarButton {
             // Just using the view form this
+            navigationBarType = .custom
+            navigationHeaderViewController = AmityMessageListHeaderView(viewModel: screenViewModel)
             let item = UIBarButtonItem(customView: navigationHeaderViewController)
             navigationItem.leftBarButtonItem = item
             let image = AmityIconSet.Chat.iconSetting
@@ -256,6 +255,7 @@ extension AmityMessageListViewController: AmityKeyboardServiceDelegate {
         
         let offset = height > 0 ? view.safeAreaInsets.bottom : 0
         bottomConstraint.constant = -height + offset
+        
         view.setNeedsUpdateConstraints()
         view.layoutIfNeeded()
         
@@ -264,11 +264,6 @@ extension AmityMessageListViewController: AmityKeyboardServiceDelegate {
             screenViewModel.action.inputSource(for: .default)
         } else {
             screenViewModel.action.toggleKeyboardVisible(visible: true)
-        }
-        
-        // scroll to bottom
-        if let lastIndexPath = messageViewController.tableView.lastIndexPath {
-            messageViewController.tableView.scrollToRow(at: lastIndexPath, at: .bottom, animated: false)
         }
     }
 }
@@ -336,7 +331,7 @@ extension AmityMessageListViewController: AmityMessageListScreenViewModelDelegat
     }
     
     func screenViewModelDidGetChannel(channel: AmityChannelModel) {
-        navigationHeaderViewController.updateViews(channel: channel)
+        navigationHeaderViewController?.updateViews(channel: channel)
     }
     
     func screenViewModelScrollToBottom(for indexPath: IndexPath) {
@@ -393,8 +388,8 @@ extension AmityMessageListViewController: AmityMessageListScreenViewModelDelegat
         
         switch events {
         case .edit(let indexPath):
-            guard let message = screenViewModel.dataSource.message(at: indexPath) else { return }
-            guard let text = message.data?["text"] as? String else { return }
+            guard let message = screenViewModel.dataSource.message(at: indexPath),
+                  let text = message.text else { return }
             
             let editTextVC = AmityEditTextViewController.make(text: text, editMode: .edit)
             editTextVC.title = AmityLocalizedStringSet.editMessageTitle.localizedString
@@ -430,8 +425,8 @@ extension AmityMessageListViewController: AmityMessageListScreenViewModelDelegat
             alertViewController.addAction(delete)
             present(alertViewController, animated: true)
             
-        case .report:
-            AmityHUD.show(.success(message: AmityLocalizedStringSet.HUD.reportSent.localizedString))
+        case .report(let indexPath):
+            screenViewModel.action.reportMessage(at: indexPath)
         case .imageViewer(let indexPath, let imageView):
             guard let message = screenViewModel.dataSource.message(at: indexPath) else { return }
             AmityUIKitManagerInternal.shared.messageMediaService.downloadImageForMessage(message: message.object, size: .full, progress: nil) { [weak self] (result) in
@@ -457,5 +452,12 @@ extension AmityMessageListViewController: AmityMessageListScreenViewModelDelegat
         default:
             break
         }
+    }
+    
+    func screenViewModelDidReportMessage(at indexPath: IndexPath) {
+        AmityHUD.show(.success(message: AmityLocalizedStringSet.HUD.reportSent.localizedString))
+    }
+    
+    func screenViewModelDidFailToReportMessage(at indexPath: IndexPath, with error: Error?) {
     }
 }

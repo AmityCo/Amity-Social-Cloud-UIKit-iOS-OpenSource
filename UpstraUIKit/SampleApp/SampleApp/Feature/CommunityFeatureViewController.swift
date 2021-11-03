@@ -13,9 +13,12 @@ import SwiftUI
 class CommunityFeatureViewController: UIViewController {
     
     enum FeatureList: CaseIterable {
+        
         case home
         case newsfeed
         case globalFeed
+        case myProfile
+        case PostCreator
         case myFeed
         case homeByDeeplink
         
@@ -27,6 +30,10 @@ class CommunityFeatureViewController: UIViewController {
                 return "Newsfeed (GlobalFeed + MyCommunity)"
             case .globalFeed:
                 return "GlobalFeed"
+            case .myProfile:
+                return "My Profile"
+            case .PostCreator:
+                return "Post Creator"
             case .myFeed:
                 return "MyFeed"
             case .homeByDeeplink:
@@ -54,16 +61,51 @@ class CommunityFeatureViewController: UIViewController {
         AmityFeedUISettings.shared.delegate = nil
         AmityFeedUISettings.shared.dataSource = nil
     }
+    
+    @available(iOS 14.0, *)
+    private func presentPostCreator(parameters: PostCreatorSettingsPage.Parameters) {
+        let postTarget: AmityPostTarget
+        switch parameters.targetType {
+        case .community:
+            fatalError("Unsupported case")
+        case .user:
+            postTarget = .myFeed
+        @unknown default:
+            fatalError("Unsupported case")
+        }
+        
+        let settings = AmityPostEditorSettings()
+        var allowPostAttachments = Set<AmityPostAttachmentType>()
+        if parameters.allowImage {
+            allowPostAttachments.formUnion([.image])
+        }
+        if parameters.allowVideo {
+            allowPostAttachments.formUnion([.video])
+        }
+        if parameters.allowFile {
+            allowPostAttachments.formUnion([.file])
+        }
+        settings.allowPostAttachments = allowPostAttachments
+        
+        let postCreatorVC = AmityPostCreatorViewController.make(postTarget: postTarget, settings: settings)
+        let navigationController = UINavigationController(rootViewController: postCreatorVC)
+        navigationController.modalPresentationStyle = .fullScreen
+        
+        present(navigationController, animated: true, completion: nil)
+    }
+    
 }
 
 extension CommunityFeatureViewController: UITableViewDelegate {
+    
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        
         tableView.deselectRow(at: indexPath, animated: true)
+        
         switch FeatureList.allCases[indexPath.row] {
         case .home:
             let homepage = AmityCommunityHomePageViewController.make()
             navigationController?.pushViewController(homepage, animated: true)
-            
             AmityFeedUISettings.shared.register(UINib(nibName: "AmityPostBirthdayTableViewCell", bundle: nil), forCellReuseIdentifier: "AmityPostBirthdayTableViewCell")
             AmityFeedUISettings.shared.register(UINib(nibName: "AmityPostThumbsupTableViewCell", bundle: nil), forCellReuseIdentifier: "AmityPostThumbsupTableViewCell")
             AmityFeedUISettings.shared.register(UINib(nibName: "AmityPostNewJoinerTableViewCell", bundle: nil), forCellReuseIdentifier: "AmityPostNewJoinerTableViewCell")
@@ -75,17 +117,32 @@ extension CommunityFeatureViewController: UITableViewDelegate {
         case .globalFeed:
             let feedViewController = AmityGlobalFeedViewController.make()
             navigationController?.pushViewController(feedViewController, animated: true)
+        case .myProfile:
+            let myUserProfileViewController = AmityUserProfilePageViewController.make(withUserId: AmityUIKitManager.client.currentUserId ?? "")
+            navigationController?.pushViewController(myUserProfileViewController, animated: true)
+        case .PostCreator:
+            if #available(iOS 14.0, *) {
+                var postCreateSettingsPage = PostCreatorSettingsPage()
+                postCreateSettingsPage.didChooseParameters = { [weak self] parameters in
+                    self?.navigationController?.popViewController(animated: true)
+                    self?.presentPostCreator(parameters: parameters)
+                }
+                let hoistingVC = UIHostingController(rootView: postCreateSettingsPage)
+                navigationController?.pushViewController(hoistingVC, animated: true)
+            } else {
+                print("iOS 14.0 is required to access this menu.")
+            }
         case .myFeed:
             let feedViewController = AmityUserFeedViewController.makeMyFeed()
             navigationController?.pushViewController(feedViewController, animated: true)
         case .homeByDeeplink:
-//            let home = AmityCommunityHomePageViewController.make(deeplinksType:.community(id: "d737b412fcd28aef5bafdcbb4d1a262d"), fromDeeplinks: true)
+            let home = AmityCommunityHomePageViewController.make(deeplinksType:.community(id: "4d0488e70ebef28f54061a798a43f81b"), fromDeeplinks: true)
 //            navigationController?.pushViewController(home, animated: true)
 //            https://amity.co/posts/8b4d22a96f4847ed1e6b76750ee63d7c
 //            https://amity.co/posts/8b4d22a96f4847ed1e6b76750ee63d7c
             //            let home = AmityCommunityHomePageViewController.make(deeplinksType: .post(id: "8b4d22a96f4847ed1e6b76750ee63d7c", communityId: "d737b412fcd28aef5bafdcbb4d1a262d"), fromDeeplinks: true)
             //            navigationController?.pushViewController(home, animated: true)
-            let home = AmityCommunityHomePageViewController.make(deeplinksType: .post(id: "c9e9ea353ca77d24478f44f8564fcc66", communityId: "d737b412fcd28aef5bafdcbb4d1a262d"), fromDeeplinks: true)
+//            let home = AmityCommunityHomePageViewController.make(deeplinksType: .post(id: "630cef8efaa994855574218f48da7856", communityId: "4d0488e70ebef28f54061a798a43f81b"), fromDeeplinks: true)
             navigationController?.pushViewController(home, animated: true)
 //            let home = AmityCommunityHomePageViewController.make(deeplinksType: .post(id: "", communityId: "d737b412fcd28aef5bafdcbb4d1a262d"), fromDeeplinks: true)
 //            navigationController?.pushViewController(home, animated: true)
@@ -94,7 +151,9 @@ extension CommunityFeatureViewController: UITableViewDelegate {
 //            navigationController?.pushViewController(home, animated: true)
         
         }
+        
     }
+    
 }
 
 extension CommunityFeatureViewController: UITableViewDataSource {

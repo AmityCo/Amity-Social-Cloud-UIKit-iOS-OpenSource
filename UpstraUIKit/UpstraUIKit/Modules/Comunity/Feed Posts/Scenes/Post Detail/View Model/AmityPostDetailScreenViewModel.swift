@@ -17,6 +17,7 @@ final class AmityPostDetailScreenViewModel: AmityPostDetailScreenViewModelType {
     private let commentController: AmityCommentControllerProtocol
     private let reactionController: AmityReactionControllerProtocol
     private let childrenController: AmityCommentChildrenController
+    private let pollRepository: AmityPollRepository
     
     private var commentCollectionToken: AmityNotificationToken?
     private var commentCollection: AmityCollection<AmityComment>?
@@ -37,6 +38,7 @@ final class AmityPostDetailScreenViewModel: AmityPostDetailScreenViewModelType {
         self.commentController = commentController
         self.reactionController = reactionController
         self.childrenController = childrenController
+        self.pollRepository = AmityPollRepository(client: AmityUIKitManagerInternal.shared.client)
     }
     
 }
@@ -84,6 +86,10 @@ extension AmityPostDetailScreenViewModel {
             return AmityPostComponent(component: AmityPostFileComponent(post: post))
         case .video:
             return AmityPostComponent(component: AmityPostMediaComponent(post: post))
+        case .poll:
+            return AmityPostComponent(component: AmityPostPollComponent(post: post))
+        case .liveStream:
+            return AmityPostComponent(component: AmityPostLiveStreamComponent(post: post))
         case .unknown:
             return AmityPostComponent(component: AmityPostPlaceHolderComponent(post: post))
         }
@@ -379,6 +385,35 @@ extension AmityPostDetailScreenViewModel {
             delegate?.screenViewModel(self, didFinishWithMessage: AmityLocalizedStringSet.HUD.unreportSent)
         } else {
             delegate?.screenViewModel(self, didFinishWithError: AmityError(error: error) ?? .unknown)
+        }
+    }
+    
+}
+
+// MARK: Poll
+extension AmityPostDetailScreenViewModel {
+    
+    func vote(withPollId pollId: String?, answerIds: [String]) {
+        guard let pollId = pollId else { return }
+        pollRepository.votePoll(withId: pollId, answerIds: answerIds) { [weak self] success, error in
+            guard let strongSelf = self else { return }
+            if success {
+                self?.fetchPost()
+            } else {
+                strongSelf.delegate?.screenViewModel(strongSelf, didFinishWithError: AmityError(error: error) ?? .unknown)
+            }
+        }
+    }
+    
+    func close(withPollId pollId: String?) {
+        guard let pollId = pollId else { return }
+        pollRepository.closePoll(withId: pollId) { [weak self] success, error in
+            guard let strongSelf = self else { return }
+            if success {
+                self?.fetchPost()
+            } else {
+                strongSelf.delegate?.screenViewModel(strongSelf, didFinishWithError: AmityError(error: error) ?? .unknown)
+            }
         }
     }
     
