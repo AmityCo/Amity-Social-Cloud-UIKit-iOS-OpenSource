@@ -71,6 +71,9 @@ private extension AmityCommunityExplorerViewController {
         recommendedContaienrView.backgroundColor = AmityColorSet.secondary.blend(.shade4)
         addContainerView(recommendedVC, to: recommendedContaienrView)
         
+        self.recommendedContaienrView.isHidden = true
+        self.backgroundView.isHidden = true
+        
         recommendedVC.selectedCommunityHandler = { [weak self] community in
             guard let strongSelf = self else { return }
             AmityEventHandler.shared.communityDidTap(from: strongSelf, communityId: community.communityId)

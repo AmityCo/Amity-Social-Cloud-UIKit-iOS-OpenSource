@@ -1,13 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="17701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="19455" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17703"/>
-        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="19454"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
-        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="AmityMyCommunityPreviewViewController" customModule="UpstraUIKit" customModuleProvider="target">
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="AmityMyCommunityPreviewViewController" customModule="AmityUIKit" customModuleProvider="target">
             <connections>
                 <outlet property="actionButton" destination="Ert-i5-SzN" id="Dzz-hO-vgZ"/>
                 <outlet property="collectionView" destination="RdE-I2-ISy" id="Wuc-hH-L24"/>
@@ -58,20 +59,19 @@
                     </constraints>
                 </view>
             </subviews>
-            <viewLayoutGuide key="safeArea" id="BTm-vd-hDJ"/>
             <color key="backgroundColor" systemColor="systemBackgroundColor"/>
             <constraints>
                 <constraint firstItem="wZn-v6-gEz" firstAttribute="top" secondItem="RdE-I2-ISy" secondAttribute="bottom" constant="16" id="0Je-64-MMn"/>
-                <constraint firstItem="BTm-vd-hDJ" firstAttribute="trailing" secondItem="Ert-i5-SzN" secondAttribute="trailing" constant="16" id="3wz-x8-zmb"/>
+                <constraint firstAttribute="trailing" secondItem="Ert-i5-SzN" secondAttribute="trailing" constant="16" id="3wz-x8-zmb"/>
                 <constraint firstItem="Ert-i5-SzN" firstAttribute="centerY" secondItem="s3Q-B5-eX2" secondAttribute="centerY" id="7ix-Is-eu3"/>
-                <constraint firstItem="BTm-vd-hDJ" firstAttribute="bottom" secondItem="wZn-v6-gEz" secondAttribute="bottom" id="D3P-FA-slV"/>
-                <constraint firstItem="RdE-I2-ISy" firstAttribute="leading" secondItem="BTm-vd-hDJ" secondAttribute="leading" id="EwF-i2-pow"/>
+                <constraint firstAttribute="bottom" secondItem="wZn-v6-gEz" secondAttribute="bottom" id="D3P-FA-slV"/>
+                <constraint firstItem="RdE-I2-ISy" firstAttribute="leading" secondItem="ny9-ph-bfZ" secondAttribute="leading" id="EwF-i2-pow"/>
                 <constraint firstItem="RdE-I2-ISy" firstAttribute="top" secondItem="s3Q-B5-eX2" secondAttribute="bottom" constant="12" id="LwE-4K-Rht"/>
-                <constraint firstItem="s3Q-B5-eX2" firstAttribute="leading" secondItem="BTm-vd-hDJ" secondAttribute="leading" constant="16" id="RiG-hj-9Wd"/>
+                <constraint firstItem="s3Q-B5-eX2" firstAttribute="leading" secondItem="ny9-ph-bfZ" secondAttribute="leading" constant="16" id="RiG-hj-9Wd"/>
                 <constraint firstItem="wZn-v6-gEz" firstAttribute="leading" secondItem="ny9-ph-bfZ" secondAttribute="leading" id="TmZ-nq-wVp"/>
                 <constraint firstAttribute="trailing" secondItem="wZn-v6-gEz" secondAttribute="trailing" id="dJn-0F-zN5"/>
-                <constraint firstItem="s3Q-B5-eX2" firstAttribute="top" secondItem="BTm-vd-hDJ" secondAttribute="top" constant="16" id="eq4-VJ-4rX"/>
-                <constraint firstItem="RdE-I2-ISy" firstAttribute="trailing" secondItem="BTm-vd-hDJ" secondAttribute="trailing" id="kpy-Vh-HRv"/>
+                <constraint firstItem="s3Q-B5-eX2" firstAttribute="top" secondItem="ny9-ph-bfZ" secondAttribute="top" constant="16" id="eq4-VJ-4rX"/>
+                <constraint firstItem="RdE-I2-ISy" firstAttribute="trailing" secondItem="ny9-ph-bfZ" secondAttribute="trailing" id="kpy-Vh-HRv"/>
             </constraints>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
             <point key="canvasLocation" x="137.68115942028987" y="119.53125"/>
