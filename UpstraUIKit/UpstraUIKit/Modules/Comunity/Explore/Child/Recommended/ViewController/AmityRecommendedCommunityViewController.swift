@@ -106,7 +106,11 @@ extension AmityRecommendedCommunityViewController: UICollectionViewDataSource {
 extension AmityRecommendedCommunityViewController: AmityRecommendedCommunityScreenViewModelDelegate {
     func screenViewModel(_ viewModel: AmityRecommendedCommunityScreenViewModelType, didRetrieveRecommended recommended: [AmityCommunityModel], isEmpty: Bool) {
         collectionView.reloadData()
-        emptyHandler?(isEmpty)
+        if screenViewModel.dataSource.numberOfRecommended() > 0 {
+            emptyHandler?(isEmpty)
+        } else {
+            emptyHandler?(true)
+        }
     }
     
     func screenViewModel(_ viewModel: AmityRecommendedCommunityScreenViewModelType, didFail error: AmityError) {
