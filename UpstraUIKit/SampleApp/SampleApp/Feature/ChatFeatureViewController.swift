@@ -8,6 +8,7 @@
 
 import UIKit
 import AmityUIKit
+import AmitySDK
 
 class ChatFeatureViewController: UIViewController {
     
@@ -34,6 +35,10 @@ class ChatFeatureViewController: UIViewController {
     
     @IBOutlet private var tableView: UITableView!
     
+    private var channelObject: AmityObject<AmityChannel>?
+    private var channelRepository: AmityChannelRepository?
+    private var channelToken: AmityNotificationToken?
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         title = "Chat Feature"
@@ -54,7 +59,7 @@ class ChatFeatureViewController: UIViewController {
                 let channelId = textField.text,
                 !channelId.isEmpty
             {
-                self?.presentChat(channelId: channelId)
+                self?.joinToTheChannel(channelId: channelId)
             }
         }
         let cancel = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
@@ -71,6 +76,24 @@ class ChatFeatureViewController: UIViewController {
         navigationController?.pushViewController(vc, animated: true)
     }
     
+    func joinToTheChannel(channelId: String) {
+        channelRepository = AmityChannelRepository(client: AmityUIKitManager.client)
+        channelObject = channelRepository?.joinChannel(channelId)
+        channelToken = channelObject?.observe({ [weak self] channel, error in
+            guard let strongSelf = self else { return }
+            
+            strongSelf.channelToken?.invalidate()
+            if let error = error {
+                let alertController = UIAlertController(title: "Something went wrong", message: "Can't join to the channel: \(error.localizedDescription)", preferredStyle: .alert)
+                
+                let ok = UIAlertAction(title: "OK", style: .cancel)
+                alertController.addAction(ok)
+                strongSelf.present(alertController, animated: true, completion: nil)
+            } else {
+                strongSelf.presentChat(channelId: channelId)
+            }
+        })
+    }
 }
 
 extension ChatFeatureViewController: UITableViewDelegate {

@@ -45,7 +45,6 @@ class CustomEventHandler: AmityEventHandler {
         switch postContentType {
         case .post:
             let settings = AmityPostEditorSettings()
-            settings.shouldFileButtonHide = false
             viewController = AmityPostCreatorViewController.make(postTarget: postTarget, settings: settings)
         case .poll:
             viewController = AmityPollCreatorViewController.make(postTarget: postTarget)

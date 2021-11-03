@@ -13,10 +13,12 @@ import SwiftUI
 class CommunityFeatureViewController: UIViewController {
     
     enum FeatureList: CaseIterable {
+        
         case home
         case newsfeed
         case globalFeed
         case myProfile
+        case PostCreator
         
         var text: String {
             switch self {
@@ -28,6 +30,8 @@ class CommunityFeatureViewController: UIViewController {
                 return "GlobalFeed"
             case .myProfile:
                 return "My Profile"
+            case .PostCreator:
+                return "Post Creator"
             }
         }
     }
@@ -51,16 +55,51 @@ class CommunityFeatureViewController: UIViewController {
         AmityFeedUISettings.shared.delegate = nil
         AmityFeedUISettings.shared.dataSource = nil
     }
+    
+    @available(iOS 14.0, *)
+    private func presentPostCreator(parameters: PostCreatorSettingsPage.Parameters) {
+        let postTarget: AmityPostTarget
+        switch parameters.targetType {
+        case .community:
+            fatalError("Unsupported case")
+        case .user:
+            postTarget = .myFeed
+        @unknown default:
+            fatalError("Unsupported case")
+        }
+        
+        let settings = AmityPostEditorSettings()
+        var allowPostAttachments = Set<AmityPostAttachmentType>()
+        if parameters.allowImage {
+            allowPostAttachments.formUnion([.image])
+        }
+        if parameters.allowVideo {
+            allowPostAttachments.formUnion([.video])
+        }
+        if parameters.allowFile {
+            allowPostAttachments.formUnion([.file])
+        }
+        settings.allowPostAttachments = allowPostAttachments
+        
+        let postCreatorVC = AmityPostCreatorViewController.make(postTarget: postTarget, settings: settings)
+        let navigationController = UINavigationController(rootViewController: postCreatorVC)
+        navigationController.modalPresentationStyle = .fullScreen
+        
+        present(navigationController, animated: true, completion: nil)
+    }
+    
 }
 
 extension CommunityFeatureViewController: UITableViewDelegate {
+    
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        
         tableView.deselectRow(at: indexPath, animated: true)
+        
         switch FeatureList.allCases[indexPath.row] {
         case .home:
             let homepage = AmityCommunityHomePageViewController.make()
             navigationController?.pushViewController(homepage, animated: true)
-            
             AmityFeedUISettings.shared.register(UINib(nibName: "AmityPostBirthdayTableViewCell", bundle: nil), forCellReuseIdentifier: "AmityPostBirthdayTableViewCell")
             AmityFeedUISettings.shared.register(UINib(nibName: "AmityPostThumbsupTableViewCell", bundle: nil), forCellReuseIdentifier: "AmityPostThumbsupTableViewCell")
             AmityFeedUISettings.shared.register(UINib(nibName: "AmityPostNewJoinerTableViewCell", bundle: nil), forCellReuseIdentifier: "AmityPostNewJoinerTableViewCell")
@@ -75,8 +114,22 @@ extension CommunityFeatureViewController: UITableViewDelegate {
         case .myProfile:
             let myUserProfileViewController = AmityUserProfilePageViewController.make(withUserId: AmityUIKitManager.client.currentUserId ?? "")
             navigationController?.pushViewController(myUserProfileViewController, animated: true)
+        case .PostCreator:
+            if #available(iOS 14.0, *) {
+                var postCreateSettingsPage = PostCreatorSettingsPage()
+                postCreateSettingsPage.didChooseParameters = { [weak self] parameters in
+                    self?.navigationController?.popViewController(animated: true)
+                    self?.presentPostCreator(parameters: parameters)
+                }
+                let hoistingVC = UIHostingController(rootView: postCreateSettingsPage)
+                navigationController?.pushViewController(hoistingVC, animated: true)
+            } else {
+                print("iOS 14.0 is required to access this menu.")
+            }
         }
+        
     }
+    
 }
 
 extension CommunityFeatureViewController: UITableViewDataSource {

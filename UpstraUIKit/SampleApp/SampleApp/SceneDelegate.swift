@@ -7,7 +7,6 @@
 //
 
 import UIKit
-import SwiftUI
 import AmityUIKit
 
 @available(iOS 13.0, *)

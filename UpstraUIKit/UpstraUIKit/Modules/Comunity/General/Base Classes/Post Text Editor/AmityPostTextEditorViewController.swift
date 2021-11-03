@@ -13,10 +13,12 @@ import AVKit
 import MobileCoreServices
 
 public class AmityPostEditorSettings {
+    
     public init() { }
-    public var shouldCameraButtonHide: Bool = false
-    public var shouldAlbumButtonHide: Bool = false
-    public var shouldFileButtonHide: Bool = false
+    
+    /// To set what are the attachment types to allow, the default value is `AmityPostAttachmentType.allCases`.
+    public var allowPostAttachments: Set<AmityPostAttachmentType> = Set<AmityPostAttachmentType>(AmityPostAttachmentType.allCases)
+    
 }
 
 protocol AmityPostViewControllerDelegate: AnyObject {
@@ -57,22 +59,25 @@ public class AmityPostTextEditorViewController: AmityViewController {
         return !textView.text.isEmpty || !galleryView.medias.isEmpty || !fileView.files.isEmpty
     }
     
-    private var attachmentType: AmityPostAttachmentType = .none {
+    private var currentAttachmentState: AmityPostAttachmentType? {
         didSet {
-            postMenuView.attachmentType = attachmentType
+            postMenuView.currentAttachmentState = currentAttachmentState
         }
     }
     
     weak var delegate: AmityPostViewControllerDelegate?
     
     init(postTarget: AmityPostTarget, postMode: AmityPostMode, settings: AmityPostEditorSettings) {
+        
         self.postTarget = postTarget
         self.postMode = postMode
         self.settings = settings
-        self.postMenuView = AmityPostTextEditorMenuView(settings: settings)
+        self.postMenuView = AmityPostTextEditorMenuView(allowPostAttachments: settings.allowPostAttachments)
+        
         super.init(nibName: nil, bundle: nil)
         
         screenViewModel.delegate = self
+        
     }
     
     required init?(coder: NSCoder) {
@@ -132,7 +137,14 @@ public class AmityPostTextEditorViewController: AmityViewController {
         galleryViewHeightConstraint = NSLayoutConstraint(item: galleryView, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 0)
         fileViewHeightConstraint = NSLayoutConstraint(item: fileView, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 0)
         postMenuViewBottomConstraints = NSLayoutConstraint(item: postMenuView, attribute: .bottom, relatedBy: .equal, toItem: view.layoutMarginsGuide, attribute: .bottom, multiplier: 1, constant: 0)
-        postMenuView.isHidden = (postMode != .create)
+        
+        switch postMode {
+        case .create:
+            // If there is no menu to show, so we don't show postMenuView.
+            postMenuView.isHidden = settings.allowPostAttachments.isEmpty
+        case .edit:
+            postMenuView.isHidden = true
+        }
         
         NSLayoutConstraint.activate([
             scrollView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
@@ -210,23 +222,6 @@ public class AmityPostTextEditorViewController: AmityViewController {
     private func updateConstraints() {
         fileViewHeightConstraint.constant = AmityFileTableView.height(for: fileView.files.count, isEdtingMode: true, isExpanded: false)
         galleryViewHeightConstraint.constant = AmityGalleryCollectionView.height(for: galleryView.contentSize.width, numberOfItems: galleryView.medias.count)
-    }
-    
-    private func presentAskMediaTypeDialogue(completion: @escaping (AmityMediaType?) -> Void) {
-        let controller = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
-        let photo = UIAlertAction(title: AmityLocalizedStringSet.General.generalPhoto.localizedString, style: .default) { _ in
-            completion(.image)
-        }
-        let video = UIAlertAction(title: AmityLocalizedStringSet.General.generalVideo.localizedString, style: .default) { _ in
-            completion(.video)
-        }
-        let cancel = UIAlertAction(title: AmityLocalizedStringSet.General.cancel.localizedString, style: .cancel) { _ in
-            completion(nil)
-        }
-        controller.addAction(photo)
-        controller.addAction(video)
-        controller.addAction(cancel)
-        present(controller, animated: true, completion: nil)
     }
     
     @objc func adjustForKeyboard(notification: Notification) {
@@ -312,14 +307,15 @@ public class AmityPostTextEditorViewController: AmityViewController {
             postButton.isEnabled = isPostValid
         }
         
+        // Update postMenuView.currentAttachmentState to disable buttons based on the chosen attachment.
         if !fileView.files.isEmpty {
-            attachmentType = .file
+            currentAttachmentState = .file
         } else if galleryView.medias.contains(where: { $0.type == .image }) {
-            attachmentType = .image
+            currentAttachmentState = .image
         } else if galleryView.medias.contains(where: { $0.type == .video }) {
-            attachmentType = .video
+            currentAttachmentState = .video
         } else {
-            attachmentType = .none
+            currentAttachmentState = .none
         }
         
     }
@@ -527,25 +523,36 @@ public class AmityPostTextEditorViewController: AmityViewController {
     }
     
     private func presentMediaPickerCamera() {
+        
         let cameraPicker = UIImagePickerController()
         cameraPicker.sourceType = .camera
+        cameraPicker.delegate = self
         
-        // Currently users can only select one media type when create a post.
-        // After users choose the media, we will not `presentAskMediaTypeDialogue` after that.
         // We automatically choose media type based on last media pick.
-        switch attachmentType {
+        switch currentAttachmentState {
         case .none:
-            cameraPicker.mediaTypes = [kUTTypeImage, kUTTypeMovie] as [String]
+            // If the user have not chosen any media yet, we allow both type to be picked.
+            // After it is selected, we force the same type for the later actions.
+            var mediaTypesWhenNothingSelected: [String] = []
+            if settings.allowPostAttachments.contains(.image) {
+                mediaTypesWhenNothingSelected.append(kUTTypeImage as String)
+            }
+            if settings.allowPostAttachments.contains(.video) {
+                mediaTypesWhenNothingSelected.append(kUTTypeMovie as String)
+            }
+            cameraPicker.mediaTypes = mediaTypesWhenNothingSelected
         case .image:
+            // The user already select image, so we force the media type to allow only image.
             cameraPicker.mediaTypes = [kUTTypeImage as String]
         case .video:
+            // The user already select video, so we force the media type to allow only video.
             cameraPicker.mediaTypes = [kUTTypeMovie as String]
         case .file:
             Log.add("Type mismatch")
-            break
         }
-        cameraPicker.delegate = self
+        
         present(cameraPicker, animated: true, completion: nil)
+        
     }
     
     private func presentMediaPickerAlbum(type: AmityMediaType) {
@@ -729,6 +736,7 @@ extension AmityPostTextEditorViewController: AmityPostTextEditorMenuViewDelegate
     }
     
     private func presentBottomSheetMenus() {
+        
         let bottomSheet = BottomSheetViewController()
         let contentView = ItemOptionView<ImageItemOption>()
         let imageBackgroundColor = AmityColorSet.base.blend(.shade4)
@@ -760,43 +768,57 @@ extension AmityPostTextEditorViewController: AmityPostTextEditorMenuViewDelegate
             strongSelf.filePicker.present(from: strongSelf.postMenuView, files: strongSelf.fileView.files)
         }
         
-        switch attachmentType {
-        case .none:
-            break
-        case .image:
-            videoOption.image = AmityIconSet.iconPlayVideo?.setTintColor(disabledColor)
-            videoOption.textColor = disabledColor
-            videoOption.completion = nil
-            fileOption.image = AmityIconSet.iconAttach?.setTintColor(disabledColor)
-            fileOption.textColor = disabledColor
-            fileOption.completion = nil
-        case .video:
-            galleryOption.image = AmityIconSet.iconPhoto?.setTintColor(disabledColor)
-            galleryOption.textColor = disabledColor
-            galleryOption.completion = nil
-            fileOption.image = AmityIconSet.iconAttach?.setTintColor(disabledColor)
-            fileOption.textColor = disabledColor
-            fileOption.completion = nil
-        case .file:
-            cameraOption.image = AmityIconSet.iconCameraSmall?.setTintColor(disabledColor)
-            cameraOption.textColor = disabledColor
-            cameraOption.completion = nil
-            galleryOption.image = AmityIconSet.iconPhoto?.setTintColor(disabledColor)
-            galleryOption.textColor = disabledColor
-            galleryOption.completion = nil
-            videoOption.image = AmityIconSet.iconPlayVideo?.setTintColor(disabledColor)
-            videoOption.textColor = disabledColor
-            videoOption.completion = nil
+        // Each option will be added, based on allowPostAttachments.
+        var items: [ImageItemOption] = []
+        if settings.allowPostAttachments.contains(.image) || settings.allowPostAttachments.contains(.video) {
+            items.append(cameraOption)
+            items.append(galleryOption)
+        }
+        if settings.allowPostAttachments.contains(.file) {
+            items.append(fileOption)
+        }
+        if settings.allowPostAttachments.contains(.video) {
+            items.append(videoOption)
         }
         
-        contentView.configure(items: [cameraOption, galleryOption, videoOption, fileOption], selectedItem: nil)
+        // NOTE: Once the currentAttachmentState has changed from `none` to something else.
+        // We still show the buttons, but we disable them based on the currentAttachmentState.
+        if currentAttachmentState != .none {
+            if currentAttachmentState != .image || currentAttachmentState != .video {
+                // Disable gallery option
+                galleryOption.image = AmityIconSet.iconPhoto?.setTintColor(disabledColor)
+                galleryOption.textColor = disabledColor
+                galleryOption.completion = nil
+                // Disable camera option
+                cameraOption.image = AmityIconSet.iconCameraSmall?.setTintColor(disabledColor)
+                cameraOption.textColor = disabledColor
+                cameraOption.completion = nil
+            }
+            if currentAttachmentState != .video {
+                // Disable video option
+                videoOption.image = AmityIconSet.iconPlayVideo?.setTintColor(disabledColor)
+                videoOption.textColor = disabledColor
+                videoOption.completion = nil
+            }
+            if currentAttachmentState != .file {
+                // Disable file option
+                fileOption.image = AmityIconSet.iconAttach?.setTintColor(disabledColor)
+                fileOption.textColor = disabledColor
+                fileOption.completion = nil
+            }
+        }
+        
+        contentView.configure(items: items, selectedItem: nil)
         contentView.didSelectItem = { _ in
             bottomSheet.dismissBottomSheet()
         }
+        
         bottomSheet.sheetContentView = contentView
         bottomSheet.isTitleHidden = true
         bottomSheet.modalPresentationStyle = .overFullScreen
+        
         present(bottomSheet, animated: false, completion: nil)
+        
     }
     
     private func addMedias(_ medias: [AmityMedia], type: AmityMediaType) {
