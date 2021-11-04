@@ -205,7 +205,8 @@ final class AmityCommunityProfileHeaderViewController: UIViewController {
             actionButton.tag = 0
             actionButton.isHidden = false
         case .member:
-            chatButton.isHidden = settings.shouldChatButtonHide
+//            chatButton.isHidden = settings.shouldChatButtonHide
+            chatButton.isHidden = true
             actionButton.setTitle(AmityLocalizedStringSet.communityDetailMessageButton.localizedString, for: .normal)
             actionButton.setImage(AmityIconSet.iconChat, position: .left)
             actionButton.tintColor = AmityColorSet.secondary
@@ -216,7 +217,8 @@ final class AmityCommunityProfileHeaderViewController: UIViewController {
             actionButton.tag = 1
             actionButton.isHidden = true
         case .admin:
-            chatButton.isHidden = settings.shouldChatButtonHide
+//            chatButton.isHidden = settings.shouldChatButtonHide
+            chatButton.isHidden = true
             actionButton.setTitle(AmityLocalizedStringSet.communityDetailEditProfileButton.localizedString, for: .normal)
             actionButton.setImage(AmityIconSet.iconEdit, position: .left)
             actionButton.tintColor = AmityColorSet.secondary

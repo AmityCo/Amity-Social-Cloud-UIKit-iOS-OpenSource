@@ -117,7 +117,7 @@ public final class AmityCommunityProfilePageViewController: AmityProfileViewCont
         if isJoined { items.append(item) }
         items.append(shareItem)
         
-        navigationItem.rightBarButtonItems = items
+//        navigationItem.rightBarButtonItems = items
     }
     
     private func showCommunitySettingModal() {

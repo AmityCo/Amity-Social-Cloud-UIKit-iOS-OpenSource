@@ -14,7 +14,7 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "723CF85424EA8C9E009AE292"
+               BlueprintIdentifier = "FCCCEB422732DD9E00CDF9FB"
                BuildableName = "Release Framework"
                BlueprintName = "Release Framework"
                ReferencedContainer = "container:AmityUIKit.xcodeproj">
@@ -50,7 +50,7 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "723CF85424EA8C9E009AE292"
+            BlueprintIdentifier = "FCCCEB422732DD9E00CDF9FB"
             BuildableName = "Release Framework"
             BlueprintName = "Release Framework"
             ReferencedContainer = "container:AmityUIKit.xcodeproj">
