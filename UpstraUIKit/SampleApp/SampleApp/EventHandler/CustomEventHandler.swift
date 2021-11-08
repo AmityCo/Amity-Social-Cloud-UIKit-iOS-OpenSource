@@ -99,5 +99,9 @@ class AmityCustomEventHandler: AmityEventHandler {
         debugPrint(communityModelExternal.communityId)
     }
     
+    override func closeAmityCommunityViewController() {
+        debugPrint("Close")
+    }
+    
     
 }

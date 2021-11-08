@@ -236,6 +236,9 @@ open class AmityEventHandler {
     open func shareCommunityPostDidTap(from source: UIViewController, title: String?, postId: String, communityId: String) {}
     open func shareCommunityProfileDidTap(from source: UIViewController, communityModelExternal: AmityCommunityModelExternal) {}
     
+    /// TrueID Detect Close view
+    open func closeAmityCommunityViewController() {}
+    
     //MARK: - AnalyticNCCEvent
     open func communityTopbarSearchTracking() {}
     open func communityTopbarProfileTracking() {}
