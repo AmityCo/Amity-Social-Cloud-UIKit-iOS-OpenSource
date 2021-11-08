@@ -18,6 +18,8 @@ public class AmityCommunityHomePageViewController: AmityPageViewController {
     private var initialized: Bool = false
     private var deeplinkFinished: Bool = false
     
+    private var leftBarButtonItem: UIBarButtonItem?
+    
     private init(deeplinksType: DeeplinksType?, fromDeeplinks: Bool) {
         screenViewModel = AmityCommunityHomePageScreenViewModel(deeplinksType: deeplinksType, fromDeeplinks: fromDeeplinks)
         super.init(nibName: AmityCommunityHomePageViewController.identifier, bundle: AmityUIKitManager.bundle)
@@ -30,16 +32,20 @@ public class AmityCommunityHomePageViewController: AmityPageViewController {
     
     public override func viewDidLoad() {
         super.viewDidLoad()
-        setupNavigationBar()
-        
         fetchCategories()
+    }
+    
+    public override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        navigationController?.setNavigationBarHidden(false, animated: true)
+        setupNavigationBar()
     }
     
     public override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         runDeeplinksRouter()
     }
-    
+   
     public static func make(deeplinksType: DeeplinksType? = nil, fromDeeplinks: Bool = false) -> AmityCommunityHomePageViewController {
         return AmityCommunityHomePageViewController(deeplinksType: deeplinksType, fromDeeplinks: fromDeeplinks)
     }
@@ -53,9 +59,23 @@ public class AmityCommunityHomePageViewController: AmityPageViewController {
     // MARK: - Setup view
     
     private func setupNavigationBar() {
+        
         let searchItem = UIBarButtonItem(image: AmityIconSet.iconSearch, style: .plain, target: self, action: #selector(searchTap))
         searchItem.tintColor = AmityColorSet.base
         navigationItem.rightBarButtonItem = searchItem
+        
+        if navigationController?.viewControllers.count ?? 0 <= 1 {
+            if presentingViewController != nil {
+                leftBarButtonItem = UIBarButtonItem(image: AmityIconSet.iconClose, style: .plain, target: self, action: #selector(dismissView))
+                leftBarButtonItem?.tintColor = AmityColorSet.base
+                navigationItem.leftBarButtonItem = leftBarButtonItem
+            }
+        } else {
+            leftBarButtonItem = UIBarButtonItem(image: AmityIconSet.iconBack, style: .plain, target: self, action: #selector(popToView))
+            leftBarButtonItem?.tintColor = AmityColorSet.base
+            navigationItem.leftBarButtonItem = leftBarButtonItem
+        }
+        
     }
 }
 
@@ -68,6 +88,16 @@ private extension AmityCommunityHomePageViewController {
         nav.modalPresentationStyle = .fullScreen
         nav.modalTransitionStyle = .crossDissolve
         present(nav, animated: true, completion: nil)
+    }
+    
+    @objc func popToView() {
+        AmityEventHandler.shared.closeAmityCommunityViewController()
+        navigationController?.popViewController(animated: true)
+    }
+    
+    @objc func dismissView() {
+        AmityEventHandler.shared.closeAmityCommunityViewController()
+        dismiss(animated: true, completion: nil)
     }
 }
 

@@ -105,7 +105,12 @@ extension CommunityFeatureViewController: UITableViewDelegate {
         switch FeatureList.allCases[indexPath.row] {
         case .home:
             let homepage = AmityCommunityHomePageViewController.make()
+//            homepage.navigationBarType = .custom
             navigationController?.pushViewController(homepage, animated: true)
+            
+//            let navController = UINavigationController(rootViewController: homepage)
+//            navController.modalPresentationStyle = .fullScreen
+//            navigationController?.present(navController, animated: true, completion: nil)
             AmityFeedUISettings.shared.register(UINib(nibName: "AmityPostBirthdayTableViewCell", bundle: nil), forCellReuseIdentifier: "AmityPostBirthdayTableViewCell")
             AmityFeedUISettings.shared.register(UINib(nibName: "AmityPostThumbsupTableViewCell", bundle: nil), forCellReuseIdentifier: "AmityPostThumbsupTableViewCell")
             AmityFeedUISettings.shared.register(UINib(nibName: "AmityPostNewJoinerTableViewCell", bundle: nil), forCellReuseIdentifier: "AmityPostNewJoinerTableViewCell")
