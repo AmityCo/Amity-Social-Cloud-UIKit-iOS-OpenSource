@@ -229,7 +229,13 @@ extension AmityPostDetailScreenViewModel {
             if success {
                 strongSelf.delegate?.screenViewModelDidLikePost(strongSelf)
             } else {
-                strongSelf.delegate?.screenViewModel(strongSelf, didFinishWithError: AmityError(error: error) ?? .unknown)
+                switch AmityError(error: error) {
+                case .itemNotFound:
+                    strongSelf.delegate?.screenViewModelDidLikePost(strongSelf)
+                default:
+                    strongSelf.delegate?.screenViewModel(strongSelf, didFinishWithError: AmityError(error: error) ?? .unknown)
+                }
+                
             }
         }
     }
@@ -240,7 +246,12 @@ extension AmityPostDetailScreenViewModel {
             if success {
                 strongSelf.delegate?.screenViewModelDidUnLikePost(strongSelf)
             } else {
-                strongSelf.delegate?.screenViewModel(strongSelf, didFinishWithError: AmityError(error: error) ?? .unknown)
+                switch AmityError(error: error) {
+                case .itemNotFound:
+                    strongSelf.delegate?.screenViewModelDidUnLikePost(strongSelf)
+                default:
+                    strongSelf.delegate?.screenViewModel(strongSelf, didFinishWithError: AmityError(error: error) ?? .unknown)
+                }
             }
         }
     }
