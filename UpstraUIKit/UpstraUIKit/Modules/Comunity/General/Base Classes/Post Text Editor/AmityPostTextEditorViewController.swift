@@ -99,7 +99,7 @@ public class AmityPostTextEditorViewController: AmityViewController {
         navigationItem.rightBarButtonItem = postButton
         navigationItem.rightBarButtonItem?.isEnabled = false
         
-        #warning("ViewController must be implemented with storyboard")
+#warning("ViewController must be implemented with storyboard")
         scrollView.translatesAutoresizingMaskIntoConstraints = false
         scrollView.keyboardDismissMode = .onDrag
         scrollView.backgroundColor = AmityColorSet.backgroundColor
@@ -489,7 +489,7 @@ public class AmityPostTextEditorViewController: AmityViewController {
         }
         
     }
-
+    
     private func showUploadFailureAlert() {
         let alertController = UIAlertController(title: AmityLocalizedStringSet.postCreationUploadIncompletTitle.localizedString, message: AmityLocalizedStringSet.postCreationUploadIncompletDescription.localizedString, preferredStyle: .alert)
         let cancelAction = UIAlertAction(title: AmityLocalizedStringSet.General.ok.localizedString, style: .cancel, handler: nil)
@@ -725,9 +725,9 @@ extension AmityPostTextEditorViewController: AmityPostTextEditorScreenViewModelD
             case .reviewing:
                 AmityAlertController.present(title: AmityLocalizedStringSet.postCreationSubmitTitle.localizedString,
                                              message: AmityLocalizedStringSet.postCreationSubmitDesc.localizedString, actions: [.ok(style: .default, handler: { [weak self] in
-                                                self?.postButton.isEnabled = true
-                                                self?.dismiss(animated: true, completion: nil)
-                                             })], from: self)
+                    self?.postButton.isEnabled = true
+                    self?.dismiss(animated: true, completion: nil)
+                })], from: self)
             case .published, .declined:
                 postButton.isEnabled = true
                 dismiss(animated: true, completion: nil)
@@ -761,9 +761,17 @@ extension AmityPostTextEditorViewController: AmityPostTextEditorMenuViewDelegate
         case .camera:
             presentMediaPickerCamera()
         case .album:
-            presentMediaPickerAlbum(type: .image)
+            checkPhotoLibraryPermission { [weak self] in
+                self?.presentMediaPickerAlbum(type: .image)
+            } fail: { [weak self] in
+                self?.alrtPermisionAccessphoto()
+            }
         case .video:
-            presentMediaPickerAlbum(type: .video)
+            checkPhotoLibraryPermission { [weak self] in
+                self?.presentMediaPickerAlbum(type: .video)
+            } fail: {
+                
+            }
         case .file:
             filePicker.present(from: view, files: fileView.files)
         case .expand:
@@ -880,11 +888,11 @@ extension AmityPostTextEditorViewController: AmityPostTextEditorMenuViewDelegate
 }
 
 extension AmityPostTextEditorViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
-
+    
     public func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
         picker.dismiss(animated: true, completion: nil)
     }
-
+    
     public func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
         
         guard let mediaType = info[.mediaType] as? String else {
@@ -935,28 +943,70 @@ extension AmityPostTextEditorViewController: UIImagePickerControllerDelegate, UI
 extension AmityPostTextEditorViewController {
     
     public override func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
-            guard isValueChanged else {
-                return super.gestureRecognizerShouldBegin(gestureRecognizer)
-            }
-            
-            if let view = gestureRecognizer.view,
-               let directions = (gestureRecognizer as? UIPanGestureRecognizer)?.direction(in: view),
-               directions.contains(.right) {
-                let alertController = UIAlertController(title: AmityLocalizedStringSet.postCreationDiscardPostTitle.localizedString, message: AmityLocalizedStringSet.postCreationDiscardPostMessage.localizedString, preferredStyle: .alert)
-                let cancelAction = UIAlertAction(title: AmityLocalizedStringSet.General.cancel.localizedString, style: .cancel, handler: nil)
-                let discardAction = UIAlertAction(title: AmityLocalizedStringSet.General.discard.localizedString, style: .destructive) { [weak self] _ in
-                    self?.generalDismiss()
-                }
-                alertController.addAction(cancelAction)
-                alertController.addAction(discardAction)
-                present(alertController, animated: true, completion: nil)
-
-                // prevents swiping back and present confirmation message
-                return false
-            }
-            
-            // falls back to normal behaviour, swipe back to previous page
+        guard isValueChanged else {
             return super.gestureRecognizerShouldBegin(gestureRecognizer)
         }
         
+        if let view = gestureRecognizer.view,
+           let directions = (gestureRecognizer as? UIPanGestureRecognizer)?.direction(in: view),
+           directions.contains(.right) {
+            let alertController = UIAlertController(title: AmityLocalizedStringSet.postCreationDiscardPostTitle.localizedString, message: AmityLocalizedStringSet.postCreationDiscardPostMessage.localizedString, preferredStyle: .alert)
+            let cancelAction = UIAlertAction(title: AmityLocalizedStringSet.General.cancel.localizedString, style: .cancel, handler: nil)
+            let discardAction = UIAlertAction(title: AmityLocalizedStringSet.General.discard.localizedString, style: .destructive) { [weak self] _ in
+                self?.generalDismiss()
+            }
+            alertController.addAction(cancelAction)
+            alertController.addAction(discardAction)
+            present(alertController, animated: true, completion: nil)
+            
+            // prevents swiping back and present confirmation message
+            return false
+        }
+        
+        // falls back to normal behaviour, swipe back to previous page
+        return super.gestureRecognizerShouldBegin(gestureRecognizer)
     }
+    
+}
+
+//MARK: - Check photo and camera permision
+extension AmityPostTextEditorViewController {
+    
+    func checkPhotoLibraryPermission(success: @escaping() -> (), fail: @escaping() -> ()) {
+        let photoAuthorizationStatus = PHPhotoLibrary.authorizationStatus()
+           switch photoAuthorizationStatus {
+           case .authorized:
+               success()
+               break
+           case .notDetermined:
+               PHPhotoLibrary.requestAuthorization({
+                   (newStatus) in
+                   if newStatus ==  PHAuthorizationStatus.authorized {
+                       success()
+                   }
+               })
+           case .restricted:
+               break
+           case .denied:
+               fail()
+               break
+           case .limited:
+               fail()
+               break
+           @unknown default:
+               fail()
+               break
+           }
+    }
+    
+    func alrtPermisionAccessphoto(title: String, Message: String) {
+        let alert = UIAlertController(title: "Photo", message: "Please allow access photo library", preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "Cancel", style: .default, handler: { action in
+        }))
+        alert.addAction(UIAlertAction(title: "Setting", style: .default, handler: { action in
+            UIApplication.shared.open(URL(string: UIApplication.openSettingsURLString)!)
+        }))
+        self.present(alert, animated: true)
+    }
+    
+}
