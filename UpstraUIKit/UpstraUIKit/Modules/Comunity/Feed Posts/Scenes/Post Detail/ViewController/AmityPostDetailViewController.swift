@@ -73,7 +73,7 @@ open class AmityPostDetailViewController: AmityViewController {
     public override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         navigationController?.setBackgroundColor(with: .white)
-        self.navigationController?.setNavigationBarHidden(false, animated: true)
+        navigationController?.setNavigationBarHidden(false, animated: true)
         AmityKeyboardService.shared.delegate = self
     }
     
