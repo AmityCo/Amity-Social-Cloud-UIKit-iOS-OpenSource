@@ -37,6 +37,7 @@ public final class AmityCommunityProfilePageViewController: AmityProfileViewCont
     public override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         AmityEventHandler.shared.communityPageToTimelineTracking()
+        navigationController?.setNavigationBarHidden(false, animated: true)
         setupViewModel()
         setupPostButton()
     }
