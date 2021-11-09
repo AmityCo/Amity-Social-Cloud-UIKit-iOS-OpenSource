@@ -11,6 +11,7 @@ import Photos
 import AmitySDK
 import AVKit
 import MobileCoreServices
+import AVFoundation
 
 public class AmityPostEditorSettings {
     
@@ -759,18 +760,22 @@ extension AmityPostTextEditorViewController: AmityPostTextEditorMenuViewDelegate
         
         switch action {
         case .camera:
-            presentMediaPickerCamera()
+            checkCameraPermission { [weak self] in
+                self?.presentMediaPickerCamera()
+            } fail: { [weak self] in
+                self?.alrtPermisionAccessphoto(title: "Camera", message: "Please allow access camera library")
+            }
         case .album:
             checkPhotoLibraryPermission { [weak self] in
                 self?.presentMediaPickerAlbum(type: .image)
             } fail: { [weak self] in
-                self?.alrtPermisionAccessphoto()
+                self?.alrtPermisionAccessphoto(title: "Photo", message: "Please allow access photo library")
             }
         case .video:
             checkPhotoLibraryPermission { [weak self] in
                 self?.presentMediaPickerAlbum(type: .video)
-            } fail: {
-                
+            } fail: { [weak self] in
+                self?.alrtPermisionAccessphoto(title: "Photo", message: "Please allow access photo library")
             }
         case .file:
             filePicker.present(from: view, files: fileView.files)
@@ -999,8 +1004,22 @@ extension AmityPostTextEditorViewController {
            }
     }
     
-    func alrtPermisionAccessphoto(title: String, Message: String) {
-        let alert = UIAlertController(title: "Photo", message: "Please allow access photo library", preferredStyle: .alert)
+    func checkCameraPermission(success: @escaping() -> (), fail: @escaping() -> ()) {
+        if AVCaptureDevice.authorizationStatus(for: AVMediaType.video) == .authorized {
+            success()
+        } else {
+            AVCaptureDevice.requestAccess(for: .video) { (granted) in
+                if granted {
+                    success()
+                } else {
+                    fail()
+                }
+            }
+        }
+    }
+    
+    func alrtPermisionAccessphoto(title: String, message: String) {
+        let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: "Cancel", style: .default, handler: { action in
         }))
         alert.addAction(UIAlertAction(title: "Setting", style: .default, handler: { action in
