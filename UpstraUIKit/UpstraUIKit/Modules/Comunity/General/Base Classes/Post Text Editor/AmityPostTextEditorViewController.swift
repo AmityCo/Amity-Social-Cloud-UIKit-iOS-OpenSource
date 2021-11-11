@@ -52,7 +52,8 @@ public class AmityPostTextEditorViewController: AmityViewController {
     private let scrollView = UIScrollView(frame: .zero)
     private let textView = AmityTextView(frame: .zero)
     private let separaterLine = UIView(frame: .zero)
-    private let galleryView = AmityGalleryCollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout())
+//    private let galleryView = AmityGalleryCollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout())
+    private let galleryView = TrueIDGalleryCollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout())
     private let fileView = AmityFileTableView(frame: .zero, style: .plain)
     private let postMenuView: AmityPostTextEditorMenuView
     private var postButton: UIBarButtonItem!
@@ -228,7 +229,7 @@ public class AmityPostTextEditorViewController: AmityViewController {
     
     private func updateConstraints() {
         fileViewHeightConstraint.constant = AmityFileTableView.height(for: fileView.files.count, isEdtingMode: true, isExpanded: false)
-        galleryViewHeightConstraint.constant = AmityGalleryCollectionView.height(for: galleryView.contentSize.width, numberOfItems: galleryView.medias.count)
+        galleryViewHeightConstraint.constant = TrueIDGalleryCollectionView.height(for: galleryView.contentSize.width, numberOfItems: galleryView.medias.count)
     }
     
     @objc func adjustForKeyboard(notification: Notification) {
@@ -636,16 +637,24 @@ public class AmityPostTextEditorViewController: AmityViewController {
     
 }
 
-extension AmityPostTextEditorViewController: AmityGalleryCollectionViewDelegate {
+extension AmityPostTextEditorViewController: TrueIDGalleryCollectionViewDelegate {
     
-    func galleryView(_ view: AmityGalleryCollectionView, didRemoveImageAt index: Int) {
+    func galleryView(_ view: TrueIDGalleryCollectionView, didRemoveImageAt index: Int) {
         var medias = galleryView.medias
         medias.remove(at: index)
         galleryView.configure(medias: medias)
         updateViewState()
+        updateConstraints()
     }
     
-    func galleryView(_ view: AmityGalleryCollectionView, didTapMedia media: AmityMedia, reference: UIImageView) {
+    private func presentPhotoViewer(media: AmityMedia, from cell: AmityPostGalleryTableViewCell) {
+        let photoViewerVC = AmityPhotoViewerController(referencedView: cell.imageView, media: media)
+        photoViewerVC.dataSource = cell
+        photoViewerVC.delegate = cell
+        present(photoViewerVC, animated: true, completion: nil)
+    }
+    
+    func galleryView(_ view: TrueIDGalleryCollectionView, didTapMedia media: AmityMedia, reference: UIImageView) {
         
         switch media.type {
         case .video:
@@ -660,7 +669,29 @@ extension AmityPostTextEditorViewController: AmityGalleryCollectionViewDelegate 
             }
         case .image:
             // Do nothing when tap at the image.
-            break
+            switch media.state {
+            case .uploading(progress: _):
+                break
+            case .uploadedImage(data: _):
+                let photoViewerVC = AmityPhotoViewerController(referencedView: reference, image: reference.image)
+                present(photoViewerVC, animated: true, completion: nil)
+            case .uploadedVideo(data: _):
+                break
+            case .localAsset(_):
+                break
+            case .image(_):
+                break
+            case .localURL(url: _):
+                break
+            case .downloadableImage(fileURL: _, placeholder: _):
+                break
+            case .downloadableVideo(videoURL: _, thumbnailUrl: _):
+                break
+            case .none:
+                break
+            case .error:
+                break
+            }
         }
         
     }
@@ -947,30 +978,30 @@ extension AmityPostTextEditorViewController: UIImagePickerControllerDelegate, UI
 // MARK: - UIGestureRecognizerDelegate
 extension AmityPostTextEditorViewController {
     
-    public override func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
-        guard isValueChanged else {
-            return super.gestureRecognizerShouldBegin(gestureRecognizer)
-        }
-        
-        if let view = gestureRecognizer.view,
-           let directions = (gestureRecognizer as? UIPanGestureRecognizer)?.direction(in: view),
-           directions.contains(.right) {
-            let alertController = UIAlertController(title: AmityLocalizedStringSet.postCreationDiscardPostTitle.localizedString, message: AmityLocalizedStringSet.postCreationDiscardPostMessage.localizedString, preferredStyle: .alert)
-            let cancelAction = UIAlertAction(title: AmityLocalizedStringSet.General.cancel.localizedString, style: .cancel, handler: nil)
-            let discardAction = UIAlertAction(title: AmityLocalizedStringSet.General.discard.localizedString, style: .destructive) { [weak self] _ in
-                self?.generalDismiss()
-            }
-            alertController.addAction(cancelAction)
-            alertController.addAction(discardAction)
-            present(alertController, animated: true, completion: nil)
-            
-            // prevents swiping back and present confirmation message
-            return false
-        }
-        
-        // falls back to normal behaviour, swipe back to previous page
-        return super.gestureRecognizerShouldBegin(gestureRecognizer)
-    }
+//    public override func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
+//        guard isValueChanged else {
+//            return super.gestureRecognizerShouldBegin(gestureRecognizer)
+//        }
+//        
+//        if let view = gestureRecognizer.view,
+//           let directions = (gestureRecognizer as? UIPanGestureRecognizer)?.direction(in: view),
+//           directions.contains(.right) {
+//            let alertController = UIAlertController(title: AmityLocalizedStringSet.postCreationDiscardPostTitle.localizedString, message: AmityLocalizedStringSet.postCreationDiscardPostMessage.localizedString, preferredStyle: .alert)
+//            let cancelAction = UIAlertAction(title: AmityLocalizedStringSet.General.cancel.localizedString, style: .cancel, handler: nil)
+//            let discardAction = UIAlertAction(title: AmityLocalizedStringSet.General.discard.localizedString, style: .destructive) { [weak self] _ in
+//                self?.generalDismiss()
+//            }
+//            alertController.addAction(cancelAction)
+//            alertController.addAction(discardAction)
+//            present(alertController, animated: true, completion: nil)
+//            
+//            // prevents swiping back and present confirmation message
+//            return false
+//        }
+//        
+//        // falls back to normal behaviour, swipe back to previous page
+//        return super.gestureRecognizerShouldBegin(gestureRecognizer)
+//    }
     
 }
 
