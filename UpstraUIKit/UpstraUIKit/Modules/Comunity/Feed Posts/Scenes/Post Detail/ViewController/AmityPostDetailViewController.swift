@@ -74,6 +74,7 @@ open class AmityPostDetailViewController: AmityViewController {
         super.viewWillAppear(animated)
         navigationController?.setBackgroundColor(with: .white)
         navigationController?.setNavigationBarHidden(false, animated: true)
+        navigationItem.largeTitleDisplayMode = .never
         AmityKeyboardService.shared.delegate = self
     }
     

@@ -38,6 +38,7 @@ public final class AmityCommunityProfilePageViewController: AmityProfileViewCont
         super.viewWillAppear(animated)
         AmityEventHandler.shared.communityPageToTimelineTracking()
         navigationController?.setNavigationBarHidden(false, animated: true)
+        navigationItem.largeTitleDisplayMode = .never
         setupViewModel()
         setupPostButton()
     }
