@@ -192,8 +192,10 @@ extension AmityFeedScreenViewModel {
 // MARK: Post
 extension AmityFeedScreenViewModel {
     func delete(withPostId postId: String) {
+        AmityHUD.show(.loading)
         postController.delete(withPostId: postId, parentId: nil) { [weak self] (success, error) in
             guard let strongSelf = self else { return }
+            AmityHUD.hide()
             if success {
                 NotificationCenter.default.post(name: NSNotification.Name.Post.didDelete, object: nil)
             } else {
