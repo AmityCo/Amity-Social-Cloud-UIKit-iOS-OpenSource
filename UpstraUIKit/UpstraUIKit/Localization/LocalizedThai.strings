@@ -176,6 +176,7 @@
 "post_creation_discard_post_title" = "ลบโพสต์";
 "post_creation_discard_post_message" = "โพสต์นี้จะถูกลบอย่างถาวร คุณจะไม่เห็นโพสต์นี้อีกต่อไป";
 "post_creation_select_image" = "เลือกรูป";
+"post_creation_select_video" = "เลือกวีดีโอ";
 "post_creation_file_upload_icomplete_title" = "เกิดข้อผิดพลาดระหว่างการอัปโหลด";
 "post_creation_file_upload_icomplete_description" = "ไม่สามารถอัปโหลดไฟล์บางไฟล์ได้ โปรดลบออกและลองใหม่อีกครั้ง";
 "post_craetion_submit_title" = "Post submitted";
