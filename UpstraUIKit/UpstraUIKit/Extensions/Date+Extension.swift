@@ -35,7 +35,8 @@ extension Date {
     }
     var relativeTime: String {
         
-        let plural = Locale.components(fromIdentifier: Locale.preferredLanguages.first!)["kCFLocaleLanguageCodeKey"] == "th" ? "" : "s"
+//        let plural = Locale.components(fromIdentifier: Locale.preferredLanguages.first!)["kCFLocaleLanguageCodeKey"] == "th" ? "" : "s"
+        let plural = AmityUIKitManagerInternal.shared.amityLanguage == "th" ? "" : "s"
         
         if yearsFromNow > 0 {
 //            return "\(yearsFromNow) year" + (yearsFromNow > 1 ? "s" : "") + " ago"
