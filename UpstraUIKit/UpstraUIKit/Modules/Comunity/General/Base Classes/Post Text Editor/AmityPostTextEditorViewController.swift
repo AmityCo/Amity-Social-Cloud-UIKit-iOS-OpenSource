@@ -212,6 +212,12 @@ public class AmityPostTextEditorViewController: AmityViewController {
         }
     }
     
+    public override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        navigationController?.setNavigationBarHidden(false, animated: true)
+        navigationItem.largeTitleDisplayMode = .never
+    }
+    
     public override func didTapLeftBarButton() {
         if isValueChanged {
             let alertController = UIAlertController(title: AmityLocalizedStringSet.postCreationDiscardPostTitle.localizedString, message: AmityLocalizedStringSet.postCreationDiscardPostMessage.localizedString, preferredStyle: .alert)
@@ -315,6 +321,12 @@ public class AmityPostTextEditorViewController: AmityViewController {
             postButton.isEnabled = isPostValid
         }
         
+        if galleryView.medias.count == Constant.maximumNumberOfImages {
+            postMenuView.isMaximum = true
+        } else {
+            postMenuView.isMaximum = false
+        }
+        
         // Update postMenuView.currentAttachmentState to disable buttons based on the chosen attachment.
         if !fileView.files.isEmpty {
             currentAttachmentState = .file
@@ -351,7 +363,7 @@ public class AmityPostTextEditorViewController: AmityViewController {
                         AmityUIKitManagerInternal.shared.fileService.uploadImage(image: img, progressHandler: { progress in
                             self?.galleryView.updateViewState(for: media.id, state: .uploading(progress: progress))
                             Log.add("[UIKit]: Upload Progress \(progress)")
-                        }, completion:  { [weak self] result in
+                        }, completion:  { [weak self, weak fileUploadFailedDispatchGroup] result in
                             switch result {
                             case .success(let imageData):
                                 Log.add("[UIKit]: Uploaded image data \(imageData.fileId)")
@@ -363,7 +375,7 @@ public class AmityPostTextEditorViewController: AmityViewController {
                                 self?.galleryView.updateViewState(for: media.id, state: .error)
                                 isUploadFailed = true
                             }
-                            fileUploadFailedDispatchGroup.leave()
+                            fileUploadFailedDispatchGroup?.leave()
                             self?.updateViewState()
                         })
                     case .failure:
@@ -414,7 +426,7 @@ public class AmityPostTextEditorViewController: AmityViewController {
                     AmityUIKitManagerInternal.shared.fileService.uploadVideo(url: url, progressHandler: { progress in
                         self?.galleryView.updateViewState(for: media.id, state: .uploading(progress: progress))
                         Log.add("[UIKit]: Upload Progress \(progress)")
-                    }, completion: { result in
+                    }, completion: { [weak dispatchGroup] result in
                         switch result {
                         case .success(let videoData):
                             Log.add("[UIKit]: Uploaded video \(videoData.fileId)")
@@ -426,7 +438,7 @@ public class AmityPostTextEditorViewController: AmityViewController {
                             self?.galleryView.updateViewState(for: media.id, state: .error)
                             isUploadFailed = true
                         }
-                        dispatchGroup.leave()
+                        dispatchGroup?.leave()
                         self?.updateViewState()
                     })
                 }
@@ -589,51 +601,70 @@ public class AmityPostTextEditorViewController: AmityViewController {
     }
     
     private func presentMediaPickerAlbum(type: AmityMediaType) {
-        
-        let supportedMediaTypes: Set<Settings.Fetch.Assets.MediaTypes>
-        
-        // The closue to execute when picker finish picking the media.
-        let finish: ([PHAsset]) -> Void
-        
-        switch type {
-        case .image:
-            supportedMediaTypes = [.image]
-            finish = { [weak self] assets in
-                guard let strongSelf = self else { return }
-                let medias: [AmityMedia] = assets.map { asset in
-                    AmityMedia(state: .localAsset(asset), type: .image)
+            
+            let supportedMediaTypes: Set<Settings.Fetch.Assets.MediaTypes>
+            
+            // The closue to execute when picker finish picking the media.
+            let finish: ([PHAsset]) -> Void
+            
+            var selectedAssets: [PHAsset] = []
+            for media in galleryView.medias {
+                if let local = media.localAsset {
+                    selectedAssets.append(local)
                 }
-                strongSelf.addMedias(medias, type: .image)
             }
-        case .video:
-            supportedMediaTypes = [.video]
-            finish = { [weak self] assets in
-                guard let strongSelf = self else { return }
-                let medias: [AmityMedia] = assets.map { asset in
-                    let media = AmityMedia(state: .localAsset(asset), type: .video)
-                    media.localAsset = asset
-                    return media
+            let selectedAssetIds: [String] = selectedAssets.map { $0.localIdentifier }
+            
+            switch type {
+            case .image:
+                supportedMediaTypes = [.image]
+                finish = { [weak self] assets in
+                    guard let strongSelf = self else { return }
+                    
+                    var newMedias: [AmityMedia] = []
+                    for asset in assets {
+                        guard !selectedAssetIds.contains(asset.localIdentifier) else {
+                            continue
+                        }
+                        let media = AmityMedia(state: .localAsset(asset), type: .image)
+                        media.localAsset = asset
+                        newMedias.append(media)
+                    }
+                    strongSelf.addMedias(newMedias, type: .image)
                 }
-                strongSelf.addMedias(medias, type: .video)
+            case .video:
+                supportedMediaTypes = [.video]
+                finish = { [weak self] assets in
+                    guard let strongSelf = self else { return }
+                    
+                    var newMedias: [AmityMedia] = []
+                    for asset in assets {
+                        guard !selectedAssetIds.contains(asset.localIdentifier) else {
+                            continue
+                        }
+                        let media = AmityMedia(state: .localAsset(asset), type: .video)
+                        media.localAsset = asset
+                        newMedias.append(media)
+                    }
+                    strongSelf.addMedias(newMedias, type: .video)
+                }
             }
+            
+            let maxNumberOfSelection: Int
+            switch postMode {
+            case .create:
+                maxNumberOfSelection = Constant.maximumNumberOfImages
+            case .edit:
+                maxNumberOfSelection = Constant.maximumNumberOfImages - galleryView.medias.count
+            }
+            let imagePicker = AmityImagePickerController(selectedAssets: selectedAssets)
+            imagePicker.settings.theme.selectionStyle = .numbered
+            imagePicker.settings.fetch.assets.supportedMediaTypes = supportedMediaTypes
+            imagePicker.settings.selection.max = maxNumberOfSelection
+            imagePicker.settings.selection.unselectOnReachingMax = false
+            presentImagePicker(imagePicker, select: nil, deselect: nil, cancel: nil, finish: finish, completion: nil)
+            
         }
-        
-        let maxNumberOfSelection: Int
-        switch postMode {
-        case .create:
-            maxNumberOfSelection = Constant.maximumNumberOfImages
-        case .edit:
-            maxNumberOfSelection = Constant.maximumNumberOfImages - galleryView.medias.count
-        }
-        
-        let imagePicker = AmityImagePickerController(selectedAssets: [])
-        imagePicker.settings.theme.selectionStyle = .numbered
-        imagePicker.settings.fetch.assets.supportedMediaTypes = supportedMediaTypes
-        imagePicker.settings.selection.max = maxNumberOfSelection
-        imagePicker.settings.selection.unselectOnReachingMax = false
-        presentImagePicker(imagePicker, select: nil, deselect: nil, cancel: nil, finish: finish, completion: nil)
-        
-    }
     
 }
 

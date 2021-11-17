@@ -29,6 +29,7 @@ public enum AmityPostAttachmentType: CaseIterable {
 class AmityPostTextEditorMenuView: UIView {
     
     static let defaultHeight: CGFloat = 60
+    var isMaximum: Bool = false
     
     private let allowPostAttachments: Set<AmityPostAttachmentType>
     
@@ -141,15 +142,29 @@ class AmityPostTextEditorMenuView: UIView {
     private func updateButtonState() {
         switch currentAttachmentState {
         case .image:
-            cameraButton.isEnabled = true
-            albumButton.isEnabled = true
-            videoButton.isEnabled = false
-            fileButton.isEnabled = false
+            if isMaximum {
+                cameraButton.isEnabled = false
+                albumButton.isEnabled = false
+                videoButton.isEnabled = false
+                fileButton.isEnabled = false
+            } else {
+                cameraButton.isEnabled = true
+                albumButton.isEnabled = true
+                videoButton.isEnabled = false
+                fileButton.isEnabled = false
+            }
         case .video:
-            cameraButton.isEnabled = true
-            albumButton.isEnabled = false
-            videoButton.isEnabled = true
-            fileButton.isEnabled = false
+            if isMaximum {
+                cameraButton.isEnabled = false
+                albumButton.isEnabled = false
+                videoButton.isEnabled = false
+                fileButton.isEnabled = false
+            } else {
+                cameraButton.isEnabled = true
+                albumButton.isEnabled = false
+                videoButton.isEnabled = true
+                fileButton.isEnabled = false
+            }
         case .file:
             cameraButton.isEnabled = false
             albumButton.isEnabled = false
