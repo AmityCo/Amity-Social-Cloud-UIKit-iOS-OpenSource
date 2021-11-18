@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="19455" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="19454"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="tWG-c6-9Aq" customClass="PTNToastView" customModule="AmityUIKit" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="414" height="40"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="IRR-ql-ZOo">
+                    <rect key="frame" x="0.0" y="0.0" width="414" height="40"/>
+                    <subviews>
+                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="svR-hC-mWz">
+                            <rect key="frame" x="112.5" y="0.0" width="189.5" height="40"/>
+                            <color key="backgroundColor" red="0.97254901960784312" green="0.79607843137254897" blue="0.22352941176470587" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        </view>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Post has been delete" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Deg-0h-Fcg">
+                            <rect key="frame" x="127.5" y="9.5" width="159.5" height="21"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                            <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                    </subviews>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <constraints>
+                        <constraint firstItem="svR-hC-mWz" firstAttribute="leading" secondItem="Deg-0h-Fcg" secondAttribute="leading" constant="-15" id="4Tv-BB-meU"/>
+                        <constraint firstAttribute="bottom" secondItem="svR-hC-mWz" secondAttribute="bottom" id="Mal-U4-Py1"/>
+                        <constraint firstItem="Deg-0h-Fcg" firstAttribute="centerX" secondItem="IRR-ql-ZOo" secondAttribute="centerX" id="PA9-bM-eRr"/>
+                        <constraint firstItem="svR-hC-mWz" firstAttribute="trailing" secondItem="Deg-0h-Fcg" secondAttribute="trailing" constant="15" id="aIR-qH-dNO"/>
+                        <constraint firstItem="svR-hC-mWz" firstAttribute="centerY" secondItem="Deg-0h-Fcg" secondAttribute="centerY" id="jjD-g0-eyz"/>
+                        <constraint firstItem="svR-hC-mWz" firstAttribute="top" secondItem="IRR-ql-ZOo" secondAttribute="top" id="uXW-OY-eha"/>
+                    </constraints>
+                    <userDefinedRuntimeAttributes>
+                        <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                            <real key="value" value="8"/>
+                        </userDefinedRuntimeAttribute>
+                        <userDefinedRuntimeAttribute type="color" keyPath="shadowColor">
+                            <color key="value" white="0.0" alpha="0.080000000000000002" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        </userDefinedRuntimeAttribute>
+                        <userDefinedRuntimeAttribute type="number" keyPath="shadowOpacity">
+                            <real key="value" value="1"/>
+                        </userDefinedRuntimeAttribute>
+                        <userDefinedRuntimeAttribute type="size" keyPath="shadowOffset">
+                            <size key="value" width="0.0" height="4"/>
+                        </userDefinedRuntimeAttribute>
+                        <userDefinedRuntimeAttribute type="number" keyPath="shadowRadius">
+                            <real key="value" value="8"/>
+                        </userDefinedRuntimeAttribute>
+                    </userDefinedRuntimeAttributes>
+                </view>
+            </subviews>
+            <viewLayoutGuide key="safeArea" id="brL-Y4-u9i"/>
+            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+            <constraints>
+                <constraint firstItem="IRR-ql-ZOo" firstAttribute="top" secondItem="tWG-c6-9Aq" secondAttribute="top" id="Fv2-43-Ef5"/>
+                <constraint firstItem="brL-Y4-u9i" firstAttribute="trailing" secondItem="IRR-ql-ZOo" secondAttribute="trailing" id="MLl-Sv-Jn0"/>
+                <constraint firstItem="IRR-ql-ZOo" firstAttribute="leading" secondItem="brL-Y4-u9i" secondAttribute="leading" id="OHp-8h-mh3"/>
+                <constraint firstAttribute="bottom" secondItem="IRR-ql-ZOo" secondAttribute="bottom" id="Sgv-x2-UUg"/>
+            </constraints>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <connections>
+                <outlet property="lblTitle" destination="Deg-0h-Fcg" id="rQ7-wG-eyT"/>
+                <outlet property="viewBackground" destination="svR-hC-mWz" id="icS-m2-ROg"/>
+            </connections>
+            <point key="canvasLocation" x="131.8840579710145" y="-122.54464285714285"/>
+        </view>
+    </objects>
+</document>
