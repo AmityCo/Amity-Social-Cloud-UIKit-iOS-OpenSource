@@ -15,7 +15,7 @@ class PTNToast: NSObject {
     static var share = PTNToast()
     private let windows = UIApplication.shared.windows.filter {$0.isKeyWindow}.first
     private var dismissTimer: Timer?
-    private var durationClosePopup: TimeInterval = 1
+    private var durationClosePopup: TimeInterval = 2
     private var viewNotification = PTNToastView()
     
     private lazy var tapGestureRecognizer: UITapGestureRecognizer = {

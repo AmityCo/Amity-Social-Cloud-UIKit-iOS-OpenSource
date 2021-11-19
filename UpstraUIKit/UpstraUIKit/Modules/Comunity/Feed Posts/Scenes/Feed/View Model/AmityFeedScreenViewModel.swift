@@ -201,7 +201,7 @@ extension AmityFeedScreenViewModel {
             } else {
                 strongSelf.delegate?.screenViewModelDidFail(strongSelf, failure: AmityError(error: error) ?? .unknown)
             }
-            PTNToast.share.present(title: "Post has been delete")
+            PTNToast.share.present(title: "Post has been deleted")
         }
     }
     
