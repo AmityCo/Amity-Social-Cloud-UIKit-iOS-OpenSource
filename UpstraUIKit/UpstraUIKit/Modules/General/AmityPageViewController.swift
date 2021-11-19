@@ -34,6 +34,8 @@ public class AmityPageViewController: AmityButtonPagerTabSViewController {
     public override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         navigationController?.setBackgroundColor(with: AmityColorSet.backgroundColor)
+        navigationController?.setNavigationBarHidden(false, animated: true)
+        navigationController?.navigationItem.largeTitleDisplayMode = .never
     }
     
     override func reloadPagerTabStripView() {
