@@ -18,6 +18,8 @@ public class AmityCommunityHomePageViewController: AmityPageViewController {
     private var initialized: Bool = false
     private var deeplinkFinished: Bool = false
     
+    private var isPresent: Bool = false
+    
     private var leftBarButtonItem: UIBarButtonItem?
     
     private init(deeplinksType: DeeplinksType?, fromDeeplinks: Bool) {
@@ -33,12 +35,14 @@ public class AmityCommunityHomePageViewController: AmityPageViewController {
     public override func viewDidLoad() {
         super.viewDidLoad()
         fetchCategories()
+        setupNavigationBar()
     }
     
     public override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         navigationController?.setNavigationBarHidden(false, animated: true)
-        setupNavigationBar()
+        navigationController?.navigationItem.largeTitleDisplayMode = .never
+        reloadNavigationObject()
     }
     
     public override func viewDidAppear(_ animated: Bool) {
@@ -69,13 +73,27 @@ public class AmityCommunityHomePageViewController: AmityPageViewController {
                 leftBarButtonItem = UIBarButtonItem(image: AmityIconSet.iconClose, style: .plain, target: self, action: #selector(dismissView))
                 leftBarButtonItem?.tintColor = AmityColorSet.base
                 navigationItem.leftBarButtonItem = leftBarButtonItem
+                isPresent = true
             }
         } else {
             leftBarButtonItem = UIBarButtonItem(image: AmityIconSet.iconBack, style: .plain, target: self, action: #selector(popToView))
             leftBarButtonItem?.tintColor = AmityColorSet.base
             navigationItem.leftBarButtonItem = leftBarButtonItem
+            isPresent = false
         }
         
+    }
+    
+    private func reloadNavigationObject() {
+        if isPresent {
+            leftBarButtonItem = UIBarButtonItem(image: AmityIconSet.iconClose, style: .plain, target: self, action: #selector(dismissView))
+            leftBarButtonItem?.tintColor = AmityColorSet.base
+            navigationItem.leftBarButtonItem = leftBarButtonItem
+        } else {
+            leftBarButtonItem = UIBarButtonItem(image: AmityIconSet.iconBack, style: .plain, target: self, action: #selector(popToView))
+            leftBarButtonItem?.tintColor = AmityColorSet.base
+            navigationItem.leftBarButtonItem = leftBarButtonItem
+        }
     }
 }
 
