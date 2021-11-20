@@ -822,22 +822,28 @@ extension AmityPostTextEditorViewController: AmityPostTextEditorMenuViewDelegate
         
         switch action {
         case .camera:
-            checkCameraPermission { [weak self] in
-                self?.presentMediaPickerCamera()
+            checkCameraPermission {
+                DispatchQueue.main.async { [weak self] in
+                    self?.presentMediaPickerCamera()
+                }
             } fail: { [weak self] in
                 self?.alrtPermisionAccessphoto(title: "Camera", message: "Please allow access camera library")
             }
         case .album:
-            checkPhotoLibraryPermission { [weak self] in
-                self?.presentMediaPickerAlbum(type: .image)
+            checkPhotoLibraryPermission {
+                DispatchQueue.main.async { [weak self] in
+                    self?.presentMediaPickerAlbum(type: .image)
+                }
             } fail: { [weak self] in
                 self?.alrtPermisionAccessphoto(title: "Photo", message: "Please allow access photo library")
             }
         case .video:
-            checkPhotoLibraryPermission { [weak self] in
-                self?.presentMediaPickerAlbum(type: .video)
+            checkPhotoLibraryPermission {
+                DispatchQueue.main.async { [weak self] in
+                    self?.presentMediaPickerAlbum(type: .video)
+                }
             } fail: { [weak self] in
-                self?.alrtPermisionAccessphoto(title: "Photo", message: "Please allow access photo library")
+                self?.alrtPermisionAccessphoto(title: "Video", message: "Please allow access photo library")
             }
         case .file:
             filePicker.present(from: view, files: fileView.files)
@@ -1081,13 +1087,15 @@ extension AmityPostTextEditorViewController {
     }
     
     func alrtPermisionAccessphoto(title: String, message: String) {
-        let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
-        alert.addAction(UIAlertAction(title: "Cancel", style: .default, handler: { action in
-        }))
-        alert.addAction(UIAlertAction(title: "Setting", style: .default, handler: { action in
-            UIApplication.shared.open(URL(string: UIApplication.openSettingsURLString)!)
-        }))
-        self.present(alert, animated: true)
+        DispatchQueue.main.async {
+            let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: "Cancel", style: .default, handler: { action in
+            }))
+            alert.addAction(UIAlertAction(title: "Setting", style: .default, handler: { action in
+                UIApplication.shared.open(URL(string: UIApplication.openSettingsURLString)!)
+            }))
+            self.present(alert, animated: true)
+        }
     }
     
 }
