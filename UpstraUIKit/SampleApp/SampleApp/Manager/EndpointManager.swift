@@ -40,7 +40,7 @@ struct EndpointConfigModel: Codable {
 struct EnvironmentSettingModel: Codable {
     var configMap: [EnvironmentType: EndpointConfigModel]
     var selectedEnv: EnvironmentType
-    
+
     static var defaultSettings: EnvironmentSettingModel {
         var configMap: [EnvironmentType : EndpointConfigModel] = [:]
         for type in EnvironmentType.allCases {
@@ -49,9 +49,10 @@ struct EnvironmentSettingModel: Codable {
         let configSetting = EnvironmentSettingModel(configMap: configMap, selectedEnv: .staging)
         return configSetting
     }
-    
+
     static func defaultConfig(for environment: EnvironmentType) -> EndpointConfigModel {
-        return EndpointConfigModel(apiKey: "YOUR_API_KEY")
+//        return EndpointConfigModel(apiKey: "b0eceb5e68ddf36545308f4e000b12dcd90985e2bf3d6a2e")
+        return EndpointConfigModel(apiKey: "b0eceb5e68ddf36545308f4e000b12dcd90985e2bf3d6a2e", httpEndpoint: AmityRegionalEndpoint.SG , socketEndpoint: AmityRegionalEndpoint.SG)
     }
 }
 
