@@ -230,6 +230,7 @@ extension AmityCommunityProfilePageViewController: AmityRefreshable {
     
     func handleRefreshing() {
         screenViewModel.action.retriveCommunity()
+        bottom.galleryVC?.reloadDataImage()
     }
 
 }

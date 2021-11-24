@@ -87,6 +87,28 @@ public class AmityPostGalleryViewController: AmityViewController {
         screenViewModel.action.switchPostsQuery(to: queryOptions)
     }
     
+    public func reloadDataImage() {
+        let filterPostTypes: Set<String>?
+        switch currentSection {
+        case .image:
+            filterPostTypes = ["image"]
+        case .video:
+            filterPostTypes = ["video"]
+        case .livestream:
+            filterPostTypes = ["liveStream"]
+        case .none:
+            filterPostTypes = ["image"]
+        }
+        let queryOptions = AmityPostQueryOptions(
+            targetType: targetType,
+            targetId: targetId,
+            sortBy: .lastCreated,
+            deletedOption: .notDeleted,
+            filterPostTypes: filterPostTypes
+        )
+        screenViewModel.action.switchPostsQuery(to: queryOptions)
+    }
+    
     public static func make(
         targetType: AmityPostTargetType,
         targetId: String

@@ -12,7 +12,7 @@ final public class AmityCommunityFeedViewController: AmityProfileBottomViewContr
     
     // MARK: - Properties
     private var timelineVC: AmityFeedViewController?
-    private var galleryVC: AmityPostGalleryViewController?
+    public var galleryVC: AmityPostGalleryViewController?
     
     private var communityId: String = ""
     
