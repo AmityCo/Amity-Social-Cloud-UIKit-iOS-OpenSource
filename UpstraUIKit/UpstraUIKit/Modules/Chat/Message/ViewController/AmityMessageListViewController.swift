@@ -21,6 +21,7 @@ public extension AmityMessageListViewController {
         public var composeBarStyle = ComposeBarStyle.default
         public var shouldHideAudioButton: Bool = false
         public var shouldShowChatSettingBarButton: Bool = false
+        public var enableConnectionBar: Bool = true
         public init() {
             // Intentionally left empty
         }
@@ -47,24 +48,37 @@ public final class AmityMessageListViewController: AmityViewController {
     @IBOutlet private var composeBarContainerView: UIView!
     @IBOutlet private var bottomConstraint: NSLayoutConstraint!
     
+    @IBOutlet weak var connectionStatusBar: UIView!
+    @IBOutlet weak var connectionStatusBarTopSpace: NSLayoutConstraint!
+    @IBOutlet weak var connectionStatusBarHeight: NSLayoutConstraint!
+    
     // MARK: - Properties
     private var screenViewModel: AmityMessageListScreenViewModelType!
+    private var connectionStatatusObservation: NSKeyValueObservation?
     
     // MARK: - Container View
     private var navigationHeaderViewController: AmityMessageListHeaderView!
     private var messageViewController: AmityMessageListTableViewController!
     private var composeBar: AmityComposeBar!
-
+    
+    // MARK: - Refresh Overlay
+    @IBOutlet weak var refreshOverlay: UIView!
+    @IBOutlet weak var refreshActivityIndicator: UIActivityIndicatorView!
+    
     private var audioRecordingViewController: AmityMessageListRecordingViewController?
     
     private let circular = AmityCircularTransition()
     
     private var settings = Settings()
     
+    private var didEnterBackgroundObservation: NSObjectProtocol?
+    private var willEnterForegroundObservation: NSObjectProtocol?
+    
     // MARK: - View lifecyle
     public override func viewDidLoad() {
         super.viewDidLoad()
         setupView()
+        setupConnectionStatusBar()
         buildViewModel()
         shouldCellOverride()
     }
@@ -144,8 +158,10 @@ private extension AmityMessageListViewController {
 
 // MARK: - Setup View
 private extension AmityMessageListViewController {
+    
     func setupView() {
         view.backgroundColor = AmityColorSet.backgroundColor
+        setRefreshOverlay(visible: false)
         setupCustomNavigationBar()
         setupMessageContainer()
         setupComposeBarContainer()
@@ -165,6 +181,81 @@ private extension AmityMessageListViewController {
                                             target: self,
                                             action: #selector(didTapSetting))
             navigationItem.rightBarButtonItem = barButton
+        }
+    }
+    
+    func setupConnectionStatusBar() {
+        
+        if !settings.enableConnectionBar {
+            connectionStatusBar.isHidden = true
+            return
+        }
+        
+        updateConnectionStatusBar(animated: false)
+        
+        // Start observing connection status to update the UI.
+        observeConnectionStatus()
+        
+        // When we go background, the connection status update might notify, but we don't care.
+        // Since we can't update the UI.
+        didEnterBackgroundObservation = NotificationCenter.default.addObserver(forName: UIApplication.didEnterBackgroundNotification, object: nil, queue: .main) { [weak self] notification in
+            self?.unobserveConnectionStatus()
+        }
+        
+        // When the app enter foreground, we now re-observe connection status, to update the UI.
+        willEnterForegroundObservation = NotificationCenter.default.addObserver(forName: UIApplication.willEnterForegroundNotification, object: nil, queue: .main) { [weak self] notification in
+            self?.updateConnectionStatusBar(animated: false)
+            self?.observeConnectionStatus()
+        }
+        
+    }
+    
+    private func observeConnectionStatus() {
+        connectionStatatusObservation = AmityUIKitManagerInternal.shared.client.observe(\.connectionStatus) { [weak self] client, change in
+            DispatchQueue.main.async {
+                self?.updateConnectionStatusBar(animated: true)
+            }
+        }
+    }
+    
+    private func unobserveConnectionStatus() {
+        connectionStatatusObservation = nil
+    }
+    
+    private func updateConnectionStatusBar(animated: Bool) {
+        
+        var barVisibilityIsUpdate = false
+        let barIsShowing = (connectionStatusBarTopSpace.constant == -connectionStatusBarHeight.constant)
+        switch AmityUIKitManagerInternal.shared.client.connectionStatus {
+        case .connected:
+            // online
+            if !barIsShowing {
+                connectionStatusBarTopSpace.constant = -connectionStatusBarHeight.constant
+                view.setNeedsLayout()
+                barVisibilityIsUpdate = true
+            }
+        default:
+            // not online
+            if barIsShowing {
+                connectionStatusBarTopSpace.constant = 0
+                view.setNeedsLayout()
+                barVisibilityIsUpdate = true
+            }
+        }
+        if barVisibilityIsUpdate, animated {
+            UIView.animate(withDuration: 0.15, animations: { [weak self] in
+                self?.view.layoutIfNeeded()
+            }, completion: nil)
+        }
+        
+    }
+    
+    private func setRefreshOverlay(visible: Bool) {
+        refreshOverlay.isHidden = !visible
+        if visible {
+            refreshActivityIndicator.startAnimating()
+        } else {
+            refreshActivityIndicator.stopAnimating()
         }
     }
     
@@ -293,6 +384,7 @@ extension AmityMessageListViewController: UIImagePickerControllerDelegate & UINa
 }
 
 extension AmityMessageListViewController: AmityMessageListScreenViewModelDelegate {
+    
     func screenViewModelAudioRecordingEvents(for events: AmityMessageListScreenViewModel.AudioRecordingEvents) {
         switch events {
         case .show:
@@ -459,5 +551,11 @@ extension AmityMessageListViewController: AmityMessageListScreenViewModelDelegat
     }
     
     func screenViewModelDidFailToReportMessage(at indexPath: IndexPath, with error: Error?) {
+        // Intentionally left empty
     }
+    
+    func screenViewModelIsRefreshing(_ isRefreshing: Bool) {
+        setRefreshOverlay(visible: isRefreshing)
+    }
+    
 }

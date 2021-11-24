@@ -102,7 +102,8 @@ class AmityPostDetailCompostView: UIView {
     }
     
     func configure(with post: AmityPostModel) {
-        avatarView.setImage(withImageURL: post.postedUser?.avatarURL, placeholder: AmityIconSet.defaultAvatar)
+        avatarView.setImage(withImageURL: AmityUIKitManagerInternal.shared.client.currentUser?.object?.getAvatarInfo()?.fileURL,
+                            placeholder: AmityIconSet.defaultAvatar)
         isHidden = !post.isCommentable
         textContainerView.isHidden = !post.isCommentable
     }

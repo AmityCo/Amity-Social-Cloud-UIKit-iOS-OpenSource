@@ -11,6 +11,7 @@ import Photos
 import AmitySDK
 
 protocol AmityMessageListScreenViewModelDelegate: AnyObject {
+    
     func screenViewModelRoute(route: AmityMessageListScreenViewModel.Route)
     func screenViewModelDidGetChannel(channel: AmityChannelModel)
     func screenViewModelScrollToBottom(for indexPath: IndexPath)
@@ -26,6 +27,9 @@ protocol AmityMessageListScreenViewModelDelegate: AnyObject {
     
     func screenViewModelDidReportMessage(at indexPath: IndexPath)
     func screenViewModelDidFailToReportMessage(at indexPath: IndexPath, with error: Error?)
+    
+    func screenViewModelIsRefreshing(_ isRefreshing: Bool)
+    
 }
 
 protocol AmityMessageListScreenViewModelDataSource {

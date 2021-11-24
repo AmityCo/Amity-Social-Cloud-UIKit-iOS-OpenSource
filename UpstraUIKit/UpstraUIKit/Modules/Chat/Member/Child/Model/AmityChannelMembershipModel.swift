@@ -14,7 +14,7 @@ struct AmityChannelMembershipModel {
     let user: AmityUser?
     let displayName: String
     let userId: String
-    let roles: NSArray
+    let roles: [String]
     var isCurrentUser: Bool {
         return userId == AmityUIKitManagerInternal.shared.client.currentUserId
     }

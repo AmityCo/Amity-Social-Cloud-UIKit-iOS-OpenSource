@@ -73,7 +73,7 @@ class AppManager {
         UserDefaults.standard.setValue(nil, forKey: UserDefaultsKey.deviceToken)
         UserDefaults.standard.setValue(nil, forKey: UserDefaultsKey.userId)
         
-        UIApplication.shared.windows.first?.rootViewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "RegisterViewController")
+        UIApplication.shared.windows.first?.rootViewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "RegisterNavigationController")
         UIApplication.shared.windows.first?.makeKeyAndVisible()
         UIApplication.shared.applicationIconBadgeNumber = 0  // reset badge counter
     }
@@ -106,7 +106,7 @@ class AppManager {
         if isUserRegistered {
             return TabbarViewController()
         } else {
-            return UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "RegisterViewController")
+            return UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "RegisterNavigationController")
         }
     }
     
