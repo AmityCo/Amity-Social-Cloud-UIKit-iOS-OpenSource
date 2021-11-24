@@ -107,6 +107,8 @@ extension AmityTrendingCommunityViewController: AmityTrendingCommunityScreenView
     func screenViewModel(_ viewModel: AmityTrendingCommunityScreenViewModelType, didRetrieveTrending trending: [AmityCommunityModel], isEmpty: Bool) {
         emptyHandler?(isEmpty)
         tableViewHeight = 0
+        heightTableViewContraint.constant = 0
+        self.tableView.layoutIfNeeded()
         heightTableViewContraint.constant = CGFloat(trending.count * 56)
         tableView.reloadData()
     }

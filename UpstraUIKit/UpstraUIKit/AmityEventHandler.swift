@@ -52,8 +52,7 @@ open class AmityEventHandler {
     /// If any of them doesn't exsist, popping to previous page.
     open func leaveCommunityDidTap(from source: AmityViewController, communityId: String) {
         if let vc = source.navigationController?
-            .viewControllers.last(where: { $0.isKind(of: AmityCommunityHomePageViewController.self)
-                                    || $0.isKind(of: AmityNewsfeedViewController.self)
+            .viewControllers.last(where: { $0.isKind(of: AmityNewsfeedViewController.self)
                                     || $0.isKind(of: AmityFeedViewController.self) }) {
             source.navigationController?.popToViewController(vc, animated: true)
             return

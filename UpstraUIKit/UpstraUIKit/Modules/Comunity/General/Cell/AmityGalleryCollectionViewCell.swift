@@ -132,7 +132,7 @@ public class AmityGalleryCollectionViewCell: UICollectionViewCell {
     
     private func loadThumbnailImage(at imageURL: String) {
         let _session = session
-        AmityUIKitManagerInternal.shared.fileService.loadImage(imageURL: imageURL, size: .medium, optimisticLoad: true) { [weak self] result in
+        AmityUIKitManagerInternal.shared.fileService.loadImage(imageURL: imageURL, size: .full, optimisticLoad: true) { [weak self] result in
             guard let strongSelf = self else { return }
             switch result {
             case .success(let image):
