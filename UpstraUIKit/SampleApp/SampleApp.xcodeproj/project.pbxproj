@@ -24,6 +24,9 @@
 		721AF3C426088849005BA15F /* CustomEventHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 721AF3C326088849005BA15F /* CustomEventHandler.swift */; };
 		721AF3CA26088884005BA15F /* CustomFeedEventHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 721AF3C926088884005BA15F /* CustomFeedEventHandler.swift */; };
 		7288E96C2630139E004535DD /* AppManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7288E96B2630139E004535DD /* AppManager.swift */; };
+		729CAF3E273CC8ED000AE162 /* Binding+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 729CAF3D273CC8ED000AE162 /* Binding+Extension.swift */; };
+		729CAF42273CC95B000AE162 /* EndpointManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 729CAF41273CC95B000AE162 /* EndpointManager.swift */; };
+		72AACE0B273931F100E59D55 /* EndpointsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72AACE0A273931F100E59D55 /* EndpointsView.swift */; };
 		97F101F526A69FBF00AD84A1 /* CustomChannelEventHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97F101F426A69FBF00AD84A1 /* CustomChannelEventHandler.swift */; };
 		A03190A7272169C1008A85DC /* PostCreatorSettingsPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = A03190A6272169C1008A85DC /* PostCreatorSettingsPage.swift */; };
 		A0BD0B4826DDE0E30054088B /* AmityUIKitLiveStream.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A0BD0B4726DDE0E30054088B /* AmityUIKitLiveStream.framework */; };
@@ -119,6 +122,9 @@
 		721AF3C926088884005BA15F /* CustomFeedEventHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomFeedEventHandler.swift; sourceTree = "<group>"; };
 		72363461260877D600CEB2B5 /* SampleApp.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = SampleApp.entitlements; sourceTree = "<group>"; };
 		7288E96B2630139E004535DD /* AppManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppManager.swift; sourceTree = "<group>"; };
+		729CAF3D273CC8ED000AE162 /* Binding+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Binding+Extension.swift"; sourceTree = "<group>"; };
+		729CAF41273CC95B000AE162 /* EndpointManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EndpointManager.swift; sourceTree = "<group>"; };
+		72AACE0A273931F100E59D55 /* EndpointsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EndpointsView.swift; sourceTree = "<group>"; };
 		97F101F426A69FBF00AD84A1 /* CustomChannelEventHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomChannelEventHandler.swift; sourceTree = "<group>"; };
 		A03190A6272169C1008A85DC /* PostCreatorSettingsPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostCreatorSettingsPage.swift; sourceTree = "<group>"; };
 		A0BD0B3B26DDDFCC0054088B /* AmityUIKitLiveStream.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = AmityUIKitLiveStream.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -286,6 +292,23 @@
 			path = "Post Creator Settings";
 			sourceTree = "<group>";
 		};
+		729CAF3F273CC913000AE162 /* Endpoint Settings */ = {
+			isa = PBXGroup;
+			children = (
+				72AACE0A273931F100E59D55 /* EndpointsView.swift */,
+			);
+			path = "Endpoint Settings";
+			sourceTree = "<group>";
+		};
+		729CAF40273CC93D000AE162 /* Manager */ = {
+			isa = PBXGroup;
+			children = (
+				7288E96B2630139E004535DD /* AppManager.swift */,
+				729CAF41273CC95B000AE162 /* EndpointManager.swift */,
+			);
+			path = Manager;
+			sourceTree = "<group>";
+		};
 		B72CDA38256B9BC100F7CAC3 /* Custom Cell */ = {
 			isa = PBXGroup;
 			children = (
@@ -326,8 +349,8 @@
 				B78FC53C24CAAA2F0083CBB4 /* Extension */,
 				B78FC53E24CAAA2F0083CBB4 /* Utils */,
 				B78DA4AD24BED88000EE902B /* Feature */,
+				729CAF40273CC93D000AE162 /* Manager */,
 				B78DA47824BED7D300EE902B /* AppDelegate.swift */,
-				7288E96B2630139E004535DD /* AppManager.swift */,
 				B78DA47A24BED7D300EE902B /* SceneDelegate.swift */,
 				B78DA48124BED7DA00EE902B /* Assets.xcassets */,
 				B78DA48324BED7DA00EE902B /* LaunchScreen.storyboard */,
@@ -376,6 +399,7 @@
 				7214C9D32632C05600192BB3 /* User Level Notifications */,
 				0D73AC8925DB8C61000D73CA /* Custom Post */,
 				B72CDA38256B9BC100F7CAC3 /* Custom Cell */,
+				729CAF3F273CC913000AE162 /* Endpoint Settings */,
 				B78DA47E24BED7D300EE902B /* Main.storyboard */,
 				B72861D824C573B100ECC563 /* TabbarViewController.swift */,
 				B78DA4AE24BED89000EE902B /* FeatureViewController.swift */,
@@ -394,6 +418,7 @@
 			isa = PBXGroup;
 			children = (
 				B78FC53D24CAAA2F0083CBB4 /* UserDefault.swift */,
+				729CAF3D273CC8ED000AE162 /* Binding+Extension.swift */,
 			);
 			path = Extension;
 			sourceTree = "<group>";
@@ -567,6 +592,7 @@
 				97F101F526A69FBF00AD84A1 /* CustomChannelEventHandler.swift in Sources */,
 				0D73ACA825DB9423000D73CA /* NewJoinerPostComponent.swift in Sources */,
 				7214C9DB2632C0D500192BB3 /* SwitchTableViewCell.swift in Sources */,
+				729CAF3E273CC8ED000AE162 /* Binding+Extension.swift in Sources */,
 				B72CDA3B256B9BEB00F7CAC3 /* CustomMessageTextIncomingTableViewCell.swift in Sources */,
 				B78DA4B124BEDBC500EE902B /* CommunityFeatureViewController.swift in Sources */,
 				7288E96C2630139E004535DD /* AppManager.swift in Sources */,
@@ -574,6 +600,8 @@
 				B78FC54124CAAA2F0083CBB4 /* Theme.swift in Sources */,
 				B754DBEC24C6F6B5005A8282 /* SettingViewController.swift in Sources */,
 				0D73ACA425DB93A2000D73CA /* ThumbsupPostComponent.swift in Sources */,
+				72AACE0B273931F100E59D55 /* EndpointsView.swift in Sources */,
+				729CAF42273CC95B000AE162 /* EndpointManager.swift in Sources */,
 				721AF3C426088849005BA15F /* CustomEventHandler.swift in Sources */,
 				B78DA4B324BEDBD100EE902B /* ChatFeatureViewController.swift in Sources */,
 			);
@@ -681,7 +709,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 12.3;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -736,7 +764,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 12.3;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;
@@ -752,7 +780,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = SampleApp/SampleApp.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 3;
+				CURRENT_PROJECT_VERSION = 2;
 				DEVELOPMENT_TEAM = 37Z583JR6K;
 				"EXCLUDED_ARCHS[sdk=iphonesimulator*]" = arm64;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -764,7 +792,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 2.6.1;
+				MARKETING_VERSION = 2.6.2;
 				PRODUCT_BUNDLE_IDENTIFIER = com.ekoapp.sample;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_INCLUDE_PATHS = "";
@@ -779,7 +807,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = SampleApp/SampleApp.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 3;
+				CURRENT_PROJECT_VERSION = 2;
 				DEVELOPMENT_TEAM = 37Z583JR6K;
 				"EXCLUDED_ARCHS[sdk=iphonesimulator*]" = arm64;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -791,7 +819,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 2.6.1;
+				MARKETING_VERSION = 2.6.2;
 				PRODUCT_BUNDLE_IDENTIFIER = com.ekoapp.sample;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = RELEASE;

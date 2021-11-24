@@ -111,7 +111,7 @@ extension AmityPostDetailScreenViewModel {
         if let post = post {
             if let communityId = post.targetCommunity?.communityId {
                 let participation = AmityCommunityParticipation(client: AmityUIKitManagerInternal.shared.client, andCommunityId: communityId)
-                post.isModerator = participation.getMember(withId: post.postedUserId)?.roles.contains(AmityCommunityRole.moderator) ?? false
+                post.isModerator = participation.getMember(withId: post.postedUserId)?.roles.contains(AmityCommunityRole.moderator.rawValue) ?? false
             }
             let component = prepareComponents(post: post)
             viewModels.append([.post(component)])
