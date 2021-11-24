@@ -284,14 +284,6 @@
 			path = EventHandler;
 			sourceTree = "<group>";
 		};
-		A03190A527216946008A85DC /* Post Creator Settings */ = {
-			isa = PBXGroup;
-			children = (
-				A03190A6272169C1008A85DC /* PostCreatorSettingsPage.swift */,
-			);
-			path = "Post Creator Settings";
-			sourceTree = "<group>";
-		};
 		729CAF3F273CC913000AE162 /* Endpoint Settings */ = {
 			isa = PBXGroup;
 			children = (
@@ -307,6 +299,14 @@
 				729CAF41273CC95B000AE162 /* EndpointManager.swift */,
 			);
 			path = Manager;
+			sourceTree = "<group>";
+		};
+		A03190A527216946008A85DC /* Post Creator Settings */ = {
+			isa = PBXGroup;
+			children = (
+				A03190A6272169C1008A85DC /* PostCreatorSettingsPage.swift */,
+			);
+			path = "Post Creator Settings";
 			sourceTree = "<group>";
 		};
 		B72CDA38256B9BC100F7CAC3 /* Custom Cell */ = {
@@ -792,7 +792,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 2.6.12;
+				MARKETING_VERSION = 2.6.13;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.ekoenterprise.pulse-qa";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_INCLUDE_PATHS = "";
@@ -819,7 +819,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 2.6.12;
+				MARKETING_VERSION = 2.6.13;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.ekoenterprise.pulse-qa";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = RELEASE;
