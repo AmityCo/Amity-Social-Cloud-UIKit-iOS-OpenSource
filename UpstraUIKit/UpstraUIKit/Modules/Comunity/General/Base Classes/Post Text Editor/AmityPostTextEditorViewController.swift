@@ -977,7 +977,8 @@ extension AmityPostTextEditorViewController: UIImagePickerControllerDelegate, UI
         switch mediaType {
         case String(kUTTypeImage):
             if let image = info[.originalImage] as? UIImage {
-                selectedMedia = AmityMedia(state: .image(image), type: .image)
+                let img = image.fixedOrientation()
+                selectedMedia = AmityMedia(state: .image(img), type: .image)
             }
         case String(kUTTypeMovie):
             if let fileUrl = info[.mediaURL] as? URL {
