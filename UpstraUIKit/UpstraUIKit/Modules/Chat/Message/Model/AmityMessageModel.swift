@@ -10,6 +10,7 @@ import UIKit
 import AmitySDK
 
 public final class AmityMessageModel {
+    
     public var object: AmityMessage
     public var messageId: String
     public var userId: String
@@ -17,6 +18,7 @@ public final class AmityMessageModel {
     public var syncState: AmitySyncState
     public var isDeleted: Bool
     public var isEdited: Bool
+    public var flagCount: UInt
     public var messageType: AmityMessageType
     public var createdAtDate: Date
     public var date: String
@@ -39,6 +41,7 @@ public final class AmityMessageModel {
         self.createdAtDate = object.createdAtDate
         self.date = AmityDateFormatter.Message.getDate(date: self.isEdited ? object.editedAtDate : object.createdAtDate)
         self.time = AmityDateFormatter.Message.getTime(date: self.isEdited ? object.editedAtDate : object.createdAtDate)
+        self.flagCount = object.flagCount
         self.data = object.data
     }
     

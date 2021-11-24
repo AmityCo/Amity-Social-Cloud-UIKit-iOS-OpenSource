@@ -8,6 +8,8 @@
 
 import UIKit
 import AmityUIKit
+import AmitySDK
+import SwiftUI
 
 class RegisterViewController: UIViewController {
     
@@ -16,6 +18,7 @@ class RegisterViewController: UIViewController {
     @IBOutlet private var versionLabel: UILabel!
     @IBOutlet private var textField: UITextField!
     @IBOutlet private var tableView: UITableView!
+    @IBOutlet private var endpointsButton: UIBarButtonItem!
     
     private let cellIdentifier = "cell"
     private let defaultUser = "victimIOS"
@@ -48,15 +51,20 @@ class RegisterViewController: UIViewController {
         tableView.delegate = self
         tableView.dataSource = self
     }
-    
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        navigationController?.setNavigationBarHidden(true, animated: true)
-    }
 
     @IBAction func addUserIDsTap() {
         addUser()
         
+    }
+    
+    @IBAction func endpointsDidTap(_ sender: Any) {
+        let endpointView = EndpointsView()
+        let endpointVC = UIHostingController(rootView: endpointView)
+        
+        endpointVC.rootView.saveButtonDidTap = {
+            endpointVC.dismiss(animated: true, completion: nil)
+        }
+        present(endpointVC, animated: true, completion: nil)
     }
     
     private func addUser() {

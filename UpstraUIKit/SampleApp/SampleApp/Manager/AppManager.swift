@@ -28,9 +28,17 @@ class AppManager {
     
     func setupAmityUIKit() {
         // setup api key
-        AmityUIKitManager.setup(apiKey: "b0eceb5e68ddf36545308f4e000b12dcd90985e2bf3d6a2e")
+//        AmityUIKitManager.setup(apiKey: "b0eceb5e68ddf36545308f4e000b12dcd90985e2bf3d6a2e")
 //        AmityUIKitManager.setup(apiKey: "b0ecba5c3a8af830443f8a1a515e1edbd50088e3b330667d")
+        let endpointConfig = EndpointManager.shared.currentEndpointConfig
+                AmityUIKitManager.setup(apiKey: endpointConfig.apiKey,
+                                        httpUrl: endpointConfig.httpEndpoint,
+                                        socketUrl: endpointConfig.socketEndpoint)
+
         AmityUIKitManager.setLanguage(language: "en")
+        
+        
+        
         
         // setup event handlers and page settings
         AmityUIKitManager.set(eventHandler: AmityCustomEventHandler())
@@ -73,7 +81,7 @@ class AppManager {
         UserDefaults.standard.setValue(nil, forKey: UserDefaultsKey.deviceToken)
         UserDefaults.standard.setValue(nil, forKey: UserDefaultsKey.userId)
         
-        UIApplication.shared.windows.first?.rootViewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "RegisterViewController")
+        UIApplication.shared.windows.first?.rootViewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "RegisterNavigationController")
         UIApplication.shared.windows.first?.makeKeyAndVisible()
         UIApplication.shared.applicationIconBadgeNumber = 0  // reset badge counter
     }
@@ -106,7 +114,7 @@ class AppManager {
         if isUserRegistered {
             return TabbarViewController()
         } else {
-            return UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "RegisterViewController")
+            return UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "RegisterNavigationController")
         }
     }
     

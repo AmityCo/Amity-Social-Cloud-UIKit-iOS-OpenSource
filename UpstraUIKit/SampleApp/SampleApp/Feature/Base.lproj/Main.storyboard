@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="17701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="18122" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17703"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="18093"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -80,8 +80,15 @@
                             <constraint firstItem="cLx-e0-7sF" firstAttribute="top" secondItem="YGS-2v-h5k" secondAttribute="bottom" constant="20" id="xBU-dR-3Vl"/>
                         </constraints>
                     </view>
-                    <navigationItem key="navigationItem" id="Rpd-xh-QNG"/>
+                    <navigationItem key="navigationItem" id="Rpd-xh-QNG">
+                        <barButtonItem key="rightBarButtonItem" title="Endpoints" id="rPR-6Y-pc9">
+                            <connections>
+                                <action selector="endpointsDidTap:" destination="Wqz-a0-fRR" id="zuL-Bj-h9Y"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
                     <connections>
+                        <outlet property="endpointsButton" destination="rPR-6Y-pc9" id="CKR-qd-43c"/>
                         <outlet property="tableView" destination="YGS-2v-h5k" id="y4O-78-j8O"/>
                         <outlet property="textField" destination="rGs-0y-aY7" id="wCy-zE-TpM"/>
                         <outlet property="versionLabel" destination="cLx-e0-7sF" id="xSX-3b-D44"/>
@@ -287,7 +294,7 @@
         <!--Navigation Controller-->
         <scene sceneID="0an-AY-uJg">
             <objects>
-                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="bJs-aQ-xju" sceneMemberID="viewController">
+                <navigationController storyboardIdentifier="RegisterNavigationController" automaticallyAdjustsScrollViewInsets="NO" id="bJs-aQ-xju" sceneMemberID="viewController">
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="l4b-xv-BIZ">
                         <rect key="frame" x="0.0" y="44" width="414" height="44"/>
