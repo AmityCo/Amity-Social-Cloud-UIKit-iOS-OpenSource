@@ -102,6 +102,7 @@ final class AmityCommunityProfileHeaderViewController: UIViewController {
     }
     
     private func updatePostLabel(postCount: Int) {
+        debugPrint(postCount as Any)
         var format = postCount == 1 ? AmityLocalizedStringSet.Unit.postSingular.localizedString : AmityLocalizedStringSet.Unit.postPlural.localizedString
         format = format.replacingOccurrences(of: " ", with: "\n") // adjust a format of localized string... "%@ posts" -> "%@\nposts"
         let value = postCount.formatUsingAbbrevation()
@@ -190,7 +191,7 @@ final class AmityCommunityProfileHeaderViewController: UIViewController {
     }
     
     func updatePostsCount() {
-        updatePostLabel(postCount: screenViewModel.dataSource.postCount)
+        updatePostLabel(postCount: screenViewModel.dataSource.community?.postsCount ?? 0)
     }
     
     private func updateActionButton() {
