@@ -102,7 +102,6 @@ final class AmityCommunityProfileHeaderViewController: UIViewController {
     }
     
     private func updatePostLabel(postCount: Int) {
-        debugPrint(postCount as Any)
         var format = postCount == 1 ? AmityLocalizedStringSet.Unit.postSingular.localizedString : AmityLocalizedStringSet.Unit.postPlural.localizedString
         format = format.replacingOccurrences(of: " ", with: "\n") // adjust a format of localized string... "%@ posts" -> "%@\nposts"
         let value = postCount.formatUsingAbbrevation()

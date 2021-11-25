@@ -17,6 +17,7 @@ final public class AmityCommunityFeedViewController: AmityProfileBottomViewContr
     private var communityId: String = ""
     
     var dataDidUpdateHandler: (() -> Void)?
+    var updateDeletePostHandler: (() -> Void)?
     
     // MARK: - View lifecycle
     public override func viewDidLoad() {
@@ -61,6 +62,10 @@ final public class AmityCommunityFeedViewController: AmityProfileBottomViewContr
     private func setupFeed() {
         timelineVC?.dataDidUpdateHandler = { [weak self] _ in
             self?.dataDidUpdateHandler?()
+        }
+        
+        timelineVC?.deletePsotHandler = { [weak self] in
+            self?.updateDeletePostHandler?()
         }
     }
     

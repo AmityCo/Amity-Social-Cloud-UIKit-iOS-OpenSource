@@ -15,6 +15,7 @@ protocol AmityFeedScreenViewModelDelegate: AnyObject {
     func screenViewModelScrollToTop(_ viewModel: AmityFeedScreenViewModelType)
     func screenViewModelDidSuccess(_ viewModel: AmityFeedScreenViewModelType, message: String)
     func screenViewModelDidFail(_ viewModel: AmityFeedScreenViewModelType, failure error: AmityError)
+    func screenViewModelDidDelete()
     
     // MARK: Post
     func screenViewModelDidLikePostSuccess(_ viewModel: AmityFeedScreenViewModelType)

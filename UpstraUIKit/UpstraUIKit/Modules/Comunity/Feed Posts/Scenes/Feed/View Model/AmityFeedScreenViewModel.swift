@@ -146,6 +146,10 @@ extension AmityFeedScreenViewModel {
         if notification.name == Notification.Name.Post.didCreate {
             delegate?.screenViewModelScrollToTop(self)
         }
+        
+        if notification.name == Notification.Name.Post.didDelete {
+            delegate?.screenViewModelDidDelete()
+        }
     }
 }
 

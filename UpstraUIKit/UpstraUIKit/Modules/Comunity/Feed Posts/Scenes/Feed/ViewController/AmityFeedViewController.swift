@@ -43,6 +43,7 @@ public final class AmityFeedViewController: AmityViewController, AmityRefreshabl
     var dataDidUpdateHandler: ((Int) -> Void)?
     var emptyViewHandler: ((UIView?) -> Void)?
     var pullRefreshHandler: (() -> Void)?
+    var deletePsotHandler: (() -> Void)?
     
     // To determine if the vc is visible or not
     private var isVisible: Bool = true
@@ -277,6 +278,11 @@ extension AmityFeedViewController: AmityPostTableViewDataSource {
 
 // MARK: - AmityFeedScreenViewModelDelegate
 extension AmityFeedViewController: AmityFeedScreenViewModelDelegate {
+    
+    func screenViewModelDidDelete() {
+        deletePsotHandler?()
+    }
+    
     func screenViewModelDidUpdateDataSuccess(_ viewModel: AmityFeedScreenViewModelType) {
         // When view is invisible but data source request updates, mark it as a dirty data source.
         // Then after view already appear, reload table view for refreshing data.

@@ -99,6 +99,10 @@ public final class AmityCommunityProfilePageViewController: AmityProfileViewCont
         bottom.dataDidUpdateHandler = { [weak self] in
             self?.header.updatePostsCount()
         }
+        
+        bottom.updateDeletePostHandler = { [weak self] in
+            self?.screenViewModel.action.retriveCommunity()
+        }
     }
     private func setupPostButton() {
         postButton.image = AmityIconSet.iconCreatePost
@@ -227,7 +231,7 @@ extension AmityCommunityProfilePageViewController: AmityCommunityProfileScreenVi
 }
 
 extension AmityCommunityProfilePageViewController: AmityRefreshable {
-    
+
     func handleRefreshing() {
         screenViewModel.action.retriveCommunity()
         bottom.galleryVC?.reloadDataImage()
