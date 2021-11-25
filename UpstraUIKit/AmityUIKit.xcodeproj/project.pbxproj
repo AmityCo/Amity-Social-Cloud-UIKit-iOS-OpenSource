@@ -6,6 +6,21 @@
 	objectVersion = 52;
 	objects = {
 
+/* Begin PBXAggregateTarget section */
+		FCD8BBB3274F632A00436D11 /* Release Framework */ = {
+			isa = PBXAggregateTarget;
+			buildConfigurationList = FCD8BBB6274F632A00436D11 /* Build configuration list for PBXAggregateTarget "Release Framework" */;
+			buildPhases = (
+				FCD8BBB7274F636200436D11 /* Merge Slice */,
+				FCD8BBB8274F637800436D11 /* Package Up */,
+			);
+			dependencies = (
+			);
+			name = "Release Framework";
+			productName = "Release Framework";
+		};
+/* End PBXAggregateTarget section */
+
 /* Begin PBXBuildFile section */
 		0D123ECE25DA85DD009171D8 /* AmityCommentCreateController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D123ECD25DA85DD009171D8 /* AmityCommentCreateController.swift */; };
 		0D12BD2B25D4307100D3E4BC /* AmityPostHeaderProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D12BD2A25D4307100D3E4BC /* AmityPostHeaderProtocol.swift */; };
@@ -4360,6 +4375,9 @@
 					72A3503824EA811500DA9D46 = {
 						CreatedOnToolsVersion = 11.6;
 					};
+					FCD8BBB3274F632A00436D11 = {
+						CreatedOnToolsVersion = 13.1;
+					};
 				};
 			};
 			buildConfigurationList = 72A3502A24EA811500DA9D46 /* Build configuration list for PBXProject "AmityUIKit" */;
@@ -4377,6 +4395,7 @@
 			targets = (
 				72A3502F24EA811500DA9D46 /* AmityUIKit */,
 				72A3503824EA811500DA9D46 /* AmityUIKitTests */,
+				FCD8BBB3274F632A00436D11 /* Release Framework */,
 			);
 		};
 /* End PBXProject section */
@@ -4526,6 +4545,45 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		FCD8BBB7274F636200436D11 /* Merge Slice */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = "Merge Slice";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# 1\n# Set bash script to exit immediately if any commands fail.\nset -e\n\n# 2\n# If remnants from a previous build exist, delete them.\nif [ -d \"./build\" ]; then\nrm -rf \"./build\"\nfi\n\n# 3\n# Build the framework for device and for simulator (using\n# all needed architectures).\nxcodebuild clean archive \\\n    -scheme AmityUIKit \\\n    -configuration Release \\\n    -arch arm64 \\\n    -sdk \"iphoneos\" \\\n    -archivePath \"./build/ios.xcarchive\" \\\n    SKIP_INSTALL=NO\n    \nxcodebuild clean archive \\\n    -scheme AmityUIKit \\\n    -configuration Release \\\n    -arch x86_64 \\\n    -sdk \"iphonesimulator\" \\\n    -archivePath \"./build/ios_sim.xcarchive\" \\\n    SKIP_INSTALL=NO\n\n# 4\n# Combine all archive and create .xcframework\n\n# 4.1\n# .xcarchive contains bcsymbolmap of AmitySDK and AmityUIKit.\n# We need to find the one that belong to AmityUIKit.framework\nsymbolmapsPath=(${PROJECT_DIR}/build/ios.xcarchive/BCSymbolMaps)\n# Search every files in BCSymbolMaps that contain \"Upstra\" word in the file content .\nupstraSymbolMap=$(find ${symbolmapsPath} -type f -print0 | xargs -0 grep -l \"Upstra\")\n # Rename that file from \"random-uuid.bcsymbolmap\" into \"AmityUIKit.bcsymbolmap\"\nmv ${upstraSymbolMap} \"${PROJECT_DIR}/build/ios.xcarchive/BCSymbolMaps/AmityUIKit.bcsymbolmap\"\n\n# 4.2 Make a real build.\nxcodebuild -create-xcframework \\\n    -framework \"${PROJECT_DIR}/build/ios.xcarchive/Products/Library/Frameworks/AmityUIKit.framework\" \\\n    -debug-symbols \"${PROJECT_DIR}/build/ios.xcarchive/dSYMs/AmityUIKit.framework.dSYM\" \\\n    -debug-symbols \"${PROJECT_DIR}/build/ios.xcarchive/BCSymbolMaps/AmityUIKit.bcsymbolmap\" \\\n    -framework \"${PROJECT_DIR}/build/ios_sim.xcarchive/Products/Library/Frameworks/AmityUIKit.framework\" \\\n    -output \"${PROJECT_DIR}/build/AmityUIKit.xcframework\"\n";
+		};
+		FCD8BBB8274F637800436D11 /* Package Up */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = "Package Up";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# Set bash script to exit immediately if any commands fail.\nset -e\n\nDISTRIBUTION_FOLDER=\"${PROJECT_DIR}/Distribution\"\n\n# Make sure we clean and re-create ./Distribution\nif [ -d \"${DISTRIBUTION_FOLDER}\" ]; then \nrm -rf \"${DISTRIBUTION_FOLDER}\"\nfi\nmkdir -p \"${DISTRIBUTION_FOLDER}\"\n\n# Copy AmityUIKit.xcframework into Distribution\ncp -r \"${PROJECT_DIR}/build/AmityUIKit.xcframework\" \"${DISTRIBUTION_FOLDER}\"\n# Copy AmitySDK.xcframework into Distribution\ncp -r \"${PROJECT_DIR}/Shared/AmitySDK.xcframework\" \"${DISTRIBUTION_FOLDER}\"\n# Copy Realm.xcframework into Distribution\ncp -r \"${PROJECT_DIR}/Shared/Realm.xcframework\" \"${DISTRIBUTION_FOLDER}\"\n\n# Delete ./build\nrm -rf \"${PROJECT_DIR}/build\"\n";
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		72A3502C24EA811500DA9D46 /* Sources */ = {
@@ -5278,6 +5336,24 @@
 			};
 			name = Release;
 		};
+		FCD8BBB4274F632A00436D11 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 37Z583JR6K;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		FCD8BBB5274F632A00436D11 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 37Z583JR6K;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -5304,6 +5380,15 @@
 			buildConfigurations = (
 				72A3504824EA811500DA9D46 /* Debug */,
 				72A3504924EA811500DA9D46 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		FCD8BBB6274F632A00436D11 /* Build configuration list for PBXAggregateTarget "Release Framework" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				FCD8BBB4274F632A00436D11 /* Debug */,
+				FCD8BBB5274F632A00436D11 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
