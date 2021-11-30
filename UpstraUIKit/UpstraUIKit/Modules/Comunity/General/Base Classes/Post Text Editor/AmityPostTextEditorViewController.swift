@@ -214,8 +214,10 @@ public class AmityPostTextEditorViewController: AmityViewController {
     
     public override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        navigationController?.setNavigationBarHidden(false, animated: true)
-        navigationItem.largeTitleDisplayMode = .never
+        DispatchQueue.main.asyncAfter(deadline: .now()) { [weak self] in
+            self?.navigationController?.setNavigationBarHidden(false, animated: false)
+            self?.navigationItem.largeTitleDisplayMode = .never
+        }
     }
     
     public override func didTapLeftBarButton() {

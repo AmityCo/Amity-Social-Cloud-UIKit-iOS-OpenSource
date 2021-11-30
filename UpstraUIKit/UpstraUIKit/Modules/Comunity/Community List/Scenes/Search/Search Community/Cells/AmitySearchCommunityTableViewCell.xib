@@ -18,42 +18,6 @@
                 <rect key="frame" x="0.0" y="0.0" width="414" height="56"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="7" translatesAutoresizingMaskIntoConstraints="NO" id="mXh-YP-2Qp">
-                        <rect key="frame" x="68" y="8" width="76.5" height="40"/>
-                        <subviews>
-                            <stackView opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" alignment="center" spacing="2" translatesAutoresizingMaskIntoConstraints="NO" id="63W-um-RYw">
-                                <rect key="frame" x="0.0" y="0.0" width="76.5" height="20"/>
-                                <subviews>
-                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Rup-PC-Vgm" userLabel="Private Badge Image View">
-                                        <rect key="frame" x="0.0" y="0.0" width="20" height="20"/>
-                                        <constraints>
-                                            <constraint firstAttribute="height" constant="20" id="59t-v1-CLS"/>
-                                            <constraint firstAttribute="width" constant="20" id="UMl-y1-XFJ"/>
-                                        </constraints>
-                                    </imageView>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="NRl-qN-ZUh">
-                                        <rect key="frame" x="22" y="1" width="32.5" height="18"/>
-                                        <fontDescription key="fontDescription" type="system" pointSize="15"/>
-                                        <nil key="textColor"/>
-                                        <nil key="highlightedColor"/>
-                                    </label>
-                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Zm6-Z6-L8B" userLabel="Badge Image View">
-                                        <rect key="frame" x="56.5" y="0.0" width="20" height="20"/>
-                                        <constraints>
-                                            <constraint firstAttribute="width" constant="20" id="KDK-9f-U0z"/>
-                                            <constraint firstAttribute="height" constant="20" id="zQ3-rs-TWz"/>
-                                        </constraints>
-                                    </imageView>
-                                </subviews>
-                            </stackView>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ioC-HL-zJ1">
-                                <rect key="frame" x="0.0" y="27" width="76.5" height="13"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="13"/>
-                                <nil key="textColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                        </subviews>
-                    </stackView>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ZPb-R0-xVy" customClass="AmityAvatarView" customModule="AmityUIKit" customModuleProvider="target">
                         <rect key="frame" x="16" y="8" width="40" height="40"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
@@ -62,15 +26,51 @@
                             <constraint firstAttribute="height" constant="40" id="tFf-3N-dak"/>
                         </constraints>
                     </view>
+                    <stackView opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" alignment="center" spacing="2" translatesAutoresizingMaskIntoConstraints="NO" id="63W-um-RYw">
+                        <rect key="frame" x="66" y="5" width="76.5" height="24"/>
+                        <subviews>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Rup-PC-Vgm" userLabel="Private Badge Image View">
+                                <rect key="frame" x="0.0" y="2" width="20" height="20"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="20" id="59t-v1-CLS"/>
+                                    <constraint firstAttribute="width" constant="20" id="UMl-y1-XFJ"/>
+                                </constraints>
+                            </imageView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="NRl-qN-ZUh">
+                                <rect key="frame" x="22" y="3" width="32.5" height="18"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Zm6-Z6-L8B" userLabel="Badge Image View">
+                                <rect key="frame" x="56.5" y="2" width="20" height="20"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="20" id="KDK-9f-U0z"/>
+                                    <constraint firstAttribute="height" constant="20" id="zQ3-rs-TWz"/>
+                                </constraints>
+                            </imageView>
+                        </subviews>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="24" id="VzG-uZ-GXR"/>
+                        </constraints>
+                    </stackView>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ioC-HL-zJ1">
+                        <rect key="frame" x="66" y="29" width="29" height="16"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="13"/>
+                        <nil key="textColor"/>
+                        <nil key="highlightedColor"/>
+                    </label>
                 </subviews>
                 <constraints>
-                    <constraint firstItem="mXh-YP-2Qp" firstAttribute="top" secondItem="ZPb-R0-xVy" secondAttribute="top" id="3FN-Bj-iGM"/>
                     <constraint firstAttribute="bottom" secondItem="ZPb-R0-xVy" secondAttribute="bottom" constant="8" id="Bnl-CM-yRc"/>
-                    <constraint firstItem="mXh-YP-2Qp" firstAttribute="leading" secondItem="ZPb-R0-xVy" secondAttribute="trailing" constant="12" id="XLk-kS-0aT"/>
-                    <constraint firstAttribute="bottom" secondItem="mXh-YP-2Qp" secondAttribute="bottom" constant="8" id="YPS-5U-grn"/>
+                    <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="ioC-HL-zJ1" secondAttribute="trailing" id="KvO-LK-LOA"/>
+                    <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="63W-um-RYw" secondAttribute="trailing" id="Mcg-r4-PO8"/>
+                    <constraint firstItem="ioC-HL-zJ1" firstAttribute="leading" secondItem="63W-um-RYw" secondAttribute="leading" id="WEV-yE-V1J"/>
+                    <constraint firstItem="63W-um-RYw" firstAttribute="centerY" secondItem="ZPb-R0-xVy" secondAttribute="centerY" constant="-11" id="bOB-Wv-amh"/>
                     <constraint firstItem="ZPb-R0-xVy" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="16" id="etg-Ub-Diu"/>
                     <constraint firstItem="ZPb-R0-xVy" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="8" id="f23-Eb-p8I"/>
-                    <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="mXh-YP-2Qp" secondAttribute="trailing" constant="16" id="q8e-VL-vTc"/>
+                    <constraint firstItem="ioC-HL-zJ1" firstAttribute="top" secondItem="63W-um-RYw" secondAttribute="bottom" id="gYq-Vg-084"/>
+                    <constraint firstItem="63W-um-RYw" firstAttribute="leading" secondItem="ZPb-R0-xVy" secondAttribute="trailing" constant="10" id="oNb-1N-wob"/>
                 </constraints>
             </tableViewCellContentView>
             <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
@@ -81,7 +81,7 @@
                 <outlet property="displayNameLabel" destination="NRl-qN-ZUh" id="j11-JQ-WOG"/>
                 <outlet property="privateBadgeImageView" destination="Rup-PC-Vgm" id="DdJ-WT-H4Y"/>
             </connections>
-            <point key="canvasLocation" x="202.89855072463769" y="128.23660714285714"/>
+            <point key="canvasLocation" x="202.89855072463769" y="127.90178571428571"/>
         </tableViewCell>
     </objects>
     <resources>

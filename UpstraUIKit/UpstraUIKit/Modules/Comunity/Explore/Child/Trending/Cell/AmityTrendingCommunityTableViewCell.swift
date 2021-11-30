@@ -28,6 +28,10 @@ final class AmityTrendingCommunityTableViewCell: UITableViewCell, Nibbable {
         return categoryLabel.isTruncated
     }
     
+    var numberOfLineInCategoryLabel: Int {
+        return categoryLabel.numberOfVisibleLines
+    }
+    
     override func awakeFromNib() {
         super.awakeFromNib()
         setupView()
@@ -46,7 +50,6 @@ final class AmityTrendingCommunityTableViewCell: UITableViewCell, Nibbable {
         avatarView.setImage(withImageURL: model.avatarURL, placeholder: AmityIconSet.defaultCommunity)
         displayNameLabel.text = model.displayName
         categoryLabel.text = model.category
-        
         membersLabel.text = String.localizedStringWithFormat(AmityLocalizedStringSet.trendingCommunityMembers.localizedString, model.membersCount.formatUsingAbbrevation())
         iconImageView.isHidden = !model.isOfficial
         iconImageViewWidthConstraint.constant = !model.isOfficial ? 0 : 24

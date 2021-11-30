@@ -15,7 +15,7 @@ protocol AmitySearchCommunityTableViewCellDelegate: AnyObject {
 
 final class AmitySearchCommunityTableViewCell: UITableViewCell, Nibbable {
     
-    static let defaultHeight: CGFloat = 56.0
+    static let defaultHeight: CGFloat = 60.0
     
     weak var delegate: AmitySearchCommunityTableViewCellDelegate?
     
