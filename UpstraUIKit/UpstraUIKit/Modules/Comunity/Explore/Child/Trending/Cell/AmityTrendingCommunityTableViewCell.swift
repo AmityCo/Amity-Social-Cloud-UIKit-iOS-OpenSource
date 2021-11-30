@@ -28,10 +28,6 @@ final class AmityTrendingCommunityTableViewCell: UITableViewCell, Nibbable {
         return categoryLabel.isTruncated
     }
     
-    var numberOfLineInCategoryLabel: Int {
-        return categoryLabel.numberOfVisibleLines
-    }
-    
     override func awakeFromNib() {
         super.awakeFromNib()
         setupView()
