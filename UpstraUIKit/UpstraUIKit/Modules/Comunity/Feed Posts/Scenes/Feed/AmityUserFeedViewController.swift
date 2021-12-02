@@ -15,10 +15,13 @@ public class AmityUserFeedViewController: AmityViewController {
     private let createPostButton: AmityFloatingButton = AmityFloatingButton()
     private let feedType: AmityPostFeedType
     
+    private var openByProfileTrueID: Bool = false
+    
     // MARK: - Initializer
     
-    init(feedType: AmityPostFeedType) {
+    init(feedType: AmityPostFeedType, openByProfileTrueID: Bool) {
         self.feedType = feedType
+        self.openByProfileTrueID = openByProfileTrueID
         feedViewController = AmityFeedViewController.make(feedType: feedType)
         super.init(nibName: nil, bundle: nil)
     }
@@ -29,11 +32,15 @@ public class AmityUserFeedViewController: AmityViewController {
     
     @available(*, deprecated, message: "`AmityUserFeedViewController.makeMyFeed()` method is deprecated. Please calls `AmityMyFeedViewController.make()` instead.")
     public static func makeMyFeed() -> AmityUserFeedViewController {
-        return AmityUserFeedViewController(feedType: .myFeed)
+        return AmityUserFeedViewController(feedType: .myFeed, openByProfileTrueID: false)
     }
     
     public static func makeUserFeed(withUserId userId: String) -> AmityUserFeedViewController {
-        return AmityUserFeedViewController(feedType: .userFeed(userId: userId))
+        return AmityUserFeedViewController(feedType: .userFeed(userId: userId), openByProfileTrueID: false)
+    }
+    
+    public static func makeUserFeedByTrueIDProfile(withUserId userId: String) -> AmityUserFeedViewController {
+        return AmityUserFeedViewController(feedType: .userFeed(userId: userId), openByProfileTrueID: true)
     }
     
     // MARK: - View's life cycle
@@ -56,7 +63,7 @@ public class AmityUserFeedViewController: AmityViewController {
         createPostButton.actionHandler = { [weak self] button in
             guard let strongSelf = self else { return }
 //            AmityEventHandler.shared.createPostBeingPrepared(from: strongSelf, postTarget: .myFeed)
-            AmityEventHandler.shared.createPostDidTap(from: strongSelf, postTarget: .myFeed)
+            AmityEventHandler.shared.createPostDidTap(from: strongSelf, postTarget: .myFeed, openByProfileTrueID: self?.openByProfileTrueID ?? false)
         }
         
         // We can't post on other user feed.
