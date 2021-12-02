@@ -45,28 +45,28 @@ class AmityCustomEventHandler: AmityEventHandler {
         source.navigationController?.pushViewController(vc, animated: true)
     }
     
-    override func createPostDidTap(from source: AmityViewController, postTarget: AmityPostTarget, postContentType: AmityPostContentType = .post) {
-        var viewController: AmityViewController
-        switch postContentType {
-        case .post:
-            let settings = AmityPostEditorSettings()
-            viewController = AmityPostCreatorViewController.make(postTarget: postTarget, settings: settings)
-        case .poll:
-            viewController = AmityPollCreatorViewController.make(postTarget: postTarget)
-
-        @unknown default:
-            super.createPostDidTap(from: source, postTarget: postTarget, postContentType: postContentType)
-            return
-        }
-        
-        if source.isModalPresentation {
-            source.navigationController?.pushViewController(viewController, animated: true)
-        } else {
-            let navigationController = UINavigationController(rootViewController: viewController)
-            navigationController.modalPresentationStyle = .overFullScreen
-            source.present(navigationController, animated: true, completion: nil)
-        }
-    }
+//    override func createPostDidTap(from source: AmityViewController, postTarget: AmityPostTarget, postContentType: AmityPostContentType = .post) {
+//        var viewController: AmityViewController
+//        switch postContentType {
+//        case .post:
+//            let settings = AmityPostEditorSettings()
+//            viewController = AmityPostCreatorViewController.make(postTarget: postTarget, settings: settings)
+//        case .poll:
+//            viewController = AmityPollCreatorViewController.make(postTarget: postTarget)
+//
+//        @unknown default:
+//            super.createPostDidTap(from: source, postTarget: postTarget, postContentType: postContentType, openByProfileTrueID: false)
+//            return
+//        }
+//        
+//        if source.isModalPresentation {
+//            source.navigationController?.pushViewController(viewController, animated: true)
+//        } else {
+//            let navigationController = UINavigationController(rootViewController: viewController)
+//            navigationController.modalPresentationStyle = .overFullScreen
+//            source.present(navigationController, animated: true, completion: nil)
+//        }
+//    }
     
     override func createLiveStreamPost(
         from source: AmityViewController,

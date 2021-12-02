@@ -107,7 +107,7 @@ open class AmityEventHandler {
         postTarget: AmityPostTarget,
         postContentType: AmityPostContentType
     ) {
-        createPostDidTap(from: source, postTarget: postTarget, postContentType: postContentType)
+        createPostDidTap(from: source, postTarget: postTarget, postContentType: postContentType, openByProfileTrueID: false)
     }
         
     /// Event for post creator
@@ -152,7 +152,7 @@ open class AmityEventHandler {
     /// The default behavior is presenting or navigating to post creation page, which depends on post content type.
     ///  - `AmityPostCreatorViewController` for post type
     ///  - `AmityPollCreatorViewController` for poll type
-    open func createPostDidTap(from source: AmityViewController, postTarget: AmityPostTarget, postContentType: AmityPostContentType = .post) {
+    open func createPostDidTap(from source: AmityViewController, postTarget: AmityPostTarget, postContentType: AmityPostContentType = .post, openByProfileTrueID: Bool) {
         
         var viewController: AmityViewController
         switch postContentType {
@@ -170,14 +170,21 @@ open class AmityEventHandler {
             return
         }
         
-        if source.isModalPresentation {
-            // a source is presenting. push a new vc.
-            source.navigationController?.pushViewController(viewController, animated: true)
-        } else {
+        if openByProfileTrueID {
             let navigationController = UINavigationController(rootViewController: viewController)
             navigationController.modalPresentationStyle = .overFullScreen
             source.present(navigationController, animated: true, completion: nil)
+        } else {
+            if source.isModalPresentation {
+                // a source is presenting. push a new vc.
+                source.navigationController?.pushViewController(viewController, animated: true)
+            } else {
+                let navigationController = UINavigationController(rootViewController: viewController)
+                navigationController.modalPresentationStyle = .overFullScreen
+                source.present(navigationController, animated: true, completion: nil)
+            }
         }
+        
     }
     
     /// This function will triggered when the user choose to "create live stream post".

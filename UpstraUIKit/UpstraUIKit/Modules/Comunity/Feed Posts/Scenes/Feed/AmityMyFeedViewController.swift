@@ -12,7 +12,7 @@ public class AmityMyFeedViewController: AmityUserFeedViewController {
     
     // This is a wrapper class to help fill in parameters.
     public static func make() -> AmityMyFeedViewController {
-        return AmityMyFeedViewController(feedType: .myFeed)
+        return AmityMyFeedViewController(feedType: .myFeed, openByProfileTrueID: false)
     }
     
 }
