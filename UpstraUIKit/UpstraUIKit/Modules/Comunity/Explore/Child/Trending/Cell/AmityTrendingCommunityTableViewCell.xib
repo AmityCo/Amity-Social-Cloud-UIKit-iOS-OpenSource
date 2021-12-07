@@ -8,6 +8,11 @@
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
+    <customFonts key="customFonts">
+        <array key="SukhumvitTadmai-Bold.ttf">
+            <string>SukhumvitTadmai-Bold</string>
+        </array>
+    </customFonts>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
@@ -19,7 +24,7 @@
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="jYq-PO-fEO">
-                        <rect key="frame" x="16" y="0.0" width="288" height="69"/>
+                        <rect key="frame" x="16" y="0.0" width="208" height="69"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Gic-yd-UUu" customClass="AmityAvatarView" customModule="AmityUIKit" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="14.5" width="40" height="40"/>
@@ -49,13 +54,13 @@
                                 </constraints>
                             </imageView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" horizontalCompressionResistancePriority="749" verticalCompressionResistancePriority="749" ambiguous="YES" text="Sports " lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="36l-G6-wnc">
-                                <rect key="frame" x="71.5" y="41" width="55" height="20.5"/>
+                                <rect key="frame" x="71.5" y="41" width="3.5" height="20.5"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="999" verticalHuggingPriority="251" ambiguous="YES" text="• 150k members" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9vD-iD-Xmt">
-                                <rect key="frame" x="134.5" y="41" width="125" height="20.5"/>
+                                <rect key="frame" x="83" y="41" width="125" height="20.5"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
@@ -80,12 +85,26 @@
                             <constraint firstItem="Gic-yd-UUu" firstAttribute="centerY" secondItem="jYq-PO-fEO" secondAttribute="centerY" id="p56-wO-cld"/>
                         </constraints>
                     </view>
+                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="X2U-tk-7ZM">
+                        <rect key="frame" x="224" y="19.5" width="80" height="30"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="80" id="kDj-Oq-SYp"/>
+                            <constraint firstAttribute="height" constant="30" id="uBl-4q-xJw"/>
+                        </constraints>
+                        <fontDescription key="fontDescription" name="SukhumvitTadmai-Bold" family="Sukhumvit Tadmai" pointSize="16"/>
+                        <state key="normal" title="Button"/>
+                        <connections>
+                            <action selector="joinButtonTapped:" destination="KGk-i7-Jjw" eventType="touchUpInside" id="vz6-Kt-A2k"/>
+                        </connections>
+                    </button>
                 </subviews>
                 <constraints>
                     <constraint firstItem="jYq-PO-fEO" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" id="4rK-sU-AnU"/>
                     <constraint firstItem="jYq-PO-fEO" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="16" id="Cbd-sZ-wcj"/>
-                    <constraint firstAttribute="trailing" secondItem="jYq-PO-fEO" secondAttribute="trailing" constant="16" id="gVh-aJ-wFU"/>
+                    <constraint firstAttribute="trailing" secondItem="X2U-tk-7ZM" secondAttribute="trailing" constant="16" id="VrU-pE-qYt"/>
+                    <constraint firstItem="X2U-tk-7ZM" firstAttribute="centerY" secondItem="XTo-DO-Ov3" secondAttribute="centerY" id="g0c-Vl-BmL"/>
                     <constraint firstAttribute="bottom" secondItem="jYq-PO-fEO" secondAttribute="bottom" constant="13" id="qiT-LU-n9B"/>
+                    <constraint firstItem="X2U-tk-7ZM" firstAttribute="leading" secondItem="jYq-PO-fEO" secondAttribute="trailing" id="yRz-yi-lrh"/>
                 </constraints>
             </tableViewCellContentView>
             <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
@@ -95,6 +114,7 @@
                 <outlet property="displayNameLabel" destination="QRB-WP-osP" id="CsB-HM-hvX"/>
                 <outlet property="iconImageView" destination="pLk-NE-Ydr" id="TWk-jm-dFI"/>
                 <outlet property="iconImageViewWidthConstraint" destination="QJf-UB-hoz" id="lvj-6U-TrX"/>
+                <outlet property="joinButton" destination="X2U-tk-7ZM" id="wI2-SJ-MBn"/>
                 <outlet property="membersLabel" destination="9vD-iD-Xmt" id="UY6-02-W0I"/>
                 <outlet property="numberLabel" destination="XTo-DO-Ov3" id="3TK-wW-56y"/>
             </connections>

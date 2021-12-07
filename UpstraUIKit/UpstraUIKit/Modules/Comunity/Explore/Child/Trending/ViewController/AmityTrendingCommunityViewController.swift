@@ -101,7 +101,7 @@ extension AmityTrendingCommunityViewController: UITableViewDataSource {
 
 // MARK: - AmityTrendingCommunityScreenViewModelDelegate
 extension AmityTrendingCommunityViewController: AmityTrendingCommunityScreenViewModelDelegate {
-
+    
     func screenViewModel(_ viewModel: AmityTrendingCommunityScreenViewModelType, didRetrieveTrending trending: [AmityCommunityModel], isEmpty: Bool) {
         emptyHandler?(isEmpty)
         tableViewHeight = 0
@@ -115,11 +115,28 @@ extension AmityTrendingCommunityViewController: AmityTrendingCommunityScreenView
     func screenViewModel(_ viewModel: AmityTrendingCommunityScreenViewModelType, didFail error: AmityError) {
         emptyHandler?(true)
     }
+    
+    func didJoinFailure(error: AmityError) {
+        
+    }
+    
+    func didLeaveFailure(error: AmityError) {
+    
+    }
 
 }
 
+
 // MARK: - AmityTrendingCommunityTableViewCellDelegate
 extension AmityTrendingCommunityViewController: AmityTrendingCommunityTableViewCellDelegate {
+    func didJoin(with item: AmityCommunityModel) {
+        screenViewModel.action.joinCommunity(community: item)
+    }
+    
+    func didLeave(with item: AmityCommunityModel) {
+        screenViewModel.action.leaveCommunity(community: item)
+    }
+    
     func cellDidTapOnAvatar(_ cell: AmityTrendingCommunityTableViewCell) {
         guard let indexPath = tableView.indexPath(for: cell) else { return }
         let community = screenViewModel.dataSource.community(at: indexPath)

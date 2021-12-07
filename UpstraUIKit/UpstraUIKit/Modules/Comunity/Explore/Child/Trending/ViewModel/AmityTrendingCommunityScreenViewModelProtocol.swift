@@ -11,6 +11,8 @@ import UIKit
 protocol AmityTrendingCommunityScreenViewModelDelegate: AnyObject {
     func screenViewModel(_ viewModel: AmityTrendingCommunityScreenViewModelType, didRetrieveTrending trending: [AmityCommunityModel], isEmpty: Bool)
     func screenViewModel(_ viewModel: AmityTrendingCommunityScreenViewModelType, didFail error: AmityError)
+    func didJoinFailure(error: AmityError)
+    func didLeaveFailure(error: AmityError)
 }
 
 protocol AmityTrendingCommunityScreenViewModelDataSource {
@@ -20,6 +22,8 @@ protocol AmityTrendingCommunityScreenViewModelDataSource {
 
 protocol AmityTrendingCommunityScreenViewModelAction {
     func retrieveTrending()
+    func joinCommunity(community: AmityCommunityModel)
+    func leaveCommunity(community: AmityCommunityModel)
 }
 
 protocol AmityTrendingCommunityScreenViewModelType: AmityTrendingCommunityScreenViewModelAction, AmityTrendingCommunityScreenViewModelDataSource {

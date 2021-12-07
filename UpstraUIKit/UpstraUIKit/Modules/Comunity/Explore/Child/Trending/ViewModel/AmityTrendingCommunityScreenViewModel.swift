@@ -7,10 +7,12 @@
 //
 
 import UIKit
-
+import AmitySDK
+import AVFoundation
 final class AmityTrendingCommunityScreenViewModel: AmityTrendingCommunityScreenViewModelType {
     
     weak var delegate: AmityTrendingCommunityScreenViewModelDelegate?
+    private var communityRepository:AmityCommunityRepository = AmityCommunityRepository(client: AmityUIKitManager.client)
     
     // MARK: - Controller
     private let trendingController: AmityCommunityTrendingControllerProtocol
@@ -54,5 +56,34 @@ extension AmityTrendingCommunityScreenViewModel {
             }
         }
     }
+    
+    func joinCommunity(community: AmityCommunityModel) {
+        communityRepository.joinCommunity(withId: community.communityId) { [weak self] (status, error) in
+            guard let strongSelf = self else { return }
+            if let error = error {
+                strongSelf.delegate?.didJoinFailure(error: AmityError(error: error) ?? .unknown)
+                return
+            }
+            if status {
+                strongSelf.retrieveTrending()
+            }
+            return
+        }
+    }
+    
+    func leaveCommunity(community: AmityCommunityModel) {
+        communityRepository.leaveCommunity(withId: community.communityId) { [weak self] (status, error) in
+            guard let strongSelf = self else { return }
+            if let error = error {
+                strongSelf.delegate?.didLeaveFailure(error: AmityError(error: error) ?? . unknown)
+                return
+            }
+            if status {
+                strongSelf.retrieveTrending()
+            }
+            return
+        }
+    }
+   
 
 }

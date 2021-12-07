@@ -10,6 +10,8 @@ import UIKit
 
 protocol AmityTrendingCommunityTableViewCellDelegate: AnyObject {
     func cellDidTapOnAvatar(_ cell: AmityTrendingCommunityTableViewCell)
+    func didJoin(with item: AmityCommunityModel)
+    func didLeave(with item: AmityCommunityModel)
 }
 
 final class AmityTrendingCommunityTableViewCell: UITableViewCell, Nibbable {
@@ -18,11 +20,13 @@ final class AmityTrendingCommunityTableViewCell: UITableViewCell, Nibbable {
     @IBOutlet private var numberLabel: UILabel!
     @IBOutlet private var displayNameLabel: UILabel!
     @IBOutlet private var iconImageView: UIImageView!
+    @IBOutlet private var joinButton: UIButton!
     @IBOutlet private var categoryLabel: UILabel!
     @IBOutlet private var membersLabel: UILabel!
     @IBOutlet private var iconImageViewWidthConstraint: NSLayoutConstraint!
     
     weak var delegate: AmityTrendingCommunityTableViewCellDelegate?
+    var item: AmityCommunityModel?
     
     var isCategoryLabelTruncated: Bool {
         return categoryLabel.isTruncated
@@ -43,16 +47,44 @@ final class AmityTrendingCommunityTableViewCell: UITableViewCell, Nibbable {
     }
     
     func display(with model: AmityCommunityModel) {
+        self.item = model
         avatarView.setImage(withImageURL: model.avatarURL, placeholder: AmityIconSet.defaultCommunity)
         displayNameLabel.text = model.displayName
         categoryLabel.text = model.category
         membersLabel.text = String.localizedStringWithFormat(AmityLocalizedStringSet.trendingCommunityMembers.localizedString, model.membersCount.formatUsingAbbrevation())
         iconImageView.isHidden = !model.isOfficial
         iconImageViewWidthConstraint.constant = !model.isOfficial ? 0 : 24
+        
+        let joinButtonTitle = model.isJoined ? "Joined" : "Join"
+
+        if model.isJoined {
+            joinButton.setTitle(joinButtonTitle, for: .normal)
+            joinButton.setTitleColor(AmityColorSet.primary, for: .normal)
+            joinButton.setBackgroundColor(color: .white, forState: .normal)
+            joinButton.layer.borderWidth = 1.0
+            joinButton.layer.borderColor = AmityColorSet.primary.cgColor
+        } else {
+            joinButton.setTitle(joinButtonTitle, for: .normal)
+            joinButton.setTitleColor(.white, for: .normal)
+            joinButton.setBackgroundColor(color: AmityColorSet.primary, forState: .normal)
+            joinButton.layer.borderWidth = 1.0
+            joinButton.layer.borderColor = AmityColorSet.primary.cgColor
+        }
     }
     
     func displayNumber(with indexPath: IndexPath) {
         numberLabel.text = "\(indexPath.row + 1)"
+    }
+    
+    
+    @IBAction func joinButtonTapped(_ sender: Any) {
+        guard let item = self.item else { return }
+        if item.isJoined {
+            delegate?.didLeave(with: item)
+        } else {
+            AmityEventHandler.shared.communityJoinButtonTracking(screenName: ScreenName.explore.rawValue)
+            delegate?.didJoin(with: item)
+        }
     }
 }
 
@@ -64,6 +96,7 @@ private extension AmityTrendingCommunityTableViewCell {
         setupNumber()
         setupDisplayName()
         setupMetadata()
+        setupJoinButton()
     }
     
     func setupAvatarView() {
@@ -101,6 +134,12 @@ private extension AmityTrendingCommunityTableViewCell {
         membersLabel.text = ""
         membersLabel.textColor = AmityColorSet.base.blend(.shade1)
         membersLabel.font = AmityFontSet.caption
+    }
+    
+    func setupJoinButton() {
+        joinButton.setTitle("", for: .normal)
+        joinButton.layer.cornerRadius = joinButton.frame.height / 2
+        joinButton.layer.masksToBounds = true
     }
 }
 
