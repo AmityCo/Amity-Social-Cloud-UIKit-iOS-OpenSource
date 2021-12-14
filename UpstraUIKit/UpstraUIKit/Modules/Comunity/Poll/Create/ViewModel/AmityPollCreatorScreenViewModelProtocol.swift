@@ -23,6 +23,7 @@ protocol AmityPollCreatorScreenViewModelDataSource {
     var isMultipleSelection: Bool { get }
     var selectedDay: Int { get }
     var timeMilliseconds: Int { get }
+    var maxAnswers: Int { get set }
     func getAnswer(at indexPath: IndexPath) -> String
 }
 

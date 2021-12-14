@@ -21,6 +21,7 @@ final class AmityPollCreatorScreenViewModel: AmityPollCreatorScreenViewModelType
     var answersItem: [String] = [] { didSet { validateFieldsMandatory() } }
     var isMultipleSelection: Bool = false  { didSet { validateFieldsMandatory() } }
     private(set) var selectedDay: Int = 0
+    var maxAnswers: Int = 0
     
     var timeMilliseconds: Int = 0  { didSet { validateFieldsMandatory() } }
     
@@ -71,7 +72,7 @@ extension AmityPollCreatorScreenViewModel {
     }
     
     func addNewOption(completion: () -> Void) {
-        guard answersItem.count < 10 else { return }
+        guard answersItem.count < maxAnswers else { return }
         if answersItem.last == "" {
             return
         }
