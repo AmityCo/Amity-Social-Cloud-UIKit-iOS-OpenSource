@@ -48,3 +48,39 @@ class AmityCategoryCommunityListScreenViewModel: AmityCategoryCommunityListScree
     }
     
 }
+
+//MARK: Action
+extension AmityCategoryCommunityListScreenViewModel {
+    
+    func join(community: AmityCommunityModel) {
+        communityrepository.joinCommunity(withId: community.communityId) { [weak self] (success, error) in
+            guard let self = self else { return }
+            
+            if let error = error {
+                self.delegate?.didJoinedCommunityFailure(error: error)
+                
+                return
+            }
+            
+            let userInfo = ["communityId": community.communityId as Any]
+//            NotificationCenter.default.post(name: NSNotification.Name.Post.didJoinCommunity, object: nil, userInfo: userInfo)
+            self.delegate?.didJoinedCommunitySuccess(community: community)
+        }
+    }
+    
+    func leave(community: AmityCommunityModel) {
+        communityrepository.leaveCommunity(withId: community.communityId) { [weak self] (success, error) in
+            guard let self = self else { return }
+            
+            if let error = error {
+                self.delegate?.didLeavedCommunityFailure(error: error)
+                return
+            }
+            
+            let userInfo = ["communityId": community.communityId as Any]
+            //        NotificationCenter.default.post(name: NSNotification.Name.Post.didLeaveCommunity, object: nil, userInfo: userInfo)
+            self.delegate?.didLeavedCommunitySuccess(community: community)
+        }
+    }
+    
+}

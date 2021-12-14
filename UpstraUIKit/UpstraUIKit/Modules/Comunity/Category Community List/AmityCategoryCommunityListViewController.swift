@@ -65,6 +65,7 @@ extension AmityCategoryCommunityListViewController: UITableViewDataSource {
         if let community = screenViewModel.dataSource.item(at: indexPath) {
             cell.display(with: community)
             cell.delegate = self
+            cell.didTappedJoinButton = didTappedJoinButton
         }
         if tableView.isBottomReached {
             screenViewModel.loadNext()
@@ -101,6 +102,22 @@ extension AmityCategoryCommunityListViewController: UITableViewDelegate {
 
 extension AmityCategoryCommunityListViewController: AmityCategoryCommunityListScreenViewModelDelegate {
     
+    func didJoinedCommunitySuccess(community: AmityCommunityModel) {
+        tableView?.reloadData()
+    }
+    
+    func didJoinedCommunityFailure(error: Error) {
+        
+    }
+    
+    func didLeavedCommunitySuccess(community: AmityCommunityModel) {
+        tableView?.reloadData()
+    }
+    
+    func didLeavedCommunityFailure(error: Error) {
+        
+    }
+    
     func screenViewModelDidUpdateData(_ viewModel: AmityCategoryCommunityListScreenViewModelType) {
         tableView?.reloadData()
     }
@@ -112,5 +129,21 @@ extension AmityCategoryCommunityListViewController: AmityMyCommunityTableViewCel
     func cellDidTapOnAvatar(_ cell: AmityMyCommunityTableViewCell) {
         guard let indexPath = tableView.indexPath(for: cell) else { return }
         communityDidTap(at: indexPath)
+    }
+}
+
+//MARK: Binding
+private extension AmityCategoryCommunityListViewController {
+    var didTappedJoinButton: ((AmityCommunityModel) -> Void) {
+        return { [weak self] (community) in
+            guard let self = self else { return }
+            
+            if community.isJoined {
+                self.screenViewModel.action.leave(community: community)
+            } else {
+                AmityEventHandler.shared.communityJoinButtonTracking(screenName: ScreenName.communityListing.rawValue)
+                self.screenViewModel.action.join(community: community)
+            }
+        }
     }
 }

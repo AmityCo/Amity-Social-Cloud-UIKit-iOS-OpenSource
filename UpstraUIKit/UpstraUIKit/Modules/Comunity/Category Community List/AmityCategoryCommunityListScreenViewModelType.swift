@@ -16,9 +16,16 @@ protocol AmityCategoryCommunityListScreenViewModelDataSource {
 
 protocol AmityCategoryCommunityListScreenViewModelDelegate: AnyObject {
     func screenViewModelDidUpdateData(_ viewModel: AmityCategoryCommunityListScreenViewModelType)
+    func didJoinedCommunitySuccess(community: AmityCommunityModel)
+    func didJoinedCommunityFailure(error: Error)
+    func didLeavedCommunitySuccess(community: AmityCommunityModel)
+    func didLeavedCommunityFailure(error: Error)
 }
 
-protocol AmityCategoryCommunityListScreenViewModelAction {}
+protocol AmityCategoryCommunityListScreenViewModelAction {
+    func join(community: AmityCommunityModel)
+    func leave(community: AmityCommunityModel)
+}
 
 protocol AmityCategoryCommunityListScreenViewModelType: AmityCategoryCommunityListScreenViewModelAction, AmityCategoryCommunityListScreenViewModelDataSource {
     var action: AmityCategoryCommunityListScreenViewModelAction { get }
