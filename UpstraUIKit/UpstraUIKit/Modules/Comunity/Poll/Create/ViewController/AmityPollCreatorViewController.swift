@@ -265,6 +265,7 @@ extension AmityPollCreatorViewController: AmityPollCreatorCellProtocolDelegate {
                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) { [weak self] in
                     let indexPath = IndexPath(item: 0, section: section + 1)
                     self?.tableView.reloadRows(at: [indexPath], with: .none)
+                    self?.tableView.reloadRows(at: [IndexPath.init(row: 0, section: 1)], with: .none)
                 }
             }
         case let .updateAnswerOption(text):
