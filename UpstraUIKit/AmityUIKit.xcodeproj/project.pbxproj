@@ -639,6 +639,9 @@
 		D4D7683E26006D7000AD4367 /* AmitySettingContentIcon.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4D7683D26006D7000AD4367 /* AmitySettingContentIcon.swift */; };
 		D4EC11E525B93DCE0095F507 /* AmityPostSharingSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4EC11E425B93DCE0095F507 /* AmityPostSharingSettings.swift */; };
 		D4EC11EA25B93E000095F507 /* AmityPostSharingTarget.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4EC11E925B93E000095F507 /* AmityPostSharingTarget.swift */; };
+		FC1DE9AC2769D1D000ECB45F /* LocalizedIndia.strings in Resources */ = {isa = PBXBuildFile; fileRef = FC1DE9AB2769D1D000ECB45F /* LocalizedIndia.strings */; };
+		FC1DE9AE2769D2AD00ECB45F /* LocalizedCambodia.strings in Resources */ = {isa = PBXBuildFile; fileRef = FC1DE9AD2769D2AD00ECB45F /* LocalizedCambodia.strings */; };
+		FC1DE9B02769D8D800ECB45F /* LocalizedPhilippin.strings in Resources */ = {isa = PBXBuildFile; fileRef = FC1DE9AF2769D8D800ECB45F /* LocalizedPhilippin.strings */; };
 		FC6459C5274E446300D1B491 /* PageType.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC6459C2274E446300D1B491 /* PageType.swift */; };
 		FC6459C6274E446300D1B491 /* DeeplinksType.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC6459C3274E446300D1B491 /* DeeplinksType.swift */; };
 		FC6459C7274E446300D1B491 /* ScreenName.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC6459C4274E446300D1B491 /* ScreenName.swift */; };
@@ -1284,6 +1287,9 @@
 		D4D7683D26006D7000AD4367 /* AmitySettingContentIcon.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AmitySettingContentIcon.swift; sourceTree = "<group>"; };
 		D4EC11E425B93DCE0095F507 /* AmityPostSharingSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AmityPostSharingSettings.swift; sourceTree = "<group>"; };
 		D4EC11E925B93E000095F507 /* AmityPostSharingTarget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AmityPostSharingTarget.swift; sourceTree = "<group>"; };
+		FC1DE9AB2769D1D000ECB45F /* LocalizedIndia.strings */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; path = LocalizedIndia.strings; sourceTree = "<group>"; };
+		FC1DE9AD2769D2AD00ECB45F /* LocalizedCambodia.strings */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; path = LocalizedCambodia.strings; sourceTree = "<group>"; };
+		FC1DE9AF2769D8D800ECB45F /* LocalizedPhilippin.strings */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; path = LocalizedPhilippin.strings; sourceTree = "<group>"; };
 		FC6459C2274E446300D1B491 /* PageType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PageType.swift; sourceTree = "<group>"; };
 		FC6459C3274E446300D1B491 /* DeeplinksType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeeplinksType.swift; sourceTree = "<group>"; };
 		FC6459C4274E446300D1B491 /* ScreenName.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScreenName.swift; sourceTree = "<group>"; };
@@ -2151,6 +2157,9 @@
 			children = (
 				FC6459DA274E45F600D1B491 /* LocalizedEnglish.strings */,
 				FC6459DB274E45F600D1B491 /* LocalizedThai.strings */,
+				FC1DE9AB2769D1D000ECB45F /* LocalizedIndia.strings */,
+				FC1DE9AD2769D2AD00ECB45F /* LocalizedCambodia.strings */,
+				FC1DE9AF2769D8D800ECB45F /* LocalizedPhilippin.strings */,
 			);
 			path = Localization;
 			sourceTree = "<group>";
@@ -4407,6 +4416,7 @@
 			files = (
 				B773618325552BA40072B182 /* AmityChatHomePageViewController.xib in Resources */,
 				7219CA642539514800169A35 /* AmityCategoryCommunityListViewEmptyView.xib in Resources */,
+				FC1DE9AC2769D1D000ECB45F /* LocalizedIndia.strings in Resources */,
 				78C1C51F25F4160A00D6F092 /* AmitySettingsItemRadioButtonContentTableViewCell.xib in Resources */,
 				970E784F26429FB300E5FCEE /* AmityChatSettingsViewController.xib in Resources */,
 				B735CD67254937A100A98B95 /* AmityKeyboardComposeBarCollectionViewCell.xib in Resources */,
@@ -4440,6 +4450,7 @@
 				97D723982695ADC3000735F5 /* AmitySearchCommunityTableViewCell.xib in Resources */,
 				B7B6050724FBF1CA005FB53D /* AmitySelectMemberListCollectionViewCell.xib in Resources */,
 				97D0EB9B26A14A3A00E9FE6A /* AmityPendingPostsHeaderView.xib in Resources */,
+				FC1DE9AE2769D2AD00ECB45F /* LocalizedCambodia.strings in Resources */,
 				72A3516024EA820800DA9D46 /* AmityRecentChatTableViewCell.xib in Resources */,
 				97D7C4B6264BF92100EA24F5 /* AmityChannelMemberSettingsViewController.xib in Resources */,
 				789F81F826E2B9C800C16C68 /* AmityPollCreatorTimeframeView.xib in Resources */,
@@ -4529,6 +4540,7 @@
 				B7C026882574CBC5007CC334 /* AmityPopoverMessageViewController.xib in Resources */,
 				1A88282326D620390057A066 /* LICENSE in Resources */,
 				B7B31C59250F4ACF000AC6E4 /* ButtonCell.xib in Resources */,
+				FC1DE9B02769D8D800ECB45F /* LocalizedPhilippin.strings in Resources */,
 				72A3518E24EA820800DA9D46 /* AmityCommunityTableViewCell.xib in Resources */,
 				A0E2B23326B7B68200F1C4D5 /* AmityPostGalleryViewController.xib in Resources */,
 				0D41DA4625D0EF860061A46D /* AmityPostFileTableViewCell.xib in Resources */,

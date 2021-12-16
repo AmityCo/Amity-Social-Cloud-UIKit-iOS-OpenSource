@@ -1,3 +1,10 @@
+/* 
+  LocalizedPhilippin.strings
+  AmityUIKit
+
+  Created by PrInCeInFiNiTy on 15/12/2564 BE.
+  Copyright © 2564 BE Amity. All rights reserved.
+*/
 "general_report" = "Report";
 "general_undo_report" = "Undo Report";
 "general_report_user" = "Report user";
