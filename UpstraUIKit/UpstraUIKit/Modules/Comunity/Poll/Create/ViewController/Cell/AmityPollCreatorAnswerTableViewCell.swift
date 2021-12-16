@@ -26,13 +26,13 @@ final class AmityPollCreatorAnswerTableViewCell: UITableViewCell, Nibbable, Amit
     }
     override func prepareForReuse() {
         super.prepareForReuse()
-        deleteButton.isHidden = true
+        deleteButton.isHidden = false
         answerTextView.text = ""
     }
     
     func display(answer: String) {
         answerTextView.text = answer
-        deleteButton.isHidden = answerTextView.text == ""
+//        deleteButton.isHidden = answerTextView.text == ""
     }
     
     func moveInputCursorToTextView() {
@@ -63,7 +63,7 @@ final class AmityPollCreatorAnswerTableViewCell: UITableViewCell, Nibbable, Amit
     }
     
     private func setupDeleteButton() {
-        deleteButton.isHidden = true
+        deleteButton.isHidden = false
         deleteButton.setImage(AmityIconSet.iconCloseWithBackground, for: .normal)
         deleteButton.tintColor = AmityColorSet.base.blend(.shade2)
     }
@@ -81,7 +81,7 @@ extension AmityPollCreatorAnswerTableViewCell: AmityTextViewDelegate {
         errorLabel.isHidden = count != AmityPollCreatorConstant.answerMax
         answerTextView.layer.borderColor = count != AmityPollCreatorConstant.answerMax ? AmityColorSet.base.blend(.shade4).cgColor : AmityColorSet.alert.cgColor
         answerTextView.layer.borderWidth = 1
-        deleteButton.isHidden = answerTextView.text == ""
+//        deleteButton.isHidden = answerTextView.text == ""
         delegate?.didPerformAction(self, action: .textViewDidChange(textView: textView))
     }
     
