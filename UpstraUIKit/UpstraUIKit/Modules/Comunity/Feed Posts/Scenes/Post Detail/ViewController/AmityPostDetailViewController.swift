@@ -187,8 +187,12 @@ open class AmityPostDetailViewController: AmityViewController {
                     })
                     AmityAlertController.present(title: AmityLocalizedStringSet.Poll.Option.alertDeleteTitle.localizedString, message: AmityLocalizedStringSet.Poll.Option.alertDeleteDesc.localizedString, actions: [cancel, delete], from: strongSelf)
                 }
-                
-                contentView.configure(items: [closePoll, deletePoll], selectedItem: nil)
+                if (post.poll?.isClosed ?? false) {
+                    contentView.configure(items: [deletePoll], selectedItem: nil)
+                } else {
+                    contentView.configure(items: [closePoll, deletePoll], selectedItem: nil)
+                }
+//                contentView.configure(items: [closePoll, deletePoll], selectedItem: nil)
             case .file, .image, .text, .video, .unknown:
                 contentView.configure(items: [editOption, deleteOption], selectedItem: nil)
             case .liveStream:
