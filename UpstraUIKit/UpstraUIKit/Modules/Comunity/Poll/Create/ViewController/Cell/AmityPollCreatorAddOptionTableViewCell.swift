@@ -38,17 +38,18 @@ final class AmityPollCreatorAddOptionTableViewCell: UITableViewCell, Nibbable, A
     }
     
     func updateAddAnswerOptionButton(isMaxAnswer: Bool) {
-        if isMaxAnswer {
-            addAnswerOptionButton.setTitleColor(AmityColorSet.base.blend(.shade3), for: .normal)
-            addAnswerOptionButton.titleLabel?.font = AmityFontSet.bodyBold
-            addAnswerOptionButton.setImage(AmityIconSet.iconPollOptionAdd, for: .normal)
-            addAnswerOptionButton.tintColor = AmityColorSet.base.blend(.shade3)
-        } else {
-            addAnswerOptionButton.setTitleColor(AmityColorSet.base, for: .normal)
-            addAnswerOptionButton.titleLabel?.font = AmityFontSet.bodyBold
-            addAnswerOptionButton.setImage(AmityIconSet.iconPollOptionAdd, for: .normal)
-            addAnswerOptionButton.tintColor = AmityColorSet.base
-        }
+        addAnswerOptionButton.isHidden = isMaxAnswer
+//        if isMaxAnswer {
+//            addAnswerOptionButton.setTitleColor(AmityColorSet.base.blend(.shade3), for: .normal)
+//            addAnswerOptionButton.titleLabel?.font = AmityFontSet.bodyBold
+//            addAnswerOptionButton.setImage(AmityIconSet.iconPollOptionAdd, for: .normal)
+//            addAnswerOptionButton.tintColor = AmityColorSet.base.blend(.shade3)
+//        } else {
+//            addAnswerOptionButton.setTitleColor(AmityColorSet.base, for: .normal)
+//            addAnswerOptionButton.titleLabel?.font = AmityFontSet.bodyBold
+//            addAnswerOptionButton.setImage(AmityIconSet.iconPollOptionAdd, for: .normal)
+//            addAnswerOptionButton.tintColor = AmityColorSet.base
+//        }
     }
     
     // MARK: - Action
