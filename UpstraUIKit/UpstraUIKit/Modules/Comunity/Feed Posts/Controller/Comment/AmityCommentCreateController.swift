@@ -10,7 +10,7 @@ import UIKit
 import AmitySDK
 
 protocol AmityCommentCreateControllerProtocol {
-    func createComment(withReferenceId postId: String, referenceType: AmityCommentReferenceType, parentId: String?, text: String, completion: ((AmityComment?, Error?) -> Void)?)
+    func createComment(withReferenceId postId: String, referenceType: AmityCommentReferenceType, parentId: String?, text: String, metadata: [String: Any]?, mentionees: AmityMentioneesBuilder?, completion: ((AmityComment?, Error?) -> Void)?)
 }
 
 final class AmityCommentCreateController: AmityCommentCreateControllerProtocol {
@@ -19,9 +19,15 @@ final class AmityCommentCreateController: AmityCommentCreateControllerProtocol {
     private var object: AmityObject<AmityComment>?
     private var token: AmityNotificationToken?
     
-    func createComment(withReferenceId postId: String, referenceType: AmityCommentReferenceType, parentId: String?, text: String, completion: ((AmityComment?, Error?) -> Void)?) {
+    func createComment(withReferenceId postId: String, referenceType: AmityCommentReferenceType, parentId: String?, text: String, metadata: [String: Any]?, mentionees: AmityMentioneesBuilder?, completion: ((AmityComment?, Error?) -> Void)?) {
         token?.invalidate()
-        object = repository.createComment(forReferenceId: postId, referenceType: referenceType, parentId: parentId, text: text)
+        
+        if let metadata = metadata, let mentionees = mentionees {
+            object = repository.createComment(forReferenceId: postId, referenceType: referenceType, parentId: parentId, text: text, metadata: metadata, mentionees: mentionees)
+        } else {
+            object = repository.createComment(forReferenceId: postId, referenceType: referenceType, parentId: parentId, text: text)
+        }
+        
         token = object?.observe { commentObject, error in
             completion?(commentObject.object, error)
         }

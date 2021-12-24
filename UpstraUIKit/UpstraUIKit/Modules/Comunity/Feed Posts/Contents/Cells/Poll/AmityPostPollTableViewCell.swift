@@ -269,4 +269,6 @@ extension AmityPostPollTableViewCell: AmityExpandableLabelDelegate {
         performAction(action: .tapExpandableLabel(label: label))
     }
 
+    public func didTapOnMention(_ label: AmityExpandableLabel, withUserId userId: String) {
+    }
 }

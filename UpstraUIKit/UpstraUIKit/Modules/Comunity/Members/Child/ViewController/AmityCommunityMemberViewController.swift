@@ -196,7 +196,7 @@ private extension AmityCommunityMemberViewController {
                 let member = strongSelf.screenViewModel.dataSource.member(at: indexPath)
                 switch strongSelf.viewType {
                 case .member:
-                    if !member.isModerator {
+                    if !member.isModerator && !member.isGlobalBan {
                         let addRoleOption = TextItemOption(title: AmityLocalizedStringSet.CommunityMembreSetting.optionPromoteToModerator.localizedString) {
                             AmityHUD.show(.loading)
                             strongSelf.screenViewModel.action.addRole(at: indexPath)

@@ -21,6 +21,7 @@ protocol AmityCommunitySettingsScreenViewModelDelegate: AnyObject {
 protocol AmityCommunitySettingsScreenViewModelDataSource {
     var community: AmityCommunityModel? { get }
     var communityId: String { get }
+    func isModerator(userId: String) -> Bool
 }
 
 protocol AmityCommunitySettingsScreenViewModelAction {

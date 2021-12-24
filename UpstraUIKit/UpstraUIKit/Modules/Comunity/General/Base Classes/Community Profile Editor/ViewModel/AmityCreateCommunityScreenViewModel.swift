@@ -241,29 +241,6 @@ extension AmityCreateCommunityScreenViewModel {
 }
 
 private extension AmityCreateCommunityScreenViewModel {
-    
-    // Force set moderator after create the community success
-    private func updateRole(withCommunityId communityId: String) {
-        let userId = AmityUIKitManagerInternal.shared.currentUserId
-        communityModeration = AmityCommunityModeration(client: AmityUIKitManagerInternal.shared.client, andCommunity: communityId)
-        communityModeration?.addRole(AmityCommunityRole.moderator.rawValue, userIds: [userId]) { [weak self] (success, error) in
-            guard let strongSelf = self else { return }
-            if let _ = error {
-                AmityHUD.hide()
-                AmityUtilities.showError()
-                return
-            } else {
-                if success {
-                    self?.delegate?.screenViewModel(strongSelf, state: .createSuccess(communityId: communityId))
-                } else {
-                    AmityHUD.hide()
-                    AmityUtilities.showError()
-                    return
-                }
-            }
-        }
-    }
-    
     private func showProfile(model: AmityCommunityModel) {
         updateDisplayName(text: model.displayName)
         updateDescription(text: model.description)
@@ -295,7 +272,7 @@ private extension AmityCreateCommunityScreenViewModel {
             guard let strongSelf = self else { return }
             
             if let community = community {
-                strongSelf.updateRole(withCommunityId: community.communityId)
+                strongSelf.delegate?.screenViewModel(strongSelf, state: .createSuccess(communityId: community.communityId))
             } else {
                 strongSelf.delegate?.screenViewModel(strongSelf, failure: AmityError(error: error) ?? .unknown)
             }

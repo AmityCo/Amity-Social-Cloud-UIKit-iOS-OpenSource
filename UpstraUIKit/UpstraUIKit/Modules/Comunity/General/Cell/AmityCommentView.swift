@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import AmitySDK
 
 enum AmityCommentViewLayout {
     case comment(contentExpanded: Bool, shouldActionShow: Bool, shouldLineShow: Bool)
@@ -41,6 +42,8 @@ class AmityCommentView: AmityView {
     @IBOutlet private weak var separatorLineView: UIView!
     @IBOutlet private weak var leadingAvatarImageViewConstraint: NSLayoutConstraint!
     @IBOutlet private weak var topAvatarImageViewConstraint: NSLayoutConstraint!
+    @IBOutlet private weak var bannedImageView: UIImageView!
+    @IBOutlet private weak var bannedImageViewWidthConstraint: NSLayoutConstraint!
     
     weak var delegate: AmityCommentViewDelegate?
     private(set) var comment: AmityCommentModel?
@@ -110,7 +113,20 @@ class AmityCommentView: AmityView {
         }
         avatarView.setImage(withImageURL: comment.fileURL, placeholder: AmityIconSet.defaultAvatar)
         titleLabel.text = comment.displayName
-        contentLabel.text = comment.text
+        
+        if comment.isAuthorGlobalBanned {
+            bannedImageView.isHidden = false
+            bannedImageViewWidthConstraint.constant = 16
+            bannedImageView.image = AmityIconSet.CommunitySettings.iconCommunitySettingBanned
+        }
+        
+        if let metadata = comment.metadata {
+            let attributes = AmityMentionManager.getAttributes(fromText: comment.text, withMetadata: metadata)
+            contentLabel.setText(comment.text, withAttributes: attributes)
+        } else {
+            contentLabel.text = comment.text
+        }
+        
         likeButton.isSelected = comment.isLiked
         separatorLineView.isHidden = true
         
@@ -165,4 +181,8 @@ class AmityCommentView: AmityView {
         delegate?.commentView(self, didTapAction: .viewReply)
     }
     
+    func prepareForReuse() {
+        bannedImageView.image = nil
+        comment = nil
+    }
 }

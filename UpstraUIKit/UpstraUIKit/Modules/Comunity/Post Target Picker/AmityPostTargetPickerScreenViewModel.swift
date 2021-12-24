@@ -21,7 +21,11 @@ class AmityPostTargetPickerScreenViewModel: AmityPostTargetPickerScreenViewModel
         communityCollection = communityRepository.getCommunities(displayName: "", filter: .userIsMember, sortBy: .displayName, categoryId: nil, includeDeleted: false)
         categoryCollectionToken = communityCollection?.observe({ [weak self] (collection, _, _) in
             guard let strongSelf = self else { return }
-            strongSelf.delegate?.screenViewModelDidUpdateItems(strongSelf)
+            switch collection.dataStatus {
+            case .fresh:
+                strongSelf.delegate?.screenViewModelDidUpdateItems(strongSelf)
+            default: break
+            }
         })
     }
     

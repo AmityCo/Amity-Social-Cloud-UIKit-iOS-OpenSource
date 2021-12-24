@@ -355,6 +355,7 @@ extension AmityMessageListViewController: AmityKeyboardServiceDelegate {
             screenViewModel.action.inputSource(for: .default)
         } else {
             screenViewModel.action.toggleKeyboardVisible(visible: true)
+            screenViewModel.shouldScrollToBottom(force: true)
         }
     }
 }
@@ -460,6 +461,7 @@ extension AmityMessageListViewController: AmityMessageListScreenViewModelDelegat
             messageViewController.tableView.reloadData()
         case .didSendText:
             composeBar.clearText()
+            screenViewModel.shouldScrollToBottom(force: true)
         case .didEditText:
             break
         case .didDelete(let indexPath):
@@ -483,12 +485,12 @@ extension AmityMessageListViewController: AmityMessageListScreenViewModelDelegat
             guard let message = screenViewModel.dataSource.message(at: indexPath),
                   let text = message.text else { return }
             
-            let editTextVC = AmityEditTextViewController.make(text: text, editMode: .edit)
+            let editTextVC = AmityEditTextViewController.make(text: text, editMode: .editMessage)
             editTextVC.title = AmityLocalizedStringSet.editMessageTitle.localizedString
             editTextVC.dismissHandler = {
                 editTextVC.dismiss(animated: true, completion: nil)
             }
-            editTextVC.editHandler = { [weak self] newMessage in
+            editTextVC.editHandler = { [weak self] newMessage, _, _ in
                 self?.screenViewModel.action.editText(with: newMessage, messageId: message.messageId)
             }
             let nav = UINavigationController(rootViewController: editTextVC)

@@ -40,7 +40,7 @@ final class AmityPostFetchPostController: AmityPostFetchPostControllerProtocol {
         let post = AmityPostModel(post: _post)
         if let communityId = post.targetCommunity?.communityId {
             let participation = AmityCommunityParticipation(client: AmityUIKitManagerInternal.shared.client, andCommunityId: communityId)
-            post.isModerator = participation.getMember(withId: post.postedUserId)?.roles.contains(AmityCommunityRole.moderator.rawValue) ?? false
+            post.isModerator = participation.getMember(withId: post.postedUserId)?.hasModeratorRole ?? false
         }
         return post
     }

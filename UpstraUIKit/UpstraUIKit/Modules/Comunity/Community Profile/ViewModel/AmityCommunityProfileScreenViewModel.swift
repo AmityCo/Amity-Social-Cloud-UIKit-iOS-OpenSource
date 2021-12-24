@@ -93,14 +93,11 @@ extension AmityCommunityProfileScreenViewModel {
         AmityUIKitManagerInternal.shared.client.hasPermission(.editCommunity, forCommunity: communityId) { [weak self] (hasPermission) in
             guard let strongSelf = self else { return }
             if model.isJoined {
-                if model.isCreator || hasPermission {
-                    strongSelf.memberStatusCommunity = .admin
-                } else {
-                    strongSelf.memberStatusCommunity = .member
-                }
+                strongSelf.memberStatusCommunity = hasPermission ? .admin : .member
             } else {
                 strongSelf.memberStatusCommunity = .guest
             }
+
             strongSelf.delegate?.screenViewModelDidGetCommunity(with: model)
         }
     }

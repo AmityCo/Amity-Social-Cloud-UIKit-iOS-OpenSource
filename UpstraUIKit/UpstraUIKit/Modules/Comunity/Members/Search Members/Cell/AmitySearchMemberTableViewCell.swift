@@ -21,6 +21,8 @@ final class AmitySearchMemberTableViewCell: UITableViewCell, Nibbable {
     
     @IBOutlet private var avatarView: AmityAvatarView!
     @IBOutlet private var displayNameLabel: UILabel!
+    @IBOutlet private var bannedImageView: UIImageView!
+    @IBOutlet private var bannedImageViewWidthConstraint: NSLayoutConstraint!
     
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -50,11 +52,20 @@ final class AmitySearchMemberTableViewCell: UITableViewCell, Nibbable {
         avatarView.placeholder = AmityIconSet.defaultAvatar
         displayNameLabel.text = ""
         avatarView.image = nil
+        bannedImageViewWidthConstraint.constant = 0
+        bannedImageView.image = nil
+        bannedImageView.isHidden = true
     }
     
     func display(with user: AmityUserModel) {
         avatarView.setImage(withImageURL: user.avatarURL, placeholder: AmityIconSet.defaultAvatar)
         displayNameLabel.text = user.displayName
+        
+        if user.isGlobalBan {
+            bannedImageView.isHidden = false
+            bannedImageViewWidthConstraint.constant = 16
+            bannedImageView.image = AmityIconSet.CommunitySettings.iconCommunitySettingBanned
+        }
     }
 }
 

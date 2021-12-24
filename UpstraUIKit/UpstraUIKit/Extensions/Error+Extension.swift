@@ -15,6 +15,7 @@ enum AmityError: Int, Error {
     case bannedWord = 400308
     case noUserAccessPermission = 400301
     case fileServiceIsNotReady = 38528523
+    case unableToLeaveCommunity = 400317
     
     init?(error: Error?) {
         guard let errorCode = error?._code,

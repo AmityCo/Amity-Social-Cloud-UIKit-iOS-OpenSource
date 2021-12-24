@@ -54,6 +54,9 @@ public class AmityPostTextEditorViewController: AmityViewController {
     private var fileViewHeightConstraint: NSLayoutConstraint!
     private var postMenuViewBottomConstraints: NSLayoutConstraint!
     private var filePicker: AmityFilePicker!
+    private var mentionTableView: AmityMentionTableView
+    private var mentionTableViewHeightConstraint: NSLayoutConstraint!
+    private var mentionManager: AmityMentionManager?
     
     private var isValueChanged: Bool {
         return !textView.text.isEmpty || !galleryView.medias.isEmpty || !fileView.files.isEmpty
@@ -73,11 +76,21 @@ public class AmityPostTextEditorViewController: AmityViewController {
         self.postMode = postMode
         self.settings = settings
         self.postMenuView = AmityPostTextEditorMenuView(allowPostAttachments: settings.allowPostAttachments)
+        self.mentionTableView = AmityMentionTableView(frame: .zero)
+        
+        if postMode == .create {
+            var communityId: String? = nil
+            switch postTarget {
+            case .community(let community):
+                communityId = community.isPublic ? nil : community.communityId
+            default: break
+            }
+            mentionManager = AmityMentionManager(withType: .post(communityId: communityId))
+        }
         
         super.init(nibName: nil, bundle: nil)
         
         screenViewModel.delegate = self
-        
     }
     
     required init?(coder: NSCoder) {
@@ -134,6 +147,11 @@ public class AmityPostTextEditorViewController: AmityViewController {
         comunityPanelView.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(comunityPanelView)
         
+        mentionTableView.isHidden = true
+        mentionTableView.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(mentionTableView)
+        mentionTableViewHeightConstraint = mentionTableView.heightAnchor.constraint(equalToConstant: 240.0)
+        
         galleryViewHeightConstraint = NSLayoutConstraint(item: galleryView, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 0)
         fileViewHeightConstraint = NSLayoutConstraint(item: fileView, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 0)
         postMenuViewBottomConstraints = NSLayoutConstraint(item: postMenuView, attribute: .bottom, relatedBy: .equal, toItem: view.layoutMarginsGuide, attribute: .bottom, multiplier: 1, constant: 0)
@@ -175,7 +193,11 @@ public class AmityPostTextEditorViewController: AmityViewController {
             fileView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor),
             fileView.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor),
             fileView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor),
-            fileViewHeightConstraint
+            fileViewHeightConstraint,
+            mentionTableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            mentionTableView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            mentionTableView.bottomAnchor.constraint(equalTo: postMenuView.topAnchor),
+            mentionTableViewHeightConstraint
         ])
         updateConstraints()
         // keyboard
@@ -202,6 +224,9 @@ public class AmityPostTextEditorViewController: AmityViewController {
         if case .edit(let postId) = postMode {
             screenViewModel.dataSource.loadPost(for: postId)
         }
+        mentionTableView.delegate = self
+        mentionTableView.dataSource = self
+        mentionManager?.delegate = self
     }
     
     public override func didTapLeftBarButton() {
@@ -249,17 +274,18 @@ public class AmityPostTextEditorViewController: AmityViewController {
         
         view.endEditing(true)
         postButton.isEnabled = false
-        
+        let metada = mentionManager?.getMetadata()
+        let mentionees = mentionManager?.getMentionees()
         if let post = currentPost {
             // update post
-            screenViewModel.updatePost(oldPost: post, text: text, medias: medias, files: files)
+            screenViewModel.updatePost(oldPost: post, text: text, medias: medias, files: files, metadata: metada, mentionees: mentionees)
         } else {
             // create post
             var communityId: String?
             if case .community(let community) = postTarget {
                 communityId = community.communityId
             }
-            screenViewModel.createPost(text: text, medias: medias, files: files, communityId: communityId)
+            screenViewModel.createPost(text: text, medias: medias, files: files, communityId: communityId, metadata: metada, mentionees: mentionees)
         }
         
     }
@@ -318,6 +344,9 @@ public class AmityPostTextEditorViewController: AmityViewController {
             currentAttachmentState = .none
         }
         
+        if textView.text.isEmpty {
+            textView.textColor = AmityColorSet.base
+        }
     }
     
     // MARK: Helper functions
@@ -641,6 +670,17 @@ extension AmityPostTextEditorViewController: AmityTextViewDelegate {
         updateViewState()
     }
     
+    func textView(_ textView: AmityTextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
+        if textView.text.count > AmityMentionManager.maximumCharacterCountForPost {
+            showAlertForMaximumCharacters()
+            return false
+        }
+        return mentionManager?.shouldChangeTextIn(textView, inRange: range, replacementText: text, currentText: textView.text) ?? true
+    }
+    
+    func textViewDidChangeSelection(_ textView: AmityTextView) {
+        mentionManager?.changeSelection(textView)
+    }
 }
 
 extension AmityPostTextEditorViewController: AmityFilePickerDelegate {
@@ -682,9 +722,14 @@ extension AmityPostTextEditorViewController: AmityPostTextEditorScreenViewModelD
     func screenViewModelDidLoadPost(_ viewModel: AmityPostTextEditorScreenViewModel, post: AmityPost) {
         // This will get call once when open with edit mode
         currentPost = AmityPostModel(post: post)
-        fileView.configure(files: currentPost!.files)
-        galleryView.configure(medias: currentPost!.medias)
-        textView.text = currentPost!.text
+        
+        guard let postModel = currentPost else { return }
+        
+        fileView.configure(files: postModel.files)
+        galleryView.configure(medias: postModel.medias)
+        textView.text = postModel.text
+        
+        setupMentionManager(withPost: postModel)
         updateConstraints()
     }
     
@@ -840,6 +885,12 @@ extension AmityPostTextEditorViewController: AmityPostTextEditorMenuViewDelegate
         updateConstraints()
     }
     
+    private func showAlertForMaximumCharacters() {
+        let alertController = UIAlertController(title: AmityLocalizedStringSet.postUnableToPostTitle.localizedString, message: AmityLocalizedStringSet.postUnableToPostDescription.localizedString, preferredStyle: .alert)
+        let cancelAction = UIAlertAction(title: AmityLocalizedStringSet.General.done.localizedString, style: .cancel, handler: nil)
+        alertController.addAction(cancelAction)
+        present(alertController, animated: true, completion: nil)
+    }
 }
 
 extension AmityPostTextEditorViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
@@ -859,7 +910,8 @@ extension AmityPostTextEditorViewController: UIImagePickerControllerDelegate, UI
         switch mediaType {
         case String(kUTTypeImage):
             if let image = info[.originalImage] as? UIImage {
-                selectedMedia = AmityMedia(state: .image(image), type: .image)
+                let img = image.fixedOrientation()
+                selectedMedia = AmityMedia(state: .image(img), type: .image)
             }
         case String(kUTTypeMovie):
             if let fileUrl = info[.mediaURL] as? URL {
@@ -898,28 +950,105 @@ extension AmityPostTextEditorViewController: UIImagePickerControllerDelegate, UI
 extension AmityPostTextEditorViewController {
     
     public override func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
-            guard isValueChanged else {
-                return super.gestureRecognizerShouldBegin(gestureRecognizer)
-            }
-            
-            if let view = gestureRecognizer.view,
-               let directions = (gestureRecognizer as? UIPanGestureRecognizer)?.direction(in: view),
-               directions.contains(.right) {
-                let alertController = UIAlertController(title: AmityLocalizedStringSet.postCreationDiscardPostTitle.localizedString, message: AmityLocalizedStringSet.postCreationDiscardPostMessage.localizedString, preferredStyle: .alert)
-                let cancelAction = UIAlertAction(title: AmityLocalizedStringSet.General.cancel.localizedString, style: .cancel, handler: nil)
-                let discardAction = UIAlertAction(title: AmityLocalizedStringSet.General.discard.localizedString, style: .destructive) { [weak self] _ in
-                    self?.generalDismiss()
-                }
-                alertController.addAction(cancelAction)
-                alertController.addAction(discardAction)
-                present(alertController, animated: true, completion: nil)
-
-                // prevents swiping back and present confirmation message
-                return false
-            }
-            
-            // falls back to normal behaviour, swipe back to previous page
+        guard isValueChanged, !(mentionManager?.isSearchingStarted ?? false) else {
             return super.gestureRecognizerShouldBegin(gestureRecognizer)
         }
+            
+        if let view = gestureRecognizer.view,
+            let directions = (gestureRecognizer as? UIPanGestureRecognizer)?.direction(in: view),
+            directions.contains(.right) {
+            let alertController = UIAlertController(title: AmityLocalizedStringSet.postCreationDiscardPostTitle.localizedString, message: AmityLocalizedStringSet.postCreationDiscardPostMessage.localizedString, preferredStyle: .alert)
+            let cancelAction = UIAlertAction(title: AmityLocalizedStringSet.General.cancel.localizedString, style: .cancel, handler: nil)
+            let discardAction = UIAlertAction(title: AmityLocalizedStringSet.General.discard.localizedString, style: .destructive) { [weak self] _ in
+                self?.generalDismiss()
+            }
+            alertController.addAction(cancelAction)
+            alertController.addAction(discardAction)
+            present(alertController, animated: true, completion: nil)
+
+            // prevents swiping back and present confirmation message
+            return false
+        }
         
+        // falls back to normal behaviour, swipe back to previous page
+        return super.gestureRecognizerShouldBegin(gestureRecognizer)
     }
+}
+
+// MARK: - UITableViewDelegate
+extension AmityPostTextEditorViewController: UITableViewDelegate {
+    public func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return AmityMentionTableViewCell.height
+    }
+    
+    public func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        mentionManager?.addMention(from: textView, in: textView.text, at: indexPath)
+    }
+    
+    public func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        if indexPath.row == (mentionManager?.users.count ?? 0) - 4 {
+            mentionManager?.loadMore()
+        }
+    }
+}
+
+// MARK: - UITableViewDataSource
+extension AmityPostTextEditorViewController: UITableViewDataSource {
+    public func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return mentionManager?.users.count ?? 0
+    }
+    
+    public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: AmityMentionTableViewCell.identifier) as? AmityMentionTableViewCell, let model = mentionManager?.getUser(at: indexPath) else { return UITableViewCell() }
+        cell.display(with: model)
+        return cell
+    }
+}
+
+// MARK: - AmityMentionManagerDelegate
+extension AmityPostTextEditorViewController: AmityMentionManagerDelegate {
+    func didCreateAttributedString(attributedString: NSAttributedString) {
+        textView.attributedText = attributedString
+        textView.font = AmityFontSet.body
+    }
+    
+    func didGetUsers(users: [AmityMentionUserModel]) {
+        if users.isEmpty {
+            mentionTableViewHeightConstraint.constant = 0
+            mentionTableView.isHidden = true
+        } else {
+            var heightConstant:CGFloat = 240.0
+            if users.count < 5 {
+                heightConstant = CGFloat(users.count) * 52.0
+            }
+            mentionTableViewHeightConstraint.constant = heightConstant
+            mentionTableView.isHidden = false
+            mentionTableView.reloadData()
+        }
+    }
+    
+    func didMentionsReachToMaximumLimit() {
+        let alertController = UIAlertController(title: AmityLocalizedStringSet.Mention.unableToMentionTitle.localizedString, message: AmityLocalizedStringSet.Mention.unableToMentionPostDescription.localizedString, preferredStyle: .alert)
+        let cancelAction = UIAlertAction(title: AmityLocalizedStringSet.General.done.localizedString, style: .cancel, handler: nil)
+        alertController.addAction(cancelAction)
+        present(alertController, animated: true, completion: nil)
+    }
+    
+    func didCharactersReachToMaximumLimit() {
+        showAlertForMaximumCharacters()
+    }
+}
+
+// MARK: - Private methods
+private extension AmityPostTextEditorViewController {
+    func setupMentionManager(withPost post: AmityPostModel) {
+        guard mentionManager == nil else { return }
+        let communityId: String? = (currentPost?.targetCommunity?.isPublic ?? true) ? nil : currentPost?.targetCommunity?.communityId
+        mentionManager = AmityMentionManager(withType: .post(communityId: communityId))
+        mentionManager?.delegate = self
+        
+        if let metadata = post.metadata {
+            mentionManager?.setMentions(metadata: metadata, inText: post.text)
+        }
+    }
+}

@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import AmitySDK
 
 public final class AmityPostGalleryTableViewCell: UITableViewCell, Nibbable, AmityPostProtocol {
     public weak var delegate: AmityPostDelegate?
@@ -23,6 +24,8 @@ public final class AmityPostGalleryTableViewCell: UITableViewCell, Nibbable, Ami
     public private(set) var post: AmityPostModel?
     public private(set) var indexPath: IndexPath?
     
+    private var mentions: [AmityMention] = []
+    
     public override func awakeFromNib() {
         super.awakeFromNib()
         setupView()
@@ -33,6 +36,8 @@ public final class AmityPostGalleryTableViewCell: UITableViewCell, Nibbable, Ami
         galleryCollectionView.configure(medias: [])
         contentLabel.isExpanded = false
         contentLabel.text = nil
+        post = nil
+        mentions = []
     }
     
     public func display(post: AmityPostModel, indexPath: IndexPath) {
@@ -40,7 +45,13 @@ public final class AmityPostGalleryTableViewCell: UITableViewCell, Nibbable, Ami
         self.indexPath = indexPath
         galleryCollectionView.configure(medias: post.medias)
         
-        contentLabel.text = post.text
+        if let metadata = post.metadata {
+            let attributes = AmityMentionManager.getAttributes(fromText: post.text, withMetadata: metadata)
+            contentLabel.setText(post.text, withAttributes: attributes)
+        } else {
+            contentLabel.text = post.text
+        }
+        
         contentLabel.isExpanded = post.appearance.shouldContentExpand
     }
     
@@ -202,4 +213,7 @@ extension AmityPostGalleryTableViewCell: AmityExpandableLabelDelegate {
         performAction(action: .tapExpandableLabel(label: label))
     }
     
+    public func didTapOnMention(_ label: AmityExpandableLabel, withUserId userId: String) {
+        performAction(action: .tapOnMentionWithUserId(userId: userId))
+    }
 }

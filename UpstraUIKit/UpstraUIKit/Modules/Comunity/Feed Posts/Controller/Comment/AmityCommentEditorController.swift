@@ -11,7 +11,7 @@ import AmitySDK
 
 protocol AmityCommentEditorControllerProtocol {
     func delete(withComment comment: AmityCommentModel, completion: AmityRequestCompletion?)
-    func edit(withComment comment: AmityCommentModel, text: String, completion: AmityRequestCompletion?)
+    func edit(withComment comment: AmityCommentModel, text: String, metadata: [String : Any]?, mentionees: AmityMentioneesBuilder?, completion: AmityRequestCompletion?)
 }
 
 final class AmityCommentEditorController: AmityCommentEditorControllerProtocol {
@@ -20,11 +20,11 @@ final class AmityCommentEditorController: AmityCommentEditorControllerProtocol {
     private var commentRepository: AmityCommentRepository?
     func delete(withComment comment: AmityCommentModel, completion: AmityRequestCompletion?) {
         commentRepository = AmityCommentRepository(client: AmityUIKitManagerInternal.shared.client)
-        commentRepository?.deleteComment(withId: comment.comment.commentId, completion: completion)
+        commentRepository?.deleteComment(withId: comment.id, completion: completion)
     }
         
-    func edit(withComment comment: AmityCommentModel, text: String, completion: AmityRequestCompletion?) {
-        editor = AmityCommentEditor(client: AmityUIKitManagerInternal.shared.client, commentId: comment.comment.commentId)
-        editor?.editText(text, completion: completion)
+    func edit(withComment comment: AmityCommentModel, text: String, metadata: [String : Any]?, mentionees: AmityMentioneesBuilder?, completion: AmityRequestCompletion?) {
+        editor = AmityCommentEditor(client: AmityUIKitManagerInternal.shared.client, commentId: comment.id)
+        editor?.editText(text, metadata: metadata, mentionees: mentionees, completion: completion)
     }
 }

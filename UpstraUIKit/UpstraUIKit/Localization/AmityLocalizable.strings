@@ -192,6 +192,12 @@
 "post_creation_file_upload_icomplete_description" = "Some files could not be uploaded.\nPlease remove and try again";
 "post_craetion_submit_title" = "Post submitted";
 "post_creation_submit_desc" = "Your post has been submitted to the pending list. It will be reviewed by community moderator";
+"post_unable_to_post_title" = "Unable to post";
+"post_unable_to_comment_title" = "Unable to comment";
+"post_unable_to_reply_title" = "Unable to reply";
+"post_unable_to_post_description" = "You have reached maximum 50,000 characters in a post.";
+"post_unable_to_comment_description" = "You have reached maximum 50,000 characters in a comment.";
+"post_unable_to_reply_description" = "You have reached maximum 50,000 characters in a reply.";
 
 // MARK: - Post detail
 "post_detail_replying_to" = "Replying to %@";
@@ -250,8 +256,10 @@
 "community_settings_item_title_leave_community" = "Leave community";
 "community_settings_item_title_close_community" = "Close community";
 "community_settings_item_desc_close_community" = "Closing this community will remove the community page and all its content and comments.";
-"community_settings_alert_title_leave" = "Leave community?";
+"community_settings_alert_title_leave" = "Leave community";
 "community_settings_alert_desc_leave" = "You won’t no longer be able to post and interact in this community after leaving.";
+"community_settings_alert_desc_moderator_leave" = "Leaving community, you’ll give up your moderator status and won’t no longer be able to post and interact in this community.";
+"community_settings_alert_desc_last_moderator_leave" = "As you’re the last moderator and member, leaving will also close this community. All posts shared in community will be deleted. This cannot be undone.";
 "community_settings_alert_title_close" = "Close community?";
 "community_settings_alert_desc_close" = "All members will be removed from the community. All posts, messages, reactions, and media shared in community will be deleted. This cannot be undone.";
 "community_settings_alert_fail_title_leave" = "Unable to leave community";
@@ -306,6 +314,9 @@
 // MARK: - Community
 "community_alert_unable_to_perform_action_title" = "Unable to perform this action";
 "community_alert_unable_to_perform_action_desc" = "You no longer have permission to make any changes in this community";
+"community_alert_unable_to_leave_community_title" = "Unable to leave community";
+"community_alert_unable_to_leave_community_desc" = "You’re the only moderator in this group. To leave community, nominate other members to moderator role.";
+
 
 // MARK: - Edit User Profile
 "edit_user_profile_title" = "Edit Profile";
@@ -431,3 +442,9 @@
 "poll_ends_in_days" = "Poll ends in %@";
 "poll_ends_in_minutes" = "Poll ends in %@";
 "poll_ends_in_hours" = "Poll ends in %@";
+
+// MARK: - Mention
+"mention_unable_to_mention_title" = "Unable to mention user";
+"mention_unable_to_mention_post_description" = "You have reached maximum 30 mentioned users in a post.";
+"mention_unable_to_mention_comment_description" = "You have reached maximum 30 mentioned users in a comment.";
+"mention_unable_to_mention_reply_description" = "You have reached maximum 30 mentioned users in a reply.";

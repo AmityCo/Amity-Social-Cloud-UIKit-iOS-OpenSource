@@ -18,7 +18,8 @@ class CommunityFeatureViewController: UIViewController {
         case newsfeed
         case globalFeed
         case myProfile
-        case PostCreator
+        case postCreator
+        case multipleFeeds
         
         var text: String {
             switch self {
@@ -30,8 +31,10 @@ class CommunityFeatureViewController: UIViewController {
                 return "GlobalFeed"
             case .myProfile:
                 return "My Profile"
-            case .PostCreator:
+            case .postCreator:
                 return "Post Creator"
+            case .multipleFeeds:
+                return "Multiple Feeds"
             }
         }
     }
@@ -41,8 +44,6 @@ class CommunityFeatureViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-
-        
         title = "Community"
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: "CellID")
         tableView.delegate = self
@@ -114,7 +115,10 @@ extension CommunityFeatureViewController: UITableViewDelegate {
         case .myProfile:
             let myUserProfileViewController = AmityUserProfilePageViewController.make(withUserId: AmityUIKitManager.client.currentUserId ?? "")
             navigationController?.pushViewController(myUserProfileViewController, animated: true)
-        case .PostCreator:
+        case .multipleFeeds:
+            let samplePageViewController = SamplePageViewController()
+            navigationController?.pushViewController(samplePageViewController, animated: true)
+        case .postCreator:
             if #available(iOS 14.0, *) {
                 var postCreateSettingsPage = PostCreatorSettingsPage()
                 postCreateSettingsPage.didChooseParameters = { [weak self] parameters in

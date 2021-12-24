@@ -12,8 +12,11 @@ import AmitySDK
 public class AmityEditTextViewController: AmityViewController {
     
     enum EditMode {
-        case create
-        case edit
+        case create(communityId: String?, isReply: Bool)
+        // Comment, Reply
+        case edit(communityId: String?, metadata: [String: Any]?, isReply: Bool)
+        // Message
+        case editMessage
     }
     
     // MARK: - IBOutlet Properties
@@ -21,14 +24,20 @@ public class AmityEditTextViewController: AmityViewController {
     @IBOutlet private var headerLabel: UILabel!
     @IBOutlet private var textView: AmityTextView!
     @IBOutlet private var bottomConstraint: NSLayoutConstraint!
+    @IBOutlet private var mentionTableView: AmityMentionTableView!
+    @IBOutlet private var mentionTableViewHeightConstraint: NSLayoutConstraint!
+    @IBOutlet private var mentionTableViewBottomConstraint: NSLayoutConstraint!
+    
     
     // MARK: - Properties
     private let editMode: EditMode
     private var saveBarButton: UIBarButtonItem!
     private let headerTitle: String?
     private let message: String
-    var editHandler: ((String) -> Void)?
+    var editHandler: ((String, [String: Any]?, AmityMentioneesBuilder?) -> Void)?
     var dismissHandler: (() -> Void)?
+    private let mentionManager: AmityMentionManager
+    private var metadata: [String: Any]? = nil
     
     // MARK: - View lifecycle
     
@@ -36,6 +45,15 @@ public class AmityEditTextViewController: AmityViewController {
         self.headerTitle = headerTitle
         self.message = text
         self.editMode = editMode
+        switch editMode {
+        case .editMessage:
+            mentionManager = AmityMentionManager(withType: .message(channelId: nil))
+        case .create(let communityId, _):
+            mentionManager = AmityMentionManager(withType: .comment(communityId: communityId))
+        case .edit(let communityId, let metadata, _):
+            mentionManager = AmityMentionManager(withType: .comment(communityId: communityId))
+            self.metadata = metadata
+        }
         super.init(nibName: AmityEditTextViewController.identifier, bundle: AmityUIKitManager.bundle)
     }
     
@@ -51,6 +69,12 @@ public class AmityEditTextViewController: AmityViewController {
         super.viewDidLoad()
         setupHeaderView()
         setupView()
+        setupMentionTableView()
+        
+        mentionManager.delegate = self
+        if let metadata = metadata {
+            mentionManager.setMentions(metadata: metadata, inText: message)
+        }
     }
     
     public override func didTapLeftBarButton() {
@@ -71,30 +95,62 @@ public class AmityEditTextViewController: AmityViewController {
     }
     
     private func setupView() {
-        let buttonTitle = (editMode == .create) ? AmityLocalizedStringSet.General.post.localizedString : AmityLocalizedStringSet.General.save.localizedString
-        saveBarButton = UIBarButtonItem(title: buttonTitle, style: .plain, target: self, action: #selector(saveTap))
+        switch editMode {
+        case .create(_, _):
+            saveBarButton = UIBarButtonItem(title: AmityLocalizedStringSet.General.post.localizedString, style: .plain, target: self, action: #selector(saveTap))
+            saveBarButton.isEnabled = !message.isEmpty
+        case .edit, .editMessage:
+            saveBarButton = UIBarButtonItem(title: AmityLocalizedStringSet.General.save.localizedString, style: .plain, target: self, action: #selector(saveTap))
+            saveBarButton.isEnabled = false
+        }
+
         saveBarButton.tintColor = AmityColorSet.primary
         navigationItem.rightBarButtonItem = saveBarButton
         textView.text = message
         textView.placeholder = AmityLocalizedStringSet.textMessagePlaceholder.localizedString
         textView.showsVerticalScrollIndicator = false
         textView.customTextViewDelegate = self
-        saveBarButton.isEnabled = (editMode == .create) ? !message.isEmpty : false
         AmityKeyboardService.shared.delegate = self
     }
     
+    private func setupMentionTableView() {
+        mentionTableView.isHidden = true
+        mentionTableView.delegate = self
+        mentionTableView.dataSource = self
+    }
+    
     @objc private func saveTap() {
+        let metadata: [String: Any]? = mentionManager.getMetadata()
+        let mentionees: AmityMentioneesBuilder? = mentionManager.getMentionees()
         dismiss(animated: true) { [weak self] in
-            self?.editHandler?(self?.textView.text ?? "")
+            guard let strongSelf = self else { return }
+            strongSelf.editHandler?(strongSelf.textView.text ?? "", metadata, mentionees)
         }
     }
     
+    private func showAlertForMaximumCharacters() {
+        var title = AmityLocalizedStringSet.postUnableToCommentTitle.localizedString
+        var message = AmityLocalizedStringSet.postUnableToCommentDescription.localizedString
+        switch editMode {
+        case .edit(_, _, let isReply), .create(_, let isReply):
+            title = isReply ? AmityLocalizedStringSet.postUnableToReplyTitle.localizedString : AmityLocalizedStringSet.postUnableToCommentTitle.localizedString
+            message = isReply ? AmityLocalizedStringSet.postUnableToReplyDescription.localizedString : AmityLocalizedStringSet.postUnableToCommentDescription.localizedString
+        default:
+            break
+        }
+        let alertController = UIAlertController(title: title, message: message, preferredStyle: .alert)
+        let cancelAction = UIAlertAction(title: AmityLocalizedStringSet.General.done.localizedString, style: .cancel, handler: nil)
+        alertController.addAction(cancelAction)
+        present(alertController, animated: true, completion: nil)
+    }
 }
 
 extension AmityEditTextViewController: AmityKeyboardServiceDelegate {
     func keyboardWillChange(service: AmityKeyboardService, height: CGFloat, animationDuration: TimeInterval) {
         let offset = height > 0 ? view.safeAreaInsets.bottom : 0
-        bottomConstraint.constant = -height + offset
+        let constant = -height + offset
+        bottomConstraint.constant = constant
+        mentionTableViewBottomConstraint.constant = constant
 
         view.setNeedsUpdateConstraints()
         view.layoutIfNeeded()
@@ -104,6 +160,87 @@ extension AmityEditTextViewController: AmityKeyboardServiceDelegate {
 extension AmityEditTextViewController: AmityTextViewDelegate {
     func textViewDidChange(_ textView: AmityTextView) {
         guard let text = textView.text else { return }
-        saveBarButton.isEnabled = !text.isEmpty
+        saveBarButton.isEnabled = !text.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
+        if text.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
+            textView.attributedText = nil
+            textView.textColor = AmityColorSet.base
+        }
+    }
+    
+    func textViewDidChangeSelection(_ textView: AmityTextView) {
+        mentionManager.changeSelection(textView)
+    }
+    
+    func textView(_ textView: AmityTextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
+        if textView.text.count > AmityMentionManager.maximumCharacterCountForPost {
+            showAlertForMaximumCharacters()
+            return false
+        }
+        return mentionManager.shouldChangeTextIn(textView, inRange: range, replacementText: text, currentText: textView.text)
+    }
+}
+
+// MARK: - UITableViewDataSource
+extension AmityEditTextViewController: UITableViewDataSource {
+    public func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return mentionManager.users.count
+    }
+    
+    public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: AmityMentionTableViewCell.identifier) as? AmityMentionTableViewCell, let model = mentionManager.getUser(at: indexPath) else { return UITableViewCell() }
+        cell.display(with: model)
+        return cell
+    }
+}
+
+// MARK: - UITableViewDelegate
+extension AmityEditTextViewController: UITableViewDelegate {
+    public func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return AmityMentionTableViewCell.height
+    }
+    
+    public func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        mentionManager.addMention(from: textView, in: textView.text, at: indexPath)
+    }
+    
+    public func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        if tableView.isBottomReached {
+            mentionManager.loadMore()
+        }
+    }
+}
+
+// MARK: - AmityMentionManagerDelegate
+extension AmityEditTextViewController: AmityMentionManagerDelegate {
+    func didCreateAttributedString(attributedString: NSAttributedString) {
+        textView.attributedText = attributedString
+        textView.font = AmityFontSet.body
+    }
+    
+    func didGetUsers(users: [AmityMentionUserModel]) {
+        if users.isEmpty {
+            mentionTableViewHeightConstraint.constant = 0
+            mentionTableView.isHidden = true
+        } else {
+            var heightConstant:CGFloat = 240.0
+            if users.count < 5 {
+                heightConstant = CGFloat(users.count) * 52.0
+            }
+            mentionTableViewHeightConstraint.constant = heightConstant
+            mentionTableView.isHidden = false
+            mentionTableView.reloadData()
+        }
+    }
+    
+    func didMentionsReachToMaximumLimit() {
+        let alertController = UIAlertController(title: AmityLocalizedStringSet.Mention.unableToMentionTitle.localizedString, message: AmityLocalizedStringSet.Mention.unableToMentionReplyDescription.localizedString, preferredStyle: .alert)
+        let cancelAction = UIAlertAction(title: AmityLocalizedStringSet.General.done.localizedString, style: .cancel, handler: nil)
+        alertController.addAction(cancelAction)
+        present(alertController, animated: true, completion: nil)
+    }
+    
+    func didCharactersReachToMaximumLimit() {
+        showAlertForMaximumCharacters()
     }
 }

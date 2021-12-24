@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import AmitySDK
 
 public final class AmityPostTextTableViewCell: UITableViewCell, Nibbable, AmityPostProtocol {
     
@@ -33,6 +34,7 @@ public final class AmityPostTextTableViewCell: UITableViewCell, Nibbable, AmityP
         super.prepareForReuse()
         contentLabel.isExpanded = false
         contentLabel.text = nil
+        post = nil
     }
     
     public func display(post: AmityPostModel, indexPath: IndexPath) {
@@ -52,12 +54,17 @@ public final class AmityPostTextTableViewCell: UITableViewCell, Nibbable, AmityP
             }
             contentLabel.text = texts.joined(separator: "\n")
         } else {
+            
             // The default render behaviour just to grab text from post.text
-            contentLabel.text = post.text
+            if let metadata = post.metadata {
+                let attributes = AmityMentionManager.getAttributes(fromText: post.text, withMetadata: metadata)
+                contentLabel.setText(post.text, withAttributes: attributes)
+            } else {
+                contentLabel.text = post.text
+            }
         }
         
         contentLabel.isExpanded = post.appearance.shouldContentExpand
-        
     }
     
     // MARK: - Setup views
@@ -106,4 +113,7 @@ extension AmityPostTextTableViewCell: AmityExpandableLabelDelegate {
         performAction(action: .tapExpandableLabel(label: label))
     }
 
+    public func didTapOnMention(_ label: AmityExpandableLabel, withUserId userId: String) {
+        performAction(action: .tapOnMentionWithUserId(userId: userId))
+    }
 }

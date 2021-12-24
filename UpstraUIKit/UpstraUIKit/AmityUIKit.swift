@@ -14,6 +14,45 @@ public final class AmityUIKitManager {
     
     private init() { }
     
+    
+    /// Setup AmityUIKit instance. Internally it creates AmityClient instance
+    /// from AmitySDK.
+    ///
+    /// If you are using `AmitySDK` & `AmityUIKit` within same project, you can setup `AmityClient` instance using this method and access it using static property `client`.
+    ///
+    /// ~~~
+    /// AmityUIKitManager.setup(...)
+    /// ...
+    /// let client: AmityClient = AmityUIKitManager.client
+    /// ~~~
+    ///
+    /// - Parameters:
+    ///   - apiKey: ApiKey provided by Amity
+    ///   - region: The region to which this UIKit connects to. By default, region is .global
+    public static func setup(apiKey: String, region: AmityRegion = .global) {
+        AmityUIKitManagerInternal.shared.setup(apiKey, region: region)
+    }
+    
+    
+    /// Setup AmityUIKit instance. Internally it creates AmityClient instance from AmitySDK.
+    ///
+    /// If you do not need extra configuration, please use setup(apiKey:_, region:_) method instead.
+    ///
+    /// Also if you are using `AmitySDK` & `AmityUIKit` within same project, you can setup `AmityClient` instance using this method and access it using static property `client`.
+    ///
+    /// ~~~
+    /// AmityUIKitManager.setup(...)
+    /// ...
+    /// let client: AmityClient = AmityUIKitManager.client
+    /// ~~~
+    ///
+    /// - Parameters:
+    ///   - apiKey: ApiKey provided by Amity
+    ///   - endpoint: Custom Endpoint to which this UIKit connects to.
+    public static func setup(apiKey: String, endpoint: AmityEndpoint) {
+        AmityUIKitManagerInternal.shared.setup(apiKey, endpoint: endpoint)
+    }
+    
     // MARK: - Setup Authentication
     
     /// Setup AmityUIKit instance. Internally it creates AmityClient instance from AmitySDK.
@@ -22,6 +61,8 @@ public final class AmityUIKitManager {
     ///   - apiKey: API key provided by Amity.
     ///   - httpUrl: Custom url to be used as base url.
     ///   - socketUrl: Custom url to be used as base url.
+    ///
+    @available(swift, deprecated: 2.8.0, message: "This method will be removed in future version. Please use `setup(apiKey:_, region:_)` method instead")
     public static func setup(apiKey: String, httpUrl: String? = nil, socketUrl: String? = nil) {
         if let httpUrl = httpUrl, let socketUrl = socketUrl {
             AmityUIKitManagerInternal.shared.setup(apiKey, httpUrl: httpUrl, socketUrl: socketUrl)
@@ -120,8 +161,6 @@ final class AmityUIKitManagerInternal: NSObject {
     public static let shared = AmityUIKitManagerInternal()
     private var _client: AmityClient?
     private var apiKey: String = ""
-    private var httpUrl: String = ""
-    private var socketUrl: String = ""
     
     private(set) var fileService = AmityFileService()
     private(set) var messageMediaService = AmityMessageMediaService()
@@ -143,14 +182,26 @@ final class AmityUIKitManagerInternal: NSObject {
     
     // MARK: - Setup functions
 
+    func setup(_ apiKey: String, region: AmityRegion) {
+        guard let client = try? AmityClient(apiKey: apiKey, region: region) else { return }
+        
+        _client = client
+        _client?.clientErrorDelegate = self
+    }
+    
+    func setup(_ apiKey: String, endpoint: AmityEndpoint) {
+        guard let client = try? AmityClient(apiKey: apiKey, endpoint: endpoint) else { return }
+        
+        _client = client
+        _client?.clientErrorDelegate = self
+    }
+    
     func setup(_ apiKey: String, httpUrl: String = "", socketUrl: String = "") {
         self.apiKey = apiKey
-        self.httpUrl = httpUrl
-        self.socketUrl = socketUrl
-        
+
         // Passing empty string over `httpUrl` and `socketUrl` is acceptable.
         // `AmityClient` will be using the default endpoint instead.
-        guard let client = AmityClient(apiKey: apiKey, httpUrl: httpUrl, socketUrl: socketUrl) else {
+        guard let client = try? AmityClient(apiKey: apiKey, httpUrl: httpUrl, socketUrl: socketUrl) else {
             assertionFailure("Something went wrong. API key is invalid.")
             return
         }
@@ -163,13 +214,13 @@ final class AmityUIKitManagerInternal: NSObject {
                         authToken: String?,
                         completion: AmityRequestCompletion?) {
         
-        client.registerDevice(withUserId: userId, displayName: displayName, authToken: authToken, completion: completion)
+        client.login(userId: userId, displayName: displayName, authToken: authToken, completion: completion)
         didUpdateClient()
     }
     
     func unregisterDevice() {
         AmityFileCache.shared.clearCache()
-        self._client?.unregisterDevice()
+        self._client?.logout()
     }
     
     func didUpdateClient() {
@@ -194,5 +245,4 @@ extension AmityUIKitManagerInternal: AmityClientErrorDelegate {
     func didReceiveAsyncError(_ error: Error) {
         AmityHUD.show(.error(message: error.localizedDescription))
     }
-    
 }

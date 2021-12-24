@@ -14,12 +14,14 @@ struct AmityUserModel {
     let displayName: String
     let avatarURL: String
     let about: String
+    let isGlobalBan: Bool
     
     init(user: AmityUser) {
         userId = user.userId
         displayName = user.displayName ?? AmityLocalizedStringSet.General.anonymous.localizedString
         avatarURL = user.getAvatarInfo()?.fileURL ?? ""
         about = user.userDescription
+        isGlobalBan = user.isGlobalBan
     }
     
     var isCurrentUser: Bool {

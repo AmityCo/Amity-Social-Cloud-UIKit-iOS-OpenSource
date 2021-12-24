@@ -231,13 +231,13 @@ extension AmityMessageListScreenViewModel {
     
     func send(withText text: String?) {
         let textMessage = text?.trimmingCharacters(in: .whitespacesAndNewlines) ?? ""
-        guard !textMessage.isEmpty else { return }
-        
-        createMessageNotificationToken = messageRepository.createTextMessage(withChannelId: channelId, text: textMessage, tags: nil, parentId: nil)
-            .observe { [weak self] (_message, error) in
-                self?.text = ""
-                self?.delegate?.screenViewModelEvents(for: .didSendText)
-                self?.shouldScrollToBottom(force: true)
+        guard !textMessage.isEmpty else {
+            return
+        }
+        messageRepository.createTextMessage(withChannelId: channelId, text: textMessage, tags: nil, parentId: nil) { [weak self] _,_ in
+            self?.text = ""
+            self?.delegate?.screenViewModelEvents(for: .didSendText)
+            self?.shouldScrollToBottom(force: true)
         }
     }
     

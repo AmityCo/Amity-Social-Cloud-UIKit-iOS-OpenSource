@@ -139,6 +139,7 @@ public struct AmityIconSet {
         public static var iconItemPostReview = UIImage(named: "icon_item_post_review", in: AmityUIKitManager.bundle, compatibleWith: nil)
         public static var iconCommentSetting = UIImage(named: "icon_community_setting_comment", in: AmityUIKitManager.bundle, compatibleWith: nil)
         public static var iconPostSetting = UIImage(named: "icon_community_setting_post", in: AmityUIKitManager.bundle, compatibleWith: nil)
+        public static var iconCommunitySettingBanned = UIImage(named: "icon_community_setting_banned", in: AmityUIKitManager.bundle, compatibleWith: nil)
     }
         
     enum CommunityNotificationSettings {

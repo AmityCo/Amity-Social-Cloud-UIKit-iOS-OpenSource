@@ -18,6 +18,7 @@ final class AmityCommunitySettingsScreenViewModel: AmityCommunitySettingsScreenV
     private let communityLeaveController: AmityCommunityLeaveControllerProtocol
     private let communityDeleteController: AmityCommunityDeleteControllerProtocol
     private let communityInfoController: AmityCommunityInfoControllerProtocol
+    private let userRolesController: AmityCommunityUserRolesControllerProtocol
     
     // MARK: - SubViewModel
     private var menuViewModel: AmityCommunitySettingsCreateMenuViewModelProtocol?
@@ -34,19 +35,23 @@ final class AmityCommunitySettingsScreenViewModel: AmityCommunitySettingsScreenV
          communityNotificationController: AmityCommunityNotificationSettingsControllerProtocol,
          communityLeaveController: AmityCommunityLeaveControllerProtocol,
          communityDeleteController: AmityCommunityDeleteControllerProtocol,
-         communityInfoController: AmityCommunityInfoControllerProtocol) {
+         communityInfoController: AmityCommunityInfoControllerProtocol,
+         userRolesController: AmityCommunityUserRolesControllerProtocol) {
         self.communityId = communityId
         self.userNotificationController = userNotificationController
         self.communityNotificationController = communityNotificationController
         self.communityLeaveController = communityLeaveController
         self.communityDeleteController = communityDeleteController
         self.communityInfoController = communityInfoController
+        self.userRolesController = userRolesController
     }
 }
 
 // MARK: - DataSource
 extension AmityCommunitySettingsScreenViewModel {
-    
+    func isModerator(userId: String) -> Bool {
+        return userRolesController.getUserRoles(withUserId: userId, role: .moderator) || userRolesController.getUserRoles(withUserId: userId, role: .communityModerator)
+    }
 }
 
 // MARK: - Action
@@ -95,7 +100,8 @@ extension AmityCommunitySettingsScreenViewModel {
     
     func retrieveSettingsMenu() {
         guard let community = community else { return }
-        menuViewModel = AmityCommunitySettingsCreateMenuViewModel(community: community)
+        let userRolesController: AmityCommunityUserRolesControllerProtocol = AmityCommunityUserRolesController(communityId: community.communityId)
+        menuViewModel = AmityCommunitySettingsCreateMenuViewModel(community: community, userRolesController: userRolesController)
         menuViewModel?.createSettingsItems(shouldNotificationItemShow: isSocialUserEnabled && isSocialNetworkEnabled, isNotificationEnabled: isNotificationEnabled) { [weak self] (items) in
             guard let strongSelf = self else { return }
             strongSelf.delegate?.screenViewModel(strongSelf, didGetSettingMenu: items)
@@ -107,7 +113,7 @@ extension AmityCommunitySettingsScreenViewModel {
             guard let strongSelf = self else { return }
             if let error = error {
                 switch error {
-                case .noPermission:
+                case .noPermission, .unableToLeaveCommunity:
                     strongSelf.delegate?.screenViewModel(strongSelf, failure: error)
                 default:
                     strongSelf.delegate?.screenViewModelDidLeaveCommunityFail()

@@ -142,8 +142,9 @@ open class AmityViewController: UIViewController {
         view.addGestureRecognizer(fullWidthBackGestureRecognizer)
     }
     
-    // remove swipe back gesture
-    func removeSwipeBackGesture() {
+    // This function is to disable swipe to back functionality
+    // after it gets called, the view controller will no longer reflect swipe to back action.
+    public func removeSwipeBackGesture() {
         view.removeGestureRecognizer(fullWidthBackGestureRecognizer)
     }
 

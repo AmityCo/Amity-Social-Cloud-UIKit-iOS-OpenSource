@@ -6,7 +6,7 @@
 //  Copyright © 2021 Amity. All rights reserved.
 //
 
-import Foundation
+import UIKit
 import AmitySDK
 
 enum OptionsList: Equatable {

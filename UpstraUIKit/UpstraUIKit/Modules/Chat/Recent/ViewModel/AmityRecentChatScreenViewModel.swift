@@ -51,17 +51,6 @@ public struct AmityChannelModel {
         }
         return ""
     }
-    
-    func getCreatorId() -> String {
-        if let creatorId = metadata["creatorId"] as? String {
-            return creatorId
-        }
-        return ""
-    }
-    
-    func isCreator() -> Bool {
-        return AmityUIKitManagerInternal.shared.client.currentUserId == getCreatorId()
-    }
 }
 
 final class AmityRecentChatScreenViewModel: AmityRecentChatScreenViewModelType {
@@ -154,27 +143,17 @@ final class AmityRecentChatScreenViewModel: AmityRecentChatScreenViewModelType {
     }
     
     private func createNewCommiunityChannel(builder: AmityCommunityChannelBuilder) {
-        let channelObject = channelRepository.createChannel().community(with: builder)
+        let channelObject = channelRepository.createChannel(with: builder)
         communityToken?.invalidate()
         communityToken = channelObject.observe {[weak self] channelObject, error in
             guard let weakSelf = self else { return }
             if let error = error {
                 weakSelf.delegate?.screenViewModelDidFailedCreateCommunity(error: error.localizedDescription)
             }
-            if let channelId = channelObject.object?.channelId,
-               let meta = builder.channelMetadata,
-               let creatorId = meta["creatorId"] as? String {
+            if let channelId = channelObject.object?.channelId {
                 weakSelf.communityToken?.invalidate()
-                weakSelf.addCreatorRole(channelId: channelId, userId: creatorId)
                 weakSelf.delegate?.screenViewModelDidCreateCommunity(channelId: channelId)
             }
-        }
-    }
-    
-    private func addCreatorRole(channelId: String, userId: String) {
-        roleController = AmityChannelRoleController(channelId: channelId)
-        roleController?.add(role: .creator, userIds: [userId]) { [weak self] error in
-            /// Intentially left empty
         }
     }
     
@@ -200,7 +179,7 @@ final class AmityRecentChatScreenViewModel: AmityRecentChatScreenViewModelType {
         builder.setTags(["ch-comm","ios-sdk"])
         
         
-        let channelObject = channelRepository.createChannel().conversation(with: builder)
+        let channelObject = channelRepository.createChannel(with: builder)
         communityToken?.invalidate()
         communityToken = channelObject.observe { channelObject, error in
             if let channelId = channelObject.object?.channelId {
@@ -255,17 +234,16 @@ private extension AmityRecentChatScreenViewModel {
     func getChannelList() {
         switch channelType {
         case .community:
-            let builder = AmityCommunityChannelQueryBuilder(filter: .userIsMember, includingTags: [], excludingTags: [], includeDeleted: false)
-            channelsCollection = channelRepository
-                .getChannels()
-                .communityType(with: builder)
-                .query()
+            let query = AmityChannelQuery()
+            query.types = [AmityChannelQueryType.community]
+            query.filter = .userIsMember
+            query.includeDeleted = false
+            channelsCollection = channelRepository.getChannels(with: query)
         case .conversation:
-            let builder = AmityConversationChannelQueryBuilder(includingTags: [], excludingTags: [], includeDeleted: false)
-            channelsCollection = channelRepository
-                .getChannels()
-                .conversation(with: builder)
-                .query()
+            let query = AmityChannelQuery()
+            query.types = [AmityChannelQueryType.conversation]
+            query.includeDeleted = false
+            channelsCollection = channelRepository.getChannels(with: query)
         default:
             break
         }

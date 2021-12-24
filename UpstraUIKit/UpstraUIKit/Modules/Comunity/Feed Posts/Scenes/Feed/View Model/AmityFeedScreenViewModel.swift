@@ -20,12 +20,17 @@ final class AmityFeedScreenViewModel: AmityFeedScreenViewModelType {
     private let reactionController: AmityReactionControllerProtocol
     private let pollRepository: AmityPollRepository
     
-    
     // MARK: - Properties
     private let debouncer = Debouncer(delay: 0.3)
     private let feedType: AmityPostFeedType
     private var postComponents = [AmityPostComponent]()
     private(set) var isPrivate: Bool
+    private(set) var isLoading: Bool {
+        didSet {
+            guard oldValue != isLoading else { return }
+            delegate?.screenViewModelLoadingStatusDidChange(self, isLoading: isLoading)
+        }
+    }
     
     init(withFeedType feedType: AmityPostFeedType,
         postController: AmityPostControllerProtocol,
@@ -36,14 +41,13 @@ final class AmityFeedScreenViewModel: AmityFeedScreenViewModelType {
         self.commentController = commentController
         self.reactionController = reactionController
         self.isPrivate = false
+        self.isLoading = false
         self.pollRepository = AmityPollRepository(client: AmityUIKitManagerInternal.shared.client)
     }
     
 }
 
 // MARK: - DataSource
-
-// MARK: Post component
 extension AmityFeedScreenViewModel {
     
     func getFeedType() -> AmityPostFeedType {
@@ -79,6 +83,7 @@ extension AmityFeedScreenViewModel {
                 addComponent(component: AmityPostPlaceHolderComponent(post: post))
             }
         }
+        isLoading = false
         delegate?.screenViewModelDidUpdateDataSuccess(self)
     }
 
@@ -92,6 +97,7 @@ extension AmityFeedScreenViewModel {
 extension AmityFeedScreenViewModel {
     
     func fetchPosts() {
+        isLoading = true
         postController.retrieveFeed(withFeedType: feedType) { [weak self] (result) in
             guard let strongSelf = self else { return }
             switch result {
@@ -99,7 +105,6 @@ extension AmityFeedScreenViewModel {
                 strongSelf.debouncer.run {
                     strongSelf.prepareComponents(posts: posts)
                 }
-                
             case .failure(let error):
                 if let amityError = AmityError(error: error), amityError == .noUserAccessPermission {
                     switch strongSelf.feedType {
@@ -234,8 +239,8 @@ extension AmityFeedScreenViewModel {
         }
     }
     
-    func edit(withComment comment: AmityCommentModel, text: String) {
-        commentController.edit(withComment: comment, text: text) { [weak self] (success, error) in
+    func edit(withComment comment: AmityCommentModel, text: String, metadata: [String : Any]?, mentionees: AmityMentioneesBuilder?) {
+        commentController.edit(withComment: comment, text: text, metadata: metadata, mentionees: mentionees) { [weak self] (success, error) in
             guard let strongSelf = self else { return }
             if success {
                 strongSelf.delegate?.screenViewModelDidEditCommentSuccess(strongSelf)

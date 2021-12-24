@@ -36,12 +36,14 @@ final class AmityCommunitySettingsViewController: AmityViewController {
         let communityLeaveController = AmityCommunityLeaveController(withCommunityId: communityId)
         let communityDeleteController = AmityCommunityDeleteController(withCommunityId: communityId)
         let communityInfoController = AmityCommunityInfoController(communityId: communityId)
+        let communityUserRoleController = AmityCommunityUserRolesController(communityId: communityId)
         let viewModel: AmityCommunitySettingsScreenViewModelType = AmityCommunitySettingsScreenViewModel(communityId: communityId,
-                                                                                                     userNotificationController: userNotificationController,
-                                                                                                     communityNotificationController: communityNotificationController,
-                                                                                                     communityLeaveController: communityLeaveController,
-                                                                                                     communityDeleteController: communityDeleteController,
-                                                                                                     communityInfoController: communityInfoController)
+                                                                                          userNotificationController: userNotificationController,
+                                                                                     communityNotificationController: communityNotificationController,
+                                                                                            communityLeaveController: communityLeaveController,
+                                                                                           communityDeleteController: communityDeleteController,
+                                                                                             communityInfoController: communityInfoController,
+                                                                                                 userRolesController: communityUserRoleController)
         let vc = AmityCommunitySettingsViewController(nibName: AmityCommunitySettingsViewController.identifier, bundle: AmityUIKitManager.bundle)
         vc.screenViewModel = viewModel
         return vc
@@ -86,14 +88,29 @@ final class AmityCommunitySettingsViewController: AmityViewController {
             guard let item = AmityCommunitySettingsItem(rawValue: content.identifier) else { return }
             switch item {
             case .leaveCommunity:
+                let alertTitle = AmityLocalizedStringSet.CommunitySettings.alertTitleLeave.localizedString
+                let actionTitle = AmityLocalizedStringSet.General.leave.localizedString
+                var description = AmityLocalizedStringSet.CommunitySettings.alertDescLeave.localizedString
+                let isOnlyOneMember = screenViewModel.dataSource.community?.membersCount == 1
+                if screenViewModel.dataSource.isModerator(userId: AmityUIKitManagerInternal.shared.currentUserId) {
+                    description = AmityLocalizedStringSet.CommunitySettings.alertDescModeratorLeave.localizedString
+                }
+
                 AmityAlertController.present(
-                    title: AmityLocalizedStringSet.CommunitySettings.alertTitleLeave.localizedString,
-                    message: AmityLocalizedStringSet.CommunitySettings.alertDescLeave.localizedString,
-                    actions: [.cancel(handler: nil),
-                              .custom(title: AmityLocalizedStringSet.General.leave.localizedString,
-                                      style: .destructive, handler: { [weak self] in
-                                        self?.screenViewModel.action.leaveCommunity()
-                                      })],
+                    title: alertTitle,
+                    message: description.localizedString,
+                    actions: [.cancel(handler: nil), .custom(title: actionTitle.localizedString, style: .destructive, handler: { [weak self] in
+                        guard let strongSelf = self else { return }
+                        if isOnlyOneMember {
+                            let description = AmityLocalizedStringSet.CommunitySettings.alertDescLastModeratorLeave.localizedString
+                            AmityAlertController.present(title: alertTitle, message: description, actions: [.cancel(handler: nil), .custom(title: AmityLocalizedStringSet.General.close.localizedString, style: .destructive, handler: { [weak self] in
+                                    self?.screenViewModel.action.closeCommunity()
+                            })],
+                            from: strongSelf)
+                        } else {
+                            strongSelf.screenViewModel.action.leaveCommunity()
+                        }
+                    })],
                     from: self)
             case .closeCommunity:
                 AmityAlertController.present(
@@ -161,6 +178,10 @@ extension AmityCommunitySettingsViewController: AmityCommunitySettingsScreenView
                                        actions: [.ok(handler: { [weak self] in
                                         self?.navigationController?.popToRootViewController(animated: true)
                                        })], from: self)
+        case .unableToLeaveCommunity:
+            AmityAlertController.present(title: AmityLocalizedStringSet.Community.alertUnableToLeaveCommunityTitle.localizedString,
+                                       message: AmityLocalizedStringSet.Community.alertUnableToLeaveCommunityDesc.localizedString,
+                                       actions: [.ok(handler: nil)], from: self)
         default:
             break
         }

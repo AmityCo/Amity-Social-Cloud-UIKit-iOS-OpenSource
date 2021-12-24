@@ -206,6 +206,12 @@ public struct AmityLocalizedStringSet {
     static let postCreationUploadIncompletDescription = "post_creation_file_upload_icomplete_description"
     static let postCreationSubmitTitle = "post_craetion_submit_title"
     static let postCreationSubmitDesc = "post_creation_submit_desc"
+    static let postUnableToPostTitle = "post_unable_to_post_title"
+    static let postUnableToCommentTitle = "post_unable_to_comment_title"
+    static let postUnableToReplyTitle = "post_unable_to_reply_title"
+    static let postUnableToPostDescription = "post_unable_to_post_description"
+    static let postUnableToCommentDescription = "post_unable_to_comment_description"
+    static let postUnableToReplyDescription = "post_unable_to_reply_description"
     
     // MARK: - Post detail
     struct PostDetail {
@@ -271,6 +277,8 @@ public struct AmityLocalizedStringSet {
         static let itemDescCloseCommunity = "community_settings_item_desc_close_community"
         static let alertTitleLeave = "community_settings_alert_title_leave"
         static let alertDescLeave = "community_settings_alert_desc_leave"
+        static let alertDescModeratorLeave = "community_settings_alert_desc_moderator_leave"
+        static let alertDescLastModeratorLeave = "community_settings_alert_desc_last_moderator_leave"
         static let alertTitleClose = "community_settings_alert_title_close"
         static let alertDescClose = "community_settings_alert_desc_close"
         static let alertFailTitleLeave = "community_settings_alert_fail_title_leave"
@@ -338,6 +346,8 @@ public struct AmityLocalizedStringSet {
     enum Community {
         static let alertUnableToPerformActionTitle = "community_alert_unable_to_perform_action_title"
         static let alertUnableToPerformActionDesc = "community_alert_unable_to_perform_action_desc"
+        static let alertUnableToLeaveCommunityTitle = "community_alert_unable_to_leave_community_title"
+        static let alertUnableToLeaveCommunityDesc = "community_alert_unable_to_leave_community_desc"
     }
     
     // MARK: - Edit User Profile
@@ -486,4 +496,11 @@ public struct AmityLocalizedStringSet {
         }
     }
     
+    // MARK: - Mention
+    enum Mention {
+        static let unableToMentionTitle = "mention_unable_to_mention_title"
+        static let unableToMentionPostDescription = "mention_unable_to_mention_post_description"
+        static let unableToMentionCommentDescription = "mention_unable_to_mention_comment_description"
+        static let unableToMentionReplyDescription = "mention_unable_to_mention_reply_description"
+    }
 }

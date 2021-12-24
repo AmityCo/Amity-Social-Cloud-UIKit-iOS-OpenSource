@@ -53,7 +53,17 @@ extension LiveStreamBroadcastViewController {
         
         // createStream
         let title = titleTextField.text ?? ""
-        let description = descriptionTextView.text
+        
+        let description: String? = {
+            let text = descriptionTextView.text ?? ""
+            let trimmedText = text.trimmingCharacters(in: .whitespacesAndNewlines)
+            if !trimmedText.isEmpty {
+                return trimmedText
+            } else {
+                return nil
+            }
+        } ()
+        
         let createStream = GoLive.CreateStream(streamRepository: streamRepository, title: title, description: description, meta: nil)
         
         // createPost

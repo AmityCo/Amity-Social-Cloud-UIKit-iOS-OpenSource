@@ -68,10 +68,12 @@ extension AmityPostModel {
     public class Author {
         public let avatarURL: String?
         public let displayName: String?
+        public let isGlobalBan: Bool
         
-        public init( avatarURL: String?, displayName: String?) {
+        public init( avatarURL: String?, displayName: String?, isGlobalBan: Bool) {
             self.avatarURL = avatarURL
             self.displayName = displayName
+            self.isGlobalBan = isGlobalBan
         }
     }
     
@@ -176,6 +178,16 @@ public class AmityPostModel {
      * The post target community
      */
     public let targetCommunity: AmityCommunity?
+    
+    /**
+     * The post metadata
+     */
+    public let metadata: [String: Any]?
+    
+    /**
+     * The post mentionees
+     */
+    public let mentionees: [AmityMentionees]?
     
     /**
      * The post target type
@@ -285,18 +297,20 @@ public class AmityPostModel {
         parentPostId = post.parentPostId
         postedUser = Author(
             avatarURL: post.postedUser?.getAvatarInfo()?.fileURL,
-            displayName: post.postedUser?.displayName ?? AmityLocalizedStringSet.General.anonymous.localizedString)
+            displayName: post.postedUser?.displayName ?? AmityLocalizedStringSet.General.anonymous.localizedString, isGlobalBan: post.postedUser?.isGlobalBan ?? false)
         subtitle = post.isEdited ? String.localizedStringWithFormat(AmityLocalizedStringSet.PostDetail.postDetailCommentEdit.localizedString, post.createdAt.relativeTime) : post.createdAt.relativeTime
         postedUserId = post.postedUserId
         sharedCount = Int(post.sharedCount)
         reactionsCount = Int(post.reactionsCount)
         allCommentCount = Int(post.commentsCount)
-        allReactions = post.myReactions as? [String] ?? []
+        allReactions = post.myReactions
         myReactions = allReactions.compactMap(AmityReactionType.init)
         feedType = post.getFeedType()
         data = post.data ?? [:]
         appearance = AmityPostAppearance()
         poll = post.getPollInfo().map(Poll.init)
+        metadata = post.metadata
+        mentionees = post.mentionees
         extractPostData()
     }
     

@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import AmitySDK
 
 public final class AmityPostFileTableViewCell: UITableViewCell, Nibbable, AmityPostProtocol {
     public weak var delegate: AmityPostDelegate?
@@ -40,7 +41,13 @@ public final class AmityPostFileTableViewCell: UITableViewCell, Nibbable, AmityP
         self.post = post
         self.indexPath = indexPath
         fileTableView.configure(files: post.files)
-        contentLabel.text = post.text
+        
+        if let metadata = post.metadata {
+            let attributes = AmityMentionManager.getAttributes(fromText: post.text, withMetadata: metadata)
+            contentLabel.setText(post.text, withAttributes: attributes)
+        } else {
+            contentLabel.text = post.text
+        }
         contentLabel.isExpanded = post.appearance.shouldContentExpand
         fileTableView.isExpanded = post.appearance.shouldContentExpand
         heightConstraint.constant = AmityFileTableView.height(for: post.files.count, isEdtingMode: false, isExpanded: post.appearance.shouldContentExpand)
@@ -72,7 +79,6 @@ public final class AmityPostFileTableViewCell: UITableViewCell, Nibbable, AmityP
     private func performAction(action: AmityPostAction) {
         delegate?.didPerformAction(self, action: action)
     }
-    
 }
 
 extension AmityPostFileTableViewCell: AmityFileTableViewDelegate {
@@ -117,4 +123,7 @@ extension AmityPostFileTableViewCell: AmityExpandableLabelDelegate {
         performAction(action: .tapExpandableLabel(label: label))
     }
     
+    public func didTapOnMention(_ label: AmityExpandableLabel, withUserId userId: String) {
+        performAction(action: .tapOnMentionWithUserId(userId: userId))
+    }
 }
