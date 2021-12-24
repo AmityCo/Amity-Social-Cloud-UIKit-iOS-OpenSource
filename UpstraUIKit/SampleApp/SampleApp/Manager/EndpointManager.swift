@@ -51,7 +51,7 @@ struct EnvironmentSettingModel: Codable {
     }
     
     static func defaultConfig(for environment: EnvironmentType) -> EndpointConfigModel {
-        return EndpointConfigModel(apiKey: "YOUR_API_KEY")
+        return EndpointConfigModel(apiKey: "YOUR_API_KEY", httpEndpoint: AmityRegionalEndpoint.SG, socketEndpoint: AmityRegionalEndpoint.SG)
     }
 }
 
