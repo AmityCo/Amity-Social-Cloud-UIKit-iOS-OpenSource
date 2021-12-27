@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="19455" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="19529" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="19454"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="19519"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -24,7 +24,7 @@
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="jYq-PO-fEO">
-                        <rect key="frame" x="16" y="0.0" width="208" height="69"/>
+                        <rect key="frame" x="16" y="0.0" width="198" height="69"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Gic-yd-UUu" customClass="AmityAvatarView" customModule="AmityUIKit" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="14.5" width="40" height="40"/>
@@ -41,26 +41,26 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" ambiguous="YES" text="DisplayName" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="QRB-WP-osP">
-                                <rect key="frame" x="71.5" y="20.5" width="100.5" height="20.5"/>
+                                <rect key="frame" x="71.5" y="20.5" width="98.5" height="20.5"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" image="icon_badge_checkmark" translatesAutoresizingMaskIntoConstraints="NO" id="pLk-NE-Ydr">
-                                <rect key="frame" x="176" y="19" width="24" height="24"/>
+                                <rect key="frame" x="174" y="19" width="24" height="24"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="24" id="3kz-9h-oJ5"/>
                                     <constraint firstAttribute="width" constant="24" id="QJf-UB-hoz"/>
                                 </constraints>
                             </imageView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" horizontalCompressionResistancePriority="749" verticalCompressionResistancePriority="749" ambiguous="YES" text="Sports " lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="36l-G6-wnc">
-                                <rect key="frame" x="71.5" y="41" width="3.5" height="20.5"/>
+                                <rect key="frame" x="71.5" y="41" width="0.0" height="20.5"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="999" verticalHuggingPriority="251" ambiguous="YES" text="• 150k members" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9vD-iD-Xmt">
-                                <rect key="frame" x="83" y="41" width="125" height="20.5"/>
+                                <rect key="frame" x="79.5" y="41" width="118.5" height="20.5"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
@@ -85,13 +85,14 @@
                             <constraint firstItem="Gic-yd-UUu" firstAttribute="centerY" secondItem="jYq-PO-fEO" secondAttribute="centerY" id="p56-wO-cld"/>
                         </constraints>
                     </view>
-                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="X2U-tk-7ZM">
-                        <rect key="frame" x="224" y="19.5" width="80" height="30"/>
+                    <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="249" verticalHuggingPriority="249" horizontalCompressionResistancePriority="749" verticalCompressionResistancePriority="749" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="X2U-tk-7ZM">
+                        <rect key="frame" x="219" y="19.5" width="85" height="30"/>
                         <constraints>
-                            <constraint firstAttribute="width" constant="80" id="kDj-Oq-SYp"/>
+                            <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="85" id="kDj-Oq-SYp"/>
                             <constraint firstAttribute="height" constant="30" id="uBl-4q-xJw"/>
                         </constraints>
                         <fontDescription key="fontDescription" name="SukhumvitTadmai-Bold" family="Sukhumvit Tadmai" pointSize="16"/>
+                        <inset key="titleEdgeInsets" minX="5" minY="0.0" maxX="5" maxY="0.0"/>
                         <state key="normal" title="Button"/>
                         <connections>
                             <action selector="joinButtonTapped:" destination="KGk-i7-Jjw" eventType="touchUpInside" id="vz6-Kt-A2k"/>
@@ -104,7 +105,7 @@
                     <constraint firstAttribute="trailing" secondItem="X2U-tk-7ZM" secondAttribute="trailing" constant="16" id="VrU-pE-qYt"/>
                     <constraint firstItem="X2U-tk-7ZM" firstAttribute="centerY" secondItem="XTo-DO-Ov3" secondAttribute="centerY" id="g0c-Vl-BmL"/>
                     <constraint firstAttribute="bottom" secondItem="jYq-PO-fEO" secondAttribute="bottom" constant="13" id="qiT-LU-n9B"/>
-                    <constraint firstItem="X2U-tk-7ZM" firstAttribute="leading" secondItem="jYq-PO-fEO" secondAttribute="trailing" id="yRz-yi-lrh"/>
+                    <constraint firstItem="X2U-tk-7ZM" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="jYq-PO-fEO" secondAttribute="trailing" constant="5" id="yRz-yi-lrh"/>
                 </constraints>
             </tableViewCellContentView>
             <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>

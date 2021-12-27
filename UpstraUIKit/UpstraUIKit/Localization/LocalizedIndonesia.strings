@@ -363,3 +363,4 @@
 "error_message_link_not_allowed_detail" = "Tautan Anda tidak terdaftar oleh TrueID, tim berhak untuk membagikan tautan Anda";
 "error_message_default" = "Oops! Terjadi kesalahan. Silakan coba lagi.";
 "error_message_connection_error" = "Oops! Terjadi kesalahan. Silakan coba lagi.";
+"community_detail_joined_button" = "Telah bergabung";

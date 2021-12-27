@@ -479,6 +479,8 @@ extension AmityCommunityProfileEditorViewController: AmityCreateCommunityScreenV
         switch error {
         case .noPermission:
             let alert = UIAlertController(title: AmityLocalizedStringSet.Community.alertUnableToPerformActionTitle.localizedString, message: AmityLocalizedStringSet.Community.alertUnableToPerformActionDesc.localizedString, preferredStyle: .alert)
+            alert.setTitle(font: AmityFontSet.title)
+            alert.setMessage(font: AmityFontSet.body)
             alert.addAction(UIAlertAction(title: AmityLocalizedStringSet.General.ok, style: .default, handler: { [weak self] _ in
                 guard let strongSelf = self else { return }
                 strongSelf.dismiss(animated: true, completion: {
@@ -527,6 +529,8 @@ extension AmityCommunityProfileEditorViewController: AmityCreateCommunityScreenV
         case .onDismiss(let isChange):
             if isChange {
                 let alert = UIAlertController(title: AmityLocalizedStringSet.createCommunityAlertTitle.localizedString, message: AmityLocalizedStringSet.createCommunityAlertDesc.localizedString, preferredStyle: .alert)
+                alert.setTitle(font: AmityFontSet.title)
+                alert.setMessage(font: AmityFontSet.body)
                 alert.addAction(UIAlertAction(title: AmityLocalizedStringSet.General.cancel.localizedString, style: .cancel, handler: nil))
                 alert.addAction(UIAlertAction(title: AmityLocalizedStringSet.General.leave.localizedString, style: .destructive, handler: { [weak self] _ in
                     self?.generalDismiss()

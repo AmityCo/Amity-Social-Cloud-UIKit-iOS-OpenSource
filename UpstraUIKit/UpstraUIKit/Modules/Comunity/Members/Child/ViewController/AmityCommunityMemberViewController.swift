@@ -155,6 +155,8 @@ extension AmityCommunityMemberViewController: AmityCommunityMemberScreenViewMode
             switch error {
             case .noPermission:
                 let alert = UIAlertController(title: AmityLocalizedStringSet.Community.alertUnableToPerformActionTitle.localizedString, message: AmityLocalizedStringSet.Community.alertUnableToPerformActionDesc.localizedString, preferredStyle: .alert)
+                alert.setTitle(font: AmityFontSet.title)
+                alert.setMessage(font: AmityFontSet.body)
                 alert.addAction(UIAlertAction(title: AmityLocalizedStringSet.General.ok.localizedString, style: .default, handler: { _ in
                     self?.navigationController?.popToRootViewController(animated: true)
                 }))
@@ -214,6 +216,8 @@ private extension AmityCommunityMemberViewController {
                 let removeOption = TextItemOption(title: AmityLocalizedStringSet.CommunityMembreSetting.optionRemove.localizedString, textColor: AmityColorSet.alert) {
                     let alert = UIAlertController(title: AmityLocalizedStringSet.CommunityMembreSetting.alertTitle.localizedString,
                                                   message: AmityLocalizedStringSet.CommunityMembreSetting.alertDesc.localizedString, preferredStyle: .alert)
+                    alert.setTitle(font: AmityFontSet.title)
+                    alert.setMessage(font: AmityFontSet.body)
                     alert.addAction(UIAlertAction(title: AmityLocalizedStringSet.General.cancel.localizedString, style: .default, handler: nil))
                     alert.addAction(UIAlertAction(title: AmityLocalizedStringSet.General.remove.localizedString, style: .destructive, handler: { _ in
                         strongSelf.screenViewModel.action.removeUser(at: indexPath)

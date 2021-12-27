@@ -21,6 +21,12 @@ class CommunityFeatureViewController: UIViewController {
         case PostCreator
         case myFeed
         case homeByDeeplink
+        case th
+        case id
+        case kh
+        case ph
+        case vn
+        case en
         
         var text: String {
             switch self {
@@ -38,6 +44,18 @@ class CommunityFeatureViewController: UIViewController {
                 return "MyFeed"
             case .homeByDeeplink:
                 return "Home by deep link"
+            case .th:
+                return "th"
+            case .id:
+                return "id"
+            case .kh:
+                return "kh"
+            case .ph:
+                return "ph"
+            case .vn:
+                return "vn"
+            case .en:
+                return "en"
             }
         }
     }
@@ -46,9 +64,6 @@ class CommunityFeatureViewController: UIViewController {
     var birthday: BirthdayPostComponent?
     override func viewDidLoad() {
         super.viewDidLoad()
-
-
-        
         title = "Community"
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: "CellID")
         tableView.delegate = self
@@ -155,8 +170,38 @@ extension CommunityFeatureViewController: UITableViewDelegate {
 //            let home = AmityCommunityHomePageViewController.make(deeplinksType: .category(id: "dca95af263fbf131ff02ec6dc734d7e7"), fromDeeplinks: true)
 //            navigationController?.pushViewController(home, animated: true)
         
+        case .th:
+            AmityUIKitManager.setLanguage(language: "th")
+            openHomePage()
+        case .id:
+            AmityUIKitManager.setLanguage(language: "id")
+            openHomePage()
+        case .kh:
+            AmityUIKitManager.setLanguage(language: "kh")
+            openHomePage()
+        case .ph:
+            AmityUIKitManager.setLanguage(language: "ph")
+            openHomePage()
+        case .vn:
+            AmityUIKitManager.setLanguage(language: "vn")
+            openHomePage()
+        case .en:
+            AmityUIKitManager.setLanguage(language: "en")
+            openHomePage()
         }
         
+    }
+    
+    private func openHomePage() {
+        let homepage = AmityCommunityHomePageViewController.make()
+        let navController = UINavigationController(rootViewController: homepage)
+        navController.modalPresentationStyle = .fullScreen
+        navigationController?.present(navController, animated: true, completion: nil)
+        AmityFeedUISettings.shared.register(UINib(nibName: "AmityPostBirthdayTableViewCell", bundle: nil), forCellReuseIdentifier: "AmityPostBirthdayTableViewCell")
+        AmityFeedUISettings.shared.register(UINib(nibName: "AmityPostThumbsupTableViewCell", bundle: nil), forCellReuseIdentifier: "AmityPostThumbsupTableViewCell")
+        AmityFeedUISettings.shared.register(UINib(nibName: "AmityPostNewJoinerTableViewCell", bundle: nil), forCellReuseIdentifier: "AmityPostNewJoinerTableViewCell")
+        AmityFeedUISettings.shared.delegate = self
+        AmityFeedUISettings.shared.dataSource = self
     }
     
 }

@@ -223,6 +223,8 @@ public class AmityPostTextEditorViewController: AmityViewController {
     public override func didTapLeftBarButton() {
         if isValueChanged {
             let alertController = UIAlertController(title: AmityLocalizedStringSet.postCreationDiscardPostTitle.localizedString, message: AmityLocalizedStringSet.postCreationDiscardPostMessage.localizedString, preferredStyle: .alert)
+            alertController.setTitle(font: AmityFontSet.title)
+            alertController.setMessage(font: AmityFontSet.body)
             let cancelAction = UIAlertAction(title: AmityLocalizedStringSet.General.cancel.localizedString, style: .cancel, handler: nil)
             let discardAction = UIAlertAction(title: AmityLocalizedStringSet.General.discard.localizedString, style: .destructive) { [weak self] _ in
                 self?.generalDismiss()
@@ -508,6 +510,8 @@ public class AmityPostTextEditorViewController: AmityViewController {
     
     private func showUploadFailureAlert() {
         let alertController = UIAlertController(title: AmityLocalizedStringSet.postCreationUploadIncompletTitle.localizedString, message: AmityLocalizedStringSet.postCreationUploadIncompletDescription.localizedString, preferredStyle: .alert)
+        alertController.setTitle(font: AmityFontSet.title)
+        alertController.setMessage(font: AmityFontSet.body)
         let cancelAction = UIAlertAction(title: AmityLocalizedStringSet.General.ok.localizedString, style: .cancel, handler: nil)
         alertController.addAction(cancelAction)
         present(alertController, animated: true, completion: nil)

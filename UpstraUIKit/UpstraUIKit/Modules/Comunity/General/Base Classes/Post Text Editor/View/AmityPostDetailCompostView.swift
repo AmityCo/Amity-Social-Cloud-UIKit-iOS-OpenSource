@@ -26,6 +26,7 @@ class AmityPostDetailCompostView: UIView {
         didSet {
             if let _replyingUsername = replyingUsername {
                 replyLabel.text = String.localizedStringWithFormat(AmityLocalizedStringSet.PostDetail.replyingTo.localizedString, _replyingUsername)
+                replyLabel.font = AmityFontSet.body
                 replyContainerView.isHidden = false
             } else {
                 replyContainerView.isHidden = true

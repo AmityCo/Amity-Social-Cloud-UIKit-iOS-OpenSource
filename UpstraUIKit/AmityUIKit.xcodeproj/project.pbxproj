@@ -639,7 +639,7 @@
 		D4D7683E26006D7000AD4367 /* AmitySettingContentIcon.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4D7683D26006D7000AD4367 /* AmitySettingContentIcon.swift */; };
 		D4EC11E525B93DCE0095F507 /* AmityPostSharingSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4EC11E425B93DCE0095F507 /* AmityPostSharingSettings.swift */; };
 		D4EC11EA25B93E000095F507 /* AmityPostSharingTarget.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4EC11E925B93E000095F507 /* AmityPostSharingTarget.swift */; };
-		FC1DE9AC2769D1D000ECB45F /* LocalizedIndia.strings in Resources */ = {isa = PBXBuildFile; fileRef = FC1DE9AB2769D1D000ECB45F /* LocalizedIndia.strings */; };
+		FC1DE9AC2769D1D000ECB45F /* LocalizedIndonesia.strings in Resources */ = {isa = PBXBuildFile; fileRef = FC1DE9AB2769D1D000ECB45F /* LocalizedIndonesia.strings */; };
 		FC1DE9AE2769D2AD00ECB45F /* LocalizedCambodia.strings in Resources */ = {isa = PBXBuildFile; fileRef = FC1DE9AD2769D2AD00ECB45F /* LocalizedCambodia.strings */; };
 		FC1DE9B02769D8D800ECB45F /* LocalizedPhilippin.strings in Resources */ = {isa = PBXBuildFile; fileRef = FC1DE9AF2769D8D800ECB45F /* LocalizedPhilippin.strings */; };
 		FC6459C5274E446300D1B491 /* PageType.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC6459C2274E446300D1B491 /* PageType.swift */; };
@@ -1287,7 +1287,7 @@
 		D4D7683D26006D7000AD4367 /* AmitySettingContentIcon.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AmitySettingContentIcon.swift; sourceTree = "<group>"; };
 		D4EC11E425B93DCE0095F507 /* AmityPostSharingSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AmityPostSharingSettings.swift; sourceTree = "<group>"; };
 		D4EC11E925B93E000095F507 /* AmityPostSharingTarget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AmityPostSharingTarget.swift; sourceTree = "<group>"; };
-		FC1DE9AB2769D1D000ECB45F /* LocalizedIndia.strings */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; path = LocalizedIndia.strings; sourceTree = "<group>"; };
+		FC1DE9AB2769D1D000ECB45F /* LocalizedIndonesia.strings */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; path = LocalizedIndonesia.strings; sourceTree = "<group>"; };
 		FC1DE9AD2769D2AD00ECB45F /* LocalizedCambodia.strings */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; path = LocalizedCambodia.strings; sourceTree = "<group>"; };
 		FC1DE9AF2769D8D800ECB45F /* LocalizedPhilippin.strings */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; path = LocalizedPhilippin.strings; sourceTree = "<group>"; };
 		FC6459C2274E446300D1B491 /* PageType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PageType.swift; sourceTree = "<group>"; };
@@ -2157,7 +2157,7 @@
 			children = (
 				FC6459DA274E45F600D1B491 /* LocalizedEnglish.strings */,
 				FC6459DB274E45F600D1B491 /* LocalizedThai.strings */,
-				FC1DE9AB2769D1D000ECB45F /* LocalizedIndia.strings */,
+				FC1DE9AB2769D1D000ECB45F /* LocalizedIndonesia.strings */,
 				FC1DE9AD2769D2AD00ECB45F /* LocalizedCambodia.strings */,
 				FC1DE9AF2769D8D800ECB45F /* LocalizedPhilippin.strings */,
 			);
@@ -4416,7 +4416,7 @@
 			files = (
 				B773618325552BA40072B182 /* AmityChatHomePageViewController.xib in Resources */,
 				7219CA642539514800169A35 /* AmityCategoryCommunityListViewEmptyView.xib in Resources */,
-				FC1DE9AC2769D1D000ECB45F /* LocalizedIndia.strings in Resources */,
+				FC1DE9AC2769D1D000ECB45F /* LocalizedIndonesia.strings in Resources */,
 				78C1C51F25F4160A00D6F092 /* AmitySettingsItemRadioButtonContentTableViewCell.xib in Resources */,
 				970E784F26429FB300E5FCEE /* AmityChatSettingsViewController.xib in Resources */,
 				B735CD67254937A100A98B95 /* AmityKeyboardComposeBarCollectionViewCell.xib in Resources */,

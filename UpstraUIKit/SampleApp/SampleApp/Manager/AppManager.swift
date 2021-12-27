@@ -35,7 +35,7 @@ class AppManager {
                                         httpUrl: endpointConfig.httpEndpoint,
                                         socketUrl: endpointConfig.socketEndpoint)
 
-        AmityUIKitManager.setLanguage(language: "en")
+      
         
         
         

@@ -364,3 +364,4 @@
 "error_message_link_not_allowed_detail" = "លីងតំណរបស់អ្នកមិនត្រូវបានអនុញាតឱ្យប្រើប្រាស់ដោយ TrueID ទេ។ TrueID រក្សាសិទ្ធិក្នងការចែករំលែកតំណលីងរបស់អ្នក។";
 "error_message_default" = "មានអ្វីមួយខុសប្រក្រតី។ សូម​ព្យាយាម​ម្តង​ទៀត។";
 "error_message_connection_error" = "មានអ្វីមួយខុសប្រក្រតី។ សូម​ព្យាយាម​ម្តង​ទៀត។";
+"community_detail_joined_button" = "បានចូលរួម";
