@@ -54,6 +54,8 @@ struct AmityAlertController {
      */
     static func present(title: String?, message: String?, actions: [Action], from viewController: UIViewController, completion: (() -> Void)? = nil) {
         let alertController = UIAlertController(title: title, message: message, preferredStyle: .alert)
+        alertController.setTitle(font: AmityFontSet.title)
+        alertController.setMessage(font: AmityFontSet.body)
         actions.forEach { alertController.addAction($0.alertAction) }
         viewController.present(alertController, animated: true, completion: completion)
     }

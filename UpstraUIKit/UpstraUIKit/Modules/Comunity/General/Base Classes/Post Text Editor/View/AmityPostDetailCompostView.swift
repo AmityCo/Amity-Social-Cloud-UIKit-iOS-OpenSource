@@ -152,6 +152,7 @@ class AmityPostDetailCompostView: UIView {
         textView.font = AmityFontSet.body
         postButton.translatesAutoresizingMaskIntoConstraints = false
         postButton.setTitle(AmityLocalizedStringSet.General.post.localizedString, for: .normal)
+        postButton.titleLabel?.font = AmityFontSet.title
         postButton.setTitleColor(AmityColorSet.primary, for: .normal)
         postButton.setTitleColor(AmityColorSet.primary.blend(.shade2), for: .disabled)
         postButton.addTarget(self, action: #selector(postButtonTap), for: .touchUpInside)

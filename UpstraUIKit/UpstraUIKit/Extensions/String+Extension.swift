@@ -32,12 +32,14 @@ extension String {
             return NSLocalizedString(self, tableName: "LocalizedThai", bundle: AmityUIKitManager.bundle, value: "", comment: "")
         case "id":
             return NSLocalizedString(self, tableName: "LocalizedIndonesia", bundle: AmityUIKitManager.bundle, value: "", comment: "")
-        case "kh":
+        case "km":
             return NSLocalizedString(self, tableName: "LocalizedCambodia", bundle: AmityUIKitManager.bundle, value: "", comment: "")
         case "ph":
             return NSLocalizedString(self, tableName: "LocalizedPhilippin", bundle: AmityUIKitManager.bundle, value: "", comment: "")
         case "vn":
             return NSLocalizedString(self, tableName: "LocalizedEnglish", bundle: AmityUIKitManager.bundle, value: "", comment: "")
+        case "my":
+            return NSLocalizedString(self, tableName: "LocalizedMyanmar", bundle: AmityUIKitManager.bundle, value: "", comment: "")
         case "en":
             return NSLocalizedString(self, tableName: "LocalizedEnglish", bundle: AmityUIKitManager.bundle, value: "", comment: "")
         default:

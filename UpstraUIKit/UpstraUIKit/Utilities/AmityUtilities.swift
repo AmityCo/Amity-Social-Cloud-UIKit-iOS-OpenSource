@@ -17,6 +17,8 @@ struct AmityUtilities {
     
     static func showAlert(title: String?, message: String?, viewController: UIViewController, callBackOK:((UIAlertAction) -> Void)?) {
         let alertController = UIAlertController(title: title, message: message, preferredStyle: .alert)
+        alertController.setTitle(font: AmityFontSet.title)
+        alertController.setMessage(font: AmityFontSet.body)
         let okAlert = UIAlertAction(title: AmityLocalizedStringSet.General.ok.localizedString, style: .default, handler: callBackOK)
         alertController.addAction(okAlert)
         viewController.present(alertController, animated: true, completion: nil)

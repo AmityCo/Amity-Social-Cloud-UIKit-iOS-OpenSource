@@ -23,10 +23,11 @@ class CommunityFeatureViewController: UIViewController {
         case homeByDeeplink
         case th
         case id
-        case kh
+        case km
         case ph
         case vn
         case en
+        case my
         
         var text: String {
             switch self {
@@ -48,14 +49,16 @@ class CommunityFeatureViewController: UIViewController {
                 return "th"
             case .id:
                 return "id"
-            case .kh:
-                return "kh"
+            case .km:
+                return "km"
             case .ph:
                 return "ph"
             case .vn:
                 return "vn"
             case .en:
                 return "en"
+            case .my:
+                return "my"
             }
         }
     }
@@ -176,8 +179,8 @@ extension CommunityFeatureViewController: UITableViewDelegate {
         case .id:
             AmityUIKitManager.setLanguage(language: "id")
             openHomePage()
-        case .kh:
-            AmityUIKitManager.setLanguage(language: "kh")
+        case .km:
+            AmityUIKitManager.setLanguage(language: "km")
             openHomePage()
         case .ph:
             AmityUIKitManager.setLanguage(language: "ph")
@@ -187,6 +190,9 @@ extension CommunityFeatureViewController: UITableViewDelegate {
             openHomePage()
         case .en:
             AmityUIKitManager.setLanguage(language: "en")
+            openHomePage()
+        case .my:
+            AmityUIKitManager.setLanguage(language: "my")
             openHomePage()
         }
         

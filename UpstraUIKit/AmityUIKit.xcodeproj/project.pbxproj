@@ -642,6 +642,7 @@
 		FC1DE9AC2769D1D000ECB45F /* LocalizedIndonesia.strings in Resources */ = {isa = PBXBuildFile; fileRef = FC1DE9AB2769D1D000ECB45F /* LocalizedIndonesia.strings */; };
 		FC1DE9AE2769D2AD00ECB45F /* LocalizedCambodia.strings in Resources */ = {isa = PBXBuildFile; fileRef = FC1DE9AD2769D2AD00ECB45F /* LocalizedCambodia.strings */; };
 		FC1DE9B02769D8D800ECB45F /* LocalizedPhilippin.strings in Resources */ = {isa = PBXBuildFile; fileRef = FC1DE9AF2769D8D800ECB45F /* LocalizedPhilippin.strings */; };
+		FC4383202785B35F000482E7 /* LocalizedMyanmar.strings in Resources */ = {isa = PBXBuildFile; fileRef = FC43831F2785B35F000482E7 /* LocalizedMyanmar.strings */; };
 		FC6459C5274E446300D1B491 /* PageType.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC6459C2274E446300D1B491 /* PageType.swift */; };
 		FC6459C6274E446300D1B491 /* DeeplinksType.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC6459C3274E446300D1B491 /* DeeplinksType.swift */; };
 		FC6459C7274E446300D1B491 /* ScreenName.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC6459C4274E446300D1B491 /* ScreenName.swift */; };
@@ -1290,6 +1291,7 @@
 		FC1DE9AB2769D1D000ECB45F /* LocalizedIndonesia.strings */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; path = LocalizedIndonesia.strings; sourceTree = "<group>"; };
 		FC1DE9AD2769D2AD00ECB45F /* LocalizedCambodia.strings */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; path = LocalizedCambodia.strings; sourceTree = "<group>"; };
 		FC1DE9AF2769D8D800ECB45F /* LocalizedPhilippin.strings */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; path = LocalizedPhilippin.strings; sourceTree = "<group>"; };
+		FC43831F2785B35F000482E7 /* LocalizedMyanmar.strings */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; path = LocalizedMyanmar.strings; sourceTree = "<group>"; };
 		FC6459C2274E446300D1B491 /* PageType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PageType.swift; sourceTree = "<group>"; };
 		FC6459C3274E446300D1B491 /* DeeplinksType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeeplinksType.swift; sourceTree = "<group>"; };
 		FC6459C4274E446300D1B491 /* ScreenName.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScreenName.swift; sourceTree = "<group>"; };
@@ -2160,6 +2162,7 @@
 				FC1DE9AB2769D1D000ECB45F /* LocalizedIndonesia.strings */,
 				FC1DE9AD2769D2AD00ECB45F /* LocalizedCambodia.strings */,
 				FC1DE9AF2769D8D800ECB45F /* LocalizedPhilippin.strings */,
+				FC43831F2785B35F000482E7 /* LocalizedMyanmar.strings */,
 			);
 			path = Localization;
 			sourceTree = "<group>";
@@ -4507,6 +4510,7 @@
 				B77D391E24FB4AF2004907CF /* AmityMessageDateView.xib in Resources */,
 				72A974DE25E7595700706EB4 /* AmityPostViewAllCommentsTableViewCell.xib in Resources */,
 				B729BF6F2519163F00FC1A98 /* AmityMyCommunityTableViewCell.xib in Resources */,
+				FC4383202785B35F000482E7 /* LocalizedMyanmar.strings in Resources */,
 				A0B68B6126E7238E007D7B5B /* AmityPostLiveStreamTableViewCell.xib in Resources */,
 				975F14DD2696C4A3009C94C7 /* AmityUserSettingsViewController.xib in Resources */,
 				A0A903AD26BA6E86002949B2 /* PostGallerySegmentedControlCell.xib in Resources */,

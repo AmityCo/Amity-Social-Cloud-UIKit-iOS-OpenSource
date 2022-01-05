@@ -1,10 +1,3 @@
-/* 
-  LocalizedIndia.strings
-  AmityUIKit
-
-  Created by PrInCeInFiNiTy on 15/12/2564 BE.
-  Copyright © 2564 BE Amity. All rights reserved.
-*/
 "general_report" = "Laporan";
 "general_undo_report" = "Batalkan laporan";
 "general_report_user" = "Laporkan pengguna";
@@ -61,8 +54,8 @@
 "unit_comment_plural" = "%@ komentar";
 "unit_member_singular" = "%@ angoota";
 "unit_member_plural" = "%@ anggota";
-"unit_post_singular" = "%@ post";
-"unit_post_plural" = "%@ post";
+"unit_post_singular" = "%@ Unggahan";
+"unit_post_plural" = "%@ Unggahan";
 "unit_share_singular" = "%@ dibagikan";
 "unit_share_plural" = "%@ dibagikan";
 "unit_day_singular" = "%@ hari";
@@ -137,6 +130,7 @@
 "explore_title" = "Jelajahi";
 "community_home_title" = "KOMUNITAS";
 "community_detail_join_button" = "Gabung";
+"community_detail_joined_button" = "Telah bergabung";
 "community_detail_message_button" = "Pesan";
 "community_detail_edit_profile_button" = "Sunting Profil";
 "user_detail_following_count" = "%@ Mengikuti";
@@ -363,4 +357,3 @@
 "error_message_link_not_allowed_detail" = "Tautan Anda tidak terdaftar oleh TrueID, tim berhak untuk membagikan tautan Anda";
 "error_message_default" = "Oops! Terjadi kesalahan. Silakan coba lagi.";
 "error_message_connection_error" = "Oops! Terjadi kesalahan. Silakan coba lagi.";
-"community_detail_joined_button" = "Telah bergabung";
