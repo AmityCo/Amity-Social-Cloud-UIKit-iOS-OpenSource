@@ -31,6 +31,10 @@ extension AmityPostTableViewDelegate {
     }
 }
 
+protocol AmityPostTableViewScroll: AnyObject {
+    func scrollViewDidScroll(_ scrollView: UIScrollView)
+}
+
 protocol AmityPostTableViewDataSource: AnyObject {
     func numberOfSections(in tableView: AmityPostTableView) -> Int
     func tableView(_ tableView: AmityPostTableView, numberOfRowsInSection section: Int) -> Int
@@ -41,8 +45,12 @@ final class AmityPostTableView: UITableView, UITableViewDelegate, UITableViewDat
     
     // Internal Delegate
     weak var postDelegate: AmityPostTableViewDelegate?
+    
     // Internal DataSource
     weak var postDataSource: AmityPostTableViewDataSource?
+    
+    // Internal Scroll
+    weak var postScrollDelegate: AmityPostTableViewScroll?
     
     // Feed Delegate
     weak var feedDelegate: AmityFeedDelegate?
@@ -136,5 +144,10 @@ final class AmityPostTableView: UITableView, UITableViewDelegate, UITableViewDat
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         return postDataSource?.tableView(self, cellForRowAt: indexPath) ?? UITableViewCell()
+    }
+    
+    // MARL: - Scroll
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        postScrollDelegate?.scrollViewDidScroll(scrollView)
     }
 }

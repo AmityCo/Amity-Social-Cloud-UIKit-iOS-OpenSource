@@ -21,6 +21,10 @@ public class AmityPostGalleryViewController: AmityViewController {
     
     private var currentSection: PostGallerySegmentedControlCell.Section?
     
+    private let createPostButton: AmityFloatingButton = AmityFloatingButton()
+    var openByProfileTrueID: Bool = false
+    var isHiddenButtonCreate: Bool = true
+    
     @IBOutlet private weak var collectionView: UICollectionView!
     
     enum C {
@@ -31,6 +35,7 @@ public class AmityPostGalleryViewController: AmityViewController {
     public override func viewDidLoad() {
         super.viewDidLoad()
         setupUI()
+        setupPostButton()
         screenViewModel.delegate = self
         // Start with .image section
         switchTo(.image)
@@ -48,6 +53,20 @@ public class AmityPostGalleryViewController: AmityViewController {
         collectionView.register(PostGalleryEmptyStateCell.self)
         collectionView.dataSource = self
         collectionView.delegate = self
+        
+    }
+    
+    private func setupPostButton() {
+        createPostButton.image = AmityIconSet.iconCreatePost
+        createPostButton.add(to: view, position: .bottomRight)
+        createPostButton.actionHandler = { [weak self] button in
+            guard let strongSelf = self else { return }
+            AmityEventHandler.shared.createPostDidTap(from: strongSelf, postTarget: .myFeed, openByProfileTrueID: self?.openByProfileTrueID ?? false)
+        }
+        
+        createPostButton.isHidden = isHiddenButtonCreate
+
+        
     }
     
     private func presentPhotoViewer(referenceView: UIImageView, media: AmityMedia) {
@@ -120,12 +139,30 @@ public class AmityPostGalleryViewController: AmityViewController {
         screenViewModel.setup(
             postRepository: AmityPostRepository(client: AmityUIKitManagerInternal.shared.client)
         )
-        
         vc.screenViewModel = screenViewModel
         vc.targetType = targetType
         vc.targetId = targetId
         
         return vc
+    }
+    
+    public static func makeByTrueID(
+        targetType: AmityPostTargetType,
+        targetId: String,
+        isButtonCreate: Bool) -> AmityPostGalleryViewController {
+            
+            let vc = AmityPostGalleryViewController(nibName: AmityPostGalleryViewController.identifier, bundle: AmityUIKitManager.bundle)
+            
+            let screenViewModel = AmityPostGalleryScreenViewModel()
+            screenViewModel.setup(
+                postRepository: AmityPostRepository(client: AmityUIKitManagerInternal.shared.client)
+            )
+            vc.isHiddenButtonCreate = isButtonCreate
+            vc.screenViewModel = screenViewModel
+            vc.targetType = targetType
+            vc.targetId = targetId
+            
+            return vc
     }
 
 }
@@ -159,6 +196,16 @@ extension AmityPostGalleryViewController: UICollectionViewDataSource {
     }
     
 }
+
+extension AmityPostGalleryViewController {
+    
+    public func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        AmityEventHandler.shared.galleryDidScroll()
+    }
+    
+}
+
+
 
 extension AmityPostGalleryViewController: UICollectionViewDelegateFlowLayout {
     

@@ -133,6 +133,7 @@ public final class AmityFeedViewController: AmityViewController, AmityRefreshabl
         tableView.register(AmityEmptyStateHeaderFooterView.self, forHeaderFooterViewReuseIdentifier: AmityEmptyStateHeaderFooterView.identifier)
         tableView.postDataSource = self
         tableView.postDelegate = self
+        tableView.postScrollDelegate = self
     }
     
     private func setupRefreshControl() {
@@ -274,6 +275,15 @@ extension AmityFeedViewController: AmityPostTableViewDataSource {
             return singleComponent.getComponentCell(tableView, at: indexPath)
         }
     }
+}
+
+// MARK: - ScrollDelegate
+extension AmityFeedViewController: AmityPostTableViewScroll {
+    
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        AmityEventHandler.shared.timelineFeedDidScroll()
+    }
+    
 }
 
 // MARK: - AmityFeedScreenViewModelDelegate
