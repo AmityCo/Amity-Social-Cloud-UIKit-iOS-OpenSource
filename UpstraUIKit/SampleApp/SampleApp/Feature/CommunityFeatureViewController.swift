@@ -12,8 +12,13 @@ import SwiftUI
 
 class CommunityFeatureViewController: UIViewController {
     
+    private enum UserDefaultsKey {
+        static let userId = "userId"
+        static let userIds = "userIds"
+        static let deviceToken = "deviceToken"
+    }
+    
     enum FeatureList: CaseIterable {
-        
         case home
         case newsfeed
         case globalFeed
@@ -28,6 +33,9 @@ class CommunityFeatureViewController: UIViewController {
         case vn
         case en
         case my
+        case gallery
+        case unregister
+        case client
         
         var text: String {
             switch self {
@@ -59,6 +67,12 @@ class CommunityFeatureViewController: UIViewController {
                 return "en"
             case .my:
                 return "my"
+            case .gallery:
+                return "gallery"
+            case .unregister:
+                return "unregister"
+            case .client:
+                return "client"
             }
         }
     }
@@ -194,6 +208,13 @@ extension CommunityFeatureViewController: UITableViewDelegate {
         case .my:
             AmityUIKitManager.setLanguage(language: "my")
             openHomePage()
+        case .gallery:
+            let galleryVC = AmityPostGalleryViewController.makeByTrueID(targetType: .user, targetId: UserDefaults.standard.value(forKey: UserDefaultsKey.userId) as! String, isHiddenButtonCreate: false)
+            navigationController?.pushViewController(galleryVC, animated: true)
+        case .unregister:
+            AmityUIKitManager.unregisterDevice()
+        case .client:
+            debugPrint(AmityUIKitManager.client)
         }
         
     }

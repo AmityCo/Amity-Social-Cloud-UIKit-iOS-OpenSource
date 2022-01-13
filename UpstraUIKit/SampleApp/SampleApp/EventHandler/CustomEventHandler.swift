@@ -108,5 +108,12 @@ class AmityCustomEventHandler: AmityEventHandler {
         debugPrint("Close")
     }
     
+    override func timelineFeedDidScroll() {
+        debugPrint("Timeline Feed Did Scroll")
+    }
     
+    override func galleryDidScroll() {
+        debugPrint("Gallery Feed Did Scroll")
+    }
+
 }
