@@ -38,6 +38,10 @@ final public class AmityPostPollTableViewCell: UITableViewCell, Nibbable, AmityP
         setupVoteCountLabel()
         setupTableView()
         setupSubmitVoteButton()
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.15) {
+            self.delegate?.loadTableViewPollFinish()
+        }
+
     }
     
     public override func prepareForReuse() {

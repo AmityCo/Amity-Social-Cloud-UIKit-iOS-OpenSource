@@ -413,8 +413,11 @@ extension AmityPostDetailViewController: AmityPostHeaderProtocolHandlerDelegate 
     
 }
 
+
+
 // MARK: - AmityPostProtocolHandlerDelegate
 extension AmityPostDetailViewController: AmityPostProtocolHandlerDelegate {
+    
     func amityPostProtocolHandlerDidTapSubmit(_ cell: AmityPostProtocol) {
         if let cell = cell as? AmityPostPollTableViewCell {
             screenViewModel.action.vote(withPollId: cell.post?.poll?.id, answerIds: cell.selectedAnswerIds)

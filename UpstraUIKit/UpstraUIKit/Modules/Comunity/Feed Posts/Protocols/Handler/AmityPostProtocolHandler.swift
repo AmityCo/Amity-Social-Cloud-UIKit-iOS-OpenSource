@@ -53,6 +53,10 @@ final class AmityPostProtocolHandler {
 
 extension AmityPostProtocolHandler: AmityPostDelegate {
     
+    func loadTableViewPollFinish() {
+        tableView?.reloadData()
+    }
+    
     func didPerformAction(_ cell: AmityPostProtocol, action: AmityPostAction) {
         guard let post = cell.post else { return }
         switch action {

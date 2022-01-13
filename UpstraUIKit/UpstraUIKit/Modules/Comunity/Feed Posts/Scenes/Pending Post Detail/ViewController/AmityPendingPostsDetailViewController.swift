@@ -146,6 +146,10 @@ extension AmityPendingPostsDetailViewController: AmityPostHeaderDelegate {
 
 extension AmityPendingPostsDetailViewController: AmityPostDelegate {
     
+    func loadTableViewPollFinish() {
+        
+    }
+    
     private func presentPhotoViewer(media: AmityMedia, from cell: AmityPostGalleryTableViewCell) {
         let photoViewerVC = AmityPhotoViewerController(referencedView: cell.imageView, media: media)
         photoViewerVC.dataSource = cell

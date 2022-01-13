@@ -105,7 +105,7 @@ final public class AmityPostPollAnswerTableViewCell: UITableViewCell, Nibbable {
         titleLabel.textColor = AmityColorSet.base
         titleLabel.numberOfLines = 0
         titleLabel.lineBreakMode = .byCharWrapping
-        titleLabel.preferredMaxLayoutWidth = votingStackView.bounds.width - 34 // [ImageWidth + Spacing]
+//        titleLabel.preferredMaxLayoutWidth = votingStackView.bounds.width - 34 // [ImageWidth + Spacing]
     }
     
     private func setupStatusView() {
@@ -124,7 +124,7 @@ final public class AmityPostPollAnswerTableViewCell: UITableViewCell, Nibbable {
         resultTitleLabel.font = AmityFontSet.bodyBold
         resultTitleLabel.textColor = AmityColorSet.base
         resultTitleLabel.numberOfLines = 0
-        resultTitleLabel.preferredMaxLayoutWidth = votedStackView.bounds.width
+//        resultTitleLabel.preferredMaxLayoutWidth = votedStackView.bounds.width + 34
     }
     
     private func setupVoteProgressView() {

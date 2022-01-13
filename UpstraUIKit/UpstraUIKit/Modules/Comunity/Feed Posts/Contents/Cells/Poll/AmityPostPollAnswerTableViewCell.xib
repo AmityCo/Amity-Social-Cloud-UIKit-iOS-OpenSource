@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="18122" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="19529" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="18093"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="19519"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -32,10 +32,10 @@
                                 <rect key="frame" x="12" y="12" width="418" height="266"/>
                                 <subviews>
                                     <stackView opaque="NO" contentMode="scaleToFill" alignment="top" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="fbm-68-5kt">
-                                        <rect key="frame" x="0.0" y="0.0" width="418" height="144"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="418" height="116"/>
                                         <subviews>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="fOk-Bm-43z">
-                                                <rect key="frame" x="0.0" y="0.0" width="418" height="85"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="418" height="103.5"/>
                                                 <subviews>
                                                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon_radio_on" translatesAutoresizingMaskIntoConstraints="NO" id="e41-YO-6KR">
                                                         <rect key="frame" x="0.0" y="0.0" width="24" height="24"/>
@@ -45,11 +45,12 @@
                                                         </constraints>
                                                     </imageView>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="i3V-xw-Dtq">
-                                                        <rect key="frame" x="32" y="2" width="386" height="83"/>
+                                                        <rect key="frame" x="32" y="2" width="386" height="101.5"/>
                                                         <string key="text">Label 1
 Label 2
 ...
-Label 4</string>
+Label 4
+Lable 5</string>
                                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                         <nil key="textColor"/>
                                                         <nil key="highlightedColor"/>
@@ -67,27 +68,28 @@ Label 4</string>
                                             </view>
                                         </subviews>
                                     </stackView>
-                                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="4" translatesAutoresizingMaskIntoConstraints="NO" id="yQy-NE-f56">
-                                        <rect key="frame" x="0.0" y="144" width="418" height="122"/>
+                                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="yQy-NE-f56">
+                                        <rect key="frame" x="0.0" y="116" width="418" height="150"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="s2B-V8-vre">
-                                                <rect key="frame" x="0.0" y="0.0" width="418" height="81.5"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="418" height="101.5"/>
                                                 <string key="text">Label 1
 Label 2
 ...
-Label 4</string>
+Label 4
+Lable 5</string>
                                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                 <nil key="textColor"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <progressView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" progress="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="NcF-0m-57x">
-                                                <rect key="frame" x="0.0" y="85.5" width="418" height="12"/>
+                                                <rect key="frame" x="0.0" y="109.5" width="418" height="12"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="12" id="q9c-ih-9mo"/>
                                                 </constraints>
                                             </progressView>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="LZy-ld-GQf">
-                                                <rect key="frame" x="0.0" y="101.5" width="418" height="20.5"/>
+                                                <rect key="frame" x="0.0" y="129.5" width="418" height="20.5"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                 <nil key="textColor"/>
                                                 <nil key="highlightedColor"/>

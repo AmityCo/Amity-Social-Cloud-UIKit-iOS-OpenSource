@@ -18,6 +18,7 @@ public protocol AmityPostProtocol: UITableViewCell, AmityCellIdentifiable {
 
 public protocol AmityPostDelegate: AnyObject {
     func didPerformAction(_ cell: AmityPostProtocol, action: AmityPostAction)
+    func loadTableViewPollFinish()
 }
 
 public enum AmityPostAction {

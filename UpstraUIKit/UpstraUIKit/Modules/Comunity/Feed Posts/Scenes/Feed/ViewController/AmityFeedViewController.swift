@@ -398,6 +398,11 @@ extension AmityFeedViewController: AmityPostHeaderProtocolHandlerDelegate {
 
 // MARK: - AmityPostProtocolHandlerDelegate
 extension AmityFeedViewController: AmityPostProtocolHandlerDelegate {
+    
+    func amityPostProtocalHandlerDidReloadTableView() {
+        
+    }
+    
     func amityPostProtocolHandlerDidTapSubmit(_ cell: AmityPostProtocol) {
         if let cell = cell as? AmityPostPollTableViewCell {
             screenViewModel.action.vote(withPollId: cell.post?.poll?.id, answerIds: cell.selectedAnswerIds)

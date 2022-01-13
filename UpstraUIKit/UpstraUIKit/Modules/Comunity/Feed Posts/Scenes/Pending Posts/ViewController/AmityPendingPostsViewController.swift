@@ -184,6 +184,11 @@ extension AmityPendingPostsViewController: AmityPendingPostsActionCellDelegate {
 }
 
 extension AmityPendingPostsViewController: AmityPostDelegate {
+    
+    public func loadTableViewPollFinish() {
+        
+    }
+    
 
     public func didPerformAction(_ cell: AmityPostProtocol, action: AmityPostAction) {
         switch action {

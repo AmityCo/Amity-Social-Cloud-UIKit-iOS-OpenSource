@@ -28,7 +28,6 @@ public final class AmityPollCreatorViewController: AmityViewController {
     private var postButton: UIBarButtonItem?
     private var screenViewModel: AmityPollCreatorScreenViewModelType?
     
-    var maxAnswers: Int = 10
     
     // MARK: - View's lifecycle
     public override func viewDidLoad() {
@@ -38,7 +37,7 @@ public final class AmityPollCreatorViewController: AmityViewController {
         setupTitle()
         setupPostNavigationBarbutton()
         setupTableView()
-        screenViewModel?.maxAnswers = maxAnswers  
+        screenViewModel?.maxAnswers = AmityPollCreatorConstant.optionMax
     }
     
     public static func make(postTarget: AmityPostTarget) -> AmityPollCreatorViewController {
@@ -201,7 +200,7 @@ extension AmityPollCreatorViewController: UITableViewDataSource {
             let cell: AmityPollCreatorAddOptionTableViewCell = tableView.dequeueReusableCell(for: indexPath)
             cell.delegate = self
             cell.indexPath = indexPath
-            screenViewModel?.answersItem.count == 10 ? cell.updateAddAnswerOptionButton(isMaxAnswer:  true) : cell.updateAddAnswerOptionButton(isMaxAnswer: false)
+            screenViewModel?.answersItem.count == AmityPollCreatorConstant.optionMax ? cell.updateAddAnswerOptionButton(isMaxAnswer:  true) : cell.updateAddAnswerOptionButton(isMaxAnswer: false)
             return cell
         case .multipleSeaction:
             let cell: AmityPollCreatorMultipleSelectionTableViewCell = tableView.dequeueReusableCell(for: indexPath)
