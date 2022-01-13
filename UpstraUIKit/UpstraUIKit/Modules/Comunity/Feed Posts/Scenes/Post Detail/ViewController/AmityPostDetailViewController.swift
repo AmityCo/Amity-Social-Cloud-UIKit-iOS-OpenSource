@@ -107,6 +107,7 @@ open class AmityPostDetailViewController: AmityViewController {
     // MARK: Setup views
     private func setupView() {
         view.backgroundColor = AmityColorSet.backgroundColor
+        tableView.isHidden = true
     }
     
     private func setupNavigationBar() {
@@ -299,6 +300,11 @@ extension AmityPostDetailViewController: AmityPostDetailScreenViewModelDelegate 
         if let post = screenViewModel.post {
             commentComposeBarView.configure(with: post)
         }
+        
+        if viewModel.post?.dataTypeInternal != .poll {
+            tableView.isHidden = false
+        }
+        
     }
     
     func screenViewModelDidUpdatePost(_ viewModel: AmityPostDetailScreenViewModelType) {
