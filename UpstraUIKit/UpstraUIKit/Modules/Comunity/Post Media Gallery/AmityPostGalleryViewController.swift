@@ -206,7 +206,7 @@ extension AmityPostGalleryViewController: UICollectionViewDataSource {
 extension AmityPostGalleryViewController {
     
     public func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        AmityEventHandler.shared.galleryDidScroll()
+        AmityEventHandler.shared.galleryDidScroll(scrollView)
     }
     
 }

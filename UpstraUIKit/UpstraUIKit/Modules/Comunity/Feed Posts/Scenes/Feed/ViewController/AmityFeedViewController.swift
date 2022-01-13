@@ -281,7 +281,7 @@ extension AmityFeedViewController: AmityPostTableViewDataSource {
 extension AmityFeedViewController: AmityPostTableViewScroll {
     
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        AmityEventHandler.shared.timelineFeedDidScroll()
+        AmityEventHandler.shared.timelineFeedDidScroll(scrollView)
     }
     
 }
