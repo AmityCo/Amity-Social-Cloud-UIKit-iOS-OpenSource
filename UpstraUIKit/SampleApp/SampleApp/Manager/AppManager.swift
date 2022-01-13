@@ -30,14 +30,12 @@ class AppManager {
         // setup api key
 //        AmityUIKitManager.setup(apiKey: "b0eceb5e68ddf36545308f4e000b12dcd90985e2bf3d6a2e")
 //        AmityUIKitManager.setup(apiKey: "b0ecba5c3a8af830443f8a1a515e1edbd50088e3b330667d")
+        
+        
         let endpointConfig = EndpointManager.shared.currentEndpointConfig
                 AmityUIKitManager.setup(apiKey: endpointConfig.apiKey,
                                         httpUrl: endpointConfig.httpEndpoint,
                                         socketUrl: endpointConfig.socketEndpoint)
-
-      
-        
-        
         
         
         // setup event handlers and page settings
@@ -58,6 +56,13 @@ class AppManager {
     }
     
     func register(withUserId userId: String) {
+        
+        if AmityUIKitManager.isClient {
+            debugPrint("Have")
+        } else {
+            debugPrint("Don't Have")
+        }
+        
         AmityUIKitManager.registerDevice(withUserId: userId, displayName: nil) { success, error in
             print("[Sample App] register device with userId '\(userId)' \(success ? "successfully" : "failed")")
             if let error = error {

@@ -22,8 +22,10 @@ public class AmityPostGalleryViewController: AmityViewController {
     private var currentSection: PostGallerySegmentedControlCell.Section?
     
     private let createPostButton: AmityFloatingButton = AmityFloatingButton()
-    var openByProfileTrueID: Bool = false
     var isHiddenButtonCreate: Bool = true
+    
+    @IBOutlet weak var marginRight: NSLayoutConstraint!
+    @IBOutlet weak var marginLeft: NSLayoutConstraint!
     
     @IBOutlet private weak var collectionView: UICollectionView!
     
@@ -61,11 +63,16 @@ public class AmityPostGalleryViewController: AmityViewController {
         createPostButton.add(to: view, position: .bottomRight)
         createPostButton.actionHandler = { [weak self] button in
             guard let strongSelf = self else { return }
-            AmityEventHandler.shared.createPostDidTap(from: strongSelf, postTarget: .myFeed, openByProfileTrueID: self?.openByProfileTrueID ?? false)
+            AmityEventHandler.shared.createPostDidTap(from: strongSelf, postTarget: .myFeed, openByProfileTrueID: true)
+        }
+        
+        if !isHiddenButtonCreate {
+            marginLeft.constant = 0
+            marginRight.constant = 0
+            self.view.layoutIfNeeded()
         }
         
         createPostButton.isHidden = isHiddenButtonCreate
-
         
     }
     
@@ -149,7 +156,7 @@ public class AmityPostGalleryViewController: AmityViewController {
     public static func makeByTrueID(
         targetType: AmityPostTargetType,
         targetId: String,
-        isButtonCreate: Bool) -> AmityPostGalleryViewController {
+        isHiddenButtonCreate: Bool) -> AmityPostGalleryViewController {
             
             let vc = AmityPostGalleryViewController(nibName: AmityPostGalleryViewController.identifier, bundle: AmityUIKitManager.bundle)
             
@@ -157,11 +164,10 @@ public class AmityPostGalleryViewController: AmityViewController {
             screenViewModel.setup(
                 postRepository: AmityPostRepository(client: AmityUIKitManagerInternal.shared.client)
             )
-            vc.isHiddenButtonCreate = isButtonCreate
             vc.screenViewModel = screenViewModel
             vc.targetType = targetType
             vc.targetId = targetId
-            
+            vc.isHiddenButtonCreate = isHiddenButtonCreate
             return vc
     }
 
