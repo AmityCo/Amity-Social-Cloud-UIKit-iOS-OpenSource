@@ -363,3 +363,4 @@
 "error_message_link_not_allowed_detail" = "Your link is not authorized by TrueID, the team reserves the right to share your link.";
 "error_message_default" = "Oops, something went wrong. Please try again.";
 "error_message_connection_error" = "Oops, something went wrong. Please try again.";
+"community_detail_joined_button" = "Joined";

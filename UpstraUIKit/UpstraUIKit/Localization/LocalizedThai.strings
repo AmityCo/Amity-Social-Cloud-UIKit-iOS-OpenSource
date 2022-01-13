@@ -43,8 +43,8 @@
 "general_video" = "วิดีโอ";
 "general_photo" = "รูปภาพ";
 "general_attachment" = "เอกสารแนบ";
-"general_comment" = "ถูกใจ";
-"general_share" = "ความคิดเห็น";
+"general_comment" = "ความคิดเห็น";
+"general_share" = "แชร์";
 "general_search" = "ค้นหา";
 "title_placeholder" = "หัวข้อ";
 "description_placeholder" = "คำอธิบาย";
@@ -182,7 +182,7 @@
 "post_detail_comment_edited" = "%@ • แก้ไขแล้ว";
 "post_to_title" = "โพสต์ไปยัง";
 "post_to_post_as_community_title" = "โพสต์ด้วยบัญชีคอมมูนิตี้";
-"post_to_post_as_community_message" = "ตัวเลือกนี้ช่วยให้คุณสามารถโพสต์ในนามของบัญชีคอมมูนิตี้";
+"post_to_post_as_community_message" = "ตัวเลือกนี้ช่วยให้คุณสามารถโพสต์ในนามของ บัญชีคอมมูนิตี้";
 "recommended_community_title" = "คอมมูนิตี้แนะนำสำหรับคุณ";
 "trending_community_title" = "คอมมูนิตี้ที่น่าสนใจในวันนี้";
 "trending_community_members" = "• %@ สมาชิก";
@@ -356,3 +356,4 @@
 "error_message_link_not_allowed_detail" = "ลิงค์ของคุณไม่ได้รับอนุญาตจาก TrueID ทีมงานขอสงวนสิทธิ์ในการแชร์ลิงค์ของคุณ";
 "error_message_default" = "เกิดข้อผิดพลาดจากระบบ กรุณาลองใหม่อีกครั้ง";
 "error_message_connection_error" = "เกิดข้อผิดพลาดจากระบบ กรุณาลองใหม่อีกครั้ง";
+"community_detail_joined_button" = "เข้าร่วมแล้ว";

@@ -79,6 +79,8 @@ final class AmityMyCommunityTableViewCell: UITableViewCell, Nibbable {
         joinButton.setTitle("", for: .normal)
         joinButton.layer.cornerRadius = joinButton.frame.height / 2
         joinButton.layer.masksToBounds = true
+        joinButton.sizeToFit()
+        joinButton.titleLabel?.font = AmityFontSet.bodyBold
     }
     
     func display(with community: AmityCommunityModel) {
@@ -88,7 +90,7 @@ final class AmityMyCommunityTableViewCell: UITableViewCell, Nibbable {
         badgeImageView.isHidden = !community.isOfficial
         privateBadgeImageView.isHidden = community.isPublic
         
-        let joinButtonTitle = community.isJoined ? "Joined" : "Join"
+        let joinButtonTitle = community.isJoined ? AmityLocalizedStringSet.communityDetailJoinedButton.localizedString : AmityLocalizedStringSet.communityDetailJoinButton.localizedString
 
         if community.isJoined {
             joinButton.setTitle(joinButtonTitle, for: .normal)

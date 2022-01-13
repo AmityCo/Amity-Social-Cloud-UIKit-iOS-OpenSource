@@ -159,6 +159,8 @@ open class AmityPostDetailViewController: AmityViewController {
             let deleteOption = TextItemOption(title: AmityLocalizedStringSet.PostDetail.deletePost.localizedString) { [weak self] in
                 // delete option
                 let alert = UIAlertController(title: AmityLocalizedStringSet.PostDetail.deletePostTitle.localizedString, message: AmityLocalizedStringSet.PostDetail.deletePostMessage.localizedString, preferredStyle: .alert)
+                alert.setTitle(font: AmityFontSet.title)
+                alert.setMessage(font: AmityFontSet.body)
                 alert.addAction(UIAlertAction(title: AmityLocalizedStringSet.General.cancel.localizedString, style: .cancel, handler: nil))
                 alert.addAction(UIAlertAction(title: AmityLocalizedStringSet.General.delete.localizedString, style: .destructive, handler: { [weak self] _ in
                     self?.screenViewModel.deletePost()
@@ -476,6 +478,8 @@ extension AmityPostDetailViewController: AmityPostDetailCompostViewDelegate {
             let alertTitle = (self?.parentComment == nil) ? AmityLocalizedStringSet.PostDetail.discardCommentTitle.localizedString : AmityLocalizedStringSet.PostDetail.discardReplyTitle.localizedString
             let alertMessage = (self?.parentComment == nil) ? AmityLocalizedStringSet.PostDetail.discardCommentMessage.localizedString : AmityLocalizedStringSet.PostDetail.discardReplyMessage.localizedString
             let alertController = UIAlertController(title: alertTitle, message: alertMessage, preferredStyle: .alert)
+            alertController.setTitle(font: AmityFontSet.title)
+            alertController.setMessage(font: AmityFontSet.body)
             let cancelAction = UIAlertAction(title: AmityLocalizedStringSet.General.cancel.localizedString, style: .cancel, handler: nil)
             let discardAction = UIAlertAction(title: AmityLocalizedStringSet.General.discard.localizedString, style: .destructive) { _ in
                 editTextViewController?.dismiss(animated: true, completion: nil)

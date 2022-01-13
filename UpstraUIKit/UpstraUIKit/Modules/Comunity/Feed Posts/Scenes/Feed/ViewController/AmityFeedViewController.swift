@@ -133,6 +133,7 @@ public final class AmityFeedViewController: AmityViewController, AmityRefreshabl
         tableView.register(AmityEmptyStateHeaderFooterView.self, forHeaderFooterViewReuseIdentifier: AmityEmptyStateHeaderFooterView.identifier)
         tableView.postDataSource = self
         tableView.postDelegate = self
+        tableView.postScrollDelegate = self
     }
     
     private func setupRefreshControl() {
@@ -274,6 +275,15 @@ extension AmityFeedViewController: AmityPostTableViewDataSource {
             return singleComponent.getComponentCell(tableView, at: indexPath)
         }
     }
+}
+
+// MARK: - ScrollDelegate
+extension AmityFeedViewController: AmityPostTableViewScroll {
+    
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        AmityEventHandler.shared.timelineFeedDidScroll(scrollView)
+    }
+    
 }
 
 // MARK: - AmityFeedScreenViewModelDelegate
@@ -483,6 +493,8 @@ extension AmityFeedViewController: AmityPostPreviewCommentDelegate {
         
         let deleteOption = TextItemOption(title: AmityLocalizedStringSet.PostDetail.deleteComment.localizedString) { [weak self] in
             let alert = UIAlertController(title: AmityLocalizedStringSet.PostDetail.deleteCommentTitle.localizedString, message: AmityLocalizedStringSet.PostDetail.deleteCommentMessage.localizedString, preferredStyle: .alert)
+            alert.setTitle(font: AmityFontSet.title)
+            alert.setMessage(font: AmityFontSet.body)
             alert.addAction(UIAlertAction(title: AmityLocalizedStringSet.General.cancel.localizedString, style: .cancel, handler: nil))
             alert.addAction(UIAlertAction(title: AmityLocalizedStringSet.General.delete.localizedString, style: .destructive) { [weak self] _ in
                 self?.screenViewModel.action.delete(withComment: comment)

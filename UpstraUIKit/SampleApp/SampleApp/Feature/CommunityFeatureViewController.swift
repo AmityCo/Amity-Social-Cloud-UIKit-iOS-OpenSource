@@ -12,8 +12,13 @@ import SwiftUI
 
 class CommunityFeatureViewController: UIViewController {
     
+    private enum UserDefaultsKey {
+        static let userId = "userId"
+        static let userIds = "userIds"
+        static let deviceToken = "deviceToken"
+    }
+    
     enum FeatureList: CaseIterable {
-        
         case home
         case newsfeed
         case globalFeed
@@ -21,6 +26,16 @@ class CommunityFeatureViewController: UIViewController {
         case PostCreator
         case myFeed
         case homeByDeeplink
+        case th
+        case id
+        case km
+        case ph
+        case vn
+        case en
+        case my
+        case gallery
+        case unregister
+        case client
         
         var text: String {
             switch self {
@@ -38,6 +53,26 @@ class CommunityFeatureViewController: UIViewController {
                 return "MyFeed"
             case .homeByDeeplink:
                 return "Home by deep link"
+            case .th:
+                return "th"
+            case .id:
+                return "id"
+            case .km:
+                return "km"
+            case .ph:
+                return "ph"
+            case .vn:
+                return "vn"
+            case .en:
+                return "en"
+            case .my:
+                return "my"
+            case .gallery:
+                return "gallery"
+            case .unregister:
+                return "unregister"
+            case .client:
+                return "client"
             }
         }
     }
@@ -46,9 +81,6 @@ class CommunityFeatureViewController: UIViewController {
     var birthday: BirthdayPostComponent?
     override func viewDidLoad() {
         super.viewDidLoad()
-
-
-        
         title = "Community"
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: "CellID")
         tableView.delegate = self
@@ -155,8 +187,48 @@ extension CommunityFeatureViewController: UITableViewDelegate {
 //            let home = AmityCommunityHomePageViewController.make(deeplinksType: .category(id: "dca95af263fbf131ff02ec6dc734d7e7"), fromDeeplinks: true)
 //            navigationController?.pushViewController(home, animated: true)
         
+        case .th:
+            AmityUIKitManager.setLanguage(language: "th")
+            openHomePage()
+        case .id:
+            AmityUIKitManager.setLanguage(language: "id")
+            openHomePage()
+        case .km:
+            AmityUIKitManager.setLanguage(language: "km")
+            openHomePage()
+        case .ph:
+            AmityUIKitManager.setLanguage(language: "ph")
+            openHomePage()
+        case .vn:
+            AmityUIKitManager.setLanguage(language: "vn")
+            openHomePage()
+        case .en:
+            AmityUIKitManager.setLanguage(language: "en")
+            openHomePage()
+        case .my:
+            AmityUIKitManager.setLanguage(language: "my")
+            openHomePage()
+        case .gallery:
+            let galleryVC = AmityPostGalleryViewController.makeByTrueID(targetType: .user, targetId: UserDefaults.standard.value(forKey: UserDefaultsKey.userId) as! String, isHiddenButtonCreate: false)
+            navigationController?.pushViewController(galleryVC, animated: true)
+        case .unregister:
+            AmityUIKitManager.unregisterDevice()
+        case .client:
+            debugPrint(AmityUIKitManager.client)
         }
         
+    }
+    
+    private func openHomePage() {
+        let homepage = AmityCommunityHomePageViewController.make()
+        let navController = UINavigationController(rootViewController: homepage)
+        navController.modalPresentationStyle = .fullScreen
+        navigationController?.present(navController, animated: true, completion: nil)
+        AmityFeedUISettings.shared.register(UINib(nibName: "AmityPostBirthdayTableViewCell", bundle: nil), forCellReuseIdentifier: "AmityPostBirthdayTableViewCell")
+        AmityFeedUISettings.shared.register(UINib(nibName: "AmityPostThumbsupTableViewCell", bundle: nil), forCellReuseIdentifier: "AmityPostThumbsupTableViewCell")
+        AmityFeedUISettings.shared.register(UINib(nibName: "AmityPostNewJoinerTableViewCell", bundle: nil), forCellReuseIdentifier: "AmityPostNewJoinerTableViewCell")
+        AmityFeedUISettings.shared.delegate = self
+        AmityFeedUISettings.shared.dataSource = self
     }
     
 }

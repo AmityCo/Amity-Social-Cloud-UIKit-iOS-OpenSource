@@ -245,6 +245,10 @@ open class AmityEventHandler {
     /// TrueID Detect Close view
     open func closeAmityCommunityViewController() {}
     
+    /// TrueID Scroll Profile Detect
+    open func timelineFeedDidScroll(_ scrollView: UIScrollView) {}
+    open func galleryDidScroll(_ scrollView: UIScrollView) {}
+    
     //MARK: - AnalyticNCCEvent
     open func communityTopbarSearchTracking() {}
     open func communityTopbarProfileTracking() {}

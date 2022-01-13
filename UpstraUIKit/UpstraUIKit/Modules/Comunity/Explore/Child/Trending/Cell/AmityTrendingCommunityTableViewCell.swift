@@ -55,8 +55,8 @@ final class AmityTrendingCommunityTableViewCell: UITableViewCell, Nibbable {
         iconImageView.isHidden = !model.isOfficial
         iconImageViewWidthConstraint.constant = !model.isOfficial ? 0 : 24
         
-        let joinButtonTitle = model.isJoined ? "Joined" : "Join"
-
+        let joinButtonTitle = model.isJoined ? AmityLocalizedStringSet.communityDetailJoinedButton.localizedString : AmityLocalizedStringSet.communityDetailJoinButton.localizedString
+        
         if model.isJoined {
             joinButton.setTitle(joinButtonTitle, for: .normal)
             joinButton.setTitleColor(AmityColorSet.primary, for: .normal)
@@ -140,6 +140,8 @@ private extension AmityTrendingCommunityTableViewCell {
         joinButton.setTitle("", for: .normal)
         joinButton.layer.cornerRadius = joinButton.frame.height / 2
         joinButton.layer.masksToBounds = true
+        joinButton.sizeToFit()
+        joinButton.titleLabel?.font = AmityFontSet.captionBold
     }
 }
 

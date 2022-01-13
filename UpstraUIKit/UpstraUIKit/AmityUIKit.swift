@@ -115,6 +115,11 @@ public final class AmityUIKitManager {
     public static func setLanguage(language: String) {
         AmityUIKitManagerInternal.shared.setLanguage(language: language)
     }
+    
+    public static var isClient: Bool {
+        AmityUIKitManagerInternal.shared.isClientRegister
+    }
+   
 }
 
 final class AmityUIKitManagerInternal: NSObject {
@@ -138,6 +143,14 @@ final class AmityUIKitManagerInternal: NSObject {
             fatalError("Something went wrong. Please ensure `AmityUIKitManager.setup(:_)` get called before accessing client.")
         }
         return client
+    }
+    
+    var isClientRegister: Bool {
+        if _client == nil {
+            return false
+        } else {
+            return true
+        }
     }
     
     var amityLanguage: String { return language }

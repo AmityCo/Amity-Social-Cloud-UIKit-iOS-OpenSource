@@ -7,7 +7,7 @@
 //
 
 import UIKit
-
+import Foundation
 /**
  * Reusable alert controller
  */
@@ -54,7 +54,42 @@ struct AmityAlertController {
      */
     static func present(title: String?, message: String?, actions: [Action], from viewController: UIViewController, completion: (() -> Void)? = nil) {
         let alertController = UIAlertController(title: title, message: message, preferredStyle: .alert)
+        alertController.setTitle(font: AmityFontSet.title)
+        alertController.setMessage(font: AmityFontSet.body)
         actions.forEach { alertController.addAction($0.alertAction) }
         viewController.present(alertController, animated: true, completion: completion)
+    }
+}
+
+extension UIAlertController {
+    
+    //Set title font and title color
+    func setTitle(font: UIFont?) {
+        guard let title = self.title else { return }
+        let attributeString = NSMutableAttributedString(string: title)
+        if let titleFont = font {
+            let range = (title as NSString).range(of: title)
+            attributeString.addAttributes([NSAttributedString.Key.font : titleFont],
+                                          range: range)
+        }
+        self.setValue(attributeString, forKey: "attributedTitle")
+    }
+    
+    //Set message font and message color
+    func setMessage(font: UIFont?) {
+        guard let title = self.message else {
+            return
+        }
+        let attributedString = NSMutableAttributedString(string: title)
+        if let titleFont = font {
+            let range = (title as NSString).range(of: title)
+            attributedString.addAttributes([NSAttributedString.Key.font : titleFont], range: range)
+        }
+        self.setValue(attributedString, forKey: "attributedMessage")
+    }
+    
+    //Set tint color of UIAlertController
+    func setTint(color: UIColor) {
+        self.view.tintColor = color
     }
 }
