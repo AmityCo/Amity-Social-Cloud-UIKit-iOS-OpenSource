@@ -620,6 +620,8 @@ extension AmityPostDetailViewController: AmityCommentTableViewCellDelegate {
                     let alertTitle = comment.isParent ? AmityLocalizedStringSet.PostDetail.discardCommentTitle.localizedString : AmityLocalizedStringSet.PostDetail.discardReplyTitle.localizedString
                     let alertMessage = comment.isParent ? AmityLocalizedStringSet.PostDetail.discardEditedCommentMessage.localizedString : AmityLocalizedStringSet.PostDetail.discardEditedReplyMessage.localizedString
                     let alertController = UIAlertController(title: alertTitle, message: alertMessage, preferredStyle: .alert)
+                    alertController.setTitle(font: AmityFontSet.title)
+                    alertController.setMessage(font: AmityFontSet.body)
                     let cancelAction = UIAlertAction(title: AmityLocalizedStringSet.General.cancel.localizedString, style: .cancel, handler: nil)
                     let discardAction = UIAlertAction(title: AmityLocalizedStringSet.General.discard.localizedString, style: .destructive) { _ in
                         editTextViewController?.dismiss(animated: true, completion: nil)
@@ -636,6 +638,8 @@ extension AmityPostDetailViewController: AmityCommentTableViewCellDelegate {
                 let alertTitle = comment.isParent ? AmityLocalizedStringSet.PostDetail.deleteCommentTitle.localizedString : AmityLocalizedStringSet.PostDetail.deleteReplyTitle.localizedString
                 let alertMessage = comment.isParent ? AmityLocalizedStringSet.PostDetail.deleteCommentMessage.localizedString : AmityLocalizedStringSet.PostDetail.deleteReplyMessage.localizedString
                 let alert = UIAlertController(title: alertTitle, message: alertMessage, preferredStyle: .alert)
+                alert.setTitle(font: AmityFontSet.title)
+                alert.setMessage(font: AmityFontSet.body)
                 alert.addAction(UIAlertAction(title: AmityLocalizedStringSet.General.cancel.localizedString, style: .cancel, handler: nil))
                 alert.addAction(UIAlertAction(title: AmityLocalizedStringSet.General.delete.localizedString, style: .destructive) { [weak self] _ in
                     self?.screenViewModel.action.deleteComment(with: comment)

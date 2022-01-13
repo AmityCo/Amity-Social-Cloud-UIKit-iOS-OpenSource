@@ -186,7 +186,6 @@ open class AmityEventHandler {
         }
         
     }
-    
     /// This function will triggered when the user choose to "create live stream post".
     ///
     /// - Parameters:
