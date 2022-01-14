@@ -55,7 +55,15 @@ final public class AmityPostPollAnswerTableViewCell: UITableViewCell, Nibbable {
         statusView.isHidden = !answer.isVotedByUser
         
         if poll.isClosed || poll.isVoted {
-            voteCountLabel.text = "\(answer.voteCount.formatUsingAbbrevation()) \(AmityLocalizedStringSet.Poll.Option.voteCountTitle.localizedString)"
+            
+            var s = ""
+            if poll.voteCount > 1 && (AmityUIKitManagerInternal.shared.amityLanguage == "en" || AmityUIKitManagerInternal.shared.amityLanguage == "ph") {
+                s = "s"
+            } else {
+                s = ""
+            }
+            
+            voteCountLabel.text = "\(answer.voteCount.formatUsingAbbrevation()) \(AmityLocalizedStringSet.Poll.Option.voteCountTitle.localizedString)\(s)"
             
             let voteProgress = poll.voteCount > 0 ? Double(answer.voteCount) / Double(poll.voteCount) : 0
             

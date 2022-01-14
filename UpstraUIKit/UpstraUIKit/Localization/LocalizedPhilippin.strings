@@ -339,7 +339,7 @@
 "poll_alert_delete_title" = "Delete this poll";
 "poll_alert_delete_desc" = "This poll will be permanently deleted. You’ll no longer to see and find this poll";
 "poll_submit_vote_title" = "Submit vote";
-"poll_vote_count_title" = "votes";
+"poll_vote_count_title" = "vote";
 "poll_final_result" = "Final results";
 "poll_open_for_voting" = "Open for voting";
 "poll_ends_in_days" = "Poll ends in %@";
