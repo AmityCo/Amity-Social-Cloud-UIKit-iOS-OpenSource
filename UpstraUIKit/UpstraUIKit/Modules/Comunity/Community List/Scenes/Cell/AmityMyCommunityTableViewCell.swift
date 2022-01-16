@@ -15,7 +15,7 @@ protocol AmityMyCommunityTableViewCellDelegate: AnyObject {
 
 final class AmityMyCommunityTableViewCell: UITableViewCell, Nibbable {
     
-    static let defaultHeight: CGFloat = 56.0
+//    static let defaultHeight: CGFloat = 56.0
     
     weak var delegate: AmityMyCommunityTableViewCellDelegate?
     
@@ -28,6 +28,8 @@ final class AmityMyCommunityTableViewCell: UITableViewCell, Nibbable {
             joinButton.addTarget(self, action: #selector(didJoinButton(_:)), for: .touchDown)
         }
     }
+    @IBOutlet weak var lblDescription: UILabel!
+    @IBOutlet weak var lblMember: UILabel!
     
     /* Closure Properties */
     var didTappedJoinButton: ((AmityCommunityModel) -> Void)?
@@ -47,7 +49,8 @@ final class AmityMyCommunityTableViewCell: UITableViewCell, Nibbable {
         contentView.backgroundColor = .clear
         
         setupAvatarView()
-        
+        setupDescription()
+        setupMember()
         displayNameLabel.font = AmityFontSet.bodyBold
         displayNameLabel.textColor = AmityColorSet.base
         displayNameLabel.text = ""
@@ -55,6 +58,18 @@ final class AmityMyCommunityTableViewCell: UITableViewCell, Nibbable {
         privateBadgeImageView.tintColor = AmityColorSet.base
         badgeImageView.image = AmityIconSet.iconBadgeCheckmark
         badgeImageView.tintColor = AmityColorSet.highlight
+    }
+    
+    private func setupDescription() {
+        lblDescription.font = AmityFontSet.body
+        lblDescription.textColor = AmityColorSet.base
+        lblDescription.text = ""
+    }
+    
+    private func setupMember() {
+        lblMember.text = ""
+        lblMember.font = AmityFontSet.caption
+        lblMember.textColor = AmityColorSet.base.blend(.shade1)
     }
     
     func setupAvatarView() {
@@ -89,6 +104,9 @@ final class AmityMyCommunityTableViewCell: UITableViewCell, Nibbable {
         displayNameLabel.text = community.displayName
         badgeImageView.isHidden = !community.isOfficial
         privateBadgeImageView.isHidden = community.isPublic
+        
+        lblDescription.text = community.description
+        lblMember.text = String.localizedStringWithFormat(("%@ \(AmityLocalizedStringSet.CommunitySettings.itemTitleMembers.localizedString)"), community.membersCount.formatUsingAbbrevation())
         
         let joinButtonTitle = community.isJoined ? AmityLocalizedStringSet.communityDetailJoinedButton.localizedString : AmityLocalizedStringSet.communityDetailJoinButton.localizedString
 

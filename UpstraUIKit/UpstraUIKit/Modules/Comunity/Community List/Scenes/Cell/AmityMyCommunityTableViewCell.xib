@@ -16,31 +16,31 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
-        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" rowHeight="44" id="KGk-i7-Jjw" customClass="AmityMyCommunityTableViewCell" customModule="AmityUIKit" customModuleProvider="target">
-            <rect key="frame" x="0.0" y="0.0" width="414" height="56"/>
+        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" rowHeight="83" id="KGk-i7-Jjw" customClass="AmityMyCommunityTableViewCell" customModule="AmityUIKit" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="414" height="95"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
-                <rect key="frame" x="0.0" y="0.0" width="414" height="56"/>
+                <rect key="frame" x="0.0" y="0.0" width="414" height="95"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <stackView opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" alignment="center" spacing="2" translatesAutoresizingMaskIntoConstraints="NO" id="63W-um-RYw">
-                        <rect key="frame" x="64" y="8" width="76" height="40"/>
+                        <rect key="frame" x="64" y="10" width="76" height="24"/>
                         <subviews>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Rup-PC-Vgm" userLabel="Private Badge Image View">
-                                <rect key="frame" x="0.0" y="11" width="18" height="18"/>
+                                <rect key="frame" x="0.0" y="3" width="18" height="18"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="18" id="59t-v1-CLS"/>
                                     <constraint firstAttribute="width" constant="18" id="UMl-y1-XFJ"/>
                                 </constraints>
                             </imageView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="NRl-qN-ZUh">
-                                <rect key="frame" x="20" y="10" width="36" height="20.5"/>
+                                <rect key="frame" x="20" y="2" width="36" height="20.5"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Zm6-Z6-L8B" userLabel="Badge Image View">
-                                <rect key="frame" x="58" y="11" width="18" height="18"/>
+                                <rect key="frame" x="58" y="3" width="18" height="18"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="18" id="KDK-9f-U0z"/>
                                     <constraint firstAttribute="height" constant="18" id="zQ3-rs-TWz"/>
@@ -49,7 +49,7 @@
                         </subviews>
                     </stackView>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ZPb-R0-xVy" customClass="AmityAvatarView" customModule="AmityUIKit" customModuleProvider="target">
-                        <rect key="frame" x="16" y="8" width="40" height="40"/>
+                        <rect key="frame" x="16" y="27.5" width="40" height="40"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
                             <constraint firstAttribute="width" constant="40" id="k3i-9Q-nIa"/>
@@ -57,7 +57,7 @@
                         </constraints>
                     </view>
                     <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="249" verticalHuggingPriority="249" horizontalCompressionResistancePriority="749" verticalCompressionResistancePriority="749" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="cs3-HS-3u2">
-                        <rect key="frame" x="313" y="13" width="85" height="30"/>
+                        <rect key="frame" x="313" y="32.5" width="85" height="30"/>
                         <constraints>
                             <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="85" id="5ru-oH-pua"/>
                             <constraint firstAttribute="height" constant="30" id="gzv-Gh-kMo"/>
@@ -65,17 +65,34 @@
                         <fontDescription key="fontDescription" name="SukhumvitTadmai-Bold" family="Sukhumvit Tadmai" pointSize="16"/>
                         <state key="normal" title="Button"/>
                     </button>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3vg-aK-rjX">
+                        <rect key="frame" x="64" y="39" width="41.5" height="20.5"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                        <nil key="textColor"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="u6G-5l-hEn">
+                        <rect key="frame" x="64" y="64.5" width="41.5" height="20.5"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                        <nil key="textColor"/>
+                        <nil key="highlightedColor"/>
+                    </label>
                 </subviews>
                 <constraints>
                     <constraint firstItem="cs3-HS-3u2" firstAttribute="centerY" secondItem="ZPb-R0-xVy" secondAttribute="centerY" id="3oq-l1-ujn"/>
-                    <constraint firstItem="63W-um-RYw" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="8" id="6BR-QV-dHn"/>
-                    <constraint firstAttribute="bottom" secondItem="ZPb-R0-xVy" secondAttribute="bottom" constant="8" id="Bnl-CM-yRc"/>
                     <constraint firstItem="cs3-HS-3u2" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="63W-um-RYw" secondAttribute="trailing" id="KIl-5s-lLU"/>
+                    <constraint firstItem="3vg-aK-rjX" firstAttribute="leading" secondItem="63W-um-RYw" secondAttribute="leading" id="Ovg-lZ-Shj"/>
+                    <constraint firstItem="3vg-aK-rjX" firstAttribute="top" secondItem="63W-um-RYw" secondAttribute="bottom" constant="5" id="TT3-q2-Dlc"/>
+                    <constraint firstItem="cs3-HS-3u2" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="3vg-aK-rjX" secondAttribute="trailing" constant="10" id="WyI-1M-yod"/>
                     <constraint firstItem="63W-um-RYw" firstAttribute="leading" secondItem="ZPb-R0-xVy" secondAttribute="trailing" constant="8" id="Y6U-xP-0tQ"/>
                     <constraint firstAttribute="trailing" secondItem="cs3-HS-3u2" secondAttribute="trailing" constant="16" id="bbJ-Wp-HEB"/>
+                    <constraint firstItem="u6G-5l-hEn" firstAttribute="top" secondItem="3vg-aK-rjX" secondAttribute="bottom" constant="5" id="e0s-aB-as6"/>
+                    <constraint firstItem="ZPb-R0-xVy" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="eD2-DI-kQ8"/>
                     <constraint firstItem="ZPb-R0-xVy" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="16" id="etg-Ub-Diu"/>
-                    <constraint firstItem="ZPb-R0-xVy" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="8" id="f23-Eb-p8I"/>
-                    <constraint firstAttribute="bottom" secondItem="63W-um-RYw" secondAttribute="bottom" constant="8" id="fJN-pU-BHa"/>
+                    <constraint firstItem="u6G-5l-hEn" firstAttribute="leading" secondItem="3vg-aK-rjX" secondAttribute="leading" id="kLz-hp-Uff"/>
+                    <constraint firstAttribute="bottom" secondItem="u6G-5l-hEn" secondAttribute="bottom" constant="10" id="unf-2G-pYa"/>
+                    <constraint firstItem="cs3-HS-3u2" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="u6G-5l-hEn" secondAttribute="trailing" constant="10" id="vdN-ih-8Z2"/>
+                    <constraint firstItem="63W-um-RYw" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="10" id="wva-cj-w6F"/>
                 </constraints>
             </tableViewCellContentView>
             <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
@@ -84,9 +101,11 @@
                 <outlet property="badgeImageView" destination="Zm6-Z6-L8B" id="a2b-Ro-Li7"/>
                 <outlet property="displayNameLabel" destination="NRl-qN-ZUh" id="j11-JQ-WOG"/>
                 <outlet property="joinButton" destination="cs3-HS-3u2" id="kUI-0z-vmL"/>
+                <outlet property="lblDescription" destination="3vg-aK-rjX" id="vYX-Hw-Eq9"/>
+                <outlet property="lblMember" destination="u6G-5l-hEn" id="enM-LO-GxF"/>
                 <outlet property="privateBadgeImageView" destination="Rup-PC-Vgm" id="DdJ-WT-H4Y"/>
             </connections>
-            <point key="canvasLocation" x="202.89855072463769" y="128.23660714285714"/>
+            <point key="canvasLocation" x="202.89855072463769" y="139.62053571428569"/>
         </tableViewCell>
     </objects>
     <resources>

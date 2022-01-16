@@ -82,7 +82,8 @@ extension AmityCategoryCommunityListViewController: UITableViewDelegate {
     }
     
     public func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return AmityMyCommunityTableViewCell.defaultHeight
+//        return AmityMyCommunityTableViewCell.defaultHeight
+        return UITableView.automaticDimension
     }
     
     public func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
