@@ -65,22 +65,33 @@
                         <fontDescription key="fontDescription" name="SukhumvitTadmai-Bold" family="Sukhumvit Tadmai" pointSize="16"/>
                         <state key="normal" title="Button"/>
                     </button>
-                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3vg-aK-rjX">
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3vg-aK-rjX">
                         <rect key="frame" x="64" y="39" width="41.5" height="20.5"/>
                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                         <nil key="textColor"/>
                         <nil key="highlightedColor"/>
                     </label>
-                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="u6G-5l-hEn">
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="u6G-5l-hEn">
                         <rect key="frame" x="64" y="64.5" width="41.5" height="20.5"/>
                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                         <nil key="textColor"/>
                         <nil key="highlightedColor"/>
                     </label>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="fID-xh-4E8">
+                        <rect key="frame" x="16" y="94" width="382" height="1"/>
+                        <color key="backgroundColor" systemColor="systemGray5Color"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="1" id="UwL-lb-byf"/>
+                        </constraints>
+                    </view>
                 </subviews>
                 <constraints>
+                    <constraint firstItem="fID-xh-4E8" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="16" id="1BH-Zt-Ebu"/>
                     <constraint firstItem="cs3-HS-3u2" firstAttribute="centerY" secondItem="ZPb-R0-xVy" secondAttribute="centerY" id="3oq-l1-ujn"/>
+                    <constraint firstAttribute="bottom" secondItem="fID-xh-4E8" secondAttribute="bottom" id="52Y-G5-Ppo"/>
+                    <constraint firstAttribute="trailing" secondItem="fID-xh-4E8" secondAttribute="trailing" constant="16" id="HNj-zq-wrB"/>
                     <constraint firstItem="cs3-HS-3u2" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="63W-um-RYw" secondAttribute="trailing" id="KIl-5s-lLU"/>
+                    <constraint firstItem="fID-xh-4E8" firstAttribute="top" secondItem="u6G-5l-hEn" secondAttribute="bottom" constant="9" id="MCs-bo-PNI"/>
                     <constraint firstItem="3vg-aK-rjX" firstAttribute="leading" secondItem="63W-um-RYw" secondAttribute="leading" id="Ovg-lZ-Shj"/>
                     <constraint firstItem="3vg-aK-rjX" firstAttribute="top" secondItem="63W-um-RYw" secondAttribute="bottom" constant="5" id="TT3-q2-Dlc"/>
                     <constraint firstItem="cs3-HS-3u2" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="3vg-aK-rjX" secondAttribute="trailing" constant="10" id="WyI-1M-yod"/>
@@ -90,7 +101,6 @@
                     <constraint firstItem="ZPb-R0-xVy" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="eD2-DI-kQ8"/>
                     <constraint firstItem="ZPb-R0-xVy" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="16" id="etg-Ub-Diu"/>
                     <constraint firstItem="u6G-5l-hEn" firstAttribute="leading" secondItem="3vg-aK-rjX" secondAttribute="leading" id="kLz-hp-Uff"/>
-                    <constraint firstAttribute="bottom" secondItem="u6G-5l-hEn" secondAttribute="bottom" constant="10" id="unf-2G-pYa"/>
                     <constraint firstItem="cs3-HS-3u2" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="u6G-5l-hEn" secondAttribute="trailing" constant="10" id="vdN-ih-8Z2"/>
                     <constraint firstItem="63W-um-RYw" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="10" id="wva-cj-w6F"/>
                 </constraints>
@@ -101,16 +111,19 @@
                 <outlet property="badgeImageView" destination="Zm6-Z6-L8B" id="a2b-Ro-Li7"/>
                 <outlet property="displayNameLabel" destination="NRl-qN-ZUh" id="j11-JQ-WOG"/>
                 <outlet property="joinButton" destination="cs3-HS-3u2" id="kUI-0z-vmL"/>
-                <outlet property="lblDescription" destination="3vg-aK-rjX" id="vYX-Hw-Eq9"/>
-                <outlet property="lblMember" destination="u6G-5l-hEn" id="enM-LO-GxF"/>
+                <outlet property="lblDescription" destination="u6G-5l-hEn" id="eJc-ku-UyD"/>
+                <outlet property="lblMember" destination="3vg-aK-rjX" id="9na-Tc-i7L"/>
                 <outlet property="privateBadgeImageView" destination="Rup-PC-Vgm" id="DdJ-WT-H4Y"/>
             </connections>
-            <point key="canvasLocation" x="202.89855072463769" y="139.62053571428569"/>
+            <point key="canvasLocation" x="202.89855072463769" y="138.95089285714286"/>
         </tableViewCell>
     </objects>
     <resources>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+        <systemColor name="systemGray5Color">
+            <color red="0.89803921568627454" green="0.89803921568627454" blue="0.91764705882352937" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
     </resources>
 </document>

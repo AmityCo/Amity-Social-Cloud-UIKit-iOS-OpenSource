@@ -36,6 +36,10 @@ extension LiveStreamBroadcastViewController {
         if title.isEmpty {
             return .failure(GeneralError(message: "Title can not be empty."))
         }
+        let description = descriptionTextView.text ?? ""
+        if description.isEmpty {
+            return .failure(GeneralError(message: "Description can not be empty."))
+        }
         return .success(Void())
     }
     

@@ -7,6 +7,7 @@
 
 import UIKit
 import AVFoundation
+import Photos
 
 extension LiveStreamBroadcastViewController {
     
@@ -50,14 +51,54 @@ extension LiveStreamBroadcastViewController {
     }
     
     func presentPermissionRequiredDialogue() {
-        let title = "Permission Required!!"
-        let message = "Please grant permission in iOS settings."
+        let title = "Permission Required"
+        let message = "Please grant permission camera and microphone in iOS settings."
         let alertController = UIAlertController(title: title, message: message, preferredStyle: .alert)
-        let ok = UIAlertAction(title: "OK", style: .default) { [weak self] action in
-            self?.dismiss(animated: true, completion: nil)
-        }
-        alertController.addAction(ok)
-        present(alertController, animated: true, completion: nil)
+        alertController.addAction(UIAlertAction(title: "Cancel", style: .default, handler: { action in
+        }))
+        alertController.addAction(UIAlertAction(title: "Setting", style: .default, handler: { action in
+            UIApplication.shared.open(URL(string: UIApplication.openSettingsURLString)!)
+        }))
+        self.present(alertController, animated: true)
+    }
+    
+    func alertPhotoPermision() {
+        let title = "Photo"
+        let message = "Please allow access photo library"
+        let alertController = UIAlertController(title: title, message: message, preferredStyle: .alert)
+        alertController.addAction(UIAlertAction(title: "Cancel", style: .default, handler: { action in
+        }))
+        alertController.addAction(UIAlertAction(title: "Setting", style: .default, handler: { action in
+            UIApplication.shared.open(URL(string: UIApplication.openSettingsURLString)!)
+        }))
+        self.present(alertController, animated: true)
+    }
+    
+    func checkPhotoLibraryPermission(success: @escaping() -> (), fail: @escaping() -> ()) {
+        let photoAuthorizationStatus = PHPhotoLibrary.authorizationStatus()
+           switch photoAuthorizationStatus {
+           case .authorized:
+               success()
+               break
+           case .notDetermined:
+               PHPhotoLibrary.requestAuthorization({
+                   (newStatus) in
+                   if newStatus ==  PHAuthorizationStatus.authorized {
+                       success()
+                   }
+               })
+           case .restricted:
+               break
+           case .denied:
+               fail()
+               break
+           case .limited:
+               fail()
+               break
+           @unknown default:
+               fail()
+               break
+           }
     }
     
 }

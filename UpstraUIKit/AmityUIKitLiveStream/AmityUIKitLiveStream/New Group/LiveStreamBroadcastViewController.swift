@@ -102,6 +102,7 @@ final public class LiveStreamBroadcastViewController: UIViewController {
     var keyboardHeight: CGFloat = 0
     var keyboardObservationTokens: [NSObjectProtocol] = []
     
+    var isClose: Bool = false
     // MARK: - Init / Deinit
     
     public init(client: AmityClient, targetId: String?, targetType: AmityPostTargetType) {
@@ -359,7 +360,13 @@ final public class LiveStreamBroadcastViewController: UIViewController {
     }
     
     @IBAction private func selectCoverButtonDidTouch() {
-        presentCoverImagePicker()
+        checkPhotoLibraryPermission {
+            DispatchQueue.main.async { [weak self] in
+                self?.presentCoverImagePicker()
+            }
+        } fail: {
+            self.alertPhotoPermision()
+        }
     }
     
     @IBAction private func closeButtonDidTouch() {
@@ -367,6 +374,7 @@ final public class LiveStreamBroadcastViewController: UIViewController {
     }
     
     @IBAction private func goLiveButtonDidTouch() {
+        view.endEditing(true)
         goLive()
     }
     

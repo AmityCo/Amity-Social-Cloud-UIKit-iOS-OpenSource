@@ -166,6 +166,7 @@ open class AmityPostDetailViewController: AmityViewController {
                 alert.addAction(UIAlertAction(title: AmityLocalizedStringSet.General.delete.localizedString, style: .destructive, handler: { [weak self] _ in
                     self?.screenViewModel.deletePost()
                     self?.navigationController?.popViewController(animated: true)
+//                    self?.generalDismiss()
                 }))
                 self?.present(alert, animated: true, completion: nil)
             }
