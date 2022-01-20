@@ -176,9 +176,17 @@ private extension AmityCommunityHomePageViewController {
             let viewController = AmityCommunityProfilePageViewController.make(withCommunityId: id)
             navigationController?.pushViewController(viewController, animated: true)
         case .post(let id, let communityId):
-            let viewController = AmityCommunityProfilePageViewController.make(withCommunityId: communityId, postId: id, fromDeeplinks: screenViewModel.dataSource.fromDeeplinks)
-            navigationController?.pushViewController(viewController, animated: true)
-        break
+            //            let viewController = AmityCommunityProfilePageViewController.make(withCommunityId: communityId, postId: id, fromDeeplinks: screenViewModel.dataSource.fromDeeplinks)
+            //            navigationController?.pushViewController(viewController, animated: true)
+            if communityId != "" {
+                let viewController = AmityCommunityProfilePageViewController.make(withCommunityId: communityId, postId: id, fromDeeplinks: screenViewModel.dataSource.fromDeeplinks)
+                navigationController?.pushViewController(viewController, animated: true)
+            } else {
+                let postVC = AmityPostDetailViewController.make(withPostId: id)
+                navigationController?.pushViewController(postVC, animated: true)
+            }
+            
+            break
         case .category(let id):
             if let item = screenViewModel.getCategoryItemBy(categoryId: id) {
                 let viewController = AmityCategoryCommunityListViewController.make(categoryId: item.categoryId)
