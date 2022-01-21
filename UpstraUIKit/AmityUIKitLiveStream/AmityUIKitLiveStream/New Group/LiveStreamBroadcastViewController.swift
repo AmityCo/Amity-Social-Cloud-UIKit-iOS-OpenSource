@@ -239,7 +239,7 @@ final public class LiveStreamBroadcastViewController: UIViewController {
         descriptionTextView.font = AmityFontSet.body
         descriptionTextView.placeholder = "Tap to add post description..."
         descriptionTextView.textColor = .white
-        descriptionTextView.returnKeyType = .done
+        descriptionTextView.returnKeyType = .default
         let textViewToolbar: UIToolbar = UIToolbar()
         textViewToolbar.barStyle = .default
         textViewToolbar.items = [

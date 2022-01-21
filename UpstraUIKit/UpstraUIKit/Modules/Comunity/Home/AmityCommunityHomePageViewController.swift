@@ -176,8 +176,6 @@ private extension AmityCommunityHomePageViewController {
             let viewController = AmityCommunityProfilePageViewController.make(withCommunityId: id)
             navigationController?.pushViewController(viewController, animated: true)
         case .post(let id, let communityId):
-            //            let viewController = AmityCommunityProfilePageViewController.make(withCommunityId: communityId, postId: id, fromDeeplinks: screenViewModel.dataSource.fromDeeplinks)
-            //            navigationController?.pushViewController(viewController, animated: true)
             if communityId != "" {
                 let viewController = AmityCommunityProfilePageViewController.make(withCommunityId: communityId, postId: id, fromDeeplinks: screenViewModel.dataSource.fromDeeplinks)
                 navigationController?.pushViewController(viewController, animated: true)

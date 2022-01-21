@@ -73,6 +73,7 @@ protocol AmityPostDetailScreenViewModelAction {
     func likePost()
     func unlikePost()
     func deletePost()
+    func deletePostLiveStream(completion: @escaping(Result<Void,Error>) -> ())
     func reportPost()
     func unreportPost()
     func getPostReportStatus()

@@ -7,6 +7,7 @@
 
 import Foundation
 import AmitySDK
+import AmityUIKit
 
 extension LiveStreamBroadcastViewController {
     
@@ -77,12 +78,14 @@ extension LiveStreamBroadcastViewController {
         operations.append(createPost)
         
         // Observe last create psot completion, to update UI.
+        AmityHUD.show(.loading)
         createPost.completionBlock = { [weak createPost, weak self] in
             guard let result = createPost?.result else {
                 assertionFailure("create post result must be ready at this point.")
                 return
             }
             DispatchQueue.main.async {
+                AmityHUD.hide()
                 self?.handleCreatePostResult(result)
             }
         }

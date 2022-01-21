@@ -261,6 +261,8 @@ extension AmityPollCreatorViewController: AmityPollCreatorCellProtocolDelegate {
                     cell.moveInputCursorToTextView()
                 }
                 
+                self?.tableView.scrollToRow(at: insertIndexPath, at: .top, animated: true)
+                
                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) { [weak self] in
                     let indexPath = IndexPath(item: 0, section: section + 1)
                     self?.tableView.reloadRows(at: [indexPath], with: .none)

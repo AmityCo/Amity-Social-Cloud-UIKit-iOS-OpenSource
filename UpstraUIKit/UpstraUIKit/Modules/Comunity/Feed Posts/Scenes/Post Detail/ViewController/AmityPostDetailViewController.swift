@@ -164,9 +164,18 @@ open class AmityPostDetailViewController: AmityViewController {
                 alert.setMessage(font: AmityFontSet.body)
                 alert.addAction(UIAlertAction(title: AmityLocalizedStringSet.General.cancel.localizedString, style: .cancel, handler: nil))
                 alert.addAction(UIAlertAction(title: AmityLocalizedStringSet.General.delete.localizedString, style: .destructive, handler: { [weak self] _ in
-                    self?.screenViewModel.deletePost()
-                    self?.navigationController?.popViewController(animated: true)
-//                    self?.generalDismiss()
+                    if self?.navigationController?.viewControllers.count ?? 0 <= 1 {
+                        if self?.presentingViewController != nil {
+                            AmityHUD.show(.loading)
+                            self?.screenViewModel.deletePostLiveStream(completion: { [weak self] _ in
+                                AmityHUD.hide()
+                                self?.didTapLeftBarButton()
+                            })
+                        }
+                    } else {
+                        self?.screenViewModel.deletePost()
+                        self?.navigationController?.popViewController(animated: true)
+                    }
                 }))
                 self?.present(alert, animated: true, completion: nil)
             }
@@ -209,6 +218,10 @@ open class AmityPostDetailViewController: AmityViewController {
             screenViewModel.action.getPostReportStatus()
         }
         
+    }
+    
+    @objc func dissmissVC() {
+        self.didTapLeftBarButton()
     }
     
 }

@@ -267,6 +267,19 @@ extension AmityPostDetailScreenViewModel {
         }
     }
     
+    func deletePostLiveStream(completion: @escaping(Result<Void,Error>) -> ()) {
+        postController.delete(withPostId: postId, parentId: nil) { [weak self] (success, error) in
+            guard let strongSelf = self else { return }
+            if success {
+                NotificationCenter.default.post(name: NSNotification.Name.Post.didDelete, object: nil)
+                completion(.success(()))
+            } else {
+                strongSelf.delegate?.screenViewModel(strongSelf, didFinishWithError: AmityError(error: error) ?? .unknown)
+                completion(.success(()))
+            }
+        }
+    }
+    
     func reportPost() {
         postController.report(withPostId: postId) { [weak self] (success, error) in
             self?.reportHandler(success: success, error: error)
