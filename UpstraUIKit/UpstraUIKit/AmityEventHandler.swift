@@ -143,7 +143,7 @@ open class AmityEventHandler {
                 completion(.livestream)
             }
         
-        AmityBottomSheet.present(options: [postOption, pollPostOption, livestreamPost], from: source)
+        AmityBottomSheet.present(options: [postOption, livestreamPost, pollPostOption], from: source)
     }
     
     /// Event for post creator

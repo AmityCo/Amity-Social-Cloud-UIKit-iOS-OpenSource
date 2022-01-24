@@ -185,8 +185,8 @@ open class AmityPostDetailViewController: AmityViewController {
                 let closePoll = TextItemOption(title: AmityLocalizedStringSet.Poll.Option.closeTitle.localizedString) { [weak self] in
                     guard let strongSelf = self else { return }
                     let cancel = AmityAlertController.Action.cancel(style: .default, handler: nil)
-                    let close = AmityAlertController.Action.custom(title: AmityLocalizedStringSet.Poll.Option.closeTitle.lowercased(), style: .destructive) {
-                        
+                    let close = AmityAlertController.Action.custom(title: AmityLocalizedStringSet.Poll.Option.closeTitle.localizedString, style: .destructive) {
+                        self?.screenViewModel.close(withPollId: post.poll?.id)
                     }
                     AmityAlertController.present(title: AmityLocalizedStringSet.Poll.Option.alertCloseTitle.localizedString, message: AmityLocalizedStringSet.Poll.Option.alertCloseDesc.localizedString, actions: [cancel, close], from: strongSelf)
                     
