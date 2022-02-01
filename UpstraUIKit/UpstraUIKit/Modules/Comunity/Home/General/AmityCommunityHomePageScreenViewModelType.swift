@@ -18,28 +18,10 @@ protocol AmityCommunityHomePageScreenViewModelDataSource {
     func getCategoryItems() -> [AmityCommunityCategoryModel]
 }
 
-protocol AmityCommunityHomePageScreenViewModelDelegate: class {
-    func didFetchCommunitiesSuccess(page: PageType)
-    func didFetchCommunitiesFailure(error: Error)
-    func didFetchProfileImageSuccess(image: UIImage)
-    func didFetchProfileImageFailure()
-    func didFetchCategoriesSuccess()
-    func didFetchCategoriesFailure(error: Error)
-}
-
-protocol AmityCommunityHomePageScreenViewModelAction {
-    func fetchCommunities()
-    func fetchProfileImage(with userId: String)
-    func fetchCategories()
-}
-
-protocol AmityCommunityHomePageScreenViewModelType: AmityCommunityHomePageScreenViewModelAction, AmityCommunityHomePageScreenViewModelDataSource {
-    var action: AmityCommunityHomePageScreenViewModelAction { get }
+protocol AmityCommunityHomePageScreenViewModelType: AmityCommunityHomePageScreenViewModelDataSource {
     var dataSource: AmityCommunityHomePageScreenViewModelDataSource { get }
-    var delegate: AmityCommunityHomePageScreenViewModelDelegate? { get set }
 }
 
 extension AmityCommunityHomePageScreenViewModelType {
-    var action: AmityCommunityHomePageScreenViewModelAction { return self }
     var dataSource: AmityCommunityHomePageScreenViewModelDataSource { return self }
 }

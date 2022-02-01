@@ -642,6 +642,8 @@
 		FC1DE9AC2769D1D000ECB45F /* LocalizedIndonesia.strings in Resources */ = {isa = PBXBuildFile; fileRef = FC1DE9AB2769D1D000ECB45F /* LocalizedIndonesia.strings */; };
 		FC1DE9AE2769D2AD00ECB45F /* LocalizedCambodia.strings in Resources */ = {isa = PBXBuildFile; fileRef = FC1DE9AD2769D2AD00ECB45F /* LocalizedCambodia.strings */; };
 		FC1DE9B02769D8D800ECB45F /* LocalizedPhilippin.strings in Resources */ = {isa = PBXBuildFile; fileRef = FC1DE9AF2769D8D800ECB45F /* LocalizedPhilippin.strings */; };
+		FC2F9C4D27A91A390023C4D1 /* AmityNewsFeedScreenViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC2F9C4C27A91A390023C4D1 /* AmityNewsFeedScreenViewModel.swift */; };
+		FC2F9C4F27A928470023C4D1 /* AmityNewsFeedScreenViewModelType.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC2F9C4E27A928470023C4D1 /* AmityNewsFeedScreenViewModelType.swift */; };
 		FC4383202785B35F000482E7 /* LocalizedMyanmar.strings in Resources */ = {isa = PBXBuildFile; fileRef = FC43831F2785B35F000482E7 /* LocalizedMyanmar.strings */; };
 		FC6459C5274E446300D1B491 /* PageType.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC6459C2274E446300D1B491 /* PageType.swift */; };
 		FC6459C6274E446300D1B491 /* DeeplinksType.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC6459C3274E446300D1B491 /* DeeplinksType.swift */; };
@@ -1291,6 +1293,8 @@
 		FC1DE9AB2769D1D000ECB45F /* LocalizedIndonesia.strings */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; path = LocalizedIndonesia.strings; sourceTree = "<group>"; };
 		FC1DE9AD2769D2AD00ECB45F /* LocalizedCambodia.strings */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; path = LocalizedCambodia.strings; sourceTree = "<group>"; };
 		FC1DE9AF2769D8D800ECB45F /* LocalizedPhilippin.strings */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; path = LocalizedPhilippin.strings; sourceTree = "<group>"; };
+		FC2F9C4C27A91A390023C4D1 /* AmityNewsFeedScreenViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AmityNewsFeedScreenViewModel.swift; sourceTree = "<group>"; };
+		FC2F9C4E27A928470023C4D1 /* AmityNewsFeedScreenViewModelType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AmityNewsFeedScreenViewModelType.swift; sourceTree = "<group>"; };
 		FC43831F2785B35F000482E7 /* LocalizedMyanmar.strings */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; path = LocalizedMyanmar.strings; sourceTree = "<group>"; };
 		FC6459C2274E446300D1B491 /* PageType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PageType.swift; sourceTree = "<group>"; };
 		FC6459C3274E446300D1B491 /* DeeplinksType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeeplinksType.swift; sourceTree = "<group>"; };
@@ -4080,6 +4084,7 @@
 		B7A9242024F42816001F4B49 /* Newsfeed */ = {
 			isa = PBXGroup;
 			children = (
+				FC2F9C4B27A91A110023C4D1 /* ViewModel */,
 				B7A9242624F428CE001F4B49 /* Empty View */,
 				B7A9242524F428BC001F4B49 /* ViewController */,
 			);
@@ -4282,6 +4287,15 @@
 				D441BEE925C16F1E00C1EEB9 /* AmityFeedUISettings.swift */,
 			);
 			path = Share;
+			sourceTree = "<group>";
+		};
+		FC2F9C4B27A91A110023C4D1 /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				FC2F9C4C27A91A390023C4D1 /* AmityNewsFeedScreenViewModel.swift */,
+				FC2F9C4E27A928470023C4D1 /* AmityNewsFeedScreenViewModelType.swift */,
+			);
+			path = ViewModel;
 			sourceTree = "<group>";
 		};
 		FC6459C0274E444600D1B491 /* NCC */ = {
@@ -4882,6 +4896,7 @@
 				721C8C87262D1EA100BA576C /* AmityCommentEditorViewController.swift.swift in Sources */,
 				72A3514124EA820800DA9D46 /* AmityComunity.swift in Sources */,
 				B788B935252D8B71002F4F12 /* AmityTrendingCommunityScreenViewModelProtocol.swift in Sources */,
+				FC2F9C4F27A928470023C4D1 /* AmityNewsFeedScreenViewModelType.swift in Sources */,
 				A0A903B226BA749B002949B2 /* Protocol.swift in Sources */,
 				979199B02689C7220057468F /* AmityComposeBar.swift in Sources */,
 				97D7236E2695A690000735F5 /* AmityUserProfileHeaderScreenViewModel.swift in Sources */,
@@ -5012,6 +5027,7 @@
 				72A3513B24EA820800DA9D46 /* UINavigationController+Extension.swift in Sources */,
 				B7B31C62250F4ACF000AC6E4 /* ButtonBarViewCell.swift in Sources */,
 				97D7C4E2264C093A00EA24F5 /* AmityChanneluserModeratorController.swift in Sources */,
+				FC2F9C4D27A91A390023C4D1 /* AmityNewsFeedScreenViewModel.swift in Sources */,
 				97D7C49C264BF90000EA24F5 /* AmityChannelMemberSettingsTableViewCell.swift in Sources */,
 				D404015C25FF88FE00311C83 /* AmityCommunityNotificationSettingsScreenViewModel.swift in Sources */,
 				B76C7B732508DD72001E1718 /* UIApplication+Extension.swift in Sources */,

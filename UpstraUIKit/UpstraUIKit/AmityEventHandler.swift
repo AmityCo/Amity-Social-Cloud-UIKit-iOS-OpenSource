@@ -115,7 +115,7 @@ open class AmityEventHandler {
     ///
     /// If there is a `postTarget` passing into, immediately calls `postTargetDidSelect(:)`.
     /// If there isn't , navigate to `AmityPostTargetSelectionViewController`.
-    open func createPostBeingPrepared(from source: AmityViewController, postTarget: AmityPostTarget? = nil) {
+    open func createPostBeingPrepared(from source: AmityViewController, postTarget: AmityPostTarget? = nil, liveStreamPermission: Bool = false) {
         let completion: ((AmityPostContentType) -> Void) = { postContentType in
             if let postTarget = postTarget {
                 // show create post
@@ -143,7 +143,12 @@ open class AmityEventHandler {
                 completion(.livestream)
             }
         
-        AmityBottomSheet.present(options: [postOption, livestreamPost, pollPostOption], from: source)
+        if liveStreamPermission {
+            AmityBottomSheet.present(options: [postOption, livestreamPost, pollPostOption], from: source)
+        } else {
+            AmityBottomSheet.present(options: [postOption, pollPostOption], from: source)
+        }
+
     }
     
     /// Event for post creator

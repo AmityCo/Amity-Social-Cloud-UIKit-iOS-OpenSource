@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import AmitySDK
 
 public class AmityCommunityProfilePageSettings {
     public init() { }
@@ -25,12 +26,14 @@ public final class AmityCommunityProfilePageViewController: AmityProfileViewCont
     private var postButton: AmityFloatingButton = AmityFloatingButton()
     
     private var screenViewModel: AmityCommunityProfileScreenViewModelType!
+    private var screenViewModelNewsFeed: AmityNewsFeedScreenViewModelType? = nil
+    private var permissionCanLive: Bool = false
     
     public override func viewDidLoad() {
         super.viewDidLoad()
         screenViewModel.delegate = self
         setupFeed()
-        
+        setupScreenViewModelNewsFeed()
         routeToDeeplinksPostIfNeed()
     }
     
@@ -104,6 +107,13 @@ public final class AmityCommunityProfilePageViewController: AmityProfileViewCont
             self?.screenViewModel.action.retriveCommunity()
         }
     }
+    
+    private func setupScreenViewModelNewsFeed() {
+        screenViewModelNewsFeed = AmityNewsFeedScreenViewModel()
+        screenViewModelNewsFeed?.delegate = self
+        fetchUserProfile()
+    }
+    
     private func setupPostButton() {
         postButton.image = AmityIconSet.iconCreatePost
         postButton.add(to: view, position: .bottomRight)
@@ -202,7 +212,7 @@ extension AmityCommunityProfilePageViewController: AmityCommunityProfileScreenVi
 //            let nav = UINavigationController(rootViewController: vc)
 //            nav.modalPresentationStyle = .fullScreen
 //            present(nav, animated: true, completion: nil)
-            AmityEventHandler.shared.createPostBeingPrepared(from: self, postTarget: .community(object: community.object))
+            AmityEventHandler.shared.createPostBeingPrepared(from: self, postTarget: .community(object: community.object),liveStreamPermission: self.permissionCanLive)
         case .member:
             guard let community = viewModel.community else { return }
             let vc = AmityCommunityMemberSettingsViewController.make(community: community.object)
@@ -260,4 +270,26 @@ private extension AmityCommunityProfilePageViewController {
         
         screenViewModel.action.route(.deeplinksPost(id: postId))
     }
+}
+
+// MARK: - Action
+extension AmityCommunityProfilePageViewController {
+    
+    func fetchUserProfile() {
+        screenViewModelNewsFeed?.fetchUserProfile(with: AmityUIKitManagerInternal.shared.currentUserId)
+    }
+    
+}
+// MARK: - Delegate
+extension AmityCommunityProfilePageViewController: AmityNewsFeedScreenViewModelDelegate {
+    
+    func didFetchUserProfile(user: AmityUser) {
+        switch AmityUIKitManagerInternal.shared.envByApiKey {
+        case .staging:
+            user.roles.filter{ $0 == AmityUIKitManagerInternal.shared.stagingLiveRoleID}.count > 0 ? (permissionCanLive = true) : (permissionCanLive = false)
+        case .production:
+            user.roles.filter{ $0 == AmityUIKitManagerInternal.shared.productionLiveRoleID}.count > 0 ? (permissionCanLive = true) : (permissionCanLive = false)
+        }
+    }
+    
 }

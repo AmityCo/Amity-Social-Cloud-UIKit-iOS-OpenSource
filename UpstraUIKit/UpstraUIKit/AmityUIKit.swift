@@ -126,12 +126,25 @@ final class AmityUIKitManagerInternal: NSObject {
     
     // MARK: - Properties
     
+    enum Env {
+        case production
+        case staging
+    }
+    
     public static let shared = AmityUIKitManagerInternal()
     private var _client: AmityClient?
     private var apiKey: String = ""
     private var httpUrl: String = ""
     private var socketUrl: String = ""
     private var language: String = ""
+    
+    var stagingLiveRoleID: String {
+        return "251a6a45-13f3-4c45-8bb5-bebd5d2a8819"
+    }
+    
+    var productionLiveRoleID: String {
+        return "df29018e-49fb-4197-b53b-0267464b4301"
+    }
     
     private(set) var fileService = AmityFileService()
     private(set) var messageMediaService = AmityMessageMediaService()
@@ -143,6 +156,10 @@ final class AmityUIKitManagerInternal: NSObject {
             fatalError("Something went wrong. Please ensure `AmityUIKitManager.setup(:_)` get called before accessing client.")
         }
         return client
+    }
+    
+    var envByApiKey:Env {
+        apiKey == "b0eceb5e68ddf36545308f4e000b12dcd90985e2bf3d6a2e" ? .staging : .production
     }
     
     var isClientRegister: Bool {

@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import AmitySDK
 
 public class AmityCommunityHomePageViewController: AmityPageViewController {
     
@@ -34,7 +35,6 @@ public class AmityCommunityHomePageViewController: AmityPageViewController {
     
     public override func viewDidLoad() {
         super.viewDidLoad()
-        fetchCategories()
         setupNavigationBar()
     }
     
@@ -121,47 +121,7 @@ private extension AmityCommunityHomePageViewController {
 
 // MARK: - Action
 private extension AmityCommunityHomePageViewController {
-    func checkEkoConnection() {
-//        if UpstraUIKitManagerInternal.shared.client.currentUser?.object?.userId == nil {
-//            let message = EkoLocalizedStringSet.errorMessageConnectionError.localizedString
-//            EkoUtilities.showAlert(with: "", message: message, viewController: self) { [weak self] _ in
-//                self?.dismiss(animated: true, completion: nil)
-//            }
-//        }
-    }
-
-    // Waiting for the best solution to popup user is banned
-    func checkUserIsBannned() {
-        // If user is banned, userId will be nil
-//        if UpstraUIKitManagerInternal.shared.client.currentUser?.object?.userId == nil {
-//            let message = EkoLocalizedStringSet.errorMessageUserIsBanned.localizedString
-//            EkoUtilities.showAlert(with: "", message: message, viewController: self) { [weak self] _ in
-//                self?.dismiss(animated: true, completion: nil)
-//            }
-//        }
-    }
-    
-    func fetchCommunities() {
-//        if initialized { return }
-//
-//        screenViewModel.fetchCommunities()
-    }
-    
-    func fetchProfileImage() {
-//        screenViewModel.fetchProfileImage(with: UpstraUIKitManagerInternal.shared.client.currentUser?.object?.userId ?? "")
-    }
-    
-    func fetchCategories() {
-        screenViewModel.fetchCategories()
-    }
-    
-    func setCurrentPage() {
-//        if initialized { return }
-//
-//        let page = screenViewModel.dataSource.baseOnJoinPage
-//        setCurrentIndex(page.rawValue)
-    }
-    
+   
     func runDeeplinksRouter() {
         if deeplinkFinished { return }
         
