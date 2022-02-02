@@ -27,6 +27,7 @@ final public class AmityPostPollTableViewCell: UITableViewCell, Nibbable, AmityP
     public weak var delegate: AmityPostDelegate?
     public var post: AmityPostModel?
     public var indexPath: IndexPath?
+    public var openPageByDetail: Bool = false
     
     private(set) var selectedAnswerIds: [String] = []
     
@@ -142,6 +143,18 @@ final public class AmityPostPollTableViewCell: UITableViewCell, Nibbable, AmityP
 }
 
 extension AmityPostPollTableViewCell: UITableViewDelegate {
+    
+    public func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        if let lastVisibleIndexPath = tableView.indexPathsForVisibleRows?.last {
+            if indexPath == lastVisibleIndexPath {
+                if openPageByDetail {
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.15) {
+                        self.delegate?.loadTableViewPollFinish()
+                    }
+                }
+            }
+        }
+    }
     
     public func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         

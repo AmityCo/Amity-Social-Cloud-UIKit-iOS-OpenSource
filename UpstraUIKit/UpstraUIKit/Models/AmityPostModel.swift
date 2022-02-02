@@ -270,6 +270,8 @@ public class AmityPostModel {
         return myReactions.contains(.like)
     }
     
+    public var isOpenPageByDetail:Bool = false
+    
     var communityId: String? {
         return post.targetCommunity?.communityId
     }

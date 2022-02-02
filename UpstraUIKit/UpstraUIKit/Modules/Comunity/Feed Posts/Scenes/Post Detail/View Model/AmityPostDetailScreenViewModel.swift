@@ -87,7 +87,9 @@ extension AmityPostDetailScreenViewModel {
         case .video:
             return AmityPostComponent(component: AmityPostMediaComponent(post: post))
         case .poll:
-            return AmityPostComponent(component: AmityPostPollComponent(post: post))
+            let postPollDataModel = post
+            postPollDataModel.isOpenPageByDetail = true
+            return AmityPostComponent(component: AmityPostPollComponent(post: postPollDataModel))
         case .liveStream:
             return AmityPostComponent(component: AmityPostLiveStreamComponent(post: post))
         case .unknown:

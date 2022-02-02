@@ -41,6 +41,7 @@ public struct AmityPostPollComponent: AmityPostComposable {
             return cell
         case 1:
             let cell: AmityPostPollTableViewCell = tableView.dequeueReusableCell(for: indexPath)
+            cell.openPageByDetail = post.isOpenPageByDetail
             cell.display(post: post, indexPath: indexPath)
             return cell
         case 2:
