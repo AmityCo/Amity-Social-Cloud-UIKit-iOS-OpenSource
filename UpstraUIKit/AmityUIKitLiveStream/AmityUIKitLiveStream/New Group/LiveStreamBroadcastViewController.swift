@@ -72,7 +72,11 @@ final public class LiveStreamBroadcastViewController: UIViewController {
     @IBOutlet weak var uiContainerCreate: UIView!
     
     // - uiContainerCreate.topRightStackView
-    @IBOutlet private weak var selectCoverButton: UIButton!
+    @IBOutlet private weak var selectCoverButton: UIButton! {
+        didSet {
+            selectCoverButton.layer.cornerRadius = 5
+        }
+    }
     @IBOutlet private weak var coverImageContainer: UIView!
     @IBOutlet private weak var coverImageView: UIImageView!
     
