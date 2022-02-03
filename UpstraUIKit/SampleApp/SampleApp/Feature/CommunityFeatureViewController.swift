@@ -7,10 +7,13 @@
 //
 
 import UIKit
+import AmitySDK
 import AmityUIKit
 import SwiftUI
 
 class CommunityFeatureViewController: UIViewController {
+    
+    let userNotificationManager = AmityUIKitManager.client.notificationManager
     
     private enum UserDefaultsKey {
         static let userId = "userId"
@@ -34,7 +37,7 @@ class CommunityFeatureViewController: UIViewController {
         case en
         case my
         case gallery
-        case unregister
+        case notification
         case client
         
         var text: String {
@@ -69,8 +72,8 @@ class CommunityFeatureViewController: UIViewController {
                 return "my"
             case .gallery:
                 return "gallery"
-            case .unregister:
-                return "unregister"
+            case .notification:
+                return "notification"
             case .client:
                 return "client"
             }
@@ -211,8 +214,15 @@ extension CommunityFeatureViewController: UITableViewDelegate {
         case .gallery:
             let galleryVC = AmityPostGalleryViewController.makeByTrueID(targetType: .user, targetId: UserDefaults.standard.value(forKey: UserDefaultsKey.userId) as! String, isHiddenButtonCreate: false)
             navigationController?.pushViewController(galleryVC, animated: true)
-        case .unregister:
-            AmityUIKitManager.unregisterDevice()
+        case .notification:
+            let model: [AmityUserNotificationModule] = [AmityUserNotificationModule(moduleType: .videoStreaming, isEnabled: false, roleFilter: nil)]
+            self.userNotificationManager.enable(for: model) { (success, error) in
+                if success {
+                    debugPrint("Notification Success" as Any)
+                } else {
+                    debugPrint("Error" as Any)
+                }
+            }
         case .client:
             debugPrint(AmityUIKitManager.client)
         }

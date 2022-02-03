@@ -6,6 +6,7 @@
 //  Copyright © 2564 BE Amity. All rights reserved.
 //
 
+import AmitySDK
 import AmityUIKit
 import UIKit
 
@@ -53,6 +54,7 @@ class AppManager {
         if let currentUserId = UserDefaults.standard.value(forKey: UserDefaultsKey.userId) as? String {
             register(withUserId: currentUserId)
         }
+        
     }
     
     func register(withUserId userId: String) {
@@ -67,7 +69,10 @@ class AppManager {
             print("[Sample App] register device with userId '\(userId)' \(success ? "successfully" : "failed")")
             if let error = error {
                 print("[Sample App] register device failed \(error.localizedDescription)")
+                
+               
             }
+            
         }
         UserDefaults.standard.setValue(userId, forKey: UserDefaultsKey.userId)
         
