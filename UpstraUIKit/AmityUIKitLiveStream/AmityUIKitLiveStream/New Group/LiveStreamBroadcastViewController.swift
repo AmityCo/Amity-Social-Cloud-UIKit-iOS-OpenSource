@@ -234,6 +234,8 @@ final public class LiveStreamBroadcastViewController: UIViewController {
         titleTextField.maxLength = 30
         titleTextField.font = AmityFontSet.headerLine
         titleTextField.textColor = .white
+        titleTextField.attributedPlaceholder =
+        NSAttributedString(string: "Title", attributes: [NSAttributedString.Key.foregroundColor: UIColor.white])
         titleTextField.returnKeyType = .done
         titleTextField.delegate = self
         

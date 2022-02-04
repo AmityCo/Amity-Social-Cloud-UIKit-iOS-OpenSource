@@ -657,6 +657,7 @@
 		FC6459D9274E45B000D1B491 /* TrueIDCollectionViewLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC6459D8274E45B000D1B491 /* TrueIDCollectionViewLayout.swift */; };
 		FC6459DC274E45F600D1B491 /* LocalizedEnglish.strings in Resources */ = {isa = PBXBuildFile; fileRef = FC6459DA274E45F600D1B491 /* LocalizedEnglish.strings */; };
 		FC6459DD274E45F600D1B491 /* LocalizedThai.strings in Resources */ = {isa = PBXBuildFile; fileRef = FC6459DB274E45F600D1B491 /* LocalizedThai.strings */; };
+		FCF45CCC27AD07F000AFFE0A /* AmityDeepLink.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCF45CCB27AD07F000AFFE0A /* AmityDeepLink.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -1308,6 +1309,7 @@
 		FC6459D8274E45B000D1B491 /* TrueIDCollectionViewLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TrueIDCollectionViewLayout.swift; sourceTree = "<group>"; };
 		FC6459DA274E45F600D1B491 /* LocalizedEnglish.strings */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; path = LocalizedEnglish.strings; sourceTree = "<group>"; };
 		FC6459DB274E45F600D1B491 /* LocalizedThai.strings */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; path = LocalizedThai.strings; sourceTree = "<group>"; };
+		FCF45CCB27AD07F000AFFE0A /* AmityDeepLink.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AmityDeepLink.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -4302,6 +4304,7 @@
 			isa = PBXGroup;
 			children = (
 				FC6459C1274E445C00D1B491 /* Enums */,
+				FCF45CCB27AD07F000AFFE0A /* AmityDeepLink.swift */,
 			);
 			path = NCC;
 			sourceTree = "<group>";
@@ -4852,6 +4855,7 @@
 				0D95687F25D58F5600DE98FD /* AmityPostComponent.swift in Sources */,
 				975F14D92696C4A3009C94C7 /* AmityUserSettingsCreateMenuViewModel.swift in Sources */,
 				7211554125505D4B0081CC23 /* AmityCategoryPickerScreenViewModel.swift in Sources */,
+				FCF45CCC27AD07F000AFFE0A /* AmityDeepLink.swift in Sources */,
 				789F820026E2C25B00C16C68 /* AmityPollCreatorOptionTableViewCell.swift in Sources */,
 				72A3516F24EA820800DA9D46 /* CGSize+Scale.swift in Sources */,
 				B7B0262F256FB4D900CD9242 /* AmityMessageListRecordingViewController.swift in Sources */,

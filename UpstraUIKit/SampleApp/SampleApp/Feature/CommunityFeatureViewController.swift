@@ -176,19 +176,29 @@ extension CommunityFeatureViewController: UITableViewDelegate {
             let feedViewController = AmityUserFeedViewController.makeMyFeed()
             navigationController?.pushViewController(feedViewController, animated: true)
         case .homeByDeeplink:
-            let home = AmityCommunityHomePageViewController.make(deeplinksType:.community(id: "4d0488e70ebef28f54061a798a43f81b"), fromDeeplinks: true)
+//            let home = AmityCommunityHomePageViewController.make(deeplinksType:.community(id: "4d0488e70ebef28f54061a798a43f81b"), fromDeeplinks: true)
 //            navigationController?.pushViewController(home, animated: true)
 //            https://amity.co/posts/8b4d22a96f4847ed1e6b76750ee63d7c
 //            https://amity.co/posts/8b4d22a96f4847ed1e6b76750ee63d7c
             //            let home = AmityCommunityHomePageViewController.make(deeplinksType: .post(id: "8b4d22a96f4847ed1e6b76750ee63d7c", communityId: "d737b412fcd28aef5bafdcbb4d1a262d"), fromDeeplinks: true)
             //            navigationController?.pushViewController(home, animated: true)
 //            let home = AmityCommunityHomePageViewController.make(deeplinksType: .post(id: "630cef8efaa994855574218f48da7856", communityId: "4d0488e70ebef28f54061a798a43f81b"), fromDeeplinks: true)
-            navigationController?.pushViewController(home, animated: true)
+//            navigationController?.pushViewController(home, animated: true)
 //            let home = AmityCommunityHomePageViewController.make(deeplinksType: .post(id: "", communityId: "d737b412fcd28aef5bafdcbb4d1a262d"), fromDeeplinks: true)
 //            navigationController?.pushViewController(home, animated: true)
 //            dca95af263fbf131ff02ec6dc734d7e7
 //            let home = AmityCommunityHomePageViewController.make(deeplinksType: .category(id: "dca95af263fbf131ff02ec6dc734d7e7"), fromDeeplinks: true)
 //            navigationController?.pushViewController(home, animated: true)
+            
+            //            let home = AmityCommunityHomePageViewController.make(fromDeeplinks: true, deepLinkSocial: AmityDeepLink(deepLinkType: .post, postID: "890615e34219985839035d50881506fd", communityID: "56701fa0443c1e92b43d89961fdc0cd4"))
+            //            navigationController?.pushViewController(home, animated: true)
+            
+            //            let home = AmityCommunityHomePageViewController.make(fromDeeplinks: true, deepLinkSocial: AmityDeepLink(deepLinkType: .community, postID: "890615e34219985839035d50881506fd", communityID: "56701fa0443c1e92b43d89961fdc0cd4"))
+            //            navigationController?.pushViewController(home, animated: true)
+            
+//            let home = AmityCommunityHomePageViewController.make(fromDeeplinks: true, deepLinkSocial: AmityDeepLink(deepLinkType: .category, categoryID: "b2f4c60313f99a7cb59a222cfcaccda1"))
+            let home = AmityCommunityHomePageViewController.make(fromDeeplinks: true, amityDeepLink: AmityDeepLink(deepLinkType: .category, categoryID: "b2f4c60313f99a7cb59a222cfcaccda1"))
+            navigationController?.pushViewController(home, animated: true)
         
         case .th:
             AmityUIKitManager.setLanguage(language: "th")

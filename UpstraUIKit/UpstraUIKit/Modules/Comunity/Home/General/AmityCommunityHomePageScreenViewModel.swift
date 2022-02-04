@@ -17,12 +17,14 @@ class AmityCommunityHomePageScreenViewModel: AmityCommunityHomePageScreenViewMod
     var fromDeeplinks: Bool
     var deeplinksType: DeeplinksType?
     var categoryItems: [AmityCommunityCategoryModel]
+    var amityDeepLink: AmityDeepLink?
     
-    init(deeplinksType: DeeplinksType? = nil, fromDeeplinks: Bool = false) {
+    init(deeplinksType: DeeplinksType? = nil, fromDeeplinks: Bool = false, amityDeepLink: AmityDeepLink? = nil) {
         baseOnJoinPage = .newsFeed
         categoryItems = []
         self.fromDeeplinks = fromDeeplinks
         self.deeplinksType = deeplinksType
+        self.amityDeepLink = amityDeepLink
     }
 }
 
