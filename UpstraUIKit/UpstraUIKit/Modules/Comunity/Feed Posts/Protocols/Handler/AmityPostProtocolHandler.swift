@@ -54,8 +54,10 @@ final class AmityPostProtocolHandler {
 extension AmityPostProtocolHandler: AmityPostDelegate {
     
     func loadTableViewPollFinish() {
-        tableView?.reloadData()
-        tableView?.isHidden = false
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+            self.tableView?.reloadData()
+            self.tableView?.isHidden = false
+        }
     }
     
     func didPerformAction(_ cell: AmityPostProtocol, action: AmityPostAction) {

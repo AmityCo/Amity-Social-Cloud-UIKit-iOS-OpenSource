@@ -14,17 +14,13 @@ class AmityCommunityHomePageScreenViewModel: AmityCommunityHomePageScreenViewMod
     private var pendingRequestWorkItem: DispatchWorkItem?
     
     var baseOnJoinPage: PageType
-    var fromDeeplinks: Bool
-    var deeplinksType: DeeplinksType?
     var categoryItems: [AmityCommunityCategoryModel]
-    var amityDeepLink: AmityDeepLink?
+    var amityCommunityEventTypeModel: AmityCommunityEventTypeModel?
     
-    init(deeplinksType: DeeplinksType? = nil, fromDeeplinks: Bool = false, amityDeepLink: AmityDeepLink? = nil) {
+    init(amityCommunityEventTypeModel: AmityCommunityEventTypeModel? = nil) {
         baseOnJoinPage = .newsFeed
         categoryItems = []
-        self.fromDeeplinks = fromDeeplinks
-        self.deeplinksType = deeplinksType
-        self.amityDeepLink = amityDeepLink
+        self.amityCommunityEventTypeModel = amityCommunityEventTypeModel
     }
 }
 

@@ -11,9 +11,7 @@ import UIKit
 
 protocol AmityCommunityHomePageScreenViewModelDataSource {
     var baseOnJoinPage: PageType { get set }
-    var fromDeeplinks: Bool { get set }
-    var deeplinksType: DeeplinksType? { get set }
-    var amityDeepLink: AmityDeepLink? { get set }
+    var amityCommunityEventTypeModel: AmityCommunityEventTypeModel? { get set }
     var categoryItems: [AmityCommunityCategoryModel] { get set }
     func getCategoryItemBy(categoryId: String) -> AmityCommunityCategoryModel?
     func getCategoryItems() -> [AmityCommunityCategoryModel]

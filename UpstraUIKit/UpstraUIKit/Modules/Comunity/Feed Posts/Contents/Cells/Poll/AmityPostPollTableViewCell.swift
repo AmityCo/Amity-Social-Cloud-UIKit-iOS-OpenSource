@@ -145,13 +145,9 @@ final public class AmityPostPollTableViewCell: UITableViewCell, Nibbable, AmityP
 extension AmityPostPollTableViewCell: UITableViewDelegate {
     
     public func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-        if let lastVisibleIndexPath = tableView.indexPathsForVisibleRows?.last {
-            if indexPath == lastVisibleIndexPath {
-                if openPageByDetail {
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.15) {
-                        self.delegate?.loadTableViewPollFinish()
-                    }
-                }
+        if openPageByDetail {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+                self.delegate?.loadTableViewPollFinish()
             }
         }
     }

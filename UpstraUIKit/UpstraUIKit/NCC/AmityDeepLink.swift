@@ -8,21 +8,21 @@
 
 import Foundation
 
-public enum DeepLinkType {
+public enum AmityCommunityEventOpenType {
     case post
     case community
     case category
     case none
 }
 
-public struct AmityDeepLink {
-    var deepLinkType:DeepLinkType = .none
+public struct AmityCommunityEventTypeModel {
+    var openType:AmityCommunityEventOpenType = .none
     var postID: String?
     var communityID: String?
     var categoryID: String?
     
-    public init(deepLinkType: DeepLinkType, postID: String? = nil, communityID: String? = nil, categoryID: String? = nil) {
-        self.deepLinkType = deepLinkType
+    public init(openType: AmityCommunityEventOpenType, postID: String? = nil, communityID: String? = nil, categoryID: String? = nil) {
+        self.openType = openType
         self.postID = postID
         self.communityID = communityID
         self.categoryID = categoryID
