@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="18122" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="19529" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="18093"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="19519"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -128,6 +128,59 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="4039" y="-688"/>
+        </scene>
+        <!--Chat From Community View Controller-->
+        <scene sceneID="hIw-a4-XSV">
+            <objects>
+                <viewController storyboardIdentifier="ChatFromCommunityViewController" id="dHx-hu-oHw" customClass="ChatFromCommunityViewController" customModule="SampleApp" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="IXU-RB-1Lv">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="3cf-hF-T7S">
+                                <rect key="frame" x="50" y="219" width="314" height="80"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="80" id="hnA-kI-OQi"/>
+                                </constraints>
+                                <color key="tintColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                <state key="normal" title="Button"/>
+                                <buttonConfiguration key="configuration" style="plain" title="Go to chat" cornerStyle="medium">
+                                    <backgroundConfiguration key="background">
+                                        <color key="backgroundColor" systemColor="systemGreenColor"/>
+                                    </backgroundConfiguration>
+                                </buttonConfiguration>
+                                <connections>
+                                    <action selector="goToChannel" destination="dHx-hu-oHw" eventType="touchUpInside" id="bnf-ci-jbs"/>
+                                </connections>
+                            </button>
+                            <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Enter other username here..." textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="nap-u4-3e8">
+                                <rect key="frame" x="50" y="321" width="314" height="40"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="40" id="Jp2-xz-psW"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits"/>
+                            </textField>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="Yv3-9x-UF4"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="nap-u4-3e8" firstAttribute="top" secondItem="3cf-hF-T7S" secondAttribute="bottom" constant="22" id="5Fb-EP-32t"/>
+                            <constraint firstItem="3cf-hF-T7S" firstAttribute="leading" secondItem="Yv3-9x-UF4" secondAttribute="leading" constant="50" id="8LM-VK-2E3"/>
+                            <constraint firstItem="3cf-hF-T7S" firstAttribute="top" secondItem="Yv3-9x-UF4" secondAttribute="top" constant="175" id="9eF-5z-cFO"/>
+                            <constraint firstItem="Yv3-9x-UF4" firstAttribute="trailing" secondItem="nap-u4-3e8" secondAttribute="trailing" constant="50" id="Azf-kS-c8f"/>
+                            <constraint firstItem="Yv3-9x-UF4" firstAttribute="trailing" secondItem="3cf-hF-T7S" secondAttribute="trailing" constant="50" id="CJc-rU-wvr"/>
+                            <constraint firstItem="nap-u4-3e8" firstAttribute="leading" secondItem="Yv3-9x-UF4" secondAttribute="leading" constant="50" id="Ja6-vC-hfL"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="chatButton" destination="3cf-hF-T7S" id="9GB-LG-Z6U"/>
+                        <outlet property="userNameTextField" destination="nap-u4-3e8" id="hUO-d4-eQT"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="jQE-75-aak" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="4040.579710144928" y="23.4375"/>
         </scene>
         <!--Community Feature View Controller-->
         <scene sceneID="mQn-LX-Tub">
@@ -383,6 +436,9 @@
         </systemColor>
         <systemColor name="systemBlueColor">
             <color red="0.0" green="0.47843137254901963" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </systemColor>
+        <systemColor name="systemGreenColor">
+            <color red="0.20392156862745098" green="0.7803921568627451" blue="0.34901960784313724" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
     </resources>
 </document>

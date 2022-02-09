@@ -119,7 +119,10 @@ public final class AmityUIKitManager {
     public static var isClient: Bool {
         AmityUIKitManagerInternal.shared.isClientRegister
     }
-   
+    
+    public static func createChannel() {
+        
+    }
 }
 
 final class AmityUIKitManagerInternal: NSObject {

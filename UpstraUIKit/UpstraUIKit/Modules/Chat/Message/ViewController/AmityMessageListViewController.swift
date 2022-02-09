@@ -175,12 +175,6 @@ private extension AmityMessageListViewController {
             navigationHeaderViewController = AmityMessageListHeaderView(viewModel: screenViewModel)
             let item = UIBarButtonItem(customView: navigationHeaderViewController)
             navigationItem.leftBarButtonItem = item
-            let image = AmityIconSet.Chat.iconSetting
-            let barButton = UIBarButtonItem(image: image,
-                                            style: .plain,
-                                            target: self,
-                                            action: #selector(didTapSetting))
-            navigationItem.rightBarButtonItem = barButton
         }
     }
     
@@ -355,6 +349,9 @@ extension AmityMessageListViewController: AmityKeyboardServiceDelegate {
             screenViewModel.action.inputSource(for: .default)
         } else {
             screenViewModel.action.toggleKeyboardVisible(visible: true)
+            screenViewModel.shouldScrollToBottom(force: true)
+            // scroll to bottom of chat when tap textview
+//            scrollTableviewToLastIndex()
         }
     }
 }
@@ -460,6 +457,7 @@ extension AmityMessageListViewController: AmityMessageListScreenViewModelDelegat
             messageViewController.tableView.reloadData()
         case .didSendText:
             composeBar.clearText()
+            screenViewModel.shouldScrollToBottom(force: true)
         case .didEditText:
             break
         case .didDelete(let indexPath):

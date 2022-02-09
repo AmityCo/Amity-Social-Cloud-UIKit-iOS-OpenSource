@@ -66,7 +66,23 @@ public class AmityCommunityHomePageViewController: AmityPageViewController {
         
         let searchItem = UIBarButtonItem(image: AmityIconSet.iconSearch, style: .plain, target: self, action: #selector(searchTap))
         searchItem.tintColor = AmityColorSet.base
-        navigationItem.rightBarButtonItem = searchItem
+        
+//        let chatItem = UIBarButtonItem(image: AmityIconSet.iconChatInCommunity, style: .plain, target: self, action: #selector(chatTap))
+//        chatItem.tintColor = AmityColorSet.base
+        
+        let chatIconView = UIButton(type: .custom)
+        chatIconView.frame = CGRect(x: 0, y: 0, width: 24, height: 24)
+        chatIconView.setBackgroundImage(AmityIconSet.iconChatInCommunity, for: .normal)
+        chatIconView.contentMode = .scaleAspectFit
+//        chatIconView.setImage(AmityIconSet.iconChatInCommunity, for: .normal)
+//        chatIconView.imageView?.contentMode = .scaleAspectFit
+        chatIconView.addTarget(self, action: #selector(chatTap), for: .touchUpInside)
+        let chatItem = UIBarButtonItem(customView: chatIconView)
+        
+//        let _ = chatItem.customView?.widthAnchor.constraint(equalToConstant: 24).isActive = true
+//        let _ = chatItem.customView?.heightAnchor.constraint(equalToConstant: 24).isActive = true
+        
+        navigationItem.rightBarButtonItems = [searchItem, chatItem]
         
         if navigationController?.viewControllers.count ?? 0 <= 1 {
             if presentingViewController != nil {
@@ -106,6 +122,13 @@ private extension AmityCommunityHomePageViewController {
         nav.modalPresentationStyle = .fullScreen
         nav.modalTransitionStyle = .crossDissolve
         present(nav, animated: true, completion: nil)
+    }
+    
+    @objc func chatTap() {
+        let chatVC = AmityRecentChatViewController.make(channelType: .community)
+        chatVC.modalPresentationStyle = .fullScreen
+        chatVC.modalTransitionStyle = .crossDissolve
+        navigationController?.pushViewController(chatVC, animated: true)
     }
     
     @objc func popToView() {

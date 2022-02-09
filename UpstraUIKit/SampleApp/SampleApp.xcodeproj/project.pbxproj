@@ -27,6 +27,7 @@
 		729CAF3E273CC8ED000AE162 /* Binding+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 729CAF3D273CC8ED000AE162 /* Binding+Extension.swift */; };
 		729CAF42273CC95B000AE162 /* EndpointManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 729CAF41273CC95B000AE162 /* EndpointManager.swift */; };
 		72AACE0B273931F100E59D55 /* EndpointsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72AACE0A273931F100E59D55 /* EndpointsView.swift */; };
+		7F7704FF27B24F4100600D85 /* ChatFromCommunityViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F7704FE27B24F4100600D85 /* ChatFromCommunityViewController.swift */; };
 		97F101F526A69FBF00AD84A1 /* CustomChannelEventHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97F101F426A69FBF00AD84A1 /* CustomChannelEventHandler.swift */; };
 		A03190A7272169C1008A85DC /* PostCreatorSettingsPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = A03190A6272169C1008A85DC /* PostCreatorSettingsPage.swift */; };
 		A0BD0B4826DDE0E30054088B /* AmityUIKitLiveStream.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A0BD0B4726DDE0E30054088B /* AmityUIKitLiveStream.framework */; };
@@ -125,6 +126,7 @@
 		729CAF3D273CC8ED000AE162 /* Binding+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Binding+Extension.swift"; sourceTree = "<group>"; };
 		729CAF41273CC95B000AE162 /* EndpointManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EndpointManager.swift; sourceTree = "<group>"; };
 		72AACE0A273931F100E59D55 /* EndpointsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EndpointsView.swift; sourceTree = "<group>"; };
+		7F7704FE27B24F4100600D85 /* ChatFromCommunityViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatFromCommunityViewController.swift; sourceTree = "<group>"; };
 		97F101F426A69FBF00AD84A1 /* CustomChannelEventHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomChannelEventHandler.swift; sourceTree = "<group>"; };
 		A03190A6272169C1008A85DC /* PostCreatorSettingsPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostCreatorSettingsPage.swift; sourceTree = "<group>"; };
 		A0BD0B3B26DDDFCC0054088B /* AmityUIKitLiveStream.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = AmityUIKitLiveStream.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -410,6 +412,7 @@
 				D495077325E637C1005C033F /* DataListViewController.swift */,
 				D4AFF23125ED1E7C002C001C /* GlobalPostsFeedViewController.swift */,
 				D4AFF23525ED1F88002C001C /* GlobalPostsDataSource.swift */,
+				7F7704FE27B24F4100600D85 /* ChatFromCommunityViewController.swift */,
 			);
 			path = Feature;
 			sourceTree = "<group>";
@@ -581,6 +584,7 @@
 				B72861D924C573B100ECC563 /* TabbarViewController.swift in Sources */,
 				D4AFF23225ED1E7C002C001C /* GlobalPostsFeedViewController.swift in Sources */,
 				0D73AC9E25DB9332000D73CA /* BirthdayPostComponent.swift in Sources */,
+				7F7704FF27B24F4100600D85 /* ChatFromCommunityViewController.swift in Sources */,
 				D4AFF1CF25ECE8AD002C001C /* PostPreviewTableViewCell.swift in Sources */,
 				D4AFF23625ED1F88002C001C /* GlobalPostsDataSource.swift in Sources */,
 				B74ADE5E24F3B026009C86DA /* UserDefaults.swift in Sources */,
