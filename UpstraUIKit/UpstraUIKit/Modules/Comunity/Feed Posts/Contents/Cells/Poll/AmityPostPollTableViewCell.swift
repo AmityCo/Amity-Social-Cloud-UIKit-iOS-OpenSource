@@ -68,13 +68,13 @@ final public class AmityPostPollTableViewCell: UITableViewCell, Nibbable, AmityP
         }
         
         statusPollLabel.text = poll.isClosed ? AmityLocalizedStringSet.Poll.Option.finalResult.localizedString : pollStatus
-        var s = ""
-        if poll.voteCount > 1 && (AmityUIKitManagerInternal.shared.amityLanguage == "en" || AmityUIKitManagerInternal.shared.amityLanguage == "ph") {
-            s = "s"
+        let actualUnit = String.localizedStringWithFormat("\(poll.voteCount)")
+        if poll.voteCount > 1 {
+            voteCountLabel.text = String.localizedStringWithFormat(AmityLocalizedStringSet.Poll.Option.voteCountTitles.localizedString, actualUnit)
         } else {
-            s = ""
+            voteCountLabel.text = String.localizedStringWithFormat(AmityLocalizedStringSet.Poll.Option.voteCountTitle.localizedString, actualUnit)
         }
-        voteCountLabel.text = "\(poll.voteCount.formatUsingAbbrevation()) \(AmityLocalizedStringSet.Poll.Option.voteCountTitle.localizedString)\(s)"
+        
         submitVoteButton.isHidden = poll.isClosed || poll.isVoted || !(post.feedType == .published)
         
         poll.answers.forEach { answer in

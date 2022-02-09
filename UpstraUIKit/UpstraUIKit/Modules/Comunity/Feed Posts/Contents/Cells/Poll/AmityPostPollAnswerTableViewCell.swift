@@ -56,14 +56,21 @@ final public class AmityPostPollAnswerTableViewCell: UITableViewCell, Nibbable {
         
         if poll.isClosed || poll.isVoted {
             
-            var s = ""
-            if poll.voteCount > 1 && (AmityUIKitManagerInternal.shared.amityLanguage == "en" || AmityUIKitManagerInternal.shared.amityLanguage == "ph") {
-                s = "s"
+            let actualUnit = String.localizedStringWithFormat("\(answer.voteCount.formatUsingAbbrevation())")
+            if poll.voteCount > 1 {
+                voteCountLabel.text = String.localizedStringWithFormat(AmityLocalizedStringSet.Poll.Option.voteCountTitles.localizedString, actualUnit)
             } else {
-                s = ""
+                voteCountLabel.text = String.localizedStringWithFormat(AmityLocalizedStringSet.Poll.Option.voteCountTitle.localizedString, actualUnit)
             }
             
-            voteCountLabel.text = "\(answer.voteCount.formatUsingAbbrevation()) \(AmityLocalizedStringSet.Poll.Option.voteCountTitle.localizedString)\(s)"
+//            var s = ""
+//            if poll.voteCount > 1 && (AmityUIKitManagerInternal.shared.amityLanguage == "en" || AmityUIKitManagerInternal.shared.amityLanguage == "ph") {
+//                s = "s"
+//            } else {
+//                s = ""
+//            }
+//            
+//            voteCountLabel.text = "\(answer.voteCount.formatUsingAbbrevation()) \(AmityLocalizedStringSet.Poll.Option.voteCountTitle.localizedString)\(s)"
             
             let voteProgress = poll.voteCount > 0 ? Double(answer.voteCount) / Double(poll.voteCount) : 0
             
@@ -94,7 +101,13 @@ final public class AmityPostPollAnswerTableViewCell: UITableViewCell, Nibbable {
         if poll.isClosed {
             titleLabel.text = AmityLocalizedStringSet.Poll.Option.viewFullResult.localizedString
         } else {
-            titleLabel.text = "\(number) \(AmityLocalizedStringSet.Poll.Option.moreOption.localizedString)"
+            let actualUnit = String.localizedStringWithFormat("\(number)")
+            if number > 1 {
+                titleLabel.text = String.localizedStringWithFormat(AmityLocalizedStringSet.Poll.Option.moreOptions.localizedString, actualUnit)
+            } else {
+                titleLabel.text = String.localizedStringWithFormat(AmityLocalizedStringSet.Poll.Option.moreOption.localizedString, actualUnit)
+            }
+           
         }
         
         titleLabel.textAlignment = .center

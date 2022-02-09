@@ -39,7 +39,7 @@ extension String {
         case "vn":
             return NSLocalizedString(self, tableName: "LocalizedEnglish", bundle: AmityUIKitManager.bundle, value: "", comment: "")
         case "my":
-            return NSLocalizedString(self, tableName: "LocalizedMyanmar", bundle: AmityUIKitManager.bundle, value: "", comment: "")
+            return NSLocalizedString(self, tableName: "LocalizedEnglish", bundle: AmityUIKitManager.bundle, value: "", comment: "")
         case "en":
             return NSLocalizedString(self, tableName: "LocalizedEnglish", bundle: AmityUIKitManager.bundle, value: "", comment: "")
         default:

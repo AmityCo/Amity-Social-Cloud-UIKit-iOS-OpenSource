@@ -454,11 +454,11 @@ public struct AmityLocalizedStringSet {
     enum Poll {
         
         enum Create {
-            static let questionTitle = "poll_create_question_title"
+            static let questionTitle = "amity_poll_question"
             static let questionPlaceholder = "poll_create_question_placeholder"
             static let answerTitle = "poll_create_answer_title"
             static let answerDesc = "poll_create_answer_desc"
-            static let answerPlaceholder = "poll_create_answer_placeholder"
+            static let answerPlaceholder = "poll_create_answer_button"
             static let answerButton = "poll_create_answer_button"
             static let multipleSelectionTitle = "poll_create_multiple_selection_title"
             static let multipleSelectionDesc = "poll_create_multiple_selection_desc"
@@ -472,20 +472,26 @@ public struct AmityLocalizedStringSet {
         enum Option {
             static let closeTitle = "poll_close_title"
             static let deleteTitle = "poll_delete_title"
-            static let moreOption = "more options";
+            static let moreOption = "amity_poll_expand";
+            static let moreOptions = "amity_poll_expands";
             static let viewFullResult = "poll_view_full_result"
-            static let alertCloseTitle = "poll_alert_close_title"
+            static let alertCloseTitle = "amity_close_poll_title"
             static let alertCloseDesc = "poll_alert_close_desc"
-            static let alertDeleteTitle = "poll_alert_delete_title"
+            static let alertDeleteTitle = "amity_delete_poll_title"
             static let alertDeleteDesc = "poll_alert_delete_desc"
             static let submitVoteTitle = "poll_submit_vote_title"
-            static let voteCountTitle = "poll_vote_count_title"
+            static let voteCountTitle = "amity_poll_vote_count"
+            static let voteCountTitles = "amity_poll_vote_counts"
             static let finalResult = "poll_final_result"
             static let openForVoting = "poll_open_for_voting"
             
-            static let pollEndDurationDays = "poll_ends_in_days"
-            static let pollEndDurationMinutes = "poll_ends_in_minutes"
-            static let pollEndDurationHours = "poll_ends_in_hours"
+            static let pollEndDurationDay = "amity_poll_status_closed_in_day"
+            static let pollEndDurationDays = "amity_poll_status_closed_in_days"
+            static let pollEndDurationMinute = "amity_poll_status_closed_in_minute"
+            static let pollEndDurationMinutes = "amity_poll_status_closed_in_minutes"
+            static let pollEndDurationHour = "amity_poll_status_closed_in_hour"
+            static let pollEndDurationHours = "amity_poll_status_closed_in_hours"
+            
         }
     }
     

@@ -56,33 +56,40 @@ extension PollStatus {
         
         private var baseInfo: String {
             switch self {
-            case .days:
-                return AmityLocalizedStringSet.Poll.Option.pollEndDurationDays.localizedString
-            case .hours:
-                return AmityLocalizedStringSet.Poll.Option.pollEndDurationHours.localizedString
-            case .minutes:
-                return AmityLocalizedStringSet.Poll.Option.pollEndDurationMinutes.localizedString
+            case .days(let count):
+                if count > 1 {
+                    return AmityLocalizedStringSet.Poll.Option.pollEndDurationDays.localizedString
+                } else {
+                    return AmityLocalizedStringSet.Poll.Option.pollEndDurationDay.localizedString
+                }
+            case .hours(let count):
+                if count > 1 {
+                    return AmityLocalizedStringSet.Poll.Option.pollEndDurationHours.localizedString
+                } else {
+                    return AmityLocalizedStringSet.Poll.Option.pollEndDurationHour.localizedString
+                }
+            case .minutes(let count):
+                if count > 1 {
+                    return AmityLocalizedStringSet.Poll.Option.pollEndDurationMinutes.localizedString
+                } else {
+                    return AmityLocalizedStringSet.Poll.Option.pollEndDurationMinute.localizedString
+                }
             }
         }
         
         var info: String {
             switch self {
             case .days(let remainingDays):
-                let baseUnit = remainingDays > 1 ? AmityLocalizedStringSet.Unit.dayPlural.localizedString : AmityLocalizedStringSet.Unit.daySingular.localizedString
-                
-                let actualUnit = String.localizedStringWithFormat(baseUnit, "\(remainingDays)")
+                let actualUnit = String.localizedStringWithFormat("\(remainingDays)")
                 return String.localizedStringWithFormat(baseInfo, actualUnit)
                 
             case .hours(let remainingHours):
-                let baseUnit = remainingHours > 1 ? AmityLocalizedStringSet.Unit.hourPlural.localizedString : AmityLocalizedStringSet.Unit.hourSingular.localizedString
-                
-                let actualUnit = String.localizedStringWithFormat(baseUnit, "\(remainingHours)")
+              
+                let actualUnit = String.localizedStringWithFormat("\(remainingHours)")
                 return String.localizedStringWithFormat(baseInfo, actualUnit)
                 
             case .minutes(let remainingMinutes):
-                let baseUnit = remainingMinutes > 1 ? AmityLocalizedStringSet.Unit.minutePlural.localizedString: AmityLocalizedStringSet.Unit.minuteSingular.localizedString
-                
-                let actualUnit = String.localizedStringWithFormat(baseUnit, "\(remainingMinutes)")
+                let actualUnit = String.localizedStringWithFormat("\(remainingMinutes)")
                 return String.localizedStringWithFormat(baseInfo, actualUnit)
             }
         }
