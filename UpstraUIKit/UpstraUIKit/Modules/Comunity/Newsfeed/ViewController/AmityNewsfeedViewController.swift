@@ -149,9 +149,11 @@ extension AmityNewsfeedViewController: AmityNewsFeedScreenViewModelDelegate {
     func didFetchUserProfile(user: AmityUser) {
         switch AmityUIKitManagerInternal.shared.envByApiKey {
         case .staging:
-            user.roles.filter{ $0 == AmityUIKitManagerInternal.shared.stagingLiveRoleID}.count > 0 ? (permissionCanLive = true) : (permissionCanLive = false)
+            let summaryRoles = user.roles + AmityUIKitManagerInternal.shared.stagingLiveRoleID
+            Array(Dictionary(grouping: summaryRoles, by: {$0}).filter { $1.count > 1 }.keys).count > 0 ? (permissionCanLive = true) : (permissionCanLive = false)
         case .production:
-            user.roles.filter{ $0 == AmityUIKitManagerInternal.shared.productionLiveRoleID}.count > 0 ? (permissionCanLive = true) : (permissionCanLive = false)
+            let summaryRoles = user.roles + AmityUIKitManagerInternal.shared.productionLiveRoleID
+            Array(Dictionary(grouping: summaryRoles, by: {$0}).filter { $1.count > 1 }.keys).count > 0 ? (permissionCanLive = true) : (permissionCanLive = false)
         }
     }
     

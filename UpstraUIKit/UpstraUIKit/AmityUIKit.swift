@@ -142,12 +142,22 @@ final class AmityUIKitManagerInternal: NSObject {
     private var socketUrl: String = ""
     private var language: String = ""
     
-    var stagingLiveRoleID: String {
-        return "251a6a45-13f3-4c45-8bb5-bebd5d2a8819"
+    var stagingLiveRoleID: [String] {
+        return ["251a6a45-13f3-4c45-8bb5-bebd5d2a8819",
+                "84ef8e1e-c26a-4e7c-bff9-9105dcacb8dd",
+                "f60a11c7-8832-42b3-9f27-bba09d7c7bd8",
+                "13daf123-326d-441f-a7ad-eab376f2ed47",
+                "5fc45a0d-220b-43bf-bd37-cd40d1fb3798",
+                "4d1269fd-3411-4f71-9e3d-b32828dbf601"]
     }
     
-    var productionLiveRoleID: String {
-        return "df29018e-49fb-4197-b53b-0267464b4301"
+    var productionLiveRoleID: [String] {
+        return ["df29018e-49fb-4197-b53b-0267464b4301",
+                "3010519a-f08a-4d21-8075-1be9414f8f47",
+                "955a4648-319b-420a-b97a-b44f6e69dad5",
+                "0e5f90c6-754a-465f-b62e-41df0f95c402",
+                "884895d3-ec5d-445b-bbe2-5f4f300162ea",
+                "364ef67b-7780-47a6-bbcb-0b1cc8c8c6dd"]
     }
     
     private(set) var fileService = AmityFileService()
