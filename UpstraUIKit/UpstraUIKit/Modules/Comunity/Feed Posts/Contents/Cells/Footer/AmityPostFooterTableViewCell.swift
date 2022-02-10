@@ -92,7 +92,7 @@ public final class AmityPostFooterTableViewCell: UITableViewCell, Nibbable, Amit
         likeButton.setTintColor(AmityColorSet.base.blend(.shade2), for: .normal)
         likeButton.setTitleFont(AmityFontSet.bodyBold)
         likeButton.setInsets(forContentPadding: .zero, imageTitlePadding: 4)
-        likeButton.titleLabel?.numberOfLines = 0
+//        likeButton.titleLabel?.numberOfLines = 0
         
         // like badge
         likeLabel.textColor = AmityColorSet.base.blend(.shade2)
@@ -107,7 +107,7 @@ public final class AmityPostFooterTableViewCell: UITableViewCell, Nibbable, Amit
         commentButton.setTintColor(AmityColorSet.base.blend(.shade2), for: .normal)
         commentButton.setTitleFont(AmityFontSet.bodyBold)
         commentButton.setInsets(forContentPadding: .zero, imageTitlePadding: 4)
-        commentButton.titleLabel?.numberOfLines = 0
+//        commentButton.titleLabel?.numberOfLines = 0
         
         // comment badge
         commentLabel.textColor = AmityColorSet.base.blend(.shade2)

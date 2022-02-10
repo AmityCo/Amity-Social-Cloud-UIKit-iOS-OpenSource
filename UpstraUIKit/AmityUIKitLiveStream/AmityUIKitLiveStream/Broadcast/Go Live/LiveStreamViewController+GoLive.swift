@@ -17,7 +17,7 @@ extension LiveStreamBroadcastViewController {
         // Validate Inputs
         switch validateInputs() {
         case .failure(let error):
-            presentErrorDialogue(title: AmityLocalizedStringSet.LiveStream.Alert.imputError, message: error.localizedDescription)
+            presentErrorDialogue(title: AmityLocalizedStringSet.LiveStream.Alert.imputError.localizedString, message: error.localizedDescription)
             return
         case .success:
             break
