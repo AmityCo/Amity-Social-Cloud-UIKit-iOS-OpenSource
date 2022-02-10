@@ -30,14 +30,6 @@ final class AmityPollCreatorScreenViewModel: AmityPollCreatorScreenViewModelType
         self.postTarget = postTarget
     }
     
-    private func validateFieldsMandatory() {
-        guard pollQuestion != "", answersItem.count > 1, answersItem.filter({ $0 == ""}).isEmpty else {
-            delegate?.screenViewModelCanPost(false)
-            return
-        }
-        delegate?.screenViewModelCanPost(true)
-    }
-    
     func validateFieldsIsChange() {
         let result = (pollQuestion != "") || (!answersItem.isEmpty) || (isMultipleSelection) || (timeMilliseconds != 0)
         delegate?.screenViewModelFieldsChange(result)
@@ -49,6 +41,24 @@ extension AmityPollCreatorScreenViewModel {
     
     func getAnswer(at indexPath: IndexPath) -> String {
         return answersItem[indexPath.row]
+    }
+}
+
+// MARK: - Private methods
+private extension AmityPollCreatorScreenViewModel {
+    private func validateFieldsMandatory() {
+        guard pollQuestion != "", answersItem.count > 1, answersItem.filter({ $0 == ""}).isEmpty else {
+            delegate?.screenViewModelCanPost(false)
+            return
+        }
+        delegate?.screenViewModelCanPost(true)
+    }
+    
+    private func handleResponse(post: AmityPost?, error: Error?) {
+        let success = post != nil
+        Log.add("Poll post created: \(success) Error: \(String(describing: error))")
+        delegate?.screenViewModelDidCreatePost(self, post: post, error: error)
+        NotificationCenter.default.post(name: NSNotification.Name.Post.didCreate, object: nil)
     }
 }
 
@@ -91,7 +101,7 @@ extension AmityPollCreatorScreenViewModel {
         completion()
     }
     
-    func createPoll() {
+    func createPoll(withMetadata metadata: [String: Any]?, andMentionees mentionees: AmityMentioneesBuilder?) {
         let builder = AmityPollCreationBuilder()
         
         for item in answersItem {
@@ -107,26 +117,26 @@ extension AmityPollCreatorScreenViewModel {
                 let pollPostBuilder = AmityPollPostBuilder()
                 pollPostBuilder.setText(strongSelf.pollQuestion)
                 pollPostBuilder.setPollId(pollId)
+                var targetId: String? = nil
+                var targetType = AmityPostTargetType.user
+                
                 switch strongSelf.postTarget {
-                case .myFeed:
-                    self?.postRepository.createPost(pollPostBuilder, targetId: nil, targetType: .user, completion: { post, error in
-                        guard let strongSelf = self else { return }
-                        let success = post != nil
-                        Log.add("Text post created: \(success) Error: \(String(describing: error))")
-                        strongSelf.delegate?.screenViewModelDidCreatePost(strongSelf, post: post, error: error)
-                        NotificationCenter.default.post(name: NSNotification.Name.Post.didCreate, object: nil)
-                    })
                 case .community(let object):
-                    self?.postRepository.createPost(pollPostBuilder, targetId: object.communityId, targetType: .community, completion: { post, error in
-                        guard let strongSelf = self else { return }
-                        let success = post != nil
-                        Log.add("Text post created: \(success) Error: \(String(describing: error))")
-                        strongSelf.delegate?.screenViewModelDidCreatePost(strongSelf, post: post, error: error)
-                        NotificationCenter.default.post(name: NSNotification.Name.Post.didCreate, object: nil)
+                    targetId = object.communityId
+                    targetType = .community
+                default: break
+                }
+                
+                if let metadata = metadata, let mentionees = mentionees {
+                    self?.postRepository.createPost(pollPostBuilder, targetId: targetId, targetType: targetType, metadata: metadata, mentionees: mentionees, completion: { post, error in
+                        self?.handleResponse(post: post, error: error)
+                    })
+                } else {
+                    self?.postRepository.createPost(pollPostBuilder, targetId: targetId, targetType: targetType, completion: { post, error in
+                        self?.handleResponse(post: post, error: error)
                     })
                 }
             }
         }
     }
-    
 }

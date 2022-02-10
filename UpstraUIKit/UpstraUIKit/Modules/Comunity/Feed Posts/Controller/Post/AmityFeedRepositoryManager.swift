@@ -11,6 +11,7 @@ import AmitySDK
 
 public enum AmityPostFeedType: Equatable {
     case globalFeed
+    case customPostRankingGlobalFeed
     case myFeed
     case userFeed(userId: String)
     case communityFeed(communityId: String)
@@ -47,6 +48,8 @@ final class AmityFeedRepositoryManager: AmityFeedRepositoryManagerProtocol {
         switch type {
         case .globalFeed:
             collection = repository.getGlobalFeed()
+        case .customPostRankingGlobalFeed:
+            collection = repository.getCustomPostRankingGlobalfeed()
         case .myFeed:
             collection = repository.getMyFeedSorted(by: .lastCreated, includeDeleted: false)
         case .userFeed(let userId):

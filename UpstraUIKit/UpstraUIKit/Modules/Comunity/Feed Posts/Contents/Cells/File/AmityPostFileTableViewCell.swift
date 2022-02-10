@@ -42,8 +42,8 @@ public final class AmityPostFileTableViewCell: UITableViewCell, Nibbable, AmityP
         self.indexPath = indexPath
         fileTableView.configure(files: post.files)
         
-        if let metadata = post.metadata {
-            let attributes = AmityMentionManager.getAttributes(fromText: post.text, withMetadata: metadata)
+        if let metadata = post.metadata, let mentionees = post.mentionees {
+            let attributes = AmityMentionManager.getAttributes(fromText: post.text, withMetadata: metadata, mentionees: mentionees)
             contentLabel.setText(post.text, withAttributes: attributes)
         } else {
             contentLabel.text = post.text

@@ -60,13 +60,12 @@ final class AmityCreateCommunityScreenViewModel: AmityCreateCommunityScreenViewM
     }
     
     private var isRequiredFieldExisted: Bool {
-        let isRequiredFieldExisted = !displayName.trimmingCharacters(in: .whitespaces).isEmpty && selectedCategoryId != nil
-        
         if let community = community.value {
             // Edit community
             let isValueChanged = (displayName != community.displayName) || (description != community.description) || (community.isPublic != isPublic) || (imageAvatar != nil) || (community.categoryId != selectedCategoryId)
-            return isRequiredFieldExisted && isValueChanged
+            return !displayName.trimmingCharacters(in: .whitespaces).isEmpty && isValueChanged
         } else {
+            let isRequiredFieldExisted = !displayName.trimmingCharacters(in: .whitespaces).isEmpty && selectedCategoryId != nil
             if isPublic {
                 // Create public community
                 return isRequiredFieldExisted

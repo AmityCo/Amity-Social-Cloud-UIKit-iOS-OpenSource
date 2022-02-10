@@ -10,6 +10,7 @@ import UIKit
 
 protocol AmityPollCreatorCellProtocolDelegate: AnyObject {
     func didPerformAction(_ cell: AmityPollCreatorCellProtocol, action: AmityPollCreatorCellAction)
+    func textView(_ textView: AmityTextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool
 }
 
 protocol AmityPollCreatorCellProtocol {
@@ -22,6 +23,7 @@ protocol AmityPollCreatorCellProtocol {
 
 enum AmityPollCreatorCellAction {
     case textViewDidChange(textView: AmityTextView)
+    case textViewDidChangeSelection(textView: AmityTextView)
     case multipleSelectionChange(isMultiple: Bool)
     case selectSchedule
     case addAnswerOption

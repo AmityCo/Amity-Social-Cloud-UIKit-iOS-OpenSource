@@ -8,25 +8,30 @@
 
 import UIKit
 
-/// A view controller for providing global post feed which consist of community feed and my own feed..
+/// A view controller for providing global post feed which consist of community feed and my own feed.
 public class AmityGlobalFeedViewController: AmityViewController {
     
-    private let feedViewController: AmityFeedViewController
+    private var feedViewController: AmityFeedViewController!
     private let createPostButton: AmityFloatingButton = AmityFloatingButton()
     
     // MARK: - Initializer
     
-    private init() {
-        feedViewController = AmityFeedViewController.make(feedType: .globalFeed)
-        super.init(nibName: nil, bundle: nil)
-    }
-    
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    
+    /// Initialize a global feed showing posts.
+    /// The feed consists of user posts, participated community posts and connected user posts.
     public static func make() -> AmityGlobalFeedViewController {
-        return AmityGlobalFeedViewController()
+        let vc = AmityGlobalFeedViewController(nibName: nil, bundle: nil)
+        vc.feedViewController = AmityFeedViewController.make(feedType: .globalFeed)
+        return vc
+    }
+    
+    /// Initialize a global feed showing posts with customizable ranking sorting.
+    /// The feed eed consists of user posts, participated community posts and connected user posts.
+    ///
+    /// The custom post ranking needs to be enabled on server settings.
+    public static func makeCustomPostRanking() -> AmityGlobalFeedViewController {
+        let vc = AmityGlobalFeedViewController(nibName: nil, bundle: nil)
+        vc.feedViewController = AmityFeedViewController.make(feedType: .customPostRankingGlobalFeed)
+        return vc
     }
     
     // MARK: - View's life cycle

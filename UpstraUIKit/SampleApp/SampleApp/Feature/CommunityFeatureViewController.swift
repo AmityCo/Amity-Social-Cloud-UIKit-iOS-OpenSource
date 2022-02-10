@@ -17,6 +17,7 @@ class CommunityFeatureViewController: UIViewController {
         case home
         case newsfeed
         case globalFeed
+        case customPostRankingGlobalFeed
         case myProfile
         case postCreator
         case multipleFeeds
@@ -29,6 +30,8 @@ class CommunityFeatureViewController: UIViewController {
                 return "Newsfeed (GlobalFeed + MyCommunity)"
             case .globalFeed:
                 return "GlobalFeed"
+            case .customPostRankingGlobalFeed:
+                return "Custom Post Ranking Global Feed"
             case .myProfile:
                 return "My Profile"
             case .postCreator:
@@ -99,19 +102,34 @@ extension CommunityFeatureViewController: UITableViewDelegate {
         
         switch FeatureList.allCases[indexPath.row] {
         case .home:
-            let homepage = AmityCommunityHomePageViewController.make()
-            navigationController?.pushViewController(homepage, animated: true)
+            
             AmityFeedUISettings.shared.register(UINib(nibName: "AmityPostBirthdayTableViewCell", bundle: nil), forCellReuseIdentifier: "AmityPostBirthdayTableViewCell")
             AmityFeedUISettings.shared.register(UINib(nibName: "AmityPostThumbsupTableViewCell", bundle: nil), forCellReuseIdentifier: "AmityPostThumbsupTableViewCell")
             AmityFeedUISettings.shared.register(UINib(nibName: "AmityPostNewJoinerTableViewCell", bundle: nil), forCellReuseIdentifier: "AmityPostNewJoinerTableViewCell")
+            
             AmityFeedUISettings.shared.delegate = self
             AmityFeedUISettings.shared.dataSource = self
+            
+            let homepage = AmityCommunityHomePageViewController.make()
+            let navigationController = UINavigationController(rootViewController: homepage)
+            navigationController.modalPresentationStyle = .fullScreen
+            present(navigationController, animated: true, completion: nil)
+            
         case .newsfeed:
-            let newsfeedViewController = AmityNewsfeedViewController.make()
-            navigationController?.pushViewController(newsfeedViewController, animated: true)
+            let newsfeedPage = AmityNewsfeedViewController.make()
+            let navigationController = UINavigationController(rootViewController: newsfeedPage)
+            navigationController.modalPresentationStyle = .fullScreen
+            present(navigationController, animated: true, completion: nil)
         case .globalFeed:
-            let feedViewController = AmityGlobalFeedViewController.make()
-            navigationController?.pushViewController(feedViewController, animated: true)
+            let globalFeedPage = AmityGlobalFeedViewController.make()
+            let navigationController = UINavigationController(rootViewController: globalFeedPage)
+            navigationController.modalPresentationStyle = .fullScreen
+            present(navigationController, animated: true, completion: nil)
+        case .customPostRankingGlobalFeed:
+            let globalFeedPage = AmityGlobalFeedViewController.makeCustomPostRanking()
+            let navigationController = UINavigationController(rootViewController: globalFeedPage)
+            navigationController.modalPresentationStyle = .fullScreen
+            present(navigationController, animated: true, completion: nil)
         case .myProfile:
             let myUserProfileViewController = AmityUserProfilePageViewController.make(withUserId: AmityUIKitManager.client.currentUserId ?? "")
             navigationController?.pushViewController(myUserProfileViewController, animated: true)

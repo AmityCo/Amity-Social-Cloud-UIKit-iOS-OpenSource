@@ -34,7 +34,7 @@ protocol AmityPollCreatorScreenViewModelAction {
     func updateAnswer(_ text: String?, at indexPath: IndexPath?, completion: (() -> Void)?)
     func deleteAnswer(at indexPath: IndexPath?, completion: (() -> Void))
     
-    func createPoll()
+    func createPoll(withMetadata metadata: [String: Any]?, andMentionees mentionees: AmityMentioneesBuilder?)
     func validateFieldsIsChange()
 }
 

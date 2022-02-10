@@ -45,8 +45,8 @@ public final class AmityPostGalleryTableViewCell: UITableViewCell, Nibbable, Ami
         self.indexPath = indexPath
         galleryCollectionView.configure(medias: post.medias)
         
-        if let metadata = post.metadata {
-            let attributes = AmityMentionManager.getAttributes(fromText: post.text, withMetadata: metadata)
+        if let metadata = post.metadata, let mentionees = post.mentionees {
+            let attributes = AmityMentionManager.getAttributes(fromText: post.text, withMetadata: metadata, mentionees: mentionees)
             contentLabel.setText(post.text, withAttributes: attributes)
         } else {
             contentLabel.text = post.text

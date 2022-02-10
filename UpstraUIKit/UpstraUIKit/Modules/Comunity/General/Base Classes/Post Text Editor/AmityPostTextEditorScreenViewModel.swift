@@ -355,7 +355,7 @@ class AmityPostTextEditorScreenViewModel: AmityPostTextEditorScreenViewModelType
      To delete any media, we need to remove the child `AmityPost` instance of that media.
      */
     private func deleteChildPost(postId: String, parentId: String, completion: @escaping (_ isSuccess: Bool, Error?) -> Void) {
-        postrepository.deletePost(withPostId: postId, parentId: parentId) { (isSuccess, error) in
+        postrepository.deletePost(withPostId: postId, parentId: parentId, hardDelete: false) { (isSuccess, error) in
             completion(isSuccess, error)
         }
     }

@@ -55,7 +55,12 @@ final public class AmityPostPollTableViewCell: UITableViewCell, Nibbable, AmityP
         self.indexPath = indexPath
         
         guard let poll = post.poll else { return }
-        titlePollLabel.text = poll.question
+        if let metadata = post.metadata, let mentionees = post.mentionees {
+            let attributes = AmityMentionManager.getAttributes(fromText: poll.question, withMetadata: metadata, mentionees: mentionees)
+            titlePollLabel.setText(poll.question, withAttributes: attributes)
+        } else {
+            titlePollLabel.text = poll.question
+        }
         
         var pollStatus: String = AmityLocalizedStringSet.Poll.Option.openForVoting.localizedString
         if !poll.isClosed && poll.closedIn > 0 {
@@ -270,5 +275,6 @@ extension AmityPostPollTableViewCell: AmityExpandableLabelDelegate {
     }
 
     public func didTapOnMention(_ label: AmityExpandableLabel, withUserId userId: String) {
+        performAction(action: .tapOnMentionWithUserId(userId: userId))
     }
 }

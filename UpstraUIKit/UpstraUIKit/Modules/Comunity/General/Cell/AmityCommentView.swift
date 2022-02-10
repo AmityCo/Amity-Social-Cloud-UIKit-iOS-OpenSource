@@ -120,8 +120,8 @@ class AmityCommentView: AmityView {
             bannedImageView.image = AmityIconSet.CommunitySettings.iconCommunitySettingBanned
         }
         
-        if let metadata = comment.metadata {
-            let attributes = AmityMentionManager.getAttributes(fromText: comment.text, withMetadata: metadata)
+        if let metadata = comment.metadata, let mentionees = comment.mentionees {
+            let attributes = AmityMentionManager.getAttributes(fromText: comment.text, withMetadata: metadata, mentionees: mentionees)
             contentLabel.setText(comment.text, withAttributes: attributes)
         } else {
             contentLabel.text = comment.text
