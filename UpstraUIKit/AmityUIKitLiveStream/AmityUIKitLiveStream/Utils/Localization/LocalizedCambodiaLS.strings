@@ -1,0 +1,38 @@
+/* 
+  LocalizedCambodiaLS.strings
+  AmityUIKitLiveStream
+
+  Created by PrInCeInFiNiTy on 10/2/2565 BE.
+  
+*/
+"amity_video_stream_title" = "ការផ្សាយ​ផ្ទាល់";
+"amity_video_stream_live" = "ផ្សាយផ្ទាល់";
+"amity_video_stream_recorded" = "ការថតទុក";
+"amity_video_stream_ended_title" = "ការផ្សាយបន្តផ្ទាល់នេះបានបញ្ចប់";
+"amity_video_stream_ended_description" = "ការផ្សាយបន្តផ្ទាល់ដែលបានបញ្ចប់ នឹងមានបន្តិចទៀតនេះ";
+"amity_video_stream_thumbnail_change" = "ផ្លាស់ប្តូររូបភាព Cover";
+"amity_video_stream_thumbnail_remove" = "លុបរូបភាព Cover";
+"amity_video_stream_unavailable_description" = "ការផ្សាយបន្តផ្ទាល់នេះមិនដំណើរការទេឥឡូវនេះ";
+"amity_video_stream_go_live" = "បន្តផ្ទាល់";
+"amity_video_stream_title_hint" = "ចំណងជើងផ្សាយផ្ទាល់";
+"amity_video_stream_description_hint" = "​ដើម្បី​បន្ថែម​ការ​ពិពណ៌នា​ប្រកាស...";
+"amity_video_stream_connecting" = "កំពុងភ្ជាប់";
+"amity_video_stream_live_with_time" = "ផ្សាយផ្ទាល់ %@: %@";
+"amity_video_stream_finish" = "បញ្ចប់";
+"amity_video_stream_stop_confirmation_title" = "បញ្ឈប់ការផ្សាយបន្តផ្ទាល់";
+"amity_video_stream_stop_confirmation_description" = "តើ​អ្នក​ប្រាកដ​ជា​ចង់​បញ្ឈប់​ការ​ផ្សាយ​ឬ?";
+"amity_video_stream_player_error" = "សូមអភ័យទោស មិនអាចចាក់ផ្សាយការបន្តផ្ទាល់នេះបានទេ";
+"amity_general_stop" = "ឈប់";
+"amity_video_stream_ending_live_stream" = "បញ្ចប់ការផ្សាយបន្តផ្ទាល់";
+"amity_video_stream_select_cover" = "ជ្រើសរើស Cover";
+"amity_video_stream_input_error" = "កំហុសក្នុងការបញ្ចូល";
+"amity_video_stream_title_can_not_be_empty" = "ចំណងជើងមិនអាចទទេបានទេ";
+"amity_video_stream_title_can_not_be_empty" = "ការពណ៌នាមិនអាចទទេបានទេ";
+"amity_video_stream_unable_to_find_live_stream_data" = "មិន​អាច​ស្វែង​រក​ទិន្នន័យ​ការ​ផ្សាយ​បន្ត​ផ្ទាល់​នៅ​ក្នុង​ការ​ប្រកាស";
+"amity_video_stream_unable_to_find_post_data" = "មិនអាចស្វែងរកទិន្នន័យប្រកាសបានទេ";
+"amity_video_stream_unable_to_find_create_stream" = "មិន​អាច​រក​ឃើញ​លទ្ធផល​នៃ​ការ​ផ្សាយ";
+"amity_video_stream_permision_requires" = "ទាមទារការអនុញ្ញាត";
+"amity_video_stream_grant_permision_camera_and_microphone" = "សូមផ្តល់ការអនុញ្ញាតប្រើប្រាស់កាមេរ៉ា និងមីក្រូហ្វូននៅក្នុងការកំណត់ iOS";
+"amity_video_stream_title_photo" = "រូបថត";
+"amirt_video_stream_please_allow_access_photo" = "សូមអនុញ្ញាតឱ្យចូលប្រើបណ្ណាល័យរូបថត";
+"amirt_video_stream_please_allow_access_camera" = "សូមអនុញ្ញាតឱ្យចូលប្រើបណ្ណាល័យកាមេរ៉ា";

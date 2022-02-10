@@ -33,6 +33,12 @@
 		A0BD0B5E26DF37160054088B /* LiveStreamBroadcastVC+Keyboard.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0BD0B5D26DF37160054088B /* LiveStreamBroadcastVC+Keyboard.swift */; };
 		A0BD0B6026DF377A0054088B /* LiveStreamBroadcastVC+CoverImagePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0BD0B5F26DF377A0054088B /* LiveStreamBroadcastVC+CoverImagePicker.swift */; };
 		A0BD0B6226DF3A3F0054088B /* LiveStreamBroadcast+UIContainerState.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0BD0B6126DF3A3F0054088B /* LiveStreamBroadcast+UIContainerState.swift */; };
+		FC542FDB27B4C5E900DF3B8E /* LocalizedEnglishLS.strings in Resources */ = {isa = PBXBuildFile; fileRef = FC542FDA27B4C5E900DF3B8E /* LocalizedEnglishLS.strings */; };
+		FC542FDD27B4C61600DF3B8E /* LocalizedThaiLS.strings in Resources */ = {isa = PBXBuildFile; fileRef = FC542FDC27B4C61600DF3B8E /* LocalizedThaiLS.strings */; };
+		FC542FDF27B4C62E00DF3B8E /* LocalizedIndonesiaLS.strings in Resources */ = {isa = PBXBuildFile; fileRef = FC542FDE27B4C62E00DF3B8E /* LocalizedIndonesiaLS.strings */; };
+		FC542FE127B4C64400DF3B8E /* LocalizedCambodiaLS.strings in Resources */ = {isa = PBXBuildFile; fileRef = FC542FE027B4C64400DF3B8E /* LocalizedCambodiaLS.strings */; };
+		FC542FE327B4C66700DF3B8E /* LocalizedPhilippinLS.strings in Resources */ = {isa = PBXBuildFile; fileRef = FC542FE227B4C66700DF3B8E /* LocalizedPhilippinLS.strings */; };
+		FC542FE527B4C68000DF3B8E /* LocalizedMyanmarLS.strings in Resources */ = {isa = PBXBuildFile; fileRef = FC542FE427B4C68000DF3B8E /* LocalizedMyanmarLS.strings */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -64,6 +70,12 @@
 		A0BD0B5D26DF37160054088B /* LiveStreamBroadcastVC+Keyboard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "LiveStreamBroadcastVC+Keyboard.swift"; sourceTree = "<group>"; };
 		A0BD0B5F26DF377A0054088B /* LiveStreamBroadcastVC+CoverImagePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "LiveStreamBroadcastVC+CoverImagePicker.swift"; sourceTree = "<group>"; };
 		A0BD0B6126DF3A3F0054088B /* LiveStreamBroadcast+UIContainerState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "LiveStreamBroadcast+UIContainerState.swift"; sourceTree = "<group>"; };
+		FC542FDA27B4C5E900DF3B8E /* LocalizedEnglishLS.strings */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; path = LocalizedEnglishLS.strings; sourceTree = "<group>"; };
+		FC542FDC27B4C61600DF3B8E /* LocalizedThaiLS.strings */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; path = LocalizedThaiLS.strings; sourceTree = "<group>"; };
+		FC542FDE27B4C62E00DF3B8E /* LocalizedIndonesiaLS.strings */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; path = LocalizedIndonesiaLS.strings; sourceTree = "<group>"; };
+		FC542FE027B4C64400DF3B8E /* LocalizedCambodiaLS.strings */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; path = LocalizedCambodiaLS.strings; sourceTree = "<group>"; };
+		FC542FE227B4C66700DF3B8E /* LocalizedPhilippinLS.strings */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; path = LocalizedPhilippinLS.strings; sourceTree = "<group>"; };
+		FC542FE427B4C68000DF3B8E /* LocalizedMyanmarLS.strings */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; path = LocalizedMyanmarLS.strings; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -189,6 +201,7 @@
 		A0BD0B5426DE22E60054088B /* Utils */ = {
 			isa = PBXGroup;
 			children = (
+				FC542FCD27B4C49E00DF3B8E /* Localization */,
 				A0B68B3426E077CD007D7B5B /* Operation */,
 				A0BD0B5826DE26700054088B /* Error */,
 				A0BD0B5726DE23010054088B /* UIViewController */,
@@ -210,6 +223,19 @@
 				A0BD0B5926DE26940054088B /* GeneralError.swift */,
 			);
 			path = Error;
+			sourceTree = "<group>";
+		};
+		FC542FCD27B4C49E00DF3B8E /* Localization */ = {
+			isa = PBXGroup;
+			children = (
+				FC542FDA27B4C5E900DF3B8E /* LocalizedEnglishLS.strings */,
+				FC542FDC27B4C61600DF3B8E /* LocalizedThaiLS.strings */,
+				FC542FDE27B4C62E00DF3B8E /* LocalizedIndonesiaLS.strings */,
+				FC542FE027B4C64400DF3B8E /* LocalizedCambodiaLS.strings */,
+				FC542FE227B4C66700DF3B8E /* LocalizedPhilippinLS.strings */,
+				FC542FE427B4C68000DF3B8E /* LocalizedMyanmarLS.strings */,
+			);
+			path = Localization;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -285,9 +311,15 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				FC542FDB27B4C5E900DF3B8E /* LocalizedEnglishLS.strings in Resources */,
+				FC542FDD27B4C61600DF3B8E /* LocalizedThaiLS.strings in Resources */,
+				FC542FE527B4C68000DF3B8E /* LocalizedMyanmarLS.strings in Resources */,
 				A0BD0B4D26DDEFB40054088B /* Assets.xcassets in Resources */,
+				FC542FE127B4C64400DF3B8E /* LocalizedCambodiaLS.strings in Resources */,
 				A0BD0B3026DCE5800054088B /* LiveStreamBroadcastViewController.xib in Resources */,
+				FC542FDF27B4C62E00DF3B8E /* LocalizedIndonesiaLS.strings in Resources */,
 				A0B68B6526E73522007D7B5B /* LiveStreamPlayerViewController.xib in Resources */,
+				FC542FE327B4C66700DF3B8E /* LocalizedPhilippinLS.strings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

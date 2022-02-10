@@ -1,0 +1,38 @@
+/* 
+  LocalizedThaiLS.strings
+  AmityUIKitLiveStream
+
+  Created by PrInCeInFiNiTy on 10/2/2565 BE.
+  
+*/
+"amity_video_stream_title" = "ไลฟ์สตรีม";
+"amity_video_stream_live" = "ไลฟ์";
+"amity_video_stream_recorded" = "บันทึกไว้";
+"amity_video_stream_ended_title" = "ไลฟ์สตรีมนี้สิ้นสุดแล้ว";
+"amity_video_stream_ended_description" = "ไลฟ์ที่จบแล้วจะพร้อมให้คุณรับชมย้อนหลังในไม่ช้า";
+"amity_video_stream_thumbnail_change" = "เปลี่ยนภาพหน้าปก";
+"amity_video_stream_thumbnail_remove" = "ลบภาพหน้าปก";
+"amity_video_stream_unavailable_description" = "สตรีมนี้ไม่พร้อมใช้งานในขณะนี้";
+"amity_video_stream_go_live" = "ไลฟ์เลย!";
+"amity_video_stream_title_hint" = "ชื่อไลฟ์สตรีม";
+"amity_video_stream_description_hint" = "แตะเพื่อเพิ่มคำอธิบายโพสต์...";
+"amity_video_stream_connecting" = "กำลังเชื่อมต่อ";
+"amity_video_stream_live_with_time" = "ไลฟ์ %@:%@";
+"amity_video_stream_finish" = "เสร็จ";
+"amity_video_stream_stop_confirmation_title" = "หยุดไลฟ์สตรีม";
+"amity_video_stream_stop_confirmation_description" = "คุณแน่ใจหรือไม่ว่าต้องการหยุดสตรีม";
+"amity_video_stream_player_error" = "ขออภัย ไม่สามารถเล่นสตรีมนี้ได้";
+"amity_general_stop" = "หยุด";
+"amity_video_stream_ending_live_stream" = "สิ้นสุดการไลฟ์";
+"amity_video_stream_select_cover" = "เลือกภาพปก";
+"amity_video_stream_input_error" = "อินพุตผิดพลาด";
+"amity_video_stream_title_can_not_be_empty" = "ต้องระบุชื่อ";
+"amity_video_stream_title_can_not_be_empty" = "ต้องระบุคำอธิบาย";
+"amity_video_stream_unable_to_find_live_stream_data" = "ไม่พบข้อมูลไลฟ์สตรีมในโพสต์";
+"amity_video_stream_unable_to_find_post_data" = "ไม่พบข้อมูลโพสต์";
+"amity_video_stream_unable_to_find_create_stream" = "ไม่พบการสร้างผลลัพธ์สตรีม";
+"amity_video_stream_permision_requires" = "ต้องได้รับอนุญาต";
+"amity_video_stream_grant_permision_camera_and_microphone" = "โปรดให้สิทธิ์กล้องและไมโครโฟนในการตั้งค่า iOS";
+"amity_video_stream_title_photo" = "รูปถ่าย";
+"amirt_video_stream_please_allow_access_photo" = "โปรดอนุญาตให้เข้าถึงคลังภาพ";
+"amirt_video_stream_please_allow_access_camera" = "โปรดอนุญาตให้เข้าถึงไลบรารีของกล้อง";

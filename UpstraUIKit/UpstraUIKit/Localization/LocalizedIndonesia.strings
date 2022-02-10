@@ -333,7 +333,7 @@
 "amity_poll_status_closed_in_day" = "Polling berakhir dalam %@ hari";
 "amity_poll_status_closed_in_days" = "Polling berakhir dalam %@ hari";
 "amity_poll_status_closed_in_hour" = "Polling berakhir dalam %@ jam";
-"amity_poll_status_closed_in_hours" = "Polling berakhir dalam %@ jam ";
+"amity_poll_status_closed_in_hours" = "Polling berakhir dalam %@ jam";
 "amity_poll_status_closed_in_minute" = "Polling berakhir dalam %@ menit ";
 "amity_poll_status_closed_in_minutes" = "Polling berakhir dalam %@ menit ";
 "amity_poll_vote_count" = "%@ Pilih";

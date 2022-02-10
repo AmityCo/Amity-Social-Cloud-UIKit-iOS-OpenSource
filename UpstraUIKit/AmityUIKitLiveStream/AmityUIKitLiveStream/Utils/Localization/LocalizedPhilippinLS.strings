@@ -1,0 +1,38 @@
+/* 
+  LocalizedPhilippinLS.strings
+  AmityUIKitLiveStream
+
+  Created by PrInCeInFiNiTy on 10/2/2565 BE.
+  
+*/
+"amity_video_stream_title" = "Livestream";
+"amity_video_stream_live" = "Live";
+"amity_video_stream_recorded" = "Recorded";
+"amity_video_stream_ended_title" = "This livestream has ended.";
+"amity_video_stream_ended_description" = "Playback will be available for you to watch shortly.";
+"amity_video_stream_thumbnail_change" = "Change cover image";
+"amity_video_stream_thumbnail_remove" = "Delete cover image";
+"amity_video_stream_unavailable_description" = "This stream is currently unavailable";
+"amity_video_stream_go_live" = "Go live";
+"amity_video_stream_title_hint" = "Livestream title";
+"amity_video_stream_description_hint" = "Tap to add post description…";
+"amity_video_stream_connecting" = "Connecting";
+"amity_video_stream_live_with_time" = "LIVE %@:%@";
+"amity_video_stream_finish" = "Finish";
+"amity_video_stream_stop_confirmation_title" = "Stop livestream";
+"amity_video_stream_stop_confirmation_description" = "Are you sure you want to stop the stream?";
+"amity_video_stream_player_error" = "Sorry, unable to play this stream";
+"amity_general_stop" = "Stop";
+"amity_video_stream_ending_live_stream" = "Ending Live Stream";
+"amity_video_stream_select_cover" = "Select Cover";
+"amity_video_stream_input_error" = "Input Error";
+"amity_video_stream_title_can_not_be_empty" = "Title can not be empty.";
+"amity_video_stream_title_can_not_be_empty" = "Description can not be empty.";
+"amity_video_stream_unable_to_find_live_stream_data" = "Unable to find live stream data in post.";
+"amity_video_stream_unable_to_find_post_data" = "Unable to find post data";
+"amity_video_stream_unable_to_find_create_stream" = "Unable to find create stream result";
+"amity_video_stream_permision_requires" = "Permission Required";
+"amity_video_stream_grant_permision_camera_and_microphone" = "Please grant permission camera and microphone in iOS settings.";
+"amity_video_stream_title_photo" = "Photo";
+"amirt_video_stream_please_allow_access_photo" = "Please allow access photo library";
+"amirt_video_stream_please_allow_access_camera" = "Please allow access camera library";

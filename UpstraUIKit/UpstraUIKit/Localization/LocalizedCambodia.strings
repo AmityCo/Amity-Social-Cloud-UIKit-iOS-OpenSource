@@ -324,7 +324,7 @@
 "amity_poll_question" = "សំណួរស្ទង់មតិ*";
 "poll_create_question_placeholder" = "តើសំណួរស្ទង់មតិរបស់អ្នកគឺជាអ្វី?";
 "amity_poll_question_error" = "អ្នក​បាន​ដល់​ចំនួន​កំណត់ 500 តួអក្សរ";
-"poll_create_answer_title" = "ជម្រើស*";
+"poll_create_answer_title" = "ជម្រើស";
 "poll_create_answer_desc" = "បង្កើតយ៉ាងហោចណាស់ 2 ជម្រើស";
 "poll_create_answer_button" = "ជម្រើសបន្ថែម";
 "amity_poll_answer_error_empty" = "ការបោះឆ្នោតមិនអាចទទេបានទេ";

@@ -320,10 +320,10 @@
 
 "amity_general_poll" = "Poll";
 "amity_general_stop" = "Stop";
-"amity_poll_question" = "Poll question*";
+"amity_poll_question" = "Poll question";
 "poll_create_question_placeholder" = "What’s your poll question?";
 "amity_poll_question_error" = "You have reached 500 characters limit.";
-"poll_create_answer_title" = "Options*";
+"poll_create_answer_title" = "Options";
 "poll_create_answer_desc" = "Create at least 2 options";
 "poll_create_answer_button" = "Add option";
 "amity_poll_answer_error_empty" = "Poll option can’t be empty.";
