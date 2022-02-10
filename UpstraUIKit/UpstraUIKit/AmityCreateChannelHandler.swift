@@ -33,13 +33,18 @@ public class AmityCreateChannelHandler {
         let userIds = allUsers.map{ $0.userId }
         let channelId = userIds.sorted().joined(separator: "-")
         let channelDisplayName = users.count == 1 ? users.first?.displayName ?? "" : allUsers.map { $0.displayName }.joined(separator: "-")
+        var userArrayWithDisplayName: [String] = []
+        for name in allUsers{
+            userArrayWithDisplayName.append("\(name.userId):\(name.displayName)")
+        }
         builder.setUserIds(userIds)
         builder.setId(channelId)
         let metaData: [String:Any] = [
             "isDirectChat": allUsers.count == 2,
             "creatorId": currentUser?.userId ?? "",
             "sdk_type":"ios",
-            "userIds": userIds
+            "userIds": userIds,
+            "chatDisplayName": userArrayWithDisplayName
         ]
         builder.setMetadata(metaData)
         builder.setDisplayName(channelDisplayName)

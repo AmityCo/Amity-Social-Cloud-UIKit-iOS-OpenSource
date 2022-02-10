@@ -49,6 +49,7 @@ private extension AmityMessageListHeaderView {
         
         displayNameLabel.textColor = AmityColorSet.base
         displayNameLabel.font = AmityFontSet.title
+        displayNameLabel.text = AmityLocalizedStringSet.General.anonymous.localizedString
         
         avatarView.image = nil
         avatarView.placeholder = AmityIconSet.defaultAvatar
@@ -65,9 +66,20 @@ extension AmityMessageListHeaderView {
                 token = repository?.getUser(channel.getOtherUserId()).observeOnce({ [weak self] user, error in
                     guard let weakSelf = self else { return }
                     if let userObject = user.object {
-                        weakSelf.displayNameLabel.text = userObject.displayName
                         weakSelf.avatarView.setImage(withImageURL: userObject.avatarCustomUrl,
                                                      placeholder: AmityIconSet.defaultAvatar)
+                        if let nicknameMetaData = channel.metadata["chatDisplayName"] as? [String] {
+                            for nickname in nicknameMetaData {
+                                if nickname.contains(AmityUIKitManagerInternal.shared.client.currentUser?.object?.userId ?? ""){
+                                    continue
+                                }else{
+                                    let splitNickName = nickname.split(separator: ":")
+                                    weakSelf.displayNameLabel.text = String(splitNickName[1])
+                                }
+                            }
+                        } else {
+                            weakSelf.displayNameLabel.text = userObject.displayName
+                        }
                     }
                     
                 })

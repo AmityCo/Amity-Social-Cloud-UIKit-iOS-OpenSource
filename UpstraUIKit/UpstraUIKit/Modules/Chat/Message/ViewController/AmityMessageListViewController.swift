@@ -169,13 +169,10 @@ private extension AmityMessageListViewController {
     }
     
     func setupCustomNavigationBar() {
-        if settings.shouldShowChatSettingBarButton {
-            // Just using the view form this
-            navigationBarType = .custom
-            navigationHeaderViewController = AmityMessageListHeaderView(viewModel: screenViewModel)
-            let item = UIBarButtonItem(customView: navigationHeaderViewController)
-            navigationItem.leftBarButtonItem = item
-        }
+        navigationBarType = .custom
+        navigationHeaderViewController = AmityMessageListHeaderView(viewModel: screenViewModel)
+        let item = UIBarButtonItem(customView: navigationHeaderViewController)
+        navigationItem.leftBarButtonItem = item    
     }
     
     func setupConnectionStatusBar() {
