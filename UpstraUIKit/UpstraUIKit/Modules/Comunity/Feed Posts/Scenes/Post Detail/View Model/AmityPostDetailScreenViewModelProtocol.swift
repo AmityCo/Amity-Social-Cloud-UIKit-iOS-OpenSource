@@ -57,6 +57,7 @@ protocol AmityPostDetailScreenViewModelDelegate: AnyObject {
 
 protocol AmityPostDetailScreenViewModelDataSource {
     var post: AmityPostModel? { get }
+    var community: AmityCommunity? { get }
     func numberOfSection() -> Int
     func numberOfItems(_ tableView: AmityPostTableView, in section: Int) -> Int
     func item(at indexPath: IndexPath) -> PostDetailViewModel
@@ -79,9 +80,9 @@ protocol AmityPostDetailScreenViewModelAction {
     func getPostReportStatus()
     
     // MARK: Comment
-    func createComment(withText text: String, parentId: String?)
+    func createComment(withText text: String, parentId: String?, metadata: [String: Any]?, mentionees: AmityMentioneesBuilder?)
+    func editComment(with comment: AmityCommentModel, text: String, metadata: [String: Any]?, mentionees: AmityMentioneesBuilder?)
     func deleteComment(with comment: AmityCommentModel)
-    func editComment(with comment: AmityCommentModel, text: String)
     func likeComment(withCommendId commentId: String)
     func unlikeComment(withCommendId commentId: String)
     func reportComment(withCommentId commentId: String)

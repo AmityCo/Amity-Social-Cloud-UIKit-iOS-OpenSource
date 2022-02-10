@@ -108,6 +108,13 @@ class EndpointManager {
         AppManager.shared.setupAmityUIKit()
     }
     
+    func resetEnvironments() {
+        UserDefaults.standard.setValue(nil, forKey: UserDefaultsKey.environments)
+        
+        // Call app manager for setting up new environment settings
+        AppManager.shared.setupAmityUIKit()
+    }
+    
     // MARK: - Helpers
     
     private static func fetchUserSettings() -> EnvironmentSettingModel {

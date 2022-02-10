@@ -15,6 +15,7 @@ protocol AmityFeedScreenViewModelDelegate: AnyObject {
     func screenViewModelScrollToTop(_ viewModel: AmityFeedScreenViewModelType)
     func screenViewModelDidSuccess(_ viewModel: AmityFeedScreenViewModelType, message: String)
     func screenViewModelDidFail(_ viewModel: AmityFeedScreenViewModelType, failure error: AmityError)
+    func screenViewModelLoadingStatusDidChange(_ viewModel: AmityFeedScreenViewModelType, isLoading: Bool)
     func screenViewModelDidDelete()
     
     // MARK: Post
@@ -35,6 +36,7 @@ protocol AmityFeedScreenViewModelDelegate: AnyObject {
 protocol AmityFeedScreenViewModelDataSource {
     // MARK: PostComponents
     var isPrivate: Bool { get }
+    var isLoading: Bool { get }
     func postComponents(in section: Int) -> AmityPostComponent
     func numberOfPostComponents() -> Int
     func getFeedType() -> AmityPostFeedType
@@ -58,7 +60,7 @@ protocol AmityFeedScreenViewModelAction {
     
     // MARK: Comment
     func delete(withComment comment: AmityCommentModel)
-    func edit(withComment comment: AmityCommentModel, text: String)
+    func edit(withComment comment: AmityCommentModel, text: String, metadata: [String : Any]?, mentionees: AmityMentioneesBuilder?)
     func report(withCommentId commentId: String)
     func unreport(withCommentId commentId: String)
     func getReportStatus(withCommendId commendId: String, completion: ((Bool) -> Void)?)

@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="18122" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="19455" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="18093"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="19454"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -18,47 +18,56 @@
                 <rect key="frame" x="0.0" y="0.0" width="352" height="82"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <stackView opaque="NO" contentMode="scaleToFill" alignment="center" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="cVr-cS-bct">
-                        <rect key="frame" x="16" y="8" width="320" height="66"/>
-                        <subviews>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="pcw-3w-nO2" customClass="AmityAvatarView" customModule="AmityUIKit" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="13" width="40" height="40"/>
-                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" constant="40" id="A1E-ZM-h3e"/>
-                                    <constraint firstAttribute="height" constant="40" id="YxK-5x-71n"/>
-                                </constraints>
-                            </view>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="I6d-21-7C6">
-                                <rect key="frame" x="48" y="23" width="240" height="20.5"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <nil key="textColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="RVq-e1-wT7">
-                                <rect key="frame" x="296" y="21" width="24" height="24"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="24" id="aqk-bM-brb"/>
-                                    <constraint firstAttribute="width" constant="24" id="j4g-aD-4S7"/>
-                                </constraints>
-                                <state key="normal" image="icon_option"/>
-                                <connections>
-                                    <action selector="optionTap" destination="KGk-i7-Jjw" eventType="touchUpInside" id="NpB-z8-Fju"/>
-                                </connections>
-                            </button>
-                        </subviews>
-                    </stackView>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="pcw-3w-nO2" customClass="AmityAvatarView" customModule="AmityUIKit" customModuleProvider="target">
+                        <rect key="frame" x="16" y="21" width="40" height="40"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="40" id="A1E-ZM-h3e"/>
+                            <constraint firstAttribute="height" constant="40" id="YxK-5x-71n"/>
+                        </constraints>
+                    </view>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="I6d-21-7C6">
+                        <rect key="frame" x="68" y="31" width="41.5" height="20.5"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                        <nil key="textColor"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <imageView hidden="YES" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="uM1-Q6-bBV">
+                        <rect key="frame" x="113.5" y="33" width="0.0" height="16"/>
+                        <constraints>
+                            <constraint firstAttribute="width" id="bk6-a2-zw0"/>
+                            <constraint firstAttribute="height" constant="16" id="fMp-qD-5xz"/>
+                        </constraints>
+                    </imageView>
+                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="RVq-e1-wT7">
+                        <rect key="frame" x="312" y="29" width="24" height="24"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="24" id="aqk-bM-brb"/>
+                            <constraint firstAttribute="width" constant="24" id="j4g-aD-4S7"/>
+                        </constraints>
+                        <state key="normal" image="icon_option"/>
+                        <connections>
+                            <action selector="optionTap" destination="KGk-i7-Jjw" eventType="touchUpInside" id="NpB-z8-Fju"/>
+                        </connections>
+                    </button>
                 </subviews>
                 <constraints>
-                    <constraint firstItem="cVr-cS-bct" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="8" id="3tE-09-ZgH"/>
-                    <constraint firstItem="cVr-cS-bct" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="16" id="Fsm-YI-d6X"/>
-                    <constraint firstAttribute="trailing" secondItem="cVr-cS-bct" secondAttribute="trailing" constant="16" id="XWy-Xv-62V"/>
-                    <constraint firstAttribute="bottom" secondItem="cVr-cS-bct" secondAttribute="bottom" constant="8" id="g6D-4p-h9c"/>
+                    <constraint firstItem="I6d-21-7C6" firstAttribute="leading" secondItem="pcw-3w-nO2" secondAttribute="trailing" constant="12" id="4qh-Zh-OBl"/>
+                    <constraint firstAttribute="trailing" secondItem="RVq-e1-wT7" secondAttribute="trailing" constant="16" id="Hnd-ue-1vg"/>
+                    <constraint firstItem="uM1-Q6-bBV" firstAttribute="leading" secondItem="I6d-21-7C6" secondAttribute="trailing" constant="4" id="NJI-1N-aOx"/>
+                    <constraint firstItem="RVq-e1-wT7" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="uM1-Q6-bBV" secondAttribute="trailing" constant="12" id="NQ7-0d-wER"/>
+                    <constraint firstItem="I6d-21-7C6" firstAttribute="centerY" secondItem="pcw-3w-nO2" secondAttribute="centerY" id="Vom-Wf-DpB"/>
+                    <constraint firstItem="pcw-3w-nO2" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="16" id="ZjB-r2-Lap"/>
+                    <constraint firstItem="uM1-Q6-bBV" firstAttribute="centerY" secondItem="I6d-21-7C6" secondAttribute="centerY" id="ac7-57-TJs"/>
+                    <constraint firstItem="RVq-e1-wT7" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="dqv-ms-55a"/>
+                    <constraint firstItem="pcw-3w-nO2" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="tng-XC-oIN"/>
                 </constraints>
             </tableViewCellContentView>
             <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
             <connections>
                 <outlet property="avatarView" destination="pcw-3w-nO2" id="Ufq-EP-Kw9"/>
+                <outlet property="bannedImageView" destination="uM1-Q6-bBV" id="EcV-yX-Eza"/>
+                <outlet property="bannedImageViewWidthConstraint" destination="bk6-a2-zw0" id="OQx-t8-r30"/>
                 <outlet property="displayNameLabel" destination="I6d-21-7C6" id="XqY-jG-A0N"/>
                 <outlet property="optionButton" destination="RVq-e1-wT7" id="3It-fG-MIM"/>
             </connections>

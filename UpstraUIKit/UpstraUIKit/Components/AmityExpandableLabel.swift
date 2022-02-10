@@ -19,11 +19,17 @@ public protocol AmityExpandableLabelDelegate: AnyObject {
     func willCollapseLabel(_ label: AmityExpandableLabel)
     func didCollapseLabel(_ label: AmityExpandableLabel)
     func expandableLabeldidTap(_ label: AmityExpandableLabel)
+    func didTapOnMention(_ label: AmityExpandableLabel, withUserId userId: String)
 }
 
 struct Hyperlink {
     let range: NSRange
-    let url: URL
+    let type: HyperlinkType
+}
+
+enum HyperlinkType {
+    case url(url: URL)
+    case mention(userId: String)
 }
 
 /**
@@ -151,9 +157,10 @@ open class AmityExpandableLabel: UILabel {
                     guard let formattedString = validUrlString.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed),
                         let url = URL(string: formattedString) else { continue }
                     attributedString.addAttributes([
-                        .foregroundColor: UIColor.systemBlue,
+                        .foregroundColor: AmityColorSet.highlight,
                         .attachment: url], range: match.range)
-                    _hyperLinkTextRange.append(Hyperlink(range: match.range, url: url))
+                    attributedString.addAttribute(.underlineStyle, value: NSUnderlineStyle.single.rawValue, range: match.range)
+                    _hyperLinkTextRange.append(Hyperlink(range: match.range, type: .url(url: url)))
                 }
                 hyperLinks = _hyperLinkTextRange
                 self.attributedText = attributedString
@@ -211,7 +218,13 @@ extension AmityExpandableLabel {
             return
         }
         if let hyperLink = hyperLinks.first(where: { check(touch: touch, isInRange: $0.range) }) {
-            UIApplication.shared.open(hyperLink.url, options: [:], completionHandler: nil)
+            switch hyperLink.type {
+            case .url(let url):
+                UIApplication.shared.open(url, options: [:], completionHandler: nil)
+            case .mention(let userId):
+                delegate?.didTapOnMention(self, withUserId: userId)
+            }
+            
         } else {
             guard isExpandable else {
                 delegate?.expandableLabeldidTap(self)
@@ -568,4 +581,38 @@ extension UILabel {
     }
 }
 
+extension AmityExpandableLabel {
+    func setText(_ text: String, withAttributes attributes: [MentionAttribute]) {
+        let attributedString = NSMutableAttributedString(string: text)
+        let detector = try! NSDataDetector(types: NSTextCheckingResult.CheckingType.link.rawValue)
+        let matches = detector.matches(in: text, options: [], range: NSRange(location: 0, length: text.utf16.count))
+        var _hyperLinkTextRange: [Hyperlink] = []
+        for match in matches {
+            guard let textRange = Range(match.range, in: text) else { continue }
+            let urlString = String(text[textRange])
+            let validUrlString = urlString.hasPrefix("http") ? urlString : "http://\(urlString)"
+            guard let formattedString = validUrlString.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed),
+                let url = URL(string: formattedString) else { continue }
+            attributedString.addAttributes([
+                .foregroundColor: AmityColorSet.highlight,
+                .attachment: url], range: match.range)
+            attributedString.addAttribute(.underlineStyle, value: NSUnderlineStyle.single.rawValue, range: match.range)
+            _hyperLinkTextRange.append(Hyperlink(range: match.range, type: .url(url: url)))
+        }
+        
+        for attribute in attributes {
+            attributedString.addAttribute(attribute.name, value: attribute.value, range: attribute.range)
+            _hyperLinkTextRange.append(Hyperlink(range: attribute.range, type: .mention(userId: attribute.userId)))
+        }
+        
+        hyperLinks = _hyperLinkTextRange
+        self.attributedText = attributedString
+    }
+}
 
+struct MentionAttribute {
+    let name: NSAttributedString.Key
+    let value: Any
+    let range: NSRange
+    let userId: String
+}

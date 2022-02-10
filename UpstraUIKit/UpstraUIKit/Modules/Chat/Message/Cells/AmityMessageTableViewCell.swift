@@ -64,6 +64,7 @@ class AmityMessageTableViewCell: UITableViewCell, AmityMessageCellProtocol {
         containerMessageView?.isHidden = false
         metadataLabel?.isHidden = false
         errorButton?.isHidden = true
+        avatarView?.image = nil
     }
     
     func setViewModel(with viewModel: AmityMessageListScreenViewModelType) {

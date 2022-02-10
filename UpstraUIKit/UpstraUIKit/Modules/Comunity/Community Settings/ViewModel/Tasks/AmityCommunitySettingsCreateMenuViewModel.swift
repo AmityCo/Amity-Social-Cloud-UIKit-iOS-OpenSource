@@ -18,12 +18,16 @@ final class AmityCommunitySettingsCreateMenuViewModel: AmityCommunitySettingsCre
     // MARK: - Properties
     private let community: AmityCommunityModel
     
+    // MARK: - Controller
+    private let userRolesController: AmityCommunityUserRolesControllerProtocol
+    
     private let dispatchCounter = DispatchGroup()
     private var shouldShowEditProfileItem: Bool = false
     private var shouldShowCloseItem: Bool = false
     
-    init(community: AmityCommunityModel) {
+    init(community: AmityCommunityModel, userRolesController: AmityCommunityUserRolesControllerProtocol) {
         self.community = community
+        self.userRolesController = userRolesController
     }
     
     func createSettingsItems(shouldNotificationItemShow: Bool, isNotificationEnabled: Bool, _ completion: (([AmitySettingsItem]) -> Void)?) {
@@ -49,12 +53,15 @@ final class AmityCommunitySettingsCreateMenuViewModel: AmityCommunitySettingsCre
     private func prepareDataSource(shouldNotificationItemShow: Bool, isNotificationEnabled: Bool, _ completion: (([AmitySettingsItem]) -> Void)?) {
         var settingsItems = [AmitySettingsItem]()
         
+        // get user roles
+        let isModerator = userRolesController.getUserRoles(withUserId: AmityUIKitManagerInternal.shared.currentUserId, role: .moderator) || userRolesController.getUserRoles(withUserId: AmityUIKitManagerInternal.shared.currentUserId, role: .communityModerator)
+        
         // MARK: Create basic item
         let basicInfoHeader = AmitySettingsItem.HeaderContent(title: AmityCommunitySettingsItem.basicInfo.title)
         settingsItems.append(.header(content: basicInfoHeader))
         
         // MARK: Create edit profile item
-        if shouldShowEditProfileItem || self.community.isCreator {
+        if shouldShowEditProfileItem || isModerator {
             let itemEditProfileContent = AmitySettingsItem.NavigationContent(identifier: AmityCommunitySettingsItem.editProfile.identifier,
                                                                            icon: AmityCommunitySettingsItem.editProfile.icon,
                                                                            title: AmityCommunitySettingsItem.editProfile.title,
@@ -82,7 +89,7 @@ final class AmityCommunitySettingsCreateMenuViewModel: AmityCommunitySettingsCre
         }
         
         // MARK: Create Community Permission
-        if shouldShowEditProfileItem || self.community.isCreator {
+        if shouldShowEditProfileItem || isModerator {
             let communityPermissionHeader = AmitySettingsItem.HeaderContent(title: AmityCommunitySettingsItem.communityPermissionHeader.title)
             settingsItems.append(.header(content: communityPermissionHeader))
             
@@ -105,7 +112,7 @@ final class AmityCommunitySettingsCreateMenuViewModel: AmityCommunitySettingsCre
         settingsItems.append(.separator)
         
         // MARK: Create close community item
-        if shouldShowCloseItem || self.community.isCreator {
+        if shouldShowCloseItem || isModerator {
             
             let closeContent = AmitySettingsItem.TextContent(identifier: AmityCommunitySettingsItem.closeCommunity.identifier,
                                                            icon: nil,

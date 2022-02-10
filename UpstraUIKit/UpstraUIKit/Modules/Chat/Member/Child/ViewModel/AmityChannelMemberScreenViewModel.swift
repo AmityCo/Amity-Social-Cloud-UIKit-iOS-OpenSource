@@ -72,13 +72,8 @@ extension AmityChannelMemberScreenViewModel {
     }
     
     func getChannelEditUserPermission(_ completion: ((Bool) -> Void)?) {
-        AmityUIKitManagerInternal.shared.client.hasPermission(.editChannel, forChannel: channel.channelId, completion: { [weak self] hasPermission in
-                guard let weakSelf = self else { return }
-                if weakSelf.channel.isCreator() {
-                    completion?(true)
-                } else {
-                    completion?(hasPermission)
-                }
+        AmityUIKitManagerInternal.shared.client.hasPermission(.editChannel, forChannel: channel.channelId, completion: { hasPermission in
+            completion?(hasPermission)
         })
     }
 }
@@ -101,7 +96,7 @@ extension AmityChannelMemberScreenViewModel {
                 }
             }
         case .moderator:
-            fetchMemberController.fetch(roles: [AmityChannelRole.moderator.rawValue, AmityChannelRole.creator.rawValue]) { [weak self] (result) in
+            fetchMemberController.fetch(roles: [AmityChannelRole.moderator.rawValue, AmityChannelRole.channelModerator.rawValue]) { [weak self] (result) in
                 switch result {
                 case .success(let members):
                     self?.members = members
@@ -204,7 +199,7 @@ extension AmityChannelMemberScreenViewModel {
 extension AmityChannelMemberScreenViewModel {
     func addRole(at indexPath: IndexPath) {
         let userId = member(at: indexPath).userId
-        roleController.add(role: .moderator, userIds: [userId]) { [weak self] error in
+        roleController.add(role: .channelModerator, userIds: [userId]) { [weak self] error in
             guard let strongSelf = self else { return }
             if let error = error {
                 strongSelf.delegate?.screenViewModel(strongSelf, failure: error)
@@ -223,8 +218,17 @@ extension AmityChannelMemberScreenViewModel {
     }
     
     func removeRole(at indexPath: IndexPath) {
-        let userId = member(at: indexPath).userId
-        roleController.remove(role: .moderator, userIds: [userId]) { [weak self] error in
+        let user = member(at: indexPath)
+        var role = AmityChannelRole.moderator
+        let isCommunityModerator = user.channelRoles.contains { currentRole in
+            currentRole == .channelModerator
+        }
+
+        if isCommunityModerator {
+            role = .channelModerator
+        }
+        
+        roleController.remove(role: role, userIds: [user.userId]) { [weak self] error in
             guard let strongSelf = self else { return }
             if let error = error {
                 strongSelf.delegate?.screenViewModel(strongSelf, failure: error)

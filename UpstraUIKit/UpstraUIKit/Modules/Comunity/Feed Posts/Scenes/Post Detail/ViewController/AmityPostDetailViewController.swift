@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import AmitySDK
 
 /// A view controller for providing post and relevant comments.
 open class AmityPostDetailViewController: AmityViewController {
@@ -15,6 +16,9 @@ open class AmityPostDetailViewController: AmityViewController {
     @IBOutlet private var tableView: AmityPostTableView!
     @IBOutlet private var commentComposeBarView: AmityPostDetailCompostView!
     @IBOutlet private var commentComposeBarBottomConstraint: NSLayoutConstraint!
+    @IBOutlet private var mentionTableView: AmityMentionTableView!
+    @IBOutlet private var mentionTableViewHeightConstraint: NSLayoutConstraint!
+    
     private var optionButton: UIBarButtonItem!
     
     // MARK: - Post Protocol Handler
@@ -28,6 +32,7 @@ open class AmityPostDetailViewController: AmityViewController {
     private var referenceId: String?
     private var expandedIds: [String] = []
     private var showReplyIds: [String] = []
+    private var mentionManager: AmityMentionManager?
     private var isFromEditTextViewController: Bool = false
     private var editTextViewController: AmityEditTextViewController?
     
@@ -68,6 +73,7 @@ open class AmityPostDetailViewController: AmityViewController {
         setupComposeBarView()
         setupProtocolHandler()
         setupScreenViewModel()
+        setupMentionTableView()
     }
     
     public override func viewWillAppear(_ animated: Bool) {
@@ -76,11 +82,13 @@ open class AmityPostDetailViewController: AmityViewController {
         navigationController?.setNavigationBarHidden(false, animated: true)
         navigationItem.largeTitleDisplayMode = .never
         AmityKeyboardService.shared.delegate = self
+        mentionManager?.delegate = self
     }
     
     public override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         navigationController?.reset()
+        mentionManager?.delegate = nil
     }
     
     // MARK: Setup Post Protocol Handler
@@ -131,6 +139,12 @@ open class AmityPostDetailViewController: AmityViewController {
         tableView.postDelegate = self
         tableView.postDataSource = self
         tableView.contentInsetAdjustmentBehavior = .never
+    }
+    
+    private func setupMentionTableView() {
+        mentionTableView.isHidden = true
+        mentionTableView.delegate = self
+        mentionTableView.dataSource = self
     }
     
     private func setupComposeBarView() {
@@ -220,6 +234,30 @@ open class AmityPostDetailViewController: AmityViewController {
         
     }
     
+    private func showAlertForMaximumCharacters() {
+        let title = parentComment == nil ? AmityLocalizedStringSet.postUnableToCommentTitle.localizedString : AmityLocalizedStringSet.postUnableToReplyTitle.localizedString
+        let message = parentComment == nil ? AmityLocalizedStringSet.postUnableToCommentDescription.localizedString : AmityLocalizedStringSet.postUnableToReplyDescription.localizedString
+        let alertController = UIAlertController(title: title, message: message, preferredStyle: .alert)
+        let cancelAction = UIAlertAction(title: AmityLocalizedStringSet.General.done.localizedString, style: .cancel, handler: nil)
+        alertController.addAction(cancelAction)
+        present(alertController, animated: true, completion: nil)
+    }
+    
+    private func setupMentionManager() {
+        if mentionManager != nil { return }
+        let community = screenViewModel.community
+        let isPublic = community?.isPublic ?? false
+        let communityId: String? = isPublic ? nil : community?.communityId
+        mentionManager = AmityMentionManager(withType: .comment(communityId: communityId))
+        mentionManager?.delegate = self
+    }
+    
+    private func createComment(withText text: String, metadata: [String: Any]?, mentionees: AmityMentioneesBuilder?, parentId: String?) {
+        screenViewModel.action.createComment(withText: text, parentId: parentId, metadata: metadata, mentionees: mentionees)
+        parentComment = nil
+        commentComposeBarView.resetState()
+        mentionManager?.resetState()
+    }
     @objc func dissmissVC() {
         self.didTapLeftBarButton()
     }
@@ -315,6 +353,7 @@ extension AmityPostDetailViewController: AmityPostDetailScreenViewModelDelegate 
             commentComposeBarView.configure(with: post)
         }
         
+        setupMentionManager()
         if viewModel.post?.dataTypeInternal != .poll {
             tableView.isHidden = false
         }
@@ -410,7 +449,6 @@ extension AmityPostDetailViewController: AmityPostDetailScreenViewModelDelegate 
             handleCreatePostError(error)
         }
     }
-    
 }
 
 // MARK: - AmityPostHeaderProtocolHandlerDelegate
@@ -480,17 +518,19 @@ extension AmityPostDetailViewController: AmityPostDetailCompostViewDelegate {
     
     func composeViewDidTapExpand(_ view: AmityPostDetailCompostView) {
         var editTextViewController: AmityEditTextViewController
+        let communityId = (screenViewModel.dataSource.community?.isPublic ?? false) ? nil : screenViewModel.dataSource.community?.communityId
         if let parentComment = parentComment {
             // create reply
             let header = String.localizedStringWithFormat(AmityLocalizedStringSet.PostDetail.replyingTo.localizedString, parentComment.displayName)
-            editTextViewController = AmityEditTextViewController.make(headerTitle: header, text: commentComposeBarView.text, editMode: .create)
+            editTextViewController = AmityEditTextViewController.make(headerTitle: header, text: commentComposeBarView.text, editMode: .create(communityId: communityId, isReply: true))
             editTextViewController.title = AmityLocalizedStringSet.PostDetail.createReply.localizedString
         } else {
             // create comment
-            editTextViewController = AmityEditTextViewController.make(text: commentComposeBarView.text, editMode: .create)
+            editTextViewController = AmityEditTextViewController.make(text: commentComposeBarView.text, editMode: .create(communityId: communityId, isReply: false))
             editTextViewController.title = AmityLocalizedStringSet.PostDetail.createComment.localizedString
         }
-        editTextViewController.editHandler = { [weak self, weak editTextViewController] text in
+        editTextViewController.editHandler = { [weak self, weak editTextViewController] text, metadata, mentionees in
+            self?.createComment(withText: text, metadata: metadata, mentionees: mentionees, parentId: self?.parentComment?.id)
             self?.isFromEditTextViewController = true
             self?.screenViewModel.action.createComment(withText: text, parentId: self?.parentComment?.id)
             self?.parentComment = nil
@@ -517,12 +557,27 @@ extension AmityPostDetailViewController: AmityPostDetailCompostViewDelegate {
     }
     
     func composeView(_ view: AmityPostDetailCompostView, didPostText text: String) {
-        isFromEditTextViewController = false
+        let metadata = mentionManager?.getMetadata()
+        let mentionees = mentionManager?.getMentionees()
+        createComment(withText: text, metadata: metadata, mentionees: mentionees, parentId: parentComment?.id)
+
+		isFromEditTextViewController = false
         screenViewModel.action.createComment(withText: text, parentId: parentComment?.id)
         parentComment = nil
         commentComposeBarView.resetState()
     }
     
+    func composeViewDidChangeSelection(_ view: AmityPostDetailCompostView) {
+        mentionManager?.changeSelection(view.textView)
+    }
+    
+    func composeView(_ view: AmityPostDetailCompostView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
+        if view.textView.text.count > AmityMentionManager.maximumCharacterCountForPost {
+            showAlertForMaximumCharacters()
+            return false
+        }
+        return mentionManager?.shouldChangeTextIn(view.textView, inRange: range, replacementText: text, currentText: view.textView.text) ?? true
+    }
 }
 
 // MARK: - AmityKeyboardServiceDelegate
@@ -575,10 +630,12 @@ extension AmityPostDetailViewController: AmityExpandableLabelDelegate {
         tableView.endUpdates()
     }
     
+    public func didTapOnMention(_ label: AmityExpandableLabel, withUserId userId: String) {
+        AmityEventHandler.shared.userDidTap(from: self, userId: userId)
+    }
 }
 
-extension AmityPostDetailViewController: AmityCommentTableViewCellDelegate {
-    
+extension AmityPostDetailViewController: AmityCommentTableViewCellDelegate {    
     func commentCellDidTapAvatar(_ cell: AmityCommentTableViewCell, userId: String) {
         AmityEventHandler.shared.userDidTap(from: self, userId: userId)
     }
@@ -619,6 +676,7 @@ extension AmityPostDetailViewController: AmityCommentTableViewCellDelegate {
     }
     
     private func presentOptionBottomSheet(comment: AmityCommentModel) {
+        let communityId = (screenViewModel.dataSource.community?.isPublic ?? false) ? nil : screenViewModel.dataSource.community?.communityId
         // Comment options
         if comment.isOwner {
             let bottomSheet = BottomSheetViewController()
@@ -632,11 +690,11 @@ extension AmityPostDetailViewController: AmityCommentTableViewCellDelegate {
             
             let editOption = TextItemOption(title: editOptionTitle) { [weak self] in
                 guard let strongSelf = self else { return }
-                let editTextViewController = AmityCommentEditorViewController.make(text: comment.text)
+                let editTextViewController = AmityCommentEditorViewController.make(comment: comment, communityId: communityId)
                 editTextViewController.title = comment.isParent ? AmityLocalizedStringSet.PostDetail.editComment.localizedString : AmityLocalizedStringSet.PostDetail.editReply.localizedString
-                editTextViewController.editHandler = { [weak self] text in
+                editTextViewController.editHandler = { [weak self] text, metadata, mentionees in
+                    self?.screenViewModel.action.editComment(with: comment, text: text, metadata: metadata, mentionees: mentionees)
                     self?.isFromEditTextViewController = true
-                    self?.screenViewModel.action.editComment(with: comment, text: text)
                     editTextViewController.dismiss(animated: true, completion: nil)
                 }
                 editTextViewController.dismissHandler = { [weak editTextViewController] in
@@ -677,7 +735,72 @@ extension AmityPostDetailViewController: AmityCommentTableViewCellDelegate {
             screenViewModel.action.getCommentReportStatus(with: comment)
         }
     }
+}
+
+// MARK: - UITableViewDataSource
+extension AmityPostDetailViewController: UITableViewDataSource {
+    public func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return mentionManager?.users.count ?? 0
+    }
     
+    public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: AmityMentionTableViewCell.identifier) as? AmityMentionTableViewCell, let model = mentionManager?.item(at: indexPath) else { return UITableViewCell() }
+        cell.display(with: model)
+        return cell
+    }
+}
+
+// MARK: - UITableViewDelegate
+extension AmityPostDetailViewController: UITableViewDelegate {
+    public func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return AmityMentionTableViewCell.height
+    }
+    
+    public func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        mentionManager?.addMention(from: commentComposeBarView.textView, in: commentComposeBarView.textView.text, at: indexPath)
+    }
+    
+    public func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        if indexPath.row == (mentionManager?.users.count ?? 0) - 4 {
+            mentionManager?.loadMore()
+        }
+    }
+}
+
+// MARK: - AmityMentionManagerDelegate
+extension AmityPostDetailViewController: AmityMentionManagerDelegate {
+    func didCreateAttributedString(attributedString: NSAttributedString) {
+        commentComposeBarView.textView.attributedText = attributedString
+        commentComposeBarView.textView.font = AmityFontSet.body
+    }
+    
+    func didGetUsers(users: [AmityMentionUserModel]) {
+        if users.isEmpty {
+            mentionTableViewHeightConstraint.constant = 0
+            mentionTableView.isHidden = true
+        } else {
+            var heightConstant:CGFloat = 240.0
+            if users.count < 5 {
+                heightConstant = CGFloat(users.count) * 52.0
+            }
+            mentionTableViewHeightConstraint.constant = heightConstant
+            mentionTableView.isHidden = false
+            mentionTableView.reloadData()
+        }
+    }
+    
+    func didMentionsReachToMaximumLimit() {
+        let message = parentComment == nil ? AmityLocalizedStringSet.Mention.unableToMentionCommentDescription.localizedString : AmityLocalizedStringSet.Mention.unableToMentionReplyDescription.localizedString
+        let alertController = UIAlertController(title: AmityLocalizedStringSet.Mention.unableToMentionTitle.localizedString, message: message, preferredStyle: .alert)
+        let cancelAction = UIAlertAction(title: AmityLocalizedStringSet.General.done.localizedString, style: .cancel, handler: nil)
+        alertController.addAction(cancelAction)
+        present(alertController, animated: true, completion: nil)
+    }
+    
+    func didCharactersReachToMaximumLimit() {
+        showAlertForMaximumCharacters()
+    }
 }
 
 

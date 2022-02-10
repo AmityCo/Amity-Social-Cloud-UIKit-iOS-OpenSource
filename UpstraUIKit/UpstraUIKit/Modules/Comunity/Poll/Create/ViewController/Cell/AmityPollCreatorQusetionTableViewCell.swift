@@ -65,6 +65,9 @@ final class AmityPollCreatorQusetionTableViewCell: UITableViewCell, Nibbable, Am
         errorLabel.font = AmityFontSet.caption
     }
 
+    func getTextView()-> UITextView? {
+        return pollTextView
+    }
 }
 
 extension AmityPollCreatorQusetionTableViewCell: AmityTextViewDelegate {
@@ -81,6 +84,13 @@ extension AmityPollCreatorQusetionTableViewCell: AmityTextViewDelegate {
         if textView.returnKeyType == .done, text == "\n" {
             textView.resignFirstResponder()
         }
-        return textView.verifyFields(shouldChangeCharactersIn: range, replacementString: text)
+        if textView.verifyFields(shouldChangeCharactersIn: range, replacementString: text) {
+            return delegate?.textView(textView, shouldChangeTextIn: range, replacementText: text) ?? true
+        }
+        return false
+    }
+    
+    func textViewDidChangeSelection(_ textView: AmityTextView) {
+        delegate?.didPerformAction(self, action: .textViewDidChangeSelection(textView: textView))
     }
 }

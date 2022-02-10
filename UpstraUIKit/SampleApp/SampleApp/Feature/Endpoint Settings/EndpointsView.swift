@@ -58,8 +58,12 @@ struct EndpointsView: View {
         
         Button("Save") {
             // Save selected environment and update values if any
-            EndpointManager.shared.update(environment: selectedEnv, apiKey: nil, httpEndpoint: httpEndpoint, socketEndpoint: httpEndpoint)
+            EndpointManager.shared.update(environment: selectedEnv, apiKey: apiKey, httpEndpoint: httpEndpoint, socketEndpoint: httpEndpoint)
             saveButtonDidTap?()
+        }
+        
+        Button("Reset") {
+            EndpointManager.shared.resetEnvironments()
         }
     }
     

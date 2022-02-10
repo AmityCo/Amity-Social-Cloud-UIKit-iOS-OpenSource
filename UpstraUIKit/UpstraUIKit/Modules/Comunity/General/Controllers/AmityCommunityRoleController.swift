@@ -10,21 +10,21 @@ import UIKit
 import AmitySDK
 
 protocol AmityCommunityRoleControllerProtocol {
-    func add(role: AmityCommunityRole, userIds: [String], completion: ((AmityError?) -> Void)?)
-    func remove(role: AmityCommunityRole, userIds: [String], completion: ((AmityError?) -> Void)?)
+    func add(roles: [String], userIds: [String], completion: ((AmityError?) -> Void)?)
+    func remove(roles: [String], userIds: [String], completion: ((AmityError?) -> Void)?)
 }
 
 final class AmityCommunityRoleController: AmityCommunityRoleControllerProtocol {
     
-    private var moderation: AmityCommunityModeration?
+    private let moderation: AmityCommunityModeration
     
     init(communityId: String) {
         moderation = AmityCommunityModeration(client: AmityUIKitManagerInternal.shared.client, andCommunity: communityId)
     }
     
     // Add role permisstion to users
-    func add(role: AmityCommunityRole, userIds: [String], completion: ((AmityError?) -> Void)?) {
-        moderation?.addRole(role.rawValue, userIds: userIds, completion: { (success, error) in
+    func add(roles: [String], userIds: [String], completion: ((AmityError?) -> Void)?) {
+        moderation.addRoles(roles, userIds: userIds, completion: { (success, error) in
             if success {
                 completion?(nil)
             } else {
@@ -38,8 +38,8 @@ final class AmityCommunityRoleController: AmityCommunityRoleControllerProtocol {
     }
     
     // Remove role permisstion from users
-    func remove(role: AmityCommunityRole, userIds: [String], completion: ((AmityError?) -> Void)?) {
-        moderation?.removeRole(role.rawValue, userIds: userIds, completion: { (success, error) in
+    func remove(roles: [String], userIds: [String], completion: ((AmityError?) -> Void)?) {
+        moderation.removeRoles(roles, userIds: userIds, completion: { (success, error) in
             if success {
                 completion?(nil)
             } else {
@@ -47,5 +47,4 @@ final class AmityCommunityRoleController: AmityCommunityRoleControllerProtocol {
             }  
         })
     }
-
 }

@@ -91,7 +91,7 @@ class AmitySocialNotificationSettingsScreenViewModel: AmityPostNotificationSetti
                     roleFilter = AmityRoleFilter.all()
                     isEnabled = true
                 case .onlyModerator:
-                    roleFilter = AmityRoleFilter.onlyFilter(withRoleIds: [AmityCommunityRole.moderator.rawValue])
+                    roleFilter = AmityRoleFilter.onlyFilter(withRoleIds: [AmityCommunityRole.moderator.rawValue, AmityCommunityRole.communityModerator.rawValue])
                     isEnabled = true
                 case .off:
                     roleFilter = nil

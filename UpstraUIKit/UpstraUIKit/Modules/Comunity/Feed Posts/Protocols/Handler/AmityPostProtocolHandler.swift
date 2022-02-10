@@ -129,6 +129,8 @@ extension AmityPostProtocolHandler: AmityPostDelegate {
                     streamId: stream.streamId
                 )
             }
+        case .tapOnMentionWithUserId(let userId):
+            AmityEventHandler.shared.userDidTap(from: viewController!, userId: userId)
         }
         
     }

@@ -27,6 +27,7 @@ final class AmityPostDetailScreenViewModel: AmityPostDetailScreenViewModelType {
     private var comments: [AmityCommentModel] = []
     private var viewModelArrays: [[PostDetailViewModel]] = []
     private let debouncer = Debouncer(delay: 0.3)
+    private(set) var community: AmityCommunity?
     
     init(withPostId postId: String,
          postController: AmityPostControllerProtocol,
@@ -109,9 +110,11 @@ extension AmityPostDetailScreenViewModel {
         
         // prepare post
         if let post = post {
-            if let communityId = post.targetCommunity?.communityId {
+            if let community = post.targetCommunity {
+                self.community = community
+                let communityId = community.communityId
                 let participation = AmityCommunityParticipation(client: AmityUIKitManagerInternal.shared.client, andCommunityId: communityId)
-                post.isModerator = participation.getMember(withId: post.postedUserId)?.roles.contains(AmityCommunityRole.moderator.rawValue) ?? false
+                post.isModerator = participation.getMember(withId: post.postedUserId)?.hasModeratorRole ?? false
             }
             let component = prepareComponents(post: post)
             viewModels.append([.post(component)])
@@ -294,8 +297,8 @@ extension AmityPostDetailScreenViewModel {
     
     // MARK: Commend
     
-    func createComment(withText text: String, parentId: String?) {
-        commentController.createComment(withReferenceId: postId, referenceType: .post, parentId: parentId, text: text) { [weak self] (comment, error) in
+    func createComment(withText text: String, parentId: String?, metadata: [String: Any]?, mentionees: AmityMentioneesBuilder?) {
+        commentController.createComment(withReferenceId: postId, referenceType: .post, parentId: parentId, text: text, metadata: metadata, mentionees: mentionees) { [weak self] (comment, error) in
             guard let strongSelf = self else { return }
             // check if the recent comment is contains banned word
             // if containts, delete the particular comment
@@ -333,8 +336,8 @@ extension AmityPostDetailScreenViewModel {
         }
     }
     
-    func editComment(with comment: AmityCommentModel, text: String) {
-        commentController.edit(withComment: comment, text: text) { [weak self] (success, error) in
+    func editComment(with comment: AmityCommentModel, text: String, metadata: [String : Any]?, mentionees: AmityMentioneesBuilder?) {
+        commentController.edit(withComment: comment, text: text, metadata: metadata, mentionees: mentionees) { [weak self] (success, error) in
             guard let strongSelf = self else { return }
             if success {
                 strongSelf.delegate?.screenViewModelDidEditComment(strongSelf)

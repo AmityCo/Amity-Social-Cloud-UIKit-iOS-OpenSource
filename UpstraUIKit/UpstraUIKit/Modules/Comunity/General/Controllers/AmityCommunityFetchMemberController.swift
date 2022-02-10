@@ -25,7 +25,7 @@ final class AmityCommunityFetchMemberController: AmityCommunityFetchMemberContro
     }
     
     func fetch(roles: [String], _ completion: @escaping (Result<[AmityCommunityMembershipModel], Error>) -> Void) {
-        memberCollection = membershipParticipation?.getMembers(filter: .all, roles: roles, sortBy: .lastCreated)
+        memberCollection = membershipParticipation?.getMembers(membershipOptions: [.member, .ban], roles: roles, sortBy: .lastCreated)
         memberToken = memberCollection?.observe { (collection, change, error) in
             if let error = error {
                 completion(.failure(error))
@@ -33,11 +33,7 @@ final class AmityCommunityFetchMemberController: AmityCommunityFetchMemberContro
                 var members: [AmityCommunityMembershipModel] = []
                 for index in 0..<collection.count() {
                     guard let member = collection.object(at: index) else { continue }
-                    var model = AmityCommunityMembershipModel(member: member)
-                    if let roles = model.roles as? [String], roles.contains(AmityCommunityRole.moderator.rawValue) {
-                        model.isModerator = true
-                    }
-                    members.append(model)
+                    members.append(AmityCommunityMembershipModel(member: member))
                 }
                 completion(.success(members))
             }

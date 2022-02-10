@@ -15,6 +15,7 @@ enum AmityError: Int, Error {
     case bannedWord = 400308
     case noUserAccessPermission = 400301
     case fileServiceIsNotReady = 38528523
+    case unableToLeaveCommunity = 400317
     case unAuthorizedError = 400100
     case itemNotFound = 400400
     case badRequestError = 400000

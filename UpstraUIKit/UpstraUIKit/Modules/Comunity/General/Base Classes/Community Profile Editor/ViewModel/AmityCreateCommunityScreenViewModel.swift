@@ -60,13 +60,12 @@ final class AmityCreateCommunityScreenViewModel: AmityCreateCommunityScreenViewM
     }
     
     private var isRequiredFieldExisted: Bool {
-        let isRequiredFieldExisted = !displayName.trimmingCharacters(in: .whitespaces).isEmpty && selectedCategoryId != nil
-        
         if let community = community.value {
             // Edit community
             let isValueChanged = (displayName != community.displayName) || (description != community.description) || (community.isPublic != isPublic) || (imageAvatar != nil) || (community.categoryId != selectedCategoryId)
-            return isRequiredFieldExisted && isValueChanged
+            return !displayName.trimmingCharacters(in: .whitespaces).isEmpty && isValueChanged
         } else {
+            let isRequiredFieldExisted = !displayName.trimmingCharacters(in: .whitespaces).isEmpty && selectedCategoryId != nil
             if isPublic {
                 // Create public community
                 return isRequiredFieldExisted
@@ -241,29 +240,6 @@ extension AmityCreateCommunityScreenViewModel {
 }
 
 private extension AmityCreateCommunityScreenViewModel {
-    
-    // Force set moderator after create the community success
-    private func updateRole(withCommunityId communityId: String) {
-        let userId = AmityUIKitManagerInternal.shared.currentUserId
-        communityModeration = AmityCommunityModeration(client: AmityUIKitManagerInternal.shared.client, andCommunity: communityId)
-        communityModeration?.addRole(AmityCommunityRole.moderator.rawValue, userIds: [userId]) { [weak self] (success, error) in
-            guard let strongSelf = self else { return }
-            if let _ = error {
-                AmityHUD.hide()
-                AmityUtilities.showError()
-                return
-            } else {
-                if success {
-                    self?.delegate?.screenViewModel(strongSelf, state: .createSuccess(communityId: communityId))
-                } else {
-                    AmityHUD.hide()
-                    AmityUtilities.showError()
-                    return
-                }
-            }
-        }
-    }
-    
     private func showProfile(model: AmityCommunityModel) {
         updateDisplayName(text: model.displayName)
         updateDescription(text: model.description)
@@ -295,7 +271,7 @@ private extension AmityCreateCommunityScreenViewModel {
             guard let strongSelf = self else { return }
             
             if let community = community {
-                strongSelf.updateRole(withCommunityId: community.communityId)
+                strongSelf.delegate?.screenViewModel(strongSelf, state: .createSuccess(communityId: community.communityId))
             } else {
                 strongSelf.delegate?.screenViewModel(strongSelf, failure: AmityError(error: error) ?? .unknown)
             }

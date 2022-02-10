@@ -18,7 +18,7 @@ extension AmityUserNotificationSettings {
             return false
         }
         let roles = roleFilter.roleIds?.compactMap { AmityCommunityRole(rawValue: $0) } ?? []
-        return roles.contains(.moderator)
+        return roles.contains { $0 == .moderator || $0 == .communityModerator }
     }
     
 }

@@ -43,27 +43,25 @@ class UploadImageMessageOperation: AsyncOperation {
                     self?.finish()
                     return
                 }
-
-                self?.token = repository
-                    .createImageMessage(withChannelId: channelId, imageFile: imageUrl, caption: nil, fullImage: true, tags: nil, parentId: nil)
-                    .observe { (liveObject, error) in
-                        
-                        guard error == nil, let message = liveObject.object else {
-                            self?.token = nil
-                            self?.finish()
-                            return
-                        }
-                        switch message.syncState {
-                        case .syncing, .default:
-                            // We don't cache local file URL as sdk handles itself
-                            break
-                        case .synced, .error:
-                            self?.token = nil
-                            self?.finish()
-                        @unknown default:
-                            fatalError()
-                        }
+                let messageId = repository.createImageMessage(withChannelId: channelId, imageFile: imageUrl, caption: nil, fullImage: true, tags: nil, parentId: nil, completion: nil)
+                self?.token = repository.getMessage(messageId)?.observe { (liveObject, error) in
+                    guard error == nil, let message = liveObject.object else {
+                        self?.token = nil
+                        self?.finish()
+                        return
+                    }
+                    switch message.syncState {
+                    case .syncing, .default:
+                        // We don't cache local file URL as sdk handles itself
+                        break
+                    case .synced, .error:
+                        self?.token = nil
+                        self?.finish()
+                    @unknown default:
+                        fatalError()
+                    }
                 }
+                
             })
 
         }

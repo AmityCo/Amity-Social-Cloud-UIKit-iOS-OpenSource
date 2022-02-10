@@ -214,6 +214,10 @@ extension AmityMessageListTableViewController: AmityExpandableLabelDelegate {
     public func didCollapseLabel(_ label: AmityExpandableLabel) {
         tableView.endUpdates()
     }
+    
+    public func didTapOnMention(_ label: AmityExpandableLabel, withUserId userId: String) {
+        // Intentionally left empty
+    }
 }
 
 // MARK: - Private functions

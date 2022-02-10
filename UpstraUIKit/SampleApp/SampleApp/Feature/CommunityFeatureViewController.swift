@@ -22,7 +22,10 @@ class CommunityFeatureViewController: UIViewController {
         case home
         case newsfeed
         case globalFeed
+        case customPostRankingGlobalFeed
         case myProfile
+        case postCreator
+        case multipleFeeds
         case PostCreator
         case myFeed
         case homeByDeeplink
@@ -45,10 +48,14 @@ class CommunityFeatureViewController: UIViewController {
                 return "Newsfeed (GlobalFeed + MyCommunity)"
             case .globalFeed:
                 return "GlobalFeed"
+            case .customPostRankingGlobalFeed:
+                return "Custom Post Ranking Global Feed"
             case .myProfile:
                 return "My Profile"
-            case .PostCreator:
+            case .postCreator:
                 return "Post Creator"
+            case .multipleFeeds:
+                return "Multiple Feeds"
             case .myFeed:
                 return "MyFeed"
             case .homeByDeeplink:
@@ -146,18 +153,37 @@ extension CommunityFeatureViewController: UITableViewDelegate {
             AmityFeedUISettings.shared.register(UINib(nibName: "AmityPostBirthdayTableViewCell", bundle: nil), forCellReuseIdentifier: "AmityPostBirthdayTableViewCell")
             AmityFeedUISettings.shared.register(UINib(nibName: "AmityPostThumbsupTableViewCell", bundle: nil), forCellReuseIdentifier: "AmityPostThumbsupTableViewCell")
             AmityFeedUISettings.shared.register(UINib(nibName: "AmityPostNewJoinerTableViewCell", bundle: nil), forCellReuseIdentifier: "AmityPostNewJoinerTableViewCell")
+            
             AmityFeedUISettings.shared.delegate = self
             AmityFeedUISettings.shared.dataSource = self
+            
+            let homepage = AmityCommunityHomePageViewController.make()
+            let navigationController = UINavigationController(rootViewController: homepage)
+            navigationController.modalPresentationStyle = .fullScreen
+            present(navigationController, animated: true, completion: nil)
+            
         case .newsfeed:
-            let newsfeedViewController = AmityNewsfeedViewController.make()
-            navigationController?.pushViewController(newsfeedViewController, animated: true)
+            let newsfeedPage = AmityNewsfeedViewController.make()
+            let navigationController = UINavigationController(rootViewController: newsfeedPage)
+            navigationController.modalPresentationStyle = .fullScreen
+            present(navigationController, animated: true, completion: nil)
         case .globalFeed:
-            let feedViewController = AmityGlobalFeedViewController.make()
-            navigationController?.pushViewController(feedViewController, animated: true)
+            let globalFeedPage = AmityGlobalFeedViewController.make()
+            let navigationController = UINavigationController(rootViewController: globalFeedPage)
+            navigationController.modalPresentationStyle = .fullScreen
+            present(navigationController, animated: true, completion: nil)
+        case .customPostRankingGlobalFeed:
+            let globalFeedPage = AmityGlobalFeedViewController.makeCustomPostRanking()
+            let navigationController = UINavigationController(rootViewController: globalFeedPage)
+            navigationController.modalPresentationStyle = .fullScreen
+            present(navigationController, animated: true, completion: nil)
         case .myProfile:
             let myUserProfileViewController = AmityUserProfilePageViewController.make(withUserId: AmityUIKitManager.client.currentUserId ?? "")
             navigationController?.pushViewController(myUserProfileViewController, animated: true)
-        case .PostCreator:
+        case .multipleFeeds:
+            let samplePageViewController = SamplePageViewController()
+            navigationController?.pushViewController(samplePageViewController, animated: true)
+        case .postCreator:
             if #available(iOS 14.0, *) {
                 var postCreateSettingsPage = PostCreatorSettingsPage()
                 postCreateSettingsPage.didChooseParameters = { [weak self] parameters in

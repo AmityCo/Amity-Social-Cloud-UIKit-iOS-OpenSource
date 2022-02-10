@@ -44,7 +44,7 @@ public final class AmityPostHeaderTableViewCell: UITableViewCell, Nibbable, Amit
         displayNameLabel.configure(displayName: post.displayName,
                                    communityName: post.targetCommunity?.displayName,
                                    isOfficial: post.targetCommunity?.isOfficial ?? false,
-                                   shouldShowCommunityName: post.appearance.shouldShowCommunityName)
+                                   shouldShowCommunityName: post.appearance.shouldShowCommunityName, shouldShowBannedSymbol: post.postedUser?.isGlobalBan ?? false)
         displayNameLabel.delegate = self
         datetimeLabel.text = post.subtitle
         
@@ -72,7 +72,7 @@ public final class AmityPostHeaderTableViewCell: UITableViewCell, Nibbable, Amit
         backgroundColor = .clear
         contentView.backgroundColor = .clear
         containerView.backgroundColor = AmityColorSet.backgroundColor
-        displayNameLabel.configure(displayName: AmityLocalizedStringSet.General.anonymous.localizedString, communityName: nil, isOfficial: false, shouldShowCommunityName: false)
+        displayNameLabel.configure(displayName: AmityLocalizedStringSet.General.anonymous.localizedString, communityName: nil, isOfficial: false, shouldShowCommunityName: false, shouldShowBannedSymbol: false)
         
         // badge
         badgeLabel.text = AmityLocalizedStringSet.General.moderator.localizedString + " • "

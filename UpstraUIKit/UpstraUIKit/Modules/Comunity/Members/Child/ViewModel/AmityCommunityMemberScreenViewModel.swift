@@ -66,13 +66,8 @@ extension AmityCommunityMemberScreenViewModel {
 // MARK: - Action
 extension  AmityCommunityMemberScreenViewModel{
     func getCommunityEditUserPermission(_ completion: ((Bool) -> Void)?) {
-        AmityUIKitManagerInternal.shared.client.hasPermission(.editCommunityUser, forCommunity: community.communityId) { [weak self] (hasPermission) in
-            guard let strongSelf = self else { return }
-            if strongSelf.community.isCreator {
-                completion?(true)
-            } else {
-                completion?(hasPermission)
-            }
+        AmityUIKitManagerInternal.shared.client.hasPermission(.editCommunityUser, forCommunity: community.communityId) { hasPermission in
+            completion?(hasPermission)
         }
     }
 }
@@ -91,7 +86,7 @@ extension AmityCommunityMemberScreenViewModel {
                 }
             }
         case .moderator:
-            fetchMemberController.fetch(roles: [AmityCommunityRole.moderator.rawValue]) { [weak self] (result) in
+            fetchMemberController.fetch(roles: [AmityCommunityRole.moderator.rawValue, AmityCommunityRole.communityModerator.rawValue]) { [weak self] (result) in
                 switch result {
                 case .success(let members):
                     self?.members = members
@@ -194,7 +189,7 @@ extension AmityCommunityMemberScreenViewModel {
 extension AmityCommunityMemberScreenViewModel {
     func addRole(at indexPath: IndexPath) {
         let userId = member(at: indexPath).userId
-        roleController.add(role: .moderator, userIds: [userId]) { [weak self] error in
+        roleController.add(roles: [AmityCommunityRole.communityModerator.rawValue, AmityChannelRole.channelModerator.rawValue], userIds: [userId]) { [weak self] error in
             guard let strongSelf = self else { return }
             if let error = error {
                 strongSelf.delegate?.screenViewModel(strongSelf, failure: error)
@@ -205,8 +200,20 @@ extension AmityCommunityMemberScreenViewModel {
     }
     
     func removeRole(at indexPath: IndexPath) {
-        let userId = member(at: indexPath).userId
-        roleController.remove(role: .moderator, userIds: [userId]) { [weak self] error in
+        let user = member(at: indexPath)
+        var roles: [String] = []
+        if let currentRoles = user.roles as? [String] {
+            if currentRoles.contains(AmityCommunityRole.moderator.rawValue) {
+                roles.append(AmityCommunityRole.moderator.rawValue)
+            }
+            
+            if currentRoles.contains(AmityCommunityRole.communityModerator.rawValue) {
+                roles.append(AmityCommunityRole.communityModerator.rawValue)
+                roles.append(AmityChannelRole.channelModerator.rawValue)
+            }
+        }
+        
+        roleController.remove(roles: roles, userIds: [user.userId]) { [weak self] error in
             guard let strongSelf = self else { return }
             if let error = error {
                 strongSelf.delegate?.screenViewModel(strongSelf, failure: error)

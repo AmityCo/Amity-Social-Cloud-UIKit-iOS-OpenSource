@@ -28,6 +28,8 @@ final class AmityFollowerTableViewCell: UITableViewCell, Nibbable {
     @IBOutlet private var avatarView: AmityAvatarView!
     @IBOutlet private var displayNameLabel: UILabel!
     @IBOutlet private var optionButton: UIButton!
+    @IBOutlet private var bannedImageView: UIImageView!
+    @IBOutlet private var bannedImageViewWidthConstraint: NSLayoutConstraint!
     
     // MARK: - Properties
     private var indexPath: IndexPath!
@@ -44,12 +46,21 @@ final class AmityFollowerTableViewCell: UITableViewCell, Nibbable {
         displayNameLabel.text = ""
         avatarView.placeholder = AmityIconSet.defaultAvatar
         avatarView.image = nil
+        bannedImageViewWidthConstraint.constant = 0
+        bannedImageView.image = nil
+        bannedImageView.isHidden = true
     }
     
     func display(with model: AmityUserModel) {
         displayNameLabel.text = model.displayName
         optionButton.isHidden = model.isCurrentUser
         avatarView.setImage(withImageURL: model.avatarURL, placeholder: AmityIconSet.defaultAvatar)
+        
+        if model.isGlobalBan {
+            bannedImageView.isHidden = false
+            bannedImageViewWidthConstraint.constant = 16
+            bannedImageView.image = AmityIconSet.CommunitySettings.iconCommunitySettingBanned
+        }
     }
     
     func setIndexPath(with _indexPath: IndexPath) {
