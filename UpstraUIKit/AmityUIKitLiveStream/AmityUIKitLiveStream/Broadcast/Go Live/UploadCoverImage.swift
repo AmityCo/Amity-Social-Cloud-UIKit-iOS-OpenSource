@@ -7,6 +7,7 @@
 
 import Foundation
 import AmitySDK
+import AmityUIKit
 
 extension GoLive {
     
@@ -30,7 +31,7 @@ extension GoLive {
                     return
                 }
                 guard let imageData = imageData else {
-                    self?.result = .failure(GeneralError(message: "Unable to find image data"))
+                    self?.result = .failure(GeneralError(message: AmityLocalizedStringSet.LiveStream.Live.findPostData.localizedString))
                     self?.finish()
                     return
                 }

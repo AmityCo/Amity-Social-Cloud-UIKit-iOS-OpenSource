@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import AmityUIKit
 
 extension LiveStreamBroadcastViewController {
     
@@ -29,16 +30,16 @@ extension LiveStreamBroadcastViewController {
         guard let startedAt = startedAt,
               let durationText = liveDurationFormatter.string(from: startedAt, to: Date()),
               let broadcaster = broadcaster else {
-            streamingStatusLabel.text = "LIVE"
+                  streamingStatusLabel.text = AmityLocalizedStringSet.LiveStream.Live.live.localizedString
             return
         }
         switch broadcaster.state {
         case .connected:
-            streamingStatusLabel.text = "LIVE \(durationText)"
+            streamingStatusLabel.text = "\(AmityLocalizedStringSet.LiveStream.Live.live.localizedString) \(durationText)"
         case .connecting, .disconnected, .idle:
-            streamingStatusLabel.text = "CONNECTING \(durationText)"
+            streamingStatusLabel.text = "\(AmityLocalizedStringSet.LiveStream.Live.connecting.localizedString) \(durationText)"
         @unknown default:
-            streamingStatusLabel.text = "LIVE \(durationText)"
+            streamingStatusLabel.text = "\(AmityLocalizedStringSet.LiveStream.Live.live.localizedString) \(durationText)"
         }
     }
     

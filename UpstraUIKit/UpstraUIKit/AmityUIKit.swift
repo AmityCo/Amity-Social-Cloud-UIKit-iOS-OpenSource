@@ -119,6 +119,10 @@ public final class AmityUIKitManager {
     public static var isClient: Bool {
         AmityUIKitManagerInternal.shared.isClientRegister
     }
+    
+    public static var AmityLanguage: String {
+        AmityUIKitManagerInternal.shared.amityLanguage
+    }
    
 }
 

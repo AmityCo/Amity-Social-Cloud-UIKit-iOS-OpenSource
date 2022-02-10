@@ -8,6 +8,7 @@
 import UIKit
 import AVFoundation
 import Photos
+import AmityUIKit
 
 extension LiveStreamBroadcastViewController {
     
@@ -51,24 +52,24 @@ extension LiveStreamBroadcastViewController {
     }
     
     func presentPermissionRequiredDialogue() {
-        let title = "Permission Required"
-        let message = "Please grant permission camera and microphone in iOS settings."
+        let title = AmityLocalizedStringSet.LiveStream.Alert.titleAlertPermission.localizedString
+        let message = AmityLocalizedStringSet.LiveStream.Alert.descriptionAlertPermission.localizedString
         let alertController = UIAlertController(title: title, message: message, preferredStyle: .alert)
-        alertController.addAction(UIAlertAction(title: "Cancel", style: .default, handler: { action in
+        alertController.addAction(UIAlertAction(title: AmityLocalizedStringSet.General.cancel.localizedString, style: .default, handler: { action in
         }))
-        alertController.addAction(UIAlertAction(title: "Setting", style: .default, handler: { action in
+        alertController.addAction(UIAlertAction(title: AmityLocalizedStringSet.General.settings.localizedString, style: .default, handler: { action in
             UIApplication.shared.open(URL(string: UIApplication.openSettingsURLString)!)
         }))
         self.present(alertController, animated: true)
     }
     
     func alertPhotoPermision() {
-        let title = "Photo"
-        let message = "Please allow access photo library"
+        let title = AmityLocalizedStringSet.LiveStream.Alert.titleAlerpermissionPhoto.localizedString
+        let message = AmityLocalizedStringSet.LiveStream.Alert.descriptionAlertPermissionPhoto.localizedString
         let alertController = UIAlertController(title: title, message: message, preferredStyle: .alert)
-        alertController.addAction(UIAlertAction(title: "Cancel", style: .default, handler: { action in
+        alertController.addAction(UIAlertAction(title: AmityLocalizedStringSet.General.cancel.localizedString, style: .default, handler: { action in
         }))
-        alertController.addAction(UIAlertAction(title: "Setting", style: .default, handler: { action in
+        alertController.addAction(UIAlertAction(title: AmityLocalizedStringSet.General.settings.localizedString, style: .default, handler: { action in
             UIApplication.shared.open(URL(string: UIApplication.openSettingsURLString)!)
         }))
         self.present(alertController, animated: true)

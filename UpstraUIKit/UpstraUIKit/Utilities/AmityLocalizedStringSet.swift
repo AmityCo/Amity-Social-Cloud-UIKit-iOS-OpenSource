@@ -18,23 +18,23 @@ import UIKit
 /// AmityLocalizedStringSet.General.ok = {CUSTOM_STRING}
 /// ```
 public struct AmityLocalizedStringSet {
-    private init() { }
+    public init() { }
     
-    enum General {
+    public enum General {
         static let report = "general_report"
         static let undoReport = "general_undo_report"
         static let reportUser = "general_report_user"
         static let unreportUser = "general_unreport_user"
-        static let settings = "general_settings"
+        public static let settings = "general_settings"
         static let accept = "general_accept"
         static let decline = "general_decline"
         static let close = "general_close"
         static let save = "general_save"
         static let saved = "general_saved"
-        static let cancel = "general_cancel"
+        public static let cancel = "general_cancel"
         static let delete = "general_delete"
         static let edit = "general_edit"
-        static let done = "general_done"
+        public static let done = "general_done"
         static let post = "general_post"
         static let discard = "general_discard"
         static let leave = "general_leave"
@@ -450,6 +450,50 @@ public struct AmityLocalizedStringSet {
         static let alertDeleteFailApproveOrDecline = "pending_posts_alert_delete_fail_approve_or_decline"
     }
     
+    // MARK: - LiveStream
+    public enum LiveStream {
+        
+        public enum Create {
+            public static let titleName = "amity_video_stream_title"
+            public static let selectCover = "amity_video_stream_select_cover"
+            public static let title = "amity_video_stream_title_hint"
+            public static let description = "amity_video_stream_description_hint"
+            public static let goLive = "amity_video_stream_go_live"
+        }
+        
+        public enum Live {
+            public static let live = "amity_video_stream_live"
+            public static let connecting = "amity_video_stream_connecting"
+            public static let finish = "amity_video_stream_finish"
+            public static let titleStopLive = "amity_video_stream_stop_confirmation_title"
+            public static let descriptionStopLive = "amity_video_stream_stop_confirmation_description"
+            public static let stopLive = "amity_general_stop"
+            public static let endingLiveStream = "amity_video_stream_ending_live_stream"
+            public static let findPostLiveStreamData = "amity_video_stream_unable_to_find_live_stream_data"
+            public static let findPostData = "amity_video_stream_unable_to_find_post_data"
+            public static let findPostStremData = "amity_video_stream_unable_to_find_create_stream"
+            public static let recorded = "amity_video_stream_recorded"
+        }
+        
+        public enum Alert {
+            public static let imputError = "amity_video_stream_input_error"
+            public static let titleCanNotEmpty = "amity_video_stream_title_can_not_be_empty"
+            public static let descriptionCanNotEmpty = "amity_video_stream_title_can_not_be_empty"
+            public static let titleAlertPermission = "amity_video_stream_permision_requires"
+            public static let descriptionAlertPermission = "amity_video_stream_grant_permision_camera_and_microphone"
+            public static let titleAlerpermissionPhoto = "amity_video_stream_title_photo"
+            public static let descriptionAlertPermissionPhoto = "amirt_video_stream_please_allow_access_photo"
+        }
+        
+        public enum Show {
+            public static let unavailable = "amity_video_stream_unavailable_description"
+            public static let ensesTitle = "amity_video_stream_ended_title"
+            public static let playback = "amity_video_stream_ended_description"
+        }
+        
+    }
+    
+    
     // MARK: - Polls
     enum Poll {
         
@@ -509,8 +553,8 @@ public struct AmityLocalizedStringSet {
     }
     
     // MARK: - Error Handling
-    struct ErrorHandling {
-        static let errorTitle = "error_title"
+    public struct ErrorHandling {
+        public static let errorTitle = "error_title"
         static let errorMessageTitle = "error_message_title"
         static let errorMessagePostBanword = "error_message_post_banword"
         static let errorMessageCommentBanword = "error_message_comment_banword"

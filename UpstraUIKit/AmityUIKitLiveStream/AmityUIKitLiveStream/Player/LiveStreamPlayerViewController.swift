@@ -193,13 +193,13 @@ public class LiveStreamPlayerViewController: UIViewController {
         case .ended, .recorded:
             // Stream End Container will obseceure all views to show title and description.
             streamEndContainer.isHidden = false
-            streamEndTitleLabel.text = "This livestream has ended."
-            streamEndDescriptionLabel.text = "Playback will be available for you to watch shortly."
+            streamEndTitleLabel.text = AmityLocalizedStringSet.LiveStream.Show.ensesTitle.localizedString
+            streamEndDescriptionLabel.text = AmityLocalizedStringSet.LiveStream.Show.playback.localizedString
             streamEndDescriptionLabel.isHidden = false
         case .idle:
             // Stream End Container will obseceure all views to show title and description.
             streamEndContainer.isHidden = false
-            streamEndTitleLabel.text = "The stream is currently unavailable."
+            streamEndTitleLabel.text = AmityLocalizedStringSet.LiveStream.Show.unavailable.localizedString
             streamEndDescriptionLabel.text = nil
             streamEndDescriptionLabel.isHidden = true
         case .live, .none:

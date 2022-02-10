@@ -157,13 +157,13 @@ class PostGalleryItemCell: UICollectionViewCell, Nibbable {
             switch streamStatus {
             case .idle:
                 streamEndView.isHidden = false
-                streamEndTitleLabel.text = "The stream is currently unavailable."
+                streamEndTitleLabel.text = AmityLocalizedStringSet.LiveStream.Show.unavailable.localizedString
                 streamEndDescriptionLabel.text = nil
                 streamEndDescriptionLabel.isHidden = true
             case .ended:
                 streamEndView.isHidden = false
-                streamEndTitleLabel.text = "This livestream has ended."
-                streamEndDescriptionLabel.text = "Playback will be available for you to watch shortly."
+                streamEndTitleLabel.text = AmityLocalizedStringSet.LiveStream.Show.ensesTitle.localizedString
+                streamEndDescriptionLabel.text = AmityLocalizedStringSet.LiveStream.Show.playback.localizedString
                 streamEndDescriptionLabel.isHidden = false
             default:
                 streamEndView.isHidden = true
@@ -178,11 +178,11 @@ class PostGalleryItemCell: UICollectionViewCell, Nibbable {
             case .live:
                 streamStateContainer.isHidden = false
                 streamStateContainer.backgroundColor = UIColor(hex: "FF305A")
-                streamStateLabel.text = "LIVE"
+                streamStateLabel.text = AmityLocalizedStringSet.LiveStream.Live.live.localizedString
             case .recorded:
                 streamStateContainer.isHidden = false
                 streamStateContainer.backgroundColor = UIColor.black.withAlphaComponent(0.7)
-                streamStateLabel.text = "RECORDED"
+                streamStateLabel.text = AmityLocalizedStringSet.LiveStream.Live.recorded.localizedString
             default:
                 streamStateContainer.isHidden = true
             }

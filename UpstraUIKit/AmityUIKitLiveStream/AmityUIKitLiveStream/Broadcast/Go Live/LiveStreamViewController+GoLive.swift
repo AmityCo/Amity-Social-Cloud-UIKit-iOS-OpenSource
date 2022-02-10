@@ -17,7 +17,7 @@ extension LiveStreamBroadcastViewController {
         // Validate Inputs
         switch validateInputs() {
         case .failure(let error):
-            presentErrorDialogue(title: "Input Error", message: error.localizedDescription)
+            presentErrorDialogue(title: AmityLocalizedStringSet.LiveStream.Alert.imputError, message: error.localizedDescription)
             return
         case .success:
             break
@@ -35,11 +35,11 @@ extension LiveStreamBroadcastViewController {
     private func validateInputs() -> Result<Void, Error> {
         let title = titleTextField.text ?? ""
         if title.isEmpty {
-            return .failure(GeneralError(message: "Title can not be empty."))
+            return .failure(GeneralError(message: AmityLocalizedStringSet.LiveStream.Alert.titleCanNotEmpty.localizedString))
         }
         let description = descriptionTextView.text ?? ""
         if description.isEmpty {
-            return .failure(GeneralError(message: "Description can not be empty."))
+            return .failure(GeneralError(message: AmityLocalizedStringSet.LiveStream.Alert.descriptionCanNotEmpty.localizedString))
         }
         return .success(Void())
     }
@@ -106,7 +106,7 @@ extension LiveStreamBroadcastViewController {
             guard let firstChildPost = post.childrenPosts?.first,
                   let streamObject = firstChildPost.getLiveStreamInfo() else {
                 assertionFailure("post.getLiveStreamInfo must exist at this point.")
-                presentErrorDialogue(title: "Error", message: "Unable to find live stream data in post.")
+                      presentErrorDialogue(title: AmityLocalizedStringSet.ErrorHandling.errorTitle.localizedString, message: AmityLocalizedStringSet.LiveStream.Live.findPostLiveStreamData.localizedString)
                 return
             }
             createdPost = post
@@ -114,7 +114,7 @@ extension LiveStreamBroadcastViewController {
             startLiveDurationTimer()
             switchToUIState(.streaming)
         case .failure(let error):
-            presentErrorDialogue(title: "Error", message: error.localizedDescription)
+            presentErrorDialogue(title: AmityLocalizedStringSet.ErrorHandling.errorTitle.localizedString, message: error.localizedDescription)
         }
         
     }

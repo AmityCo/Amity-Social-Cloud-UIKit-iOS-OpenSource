@@ -7,6 +7,7 @@
 
 import Foundation
 import AmitySDK
+import AmityUIKit
 
 extension GoLive {
     
@@ -73,7 +74,7 @@ extension GoLive {
                     return result
                 }
             }
-            return .failure(GeneralError(message: "Unable to find create stream result"))
+            return .failure(GeneralError(message: AmityLocalizedStringSet.LiveStream.Live.findPostStremData.localizedString))
         }
         
     }

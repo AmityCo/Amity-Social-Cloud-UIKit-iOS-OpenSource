@@ -138,7 +138,7 @@ open class AmityEventHandler {
         }
         
         let livestreamPost = ImageItemOption(
-            title: "Livestream",
+            title: AmityLocalizedStringSet.LiveStream.Create.titleName.localizedString,
             image: UIImage(named: "icon_create_livestream_post", in: AmityUIKitManager.bundle, compatibleWith: nil)) {
                 completion(.livestream)
             }

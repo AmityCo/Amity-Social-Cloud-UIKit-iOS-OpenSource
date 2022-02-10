@@ -75,6 +75,7 @@ final public class LiveStreamBroadcastViewController: UIViewController {
     @IBOutlet private weak var selectCoverButton: UIButton! {
         didSet {
             selectCoverButton.layer.cornerRadius = 5
+            selectCoverButton.setTitle(AmityLocalizedStringSet.LiveStream.Create.selectCover.localizedString, for: .normal)
         }
     }
     @IBOutlet private weak var coverImageContainer: UIView!
@@ -235,7 +236,7 @@ final public class LiveStreamBroadcastViewController: UIViewController {
         titleTextField.font = AmityFontSet.headerLine
         titleTextField.textColor = .white
         titleTextField.attributedPlaceholder =
-        NSAttributedString(string: "Title", attributes: [NSAttributedString.Key.foregroundColor: UIColor.white])
+        NSAttributedString(string: AmityLocalizedStringSet.LiveStream.Create.title.localizedString, attributes: [NSAttributedString.Key.foregroundColor: UIColor.white])
         titleTextField.returnKeyType = .done
         titleTextField.delegate = self
         
@@ -243,14 +244,14 @@ final public class LiveStreamBroadcastViewController: UIViewController {
         descriptionTextView.padding = .zero
         descriptionTextView.backgroundColor = .clear
         descriptionTextView.font = AmityFontSet.body
-        descriptionTextView.placeholder = "Tap to add post description..."
+        descriptionTextView.placeholder = AmityLocalizedStringSet.LiveStream.Create.description.localizedString
         descriptionTextView.textColor = .white
         descriptionTextView.returnKeyType = .default
         let textViewToolbar: UIToolbar = UIToolbar()
         textViewToolbar.barStyle = .default
         textViewToolbar.items = [
             UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: self, action: nil),
-            UIBarButtonItem(title: "Done", style: .done, target: self, action: #selector(cancelInput))
+            UIBarButtonItem(title: AmityLocalizedStringSet.General.done.localizedString, style: .done, target: self, action: #selector(cancelInput))
         ]
         textViewToolbar.sizeToFit()
         descriptionTextView.inputAccessoryView = textViewToolbar
@@ -265,13 +266,13 @@ final public class LiveStreamBroadcastViewController: UIViewController {
         goLiveButton.layer.cornerRadius = 4
         goLiveButton.layer.borderWidth = 1
         goLiveButton.layer.borderColor = UIColor(red: 0.647, green: 0.663, blue: 0.71, alpha: 1).cgColor
-        goLiveButton.setAttributedTitle(NSAttributedString(string: "Go live", attributes: [
+        goLiveButton.setAttributedTitle(NSAttributedString(string: AmityLocalizedStringSet.LiveStream.Create.goLive.localizedString, attributes: [
             .foregroundColor: UIColor.black,
             .font: AmityFontSet.bodyBold
         ]), for: .normal)
         
         finishButton.backgroundColor = .black
-        finishButton.setAttributedTitle(NSAttributedString(string: "Finish", attributes: [
+        finishButton.setAttributedTitle(NSAttributedString(string: AmityLocalizedStringSet.LiveStream.Live.finish.localizedString, attributes: [
             .foregroundColor: UIColor.white,
             .font: AmityFontSet.bodyBold
         ]), for: .normal)
@@ -286,6 +287,8 @@ final public class LiveStreamBroadcastViewController: UIViewController {
         streamingContainer.backgroundColor = UIColor(red: 1, green: 0.188, blue: 0.353, alpha: 1)
         streamingStatusLabel.textColor = .white
         streamingStatusLabel.font = AmityFontSet.captionBold
+        
+        streamEndLabel.text = AmityLocalizedStringSet.LiveStream.Live.endingLiveStream.localizedString
         
     }
     
@@ -344,12 +347,12 @@ final public class LiveStreamBroadcastViewController: UIViewController {
     }
     
     private func presentEndLiveStreamConfirmationDialogue() {
-        let title = "Do yo want to end the live stream?"
-        let alertController = UIAlertController(title: title, message: nil, preferredStyle: .alert)
-        let end = UIAlertAction(title: "End", style: .default) { [weak self] action in
+        let title = AmityLocalizedStringSet.LiveStream.Live.titleStopLive.localizedString
+        let alertController = UIAlertController(title: title, message: AmityLocalizedStringSet.LiveStream.Live.descriptionStopLive.localizedString, preferredStyle: .alert)
+        let end = UIAlertAction(title: AmityLocalizedStringSet.LiveStream.Live.stopLive.localizedString, style: .default) { [weak self] action in
             self?.finishLive()
         }
-        let cancel = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
+        let cancel = UIAlertAction(title: AmityLocalizedStringSet.General.cancel.localizedString, style: .cancel, handler: nil)
         alertController.addAction(end)
         alertController.addAction(cancel)
         present(alertController, animated: true, completion: nil)

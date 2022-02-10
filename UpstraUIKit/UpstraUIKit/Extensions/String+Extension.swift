@@ -8,7 +8,7 @@
 
 import UIKit
 
-extension String {
+public extension String {
     /// Apply to bold text
     /// - Parameters:
     ///   - listString: List string for make to bold

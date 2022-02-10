@@ -7,6 +7,7 @@
 
 import Foundation
 import AmitySDK
+import AmityUIKit
 
 extension GoLive {
     
@@ -43,7 +44,7 @@ extension GoLive {
                     return
                 }
                 guard let stream = stream else {
-                    self?.result = .failure(GeneralError(message: "Unable to find stream data"))
+                    self?.result = .failure(GeneralError(message: AmityLocalizedStringSet.LiveStream.Live.findPostStremData.localizedString))
                     self?.finish()
                     return
                 }

@@ -67,12 +67,12 @@ class AmityPostLiveStreamTableViewCell: UITableViewCell, Nibbable, AmityPostProt
         // Whether to show stream end view, which will obsecure all the view behinds.
         switch streamStatus {
         case .ended:
-            streamEndTitleLabel.text = "This livestream has ended."
-            streamEndDescriptionLabel.text = "Playback will be available for you to watch shortly."
+            streamEndTitleLabel.text = AmityLocalizedStringSet.LiveStream.Show.ensesTitle.localizedString
+            streamEndDescriptionLabel.text = AmityLocalizedStringSet.LiveStream.Show.playback.localizedString
             streamEndDescriptionLabel.isHidden = false
             streamEndView.isHidden = false
         case .idle:
-            streamEndTitleLabel.text = "The stream is currently unavailable."
+            streamEndTitleLabel.text = AmityLocalizedStringSet.LiveStream.Show.unavailable.localizedString
             streamEndDescriptionLabel.text = nil
             streamEndDescriptionLabel.isHidden = true
             streamEndView.isHidden = false
@@ -85,11 +85,11 @@ class AmityPostLiveStreamTableViewCell: UITableViewCell, Nibbable, AmityPostProt
         case .live:
             streamStateContainer.isHidden = false
             streamStateContainer.backgroundColor = UIColor(hex: "FF305A")
-            streamStateLabel.text = "LIVE"
+            streamStateLabel.text = AmityLocalizedStringSet.LiveStream.Live.live.localizedString
         case .recorded:
             streamStateContainer.isHidden = false
             streamStateContainer.backgroundColor = UIColor.black.withAlphaComponent(0.7)
-            streamStateLabel.text = "RECORDED"
+            streamStateLabel.text = AmityLocalizedStringSet.LiveStream.Live.recorded.localizedString
         default:
             streamStateContainer.isHidden = true
         }
