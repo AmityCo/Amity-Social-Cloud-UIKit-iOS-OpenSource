@@ -396,7 +396,7 @@
 "amity_video_stream_select_cover" = "Pilih cover";
 "amity_video_stream_input_error" = "Kesalahan pada input";
 "amity_video_stream_title_can_not_be_empty" = "Judul tidak bisa kosong";
-"amity_video_stream_title_can_not_be_empty" = "Deskripsi tidak bisa kosong";
+"amity_video_stream_description_can_not_be_empty" = "Deskripsi tidak bisa kosong";
 "amity_video_stream_unable_to_find_live_stream_data" = "Tidak bisa mencari data live stream";
 "amity_video_stream_unable_to_find_post_data" = "Tidak bisa mencari data post";
 "amity_video_stream_unable_to_find_create_stream" = "Tidak bisa mencari hasil live stream";

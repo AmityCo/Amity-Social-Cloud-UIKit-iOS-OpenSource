@@ -403,7 +403,7 @@
 "amity_video_stream_select_cover" = "Cover ရွေးချယ်သည်";
 "amity_video_stream_input_error" = "Error ထည့်သွင်းမည်";
 "amity_video_stream_title_can_not_be_empty" = "ခေါင်းစဉ် ထည့်သွင်းရမည် ဖြစ်သည်";
-"amity_video_stream_title_can_not_be_empty" = "အကြောင်းအရာ ထည့်သွင်းရမည် ဖြစ်သည်";
+"amity_video_stream_description_can_not_be_empty" = "အကြောင်းအရာ ထည့်သွင်းရမည် ဖြစ်သည်";
 "amity_video_stream_unable_to_find_live_stream_data" = "Post တွင် ထုတ်ရိုက်ထုတ်လွှင့်ပြသခြင်းကို ရှာဖွေလို့ မရနိုင်ပါ။";
 "amity_video_stream_unable_to_find_post_data" = "Post အကြောင်းအရာကို ရှာဖွေလို့ မရနိုင်ပါ။";
 "amity_video_stream_unable_to_find_create_stream" = "ပြသခြင်း ဖန်တီးမှုကို ရှာဖွေလို့ မရနိုင်ပါ။";

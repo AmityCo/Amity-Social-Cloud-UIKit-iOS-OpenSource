@@ -395,7 +395,7 @@
 "amity_video_stream_select_cover" = "Chọn bìa";
 "amity_video_stream_input_error" = "Lỗi đầu vào";
 "amity_video_stream_title_can_not_be_empty" = "Tiêu đề không được để trống";
-"amity_video_stream_title_can_not_be_empty" = "Mô tả không được để trống";
+"amity_video_stream_description_can_not_be_empty" = "Mô tả không được để trống";
 "amity_video_stream_unable_to_find_live_stream_data" = "Không thể tìm thấy dữ liệu buổi phát trực tiếp trong bài đăng";
 "amity_video_stream_unable_to_find_post_data" = "Không thể tìm thấy dữ liệu bài đăng";
 "amity_video_stream_unable_to_find_create_stream" = "Không thể tìm thấy kết quả tạo phát trực tiếp";

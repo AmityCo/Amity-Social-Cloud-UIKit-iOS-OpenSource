@@ -478,7 +478,7 @@ public struct AmityLocalizedStringSet {
         public enum Alert {
             public static let imputError = "amity_video_stream_input_error"
             public static let titleCanNotEmpty = "amity_video_stream_title_can_not_be_empty"
-            public static let descriptionCanNotEmpty = "amity_video_stream_title_can_not_be_empty"
+            public static let descriptionCanNotEmpty = "amity_video_stream_description_can_not_be_empty"
             public static let titleAlertPermission = "amity_video_stream_permision_requires"
             public static let descriptionAlertPermission = "amity_video_stream_grant_permision_camera_and_microphone"
             public static let titleAlerpermissionPhoto = "amity_video_stream_title_photo"
