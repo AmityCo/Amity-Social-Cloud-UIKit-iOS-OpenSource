@@ -657,6 +657,7 @@
 		FC6459D9274E45B000D1B491 /* TrueIDCollectionViewLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = FC6459D8274E45B000D1B491 /* TrueIDCollectionViewLayout.swift */; };
 		FC6459DC274E45F600D1B491 /* LocalizedEnglish.strings in Resources */ = {isa = PBXBuildFile; fileRef = FC6459DA274E45F600D1B491 /* LocalizedEnglish.strings */; };
 		FC6459DD274E45F600D1B491 /* LocalizedThai.strings in Resources */ = {isa = PBXBuildFile; fileRef = FC6459DB274E45F600D1B491 /* LocalizedThai.strings */; };
+		FC98956927B558A800F87721 /* LocalizedVietnam.strings in Resources */ = {isa = PBXBuildFile; fileRef = FC98956827B558A800F87721 /* LocalizedVietnam.strings */; };
 		FCF45CCC27AD07F000AFFE0A /* AmityDeepLink.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCF45CCB27AD07F000AFFE0A /* AmityDeepLink.swift */; };
 /* End PBXBuildFile section */
 
@@ -1309,6 +1310,7 @@
 		FC6459D8274E45B000D1B491 /* TrueIDCollectionViewLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TrueIDCollectionViewLayout.swift; sourceTree = "<group>"; };
 		FC6459DA274E45F600D1B491 /* LocalizedEnglish.strings */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; path = LocalizedEnglish.strings; sourceTree = "<group>"; };
 		FC6459DB274E45F600D1B491 /* LocalizedThai.strings */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; path = LocalizedThai.strings; sourceTree = "<group>"; };
+		FC98956827B558A800F87721 /* LocalizedVietnam.strings */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; path = LocalizedVietnam.strings; sourceTree = "<group>"; };
 		FCF45CCB27AD07F000AFFE0A /* AmityDeepLink.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AmityDeepLink.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -2169,6 +2171,7 @@
 				FC1DE9AD2769D2AD00ECB45F /* LocalizedCambodia.strings */,
 				FC1DE9AF2769D8D800ECB45F /* LocalizedPhilippin.strings */,
 				FC43831F2785B35F000482E7 /* LocalizedMyanmar.strings */,
+				FC98956827B558A800F87721 /* LocalizedVietnam.strings */,
 			);
 			path = Localization;
 			sourceTree = "<group>";
@@ -4523,6 +4526,7 @@
 				97D7C49D264BF90000EA24F5 /* AmityChannelMemberSettingsTableViewCell.xib in Resources */,
 				B76A101E252B7E1D00AFC7A8 /* AmityTrendingCommunityViewController.xib in Resources */,
 				B70D2BB52577144500E2D56B /* AmityMessageAudioOutgoingTableViewCell.xib in Resources */,
+				FC98956927B558A800F87721 /* LocalizedVietnam.strings in Resources */,
 				A0A903A926BA6E61002949B2 /* PostGalleryItemCell.xib in Resources */,
 				B77D391E24FB4AF2004907CF /* AmityMessageDateView.xib in Resources */,
 				72A974DE25E7595700706EB4 /* AmityPostViewAllCommentsTableViewCell.xib in Resources */,
