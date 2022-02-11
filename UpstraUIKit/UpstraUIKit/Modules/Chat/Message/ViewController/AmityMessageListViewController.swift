@@ -499,6 +499,7 @@ extension AmityMessageListViewController: AmityMessageListScreenViewModelDelegat
     func screenViewModelDidGetChannel(channel: AmityChannelModel) {
         setupCustomNavigationBar()
         navigationHeaderViewController?.updateViews(channel: channel)
+        screenViewModel.action.shouldScrollToBottom(force: true)
     }
     
     func screenViewModelScrollToBottom(for indexPath: IndexPath) {
@@ -541,14 +542,17 @@ extension AmityMessageListViewController: AmityMessageListScreenViewModelDelegat
         case .didDelete(let indexPath):
             messageViewController.tableView.reloadRows(at: [indexPath], with: .none)
         case .didSendImage:
+            screenViewModel.shouldScrollToBottom(force: true)
             break
         case .didUploadImage:
+            screenViewModel.shouldScrollToBottom(force: true)
             break
         case .didDeeleteErrorMessage:
             AmityHUD.show(.success(message: AmityLocalizedStringSet.HUD.delete.localizedString))
         case .didSendAudio:
             circular.hide()
             audioRecordingViewController?.stopRecording()
+            screenViewModel.shouldScrollToBottom(force: true)
         }
     }
     

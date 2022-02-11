@@ -79,8 +79,8 @@ final class AmityRecentChatTableViewCell: UITableViewCell, Nibbable {
                 token = repository?.getUser(channel.getOtherUserId()).observe({ [weak self] user, error in
                     guard let weakSelf = self else { return }
                     if let userObject = user.object {
-                        
-                        weakSelf.avatarView.setImage(withImageURL: userObject.avatarCustomUrl,
+                        let userModel = AmityUserModel(user: userObject)
+                        weakSelf.avatarView.setImage(withImageURL: userModel.avatarURL,
                                                      placeholder: AmityIconSet.defaultAvatar)
                         if let nicknameMetaData = channel.metadata["chatDisplayName"] as? [String] {
                             for nickname in nicknameMetaData {

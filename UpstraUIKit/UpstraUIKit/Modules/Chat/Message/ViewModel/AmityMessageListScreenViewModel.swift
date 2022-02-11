@@ -265,10 +265,9 @@ extension AmityMessageListScreenViewModel {
         guard !textMessage.isEmpty else {
             return
         }
+        delegate?.screenViewModelEvents(for: .didSendText)
         messageRepository.createTextMessage(withChannelId: channelId, text: textMessage, tags: nil, parentId: nil) { [weak self] _,_ in
             self?.text = ""
-            self?.delegate?.screenViewModelEvents(for: .didSendText)
-            self?.shouldScrollToBottom(force: true)
         }
     }
     
@@ -466,6 +465,10 @@ extension AmityMessageListScreenViewModel {
         }
 
         queue.addOperations(operations, waitUntilFinished: false)
+        
+        DispatchQueue.main.asyncAfter(deadline: .now()+0.2, execute: {
+            self.delegate?.screenViewModelEvents(for: .didSendImage)
+        })
     }
     
 }
@@ -477,8 +480,9 @@ extension AmityMessageListScreenViewModel {
         messageAudio?.create { [weak self] in
             self?.messageAudio = nil
             self?.delegate?.screenViewModelEvents(for: .updateMessages)
-            self?.delegate?.screenViewModelEvents(for: .didSendAudio)
-            self?.shouldScrollToBottom(force: true)
+            DispatchQueue.main.asyncAfter(deadline: .now()+0.2, execute: {
+                self?.delegate?.screenViewModelEvents(for: .didSendAudio)
+            })
         }
     }
 
