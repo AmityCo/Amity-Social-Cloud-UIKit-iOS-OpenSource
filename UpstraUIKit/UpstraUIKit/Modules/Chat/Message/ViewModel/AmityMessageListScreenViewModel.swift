@@ -79,11 +79,14 @@ final class AmityMessageListScreenViewModel: AmityMessageListScreenViewModelType
     private var lastNotOnline: Date?
     private var lastEnterBackground: Date?
     
+    private var otherUserNickname: String?
+    
     init(channelId: String) {
         self.channelId = channelId
         membershipParticipation = AmityChannelParticipation(client: AmityUIKitManagerInternal.shared.client, andChannel: channelId)
         channelRepository = AmityChannelRepository(client: AmityUIKitManagerInternal.shared.client)
         messageRepository = AmityMessageRepository(client: AmityUIKitManagerInternal.shared.client)
+        userRepository = AmityUserRepository(client: AmityUIKitManagerInternal.shared.client)
     }
     
     // MARK: - DataSource
@@ -124,6 +127,10 @@ final class AmityMessageListScreenViewModel: AmityMessageListScreenViewModelType
     
     func getCommunityId() -> String {
         return channelId
+    }
+    
+    func getOtherUserNickName() -> String {
+        return otherUserNickname ?? ""
     }
     
     private func connectionStateDidChanged() {
@@ -207,7 +214,7 @@ extension AmityMessageListScreenViewModel {
         channelNotificationToken = channelRepository.getChannel(channelId).observe { [weak self] (channel, error) in
             guard let object = channel.object else { return }
             let channelModel = AmityChannelModel(object: object)
-            self?.delegate?.screenViewModelDidGetChannel(channel: channelModel)
+            self?.getOtherUserData(channelModel: channelModel)
         }
     }
     
@@ -227,6 +234,30 @@ extension AmityMessageListScreenViewModel {
             self?.connectionStateDidChanged()
         }
         
+    }
+    
+    func getOtherUserData(channelModel: AmityChannelModel) {
+        let otherUserId = channelModel.getOtherUserId()
+        userNotificationToken = userRepository.getUser(otherUserId).observe({[weak self] user, error in
+            guard let weakSelf = self else { return }
+            if let userObject = user.object {
+                
+                if let nicknameMetaData = channelModel.metadata["chatDisplayName"] as? [String] {
+                    for nickname in nicknameMetaData {
+                        if nickname.contains(AmityUIKitManagerInternal.shared.client.currentUser?.object?.userId ?? ""){
+                            continue
+                        }else{
+                            let splitNickName = nickname.split(separator: ":")
+                            weakSelf.otherUserNickname = String(splitNickName[1])
+                        }
+                    }
+                } else {
+                    weakSelf.otherUserNickname = userObject.displayName
+                }
+                weakSelf.userNotificationToken?.invalidate()
+            }
+            weakSelf.delegate?.screenViewModelDidGetChannel(channel: channelModel)
+        })
     }
     
     func send(withText text: String?) {

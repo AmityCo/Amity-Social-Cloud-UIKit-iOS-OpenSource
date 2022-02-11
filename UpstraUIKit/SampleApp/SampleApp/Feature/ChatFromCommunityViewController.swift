@@ -31,9 +31,7 @@ class ChatFromCommunityViewController: UIViewController {
             AmityCreateChannelHandler.shared.createChannel(trueUser: user) { result in
                 switch result{
                 case .success(let channelId):
-                    var settings = AmityMessageListViewController.Settings()
-                    settings.shouldShowChatSettingBarButton = false
-                    let vc = AmityMessageListViewController.make(channelId: channelId,settings: settings)
+                    let vc = AmityMessageListViewController.make(channelId: channelId)
                     vc.modalPresentationStyle = .fullScreen
                     vc.modalTransitionStyle = .crossDissolve
                     self.navigationController?.pushViewController(vc, animated: true)

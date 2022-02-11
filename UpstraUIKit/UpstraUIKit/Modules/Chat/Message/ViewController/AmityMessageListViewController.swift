@@ -8,6 +8,8 @@
 
 import UIKit
 import AmitySDK
+import AVFoundation
+import PhotosUI
 
 public protocol AmityMessageListDataSource: AnyObject {
     func cellForMessageTypes() -> [AmityMessageTypes: AmityMessageCellProtocol.Type]
@@ -127,24 +129,52 @@ public final class AmityMessageListViewController: AmityViewController {
 private extension AmityMessageListViewController {
     
     func cameraTap() {
-        #warning("Redundancy: camera picker should be replaced with a singleton class")
-        let cameraPicker = UIImagePickerController()
-        cameraPicker.sourceType = .camera
-        cameraPicker.delegate = self
-        present(cameraPicker, animated: true, completion: nil)
+        checkCameraPermission { [weak self] in
+            guard let strongSelf = self else { return }
+            DispatchQueue.main.async {
+                #warning("Redundancy: camera picker should be replaced with a singleton class")
+                let cameraPicker = UIImagePickerController()
+                cameraPicker.sourceType = .camera
+                cameraPicker.delegate = self
+                strongSelf.present(cameraPicker, animated: true, completion: nil)
+            }
+        } fail: { [weak self] in
+            let alert = UIAlertController(title: "Camera" , message: "Please allow access camera", preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: "Cancel", style: .default, handler: { action in
+                //
+            }))
+            alert.addAction(UIAlertAction(title: "Setting", style: .default, handler: { action in
+                UIApplication.shared.open(URL(string: UIApplication.openSettingsURLString)!)
+            }))
+            self?.present(alert, animated: true, completion: nil)
+        }
     }
     
     func albumTap() {
-        let imagePicker = AmityImagePickerController(selectedAssets: [])
-        imagePicker.settings.theme.selectionStyle = .checked
-        imagePicker.settings.fetch.assets.supportedMediaTypes = [.image]
-        imagePicker.settings.selection.max = 20
-        imagePicker.settings.selection.unselectOnReachingMax = false
-        imagePicker.settings.theme.selectionStyle = .numbered
-        presentImagePicker(imagePicker, select: nil, deselect: nil, cancel: nil, finish: { [weak self] assets in
-            let medias = assets.map { AmityMedia(state: .localAsset($0), type: .image) }
-            self?.screenViewModel.action.send(withMedias: medias)
-        })
+        checkAlbumPermission { [weak self] in
+            guard let strongSelf = self else { return }
+            DispatchQueue.main.async {
+                let imagePicker = AmityImagePickerController(selectedAssets: [])
+                imagePicker.settings.theme.selectionStyle = .checked
+                imagePicker.settings.fetch.assets.supportedMediaTypes = [.image]
+                imagePicker.settings.selection.max = 20
+                imagePicker.settings.selection.unselectOnReachingMax = false
+                imagePicker.settings.theme.selectionStyle = .numbered
+                strongSelf.presentImagePicker(imagePicker, select: nil, deselect: nil, cancel: nil, finish: { [weak self] assets in
+                    let medias = assets.map { AmityMedia(state: .localAsset($0), type: .image) }
+                    self?.screenViewModel.action.send(withMedias: medias)
+                })
+            }
+        } fail: { [weak self]  in
+            let alert = UIAlertController(title: "Photo" , message: "Please allow access photo library", preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: "Cancel", style: .default, handler: { action in
+                //
+            }))
+            alert.addAction(UIAlertAction(title: "Setting", style: .default, handler: { action in
+                UIApplication.shared.open(URL(string: UIApplication.openSettingsURLString)!)
+            }))
+            self?.present(alert, animated: true, completion: nil)
+        }
     }
     
     func fileTap() {
@@ -162,20 +192,16 @@ private extension AmityMessageListViewController {
     func setupView() {
         view.backgroundColor = AmityColorSet.backgroundColor
         setRefreshOverlay(visible: false)
-        setupCustomNavigationBar()
         setupMessageContainer()
         setupComposeBarContainer()
         setupAudioRecordingView()
     }
     
     func setupCustomNavigationBar() {
-        if settings.shouldShowChatSettingBarButton {
-            // Just using the view form this
-            navigationBarType = .custom
-            navigationHeaderViewController = AmityMessageListHeaderView(viewModel: screenViewModel)
-            let item = UIBarButtonItem(customView: navigationHeaderViewController)
-            navigationItem.leftBarButtonItem = item
-        }
+        navigationBarType = .push
+        navigationHeaderViewController = AmityMessageListHeaderView(viewModel: screenViewModel)
+        let item = UIBarButtonItem(customView: navigationHeaderViewController)
+        navigationItem.leftBarButtonItem = item
     }
     
     func setupConnectionStatusBar() {
@@ -325,6 +351,59 @@ private extension AmityMessageListViewController {
         
     }
     
+    // MARK: - Permission Check
+    func checkCameraPermission(success: @escaping() -> (), fail: @escaping() -> ()){
+        
+        let cameraAuthorization = AVCaptureDevice.authorizationStatus(for: .video)
+        
+        switch cameraAuthorization {
+        case .authorized:
+            success()
+        case .notDetermined:
+            AVCaptureDevice.requestAccess(for: .video) { granted in
+                if granted {
+                    success()
+                }
+            }
+        case .restricted:
+            break
+        case .denied:
+            fail()
+            break
+        @unknown default:
+            fail()
+            break
+        }
+    }
+    
+    func checkAlbumPermission(success: @escaping() -> (), fail: @escaping() -> ()){
+        
+        let photoAuthorization = PHPhotoLibrary.authorizationStatus()
+        
+        switch photoAuthorization {
+        case .authorized:
+            success()
+            break
+        case .notDetermined:
+            PHPhotoLibrary.requestAuthorization({
+                (newStatus) in
+                if newStatus == PHAuthorizationStatus.authorized {
+                    success()
+                }
+            })
+        case .restricted:
+            break
+        case .denied:
+            fail()
+            break
+        case .limited:
+            fail()
+            break
+        @unknown default:
+            fail()
+            break
+        }
+    }
 }
 
 // MARK: - Binding ViewModel
@@ -418,6 +497,7 @@ extension AmityMessageListViewController: AmityMessageListScreenViewModelDelegat
     }
     
     func screenViewModelDidGetChannel(channel: AmityChannelModel) {
+        setupCustomNavigationBar()
         navigationHeaderViewController?.updateViews(channel: channel)
     }
     

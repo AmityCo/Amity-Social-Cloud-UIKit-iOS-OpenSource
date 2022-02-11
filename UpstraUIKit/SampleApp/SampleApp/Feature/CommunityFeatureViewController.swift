@@ -80,6 +80,8 @@ class CommunityFeatureViewController: UIViewController {
                 return "unregister"
             case .client:
                 return "client"
+            case .PostCreator:
+                return "Post Creator"
             }
         }
     }
@@ -157,7 +159,6 @@ extension CommunityFeatureViewController: UITableViewDelegate {
             AmityFeedUISettings.shared.delegate = self
             AmityFeedUISettings.shared.dataSource = self
             
-            let homepage = AmityCommunityHomePageViewController.make()
             let navigationController = UINavigationController(rootViewController: homepage)
             navigationController.modalPresentationStyle = .fullScreen
             present(navigationController, animated: true, completion: nil)
@@ -241,6 +242,18 @@ extension CommunityFeatureViewController: UITableViewDelegate {
             AmityUIKitManager.unregisterDevice()
         case .client:
             debugPrint(AmityUIKitManager.client)
+        case .PostCreator:
+            if #available(iOS 14.0, *) {
+                var postCreateSettingsPage = PostCreatorSettingsPage()
+                postCreateSettingsPage.didChooseParameters = { [weak self] parameters in
+                    self?.navigationController?.popViewController(animated: true)
+                    self?.presentPostCreator(parameters: parameters)
+                }
+                let hoistingVC = UIHostingController(rootView: postCreateSettingsPage)
+                navigationController?.pushViewController(hoistingVC, animated: true)
+            } else {
+                print("iOS 14.0 is required to access this menu.")
+            }
         }
         
     }

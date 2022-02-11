@@ -12,7 +12,7 @@ import UIKit
 public class AmityChatHomePageViewController: AmityPageViewController {
     
     // MARK: - Properties
-    var recentsChatViewController = AmityRecentChatViewController.make()
+    var recentsChatViewController = AmityRecentChatViewController.make(channelType: .community)
     public var messageDataSource: AmityMessageListDataSource? {
         get {
             return recentsChatViewController.messageDataSource

@@ -1015,6 +1015,59 @@ extension AmityPostTextEditorViewController: AmityPostTextEditorMenuViewDelegate
         alertController.addAction(cancelAction)
         present(alertController, animated: true, completion: nil)
     }
+    
+    func checkPhotoLibraryPermission(success: @escaping() -> (), fail: @escaping() -> ()) {
+        let photoAuthorizationStatus = PHPhotoLibrary.authorizationStatus()
+       switch photoAuthorizationStatus {
+       case .authorized:
+           success()
+           break
+       case .notDetermined:
+           PHPhotoLibrary.requestAuthorization({
+               (newStatus) in
+               if newStatus ==  PHAuthorizationStatus.authorized {
+                   success()
+               }
+           })
+       case .restricted:
+           break
+       case .denied:
+           fail()
+           break
+       case .limited:
+           fail()
+           break
+       @unknown default:
+           fail()
+           break
+       }
+    }
+    
+    func checkCameraPermission(success: @escaping() -> (), fail: @escaping() -> ()) {
+        if AVCaptureDevice.authorizationStatus(for: AVMediaType.video) == .authorized {
+            success()
+        } else {
+            AVCaptureDevice.requestAccess(for: .video) { (granted) in
+                if granted {
+                    success()
+                } else {
+                    fail()
+                }
+            }
+        }
+    }
+    
+    func alrtPermisionAccessphoto(title: String, message: String) {
+        DispatchQueue.main.async {
+            let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: "Cancel", style: .default, handler: { action in
+            }))
+            alert.addAction(UIAlertAction(title: "Setting", style: .default, handler: { action in
+                UIApplication.shared.open(URL(string: UIApplication.openSettingsURLString)!)
+            }))
+            self.present(alert, animated: true)
+        }
+    }
 }
 
 extension AmityPostTextEditorViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {

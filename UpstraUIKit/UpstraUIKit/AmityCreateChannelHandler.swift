@@ -33,13 +33,18 @@ public class AmityCreateChannelHandler {
         let userIds = allUsers.map{ $0.userId }
         let channelId = userIds.sorted().joined(separator: "-")
         let channelDisplayName = users.count == 1 ? users.first?.displayName ?? "" : allUsers.map { $0.displayName }.joined(separator: "-")
+        var userArrayWithDisplayName: [String] = []
+        for name in allUsers{
+            userArrayWithDisplayName.append("\(name.userId):\(name.displayName)")
+        }
         builder.setUserIds(userIds)
         builder.setId(channelId)
         let metaData: [String:Any] = [
             "isDirectChat": allUsers.count == 2,
             "creatorId": currentUser?.userId ?? "",
             "sdk_type":"ios",
-            "userIds": userIds
+            "userIds": userIds,
+            "chatDisplayName": userArrayWithDisplayName
         ]
         builder.setMetadata(metaData)
         builder.setDisplayName(channelDisplayName)
@@ -66,7 +71,7 @@ public class AmityCreateChannelHandler {
     }
     
     func createNewCommiunityChannel(builder: AmityCommunityChannelBuilder, completion: @escaping(Result<String,Error>) -> ()) {
-        let channelObject = channelRepository?.createChannel().community(with: builder)
+        let channelObject = channelRepository?.createChannel(with: builder)
         channelToken?.invalidate()
         channelToken = channelObject?.observe {[weak self] channelObject, error in
             guard let weakSelf = self else { return }
@@ -78,15 +83,9 @@ public class AmityCreateChannelHandler {
                let meta = builder.channelMetadata,
                let creatorId = meta["creatorId"] as? String {
                 weakSelf.channelToken?.invalidate()
-                weakSelf.addCreatorRole(channelId: channelId, userId: creatorId)
                 completion(.success(channelId))
             }
         }
     }
-    
-    func addCreatorRole(channelId: String, userId: String) {
-        roleController = AmityChannelRoleController(channelId: channelId)
-        roleController?.add(role: .creator, userIds: [userId]) { [weak self] error in }
-    }
-    
+
 }

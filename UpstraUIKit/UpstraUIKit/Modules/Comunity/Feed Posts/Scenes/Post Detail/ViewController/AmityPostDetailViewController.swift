@@ -530,11 +530,8 @@ extension AmityPostDetailViewController: AmityPostDetailCompostViewDelegate {
             editTextViewController.title = AmityLocalizedStringSet.PostDetail.createComment.localizedString
         }
         editTextViewController.editHandler = { [weak self, weak editTextViewController] text, metadata, mentionees in
-            self?.createComment(withText: text, metadata: metadata, mentionees: mentionees, parentId: self?.parentComment?.id)
             self?.isFromEditTextViewController = true
-            self?.screenViewModel.action.createComment(withText: text, parentId: self?.parentComment?.id)
-            self?.parentComment = nil
-            self?.commentComposeBarView.resetState()
+            self?.createComment(withText: text, metadata: metadata, mentionees: mentionees, parentId: self?.parentComment?.id)
             editTextViewController?.dismiss(animated: true, completion: nil)
         }
         editTextViewController.dismissHandler = { [weak self, weak editTextViewController] in
@@ -559,12 +556,8 @@ extension AmityPostDetailViewController: AmityPostDetailCompostViewDelegate {
     func composeView(_ view: AmityPostDetailCompostView, didPostText text: String) {
         let metadata = mentionManager?.getMetadata()
         let mentionees = mentionManager?.getMentionees()
+        isFromEditTextViewController = false
         createComment(withText: text, metadata: metadata, mentionees: mentionees, parentId: parentComment?.id)
-
-		isFromEditTextViewController = false
-        screenViewModel.action.createComment(withText: text, parentId: parentComment?.id)
-        parentComment = nil
-        commentComposeBarView.resetState()
     }
     
     func composeViewDidChangeSelection(_ view: AmityPostDetailCompostView) {
