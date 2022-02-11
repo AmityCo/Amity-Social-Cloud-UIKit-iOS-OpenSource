@@ -88,7 +88,7 @@ extension AmityGlobalFeedViewController: AmityNewsFeedScreenViewModelDelegate {
             Array(Dictionary(grouping: summaryRoles, by: {$0}).filter { $1.count > 1 }.keys).count > 0 ? (permissionCanLive = true) : (permissionCanLive = false)
         case .production:
             let summaryRoles = user.roles + AmityUIKitManagerInternal.shared.productionLiveRoleID
-            Array(Dictionary(grouping: summaryRoles, by: {$0}).filter { $1.count > 1 }.keys).count > 0 ? (permissionCanLive = true) : (permissionCanLive = false) true) : (permissionCanLive = false)
+            Array(Dictionary(grouping: summaryRoles, by: {$0}).filter { $1.count > 1 }.keys).count > 0 ? (permissionCanLive = true) : (permissionCanLive = false)
         }
     }
     

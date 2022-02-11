@@ -59,8 +59,8 @@ private class AmityAlertModalViewController: UIViewController {
     }
 }
 
-#warning("#HUD")
-#warning("Please remove this one after refactor AmityHUDErrorView, AmityHUDSuccesView, and AmityHUDLoadingView done and keep using `AmityAlertModalViewController` instead")
+//#warning("#HUD")
+//#warning("Please remove this one after refactor AmityHUDErrorView, AmityHUDSuccesView, and AmityHUDLoadingView done and keep using `AmityAlertModalViewController` instead")
 class AmityAlertViewController: UIViewController {
     
     let contentView = UIView()
