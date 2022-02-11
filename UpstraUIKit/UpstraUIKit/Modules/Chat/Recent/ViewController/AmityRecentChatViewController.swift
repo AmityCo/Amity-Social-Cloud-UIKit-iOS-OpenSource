@@ -68,11 +68,7 @@ private extension AmityRecentChatViewController {
 // MARK: - Setup View
 private extension AmityRecentChatViewController {
     func setupView() {
-        if screenViewModel.dataSource.isAddMemberBarButtonEnabled() {
-            let addImage = UIImage(named: "icon_chat_create", in: AmityUIKitManager.bundle, compatibleWith: nil)
-            let barButton = UIBarButtonItem(image: addImage, style: .plain, target: self, action: #selector(didClickAdd(_:)))
-            navigationItem.rightBarButtonItem = barButton
-        }
+        self.title = "Chat"
         setupTableView()
     }
     

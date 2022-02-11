@@ -58,6 +58,8 @@ extension AmityMessageListTableViewController {
         }
         tableView.dataSource = self
         tableView.delegate = self
+        tableView.separatorStyle = .none
+        tableView.separatorEffect = nil
         
     }
 }

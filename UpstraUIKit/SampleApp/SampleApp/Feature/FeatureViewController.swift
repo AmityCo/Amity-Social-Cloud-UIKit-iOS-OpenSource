@@ -14,6 +14,7 @@ class FeatureViewController: UIViewController {
         case chatFeature
         case community
         case data
+        case chatFromProfile
         
         var text: String {
             switch self {
@@ -23,6 +24,8 @@ class FeatureViewController: UIViewController {
                 return "Community"
             case .data:
                 return "Data"
+            case .chatFromProfile:
+                return "Test chat from profile"
             }
         }
     }
@@ -63,6 +66,10 @@ extension FeatureViewController: UITableViewDelegate {
             navigationController?.pushViewController(vc, animated: true)
         case .data:
             let vc = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "DataListViewController")
+            vc.hidesBottomBarWhenPushed = true
+            navigationController?.pushViewController(vc, animated: true)
+        case .chatFromProfile:
+            let vc = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "ChatFromCommunityViewController")
             vc.hidesBottomBarWhenPushed = true
             navigationController?.pushViewController(vc, animated: true)
         }
