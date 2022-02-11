@@ -20,7 +20,7 @@ struct AmityChannelMembershipModel {
     }
     let avatarURL: String
     
-    var isModerator: Bool = false
+    let isModerator: Bool
     
     init(member: AmityChannelMember) {
         self.user = member.user
@@ -38,6 +38,6 @@ struct AmityChannelMembershipModel {
             self.avatarURL = member.user?.getAvatarInfo()?.fileURL ?? ""
         }
         
+        self.isModerator = roles.contains { $0 == AmityChannelRole.moderator.rawValue || $0 == AmityChannelRole.channelModerator.rawValue }
     }
-    
 }

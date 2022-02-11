@@ -27,9 +27,6 @@ struct AmityCommunityModel {
     var categoryId: String?
     let avatarURL: String
     let isPostReviewEnabled: Bool
-    var isCreator: Bool {
-        return AmityUIKitManagerInternal.shared.client.currentUserId == userId
-    }
     let participation: AmityCommunityParticipation
     
     var object: AmityCommunity

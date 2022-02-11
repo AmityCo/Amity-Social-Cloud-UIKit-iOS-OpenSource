@@ -15,12 +15,13 @@ struct AmityCommunityMembershipModel {
     let displayName: String
     let userId: String
     let roles: [String]
+    let isGlobalBan: Bool
     var isCurrentUser: Bool {
         return userId == AmityUIKitManagerInternal.shared.client.currentUserId
     }
     let avatarURL: String
     
-    var isModerator: Bool = false
+    let isModerator: Bool
     
     init(member: AmityCommunityMember) {
         self.user = member.user
@@ -28,6 +29,7 @@ struct AmityCommunityMembershipModel {
         self.userId = member.userId
         self.roles = member.roles
         self.avatarURL = member.user?.getAvatarInfo()?.fileURL ?? ""
+        self.isModerator = roles.contains { $0 == AmityCommunityRole.moderator.rawValue || $0 == AmityCommunityRole.communityModerator.rawValue }
+        self.isGlobalBan = member.user?.isGlobalBan ?? false
     }
-    
 }

@@ -21,7 +21,8 @@ struct CommunityNotificationSettingModel: Equatable {
             switch filterType {
             case .only:
                 let roles = event.roleFilter?.roleIds?.compactMap { AmityCommunityRole(rawValue: $0) } ?? []
-                selectedOption = roles.contains(.moderator) ? .onlyModerator : .everyOne
+                let isModerator = roles.contains { $0 == .moderator || $0 == .communityModerator }
+                selectedOption = isModerator ? .onlyModerator : .everyOne
             case .all:
                 // if user level setting is listening to moderator actions,
                 // an `everyone` option will be hidden and default changes.

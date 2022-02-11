@@ -37,7 +37,8 @@ extension AmityCommunityMemberSettingsScreenViewModel {
 // MARK: - Action
 extension AmityCommunityMemberSettingsScreenViewModel {
     func getUserRoles() {
-        isModerator = userRolesController.getUserRoles(withUserId: AmityUIKitManagerInternal.shared.currentUserId, role: .moderator)
-        delegate?.screenViewModelShouldShowAddButtonBarItem(status: community.isCreator || isModerator)
+        isModerator = userRolesController.getUserRoles(withUserId: AmityUIKitManagerInternal.shared.currentUserId, role: .moderator) ||
+            userRolesController.getUserRoles(withUserId: AmityUIKitManagerInternal.shared.currentUserId, role: .communityModerator)
+        delegate?.screenViewModelShouldShowAddButtonBarItem(status: isModerator)
     }
 }

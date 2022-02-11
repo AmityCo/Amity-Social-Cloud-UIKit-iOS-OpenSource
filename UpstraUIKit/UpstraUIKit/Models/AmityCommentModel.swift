@@ -23,7 +23,10 @@ public struct AmityCommentModel {
     let childrenComment: [AmityCommentModel]
     let parentId: String?
     let userId: String
+    let isAuthorGlobalBanned: Bool
     private let myReactions: [String]
+    let metadata: [String: Any]?
+    let mentionees: [AmityMentionees]?
     
     // Due to AmityChat 4.0.0 requires comment object for editing and deleting
     // So, this is a workaroud for passing the original object.
@@ -41,9 +44,12 @@ public struct AmityCommentModel {
         childrenNumber = Int(comment.childrenNumber)
         parentId = comment.parentId
         userId = comment.userId
-        myReactions = comment.myReactions as? [String] ?? []
+        myReactions = comment.myReactions
         childrenComment = comment.childrenComments.map { AmityCommentModel(comment: $0) }
         self.comment = comment
+        isAuthorGlobalBanned = comment.user?.isGlobalBan ?? false
+        metadata = comment.metadata
+        mentionees = comment.mentionees
     }
     
     var isChildrenExisted: Bool {

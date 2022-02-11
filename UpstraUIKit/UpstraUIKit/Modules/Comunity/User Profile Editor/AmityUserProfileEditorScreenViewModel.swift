@@ -6,6 +6,7 @@
 //  Copyright © 2563 Amity. All rights reserved.
 //
 
+import UIKit
 import AmitySDK
 
 class AmityUserProfileEditorScreenViewModel: AmityUserProfileEditorScreenViewModelType {

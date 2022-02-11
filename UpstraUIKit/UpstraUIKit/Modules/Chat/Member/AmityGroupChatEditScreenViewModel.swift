@@ -6,7 +6,7 @@
 //  Copyright © 2021 Amity. All rights reserved.
 //
 
-import Foundation
+import UIKit
 import AmitySDK
 
 protocol AmityGroupChatEditorScreenViewModelAction {
@@ -52,7 +52,7 @@ class AmityGroupChatEditScreenViewModel: AmityGroupChatEditorScreenViewModelType
     
     init(channelId: String) {
         self.channelId = channelId
-        channelUpdateBuilder = channelRepository.updateChannel(channelId)
+        channelUpdateBuilder = AmityChannelUpdateBuilder(channelId: channelId)
         channelNotificationToken = channelRepository.getChannel(channelId)
             .observe({ [weak self] channel, error in
                 guard let weakself = self,
@@ -66,7 +66,8 @@ class AmityGroupChatEditScreenViewModel: AmityGroupChatEditorScreenViewModelType
         // Update
         channelUpdateBuilder.setDisplayName(displayName)
         channelUpdateToken?.invalidate()
-        channelUpdateToken = channelUpdateBuilder.update().observe({ [weak self] (channel, error) in
+        
+        channelUpdateToken = channelRepository.updateChannel(with: channelUpdateBuilder).observe({ [weak self] (channel, error) in
             guard let weakSelf = self else { return }
             
             if let error = error {
@@ -84,7 +85,7 @@ class AmityGroupChatEditScreenViewModel: AmityGroupChatEditorScreenViewModelType
         fileRepository.uploadImage(avatar, progress: nil) { [weak self] (imageData, error) in
             guard let weakSelf = self else { return }
             weakSelf.channelUpdateBuilder.setAvatar(imageData)
-            weakSelf.channelUpdateToken = weakSelf.channelUpdateBuilder.update().observe({ [weak self] (channel, error) in
+            weakSelf.channelUpdateToken = weakSelf.channelRepository.updateChannel(with: weakSelf.channelUpdateBuilder).observe({ [weak self] (channel, error) in
                 guard let weakSelf = self else { return }
                 completion(error == nil)
             })
@@ -92,14 +93,8 @@ class AmityGroupChatEditScreenViewModel: AmityGroupChatEditorScreenViewModelType
     }
     
     func getChannelEditUserPermission(_ completion: ((Bool) -> Void)?) {
-        AmityUIKitManagerInternal.shared.client.hasPermission(.editChannel, forChannel: channelId, completion: { [weak self] hasPermission in
-                guard let weakSelf = self else { return }
-                if let metadata = weakSelf.channel?.metadata,
-                    let creatorId = metadata["creatorId"] as? String {
-                    completion?( creatorId == AmityUIKitManagerInternal.shared.currentUserId)
-                } else {
-                    completion?(hasPermission)
-                }
+        AmityUIKitManagerInternal.shared.client.hasPermission(.editChannel, forChannel: channelId, completion: { hasPermission in
+            completion?(hasPermission)
         })
     }
 }

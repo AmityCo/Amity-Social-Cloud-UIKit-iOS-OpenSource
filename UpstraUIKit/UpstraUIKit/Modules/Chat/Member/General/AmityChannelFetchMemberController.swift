@@ -35,12 +35,7 @@ final class AmityChannelFetchMemberController: AmityChannelFetchMemberController
                     var members: [AmityChannelMembershipModel] = []
                     for index in 0..<collection.count() {
                         guard let member = collection.object(at: index) else { continue }
-                        var model = AmityChannelMembershipModel(member: member)
-                        if let roles = model.roles as? [String], roles.contains(AmityChannelRole.moderator.rawValue) {
-                            model.isModerator = true
-                            
-                        }
-                        members.append(model)
+                        members.append(AmityChannelMembershipModel(member: member))
                     }
                     completion(.success(members))
                 }

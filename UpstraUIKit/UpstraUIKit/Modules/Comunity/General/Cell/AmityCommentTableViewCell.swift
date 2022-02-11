@@ -41,6 +41,10 @@ class AmityCommentTableViewCell: UITableViewCell, Nibbable {
         selectionStyle = .none
     }
     
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        commentView.prepareForReuse()
+    }
 }
 
 extension AmityCommentTableViewCell: AmityCommentViewDelegate {

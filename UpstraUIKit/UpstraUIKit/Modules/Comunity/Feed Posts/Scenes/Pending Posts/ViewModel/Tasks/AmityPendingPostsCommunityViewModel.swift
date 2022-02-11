@@ -43,11 +43,7 @@ final class AmityPendingPostsCommunityViewModel: AmityPendingPostsCommunityViewM
                 let model = AmityCommunityModel(object: object)
                 AmityUIKitManagerInternal.shared.client.hasPermission(.editCommunity, forCommunity: strongSelf.communityId) { (hasPermission) in
                     if model.isJoined {
-                        if model.isCreator || hasPermission {
-                            statusMemberOfCommunity = .admin
-                        } else {
-                            statusMemberOfCommunity = .member
-                        }
+                        statusMemberOfCommunity = hasPermission ? .admin : .member
                     } else {
                         statusMemberOfCommunity = .guest
                     }
@@ -55,7 +51,5 @@ final class AmityPendingPostsCommunityViewModel: AmityPendingPostsCommunityViewM
                 }
             }
         }
-    
     }
-    
 }

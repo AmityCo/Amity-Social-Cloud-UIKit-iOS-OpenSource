@@ -36,7 +36,7 @@ public final class AmityMessageModel {
         self.displayName = object.user?.displayName ?? AmityLocalizedStringSet.General.anonymous.localizedString
         self.syncState = object.syncState
         self.isDeleted = object.isDeleted
-        self.isEdited = AmityMessageModel.isEdited(createdAtDate: object.createdAtDate, editedAtDate: object.editedAtDate)
+        self.isEdited = object.isEdited
         self.messageType = object.messageType
         self.createdAtDate = object.createdAtDate
         self.date = AmityDateFormatter.Message.getDate(date: self.isEdited ? object.editedAtDate : object.createdAtDate)
@@ -47,9 +47,5 @@ public final class AmityMessageModel {
     
     var text: String? {
         return data?["text"] as? String
-    }
-    
-    static func isEdited(createdAtDate: Date, editedAtDate: Date) -> Bool {
-        return editedAtDate > createdAtDate
     }
 }

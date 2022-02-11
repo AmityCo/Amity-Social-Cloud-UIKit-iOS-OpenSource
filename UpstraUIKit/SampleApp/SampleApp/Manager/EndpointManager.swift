@@ -51,9 +51,7 @@ struct EnvironmentSettingModel: Codable {
     }
 
     static func defaultConfig(for environment: EnvironmentType) -> EndpointConfigModel {
-//        return EndpointConfigModel(apiKey: "b0eceb5e68ddf36545308f4e000b12dcd90985e2bf3d6a2e")
-//        return EndpointConfigModel(apiKey: "b3bde15c3989f86045658e4a530a1688d1088be0be3d6f25", httpEndpoint: AmityRegionalEndpoint.SG , socketEndpoint: AmityRegionalEndpoint.SG)
-        return EndpointConfigModel(apiKey: "b0eceb5e68ddf36545308f4e000b12dcd90985e2bf3d6a2e", httpEndpoint: AmityRegionalEndpoint.SG , socketEndpoint: AmityRegionalEndpoint.SG)
+        return EndpointConfigModel(apiKey: "b0eceb5e68ddf36545308f4e000b12dcd90985e2bf3d6a2e", httpEndpoint: AmityRegionalEndpoint.SG, socketEndpoint: AmityRegionalEndpoint.SG)
     }
 }
 
@@ -103,6 +101,13 @@ class EndpointManager {
         
         // Save to user default
         EndpointManager.saveUserSettings(settings)
+        
+        // Call app manager for setting up new environment settings
+        AppManager.shared.setupAmityUIKit()
+    }
+    
+    func resetEnvironments() {
+        UserDefaults.standard.setValue(nil, forKey: UserDefaultsKey.environments)
         
         // Call app manager for setting up new environment settings
         AppManager.shared.setupAmityUIKit()

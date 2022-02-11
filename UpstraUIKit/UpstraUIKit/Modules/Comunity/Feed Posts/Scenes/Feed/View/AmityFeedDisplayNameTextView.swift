@@ -33,18 +33,27 @@ class AmityFeedDisplayNameLabel: UILabel {
         addGestureRecognizer(tap)
     }
     
-    func configure(displayName: String, communityName: String?, isOfficial: Bool, shouldShowCommunityName: Bool) {
+    func configure(displayName: String, communityName: String?, isOfficial: Bool, shouldShowCommunityName: Bool, shouldShowBannedSymbol: Bool) {
         self.displayName = displayName
         self.communityName = communityName
         
         let attributeString = NSMutableAttributedString()
         attributeString.append(NSAttributedString(string: displayName))
         
+        if shouldShowBannedSymbol {
+            let imageRightAttachment = NSTextAttachment()
+            imageRightAttachment.image = AmityIconSet.CommunitySettings.iconCommunitySettingBanned?.setTintColor(AmityColorSet.base.blend(.shade3))
+            imageRightAttachment.bounds = CGRect(x: 0, y: -2, width: 16, height: 16)
+            let attachmentRightString = NSAttributedString(attachment: imageRightAttachment)
+            attributeString.append(attachmentRightString)
+        }
+        
         // configure community displayname
         if shouldShowCommunityName, let communityName = communityName {
             attributeString.append(NSAttributedString(string: " ‣ "))
             attributeString.append(NSAttributedString(string: communityName))
         }
+        
         let attributes: [NSAttributedString.Key : Any] = [.foregroundColor: AmityColorSet.base, .font: AmityFontSet.bodyBold]
         attributeString.addAttributes(attributes, range: NSRange(location: 0, length: attributeString.string.utf16.count) )
         attributedText = attributeString
@@ -89,9 +98,22 @@ extension UITapGestureRecognizer {
         // Find the tapped character location and compare it to the specified range
         let locationOfTouchInLabel = location(in: label)
         let textBoundingBox = layoutManager.usedRect(for: textContainer)
+        
+        var alignmentOffset: CGFloat = 0.0
+        switch label.textAlignment {
+        case .left, .natural, .justified:
+            alignmentOffset = 0.0
+        case .center:
+            alignmentOffset = 0.5
+        case .right:
+            alignmentOffset = 1.0
+        @unknown default:
+            fatalError()
+        }
+        
         let textContainerOffset = CGPoint(
-            x: (labelSize.width - textBoundingBox.size.width) * 0.5 - textBoundingBox.origin.x,
-            y: (labelSize.height - textBoundingBox.size.height) * 0.5 - textBoundingBox.origin.y);
+            x: (labelSize.width - textBoundingBox.size.width) * alignmentOffset - textBoundingBox.origin.x,
+            y: (labelSize.height - textBoundingBox.size.height) * alignmentOffset - textBoundingBox.origin.y);
         let locationOfTouchInTextContainer = CGPoint(
             x: (locationOfTouchInLabel.x - textContainerOffset.x),
             y: 0 );

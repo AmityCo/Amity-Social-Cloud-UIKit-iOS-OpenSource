@@ -6,7 +6,7 @@
 //  Copyright © 2020 Amity. All rights reserved.
 //
 
-import Foundation
+import UIKit
 import AmitySDK
 import MobileCoreServices
 

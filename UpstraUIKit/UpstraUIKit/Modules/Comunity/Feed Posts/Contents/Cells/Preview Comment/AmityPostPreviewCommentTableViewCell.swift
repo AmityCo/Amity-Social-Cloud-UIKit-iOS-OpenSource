@@ -71,6 +71,10 @@ extension AmityPostPreviewCommentTableViewCell: AmityExpandableLabelDelegate {
     public func expandableLabeldidTap(_ label: AmityExpandableLabel) {
         performAction(action: .tapExpandableLabel(label: label))
     }
+    
+    public func didTapOnMention(_ label: AmityExpandableLabel, withUserId userId: String) {
+        performAction(action: .tapOnMention(userId: userId))
+    }
 }
 
 // MARK: AmityCommentViewDelegate

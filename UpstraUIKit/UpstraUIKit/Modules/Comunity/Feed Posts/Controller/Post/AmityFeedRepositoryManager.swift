@@ -11,6 +11,7 @@ import AmitySDK
 
 public enum AmityPostFeedType: Equatable {
     case globalFeed
+    case customPostRankingGlobalFeed
     case myFeed
     case userFeed(userId: String)
     case communityFeed(communityId: String)
@@ -47,6 +48,8 @@ final class AmityFeedRepositoryManager: AmityFeedRepositoryManagerProtocol {
         switch type {
         case .globalFeed:
             collection = repository.getGlobalFeed()
+        case .customPostRankingGlobalFeed:
+            collection = repository.getCustomPostRankingGlobalfeed()
         case .myFeed:
             collection = repository.getMyFeedSorted(by: .lastCreated, includeDeleted: false)
         case .userFeed(let userId):
@@ -82,7 +85,7 @@ final class AmityFeedRepositoryManager: AmityFeedRepositoryManagerProtocol {
             let model = AmityPostModel(post: post)
             if let communityId = model.targetCommunity?.communityId {
                 participation = AmityCommunityParticipation(client: AmityUIKitManagerInternal.shared.client, andCommunityId: communityId)
-                model.isModerator = participation?.getMember(withId: post.postedUserId)?.communityRoles.contains(.moderator) ?? false
+                model.isModerator = participation?.getMember(withId: post.postedUserId)?.hasModeratorRole ?? false
                 switch feedType {
                 case .communityFeed(let feedCommunityId), .pendingPostsFeed(let feedCommunityId):
                     model.appearance.shouldShowCommunityName = communityId != feedCommunityId

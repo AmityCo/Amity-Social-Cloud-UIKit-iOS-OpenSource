@@ -32,8 +32,8 @@ extension AmityCommentController {
 
 // MARK: - Create
 extension AmityCommentController {
-    func createComment(withReferenceId postId: String, referenceType: AmityCommentReferenceType, parentId: String?, text: String, completion: ((AmityComment?, Error?) -> Void)?) {
-        createController.createComment(withReferenceId: postId, referenceType: referenceType, parentId: parentId, text: text, completion: completion)
+    func createComment(withReferenceId postId: String, referenceType: AmityCommentReferenceType, parentId: String?, text: String, metadata: [String : Any]?, mentionees: AmityMentioneesBuilder?, completion: ((AmityComment?, Error?) -> Void)?) {
+        createController.createComment(withReferenceId: postId, referenceType: referenceType, parentId: parentId, text: text, metadata: metadata, mentionees: mentionees, completion: completion)
     }
 }
 
@@ -43,8 +43,8 @@ extension AmityCommentController {
         editorController.delete(withComment: comment, completion: completion)
     }
     
-    func edit(withComment comment: AmityCommentModel, text: String, completion: AmityRequestCompletion?) {
-        editorController.edit(withComment: comment, text: text, completion: completion)
+    func edit(withComment comment: AmityCommentModel, text: String, metadata: [String : Any]?, mentionees: AmityMentioneesBuilder?, completion: AmityRequestCompletion?) {
+        editorController.edit(withComment: comment, text: text, metadata: metadata, mentionees: mentionees, completion: completion)
     }
 }
 

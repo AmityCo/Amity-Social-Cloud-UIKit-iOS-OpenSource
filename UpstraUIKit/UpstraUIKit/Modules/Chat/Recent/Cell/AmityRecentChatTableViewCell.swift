@@ -101,7 +101,7 @@ final class AmityRecentChatTableViewCell: UITableViewCell, Nibbable {
                 break
             case .broadcast:
                 break
-            case .byTypes:
+            case .unknown:
                 break
             case .community:
                 avatarView.setImage(withImageURL: channel.avatarURL, placeholder: AmityIconSet.defaultGroupChat)

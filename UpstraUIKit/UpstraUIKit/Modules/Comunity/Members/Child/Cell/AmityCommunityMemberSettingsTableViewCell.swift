@@ -28,6 +28,8 @@ final class AmityCommunityMemberSettingsTableViewCell: UITableViewCell, Nibbable
     @IBOutlet private var avatarView: AmityAvatarView!
     @IBOutlet private var displayNameLabel: UILabel!
     @IBOutlet private var optionButton: UIButton!
+    @IBOutlet private var bannedImageView: UIImageView!
+    @IBOutlet private var bannedImageViewWidthConstraint: NSLayoutConstraint!
     
     // MARK: - Properties
     
@@ -37,11 +39,26 @@ final class AmityCommunityMemberSettingsTableViewCell: UITableViewCell, Nibbable
         setupView()
     }
     
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        
+        displayNameLabel.text = ""
+        bannedImageViewWidthConstraint.constant = 0
+        bannedImageView.image = nil
+        bannedImageView.isHidden = true
+    }
+    
     func display(with model: AmityCommunityMembershipModel, isJoined: Bool) {
         let displayName = model.displayName
         displayNameLabel.text = displayName
         optionButton.isHidden = model.isCurrentUser || !isJoined
         avatarView.setImage(withImageURL: model.avatarURL, placeholder: AmityIconSet.defaultAvatar)
+        
+        if model.isGlobalBan {
+            bannedImageView.isHidden = false
+            bannedImageViewWidthConstraint.constant = 16
+            bannedImageView.image = AmityIconSet.CommunitySettings.iconCommunitySettingBanned
+        }
     }
     
     func setIndexPath(with _indexPath: IndexPath) {

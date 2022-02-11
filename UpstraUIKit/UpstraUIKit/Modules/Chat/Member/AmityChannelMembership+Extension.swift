@@ -9,9 +9,20 @@
 import Foundation
 
 enum AmityChannelRole: String {
-    case moderator
+    /// Channel moderator
+    case channelModerator = "channel-moderator"
+    /// Standart member
     case member
-    case creator
+    /// Channel moderator
+    @available(*, deprecated, message: "Use channelModerator instead.")
+    case moderator
 }
 
-
+extension AmityChannelMembershipModel {
+    var channelRoles: [AmityChannelRole] {
+        guard let roles = roles as? [String] else {
+            return []
+        }
+        return roles.map { AmityChannelRole(rawValue: $0) ?? .member }
+    }
+}
