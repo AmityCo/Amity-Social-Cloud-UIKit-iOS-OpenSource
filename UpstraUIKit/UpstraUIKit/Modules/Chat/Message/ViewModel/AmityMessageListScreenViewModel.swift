@@ -91,6 +91,7 @@ final class AmityMessageListScreenViewModel: AmityMessageListScreenViewModelType
     
     // MARK: - DataSource
     private let queue = OperationQueue()
+    private var channelModel: AmityChannelModel?
     private var messages: [[AmityMessageModel]] = []
     private var keyboardEvents: KeyboardInputEvents = .default
     private var keyboardVisible: Bool = false
@@ -123,6 +124,10 @@ final class AmityMessageListScreenViewModel: AmityMessageListScreenViewModelType
     
     func getChannelId() -> String {
         return channelId
+    }
+    
+    func getChannelModel() -> AmityChannelModel? {
+        return channelModel
     }
     
     func getCommunityId() -> String {
@@ -213,8 +218,9 @@ extension AmityMessageListScreenViewModel {
         channelNotificationToken?.invalidate()
         channelNotificationToken = channelRepository.getChannel(channelId).observe { [weak self] (channel, error) in
             guard let object = channel.object else { return }
-            let channelModel = AmityChannelModel(object: object)
-            self?.getOtherUserData(channelModel: channelModel)
+            let model = AmityChannelModel(object: object)
+            self?.channelModel = model
+            self?.getOtherUserData(channelModel: model)
         }
     }
     
@@ -274,17 +280,20 @@ extension AmityMessageListScreenViewModel {
     func editText(with text: String, messageId: String) {
         let textMessage = text.trimmingCharacters(in: .whitespacesAndNewlines)
         guard !textMessage.isEmpty else { return }
+        delegate?.screenViewModelDidGetChannel(channel: channelModel!)
         
         editor = AmityMessageEditor(client: AmityUIKitManagerInternal.shared.client, messageId: messageId)
         editor?.editText(textMessage, completion: { [weak self] (isSuccess, error) in
             guard isSuccess else { return }
             
             self?.delegate?.screenViewModelEvents(for: .didEditText)
+            
             self?.editor = nil
         })
     }
     
     func delete(withMessage message: AmityMessageModel, at indexPath: IndexPath) {
+        AmityHUD.show(.loading)
         messageRepository = AmityMessageRepository(client: AmityUIKitManagerInternal.shared.client)
         messageRepository?.deleteMessage(withId: message.messageId, completion: { [weak self] (status, error) in
             guard error == nil , status else { return }

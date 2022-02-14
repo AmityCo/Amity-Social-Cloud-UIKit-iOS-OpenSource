@@ -39,6 +39,7 @@ protocol AmityMessageListScreenViewModelDataSource {
     func numberOfSection() -> Int
     func numberOfMessage(in section: Int) -> Int
     func getChannelId() -> String
+    func getChannelModel() -> AmityChannelModel?
     func getCommunityId() -> String
     func isKeyboardVisible() -> Bool
     func getOtherUserNickName() -> String

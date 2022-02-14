@@ -540,6 +540,7 @@ extension AmityMessageListViewController: AmityMessageListScreenViewModelDelegat
         case .didEditText:
             break
         case .didDelete(let indexPath):
+            AmityHUD.hide()
             messageViewController.tableView.reloadRows(at: [indexPath], with: .none)
         case .didSendImage:
             screenViewModel.shouldScrollToBottom(force: true)
