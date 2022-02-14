@@ -27,7 +27,7 @@ class ChatFromCommunityViewController: UIViewController {
             alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
             present(alert, animated: true, completion: nil)
         } else {
-            let user = TrueUser(userId: userNameTextField.text!, displayname: userNameTextField.text!)
+            let user = TrueUser(userId: userNameTextField.text!)
             AmityCreateChannelHandler.shared.createChannel(trueUser: user) { result in
                 switch result{
                 case .success(let channelId):

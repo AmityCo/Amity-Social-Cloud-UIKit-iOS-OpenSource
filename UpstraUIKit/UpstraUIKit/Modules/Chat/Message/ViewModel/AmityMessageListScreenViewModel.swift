@@ -489,7 +489,7 @@ extension AmityMessageListScreenViewModel {
         messageAudio?.create { [weak self] in
             self?.messageAudio = nil
             self?.delegate?.screenViewModelEvents(for: .updateMessages)
-            DispatchQueue.main.asyncAfter(deadline: .now()+0.2, execute: {
+            DispatchQueue.main.asyncAfter(deadline: .now()+0.3, execute: {
                 self?.delegate?.screenViewModelEvents(for: .didSendAudio)
             })
         }

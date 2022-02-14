@@ -794,7 +794,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = SampleApp/SampleApp.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 1.0.1;
 				DEVELOPMENT_TEAM = 37Z583JR6K;
 				"EXCLUDED_ARCHS[sdk=iphonesimulator*]" = arm64;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -807,7 +807,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 2.10.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.ekoapp.sample;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.ekoenterprise.pulse-qa";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_INCLUDE_PATHS = "";
 				SWIFT_VERSION = 5.0;
@@ -821,7 +821,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = SampleApp/SampleApp.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 1.0.1;
 				DEVELOPMENT_TEAM = 37Z583JR6K;
 				"EXCLUDED_ARCHS[sdk=iphonesimulator*]" = arm64;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -834,7 +834,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 2.10.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.ekoapp.sample;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.ekoenterprise.pulse-qa";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = RELEASE;
 				SWIFT_INCLUDE_PATHS = "";

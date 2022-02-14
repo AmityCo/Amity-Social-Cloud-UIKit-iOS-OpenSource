@@ -10,11 +10,15 @@ import Foundation
 
 public struct TrueUser {
     var userId: String
-    var displayName: String
+    var displayName: String?
     var avatarURL: String?
     
-    public init(userId: String, displayname: String){
+    public init(userId: String){
         self.userId = userId
-        self.displayName = displayname
+    }
+    
+    public init(userId: String, displayName: String){
+        self.userId = userId
+        self.displayName = displayName
     }
 }
