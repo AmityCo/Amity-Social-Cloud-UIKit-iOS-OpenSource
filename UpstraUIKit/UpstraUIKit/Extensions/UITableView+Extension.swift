@@ -10,7 +10,7 @@ import UIKit
 
 extension UITableView {
     
-    var isBottomReached: Bool {
+    public var isBottomReached: Bool {
         return contentOffset.y >= (contentSize.height - frame.size.height)
     }
     

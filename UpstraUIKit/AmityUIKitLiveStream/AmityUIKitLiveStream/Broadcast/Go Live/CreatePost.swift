@@ -19,13 +19,18 @@ extension GoLive {
         private let postRepository: AmityPostRepository
         private let targetId: String?
         private let targetType: AmityPostTargetType
+        private let metadata: [String: Any]?
+        private let mentionees: AmityMentioneesBuilder?
+        private let text: String
         
-        init(postRepository: AmityPostRepository, targetId: String?, targetType: AmityPostTargetType) {
+        init(postRepository: AmityPostRepository, text: String, targetId: String?, targetType: AmityPostTargetType, metadata: [String: Any]?, mentionees: AmityMentioneesBuilder?) {
             
             self.postRepository = postRepository
             self.targetId = targetId
             self.targetType = targetType
-            
+            self.metadata = metadata
+            self.mentionees = mentionees
+            self.text = text
         }
         
         override func main() {
@@ -45,24 +50,17 @@ extension GoLive {
             
             assert(streamId != nil, "streamId must exist at this point, please check the logic.")
             
-            // Note: we leave post.text as empty, because we render title/description from stream object.
-            let builder = AmityLiveStreamPostBuilder(streamId: streamId, text: nil)
+            let builder = AmityLiveStreamPostBuilder(streamId: streamId, text: text)
             
-            postRepository.createPost(builder, targetId: targetId, targetType: targetType) { [weak self] post, error in
-                if let error = error {
-                    self?.result = .failure(error)
-                    self?.finish()
-                    return
+            if let metadata = metadata, let mentionees = mentionees {
+                postRepository.createPost(builder, targetId: targetId, targetType: targetType, metadata: metadata, mentionees: mentionees) { [weak self] post, error in
+                    self?.handleResponse(post: post, error: error)
                 }
-                guard let post = post else {
-                    self?.result = .failure(GeneralError(message: "Unable to find post data"))
-                    self?.finish()
-                    return
+            } else {
+                postRepository.createPost(builder, targetId: targetId, targetType: targetType) { [weak self] post, error in
+                    self?.handleResponse(post: post, error: error)
                 }
-                self?.result = .success(post)
-                self?.finish()
             }
-            
         }
         
         private func findCreateStreamResult() -> Result<AmityStream, Error> {
@@ -74,6 +72,21 @@ extension GoLive {
                 }
             }
             return .failure(GeneralError(message: "Unable to find create stream result"))
+        }
+        
+        private func handleResponse(post: AmityPost?, error: Error?) {
+            if let error = error {
+                result = .failure(error)
+                finish()
+                return
+            }
+            guard let post = post else {
+                result = .failure(GeneralError(message: "Unable to find post data"))
+                finish()
+                return
+            }
+            result = .success(post)
+            finish()
         }
         
     }

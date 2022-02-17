@@ -449,11 +449,11 @@ extension AmityCommunityProfileEditorViewController: UITextFieldDelegate {
 }
 
 extension AmityCommunityProfileEditorViewController: AmityTextViewDelegate {
-    func textViewDidChange(_ textView: AmityTextView) {
+    public func textViewDidChange(_ textView: AmityTextView) {
         screenViewModel.action.textViewDidChanged(textView)
     }
     
-    func textView(_ textView: AmityTextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
+    public func textView(_ textView: AmityTextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
         return screenViewModel.action.text(textView, shouldChangeCharactersIn: range, replacementString: text)
     }
 }

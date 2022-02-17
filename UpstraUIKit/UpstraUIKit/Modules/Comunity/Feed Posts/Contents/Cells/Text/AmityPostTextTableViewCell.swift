@@ -45,14 +45,13 @@ public final class AmityPostTextTableViewCell: UITableViewCell, Nibbable, AmityP
         if let liveStream = post.liveStream {
             // We picky back to render title/description for live stream post here.
             // By getting post.liveStream
-            var texts: [String] = []
-            if let title = liveStream.title {
-                texts.append(title)
+            if let metadata = post.metadata, let mentionees = post.mentionees {
+                let attributes = AmityMentionManager.getAttributes(fromText: post.text, withMetadata: metadata, mentionees: mentionees)
+                
+                contentLabel.setText(post.text, withAttributes: attributes)
+            } else {
+                contentLabel.text = post.text
             }
-            if let description = liveStream.streamDescription {
-                texts.append(description)
-            }
-            contentLabel.text = texts.joined(separator: "\n")
         } else {
             
             // The default render behaviour just to grab text from post.text

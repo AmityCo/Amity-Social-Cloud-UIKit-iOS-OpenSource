@@ -26,7 +26,7 @@ extension String {
         return boldString
     }
     
-    var localizedString: String {
+    public var localizedString: String {
             return NSLocalizedString(self, tableName: "AmityLocalizable", bundle: AmityUIKitManager.bundle, value: "", comment: "")
     }
     

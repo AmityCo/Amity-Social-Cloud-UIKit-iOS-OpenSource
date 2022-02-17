@@ -20,7 +20,7 @@ import UIKit
 public struct AmityLocalizedStringSet {
     private init() { }
     
-    enum General {
+    public enum General {
         static let report = "general_report"
         static let undoReport = "general_undo_report"
         static let reportUser = "general_report_user"
@@ -34,7 +34,7 @@ public struct AmityLocalizedStringSet {
         static let cancel = "general_cancel"
         static let delete = "general_delete"
         static let edit = "general_edit"
-        static let done = "general_done"
+        public static let done = "general_done"
         static let post = "general_post"
         static let discard = "general_discard"
         static let leave = "general_leave"
@@ -497,10 +497,10 @@ public struct AmityLocalizedStringSet {
     }
     
     // MARK: - Mention
-    enum Mention {
-        static let unableToMentionTitle = "mention_unable_to_mention_title"
-        static let unableToMentionPostDescription = "mention_unable_to_mention_post_description"
-        static let unableToMentionCommentDescription = "mention_unable_to_mention_comment_description"
-        static let unableToMentionReplyDescription = "mention_unable_to_mention_reply_description"
+    public enum Mention {
+        public static let unableToMentionTitle = "mention_unable_to_mention_title"
+        public static let unableToMentionPostDescription = "mention_unable_to_mention_post_description"
+        public static let unableToMentionCommentDescription = "mention_unable_to_mention_comment_description"
+        public static let unableToMentionReplyDescription = "mention_unable_to_mention_reply_description"
     }
 }

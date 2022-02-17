@@ -11,7 +11,7 @@ import AmitySDK
 extension LiveStreamBroadcastViewController {
     
     /// Call this function when the user tap "Go live".
-    func goLive() {
+    func goLive(metadata: [String: Any]?, mentionees: AmityMentioneesBuilder?) {
         
         // Validate Inputs
         switch validateInputs() {
@@ -26,7 +26,7 @@ extension LiveStreamBroadcastViewController {
         goLiveButton.isEnabled = false
         
         // Create and perform go live operations.
-        let operations = createGoLiveOperations()
+        let operations = createGoLiveOperations(metadata: metadata, mentionees: mentionees)
         goLiveOperationQueue.addOperations(operations, waitUntilFinished: false)
         
     }
@@ -39,7 +39,7 @@ extension LiveStreamBroadcastViewController {
         return .success(Void())
     }
     
-    func createGoLiveOperations() -> [Operation] {
+    func createGoLiveOperations(metadata: [String: Any]?, mentionees: AmityMentioneesBuilder?) -> [Operation] {
         
         var operations: [Operation] = []
         
@@ -67,7 +67,8 @@ extension LiveStreamBroadcastViewController {
         let createStream = GoLive.CreateStream(streamRepository: streamRepository, title: title, description: description, meta: nil)
         
         // createPost
-        let createPost = GoLive.CreatePost(postRepository: postRepository, targetId: targetId, targetType: targetType)
+        let postText = "\(title)\n\n\(description ?? "")"
+        let createPost = GoLive.CreatePost(postRepository: postRepository, text: postText, targetId: targetId, targetType: targetType, metadata: metadata, mentionees: mentionees)
         
         // Set up dependencies
         if let uploadCoverImage = uploadCoverImage {

@@ -8,7 +8,7 @@
 
 import UIKit
 
-@objc protocol AmityTextViewDelegate {
+@objc public protocol AmityTextViewDelegate {
     @objc optional func textViewShouldBeginEditing(_ textView: AmityTextView) -> Bool
     @objc optional func textViewShouldEndEditing(_ textView: AmityTextView) -> Bool
     @objc optional func textViewDidBeginEditing(_ textView: AmityTextView)
@@ -16,8 +16,8 @@ import UIKit
     @objc optional func textView(_ textView: AmityTextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool
     @objc optional func textViewDidChange(_ textView: AmityTextView)
     @objc optional func textViewDidChangeSelection(_ textView: AmityTextView)
-    @objc optional func textView(_ textView: AmityTextView, shouldInteractWith URL: URL, in characterRange: NSRange, interaction: UITextItemInteraction) -> Bool
-    @objc optional func textView(_ textView: AmityTextView, shouldInteractWith textAttachment: NSTextAttachment, in characterRange: NSRange, interaction: UITextItemInteraction) -> Bool
+    @objc optional func textView(_ textView: AmityTextView, shouldInteractWithURL url: URL, in characterRange: NSRange, interaction: UITextItemInteraction) -> Bool
+    @objc optional func textView(_ textView: AmityTextView, shouldInteractWithTextAttachment textAttachment: NSTextAttachment, in characterRange: NSRange, interaction: UITextItemInteraction) -> Bool
 }
 
 open class AmityTextView: UITextView {
@@ -80,7 +80,7 @@ open class AmityTextView: UITextView {
     }
     
     /// TextView Delegate
-    weak var customTextViewDelegate : AmityTextViewDelegate?
+    public weak var customTextViewDelegate : AmityTextViewDelegate?
     
     /// Check if text characters reach the minimum requirements.
     var isValid: Bool {
@@ -227,11 +227,11 @@ extension AmityTextView: UITextViewDelegate {
     }
     
     public func textView(_ textView: UITextView, shouldInteractWith URL: URL, in characterRange: NSRange, interaction: UITextItemInteraction) -> Bool {
-        return customTextViewDelegate?.textView?(self, shouldInteractWith: URL, in: characterRange, interaction: interaction) ?? false
+        return customTextViewDelegate?.textView?(self, shouldInteractWithURL: URL, in: characterRange, interaction: interaction) ?? false
     }
     
     public func textView(_ textView: UITextView, shouldInteractWith textAttachment: NSTextAttachment, in characterRange: NSRange, interaction: UITextItemInteraction) -> Bool {
-        return customTextViewDelegate?.textView?(self, shouldInteractWith: textAttachment, in: characterRange, interaction: interaction) ?? false
+        return customTextViewDelegate?.textView?(self, shouldInteractWithTextAttachment: textAttachment, in: characterRange, interaction: interaction) ?? false
     }
     
 }

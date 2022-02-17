@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0A7682C427B16D2200F6BA41 /* AmityMediaConverter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A7682C327B16D2200F6BA41 /* AmityMediaConverter.swift */; };
 		0D123ECE25DA85DD009171D8 /* AmityCommentCreateController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D123ECD25DA85DD009171D8 /* AmityCommentCreateController.swift */; };
 		0D12BD2B25D4307100D3E4BC /* AmityPostHeaderProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D12BD2A25D4307100D3E4BC /* AmityPostHeaderProtocol.swift */; };
 		0D12BD3325D4307800D3E4BC /* AmityPostFooterProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D12BD3225D4307800D3E4BC /* AmityPostFooterProtocol.swift */; };
@@ -642,6 +643,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		0A7682C327B16D2200F6BA41 /* AmityMediaConverter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AmityMediaConverter.swift; sourceTree = "<group>"; };
 		0D123ECD25DA85DD009171D8 /* AmityCommentCreateController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AmityCommentCreateController.swift; sourceTree = "<group>"; };
 		0D12BD2A25D4307100D3E4BC /* AmityPostHeaderProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AmityPostHeaderProtocol.swift; sourceTree = "<group>"; };
 		0D12BD3225D4307800D3E4BC /* AmityPostFooterProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AmityPostFooterProtocol.swift; sourceTree = "<group>"; };
@@ -2578,6 +2580,7 @@
 				72A3507524EA820700DA9D46 /* NibFileOwnerLoadable.swift */,
 				7290C385260DCC07002FFDC8 /* Reachability.swift */,
 				72AFAC0B24F9008B00269019 /* Services */,
+				0A7682C327B16D2200F6BA41 /* AmityMediaConverter.swift */,
 			);
 			path = Utilities;
 			sourceTree = "<group>";
@@ -4587,6 +4590,7 @@
 				D404016225FF891F00311C83 /* AmityCommunityNotificationSettingsController.swift in Sources */,
 				72C1210B25BEAEB400CE105E /* AmityCommunityMembership+Extension.swift in Sources */,
 				72A3518624EA820800DA9D46 /* AlbumsViewController.swift in Sources */,
+				0A7682C427B16D2200F6BA41 /* AmityMediaConverter.swift in Sources */,
 				B73125DD2590B777000E142F /* AmityMemberPickerScreenViewModelProtocol.swift in Sources */,
 				D4EC11E525B93DCE0095F507 /* AmityPostSharingSettings.swift in Sources */,
 				72A3517824EA820800DA9D46 /* PreviewBuilder.swift in Sources */,
@@ -5173,7 +5177,7 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				MARKETING_VERSION = 2.10.0;
+				MARKETING_VERSION = 2.11.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.amity.amityuikit;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
@@ -5206,7 +5210,7 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				MARKETING_VERSION = 2.10.0;
+				MARKETING_VERSION = 2.11.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.amity.amityuikit;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;

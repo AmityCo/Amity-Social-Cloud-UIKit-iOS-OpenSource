@@ -52,6 +52,7 @@ final class AmityPollCreatorQusetionTableViewCell: UITableViewCell, Nibbable, Am
         pollTextView.padding = .init(top: 8, left: 0, bottom: 8, right: 0)
         pollTextView.returnKeyType = .done
         pollTextView.customTextViewDelegate = self
+        pollTextView.typingAttributes = [.font: AmityFontSet.body, .foregroundColor: AmityColorSet.base]
         
         lineView.backgroundColor = AmityColorSet.base.blend(.shade4)
     }
