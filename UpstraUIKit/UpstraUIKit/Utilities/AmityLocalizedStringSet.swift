@@ -176,6 +176,9 @@ public struct AmityLocalizedStringSet {
     // MARK: - Explore
     public static let exploreTitle = "explore_title"
     
+    // MARK: - Discovery
+    public static let discoveryTitle = "discovery_title"
+    
     // MARK: - Community home page
     public static let communityHomeTitle = "community_home_title"
     

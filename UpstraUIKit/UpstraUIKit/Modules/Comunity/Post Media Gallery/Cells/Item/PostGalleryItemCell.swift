@@ -202,6 +202,71 @@ class PostGalleryItemCell: UICollectionViewCell, Nibbable {
         
     }
     
+    func configure(withDisModel model: DiscoveryDataModel) {
+        
+        // Properties to render
+        let durationText: String?
+        let streamStatus: AmityStreamStatus?
+        let mediaTitle: String?
+        let imageUrl: String?
+        let placeholder: UIImage?
+        
+        let postDatatype = model.dataType
+        
+        // Find properties value from post.
+        switch postDatatype {
+        case "image":
+            imageUrl = model.file_url
+            placeholder = nil
+            durationText = nil
+            mediaTitle = nil
+            streamStatus = nil
+        case "video":
+            imageUrl = model.file_url
+            placeholder = nil
+            durationText = nil
+            mediaTitle = nil
+            streamStatus = nil
+        default:
+            durationText = nil
+            streamStatus = nil
+            mediaTitle = nil
+            imageUrl = nil
+            placeholder = nil
+        }
+        
+        // Render UI from properties above.
+        
+        // imageUrl, placeholder
+        asyncLoadImage(urlString: imageUrl, placeholder: placeholder)
+        
+        // durationText
+        if let durationText = durationText {
+            durationView.isHidden = false
+            durationLabel.text = durationText
+        } else {
+            durationView.isHidden = true
+        }
+        
+        durationView.isHidden = true
+        
+        // mediaTitle
+        if let mediaTitle = mediaTitle {
+            mediaTitleLabel.isHidden = false
+            mediaTitleLabel.text = mediaTitle
+        } else {
+            mediaTitleLabel.isHidden = true
+        }
+        
+        // hide Live stream label
+        streamStateContainer.isHidden = true
+        
+        mediaTitleLabel.isHidden = true
+        
+        darkOverlayView.isHidden = (mediaTitleLabel.isHidden && streamStateContainer.isHidden)
+        
+    }
+    
     private func asyncLoadImage(urlString: String?, placeholder: UIImage?) {
         
         guard let urlString = urlString else {
