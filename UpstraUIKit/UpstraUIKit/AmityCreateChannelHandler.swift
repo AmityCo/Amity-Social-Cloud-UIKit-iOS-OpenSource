@@ -27,11 +27,12 @@ public class AmityCreateChannelHandler {
         getOtherUserDisplayName(userId: trueUser.userId){ result in
             switch result {
             case .success(let displayName):
-                let users = [trueUser]
+                let userFromTrue = TrueUser(userId: trueUser.userId, displayName: displayName)
+                let users = [userFromTrue]
                 var allUsers = users
                 var currentUser: TrueUser?
                 if let user = AmityUIKitManagerInternal.shared.client.currentUser?.object {
-                    let userModel = TrueUser(userId: user.userId, displayName: displayName)
+                    let userModel = TrueUser(userId: user.userId, displayName: user.displayName ?? "")
                     currentUser = userModel
                     allUsers.append(userModel)
                 }
@@ -41,7 +42,7 @@ public class AmityCreateChannelHandler {
                 let channelDisplayName = users.count == 1 ? users.first?.displayName ?? "" : allUsers.map { $0.displayName ?? "" }.joined(separator: "-")
                 var userArrayWithDisplayName: [String] = []
                 for name in allUsers{
-                    userArrayWithDisplayName.append("\(name.userId):\(name.displayName)")
+                    userArrayWithDisplayName.append("\(name.userId):\(name.displayName ?? "")")
                 }
                 builder.setUserIds(userIds)
                 builder.setId(channelId)
