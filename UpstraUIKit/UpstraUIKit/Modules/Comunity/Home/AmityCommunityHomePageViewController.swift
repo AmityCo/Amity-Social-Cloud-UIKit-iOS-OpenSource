@@ -22,7 +22,7 @@ public class AmityCommunityHomePageViewController: AmityPageViewController {
     public let newsFeedVC = AmityNewsfeedViewController.make()
     public let exploreVC = AmityCommunityExplorerViewController.make()
 //    public let discoveryVC = AmityDiscoveryViewController.makeByTrueID(targetType: .community, targetId: "56701fa0443c1e92b43d89961fdc0cd4", isHiddenButtonCreate: true)
-    public let discoveryVC = AmityDiscoveryViewController.makeByTrueID(targetType: .community, targetId: "875fd7b78a63bba3d5b0ec828dce6149", isHiddenButtonCreate: true)
+//    public let discoveryVC = AmityDiscoveryViewController.makeByTrueID(targetType: .community, targetId: "875fd7b78a63bba3d5b0ec828dce6149", isHiddenButtonCreate: true)
     
     private var screenViewModel: AmityCommunityHomePageScreenViewModelType
     private var initialized: Bool = false
@@ -66,8 +66,9 @@ public class AmityCommunityHomePageViewController: AmityPageViewController {
     override func viewControllers(for pagerTabStripController: AmityPagerTabViewController) -> [UIViewController] {
         newsFeedVC.pageTitle = AmityLocalizedStringSet.newsfeedTitle.localizedString
         exploreVC.pageTitle = AmityLocalizedStringSet.exploreTitle.localizedString
-        discoveryVC.pageTitle = AmityLocalizedStringSet.discoveryTitle.localizedString
-        return [newsFeedVC, exploreVC, discoveryVC]
+//        discoveryVC.pageTitle = AmityLocalizedStringSet.discoveryTitle.localizedString
+//        return [newsFeedVC, exploreVC, discoveryVC]
+        return [newsFeedVC, exploreVC]
     }
     
     // MARK: - Setup view
