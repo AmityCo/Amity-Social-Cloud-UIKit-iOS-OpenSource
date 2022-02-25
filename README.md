@@ -24,15 +24,15 @@ AmityUIKit supports building xcframework which can be used on any Xcode version.
 `amity-uikit.zip` contains AmityChat.xcframework, Realm.xcframework and AmityUIKit.xcframework.
 
 ## Documentation
-View the [documentation](https://docs.amity.co/uikit/ios/overview) for AmityUIKit.
+View the [documentation](https://github.com/AmityCo/Amity-Social-Cloud-UIKit-iOS-OpenSource/wiki) for AmityUIKit.
 
 
 ## Changelog
-[See the changelog](https://docs.amity.co/uikit/ios/changelog) to be aware of latest improvements and fixes.
+[See the changelog](https://github.com/AmityCo/Amity-Social-Cloud-UIKit-iOS/releases) to be aware of latest improvements and fixes.
 
 
 ## Contribution guidelines
-Please refer to the (guidelines)[Link to Contributing to AmityUIKit OpenSource]
+Please refer to the [guidelines](https://docs.amity.co/support/contribute#contributions).
 
 
 ## License
