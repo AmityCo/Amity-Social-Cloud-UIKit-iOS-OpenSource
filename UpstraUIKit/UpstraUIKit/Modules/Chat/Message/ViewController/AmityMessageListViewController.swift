@@ -89,6 +89,10 @@ public final class AmityMessageListViewController: AmityViewController {
         super.viewWillAppear(animated)
         AmityKeyboardService.shared.delegate = self
         screenViewModel.startReading()
+        DispatchQueue.main.asyncAfter(deadline: .now()) { [weak self] in
+            self?.navigationController?.setNavigationBarHidden(false, animated: false)
+            self?.navigationItem.largeTitleDisplayMode = .never
+        }
     }
     
     public override func viewWillDisappear(_ animated: Bool) {
