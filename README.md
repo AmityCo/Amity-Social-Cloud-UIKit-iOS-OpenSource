@@ -32,7 +32,7 @@ View the [documentation](https://github.com/AmityCo/Amity-Social-Cloud-UIKit-iOS
 
 
 ## Contribution guidelines
-Please refer to the [guidelines](https://docs.amity.co/support/contribute#contributions).
+Please refer to the [guidelines](https://github.com/AmityCo/Amity-Social-Cloud-UIKit-iOS-OpenSource/wiki/Contributing-to-Amity-UIKit-Open-Source).
 
 
 ## License
