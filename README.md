@@ -17,11 +17,11 @@ Please note that every view model in this project will be named as **screen view
 
 ## Building framework
 AmityUIKit supports building xcframework which can be used on any Xcode version. Please follow this instruction for building.
-1. Open this project with Xcode 13.1
-2. Select Release Framework as a build target
-3. Build (The output path is /AmityUIKit/Distribution)
+1. In terminal, go to project directory
+2. Run "./scripts/release-uikit.sh"
+3. After building process is done, there will be `amity-uikit.zip` file
 
-Distribution folder will contains AmityChat.xcframework, Realm.xcframework and AmityUIKit.xcframework. These frameworks can be imported and built on any version of Xcode or Swift.
+`amity-uikit.zip` contains AmityChat.xcframework, Realm.xcframework and AmityUIKit.xcframework.
 
 ## Documentation
 View the [documentation](https://docs.amity.co/uikit/ios/overview) for AmityUIKit.
