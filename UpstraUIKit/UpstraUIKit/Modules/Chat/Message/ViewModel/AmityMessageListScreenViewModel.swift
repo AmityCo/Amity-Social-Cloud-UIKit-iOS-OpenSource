@@ -247,19 +247,6 @@ extension AmityMessageListScreenViewModel {
         userNotificationToken = userRepository.getUser(otherUserId).observe({[weak self] user, error in
             guard let weakSelf = self else { return }
             if let userObject = user.object {
-                
-//                if let nicknameMetaData = channelModel.metadata["chatDisplayName"] as? [String] {
-//                    for nickname in nicknameMetaData {
-//                        if nickname.contains(AmityUIKitManagerInternal.shared.client.currentUser?.object?.userId ?? ""){
-//                            continue
-//                        }else{
-//                            let splitNickName = nickname.split(separator: ":")
-//                            weakSelf.otherUserNickname = String(splitNickName[1])
-//                        }
-//                    }
-//                } else {
-//                    weakSelf.otherUserNickname = userObject.displayName
-//                }
                 weakSelf.otherUserNickname = userObject.displayName
                 weakSelf.userNotificationToken?.invalidate()
             }
