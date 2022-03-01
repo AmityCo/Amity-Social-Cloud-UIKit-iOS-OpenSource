@@ -559,11 +559,11 @@ public struct AmityLocalizedStringSet {
     }
     
     // MARK: - Mention
-    enum Mention {
-        static let unableToMentionTitle = "mention_unable_to_mention_title"
-        static let unableToMentionPostDescription = "mention_unable_to_mention_post_description"
-        static let unableToMentionCommentDescription = "mention_unable_to_mention_comment_description"
-        static let unableToMentionReplyDescription = "mention_unable_to_mention_reply_description"
+    public enum Mention {
+        public static let unableToMentionTitle = "mention_unable_to_mention_title"
+        public static let unableToMentionPostDescription = "mention_unable_to_mention_post_description"
+        public static let unableToMentionCommentDescription = "mention_unable_to_mention_comment_description"
+        public static let unableToMentionReplyDescription = "mention_unable_to_mention_reply_description"
     }
     // MARK: - Relative Time
     struct RelativeTime {

@@ -232,7 +232,7 @@ extension AmityUserProfileEditorViewController: UITextFieldDelegate {
 
 extension AmityUserProfileEditorViewController: AmityTextViewDelegate {
     
-    func textViewDidChange(_ textView: AmityTextView) {
+    public func textViewDidChange(_ textView: AmityTextView) {
         updateViewState()
     }
     

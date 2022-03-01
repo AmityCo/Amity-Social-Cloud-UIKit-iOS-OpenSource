@@ -122,7 +122,9 @@ extension AmityPollCreatorViewController: AmityKeyboardServiceDelegate {
 // MARK: - Action
 private extension AmityPollCreatorViewController {
     @objc func onPostButtonTap() {
-        screenViewModel?.action.createPoll(withMetadata: mentionManager?.getMetadata(), andMentionees: mentionManager?.getMentionees())
+        let metadata = mentionManager?.getMetadata()
+        let mentionees = mentionManager?.getMentionees()
+        screenViewModel?.action.createPoll(withMetadata: metadata, andMentionees: mentionees)
     }
 }
 
@@ -289,6 +291,10 @@ extension AmityPollCreatorViewController: AmityPollCreatorCellProtocolDelegate {
             if cell is AmityPollCreatorAnswerTableViewCell {
                 screenViewModel?.action.updateAnswer(textView.text, at: cell.indexPath, completion: nil)
             }
+            if let cell = tableView.cellForRow(at: IndexPath(row: 0, section: 0)) as? AmityPollCreatorQusetionTableViewCell, let textView = cell.getTextView() {
+                textView.typingAttributes = [.font: AmityFontSet.body, .foregroundColor: AmityColorSet.base]
+                screenViewModel?.action.setPollQuestion(textView.text)
+            }
         case .textViewDidChangeSelection(let textView):
             mentionManager?.changeSelection(textView)
         case .multipleSelectionChange(let isMultiple):
@@ -342,15 +348,15 @@ extension AmityPollCreatorViewController: AmityPollCreatorCellProtocolDelegate {
 
 // MARK: - AmityMentionManagerDelegate
 extension AmityPollCreatorViewController: AmityMentionManagerDelegate {
-    func didCreateAttributedString(attributedString: NSAttributedString) {
+    public func didCreateAttributedString(attributedString: NSAttributedString) {
         if let cell = tableView.cellForRow(at: IndexPath(row: 0, section: 0)) as? AmityPollCreatorQusetionTableViewCell, let textView = cell.getTextView() {
             textView.attributedText = attributedString
-            textView.font = AmityFontSet.body
+            textView.typingAttributes = [.font: AmityFontSet.body, .foregroundColor: AmityColorSet.base]
             screenViewModel?.action.setPollQuestion(textView.text)
         }
     }
     
-    func didGetUsers(users: [AmityMentionUserModel]) {
+    public func didGetUsers(users: [AmityMentionUserModel]) {
         if users.isEmpty {
             mentionTableViewHeightConstraint.constant = 0
             mentionTableView.isHidden = true
@@ -365,13 +371,13 @@ extension AmityPollCreatorViewController: AmityMentionManagerDelegate {
         }
     }
     
-    func didMentionsReachToMaximumLimit() {
+    public func didMentionsReachToMaximumLimit() {
         let alertController = UIAlertController(title: AmityLocalizedStringSet.Mention.unableToMentionTitle.localizedString, message: AmityLocalizedStringSet.Mention.unableToMentionReplyDescription.localizedString, preferredStyle: .alert)
         let cancelAction = UIAlertAction(title: AmityLocalizedStringSet.General.done.localizedString, style: .cancel, handler: nil)
         alertController.addAction(cancelAction)
         present(alertController, animated: true, completion: nil)
     }
     
-    func didCharactersReachToMaximumLimit() {
+    public func didCharactersReachToMaximumLimit() {
     }
 }

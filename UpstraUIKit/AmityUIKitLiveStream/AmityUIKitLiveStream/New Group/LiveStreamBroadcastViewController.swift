@@ -36,6 +36,8 @@ final public class LiveStreamBroadcastViewController: UIViewController {
     /// Formatter to render live duration in streamingStatusLabel
     let liveDurationFormatter = DateComponentsFormatter()
     
+    // MARK: - Private Const Properties
+    private let mentionManager: AmityMentionManager
     // MARK: - States
     
     private var hasSetupBroadcaster = false
@@ -101,6 +103,11 @@ final public class LiveStreamBroadcastViewController: UIViewController {
     
     @IBOutlet weak var streamEndLabel: UILabel!
     
+    // MARK: - UI Mention tableView
+    @IBOutlet private var mentionTableView: AmityMentionTableView!
+    @IBOutlet private var mentionTableViewHeightConstraint: NSLayoutConstraint!
+    @IBOutlet private var mentionTableViewBottomConstraint: NSLayoutConstraint!
+    
     // MARK: - Keyboard Observations
     // LiveStreamBroadcastVC+Keyboard.swift
     var keyboardIsHidden = true
@@ -115,13 +122,14 @@ final public class LiveStreamBroadcastViewController: UIViewController {
         self.client = client
         self.targetId = targetId
         self.targetType = targetType
-        
+         
         communityRepository = AmityCommunityRepository(client: client)
         userRepository = AmityUserRepository(client: client)
         fileRepository = AmityFileRepository(client: client)
         streamRepository = AmityStreamRepository(client: client)
         postRepository = AmityPostRepository(client: client)
         broadcaster = AmityStreamBroadcaster(client: client)
+        mentionManager = AmityMentionManager(withType: .post(communityId: targetId))
         
         let bundle = Bundle(for: type(of: self))
         super.init(nibName: "LiveStreamBroadcastViewController", bundle: bundle)
@@ -158,6 +166,9 @@ final public class LiveStreamBroadcastViewController: UIViewController {
         observeKeyboardFrame()
         updateCoverImageSelection()
         switchToUIState(.create)
+        mentionManager.delegate = self
+        mentionManager.setFont(AmityFontSet.body, highlightFont: AmityFontSet.bodyBold)
+        mentionManager.setColor(.white, highlightColor: .white)
     }
     
     public override func viewDidAppear(_ animated: Bool) {
@@ -194,18 +205,16 @@ final public class LiveStreamBroadcastViewController: UIViewController {
         
         // Currently we don't do update UI base on keyboard.
         
-        /*
         guard isViewLoaded, view.window != nil else {
             // only perform this logic, when view controller is visible.
             return
         }
         if keyboardIsHidden {
-            // Update UI when keyboard is hidden.
+            mentionTableViewBottomConstraint.constant = 0
         } else {
-            // Update UI when keyboard is shown.
+            mentionTableViewBottomConstraint.constant = keyboardHeight
         }
         view.setNeedsLayout()
-         */
         
     }
     
@@ -246,7 +255,10 @@ final public class LiveStreamBroadcastViewController: UIViewController {
         descriptionTextView.font = AmityFontSet.body
         descriptionTextView.placeholder = AmityLocalizedStringSet.LiveStream.Create.description.localizedString
         descriptionTextView.textColor = .white
-        descriptionTextView.returnKeyType = .default
+        descriptionTextView.returnKeyType = .done
+        descriptionTextView.customTextViewDelegate = self
+        descriptionTextView.typingAttributes = [.font: AmityFontSet.body, .foregroundColor: UIColor.white]
+        
         let textViewToolbar: UIToolbar = UIToolbar()
         textViewToolbar.barStyle = .default
         textViewToolbar.items = [
@@ -287,6 +299,7 @@ final public class LiveStreamBroadcastViewController: UIViewController {
         streamingContainer.backgroundColor = UIColor(red: 1, green: 0.188, blue: 0.353, alpha: 1)
         streamingStatusLabel.textColor = .white
         streamingStatusLabel.font = AmityFontSet.captionBold
+        setupMentionTableView()
         
         streamEndLabel.text = AmityLocalizedStringSet.LiveStream.Live.endingLiveStream.localizedString
         
@@ -362,6 +375,22 @@ final public class LiveStreamBroadcastViewController: UIViewController {
         view.endEditing(true)
     }
     
+    private func setupMentionTableView() {
+        mentionTableView.isHidden = true
+        mentionTableView.delegate = self
+        mentionTableView.dataSource = self
+        mentionTableView.register(AmityMentionTableViewCell.nib, forCellReuseIdentifier: AmityMentionTableViewCell.identifier)
+    }
+    
+    private func showAlertForMaximumCharacters() {
+        let title = "Unable to post"
+        let message = "Unable message"
+        let alertController = UIAlertController(title: title, message: message, preferredStyle: .alert)
+        let cancelAction = UIAlertAction(title: "Done", style: .cancel, handler: nil)
+        alertController.addAction(cancelAction)
+        present(alertController, animated: true, completion: nil)
+    }
+    
     // MARK: - IBActions
     
     @IBAction private func switchCameraButtonDidTouch() {
@@ -383,8 +412,13 @@ final public class LiveStreamBroadcastViewController: UIViewController {
     }
     
     @IBAction private func goLiveButtonDidTouch() {
-        view.endEditing(true)
-        goLive()
+        let titleCount = "\(titleTextField.text ?? "")\n\n".count
+        let metadata = mentionManager.getMetadata(shift: titleCount)
+        let mentionees = mentionManager.getMentionees()
+        
+        mentionManager.resetState()
+        
+        goLive(metadata: metadata, mentionees: mentionees)
     }
     
     @IBAction func finishButtonDidTouch() {
@@ -393,8 +427,21 @@ final public class LiveStreamBroadcastViewController: UIViewController {
     
 }
 
-extension LiveStreamBroadcastViewController: UITextFieldDelegate {
+extension LiveStreamBroadcastViewController: AmityTextViewDelegate {
+    public func textViewDidChangeSelection(_ textView: AmityTextView) {
+        mentionManager.changeSelection(textView)
+    }
     
+    public func textView(_ textView: AmityTextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
+        if textView.text?.count ?? 0 > AmityMentionManager.maximumCharacterCountForPost {
+            showAlertForMaximumCharacters()
+            return false
+        }
+        return mentionManager.shouldChangeTextIn(textView, inRange: range, replacementText: text, currentText: textView.text ?? "")
+    }
+}
+
+extension LiveStreamBroadcastViewController: UITextFieldDelegate {
     public func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         textField.resignFirstResponder()
         return true
@@ -405,10 +452,10 @@ extension LiveStreamBroadcastViewController: UITextFieldDelegate {
         switch textField {
         case titleTextField:
             return titleTextField.verifyFields(shouldChangeCharactersIn: range, replacementString: string)
+            
         default:
             return true
         }
-        
     }
     
 }
@@ -419,4 +466,78 @@ extension LiveStreamBroadcastViewController: AmityStreamBroadcasterDelegate {
         updateStreamingStatusText()
     }
     
+}
+
+// MARK: - AmityMentionManagerDelegate
+extension LiveStreamBroadcastViewController: AmityMentionManagerDelegate {
+    public func didGetUsers(users: [AmityMentionUserModel]) {
+        if users.isEmpty {
+            mentionTableViewHeightConstraint.constant = 0
+            mentionTableView.isHidden = true
+        } else {
+            var heightConstant:CGFloat = 240.0
+            if users.count < 5 {
+                heightConstant = CGFloat(users.count) * 52.0
+            }
+            mentionTableViewHeightConstraint.constant = heightConstant
+            mentionTableView.isHidden = false
+            mentionTableView.reloadData()
+        }
+    }
+    
+    public func didCreateAttributedString(attributedString: NSAttributedString) {
+        descriptionTextView.attributedText = attributedString
+        descriptionTextView.typingAttributes = [.font: AmityFontSet.body, .foregroundColor: UIColor.white]
+    }
+    
+    public func didMentionsReachToMaximumLimit() {
+        let alertController = UIAlertController(title: AmityLocalizedStringSet.Mention.unableToMentionTitle.localizedString, message: AmityLocalizedStringSet.Mention.unableToMentionReplyDescription.localizedString, preferredStyle: .alert)
+        let cancelAction = UIAlertAction(title: AmityLocalizedStringSet.General.done.localizedString, style: .cancel, handler: nil)
+        alertController.addAction(cancelAction)
+        present(alertController, animated: true, completion: nil)
+    }
+    
+    public func didCharactersReachToMaximumLimit() {
+        showAlertForMaximumCharacters()
+    }
+}
+
+// MARK: - UITableViewDataSource
+extension LiveStreamBroadcastViewController: UITableViewDataSource {
+    public func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return mentionManager.users.count
+    }
+    
+    public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: AmityMentionTableViewCell.identifier) as? AmityMentionTableViewCell else { return UITableViewCell() }
+        if let model = mentionManager.item(at: indexPath) {
+            cell.display(with: model)
+        }
+        
+        return cell
+    }
+}
+
+// MARK: - UITableViewDelegate
+extension LiveStreamBroadcastViewController: UITableViewDelegate {
+    public func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return AmityMentionTableViewCell.height
+    }
+    
+    public func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        var textInput: UITextInput = titleTextField
+        var text = titleTextField.text
+        if !titleTextField.isFirstResponder {
+            textInput = descriptionTextView
+            text = descriptionTextView.text
+        }
+        
+        mentionManager.addMention(from: textInput, in: text ?? "", at: indexPath)
+    }
+    
+    public func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        if tableView.isBottomReached {
+            mentionManager.loadMore()
+        }
+    }
 }

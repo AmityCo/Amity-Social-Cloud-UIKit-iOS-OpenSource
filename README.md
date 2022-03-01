@@ -1,35 +1,39 @@
-
 # AmityUIKit OpenSource
 
-<p align="center" >
-  <img src="https://global-uploads.webflow.com/5eddccffdb3c6a27f79757c1/604f017e59681e734c3bd995_nav-logo.png" alt="Amity" title="AmityUIKit">
-</p>
+Our **AmityUIKit** include user interfaces to enable fast integration of standard 
+Amity Chat and Amity Social features into new or existing applications.
 
-AmityUIKit is a delightful networking library for iOS. It is extending the powerful high-level messaging abstractions provided by [Amity](https://www.amity.co). It has a scalable architecture with well-designed, feature-rich APIs that are a joy to use.
+<img width="928" alt="Screen Shot 2564-11-22 at 08 29 57" src="https://user-images.githubusercontent.com/9884138/142821262-aab24859-68a6-45fe-a94f-3cd3a679b0ee.png">
+<img width="897" alt="Screen Shot 2564-11-22 at 08 30 03" src="https://user-images.githubusercontent.com/9884138/142821272-cf46e2c6-9963-4b90-85ed-274ccc820756.png">
 
-## Requirements
+## Overview Architecture
+**MVVM** is cleanly separates presentation layer from the other layers. Divorcing one from the other improves its maintainability and testability. It also makes the application evolution easier in the future, thereby reducing the risk of technological obsolescence. 
 
-| Minimum iOS Target | Supported Language |
-| ------------------ | ------------------ |
-| iOS 12.0           |        Swift 5.3   |
+Eliminates the need for application redesign user interfaces become outdated, or even add more complexity in the specific layer.
+For example, adding local data source to the application could be impacts to the other layers.
 
-## Dependencies
+Please note that every view model in this project will be named as **screen view model**, e.g. `AmityFeedScreenViewModel` and `AmityRecentChatScreenViewModel`.
 
-AmityUIKit has dependencies with Realm. Currently we are only able to work with Realm version 10.12.0.
 
-## Framework Building
-
+## Building framework
 AmityUIKit supports building xcframework which can be used on any Xcode version. Please follow this instruction for building.
-1. Open this project with Xcode 12.2 (The version should be the same)
-2. Select `Release Framework` as a build target
-3. Build (The output path is `/AmityUIKit/Distribution`)
+1. In terminal, go to project directory
+2. Run "./scripts/release-uikit.sh"
+3. After building process is done, there will be `amity-uikit.zip` file
 
-`Distribution` folder will contains `AmityChat.xcframework`, `Realm.xcframework` and `AmityUIKit.xcframework`. These frameworks can be imported and built on any version of Xcode or Swift.
+`amity-uikit.zip` contains AmityChat.xcframework, Realm.xcframework and AmityUIKit.xcframework.
 
-## Sample App
+## Documentation
+View the [documentation](https://github.com/AmityCo/Amity-Social-Cloud-UIKit-iOS-OpenSource/wiki) for AmityUIKit.
 
-AmityUIKit has sample app you can play along with it. It is written with Swift. Please finish `Release Framework` before running `SampleApp`.
+
+## Changelog
+[See the changelog](https://github.com/AmityCo/Amity-Social-Cloud-UIKit-iOS/releases) to be aware of latest improvements and fixes.
+
+
+## Contribution guidelines
+Please refer to the [guidelines](https://github.com/AmityCo/Amity-Social-Cloud-UIKit-iOS-OpenSource/wiki/Contributing-to-Amity-UIKit-Open-Source).
+
 
 ## License
-
-Public Framework. Copyright (c) 2020 [Amity](https://www.amity.co).
+Public Framework. Copyright (c) 2020 [Amity](https://www.amity.co/).

@@ -601,7 +601,7 @@ extension AmityExpandableLabel {
         }
         
         for attribute in attributes {
-            attributedString.addAttribute(attribute.name, value: attribute.value, range: attribute.range)
+            attributedString.addAttributes(attribute.attributes, range: attribute.range)
             _hyperLinkTextRange.append(Hyperlink(range: attribute.range, type: .mention(userId: attribute.userId)))
         }
         
@@ -611,8 +611,7 @@ extension AmityExpandableLabel {
 }
 
 struct MentionAttribute {
-    let name: NSAttributedString.Key
-    let value: Any
+    let attributes: [NSAttributedString.Key: Any]
     let range: NSRange
     let userId: String
 }

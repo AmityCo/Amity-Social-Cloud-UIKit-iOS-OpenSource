@@ -18,13 +18,13 @@ extension AmityCellIdentifiable {
     }
 }
 
-protocol Nibbable: AnyObject {
+public protocol Nibbable: AnyObject {
     static var nib: UINib { get }
 }
 
 extension Nibbable {
     
-    static var nib: UINib {
+    static public var nib: UINib {
         guard let nibName = NSStringFromClass(Self.self).components(separatedBy: ".").last else {
             fatalError("Class name not found")
         }

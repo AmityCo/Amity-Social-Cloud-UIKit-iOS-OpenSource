@@ -18,23 +18,12 @@ extension PHAsset {
         options.deliveryMode = .highQualityFormat
         options.isNetworkAccessAllowed = true
         
-        if let targetSize = targetSize {
-            // get image size depends on target size
-            manager.requestImage(for: self, targetSize: targetSize, contentMode: .aspectFill, options: options) { (result, info) in
-                if let result = result {
-                    completion?(.success(result))
-                } else {
-                    completion?(.failure(AmityError.unknown))
-                }
-            }
-        } else {
-            // get maximum image size
-            manager.requestImage(for: self, targetSize: PHImageManagerMaximumSize, contentMode: .default, options: options) { (result, info) in
-                if let result = result {
-                    completion?(.success(result))
-                } else {
-                    completion?(.failure(AmityError.unknown))
-                }
+        let contentMode: PHImageContentMode = targetSize == nil ? .default : .aspectFill
+        manager.requestImage(for: self, targetSize: targetSize ?? PHImageManagerMaximumSize, contentMode: contentMode, options: options) { (result, info) in
+            if let result = result, let imageData = result.pngData(), let pngImage = UIImage(data: imageData) {
+                completion?(.success(pngImage))
+            } else {
+                completion?(.failure(AmityError.unknown))
             }
         }
     }
@@ -48,12 +37,42 @@ extension PHAsset {
                 return true
             }
             self.requestContentEditingInput(with: options, completionHandler: {(contentEditingInput: PHContentEditingInput?, info: [AnyHashable : Any]) -> Void in
-                completion(contentEditingInput?.fullSizeImageURL as URL?)
+                
+                guard let editingInput = contentEditingInput, let imageURL = editingInput.fullSizeImageURL as URL? else {
+                    completion(nil)
+                    return
+                }
+                
+                #warning("Enable image converter for 2.12.0 version")
+                // For now BE supports .JPG, .JPEG, .PNG image formats
+                // Convert the image to png in case the image is another format
+//                let absoluteString = imageURL.absoluteString.lowercased()
+//                if absoluteString.hasSuffix(".jpg") || absoluteString.hasSuffix(".jpeg") || absoluteString.hasSuffix(".png") {
+                    completion(imageURL)
+//                    return
+//                }
+                
+//                if let url = AmityMediaConverter.convertImage(fromPath: imageURL.absoluteString) {
+//                    completion(url)
+//                    return
+//                }
+                
+//                completion(nil)
             })
         case .video:
             PHCachingImageManager().requestAVAsset(forVideo: self, options: nil) { asset, audioMix, info in
                 if let asset = asset as? AVURLAsset {
-                    completion(asset.url)
+                    let absoluteString = asset.url.absoluteString.lowercased()
+                    
+                    // Convert the video to mp4
+                    guard !absoluteString.hasSuffix(".mp4") else {
+                        completion(asset.url)
+                        return
+                    }
+                    
+                    AmityMediaConverter.convertVideo(asset: asset) { url in
+                        completion(url)
+                    }
                 } else {
                     completion(nil)
                 }

@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="19529" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="19455" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="19519"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="19454"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -16,6 +16,9 @@
                 <outlet property="descriptionTextView" destination="aOG-gM-Pbh" id="8HK-ML-oIz"/>
                 <outlet property="finishButton" destination="hb4-4n-9QZ" id="tvj-I3-XlN"/>
                 <outlet property="goLiveButton" destination="xLF-im-up6" id="dEC-fh-Lgw"/>
+                <outlet property="mentionTableView" destination="ndJ-d5-Nzh" id="yz5-l6-KKA"/>
+                <outlet property="mentionTableViewBottomConstraint" destination="lQm-DI-Gco" id="LnU-CA-W0f"/>
+                <outlet property="mentionTableViewHeightConstraint" destination="3tO-j0-FSi" id="A6A-d6-MbD"/>
                 <outlet property="overlayView" destination="EQI-Pf-pby" id="FLT-tP-0cQ"/>
                 <outlet property="renderingContainer" destination="WoG-th-p7m" id="Zgg-Wo-ySh"/>
                 <outlet property="selectCoverButton" destination="OY1-jm-R20" id="jWS-5f-tAg"/>
@@ -120,7 +123,7 @@
                             </connections>
                         </button>
                         <stackView opaque="NO" contentMode="scaleToFill" alignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="xig-em-oET" userLabel="Top Right Stack View">
-                            <rect key="frame" x="190" y="15" width="214" height="48"/>
+                            <rect key="frame" x="255" y="15" width="149" height="48"/>
                             <subviews>
                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="LKa-dh-65R" userLabel="Switch Camera Button">
                                     <rect key="frame" x="0.0" y="0.0" width="48" height="48"/>
@@ -131,20 +134,15 @@
                                     </connections>
                                 </button>
                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="OY1-jm-R20" userLabel="Select Cover Button">
-                                    <rect key="frame" x="48" y="6.5" width="113" height="35"/>
-                                    <color key="backgroundColor" white="0.0" alpha="0.59999999999999998" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                    <constraints>
-                                        <constraint firstAttribute="height" constant="35" id="Qdc-fi-b8o"/>
-                                    </constraints>
-                                    <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                                    <rect key="frame" x="48" y="0.0" width="48" height="48"/>
                                     <inset key="contentEdgeInsets" minX="10" minY="10" maxX="10" maxY="10"/>
-                                    <state key="normal" title="Select Cover"/>
+                                    <state key="normal" image="select_cover"/>
                                     <connections>
                                         <action selector="selectCoverButtonDidTouch" destination="-1" eventType="touchUpInside" id="cBB-r6-Ns4"/>
                                     </connections>
                                 </button>
                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="wsf-3H-SJK" userLabel="Cover Image Container">
-                                    <rect key="frame" x="161" y="10" width="53" height="28"/>
+                                    <rect key="frame" x="96" y="10" width="53" height="28"/>
                                     <subviews>
                                         <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="xYG-lh-GPh" userLabel="Cover Image View">
                                             <rect key="frame" x="0.0" y="0.0" width="48" height="28"/>
@@ -271,7 +269,7 @@
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Ending Live Stream" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="aEB-qR-Pd5" userLabel="Stream End Label">
                                     <rect key="frame" x="124" y="55" width="146.5" height="20.5"/>
                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                    <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                    <nil key="textColor"/>
                                     <nil key="highlightedColor"/>
                                 </label>
                             </subviews>
@@ -284,6 +282,13 @@
                         <constraint firstItem="xd6-dz-yNU" firstAttribute="leading" secondItem="aoJ-cp-xbY" secondAttribute="leading" constant="10" id="mUD-AM-hIE"/>
                     </constraints>
                 </view>
+                <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="ndJ-d5-Nzh" customClass="AmityMentionTableView" customModule="AmityUIKit" customModuleProvider="target">
+                    <rect key="frame" x="0.0" y="656" width="414" height="240"/>
+                    <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="240" id="3tO-j0-FSi"/>
+                    </constraints>
+                </tableView>
             </subviews>
             <viewLayoutGuide key="safeArea" id="fnl-2z-Ty3"/>
             <color key="backgroundColor" systemColor="systemBackgroundColor"/>
@@ -295,6 +300,7 @@
                 <constraint firstItem="hb4-4n-9QZ" firstAttribute="centerY" secondItem="cf8-B2-QuA" secondAttribute="centerY" id="A2Q-Gf-hvQ"/>
                 <constraint firstItem="WoG-th-p7m" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="A2y-jJ-cLO"/>
                 <constraint firstItem="tmF-9y-7AR" firstAttribute="top" secondItem="fnl-2z-Ty3" secondAttribute="bottom" id="AKR-q8-aJW"/>
+                <constraint firstItem="ndJ-d5-Nzh" firstAttribute="trailing" secondItem="fnl-2z-Ty3" secondAttribute="trailing" id="CG8-jZ-ypp"/>
                 <constraint firstItem="tmF-9y-7AR" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="G7D-Ez-bfG"/>
                 <constraint firstAttribute="trailing" secondItem="WoG-th-p7m" secondAttribute="trailing" id="GIk-aa-0af"/>
                 <constraint firstItem="upf-ZY-xH0" firstAttribute="top" secondItem="iHk-wc-pYa" secondAttribute="bottom" id="Iy4-RF-TL1"/>
@@ -311,10 +317,12 @@
                 <constraint firstItem="EQI-Pf-pby" firstAttribute="top" secondItem="iHk-wc-pYa" secondAttribute="bottom" id="bt0-zf-Ofx"/>
                 <constraint firstItem="6ic-9A-lyj" firstAttribute="bottom" secondItem="cf8-B2-QuA" secondAttribute="bottom" id="cFO-I1-lDE"/>
                 <constraint firstItem="cf8-B2-QuA" firstAttribute="top" secondItem="WoG-th-p7m" secondAttribute="bottom" id="fjk-is-VAH"/>
+                <constraint firstItem="ndJ-d5-Nzh" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="hJO-SX-rBo"/>
                 <constraint firstAttribute="trailing" secondItem="tmF-9y-7AR" secondAttribute="trailing" id="hOg-PP-I1U"/>
                 <constraint firstAttribute="trailing" secondItem="cf8-B2-QuA" secondAttribute="trailing" id="i7w-px-tAm"/>
                 <constraint firstAttribute="trailing" secondItem="upf-ZY-xH0" secondAttribute="trailing" id="j4H-Q9-Te1"/>
                 <constraint firstItem="cf8-B2-QuA" firstAttribute="top" secondItem="EQI-Pf-pby" secondAttribute="bottom" id="juh-gi-lCy"/>
+                <constraint firstAttribute="bottom" secondItem="ndJ-d5-Nzh" secondAttribute="bottom" id="lQm-DI-Gco"/>
                 <constraint firstAttribute="trailing" secondItem="aoJ-cp-xbY" secondAttribute="trailing" id="ndU-q8-y6T"/>
                 <constraint firstItem="6ic-9A-lyj" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="ojG-Dj-tUh"/>
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="top" secondItem="iHk-wc-pYa" secondAttribute="bottom" id="qoU-Ww-OGw"/>
@@ -327,6 +335,7 @@
     </objects>
     <resources>
         <image name="close_button" width="28" height="28"/>
+        <image name="select_cover" width="28" height="28"/>
         <image name="switch_camera" width="28" height="28"/>
         <systemColor name="labelColor">
             <color white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>

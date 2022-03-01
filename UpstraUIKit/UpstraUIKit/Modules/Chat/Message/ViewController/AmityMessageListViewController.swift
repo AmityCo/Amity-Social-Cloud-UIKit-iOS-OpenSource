@@ -89,6 +89,9 @@ public final class AmityMessageListViewController: AmityViewController {
         super.viewWillAppear(animated)
         AmityKeyboardService.shared.delegate = self
         screenViewModel.startReading()
+        
+        bottomConstraint.constant = .zero
+        view.endEditing(true)
         DispatchQueue.main.asyncAfter(deadline: .now()) { [weak self] in
             self?.navigationController?.setNavigationBarHidden(false, animated: false)
             self?.navigationItem.largeTitleDisplayMode = .never
@@ -98,10 +101,14 @@ public final class AmityMessageListViewController: AmityViewController {
     public override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         AmityKeyboardService.shared.delegate = nil
-        bottomConstraint.constant = .zero
+        
         screenViewModel.action.toggleKeyboardVisible(visible: false)
+        screenViewModel.action.inputSource(for: .default)
         screenViewModel.action.stopReading()
+        
         AmityAudioPlayer.shared.stop()
+        bottomConstraint.constant = .zero
+        view.endEditing(true)
     }
     
     /// Create `AmityMessageListViewController` instance.
@@ -640,10 +647,11 @@ extension AmityMessageListViewController: AmityMessageListScreenViewModelDelegat
             composeBar.showRecordButton(show: false)
         case .audio:
             composeBar.showRecordButton(show: true)
-            view.endEditing(true)
         default:
             break
         }
+        screenViewModel.action.toggleKeyboardVisible(visible: false)
+        view.endEditing(true)
     }
     
     func screenViewModelDidReportMessage(at indexPath: IndexPath) {

@@ -8,7 +8,7 @@
 
 import UIKit
 
-final class AmityMentionTableViewCell: UITableViewCell, Nibbable {
+public final class AmityMentionTableViewCell: UITableViewCell, Nibbable {
 
     // MARK: - IBOutlet Properties
     @IBOutlet private var avatarView: AmityAvatarView!
@@ -16,14 +16,14 @@ final class AmityMentionTableViewCell: UITableViewCell, Nibbable {
     @IBOutlet private var bannedImageView: UIImageView!
     @IBOutlet private var bannedImageViewWidthConstraint: NSLayoutConstraint!
     
-    static let height: CGFloat = 52.0
+    public static let height: CGFloat = 52.0
     
-    override func awakeFromNib() {
+    override public func awakeFromNib() {
         super.awakeFromNib()
         setupView()
     }
     
-    override func prepareForReuse() {
+    override public func prepareForReuse() {
         super.prepareForReuse()
         
         displayNameLabel.text = ""
@@ -35,7 +35,7 @@ final class AmityMentionTableViewCell: UITableViewCell, Nibbable {
         bannedImageView.isHidden = true
     }
     
-    func display(with model: AmityMentionUserModel) {
+    public func display(with model: AmityMentionUserModel) {
         avatarView.setImage(withImageURL: model.avatarURL, placeholder: AmityIconSet.defaultAvatar)
         displayNameLabel.text = model.displayName
         
