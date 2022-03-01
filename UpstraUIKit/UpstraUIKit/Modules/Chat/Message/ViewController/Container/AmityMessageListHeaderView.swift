@@ -22,12 +22,12 @@ final class AmityMessageListHeaderView: AmityView {
     
     // MARK: - Properties
     private var screenViewModel: AmityMessageListScreenViewModelType?
+    var amityNavigationBarType: AmityNavigationBarType = .push
 
     convenience init(viewModel: AmityMessageListScreenViewModelType) {
         self.init(frame: .zero)
         loadNibContent()
         screenViewModel = viewModel
-        setupView()
     }
 }
 
@@ -44,8 +44,13 @@ private extension AmityMessageListHeaderView {
         
         contentView.backgroundColor = AmityColorSet.backgroundColor
         
-        backButton.tintColor = AmityColorSet.base
-        backButton.setImage(AmityIconSet.iconBack, for: .normal)
+        if amityNavigationBarType == .push {
+              backButton.tintColor = AmityColorSet.base
+              backButton.setImage(AmityIconSet.iconBack, for: .normal)
+          } else {
+              backButton.tintColor = AmityColorSet.base
+              backButton.setImage(AmityIconSet.iconClose, for: .normal)
+          }
         
         displayNameLabel.textColor = AmityColorSet.base
         displayNameLabel.font = AmityFontSet.title
@@ -88,4 +93,12 @@ extension AmityMessageListHeaderView {
             }
         }
     }
+}
+
+extension AmityMessageListHeaderView {
+    
+    func setupData() {
+        setupView()
+    }
+    
 }

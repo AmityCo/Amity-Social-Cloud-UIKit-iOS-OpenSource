@@ -202,11 +202,22 @@ private extension AmityMessageListViewController {
     }
     
     func setupCustomNavigationBar() {
-        navigationBarType = .push
+        if navigationController?.viewControllers.count ?? 0 <= 1 {
+            if presentingViewController != nil {
+                navigationBarType = .present
+            } else {
+                navigationBarType = .push
+            }
+        } else {
+            navigationBarType = .push
+        }
         navigationHeaderViewController = AmityMessageListHeaderView(viewModel: screenViewModel)
+        navigationHeaderViewController.amityNavigationBarType = navigationBarType
+        navigationHeaderViewController.setupData()
         let item = UIBarButtonItem(customView: navigationHeaderViewController)
         navigationItem.leftBarButtonItem = item
     }
+    
     
     func setupConnectionStatusBar() {
         
