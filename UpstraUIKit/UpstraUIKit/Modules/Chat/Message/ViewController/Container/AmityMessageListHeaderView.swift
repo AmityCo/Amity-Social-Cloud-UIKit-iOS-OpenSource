@@ -69,18 +69,7 @@ extension AmityMessageListHeaderView {
                         let userModel = AmityUserModel(user: userObject)
                         weakSelf.avatarView.setImage(withImageURL: userModel.avatarURL,
                                                      placeholder: AmityIconSet.defaultAvatar)
-                        if let nicknameMetaData = channel.metadata["chatDisplayName"] as? [String] {
-                            for nickname in nicknameMetaData {
-                                if nickname.contains(AmityUIKitManagerInternal.shared.client.currentUserId ?? ""){
-                                    continue
-                                }else{
-                                    let splitNickName = nickname.split(separator: ":")
-                                    weakSelf.displayNameLabel.text = String(splitNickName[1])
-                                }
-                            }
-                        } else {
-                            weakSelf.displayNameLabel.text = userObject.displayName
-                        }
+                        weakSelf.displayNameLabel.text = userObject.displayName
                     }
                     
                 })
