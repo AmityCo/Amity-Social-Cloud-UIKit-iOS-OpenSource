@@ -91,6 +91,7 @@
 "message_readmore" = "...Read more";
 "something_went_wrong_with_try_again" = "Something went wrong. Please try again later.";
 "no_internet_connection" = "No internet connection";
+"recent_chat_no_message" = "No message yet";
 "message_list_alert_error_message_title" = "Error sending message";
 "message_list_alert_error_message_desc" = "Please try again";
 "message_list_alert_delete_error_title" = "Your message was not sent";

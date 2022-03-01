@@ -91,6 +91,7 @@
 "message_readmore" = "...ပို၍ဖတ်မည်";
 "something_went_wrong_with_try_again" = "တစ်ခုခုမှားယွင်းနေ၍ နောက်မှ ထပ်စမ်းကြည့်ပါ";
 "no_internet_connection" = "အင်တာနက်ချိတ်ဆက်မှုမရှိပါ";
+"recent_chat_no_message" = "No message yet";
 "message_list_alert_error_message_title" = "မက်ဆေ့ချ်ပို့ရာတွင် အမှားအယွင်းရှိမည်";
 "message_list_alert_error_message_desc" = "ကျေးဇူးပြု၍ နောက်တစ်ကြိမ်ကြိုးစားပါ";
 "message_list_alert_delete_error_title" = "သင့်မက်ဆေ့ချ်ပေးပို့မှု မရောက်ပါ";

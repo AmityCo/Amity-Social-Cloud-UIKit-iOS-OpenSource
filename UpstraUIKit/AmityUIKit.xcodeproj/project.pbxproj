@@ -368,6 +368,7 @@
 		78DA0323263C715C007C11CE /* AmityMyCommunityPreviewScreenViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78DA031E263C715C007C11CE /* AmityMyCommunityPreviewScreenViewModel.swift */; };
 		78DA0324263C715C007C11CE /* AmityMyCommunityPreviewViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 78DA0320263C715C007C11CE /* AmityMyCommunityPreviewViewController.xib */; };
 		78DA0325263C715C007C11CE /* AmityMyCommunityPreviewViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78DA0321263C715C007C11CE /* AmityMyCommunityPreviewViewController.swift */; };
+		7F25C11127CE029600F57D18 /* RecentMessageModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F25C11027CE029600F57D18 /* RecentMessageModel.swift */; };
 		7F7704FD27B2461A00600D85 /* AmityCreateChannelHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F7704FC27B2461A00600D85 /* AmityCreateChannelHandler.swift */; };
 		7F77050127B36CCC00600D85 /* AmityTrueUserModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F77050027B36CCC00600D85 /* AmityTrueUserModel.swift */; };
 		7F7F081227BF5DCA005C6283 /* AmityDiscoveryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F7F081127BF5DCA005C6283 /* AmityDiscoveryViewController.swift */; };
@@ -1033,6 +1034,7 @@
 		78DA031E263C715C007C11CE /* AmityMyCommunityPreviewScreenViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AmityMyCommunityPreviewScreenViewModel.swift; sourceTree = "<group>"; };
 		78DA0320263C715C007C11CE /* AmityMyCommunityPreviewViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AmityMyCommunityPreviewViewController.xib; sourceTree = "<group>"; };
 		78DA0321263C715C007C11CE /* AmityMyCommunityPreviewViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AmityMyCommunityPreviewViewController.swift; sourceTree = "<group>"; };
+		7F25C11027CE029600F57D18 /* RecentMessageModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecentMessageModel.swift; sourceTree = "<group>"; };
 		7F7704FC27B2461A00600D85 /* AmityCreateChannelHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AmityCreateChannelHandler.swift; sourceTree = "<group>"; };
 		7F77050027B36CCC00600D85 /* AmityTrueUserModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AmityTrueUserModel.swift; sourceTree = "<group>"; };
 		7F7F081127BF5DCA005C6283 /* AmityDiscoveryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AmityDiscoveryViewController.swift; sourceTree = "<group>"; };
@@ -2352,6 +2354,7 @@
 		72A350B724EA820700DA9D46 /* Recent */ = {
 			isa = PBXGroup;
 			children = (
+				7F25C10F27CE028100F57D18 /* Model */,
 				B7E3C17F25075DD90025485A /* ViewModel */,
 				72A350B824EA820700DA9D46 /* Cell */,
 				72A350BB24EA820700DA9D46 /* ViewController */,
@@ -3041,6 +3044,14 @@
 				78DA0321263C715C007C11CE /* AmityMyCommunityPreviewViewController.swift */,
 			);
 			path = ViewController;
+			sourceTree = "<group>";
+		};
+		7F25C10F27CE028100F57D18 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				7F25C11027CE029600F57D18 /* RecentMessageModel.swift */,
+			);
+			name = Model;
 			sourceTree = "<group>";
 		};
 		7F7F081027BF5648005C6283 /* Discovery */ = {
@@ -5190,6 +5201,7 @@
 				B70D2B9925763F6C00E2D56B /* AmityCircularTransition.swift in Sources */,
 				72A3517A24EA820800DA9D46 /* VideoPreviewViewController.swift in Sources */,
 				78DA0323263C715C007C11CE /* AmityMyCommunityPreviewScreenViewModel.swift in Sources */,
+				7F25C11127CE029600F57D18 /* RecentMessageModel.swift in Sources */,
 				B750672124FC061B00DD17B4 /* AmitySelectMemberListTableViewCell.swift in Sources */,
 				78D9442D25F8D730003C32A5 /* AmityCommunitySettingsScreenViewModelProtocol.swift in Sources */,
 				D404015525FF88FE00311C83 /* AmityCommunityNotificationSettingsViewModelProtocol.swift in Sources */,

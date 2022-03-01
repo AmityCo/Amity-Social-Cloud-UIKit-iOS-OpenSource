@@ -34,7 +34,8 @@ class ChatFromCommunityViewController: UIViewController {
                     let vc = AmityMessageListViewController.make(channelId: channelId)
                     vc.modalPresentationStyle = .fullScreen
                     vc.modalTransitionStyle = .crossDissolve
-                    self.navigationController?.pushViewController(vc, animated: true)
+//                    self.navigationController?.present(vc, animated: true, completion: nil)
+                    self.present(vc, animated: true, completion: nil)
                 case .failure(let error):
                     print("Error: \(error.localizedDescription)")
                 }

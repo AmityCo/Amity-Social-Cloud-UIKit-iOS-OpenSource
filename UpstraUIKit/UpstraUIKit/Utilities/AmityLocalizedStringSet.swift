@@ -113,6 +113,12 @@ public struct AmityLocalizedStringSet {
     static let somethingWentWrongWithTryAgain = "something_went_wrong_with_try_again"
     static let noInternetConnection = "no_internet_connection"
     
+    // MARK: - Recent Message
+    enum RecentMessage {
+        static let noMessage = "recent_chat_no_message"
+    }
+    
+    
     // MARK: - Message List
     enum MessageList {
         static let holdToRecord = "message_list_hold_to_record"

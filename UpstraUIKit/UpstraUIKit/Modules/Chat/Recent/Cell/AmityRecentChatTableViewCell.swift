@@ -33,7 +33,7 @@ final class AmityRecentChatTableViewCell: UITableViewCell, Nibbable {
     override func prepareForReuse() {
         super.prepareForReuse()
         titleLabel.text = ""
-        previewMessageLabel.text = ""
+        previewMessageLabel.text = AmityLocalizedStringSet.RecentMessage.noMessage.localizedString
         dateTimeLabel.text = ""
         badgeView.badge = 0
         avatarView.image = nil
@@ -55,11 +55,11 @@ final class AmityRecentChatTableViewCell: UITableViewCell, Nibbable {
         memberLabel.font = AmityFontSet.caption
         memberLabel.textColor = AmityColorSet.base.blend(.shade1)
         
-        previewMessageLabel.text = "No message yet\nNo message yet"
+        previewMessageLabel.text = AmityLocalizedStringSet.RecentMessage.noMessage.localizedString
         previewMessageLabel.numberOfLines = 2
         previewMessageLabel.font = AmityFontSet.body
         previewMessageLabel.textColor = AmityColorSet.base.blend(.shade2)
-        previewMessageLabel.alpha = 0
+        previewMessageLabel.alpha = 1
         
         dateTimeLabel.font = AmityFontSet.caption
         dateTimeLabel.textColor = AmityColorSet.base.blend(.shade2)
@@ -72,6 +72,7 @@ final class AmityRecentChatTableViewCell: UITableViewCell, Nibbable {
         dateTimeLabel.text = AmityDateFormatter.Chat.getDate(date: channel.lastActivity)
         titleLabel.text = AmityLocalizedStringSet.General.anonymous.localizedString
         avatarView.placeholder = AmityIconSet.defaultAvatar
+        previewMessageLabel.text = channel.recentMessage
         
         if channel.isDirectChat() {
             token?.invalidate()

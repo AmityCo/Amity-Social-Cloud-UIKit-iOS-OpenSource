@@ -84,6 +84,7 @@
 "message_readmore" = "...Baca Selanjutnya";
 "something_went_wrong_with_try_again" = "Terjadi kesalahan. Silakan coba kembali";
 "no_internet_connection" = "Tak Ada Koneksi Internet";
+"recent_chat_no_message" = "No message yet";
 "message_list_alert_error_message_title" = "Gagal mengirim pesan";
 "message_list_alert_error_message_desc" = "Silakan coba lagi";
 "message_list_alert_delete_error_title" = "Pesan anda tidak terkirim";

@@ -84,6 +84,7 @@
 "message_readmore" = "...Đọc thêm";
 "something_went_wrong_with_try_again" = "Đã xảy ra lỗi. Vui lòng thử lại sau.";
 "no_internet_connection" = "Không có kết nối Internet";
+"recent_chat_no_message" = "No message yet";
 "message_list_alert_error_message_title" = "Lỗi khi gửi tin nhắn";
 "message_list_alert_error_message_desc" = "Vui lòng thử lại";
 "message_list_alert_delete_error_title" = "Tin nhắn không gửi được";
