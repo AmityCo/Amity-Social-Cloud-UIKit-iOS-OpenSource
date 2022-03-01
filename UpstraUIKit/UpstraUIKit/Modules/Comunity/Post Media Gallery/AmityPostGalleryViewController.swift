@@ -294,27 +294,27 @@ extension AmityPostGalleryViewController: UICollectionViewDelegateFlowLayout {
         case .post(let postObject):
             switch postObject.dataType {
             case "video":
-//                if let originalVideo = postObject.getVideoInfo(for: .original),
-//                   let url = URL(string: originalVideo.fileURL ) {
-//                    presentVideoPlayer(at: url)
-//                } else {
-//                    print("unable to find video url for post: \(postObject.postId)")
-//                }
-                AmityEventHandler.shared.postDidtap(from: self, postId: postObject.parentPostId ?? "")
+                if let originalVideo = postObject.getVideoInfo(for: .original),
+                   let url = URL(string: originalVideo.fileURL ) {
+                    presentVideoPlayer(at: url)
+                } else {
+                    print("unable to find video url for post: \(postObject.postId)")
+                }
+//                AmityEventHandler.shared.postDidtap(from: self, postId: postObject.parentPostId ?? "")
             case "image":
-//                if let imageInfo = postObject.getImageInfo() {
-//                    let placeholder = AmityColorSet.base.blend(.shade4).asImage()
-//                    let itemCell = collectionView.cellForItem(at: indexPath) as! PostGalleryItemCell
-//                    let state = AmityMediaState.downloadableImage(fileURL: imageInfo.fileURL, placeholder: placeholder)
-//                    let media = AmityMedia(state: state, type: .image)
-//                    presentPhotoViewer(
-//                        referenceView: itemCell.imageView,
-//                        media: media
-//                    )
-//                } else {
-//                    print("unable to find image url for post: \(postObject.postId)")
-//                }
-                AmityEventHandler.shared.postDidtap(from: self, postId: postObject.parentPostId ?? "")
+                if let imageInfo = postObject.getImageInfo() {
+                    let placeholder = AmityColorSet.base.blend(.shade4).asImage()
+                    let itemCell = collectionView.cellForItem(at: indexPath) as! PostGalleryItemCell
+                    let state = AmityMediaState.downloadableImage(fileURL: imageInfo.fileURL, placeholder: placeholder)
+                    let media = AmityMedia(state: state, type: .image)
+                    presentPhotoViewer(
+                        referenceView: itemCell.imageView,
+                        media: media
+                    )
+                } else {
+                    print("unable to find image url for post: \(postObject.postId)")
+                }
+//                AmityEventHandler.shared.postDidtap(from: self, postId: postObject.parentPostId ?? "")
             case "liveStream":
                 guard let stream = postObject.getLiveStreamInfo() else {
                     print("unable to find stream for post: \(postObject.postId)")
