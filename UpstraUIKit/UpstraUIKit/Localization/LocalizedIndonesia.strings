@@ -253,6 +253,7 @@
 "profile_option_title" = "Pengaturan Profil";
 "profile_option_edit" = "Sunting Profil";
 "profile_option_logout" = "Keluar";
+"hud_loading" = "Loading...";
 "hud_somthing_went_wrong" = "Oops!\n Terjadi kesalahan";
 "hud_successfully_created" = "Berhasil \ndibuat";
 "hud_successfully_updated" = "Berhasil \ndiperbarui";

@@ -267,6 +267,7 @@
 "profile_option_title" = "Profile Settings";
 "profile_option_edit" = "Edit Profile";
 "profile_option_logout" = "Logout";
+"hud_loading" = "Loading...";
 "hud_somthing_went_wrong" = "Oops!\nSomething went wrong";
 "hud_successfully_created" = "Successfully\ncreated";
 "hud_successfully_updated" = "Successfully\nupdated";

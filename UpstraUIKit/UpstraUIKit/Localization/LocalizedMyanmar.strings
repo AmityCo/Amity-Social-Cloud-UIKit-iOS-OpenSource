@@ -260,6 +260,7 @@
 "profile_option_title" = "ပရိုဖိုင် ဆက်တင်များ";
 "profile_option_edit" = "ပရိုဖိုင်ပုံအားပြင်မည်";
 "profile_option_logout" = "ထွက်လိုက်ပါ။";
+"hud_loading" = "လုပ်ဆောင်နေသည်…";
 "hud_somthing_went_wrong" = "အိုး! တစ်ခုခု မှားသွားသည်။";
 "hud_successfully_created" = "အောင်မြင်စွာ ဖန်တီးပြီးပါပြီ။";
 "hud_successfully_updated" = "အောင်မြင်စွာ မွမ်းမံပြီးပါပြီ။";

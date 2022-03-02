@@ -260,6 +260,7 @@
 "profile_option_title" = "ការកំំណត់ Profile";
 "profile_option_edit" = "កែសម្រួល Profile";
 "profile_option_logout" = "ចាកចេញ";
+"hud_loading" = "Loading...";
 "hud_somthing_went_wrong" = "មានបញ្ហាបានកើតឡើង";
 "hud_successfully_created" = "ត្រូវបានបង្កើតដោយជោគជ័យ";
 "hud_successfully_updated" = "ត្រូវបានអាប់ឌេតដោយជោគជ័យ";

@@ -376,6 +376,7 @@ public struct AmityLocalizedStringSet {
     
     // MARK: - HUD Message
     struct HUD {
+        static let loading = "hud_loading"
         static let somethingWentWrong = "hud_somthing_went_wrong"
         static let successfullyCreated = "hud_successfully_created"
         static let successfullyUpdated = "hud_successfully_updated"

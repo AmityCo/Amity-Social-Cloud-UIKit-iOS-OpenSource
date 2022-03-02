@@ -253,6 +253,7 @@
 "profile_option_title" = "Cài đặt hồ sơ";
 "profile_option_edit" = "Chỉnh sửa hồ sơ";
 "profile_option_logout" = "Đăng xuất";
+"hud_loading" = "Loading...";
 "hud_somthing_went_wrong" = "Rất tiếc!\nĐã xảy ra lỗi";
 "hud_successfully_created" = "Đã tạo\nthành công";
 "hud_successfully_updated" = "Đã cập nhật\nthành công";

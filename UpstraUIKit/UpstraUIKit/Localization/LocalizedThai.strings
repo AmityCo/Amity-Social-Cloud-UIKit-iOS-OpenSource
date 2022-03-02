@@ -252,6 +252,7 @@
 "profile_option_title" = "ตั้งค่าโปรไฟล์";
 "profile_option_edit" = "แก้ไขข้อมูลส่วนตัว";
 "profile_option_logout" = "ออกจากระบบ";
+"hud_loading" = "Loading...";
 "hud_somthing_went_wrong" = "อุ๊ปส์\nเกิดข้อผิดพลาดผิดพลาด";
 "hud_successfully_created" = "สร้างสำเร็จแล้ว";
 "hud_successfully_updated" = "อัปเดตสำเร็จแล้ว";
