@@ -35,7 +35,7 @@ class FeatureViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        title = "[UIKit 2.6.2] [TrueID Build 2.6.20 (1)]"
+        title = "[UIKit 2.11.0] [TrueID Build 2.11.0 (1)]"
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: "CellID")
         tableView.delegate = self
         tableView.dataSource = self
