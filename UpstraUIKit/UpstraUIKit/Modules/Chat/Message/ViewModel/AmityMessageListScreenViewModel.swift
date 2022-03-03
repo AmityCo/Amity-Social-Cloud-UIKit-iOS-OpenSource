@@ -14,6 +14,7 @@ final class AmityMessageListScreenViewModel: AmityMessageListScreenViewModelType
     
     enum Route {
         case pop
+        case dissmiss
     }
     
     enum Events {

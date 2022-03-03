@@ -34,7 +34,11 @@ final class AmityMessageListHeaderView: AmityView {
 // MARK: - Action
 private extension AmityMessageListHeaderView {
     @IBAction func backTap() {
-        screenViewModel?.action.route(for: .pop)
+        if amityNavigationBarType == .push {
+            screenViewModel?.action.route(for: .pop)
+        } else {
+            screenViewModel?.action.route(for: .dissmiss)
+        }
     }
 }
 

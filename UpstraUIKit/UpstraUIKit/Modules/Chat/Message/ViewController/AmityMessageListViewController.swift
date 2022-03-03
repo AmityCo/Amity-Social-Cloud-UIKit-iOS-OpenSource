@@ -511,6 +511,8 @@ extension AmityMessageListViewController: AmityMessageListScreenViewModelDelegat
         switch route {
         case .pop:
             navigationController?.popViewController(animated: true)
+        case .dissmiss:
+            navigationController?.dismiss(animated: true, completion: nil)
         }
     }
     
