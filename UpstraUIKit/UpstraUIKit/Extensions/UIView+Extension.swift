@@ -8,9 +8,9 @@
 
 import UIKit
 
-extension UIView {
+internal extension UIView {
     
-    public static var identifier: String {
+    static var identifier: String {
         return String(describing: self)
     }
     

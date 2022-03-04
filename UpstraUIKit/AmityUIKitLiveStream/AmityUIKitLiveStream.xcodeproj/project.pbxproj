@@ -33,6 +33,7 @@
 		A0BD0B5E26DF37160054088B /* LiveStreamBroadcastVC+Keyboard.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0BD0B5D26DF37160054088B /* LiveStreamBroadcastVC+Keyboard.swift */; };
 		A0BD0B6026DF377A0054088B /* LiveStreamBroadcastVC+CoverImagePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0BD0B5F26DF377A0054088B /* LiveStreamBroadcastVC+CoverImagePicker.swift */; };
 		A0BD0B6226DF3A3F0054088B /* LiveStreamBroadcast+UIContainerState.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0BD0B6126DF3A3F0054088B /* LiveStreamBroadcast+UIContainerState.swift */; };
+		FCCD2CB927D23EC5000088DC /* UIView+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCCD2CB827D23EC5000088DC /* UIView+Extension.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -64,6 +65,7 @@
 		A0BD0B5D26DF37160054088B /* LiveStreamBroadcastVC+Keyboard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "LiveStreamBroadcastVC+Keyboard.swift"; sourceTree = "<group>"; };
 		A0BD0B5F26DF377A0054088B /* LiveStreamBroadcastVC+CoverImagePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "LiveStreamBroadcastVC+CoverImagePicker.swift"; sourceTree = "<group>"; };
 		A0BD0B6126DF3A3F0054088B /* LiveStreamBroadcast+UIContainerState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "LiveStreamBroadcast+UIContainerState.swift"; sourceTree = "<group>"; };
+		FCCD2CB827D23EC5000088DC /* UIView+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+Extension.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -138,6 +140,7 @@
 		A0BD0B1726DCE4F50054088B /* AmityUIKitLiveStream */ = {
 			isa = PBXGroup;
 			children = (
+				FCCD2CB727D23EA7000088DC /* Extensions */,
 				A0BD0B1826DCE4F50054088B /* AmityUIKitLiveStream.h */,
 				A0BD0B5426DE22E60054088B /* Utils */,
 				A0BD0B3126DCE5850054088B /* Broadcast */,
@@ -210,6 +213,14 @@
 				A0BD0B5926DE26940054088B /* GeneralError.swift */,
 			);
 			path = Error;
+			sourceTree = "<group>";
+		};
+		FCCD2CB727D23EA7000088DC /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				FCCD2CB827D23EC5000088DC /* UIView+Extension.swift */,
+			);
+			path = Extensions;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -310,6 +321,7 @@
 				A0BD0B5A26DE26940054088B /* GeneralError.swift in Sources */,
 				A0BD0B6026DF377A0054088B /* LiveStreamBroadcastVC+CoverImagePicker.swift in Sources */,
 				A0B68B4126E0791D007D7B5B /* UploadCoverImage.swift in Sources */,
+				FCCD2CB927D23EC5000088DC /* UIView+Extension.swift in Sources */,
 				A0B68B6426E73522007D7B5B /* LiveStreamPlayerViewController.swift in Sources */,
 				A0B68B3626E07824007D7B5B /* AsyncOperation.swift in Sources */,
 				A0B68B4A26E0952E007D7B5B /* LiveStreamBroadcastViewController+FinishLive.swift in Sources */,
