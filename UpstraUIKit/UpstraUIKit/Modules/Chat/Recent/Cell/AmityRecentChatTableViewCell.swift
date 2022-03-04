@@ -49,6 +49,7 @@ final class AmityRecentChatTableViewCell: UITableViewCell, Nibbable {
         
         iconImageView.isHidden = true
         statusImageView.isHidden = true
+        previewMessageLabel.isHidden = true
         
         titleLabel.font = AmityFontSet.title
         titleLabel.textColor = AmityColorSet.base
