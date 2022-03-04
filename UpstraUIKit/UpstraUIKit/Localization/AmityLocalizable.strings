@@ -188,6 +188,7 @@
 "post_creation_discard_post_title" = "Discard Post?";
 "post_creation_discard_post_message" = "Do you want to discard your post?";
 "post_creation_select_image" = "Select image";
+"post_creation_select_video" = "Select video";
 "post_creation_file_upload_icomplete_title" = "Upload incomplete";
 "post_creation_file_upload_icomplete_description" = "Some files could not be uploaded.\nPlease remove and try again";
 "post_craetion_submit_title" = "Post submitted";

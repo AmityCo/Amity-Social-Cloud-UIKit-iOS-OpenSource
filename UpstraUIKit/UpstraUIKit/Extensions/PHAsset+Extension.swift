@@ -43,21 +43,20 @@ extension PHAsset {
                     return
                 }
                 
-                #warning("Enable image converter for 2.12.0 version")
                 // For now BE supports .JPG, .JPEG, .PNG image formats
                 // Convert the image to png in case the image is another format
-//                let absoluteString = imageURL.absoluteString.lowercased()
-//                if absoluteString.hasSuffix(".jpg") || absoluteString.hasSuffix(".jpeg") || absoluteString.hasSuffix(".png") {
+                let absoluteString = imageURL.absoluteString.lowercased()
+                if absoluteString.hasSuffix(".jpg") || absoluteString.hasSuffix(".jpeg") || absoluteString.hasSuffix(".png") {
                     completion(imageURL)
-//                    return
-//                }
+                    return
+                }
                 
-//                if let url = AmityMediaConverter.convertImage(fromPath: imageURL.absoluteString) {
-//                    completion(url)
-//                    return
-//                }
+                if let url = AmityMediaConverter.convertImage(fromPath: imageURL.absoluteString) {
+                    completion(url)
+                    return
+                }
                 
-//                completion(nil)
+                completion(nil)
             })
         case .video:
             PHCachingImageManager().requestAVAsset(forVideo: self, options: nil) { asset, audioMix, info in

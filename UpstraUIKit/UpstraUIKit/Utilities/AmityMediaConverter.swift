@@ -13,17 +13,28 @@ import UIKit
 
 class AmityMediaConverter {
     static func convertImage(fromPath path: String) -> URL? {
-        guard let url = URL(string: path), let imageSource = CGImageSourceCreateWithURL(url as CFURL, nil), let cgImage = CGImageSourceCreateImageAtIndex(imageSource, 0, nil) else { return nil }
+        let options = [
+                kCGImageSourceCreateThumbnailFromImageAlways: true,
+                kCGImageSourceCreateThumbnailWithTransform: true,
+                kCGImageSourceShouldCacheImmediately: true,
+                kCGImageSourceSubsampleFactor: 2
+        ] as CFDictionary
+        
+        guard let url = URL(string: path), let imageSource = CGImageSourceCreateWithURL(url as CFURL, nil), let cgImage = CGImageSourceCreateImageAtIndex(imageSource, 0, options), let properties = CGImageSourceCopyPropertiesAtIndex(imageSource, 0, nil) as? [AnyHashable: Any] else { return nil }
 
         let uuid = UUID().uuidString
         let suffix = "\(uuid).png"
-
+        
+        let orientation = CGImagePropertyOrientation(rawValue: (properties["Orientation"] as? UInt32) ?? 1)
+        
         guard let directory = try? FileManager.default.url(for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: false) as NSURL else { return nil }
-
+        
         directory.appendingPathComponent(suffix)
         guard let absoluteString = directory.absoluteString, let destinationURL = URL(string: "\(absoluteString)\(suffix)"), let destination = CGImageDestinationCreateWithURL(destinationURL as CFURL, kUTTypePNG, 1, nil) else { return nil }
-
-        CGImageDestinationAddImage(destination, cgImage, nil)
+        
+        let imageToSave: CGImage = cgImage.rotate(fromOrientation: orientation ?? .up) ?? cgImage
+        
+        CGImageDestinationAddImage(destination, imageToSave, options)
         if CGImageDestinationFinalize(destination) {
             return destinationURL
         }
