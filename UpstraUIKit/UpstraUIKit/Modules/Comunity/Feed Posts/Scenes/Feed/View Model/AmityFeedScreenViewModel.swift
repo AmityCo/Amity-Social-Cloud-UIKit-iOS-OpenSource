@@ -339,3 +339,4 @@ extension AmityFeedScreenViewModel {
     }
     
 }
+

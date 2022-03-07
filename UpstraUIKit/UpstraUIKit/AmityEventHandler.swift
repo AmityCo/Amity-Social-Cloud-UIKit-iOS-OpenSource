@@ -105,9 +105,10 @@ open class AmityEventHandler {
     open func postTargetDidSelect(
         from source: AmityViewController,
         postTarget: AmityPostTarget,
-        postContentType: AmityPostContentType
+        postContentType: AmityPostContentType,
+        openByProfileTrueID: Bool = false
     ) {
-        createPostDidTap(from: source, postTarget: postTarget, postContentType: postContentType, openByProfileTrueID: false)
+        createPostDidTap(from: source, postTarget: postTarget, postContentType: postContentType, openByProfileTrueID: openByProfileTrueID)
     }
         
     /// Event for post creator
@@ -115,11 +116,11 @@ open class AmityEventHandler {
     ///
     /// If there is a `postTarget` passing into, immediately calls `postTargetDidSelect(:)`.
     /// If there isn't , navigate to `AmityPostTargetSelectionViewController`.
-    open func createPostBeingPrepared(from source: AmityViewController, postTarget: AmityPostTarget? = nil, liveStreamPermission: Bool = false) {
+    open func createPostBeingPrepared(from source: AmityViewController, postTarget: AmityPostTarget? = nil, liveStreamPermission: Bool = false, openByProfileTrueID: Bool = false) {
         let completion: ((AmityPostContentType) -> Void) = { postContentType in
             if let postTarget = postTarget {
                 // show create post
-                AmityEventHandler.shared.postTargetDidSelect(from: source, postTarget: postTarget, postContentType: postContentType)
+                AmityEventHandler.shared.postTargetDidSelect(from: source, postTarget: postTarget, postContentType: postContentType, openByProfileTrueID: openByProfileTrueID)
             } else {
                 // show post target picker
                 let postTargetVC = AmityPostTargetPickerViewController.make(postContentType: postContentType)

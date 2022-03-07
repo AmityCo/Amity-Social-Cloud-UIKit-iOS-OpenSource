@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import AmitySDK
 
 /// A view controller for providing specific user post feed.
 public class AmityUserFeedViewController: AmityViewController {
@@ -14,8 +15,10 @@ public class AmityUserFeedViewController: AmityViewController {
     private let feedViewController: AmityFeedViewController
     private let createPostButton: AmityFloatingButton = AmityFloatingButton()
     private let feedType: AmityPostFeedType
+    private var screenViewModel: AmityNewsFeedScreenViewModelType? = nil
     
     private var openByProfileTrueID: Bool = false
+    private var permissionCanLive: Bool = false
     
     // MARK: - Initializer
     
@@ -49,6 +52,13 @@ public class AmityUserFeedViewController: AmityViewController {
         super.viewDidLoad()
         setupFeedView()
         setupPostButton()
+        setupScreenViewModel()
+    }
+    
+    private func setupScreenViewModel() {
+        screenViewModel = AmityNewsFeedScreenViewModel()
+        screenViewModel?.delegate = self
+        fetchUserProfile()
     }
     
     // MARK: - Private functions
@@ -62,8 +72,8 @@ public class AmityUserFeedViewController: AmityViewController {
         createPostButton.add(to: view, position: .bottomRight)
         createPostButton.actionHandler = { [weak self] button in
             guard let strongSelf = self else { return }
-//            AmityEventHandler.shared.createPostBeingPrepared(from: strongSelf, postTarget: .myFeed)
-            AmityEventHandler.shared.createPostDidTap(from: strongSelf, postTarget: .myFeed, openByProfileTrueID: self?.openByProfileTrueID ?? false)
+            AmityEventHandler.shared.createPostBeingPrepared(from: strongSelf, postTarget: .myFeed, liveStreamPermission: self?.permissionCanLive ?? false, openByProfileTrueID: self?.openByProfileTrueID ?? false)
+//            AmityEventHandler.shared.createPostDidTap(from: strongSelf, postTarget: .myFeed, openByProfileTrueID: self?.openByProfileTrueID ?? false)
 
         }
         
@@ -82,3 +92,26 @@ public class AmityUserFeedViewController: AmityViewController {
     
 }
 
+// MARK: - Action
+extension AmityUserFeedViewController {
+    
+    func fetchUserProfile() {
+        screenViewModel?.fetchUserProfile(with: AmityUIKitManagerInternal.shared.currentUserId)
+    }
+    
+}
+// MARK: - Delegate
+extension AmityUserFeedViewController: AmityNewsFeedScreenViewModelDelegate {
+    
+    func didFetchUserProfile(user: AmityUser) {
+        switch AmityUIKitManagerInternal.shared.envByApiKey {
+        case .staging:
+            let summaryRoles = user.roles + AmityUIKitManagerInternal.shared.stagingLiveRoleID
+            Array(Dictionary(grouping: summaryRoles, by: {$0}).filter { $1.count > 1 }.keys).count > 0 ? (permissionCanLive = true) : (permissionCanLive = false)
+        case .production:
+            let summaryRoles = user.roles + AmityUIKitManagerInternal.shared.productionLiveRoleID
+            Array(Dictionary(grouping: summaryRoles, by: {$0}).filter { $1.count > 1 }.keys).count > 0 ? (permissionCanLive = true) : (permissionCanLive = false)
+        }
+    }
+    
+}
