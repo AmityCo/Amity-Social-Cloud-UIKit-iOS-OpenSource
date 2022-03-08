@@ -178,6 +178,10 @@ private extension AmityCommunityHomePageViewController {
                 guard let categoryID = screenViewModel.dataSource.amityCommunityEventTypeModel?.categoryID else { return }
                 let viewController = AmityCategoryCommunityListViewController.make(categoryId: categoryID)
                 navigationController?.pushViewController(viewController, animated: true)
+            case .chat:
+                guard let channelID = screenViewModel.dataSource.amityCommunityEventTypeModel?.channelID else { return }
+                let viewController = AmityRecentChatViewController.make(channelID: channelID)
+                navigationController?.pushViewController(viewController, animated: true)
             default :
                 return
             }

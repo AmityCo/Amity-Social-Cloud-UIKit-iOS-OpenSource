@@ -13,6 +13,7 @@ import AmitySDK
 public final class AmityRecentChatViewController: AmityViewController, IndicatorInfoProvider {
     
     var pageTitle: String?
+    var channelID: String?
     
     func indicatorInfo(for pagerTabStripController: AmityPagerTabViewController) -> IndicatorInfo {
         return IndicatorInfo(title: pageTitle)
@@ -36,8 +37,9 @@ public final class AmityRecentChatViewController: AmityViewController, Indicator
     }()
     
     // MARK: - View lifecycle
-    private init(viewModel: AmityRecentChatScreenViewModelType) {
+    private init(viewModel: AmityRecentChatScreenViewModelType, channelID: String? = nil) {
         screenViewModel = viewModel
+        self.channelID = channelID
         super.init(nibName: AmityRecentChatViewController.identifier, bundle: AmityUIKitManager.bundle)
     }
     
@@ -49,12 +51,15 @@ public final class AmityRecentChatViewController: AmityViewController, Indicator
         super.viewDidLoad()
         setupScreenViewModel()
         setupView()
+        openChannelByDeppLink()
     }
     
-    public static func make(channelType: AmityChannelType = .conversation) -> AmityRecentChatViewController {
+    public static func make(channelType: AmityChannelType = .conversation, channelID: String? = nil) -> AmityRecentChatViewController {
         let viewModel: AmityRecentChatScreenViewModelType = AmityRecentChatScreenViewModel(channelType: channelType)
-        return AmityRecentChatViewController(viewModel: viewModel)
+        return AmityRecentChatViewController(viewModel: viewModel,channelID: channelID)
     }
+    
+    
 }
 
 // MARK: - Setup ViewModel
@@ -161,4 +166,15 @@ extension AmityRecentChatViewController: AmityRecentChatScreenViewModelDelegate 
     func screenViewModelEmptyView(isEmpty: Bool) {
         tableView.backgroundView = isEmpty ? emptyView : nil
     }
+}
+
+extension AmityRecentChatViewController {
+    
+    func openChannelByDeppLink() {
+        guard let _ = channelID else { return }
+        if channelID == "" { return }
+        let messageVC = AmityMessageListViewController.make(channelId: channelID ?? "")
+        navigationController?.pushViewController(messageVC, animated: true)
+    }
+    
 }
