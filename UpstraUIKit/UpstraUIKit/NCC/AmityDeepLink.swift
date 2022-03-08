@@ -12,6 +12,7 @@ public enum AmityCommunityEventOpenType {
     case post
     case community
     case category
+    case chat
     case none
 }
 
@@ -20,11 +21,12 @@ public struct AmityCommunityEventTypeModel {
     var postID: String?
     var communityID: String?
     var categoryID: String?
-    
-    public init(openType: AmityCommunityEventOpenType, postID: String? = nil, communityID: String? = nil, categoryID: String? = nil) {
+    var channelID: String?
+    public init(openType: AmityCommunityEventOpenType, postID: String? = nil, communityID: String? = nil, categoryID: String? = nil, channelID: String? = nil) {
         self.openType = openType
         self.postID = postID
         self.communityID = communityID
         self.categoryID = categoryID
+        self.channelID = channelID
     }
 }
