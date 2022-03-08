@@ -21,7 +21,7 @@ public class AmityNewsfeedViewController: AmityViewController, IndicatorInfoProv
     private let emptyView = AmityNewsfeedEmptyView()
     private var headerView = AmityMyCommunityPreviewViewController.make()
     private let createPostButton: AmityFloatingButton = AmityFloatingButton()
-    private let feedViewController = AmityFeedViewController.make(feedType: .globalFeed)
+    private let feedViewController = AmityFeedViewController.make(feedType: .customPostRankingGlobalFeed)
     private var screenViewModel: AmityNewsFeedScreenViewModelType? = nil
     
     private var permissionCanLive: Bool = false
