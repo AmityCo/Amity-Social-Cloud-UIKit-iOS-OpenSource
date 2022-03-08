@@ -68,23 +68,38 @@ class AmityCustomEventHandler: AmityEventHandler {
 //        }
 //    }
     
-    override func createLiveStreamPost(
-        from source: AmityViewController,
-        targetId: String?,
-        targetType: AmityPostTargetType,
-        destinationToUnwindBackAfterFinish: UIViewController
-    ) {
+//    override func createLiveStreamPost(
+//        from source: AmityViewController,
+//        targetId: String?,
+//        targetType: AmityPostTargetType,
+//        destinationToUnwindBackAfterFinish: UIViewController
+//    ) {
+//
+//        #if canImport(AmityUIKitLiveStream)
+//        let liveStreamBroadcastViewController =
+//            LiveStreamBroadcastViewController(client: AmityUIKitManager.client, targetId: targetId, targetType: targetType)
+//        liveStreamBroadcastViewController.destinationToUnwindBackAfterFinish = destinationToUnwindBackAfterFinish
+//        liveStreamBroadcastViewController.modalPresentationStyle = .fullScreen
+//        source.present(liveStreamBroadcastViewController, animated: true, completion: nil)
+//        #else
+//        print("To broadcast live stream, please install AmityUIKitLiveStream, see also `SampleApp/INSTALLATION.md`")
+//        #endif
+//
+//    }
+    
+    override func createLiveStreamPost(from source: AmityViewController, targetId: String?, targetType: AmityPostTargetType, openByProfileTrueID: Bool = false, destinationToUnwindBackAfterFinish: UIViewController) {
         
-        #if canImport(AmityUIKitLiveStream)
-        let liveStreamBroadcastViewController =
-            LiveStreamBroadcastViewController(client: AmityUIKitManager.client, targetId: targetId, targetType: targetType)
-        liveStreamBroadcastViewController.destinationToUnwindBackAfterFinish = destinationToUnwindBackAfterFinish
-        liveStreamBroadcastViewController.modalPresentationStyle = .fullScreen
-        source.present(liveStreamBroadcastViewController, animated: true, completion: nil)
-        #else
-        print("To broadcast live stream, please install AmityUIKitLiveStream, see also `SampleApp/INSTALLATION.md`")
-        #endif
+        debugPrint(openByProfileTrueID)
         
+                #if canImport(AmityUIKitLiveStream)
+                let liveStreamBroadcastViewController =
+                    LiveStreamBroadcastViewController(client: AmityUIKitManager.client, targetId: targetId, targetType: targetType)
+                liveStreamBroadcastViewController.destinationToUnwindBackAfterFinish = destinationToUnwindBackAfterFinish
+                liveStreamBroadcastViewController.modalPresentationStyle = .fullScreen
+                source.present(liveStreamBroadcastViewController, animated: true, completion: nil)
+                #else
+                print("To broadcast live stream, please install AmityUIKitLiveStream, see also `SampleApp/INSTALLATION.md`")
+                #endif
     }
     
     override func openLiveStreamPlayer(from source: AmityViewController, postId: String, streamId: String) {

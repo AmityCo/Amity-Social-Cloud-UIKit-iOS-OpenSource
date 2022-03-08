@@ -117,6 +117,7 @@ open class AmityEventHandler {
     /// If there is a `postTarget` passing into, immediately calls `postTargetDidSelect(:)`.
     /// If there isn't , navigate to `AmityPostTargetSelectionViewController`.
     open func createPostBeingPrepared(from source: AmityViewController, postTarget: AmityPostTarget? = nil, liveStreamPermission: Bool = false, openByProfileTrueID: Bool = false) {
+        debugPrint("Open Profile ==> \(openByProfileTrueID)")
         let completion: ((AmityPostContentType) -> Void) = { postContentType in
             if let postTarget = postTarget {
                 // show create post
@@ -169,9 +170,10 @@ open class AmityEventHandler {
         case .livestream:
             switch postTarget {
             case .myFeed:
-                createLiveStreamPost(from: source, targetId: nil, targetType: .user, destinationToUnwindBackAfterFinish: source.presentingViewController ?? source)
+                createLiveStreamPost(from: source, targetId: nil, targetType: .user, openByProfileTrueID: openByProfileTrueID, destinationToUnwindBackAfterFinish: source.presentingViewController ?? source)
             case .community(object: let community):
-                createLiveStreamPost(from: source, targetId: community.communityId, targetType: .community, destinationToUnwindBackAfterFinish: source.presentingViewController ?? source)
+//                createLiveStreamPost(from: source, targetId: community.communityId, targetType: .community, destinationToUnwindBackAfterFinish: source.presentingViewController ?? source)
+                createLiveStreamPost(from: source, targetId: community.communityId, targetType: .community, openByProfileTrueID: openByProfileTrueID, destinationToUnwindBackAfterFinish: source.presentingViewController ?? source)
             }
             return
         }
@@ -203,6 +205,7 @@ open class AmityEventHandler {
         from source: AmityViewController,
         targetId: String?,
         targetType: AmityPostTargetType,
+        openByProfileTrueID: Bool,
         destinationToUnwindBackAfterFinish: UIViewController
     ) {
         print("To present live stream post creator, please override \(AmityEventHandler.self).\(#function), see https://docs.amity.co for more details.")

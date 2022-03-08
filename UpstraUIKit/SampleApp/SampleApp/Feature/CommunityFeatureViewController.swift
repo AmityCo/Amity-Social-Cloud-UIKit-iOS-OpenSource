@@ -196,7 +196,7 @@ extension CommunityFeatureViewController: UITableViewDelegate {
                 print("iOS 14.0 is required to access this menu.")
             }
         case .myFeed:
-            let feedViewController = AmityUserFeedViewController.makeMyFeed()
+            let feedViewController = AmityUserFeedViewController.makeUserFeedByTrueIDProfile(withUserId: "victimIOS")
             navigationController?.pushViewController(feedViewController, animated: true)
         case .homeByDeeplink:
             let home = AmityCommunityHomePageViewController.make(amityCommunityEventType: AmityCommunityEventTypeModel(openType: .post, postID: "890615e34219985839035d50881506fd", communityID: "56701fa0443c1e92b43d89961fdc0cd4"))
