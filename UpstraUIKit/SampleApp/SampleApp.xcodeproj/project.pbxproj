@@ -806,8 +806,8 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 2.11.0;
-				PRODUCT_BUNDLE_IDENTIFIER = "com.ekoenterprise.pulse-qa";
+				MARKETING_VERSION = 2.12.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.ekoapp.sample;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_INCLUDE_PATHS = "";
 				SWIFT_VERSION = 5.0;
@@ -833,8 +833,8 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 2.11.0;
-				PRODUCT_BUNDLE_IDENTIFIER = "com.ekoenterprise.pulse-qa";
+				MARKETING_VERSION = 2.12.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.ekoapp.sample;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = RELEASE;
 				SWIFT_INCLUDE_PATHS = "";

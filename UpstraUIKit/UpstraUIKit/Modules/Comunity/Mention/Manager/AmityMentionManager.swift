@@ -272,6 +272,7 @@ public extension AmityMentionManager {
     
     func setMentions(metadata: [String: Any], inText text: String) {
         mentions = AmityMentionMapper.mentions(fromMetadata: metadata)
+        createAttributedText(text: text)
     }
     
     func getMetadata(shift: Int = 0) -> [String: Any]? {
