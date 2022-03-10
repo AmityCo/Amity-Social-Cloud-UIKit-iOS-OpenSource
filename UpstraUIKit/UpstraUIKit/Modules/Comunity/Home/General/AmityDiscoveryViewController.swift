@@ -170,6 +170,22 @@ public class AmityDiscoveryViewController: AmityViewController {
             vc.isHiddenButtonCreate = isHiddenButtonCreate
             return vc
     }
+    
+    public static func makeByTrueIDWithoutTargetId(
+        targetType: AmityPostTargetType,
+        isHiddenButtonCreate: Bool) -> AmityDiscoveryViewController {
+            
+            let vc = AmityDiscoveryViewController(nibName: AmityDiscoveryViewController.identifier, bundle: AmityUIKitManager.bundle)
+            
+            let screenViewModel = AmityDiscoveryScreenViewModel()
+            screenViewModel.setup(
+                postRepository: AmityPostRepository(client: AmityUIKitManagerInternal.shared.client)
+            )
+            vc.screenViewModel = screenViewModel
+            vc.targetType = targetType
+            vc.isHiddenButtonCreate = isHiddenButtonCreate
+            return vc
+    }
 
 }
 
