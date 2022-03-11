@@ -1,0 +1,389 @@
+# This file contains the fastlane.tools configuration
+# You can find the documentation at https://docs.fastlane.tools
+#
+# For a list of all available actions, check out
+#
+#     https://docs.fastlane.tools/actions
+#
+# For a list of all available plugins, check out
+#
+#     https://docs.fastlane.tools/plugins/available-plugins
+#
+
+# Uncomment the line if you want fastlane to automatically update itself
+# update_fastlane
+
+# default_platform(:ios)
+
+# platform :ios do
+#   desc "Push a new release build to the App Store"
+#   lane :release do
+#     increment_build_number(xcodeproj: "AmityUIKit.xcodeproj")
+#     build_app(workspace: "UpstraUIKit.xcworkspace", scheme: "SampleApp")
+#     upload_to_app_store(skip_metadata: true, skip_screenshots: true)
+#   end
+# end
+
+
+# Uncomment the line if you want fastlane to automatically update itself
+# update_fastlane
+fastlane_require 'xcodeproj'
+
+
+default_platform(:ios)
+
+def get_xcode_value(params)
+  info_plist_key = 'INFOPLIST_FILE'
+
+  path = File.expand_path(File.join(ENV['PWD'], params[:xcodeproj]))
+  project = Xcodeproj::Project.open(path)
+
+  # Fetch the build configuration objects
+  configs = project.objects.select { |obj| obj.isa == 'XCBuildConfiguration' && !obj.build_settings[params[:identifier_key]].nil? }
+  raise "Info plist uses $(#{params[:identifier_key]}), but xcodeproj does not".red unless configs.count > 0
+
+  configs = configs.select { |obj| obj.build_settings[info_plist_key] == params[:plist_path] }
+  raise "Xcodeproj doesn't have configuration with info plist #{params[:plist_path]}.".red unless configs.count > 0
+
+  # For each of the build configurations, set app identifier
+  configs.each do |c|
+    return c.build_settings[params[:identifier_key]]
+  end
+end
+
+# plist bundle identifier may be a reference to a value in the xcodeproj,
+# so this utility function provides either the direct or indirect value.
+def get_app_identifier(params)
+  identifier_key = 'PRODUCT_BUNDLE_IDENTIFIER'
+  app_id = get_info_plist_value(key: 'CFBundleIdentifier', path: 'SampleApp/SampleApp/Info.plist') # params[:plist_path])
+
+  if app_id == "$(#{identifier_key})" then
+    return get_xcode_value(
+      xcodeproj: params[:xcodeproj],
+      plist_path: 'SampleApp/Info.plist',
+      identifier_key: identifier_key
+    )
+  end
+
+  return app_id
+end
+
+def get_version_number(params)
+  return get_info_plist_value(key: 'CFBundleShortVersionString', path: 'SampleApp/SampleApp/Info.plist') # params[:plist_path])
+end
+
+def get_build_number(params)
+  return get_info_plist_value(key: 'CFBundleVersion', path: params[:plist_path]) || get_build_number_repository()
+end
+
+def set_version_number(params)
+  if (params.has_key?(:version_number)) then
+    version_number = params[:version_number]
+    set_info_plist_value(
+      key: 'CFBundleShortVersionString',
+      value: version_number,
+      path: 'SampleApp/SampleApp/Info.plist' # params[:plist_path]
+  )
+  end
+end
+
+def set_build_number(params)
+  if (params.has_key?(:build_number)) then
+    build_number = params[:build_number]
+  else
+    build_number = get_build_number_repository()
+  end
+
+  set_info_plist_value(
+    key: 'CFBundleVersion',
+    value: build_number,
+    path: 'SampleApp/SampleApp/Info.plist'# params[:plist_path]
+  )
+end
+
+def eko_upload_to_internal_app_store(params)
+  endpoint = "https://download.ekoapp.com/apps/create-bundle"
+  command = "curl --progress-bar -F file=@#{params[:ipa]} -F platformId=#{params[:app_id]} -F platform=#{params[:platform]} -F key=#{params[:deployment_id]} -F 'description=#{params[:description]}' #{endpoint} -O"
+  puts 'uploading to eko internal app store; this may take a minute...'.blue
+  puts command.blue
+  system command
+  raise "Error uploading to internal app store" unless $? == 0
+  puts 'bundle uploaded to eko internal app store successfully!'.blue
+end
+
+platform :ios do
+  
+  username = ENV["APPLE_DEV_ACCOUNT_ID"] || "developer@ekoapp.com"
+  team_id  = ENV["EKO_SDK_DEVCENTER_TEAM_ID"] || "37Z583JR6K"
+
+  # xcode build settings
+  output_path = ENV["EKO_SDK_BUILD_OUTPUT_PATH"] || "fastlane/build"
+
+  before_all do
+    # TODO:
+  end
+
+  desc "Update build number for EkoChat project and sample app"
+  lane :update_build_number do |options| 
+    # Main Project
+    increment_build_number( 
+      xcodeproj: options[:xcodeproj]
+    )
+
+    # Sample App
+    increment_build_number(
+      xcodeproj: "SampleApp/SampleApp.xcodeproj"
+    )
+  end
+
+  # https://stackoverflow.com/questions/51153525/xcode-10-unable-to-attach-db-error/54021423#54021423
+
+  desc "Builds (but not releases) the EkoChat framework"
+  lane :build_framework do |options|
+    # https://github.com/fastlane/fastlane/issues/990
+    # Run this script from project root folder instead
+    sh "cd .. && #{ENV['PWD']}/bin/release_frameworks.sh"
+  end
+
+  desc "Runs the framework tests"
+  lane :test_framework do |options|
+    # TODO:
+    # scan(
+    #   project: options[:project] || "EkoChat.xcodeproj",
+    #   scheme: options[:scheme] || "EkoChatTests"
+    # )
+  end
+
+  desc "Initializes app on apple developer center"
+  lane :devcenter do |options|
+    puts "==== devcenter ===="
+    xcodeproj = options[:xcodeproj] || "SampleApp/SampleApp.xcodeproj"
+    plist_path = options[:plist_path] || "SampleApp/SampleApp/Info.plist"
+
+    app_id = get_app_identifier(plist_path: plist_path, xcodeproj: xcodeproj)
+    app_name = get_info_plist_value(key: "CFBundleDisplayName", path: plist_path) ||
+               get_info_plist_value(key: "CFBundleName", path: plist_path)
+    app_version = get_version_number(plist_path: plist_path)
+
+    raise "missing app_id" unless app_id
+    raise "missing app_name" unless app_name
+    raise "missing app_version" unless app_version
+
+    # create new app in apple dev center
+    produce(
+      username: username,
+      team_id: team_id,
+      app_identifier: app_id,
+      app_name: app_name,
+      app_version: app_version,
+      sku: app_id,
+      language: 'English',
+      skip_itc: true
+      #enable_services: {
+      #  icloud: "cloudkit",
+      #  push_notification: "on"
+      # }
+    )
+
+    # Generate icloud container entitlement
+    # icloud_app_id = "iCloud.#{app_id}"
+    # sh "bundle exec fastlane produce cloud_container -u #{username} -b #{team_id} -g #{icloud_app_id} -n \"Default iCloud Container\""
+    # sh "bundle exec fastlane produce associate_cloud_container -u #{username} -b #{team_id} -a #{app_id} #{icloud_app_id}"
+  end
+
+  desc "Builds Enterprise Sample App and ensure all the cert and provisioning are available"
+  lane :build_sample_app do |options|
+    xcodeproj = options[:xcodeproj] || "SampleApp/SampleApp.xcodeproj"
+    scheme = options[:scheme] || "SampleApp"
+    configuration = options[:configuration] || "Release"
+    plist_path = options[:plist_path] || "SampleApp/Info.plist"
+
+    devcenter(options)
+
+    app_id = get_app_identifier(plist_path: plist_path, xcodeproj: xcodeproj)
+
+    # magically reuse certificates and provisioning profiles across dev machines
+    match(
+      username: username,
+      team_id: team_id,
+      git_url: "https://github.com/EkoCommunications/ios-certificates", #"https://github.com/EkoCommunications/ios-certificates",
+      type: "enterprise",
+      app_identifier: app_id,
+      shallow_clone: true,
+      force: false,
+      readonly: false
+    )
+
+    puts "======== here ======"
+    # disable_automatic_code_signing(path: xcodeproj)
+    gym(
+      export_method: "enterprise",
+      workspace: "UpstraUIKit.xcworkspace", 
+      clean: true,
+      silent: true,
+      # project: xcodeproj,
+      scheme: scheme,
+      configuration: configuration,
+      output_directory: output_path,
+      output_name: "SampleApp",
+      build_path: output_path,
+      buildlog_path: output_path,
+      derived_data_path: output_path,
+      export_team_id: team_id,
+      include_symbols: true
+    )
+    # enable_automatic_code_signing(path: xcodeproj)
+  end
+
+  # desc "Does a clean build and saves the output file in the desktop"
+  # lane :release_framework do |options|
+  #   build_framework
+
+  #   plist_path = options[:plist_path] || "EkoChat/Info.plist"
+  #   version = get_info_plist_value(key: 'CFBundleShortVersionString', path: plist_path)
+  #   build_number = get_info_plist_value(key: 'CFBundleVersion', path: plist_path)
+
+  #   filename = "ekochat-#{version}-(#{build_number}).zip"
+  #   path = "#{ENV['PWD']}/#{filename}"
+
+  #   sh "cd .. && #{ENV['PWD']}/scripts/upload.sh #{path} #{version}"
+  #   sh 'rm #{path}'
+  # end
+
+
+  # desc "Uploads provided framework zip to aws s3"
+  # lane :upload_framework do |options|
+
+  #   # .zip file to upload
+  #   filename = options[:file_name]
+
+  #   # Read current version string
+  #   plist_path = options[:plist_path] || "EkoChat/Info.plist"
+  #   version = get_info_plist_value(key: 'CFBundleShortVersionString', path: plist_path)
+
+  #   sh "bash #{ENV['PWD']}/scripts/upload.sh #{filename} #{version}"
+  # end
+
+  # Options:
+  # deployment_id: <id>  
+  # This id will override the deployment id set in .env.default file
+  #
+  # notify: true | false
+  lane :release_sample_app do |options|
+    xcodeproj = options[:xcodeproj] || "SampleApp/SampleApp.xcodeproj"
+    sdk_plist_path = options[:sdk_plist_path] || "UpstraUIKit/Info.plist"
+    plist_path = options[:plist_path] || "SampleApp/Info.plist"
+
+    app_id = get_app_identifier(plist_path: plist_path, xcodeproj: xcodeproj)
+    app_deployment_id = options[:deployment_id] || ENV["SAMPLE_APP_DEPLOYMENT_ID"]
+    app_api_key = ENV["SAMPLE_APP_API_KEY"]
+
+    # Set version number same as sdk
+    sdk_version = get_version_number(plist_path: sdk_plist_path)
+    puts "-> version: #(sdk_version)"
+    # increment_version_number(
+    #   version_number: sdk_version,
+    #   xcodeproj: xcodeproj
+    # )
+
+    # Update api key in sample app
+    # set_info_plist_value(
+    #   key: 'EKOChatAPIKey',
+    #   value: app_api_key,
+    #   path: 'SampleApp/SampleApp/Info.plist'
+    # )
+
+    # Get commit has to be used in description for internal store
+    commit = last_git_commit
+    commit_hash = commit[:abbreviated_commit_hash]
+
+    # Build this sample app
+    build_sample_app(options)
+
+    # Create description
+    build_description = "Build: " + commit_hash
+
+    # Upload
+    eko_upload_to_internal_app_store(
+      platform: 'ios',
+      app_id: app_id,
+      ipa: File.expand_path(File.join(ENV['PWD'], output_path, "SampleApp.ipa")),
+      deployment_id: app_deployment_id,
+      description: build_description
+    )
+
+    # Notify
+    notify_message = "🚀 iOS SDK Sample app deployed \n #{build_description} \n Download Link: https://download.ekoapp.com/apps/#{app_deployment_id}"
+    if options[:notify] == true
+      notify_bot(message: notify_message)
+    end
+
+    # Reset info plist value
+    # set_info_plist_value(
+    #   key: 'EKOChatAPIKey',
+    #   value: "insert-your-key-here",
+    #   path: 'SampleApp/SampleApp/Info.plist'
+    # )
+
+  end
+
+  # Options:
+  #
+  # gid: Group Id
+  # tid: Thread Id
+  lane :notify_bot do |options|
+
+    gid = options[:gid] || ENV["SAMPLE_APP_BOT_GROUP_ID"]
+    tid = options[:tid] || ENV["SAMPLE_APP_BOT_THREAD_ID"]
+    message = options[:message] || ENV["SAMPLE_APP_BOT_MESSAGE"]
+
+    uri = URI.parse("https://ekogreen-h1.ekoapp.com/bot/v1/group/message")
+    request = Net::HTTP::Post.new(uri)
+    request["Authorization"] = "Bearer #{ENV['BOT_AUTH_TOKEN']}"
+    request.content_type = "application/json"
+    request.body = JSON.dump({
+      "gid" => gid,
+      "tid" => tid,
+      "message" => {
+        "type" => "text",
+        "data" => message
+      }
+    })
+    req_options = {
+      use_ssl: uri.scheme == "https",
+    }
+    puts "Notifying bot..."
+    response = Net::HTTP.start(uri.hostname, uri.port, req_options) do |http|
+      http.request(request)
+    end
+    puts response.message
+    puts "Finish notify bot"
+
+  end
+
+  desc "force cleans repo -- warning: this will remove all local changes so be careful with it!"
+  lane :clean do
+    clean_build_artifacts
+    reset_git_repo(force: true)
+  end
+
+  desc "cleans up temporary build artifacts and reverts build-specific changes to the repo"
+  private_lane :cleanup do
+    clean = Actions.lane_context[SharedValues::GIT_REPO_WAS_CLEAN_ON_START]
+
+    clean_build_artifacts
+
+    if clean then
+      reset_git_repo(force: true)
+    end
+  end
+
+  after_all do |lane|
+    # This block is called, only if the executed lane was successful
+    cleanup
+  end
+
+  error do |lane, exception|
+    # TODO
+  end
+end
