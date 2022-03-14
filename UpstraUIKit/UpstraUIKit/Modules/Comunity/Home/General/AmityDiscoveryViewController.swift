@@ -202,29 +202,24 @@ extension AmityDiscoveryViewController: UICollectionViewDataSource {
     
     public func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
-//        let item = screenViewModel.dataSource.item(at: indexPath)
-//
-//        switch item {
-//        case .segmentedControl:
-//            return (collectionView.dequeueReusableCell(for: indexPath) as PostGallerySegmentedControlCell)
-//        case .post:
-//            return (collectionView.dequeueReusableCell(for: indexPath) as PostGalleryItemCell)
-//        case .fakePost:
-//            return (collectionView.dequeueReusableCell(for: indexPath) as PostGalleryFakeItemCell)
-//        case .empty:
-//            return (collectionView.dequeueReusableCell(for: indexPath) as PostGalleryEmptyStateCell)
-//        }
-        
         return (collectionView.dequeueReusableCell(for: indexPath) as PostGalleryItemCell)
         
     }
+    
+    
     
 }
 
 extension AmityDiscoveryViewController {
     
     public func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        AmityEventHandler.shared.galleryDidScroll(scrollView)
+        
+        let height = scrollView.frame.size.height
+        let contentYoffset = scrollView.contentOffset.y
+        let distanceFromBottom = scrollView.contentSize.height - contentYoffset
+        if distanceFromBottom < height {
+            screenViewModel.action.loadMore()
+        }
     }
     
 }
@@ -242,57 +237,9 @@ extension AmityDiscoveryViewController: UICollectionViewDelegateFlowLayout {
         let itemCell = cell as! PostGalleryItemCell
         itemCell.configure(withDisModel: discoveryItem)
         
-//        let item = screenViewModel.dataSource.item(at: indexPath)
-//
-//        switch item {
-//        case .segmentedControl:
-//            let segmenteControlCell = cell as! PostGallerySegmentedControlCell
-//            segmenteControlCell.setSelectedSection(currentSection, animated: false)
-//            segmenteControlCell.delegate = self
-//        case .post(let postObject):
-//            let itemCell = cell as! PostGalleryItemCell
-//            itemCell.configure(with: postObject)
-//        case .fakePost:
-//            return
-//        case .empty:
-//            // Note: The view model just tell that the datasource is empty.
-//            // The view controller determine which type is currently empty from `currentSection`.
-//            let emptyStateCell = cell as! PostGalleryEmptyStateCell
-//            switch currentSection {
-//            case .image:
-//                emptyStateCell.configure(image: UIImage(named: "empty_post_gallery_image", in: AmityUIKitManager.bundle, compatibleWith: nil), text: "No photo yet")
-//            case .video:
-//                emptyStateCell.configure(image: UIImage(named: "empty_post_gallery_video", in: AmityUIKitManager.bundle, compatibleWith: nil), text: "No video yet")
-//            case .livestream:
-//                emptyStateCell.configure(image: UIImage(named: "empty_post_gallery_video", in: AmityUIKitManager.bundle, compatibleWith: nil), text: "No livestream yet")
-//            case .none:
-//                assertionFailure("currentSection must already have a value at this point.")
-//            }
-//        }
-        
     }
     
     public func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        
-//        let item = screenViewModel.dataSource.item(at: indexPath)
-//
-//        switch item {
-//        case .segmentedControl:
-//            return CGSize(
-//                width: collectionView.bounds.size.width,
-//                height: PostGallerySegmentedControlCell.height
-//            )
-//        case .post, .fakePost:
-//            // We calculate cell width based on available space to fit the cell.
-//            let availableWidth = collectionView.bounds.width - C.postInterimSpace
-//            // We divide by half, because we show post cell two items each row.
-//            let cellWidth = availableWidth * 0.5
-//            // We maintain recntangle ratio.
-//            let cellHeight = cellWidth
-//            return CGSize(width: cellWidth, height: cellHeight)
-//        case .empty:
-//            return CGSize(width: collectionView.bounds.width, height: PostGalleryEmptyStateCell.height)
-//        }
         
         // We calculate cell width based on available space to fit the cell.
         let availableWidth = collectionView.bounds.width - C.postInterimSpace
@@ -301,7 +248,6 @@ extension AmityDiscoveryViewController: UICollectionViewDelegateFlowLayout {
         // We maintain recntangle ratio.
         let cellHeight = cellWidth
         return CGSize(width: cellWidth, height: cellHeight)
-        
     }
     
     public func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
@@ -322,82 +268,14 @@ extension AmityDiscoveryViewController: UICollectionViewDelegateFlowLayout {
         
         collectionView.deselectItem(at: indexPath, animated: true)
         
-//        let item = screenViewModel.dataSource.item(at: indexPath)
-        
         AmityEventHandler.shared.postDidtap(from: self, postId: currentDiscoveryItem.parentPostId)
-//        switch item {
-//        case .post(let postObject):
-//            switch postObject.dataType {
-//            case "video":
-////                if let originalVideo = postObject.getVideoInfo(for: .original),
-////                   let url = URL(string: originalVideo.fileURL ) {
-////                    presentVideoPlayer(at: url)
-////                } else {
-////                    print("unable to find video url for post: \(postObject.postId)")
-////                }
-//                AmityEventHandler.shared.postDidtap(from: self, postId: postObject.parentPostId ?? "")
-//            case "image":
-////                if let imageInfo = postObject.getImageInfo() {
-////                    let placeholder = AmityColorSet.base.blend(.shade4).asImage()
-////                    let itemCell = collectionView.cellForItem(at: indexPath) as! PostGalleryItemCell
-////                    let state = AmityMediaState.downloadableImage(fileURL: imageInfo.fileURL, placeholder: placeholder)
-////                    let media = AmityMedia(state: state, type: .image)
-////                    presentPhotoViewer(
-////                        referenceView: itemCell.imageView,
-////                        media: media
-////                    )
-////                } else {
-////                    print("unable to find image url for post: \(postObject.postId)")
-////                }
-//                AmityEventHandler.shared.postDidtap(from: self, postId: postObject.parentPostId ?? "")
-//            case "liveStream":
-//                guard let stream = postObject.getLiveStreamInfo() else {
-//                    print("unable to find stream for post: \(postObject.postId)")
-//                    return
-//                }
-//                guard !stream.isDeleted else {
-//                    return
-//                }
-//                switch stream.status {
-//                case .recorded:
-//                    AmityEventHandler.shared.openRecordedLiveStreamPlayer(
-//                        from: self,
-//                        postId: postObject.postId,
-//                        streamId: stream.streamId,
-//                        recordedData: stream.recordingData
-//                    )
-//                case .live:
-//                    AmityEventHandler.shared.openLiveStreamPlayer(
-//                        from: self,
-//                        postId: postObject.postId,
-//                        streamId: stream.streamId
-//                    )
-//                case .ended, .idle:
-//                    break
-//                @unknown default:
-//                    break
-//                }
-//            default:
-//                assertionFailure("Not implement")
-//                break
-//            }
-//        default:
-//            break
-//        }
         
     }
     
     public func collectionView(_ collectionView: UICollectionView, shouldSelectItemAt indexPath: IndexPath) -> Bool {
-//        let item = screenViewModel.dataSource.item(at: indexPath)
-//        switch item {
-//        case .post:
-//            return true
-//        default:
-//            return false
-//        }
+
         return true
     }
-    
 }
 
 extension AmityDiscoveryViewController: AmityDiscoveryScreenViewModelDelegate {

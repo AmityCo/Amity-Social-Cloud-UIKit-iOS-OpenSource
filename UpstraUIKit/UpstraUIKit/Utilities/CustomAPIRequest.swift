@@ -10,8 +10,8 @@ import UIKit
 import Foundation
 
 final class customAPIRequest {
-    static func getDiscoveryData(completion: @escaping(_ discoveryArray: [DiscoveryDataModel]) -> () ) {
-        let url = URL(string: "https://qojeq6vaa8.execute-api.ap-southeast-1.amazonaws.com/media")!
+    static func getDiscoveryData(page_number: Int, completion: @escaping(_ discoveryArray: [DiscoveryDataModel]) -> () ) {
+        let url = URL(string: "https://qojeq6vaa8.execute-api.ap-southeast-1.amazonaws.com/media?page=\(page_number)")!
         
         var tempDiscoveryData: [DiscoveryDataModel] = []
         

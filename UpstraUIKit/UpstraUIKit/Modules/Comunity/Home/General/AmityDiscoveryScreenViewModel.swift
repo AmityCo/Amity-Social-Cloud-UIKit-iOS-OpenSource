@@ -33,6 +33,7 @@ class AmityDiscoveryScreenViewModel {
     
     private var posts: AmityCollection<AmityPost>?
     private var token: AmityNotificationToken?
+    private var paginateNumber: Int = 1
     
     func setup(postRepository: AmityPostRepository) {
         self.postRepository = postRepository
@@ -84,9 +85,12 @@ class AmityDiscoveryScreenViewModel {
     }
     
     func getDiscoveryItem(){
-        customAPIRequest.getDiscoveryData() { discoveryArray in
-            self.discoveryItems = discoveryArray.shuffled()
+        AmityHUD.show(.loading)
+        customAPIRequest.getDiscoveryData(page_number: paginateNumber) { discoveryArray in
+            let shuffleDiscoveryArray = discoveryArray.shuffled()
+            self.discoveryItems.append(contentsOf: shuffleDiscoveryArray)
             DispatchQueue.main.async {
+                AmityHUD.hide()
                 self.delegate?.screenViewModelDidUpdateDataSource(self)
             }
         }
@@ -113,7 +117,16 @@ extension AmityDiscoveryScreenViewModel: AmityDiscoveryScreenViewModelAction {
     }
     
     func loadMore() {
-        posts?.nextPage()
+        AmityHUD.show(.loading)
+        paginateNumber += 1
+        customAPIRequest.getDiscoveryData(page_number: paginateNumber) { discoveryArray in
+            let shuffleDiscoveryArray = discoveryArray.shuffled()
+            self.discoveryItems.append(contentsOf: shuffleDiscoveryArray)
+            DispatchQueue.main.async {
+                AmityHUD.hide()
+                self.delegate?.screenViewModelDidUpdateDataSource(self)
+            }
+        }
     }
     
 }
