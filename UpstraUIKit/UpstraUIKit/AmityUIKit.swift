@@ -267,8 +267,10 @@ final class AmityUIKitManagerInternal: NSObject {
                         authToken: String?,
                         completion: AmityRequestCompletion?) {
         
-        client.login(userId: userId, displayName: displayName, authToken: authToken, completion: completion)
-        didUpdateClient()
+        client.login(userId: userId, displayName: displayName, authToken: authToken) { [weak self] status, error in
+            self?.didUpdateClient()
+            completion?(status, error)
+        }
     }
     
     func unregisterDevice() {

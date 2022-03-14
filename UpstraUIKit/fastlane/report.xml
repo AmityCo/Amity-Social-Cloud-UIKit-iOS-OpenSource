@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites>
+  <testsuite name="fastlane.lanes">
+    
+    
+    
+      
+      <testcase classname="fastlane.lanes" name="00: default_platform" time="0.000623">
+        
+      </testcase>
+    
+      
+      <testcase classname="fastlane.lanes" name="01: get_info_plist_value" time="0.002419">
+        
+      </testcase>
+    
+      
+      <testcase classname="fastlane.lanes" name="02: get_info_plist_value" time="0.002044">
+        
+      </testcase>
+    
+      
+      <testcase classname="fastlane.lanes" name="03: last_git_commit" time="0.113652">
+        
+      </testcase>
+    
+      
+      <testcase classname="fastlane.lanes" name="04: Switch to ios build_sample_app lane" time="0.000336">
+        
+      </testcase>
+    
+      
+      <testcase classname="fastlane.lanes" name="05: Switch to ios devcenter lane" time="0.003336">
+        
+      </testcase>
+    
+      
+      <testcase classname="fastlane.lanes" name="06: get_info_plist_value" time="0.018717">
+        
+      </testcase>
+    
+      
+      <testcase classname="fastlane.lanes" name="07: get_info_plist_value" time="0.00302">
+        
+      </testcase>
+    
+      
+      <testcase classname="fastlane.lanes" name="08: get_info_plist_value" time="0.002788">
+        
+      </testcase>
+    
+      
+      <testcase classname="fastlane.lanes" name="09: get_info_plist_value" time="0.002895">
+        
+      </testcase>
+    
+      
+      <testcase classname="fastlane.lanes" name="10: produce" time="5.932073">
+        
+      </testcase>
+    
+      
+      <testcase classname="fastlane.lanes" name="11: get_info_plist_value" time="0.002827">
+        
+      </testcase>
+    
+      
+      <testcase classname="fastlane.lanes" name="12: match" time="10.08352">
+        
+      </testcase>
+    
+      
+      <testcase classname="fastlane.lanes" name="13: gym" time="570.109711">
+        
+      </testcase>
+    
+      
+      <testcase classname="fastlane.lanes" name="14: Switch to ios cleanup lane" time="0.002706">
+        
+      </testcase>
+    
+      
+      <testcase classname="fastlane.lanes" name="15: clean_build_artifacts" time="0.005127">
+        
+      </testcase>
+    
+  </testsuite>
+</testsuites>

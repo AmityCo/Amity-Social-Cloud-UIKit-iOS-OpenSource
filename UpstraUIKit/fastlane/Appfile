@@ -1,0 +1,8 @@
+# app_identifier("com.ekoapp.sample") # The bundle identifier of your app
+# apple_id("nontapat@amity.co") # Your Apple email address
+
+# itc_team_id("119603169") # App Store Connect Team ID
+# team_id("37Z583JR6K") # Developer Portal Team ID
+
+# For more information about the Appfile, see:
+#     https://docs.fastlane.tools/advanced/#appfile
