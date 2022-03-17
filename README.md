@@ -40,6 +40,18 @@ Please note that every view model in this project will be named as **screen view
 
 <br />
 
+## Installation
+All AmityUIKit's dependencies are setup to this project. Before building framework or running sample app, please run the following command.
+```
+git lfs fetch
+```
+Then, run the following command.
+```
+git lfs pull
+```
+
+<br />
+
 ## Building framework
 AmityUIKit supports building xcframework which can be used on any Xcode version. Please follow this instruction for building.
 1. In terminal, go to project directory
