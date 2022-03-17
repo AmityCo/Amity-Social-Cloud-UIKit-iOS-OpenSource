@@ -21,9 +21,7 @@ public class AmityCommunityHomePageViewController: AmityPageViewController {
     // MARK: - Properties
     public let newsFeedVC = AmityNewsfeedViewController.make()
     public let exploreVC = AmityCommunityExplorerViewController.make()
-//    public let discoveryVC = AmityDiscoveryViewController.makeByTrueID(targetType: .community, targetId: "56701fa0443c1e92b43d89961fdc0cd4", isHiddenButtonCreate: true)
     public let discoveryVC = AmityDiscoveryViewController.makeByTrueIDWithoutTargetId(targetType: .community, isHiddenButtonCreate: true)
-//    public let discoveryVC = AmityDiscoveryViewController.makeByTrueID(targetType: .community, targetId: "875fd7b78a63bba3d5b0ec828dce6149", isHiddenButtonCreate: true)
     
     private var screenViewModel: AmityCommunityHomePageScreenViewModelType
     private var initialized: Bool = false
@@ -69,7 +67,6 @@ public class AmityCommunityHomePageViewController: AmityPageViewController {
         exploreVC.pageTitle = AmityLocalizedStringSet.exploreTitle.localizedString
         discoveryVC.pageTitle = AmityLocalizedStringSet.discoveryTitle.localizedString
         return [newsFeedVC, exploreVC, discoveryVC]
-//        return [newsFeedVC, exploreVC]
     }
     
     // MARK: - Setup view
@@ -79,20 +76,12 @@ public class AmityCommunityHomePageViewController: AmityPageViewController {
         let searchItem = UIBarButtonItem(image: AmityIconSet.iconSearch, style: .plain, target: self, action: #selector(searchTap))
         searchItem.tintColor = AmityColorSet.base
         
-//        let chatItem = UIBarButtonItem(image: AmityIconSet.iconChatInCommunity, style: .plain, target: self, action: #selector(chatTap))
-//        chatItem.tintColor = AmityColorSet.base
-        
         let chatIconView = UIButton(type: .custom)
         chatIconView.frame = CGRect(x: 0, y: 0, width: 24, height: 24)
         chatIconView.setBackgroundImage(AmityIconSet.iconChatInCommunity, for: .normal)
         chatIconView.contentMode = .scaleAspectFit
-//        chatIconView.setImage(AmityIconSet.iconChatInCommunity, for: .normal)
-//        chatIconView.imageView?.contentMode = .scaleAspectFit
         chatIconView.addTarget(self, action: #selector(chatTap), for: .touchUpInside)
         let chatItem = UIBarButtonItem(customView: chatIconView)
-        
-//        let _ = chatItem.customView?.widthAnchor.constraint(equalToConstant: 24).isActive = true
-//        let _ = chatItem.customView?.heightAnchor.constraint(equalToConstant: 24).isActive = true
         
         navigationItem.rightBarButtonItems = [searchItem, chatItem]
         

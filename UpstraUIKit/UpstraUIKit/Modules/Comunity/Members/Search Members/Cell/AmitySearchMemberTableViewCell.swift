@@ -58,7 +58,14 @@ final class AmitySearchMemberTableViewCell: UITableViewCell, Nibbable {
     }
     
     func display(with user: AmityUserModel) {
-        avatarView.setImage(withImageURL: user.avatarURL, placeholder: AmityIconSet.defaultAvatar)
+//        avatarView.setImage(withImageURL: user.avatarURL, placeholder: AmityIconSet.defaultAvatar)
+        if !user.avatarCustomURL.isEmpty {
+            avatarView.setImage(withCustomURL: user.avatarCustomURL,
+                                         placeholder: AmityIconSet.defaultAvatar)
+        } else {
+            avatarView.setImage(withImageURL: user.avatarURL,
+                                         placeholder: AmityIconSet.defaultAvatar)
+        }
         displayNameLabel.text = user.displayName
         
         if user.isGlobalBan {

@@ -76,8 +76,13 @@ extension AmityMessageListHeaderView {
                     guard let weakSelf = self else { return }
                     if let userObject = user.object {
                         let userModel = AmityUserModel(user: userObject)
-                        weakSelf.avatarView.setImage(withImageURL: userModel.avatarURL,
-                                                     placeholder: AmityIconSet.defaultAvatar)
+                        if !userModel.avatarCustomURL.isEmpty {
+                            weakSelf.avatarView.setImage(withCustomURL: userModel.avatarCustomURL,
+                                                         placeholder: AmityIconSet.defaultAvatar)
+                        } else {
+                            weakSelf.avatarView.setImage(withImageURL: userModel.avatarURL,
+                                                         placeholder: AmityIconSet.defaultAvatar)
+                        }
                         weakSelf.displayNameLabel.text = userObject.displayName
                     }
                     

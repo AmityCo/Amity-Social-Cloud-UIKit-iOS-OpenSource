@@ -282,7 +282,6 @@ private extension AmityRecentChatScreenViewModel {
             
         var currentChannekModel = channelModel
         let recentMessage = channelModel.metadata["latestMessageNonBlock"] as? [[String:Any]] ?? []
-        print(recentMessage)
         //If no message yet
         if recentMessage.isEmpty {
             completion(currentChannekModel, index)
