@@ -36,7 +36,15 @@ public final class AmityPostHeaderTableViewCell: UITableViewCell, Nibbable, Amit
     
     public func display(post: AmityPostModel) {
         self.post = post
-        avatarView.setImage(withImageURL: post.postedUser?.avatarURL, placeholder: AmityIconSet.defaultAvatar)
+//        avatarView.setImage(withImageURL: post.postedUser?.avatarURL, placeholder: AmityIconSet.defaultAvatar)
+        
+        if !( (post.postedUser?.customAvatarURL ?? "").isEmpty) {
+            avatarView.setImage(withCustomURL: post.postedUser?.customAvatarURL,
+                                         placeholder: AmityIconSet.defaultAvatar)
+        } else {
+            avatarView.setImage(withImageURL: post.postedUser?.avatarURL,
+                                         placeholder: AmityIconSet.defaultAvatar)
+        }
         avatarView.actionHandler = { [weak self] in
             self?.avatarTap()
         }

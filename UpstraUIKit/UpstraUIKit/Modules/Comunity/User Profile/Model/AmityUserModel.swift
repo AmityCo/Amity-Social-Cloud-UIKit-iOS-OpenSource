@@ -13,6 +13,7 @@ struct AmityUserModel {
     let userId: String
     let displayName: String
     let avatarURL: String
+    let avatarCustomURL: String
     let about: String
     let isGlobalBan: Bool
     
@@ -20,6 +21,7 @@ struct AmityUserModel {
         userId = user.userId
         displayName = user.displayName ?? AmityLocalizedStringSet.General.anonymous.localizedString
         avatarURL = user.getAvatarInfo()?.fileURL ?? ""
+        avatarCustomURL = user.avatarCustomUrl ?? ""
         about = user.userDescription
         isGlobalBan = user.isGlobalBan
     }

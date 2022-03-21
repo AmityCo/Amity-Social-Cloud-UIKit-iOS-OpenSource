@@ -67,11 +67,13 @@ extension AmityPostModel {
     
     public class Author {
         public let avatarURL: String?
+        public let customAvatarURL: String?
         public let displayName: String?
         public let isGlobalBan: Bool
         
-        public init( avatarURL: String?, displayName: String?, isGlobalBan: Bool) {
+        public init( avatarURL: String?, customAvatarURL: String?, displayName: String?, isGlobalBan: Bool) {
             self.avatarURL = avatarURL
+            self.customAvatarURL = customAvatarURL
             self.displayName = displayName
             self.isGlobalBan = isGlobalBan
         }
@@ -303,6 +305,7 @@ public class AmityPostModel {
         parentPostId = post.parentPostId
         postedUser = Author(
             avatarURL: post.postedUser?.getAvatarInfo()?.fileURL,
+            customAvatarURL: post.postedUser?.avatarCustomUrl,
             displayName: post.postedUser?.displayName ?? AmityLocalizedStringSet.General.anonymous.localizedString, isGlobalBan: post.postedUser?.isGlobalBan ?? false)
         subtitle = post.isEdited ? String.localizedStringWithFormat(AmityLocalizedStringSet.PostDetail.postDetailCommentEdit.localizedString, post.createdAt.relativeTime) : post.createdAt.relativeTime
         postedUserId = post.postedUserId

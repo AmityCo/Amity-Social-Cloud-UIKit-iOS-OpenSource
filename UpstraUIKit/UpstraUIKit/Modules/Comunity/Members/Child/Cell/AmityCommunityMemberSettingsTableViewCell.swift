@@ -52,7 +52,17 @@ final class AmityCommunityMemberSettingsTableViewCell: UITableViewCell, Nibbable
         let displayName = model.displayName
         displayNameLabel.text = displayName
         optionButton.isHidden = model.isCurrentUser || !isJoined
-        avatarView.setImage(withImageURL: model.avatarURL, placeholder: AmityIconSet.defaultAvatar)
+        if let userFromMembership = model.user {
+            let userModel = AmityUserModel(user: userFromMembership)
+            if !(userModel.avatarCustomURL.isEmpty) {
+                avatarView.setImage(withCustomURL: userModel.avatarCustomURL,
+                                             placeholder: AmityIconSet.defaultAvatar)
+            } else {
+                avatarView.setImage(withImageURL: userModel.avatarURL,
+                                             placeholder: AmityIconSet.defaultAvatar)
+            }
+        }
+        
         
         if model.isGlobalBan {
             bannedImageView.isHidden = false

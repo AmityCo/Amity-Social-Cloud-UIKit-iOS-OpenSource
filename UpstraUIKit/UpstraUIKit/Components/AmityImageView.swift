@@ -35,9 +35,11 @@ public class AmityImageView: AmityView {
         get {
             return imageView.image
         } set {
-            imageView.image = newValue
-            placeHolderImageView.isHidden = image != nil
-            overlayView.isHidden = true
+            DispatchQueue.main.async {
+                self.imageView.image = newValue
+                self.placeHolderImageView.isHidden = self.image != nil
+                self.overlayView.isHidden = true
+            }
         }
     }
     
@@ -124,8 +126,8 @@ public class AmityImageView: AmityView {
         session = UUID().uuidString
 
         guard let imageURL = imageURL, !imageURL.isEmpty else { return }
-        let _session = session
-
+                let _session = session
+        
         // Wrap our request in a work item
         AmityUIKitManagerInternal.shared.fileService.loadImage(imageURL: imageURL, size: size) { [weak self] result in
             switch result {
@@ -135,6 +137,34 @@ public class AmityImageView: AmityView {
                     // Cell has already dequeue.
                     return
                 }
+                self?.image = image
+                completion?()
+            case .failure:
+                self?.image = nil
+                break
+            }
+        }
+    }
+    
+    public func setImage(withCustomURL imageURL: String?,
+                         size: AmityMediaSize = .small,
+                         placeholder: UIImage? = AmityIconSet.defaultAvatar,
+                         completion: (() -> Void)? = nil) {
+        image = nil
+        self.placeholder = placeholder
+        session = UUID().uuidString
+
+        guard let imageURL = imageURL, !imageURL.isEmpty else { return }
+        let _session = session
+        
+        CustomAvatarImageLoader.shared.loadImage(from: imageURL) { [weak self] result in
+            guard self?.session == _session else {
+                // Cell has already dequeue.
+                return
+            }
+            
+            switch result {
+            case .success(let image):
                 self?.image = image
                 completion?()
             case .failure:

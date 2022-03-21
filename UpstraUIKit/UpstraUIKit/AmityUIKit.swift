@@ -302,6 +302,7 @@ final class AmityUIKitManagerInternal: NSObject {
 extension AmityUIKitManagerInternal: AmityClientErrorDelegate {
     
     func didReceiveAsyncError(_ error: Error) {
-        AmityHUD.show(.error(message: error.localizedDescription))
+//        AmityHUD.show(.error(message: error.localizedDescription))
+        print("Error: \(error.localizedDescription)")
     }
 }
