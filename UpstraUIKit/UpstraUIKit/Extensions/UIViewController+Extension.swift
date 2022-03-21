@@ -49,6 +49,7 @@ extension UIViewController {
         let player = AVPlayer(url: url)
         let playerViewController = AVPlayerViewController()
         playerViewController.player = player
+        playerViewController.allowsPictureInPicturePlayback = false
         present(playerViewController, animated: true) { [weak player] in
             player?.play()
         }
