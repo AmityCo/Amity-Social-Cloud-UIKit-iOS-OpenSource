@@ -24,8 +24,13 @@ public class CustomAvatarImageLoader {
             return
         }
         
+        guard let _imageURL = imageURL else {
+            completion?(.failure(AmityError.unknown))
+            return
+        }
+        
         DispatchQueue.global().async { [weak self] in
-            if let data = try? Data(contentsOf: imageURL!),
+            if let data = try? Data(contentsOf: _imageURL),
                let image = UIImage(data: data) {
                 self?.cache.setObject(image, forKey: cacheKey)
                 print("Load custom url avatar success.")
