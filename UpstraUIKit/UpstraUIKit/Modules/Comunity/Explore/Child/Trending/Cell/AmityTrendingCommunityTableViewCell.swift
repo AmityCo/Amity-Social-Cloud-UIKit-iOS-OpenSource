@@ -82,7 +82,8 @@ final class AmityTrendingCommunityTableViewCell: UITableViewCell, Nibbable {
         if item.isJoined {
             delegate?.didLeave(with: item)
         } else {
-            AmityEventHandler.shared.communityJoinButtonTracking(screenName: ScreenName.explore.rawValue)
+            let commuExternal = AmityCommunityModelExternal(object: item)
+            AmityEventHandler.shared.communityJoinButtonTracking(screenName: ScreenName.explore.rawValue, communityModel: commuExternal)
             delegate?.didJoin(with: item)
         }
     }

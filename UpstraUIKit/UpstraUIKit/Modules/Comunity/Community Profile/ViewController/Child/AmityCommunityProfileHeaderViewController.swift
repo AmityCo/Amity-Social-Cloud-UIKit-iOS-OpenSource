@@ -264,7 +264,9 @@ private extension AmityCommunityProfileHeaderViewController {
         switch screenViewModel.dataSource.memberStatusCommunity {
         case .guest:
             AmityHUD.show(.loading)
-            AmityEventHandler.shared.communityJoinButtonTracking(screenName: ScreenName.communityProfile.rawValue)
+            guard let commuModel = (screenViewModel.dataSource.community) else { return }
+            let commuModelExternal = AmityCommunityModelExternal(object: commuModel)
+            AmityEventHandler.shared.communityJoinButtonTracking(screenName: ScreenName.communityProfile.rawValue, communityModel: commuModelExternal)
             screenViewModel.action.joinCommunity()
         case .member:
             break

@@ -142,7 +142,8 @@ private extension AmityCategoryCommunityListViewController {
             if community.isJoined {
                 self.screenViewModel.action.leave(community: community)
             } else {
-                AmityEventHandler.shared.communityJoinButtonTracking(screenName: ScreenName.communityListing.rawValue)
+                let communityExternalModel = AmityCommunityModelExternal(object: community)
+                AmityEventHandler.shared.communityJoinButtonTracking(screenName: ScreenName.communityListing.rawValue, communityModel: communityExternalModel)
                 self.screenViewModel.action.join(community: community)
             }
         }

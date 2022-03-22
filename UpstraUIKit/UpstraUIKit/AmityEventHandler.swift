@@ -263,6 +263,7 @@ open class AmityEventHandler {
     open func communityExploreButtonTracking() {}
     open func communityMyCommunitySectionTracking() {}
     open func communityCreatePostButtonTracking(screenName: String) {}
+    open func communityJoinButtonTracking(screenName: String, communityModel: AmityCommunityModelExternal) {}
     open func communityJoinButtonTracking(screenName: String) {}
     open func communityDetailSectionTracking(screenName: String) {}
     open func communityAllCategoryButtonTracking() {}
