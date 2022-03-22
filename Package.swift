@@ -4,14 +4,14 @@
 import PackageDescription
 
 let package = Package(
-    name: "Amity-Social-Cloud-UIKit-iOS-OpenSource",
+    name: "AmityUI-Noom",
     platforms: [ 
     	.iOS(.v13)
     ],
     products: [
         // Products define the executables and libraries a package produces, and make them visible to other packages.
         .library(
-            name: "Amity",
+            name: "AmityUI-Noom",
             targets: ["AmityUI-Noom"]),
     ],
     dependencies: [
@@ -26,16 +26,7 @@ let package = Package(
         .target(
             name: "AmityUI-Noom",
             dependencies: ["AmitySDK"],
-            path: "UpstraUIKit/UpstraUIKit",
-            exclude: [
-                "UpstraUIKit/UpstraUIKit/Modules/Community/Community Detail/EkoCommunityDetailViewController.swift",
-                "UpstraUIKit/UpstraUIKit/Modules/Comunity/Category List/EkoCategorySelectionViewController.swift",
-                "UpstraUIKit/UpstraUIKit/Modules/Comunity/Feed Posts/Scenes/Feed/Feed/EkoFeedController.swift",
-                "UpstraUIKit/UpstraUIKit/Modules/Comunity/Notification Settings/Social Notification Settings/ViewController/EkoPostNotificationSettingsViewController.swift",
-                "UpstraUIKit/UpstraUIKit/Modules/Comunity/Notification Settings/Social Notification Settings/ViewModel/EkoPostNotificationSettingsScreenViewModelType.swift",
-                "UpstraUIKit/UpstraUIKit/Modules/Comunity/Post Creator/EkoCreatePostViewController.swift",
-                "UpstraUIKit/UpstraUIKit/Modules/Comunity/Search/EkoSeachCommunitiesViewController.swift"
-            ]
+            path: "UpstraUIKit/UpstraUIKit"
         ),
         .testTarget(
             name: "Amity-Social-Cloud-UIKit-iOS-OpenSourceTests",
