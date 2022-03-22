@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		7F59348527E9A51700405D17 /* AmityVideoPlayerKit.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7F59348427E9A51700405D17 /* AmityVideoPlayerKit.xcframework */; };
 		A0B68B3026E07278007D7B5B /* LiveStreamViewController+GoLive.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0B68B2F26E07278007D7B5B /* LiveStreamViewController+GoLive.swift */; };
 		A0B68B3626E07824007D7B5B /* AsyncOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0B68B3526E07824007D7B5B /* AsyncOperation.swift */; };
 		A0B68B3F26E07912007D7B5B /* CreatePost.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0B68B3E26E07912007D7B5B /* CreatePost.swift */; };
@@ -37,6 +38,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		7F59348427E9A51700405D17 /* AmityVideoPlayerKit.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = AmityVideoPlayerKit.xcframework; path = "/Users/monoxide/Desktop/Work/Amity-Social-Cloud-UIKit-iOS-OpenSource-TrueID/UpstraUIKit/SampleApp/../Shared/AmityVideoPlayerKit.xcframework"; sourceTree = "<absolute>"; };
 		A0B68B2F26E07278007D7B5B /* LiveStreamViewController+GoLive.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "LiveStreamViewController+GoLive.swift"; sourceTree = "<group>"; };
 		A0B68B3526E07824007D7B5B /* AsyncOperation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AsyncOperation.swift; sourceTree = "<group>"; };
 		A0B68B3E26E07912007D7B5B /* CreatePost.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreatePost.swift; sourceTree = "<group>"; };
@@ -73,6 +75,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7F59348527E9A51700405D17 /* AmityVideoPlayerKit.xcframework in Frameworks */,
 				A0BD0B2626DCE5310054088B /* MobileVLCKit.xcframework in Frameworks */,
 				A0BD0B3826DDDE880054088B /* AmitySDK.xcframework in Frameworks */,
 				A0BD0B2826DCE5310054088B /* AmityLiveVideoBroadcastKit.xcframework in Frameworks */,
@@ -154,6 +157,7 @@
 		A0BD0B2026DCE5310054088B /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				7F59348427E9A51700405D17 /* AmityVideoPlayerKit.xcframework */,
 				A0BD0B3726DDDE880054088B /* AmitySDK.xcframework */,
 				A0BD0B3326DDD9820054088B /* AmityUIKit.framework */,
 				A0BD0B2326DCE5310054088B /* AmityLiveVideoBroadcastKit.xcframework */,
