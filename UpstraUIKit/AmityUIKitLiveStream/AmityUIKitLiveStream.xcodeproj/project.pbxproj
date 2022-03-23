@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		7F59348527E9A51700405D17 /* AmityVideoPlayerKit.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7F59348427E9A51700405D17 /* AmityVideoPlayerKit.xcframework */; };
+		7F1D596027EAD93B005A3A1C /* AmityVideoPlayerKit.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7F1D595F27EAD93B005A3A1C /* AmityVideoPlayerKit.xcframework */; };
 		A0B68B3026E07278007D7B5B /* LiveStreamViewController+GoLive.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0B68B2F26E07278007D7B5B /* LiveStreamViewController+GoLive.swift */; };
 		A0B68B3626E07824007D7B5B /* AsyncOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0B68B3526E07824007D7B5B /* AsyncOperation.swift */; };
 		A0B68B3F26E07912007D7B5B /* CreatePost.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0B68B3E26E07912007D7B5B /* CreatePost.swift */; };
@@ -20,7 +20,6 @@
 		A0B68B6426E73522007D7B5B /* LiveStreamPlayerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0B68B6226E73522007D7B5B /* LiveStreamPlayerViewController.swift */; };
 		A0B68B6526E73522007D7B5B /* LiveStreamPlayerViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = A0B68B6326E73522007D7B5B /* LiveStreamPlayerViewController.xib */; };
 		A0BD0B1A26DCE4F50054088B /* AmityUIKitLiveStream.h in Headers */ = {isa = PBXBuildFile; fileRef = A0BD0B1826DCE4F50054088B /* AmityUIKitLiveStream.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		A0BD0B2426DCE5310054088B /* _CodeSignature in Frameworks */ = {isa = PBXBuildFile; fileRef = A0BD0B2126DCE5310054088B /* _CodeSignature */; };
 		A0BD0B2626DCE5310054088B /* MobileVLCKit.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = A0BD0B2226DCE5310054088B /* MobileVLCKit.xcframework */; };
 		A0BD0B2826DCE5310054088B /* AmityLiveVideoBroadcastKit.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = A0BD0B2326DCE5310054088B /* AmityLiveVideoBroadcastKit.xcframework */; };
 		A0BD0B2F26DCE5800054088B /* LiveStreamBroadcastViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0BD0B2D26DCE5800054088B /* LiveStreamBroadcastViewController.swift */; };
@@ -38,7 +37,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		7F59348427E9A51700405D17 /* AmityVideoPlayerKit.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = AmityVideoPlayerKit.xcframework; path = "/Users/monoxide/Desktop/Work/Amity-Social-Cloud-UIKit-iOS-OpenSource-TrueID/UpstraUIKit/SampleApp/../Shared/AmityVideoPlayerKit.xcframework"; sourceTree = "<absolute>"; };
+		612DF8E227E9A43B00D5A073 /* AmityVideoPlayerKit.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = AmityVideoPlayerKit.xcframework; path = "/Users/aungmoehein/Documents/IOS/Amity-Social-Cloud-UIKit-iOS-OpenSource-TrueID/UpstraUIKit/SampleApp/../Shared/AmityVideoPlayerKit.xcframework"; sourceTree = "<absolute>"; };
+		7F1D595F27EAD93B005A3A1C /* AmityVideoPlayerKit.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = AmityVideoPlayerKit.xcframework; path = ../Shared/AmityVideoPlayerKit.xcframework; sourceTree = "<group>"; };
 		A0B68B2F26E07278007D7B5B /* LiveStreamViewController+GoLive.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "LiveStreamViewController+GoLive.swift"; sourceTree = "<group>"; };
 		A0B68B3526E07824007D7B5B /* AsyncOperation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AsyncOperation.swift; sourceTree = "<group>"; };
 		A0B68B3E26E07912007D7B5B /* CreatePost.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreatePost.swift; sourceTree = "<group>"; };
@@ -75,12 +75,11 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				7F59348527E9A51700405D17 /* AmityVideoPlayerKit.xcframework in Frameworks */,
 				A0BD0B2626DCE5310054088B /* MobileVLCKit.xcframework in Frameworks */,
 				A0BD0B3826DDDE880054088B /* AmitySDK.xcframework in Frameworks */,
 				A0BD0B2826DCE5310054088B /* AmityLiveVideoBroadcastKit.xcframework in Frameworks */,
+				7F1D596027EAD93B005A3A1C /* AmityVideoPlayerKit.xcframework in Frameworks */,
 				A0BD0B3426DDD9820054088B /* AmityUIKit.framework in Frameworks */,
-				A0BD0B2426DCE5310054088B /* _CodeSignature in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -157,7 +156,8 @@
 		A0BD0B2026DCE5310054088B /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				7F59348427E9A51700405D17 /* AmityVideoPlayerKit.xcframework */,
+				612DF8E227E9A43B00D5A073 /* AmityVideoPlayerKit.xcframework */,
+				7F1D595F27EAD93B005A3A1C /* AmityVideoPlayerKit.xcframework */,
 				A0BD0B3726DDDE880054088B /* AmitySDK.xcframework */,
 				A0BD0B3326DDD9820054088B /* AmityUIKit.framework */,
 				A0BD0B2326DCE5310054088B /* AmityLiveVideoBroadcastKit.xcframework */,
