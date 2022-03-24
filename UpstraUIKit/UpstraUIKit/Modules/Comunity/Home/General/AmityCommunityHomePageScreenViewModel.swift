@@ -12,7 +12,7 @@ import AmitySDK
 class AmityCommunityHomePageScreenViewModel: AmityCommunityHomePageScreenViewModelType {
     
     private var pendingRequestWorkItem: DispatchWorkItem?
-    
+    var delegate: AmityCommunityHomePageScreenViewModelDelegate?
     var baseOnJoinPage: PageType
     var categoryItems: [AmityCommunityCategoryModel]
     var amityCommunityEventTypeModel: AmityCommunityEventTypeModel?
@@ -38,5 +38,14 @@ extension AmityCommunityHomePageScreenViewModel {
     
     func getCategoryItems() -> [AmityCommunityCategoryModel] {
         return categoryItems
+    }
+    
+    func getChatBadge() {
+        customAPIRequest.getChatBadgeCount(userId: AmityUIKitManagerInternal.shared.currentUserId, completion: {
+            badgeCount in
+            DispatchQueue.main.async {
+                self.delegate?.screenViewModelDidGetChatBadge(badgeCount)
+            }
+        })
     }
 }

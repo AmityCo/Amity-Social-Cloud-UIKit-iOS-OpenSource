@@ -49,4 +49,32 @@ final class customAPIRequest {
 
         task.resume()
     }
+    
+    static func getChatBadgeCount(userId: String, completion: @escaping(_ badge: Int) -> () ) {
+        let url = URL(string: "https://qojeq6vaa8.execute-api.ap-southeast-1.amazonaws.com/getRedNoseTrueId?userId=\(userId)&region=th")!
+        var badge: Int = 0
+        
+        var request = URLRequest(url: url)
+        request.httpMethod = "GET"
+        
+        request.allHTTPHeaderFields = [
+            "Content-Type" : "application/json"
+        ]
+        
+        let task = URLSession.shared.dataTask(with: request) { data, response, error in
+            
+            guard let data = data, error == nil else {
+                print(error?.localizedDescription ?? "No data.")
+                return
+            }
+
+            guard let jsonDecode = try? JSONDecoder().decode(Int.self, from: data) else { return }
+            badge = jsonDecode
+            
+            completion(badge)
+            
+        }
+
+        task.resume()
+    }
 }
