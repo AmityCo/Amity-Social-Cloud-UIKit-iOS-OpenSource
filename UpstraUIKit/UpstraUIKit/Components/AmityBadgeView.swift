@@ -19,6 +19,9 @@ final class AmityBadgeView: AmityView {
         didSet {
             isHidden = badge <= 0
             label.text = "\(badge)"
+            if badge > 99 {
+                label.text = "99+"
+            }
             badgeView.layer.cornerRadius = badgeView.frame.height / 2
         }
     }

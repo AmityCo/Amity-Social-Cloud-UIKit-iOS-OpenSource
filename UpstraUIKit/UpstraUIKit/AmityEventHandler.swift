@@ -8,6 +8,7 @@
 
 import UIKit
 import AmitySDK
+import XCTest
 
 /// Global event handler for function overriding
 ///
@@ -281,5 +282,17 @@ open class AmityEventHandler {
     open func communityPageToTimelineTracking() {}
     open func communityUserProfileToTimelineTracking() {}
     open func communityCategoryNameListTracking(categoryName: String) {}
+    
+    // MARK: - Public function
+    open func getNotiCountFromAPI(completion: @escaping(_ completion:Result<Int,Error>) -> () ) {
+        customAPIRequest.getChatBadgeCount(userId: AmityUIKitManagerInternal.shared.currentUserId) { result in
+            switch result {
+            case .success(let badgeCount):
+                completion(.success(badgeCount))
+            case .failure(let error):
+                completion(.failure(error))
+            }
+        }
+    }
     
 }
