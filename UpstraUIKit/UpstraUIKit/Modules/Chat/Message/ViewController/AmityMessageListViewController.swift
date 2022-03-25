@@ -76,8 +76,6 @@ public final class AmityMessageListViewController: AmityViewController {
     private var didEnterBackgroundObservation: NSObjectProtocol?
     private var willEnterForegroundObservation: NSObjectProtocol?
     
-    private var channelLastActivity: Date?
-    
     // MARK: - View lifecyle
     public override func viewDidLoad() {
         super.viewDidLoad()
@@ -525,20 +523,7 @@ extension AmityMessageListViewController: AmityMessageListScreenViewModelDelegat
     func screenViewModelDidGetChannel(channel: AmityChannelModel) {
         setupCustomNavigationBar()
         navigationHeaderViewController?.updateViews(channel: channel)
-        
-        // Prevent auto scrolling to bottom if there's no new message
-        if channelLastActivity == nil {
-            channelLastActivity = channel.lastActivity
-        }
-        
-        // New message -> Scroll to bottom
-        if channel.lastActivity != channelLastActivity {
-            screenViewModel.action.shouldScrollToBottom(force: true)
-            channelLastActivity = channel.lastActivity
-        }else {
-            // No new message -> Don't scroll to bottom
-            screenViewModel.action.shouldScrollToBottom(force: false)
-        }
+        screenViewModel.action.shouldScrollToBottom(force: false)
     }
     
     func screenViewModelScrollToBottom(for indexPath: IndexPath) {

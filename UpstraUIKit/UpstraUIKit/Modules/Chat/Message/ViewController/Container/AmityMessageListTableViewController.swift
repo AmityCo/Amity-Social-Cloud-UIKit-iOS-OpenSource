@@ -13,6 +13,7 @@ final class AmityMessageListTableViewController: UITableViewController {
     
     // MARK: - Properties
     private var screenViewModel: AmityMessageListScreenViewModelType!
+    private var cacheIndexPath: Int = 0
     
     struct Constant {
         static let estimatedTextMessageCellHeight: CGFloat = 112
@@ -85,6 +86,10 @@ extension AmityMessageListTableViewController {
         let contentYOffset = tableView.contentOffset.y
         let viewHeight = tableView.bounds.height
         
+        if cacheIndexPath == 0 {
+            cacheIndexPath = indexPath.row
+        }
+        
         Log.add("Content Height: \(contentHeight), Content Offset: \(contentYOffset), ViewHeight: \(viewHeight)")
         
         // We update scroll position based on the view state. User can be in multiple view state.
@@ -98,10 +103,15 @@ extension AmityMessageListTableViewController {
         // State 2:
         //
         // User is seeing the latest message. So we just scroll to the bottom when new message appears
-        if contentYOffset + viewHeight >= contentHeight {
+        if viewHeight + contentYOffset >= contentHeight - 83 {
             Log.add("Scrolling tableview to show latest message")
-            tableView.layoutIfNeeded()
-            tableView.scrollToRow(at: indexPath, at: .bottom, animated: false)
+            
+            if cacheIndexPath <= indexPath.row + 1 {
+                tableView.layoutIfNeeded()
+                tableView.scrollToRow(at: indexPath, at: .bottom, animated: false)
+                cacheIndexPath = indexPath.row
+            }
+            
             return
         }
         
