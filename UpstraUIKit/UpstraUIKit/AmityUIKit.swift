@@ -237,14 +237,28 @@ final class AmityUIKitManagerInternal: NSObject {
 
     func setup(_ apiKey: String, region: AmityRegion) {
         guard let client = try? AmityClient(apiKey: apiKey, region: region) else { return }
-        
+        self.apiKey = apiKey
+
+        // Passing empty string over `httpUrl` and `socketUrl` is acceptable.
+        // `AmityClient` will be using the default endpoint instead.
+        guard let client = try? AmityClient(apiKey: apiKey, httpUrl: httpUrl, socketUrl: socketUrl) else {
+            assertionFailure("Something went wrong. API key is invalid.")
+            return
+        }
         _client = client
         _client?.clientErrorDelegate = self
     }
     
     func setup(_ apiKey: String, endpoint: AmityEndpoint) {
         guard let client = try? AmityClient(apiKey: apiKey, endpoint: endpoint) else { return }
-        
+        self.apiKey = apiKey
+
+        // Passing empty string over `httpUrl` and `socketUrl` is acceptable.
+        // `AmityClient` will be using the default endpoint instead.
+        guard let client = try? AmityClient(apiKey: apiKey, httpUrl: httpUrl, socketUrl: socketUrl) else {
+            assertionFailure("Something went wrong. API key is invalid.")
+            return
+        }
         _client = client
         _client?.clientErrorDelegate = self
     }
