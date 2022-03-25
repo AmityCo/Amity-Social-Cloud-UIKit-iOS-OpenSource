@@ -42,10 +42,19 @@ extension AmityCommunityHomePageScreenViewModel {
     
     func getChatBadge() {
         customAPIRequest.getChatBadgeCount(userId: AmityUIKitManagerInternal.shared.currentUserId, completion: {
-            badgeCount in
-            DispatchQueue.main.async {
-                self.delegate?.screenViewModelDidGetChatBadge(badgeCount)
+            result in
+            switch result {
+            case .success(let badgeCount):
+                DispatchQueue.main.async {
+                    self.delegate?.screenViewModelDidGetChatBadge(badgeCount)
+                }
+            case .failure(let error):
+                print("--->[AmitySDK]Error on get noti badge: \(error.localizedDescription)")
+                DispatchQueue.main.async {
+                    self.delegate?.screenViewModelDidGetChatBadge(0)
+                }
             }
+            
         })
     }
 }

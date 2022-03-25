@@ -50,8 +50,30 @@ final class customAPIRequest {
         task.resume()
     }
     
-    static func getChatBadgeCount(userId: String, completion: @escaping(_ badge: Int) -> () ) {
-        let url = URL(string: "https://qojeq6vaa8.execute-api.ap-southeast-1.amazonaws.com/getRedNoseTrueId?userId=\(userId)&region=th")!
+    static func getChatBadgeCount(userId: String, completion: @escaping(_ completion:Result<Int,Error>) -> () ) {
+        
+        var region: String {
+            switch AmityUIKitManagerInternal.shared.amityLanguage {
+            case "th":
+                return "th"
+            case "id":
+                return "id"
+            case "km":
+                return "km"
+            case "ph":
+                return "ph"
+            case "vn":
+                return "vn"
+            case "mm":
+                return "my"
+            case "en":
+                return "en"
+            default:
+                return ""
+            }
+        }
+        
+        let url = URL(string: "https://qojeq6vaa8.execute-api.ap-southeast-1.amazonaws.com/getRedNoseTrueId?userId=\(userId)&region=\(region)")!
         var badge: Int = 0
         
         var request = URLRequest(url: url)
@@ -65,13 +87,14 @@ final class customAPIRequest {
             
             guard let data = data, error == nil else {
                 print(error?.localizedDescription ?? "No data.")
+                completion(.failure(error!))
                 return
             }
 
             guard let jsonDecode = try? JSONDecoder().decode(Int.self, from: data) else { return }
             badge = jsonDecode
             
-            completion(badge)
+            completion(.success(badge))
             
         }
 
