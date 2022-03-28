@@ -8,7 +8,6 @@
 
 import UIKit
 import AmitySDK
-import XCTest
 
 /// Global event handler for function overriding
 ///

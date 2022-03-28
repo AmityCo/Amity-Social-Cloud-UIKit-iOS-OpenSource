@@ -94,27 +94,29 @@
                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="cdk-6j-3dY" customClass="AmityButton" customModule="AmityUIKit" customModuleProvider="target">
                                     <rect key="frame" x="0.0" y="0.0" width="50" height="22"/>
                                     <constraints>
-                                        <constraint firstAttribute="width" constant="50" id="HcE-uy-jcw"/>
+                                        <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="50" id="HcE-uy-jcw"/>
                                     </constraints>
                                     <fontDescription key="fontDescription" type="system" pointSize="13"/>
                                     <color key="tintColor" red="0.090196078430000007" green="0.094117647060000004" blue="0.10980392160000001" alpha="1" colorSpace="calibratedRGB"/>
+                                    <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="4" maxY="0.0"/>
                                     <state key="normal" title="Liked" image="icon_like">
                                         <color key="titleColor" red="0.090196078430000007" green="0.094117647060000004" blue="0.10980392160000001" alpha="1" colorSpace="calibratedRGB"/>
                                     </state>
                                 </button>
                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="qnc-ja-fPs" userLabel="Reply" customClass="AmityButton" customModule="AmityUIKit" customModuleProvider="target">
-                                    <rect key="frame" x="58" y="0.0" width="60" height="22"/>
+                                    <rect key="frame" x="58" y="0.0" width="70" height="22"/>
                                     <constraints>
-                                        <constraint firstAttribute="width" constant="60" id="LAJ-ts-zjy"/>
+                                        <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="70" id="LAJ-ts-zjy"/>
                                     </constraints>
                                     <fontDescription key="fontDescription" type="system" pointSize="13"/>
                                     <color key="tintColor" red="0.090196078430000007" green="0.094117647060000004" blue="0.10980392160000001" alpha="1" colorSpace="calibratedRGB"/>
+                                    <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="4" maxY="0.0"/>
                                     <state key="normal" title="Reply" image="icon_reply">
                                         <color key="titleColor" red="0.090196078430000007" green="0.094117647060000004" blue="0.10980392160000001" alpha="1" colorSpace="calibratedRGB"/>
                                     </state>
                                 </button>
                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="pLS-uH-QHV">
-                                    <rect key="frame" x="126" y="0.0" width="23" height="22"/>
+                                    <rect key="frame" x="136" y="0.0" width="23" height="22"/>
                                     <constraints>
                                         <constraint firstAttribute="height" constant="22" id="AEH-iD-CJj"/>
                                         <constraint firstAttribute="width" constant="23" id="FAE-5z-0o5"/>
@@ -129,7 +131,7 @@
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dLv-l7-hxu" userLabel="View Reply Button" customClass="AmityButton" customModule="AmityUIKit" customModuleProvider="target">
                             <rect key="frame" x="0.0" y="34" width="150" height="12.5"/>
                             <constraints>
-                                <constraint firstAttribute="width" constant="150" id="GZa-0R-Hmr"/>
+                                <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="150" id="GZa-0R-Hmr"/>
                                 <constraint firstAttribute="height" priority="750" constant="28" id="HVJ-YR-zj5"/>
                             </constraints>
                             <state key="normal" title="View Reply" image="icon_arrow_right">

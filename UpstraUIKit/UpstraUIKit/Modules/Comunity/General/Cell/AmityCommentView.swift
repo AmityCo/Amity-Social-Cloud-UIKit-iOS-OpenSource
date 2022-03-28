@@ -72,6 +72,7 @@ class AmityCommentView: AmityView {
         labelContainerView.layer.maskedCorners = [.layerMinXMaxYCorner, .layerMaxXMinYCorner, .layerMaxXMaxYCorner]
         
         likeButton.setTitle(AmityLocalizedStringSet.General.like.localizedString, for: .normal)
+        likeButton.sizeToFit()
         likeButton.setTitleFont(AmityFontSet.captionBold)
         likeButton.setImage(AmityIconSet.iconLike, for: .normal)
         likeButton.setImage(AmityIconSet.iconLikeFill, for: .selected)
@@ -82,6 +83,7 @@ class AmityCommentView: AmityView {
         likeButton.addTarget(self, action: #selector(likeButtonTap), for: .touchUpInside)
         likeButton.setInsets(forContentPadding: .zero, imageTitlePadding: 4)
         replyButton.setTitle(AmityLocalizedStringSet.General.reply.localizedString, for: .normal)
+        replyButton.sizeToFit()
         replyButton.setTitleFont(AmityFontSet.captionBold)
         replyButton.setImage(AmityIconSet.iconReply, for: .normal)
         replyButton.tintColor = AmityColorSet.base.blend(.shade2)
@@ -92,6 +94,7 @@ class AmityCommentView: AmityView {
         optionButton.addTarget(self, action: #selector(optionButtonTap), for: .touchUpInside)
         optionButton.tintColor = AmityColorSet.base.blend(.shade2)
         viewReplyButton.setTitle(AmityLocalizedStringSet.General.viewReply.localizedString, for: .normal)
+        viewReplyButton.sizeToFit()
         viewReplyButton.setTitleFont(AmityFontSet.captionBold)
         viewReplyButton.setTitleColor(AmityColorSet.base.blend(.shade1), for: .normal)
         viewReplyButton.setTintColor(AmityColorSet.base.blend(.shade1), for: .normal)

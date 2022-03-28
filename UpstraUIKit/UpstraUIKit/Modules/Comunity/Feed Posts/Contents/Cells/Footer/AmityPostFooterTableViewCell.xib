@@ -92,11 +92,11 @@
                                                         <nil key="textColor"/>
                                                         <nil key="highlightedColor"/>
                                                     </label>
-                                                    <stackView opaque="NO" contentMode="scaleToFill" distribution="equalSpacing" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="Ihv-Qg-TsU">
+                                                    <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="15" translatesAutoresizingMaskIntoConstraints="NO" id="Ihv-Qg-TsU">
                                                         <rect key="frame" x="0.0" y="16" width="288" height="16"/>
                                                         <subviews>
                                                             <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="255" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dHB-Qg-NR1" customClass="AmityButton" customModule="AmityUIKit" customModuleProvider="target">
-                                                                <rect key="frame" x="0.0" y="0.0" width="75" height="16"/>
+                                                                <rect key="frame" x="0.0" y="0.0" width="86" height="16"/>
                                                                 <fontDescription key="fontDescription" type="system" pointSize="13"/>
                                                                 <color key="tintColor" red="0.090196078430000007" green="0.094117647060000004" blue="0.10980392160000001" alpha="1" colorSpace="calibratedRGB"/>
                                                                 <state key="normal" title="Liked" image="icon_post_like">
@@ -107,7 +107,7 @@
                                                                 </connections>
                                                             </button>
                                                             <button opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="254" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="7rf-c3-yY7" customClass="AmityButton" customModule="AmityUIKit" customModuleProvider="target">
-                                                                <rect key="frame" x="106.5" y="0.0" width="75" height="16"/>
+                                                                <rect key="frame" x="101" y="0.0" width="86" height="16"/>
                                                                 <fontDescription key="fontDescription" type="system" pointSize="13"/>
                                                                 <color key="tintColor" red="0.50588235290000005" green="0.52549019610000003" blue="0.59607843140000005" alpha="1" colorSpace="calibratedRGB"/>
                                                                 <state key="normal" title="Comment" image="icon_comment">
@@ -118,7 +118,7 @@
                                                                 </connections>
                                                             </button>
                                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="lYA-ML-TDz" customClass="AmityButton" customModule="AmityUIKit" customModuleProvider="target">
-                                                                <rect key="frame" x="213" y="0.0" width="75" height="16"/>
+                                                                <rect key="frame" x="202" y="0.0" width="86" height="16"/>
                                                                 <fontDescription key="fontDescription" type="system" pointSize="13"/>
                                                                 <color key="tintColor" red="0.50588235290000005" green="0.52549019610000003" blue="0.59607843140000005" alpha="1" colorSpace="calibratedRGB"/>
                                                                 <state key="normal" title="Share" image="icon_share">
@@ -129,10 +129,6 @@
                                                                 </connections>
                                                             </button>
                                                         </subviews>
-                                                        <constraints>
-                                                            <constraint firstItem="lYA-ML-TDz" firstAttribute="width" secondItem="dHB-Qg-NR1" secondAttribute="width" id="YLc-2x-5Cm"/>
-                                                            <constraint firstItem="7rf-c3-yY7" firstAttribute="width" secondItem="dHB-Qg-NR1" secondAttribute="width" id="jJo-3b-g7F"/>
-                                                        </constraints>
                                                     </stackView>
                                                 </subviews>
                                                 <constraints>
