@@ -59,13 +59,13 @@ final class customAPIRequest {
             case "id":
                 return "id"
             case "km":
-                return "km"
+                return "kh"
             case "ph":
                 return "ph"
             case "vn":
                 return "vn"
-            case "mm":
-                return "my"
+            case "my":
+                return "mm"
             case "en":
                 return "en"
             default:
@@ -75,7 +75,7 @@ final class customAPIRequest {
         
         let url = URL(string: "https://qojeq6vaa8.execute-api.ap-southeast-1.amazonaws.com/getRedNoseTrueId?userId=\(userId)&region=\(region)")!
         var badge: Int = 0
-        
+        print("URL:::::: ", url)
         var request = URLRequest(url: url)
         request.httpMethod = "GET"
         
