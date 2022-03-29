@@ -54,7 +54,7 @@ final class customAPIRequest {
         
         var region: String {
             switch AmityUIKitManagerInternal.shared.amityLanguage {
-            case "th":
+            case "th", "en":
                 return "th"
             case "id":
                 return "id"
@@ -66,10 +66,8 @@ final class customAPIRequest {
                 return "vn"
             case "my":
                 return "mm"
-            case "en":
-                return "en"
             default:
-                return ""
+                return "th"
             }
         }
         
