@@ -29,6 +29,7 @@ public final class AmityRecentChatViewController: AmityViewController, Indicator
     private var screenViewModel: AmityRecentChatScreenViewModelType!
     
     private lazy var emptyView: AmityEmptyView = {
+        AmityHUD.hide()
         let emptyView = AmityEmptyView(frame: tableView.frame)
         emptyView.update(title: AmityLocalizedStringSet.emptyChatList.localizedString,
                          subtitle: nil,
