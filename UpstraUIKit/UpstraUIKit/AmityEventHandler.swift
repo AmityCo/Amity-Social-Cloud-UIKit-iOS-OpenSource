@@ -185,7 +185,19 @@ open class AmityEventHandler {
         } else {
             if source.isModalPresentation {
                 // a source is presenting. push a new vc.
-                source.navigationController?.pushViewController(viewController, animated: true)
+                if source.isKind(of: AmityPostTargetPickerViewController.self) {
+                    source.navigationController?.pushViewController(viewController, animated: true)
+                    return
+                }
+                
+                if case .myFeed = postTarget {
+                    source.navigationController?.pushViewController(viewController, animated: true)
+                    return
+                }
+                
+                let navigationController = UINavigationController(rootViewController: viewController)
+                navigationController.modalPresentationStyle = .overFullScreen
+                source.present(navigationController, animated: true, completion: nil)
             } else {
                 let navigationController = UINavigationController(rootViewController: viewController)
                 navigationController.modalPresentationStyle = .overFullScreen
