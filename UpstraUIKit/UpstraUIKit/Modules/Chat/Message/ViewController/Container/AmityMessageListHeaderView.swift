@@ -58,32 +58,27 @@ private extension AmityMessageListHeaderView {
 extension AmityMessageListHeaderView {
     
     func updateViews(channel: AmityChannelModel) {
-        if channel.isDirectChat() {
-            displayNameLabel.text = AmityLocalizedStringSet.General.anonymous.localizedString
-            token?.invalidate()
+        displayNameLabel.text = channel.displayName
+        switch channel.channelType {
+        case .standard:
+            avatarView.setImage(withImageURL: channel.avatarURL, placeholder: AmityIconSet.defaultGroupChat)
+        case .conversation:
+            avatarView.setImage(withImageURL: channel.avatarURL, placeholder: AmityIconSet.defaultAvatar)
             if !channel.getOtherUserId().isEmpty {
-                token = repository?.getUser(channel.getOtherUserId()).observeOnce({ [weak self] user, error in
+                token?.invalidate()
+                token = repository?.getUser(channel.getOtherUserId()).observeOnce { [weak self] user, error in
                     guard let weakSelf = self else { return }
                     if let userObject = user.object {
                         weakSelf.displayNameLabel.text = userObject.displayName
                         weakSelf.avatarView.setImage(withImageURL: userObject.avatarCustomUrl,
                                                      placeholder: AmityIconSet.defaultAvatar)
                     }
-                    
-                })
+                }
             }
-        } else {
-            displayNameLabel.text = channel.displayName
-            switch channel.channelType {
-            case .standard:
-                avatarView.setImage(withImageURL: channel.avatarURL, placeholder: AmityIconSet.defaultGroupChat)
-            case .conversation:
-                avatarView.setImage(withImageURL: channel.avatarURL, placeholder: AmityIconSet.defaultAvatar)
-            case .community:
-                avatarView.setImage(withImageURL: channel.avatarURL, placeholder: AmityIconSet.defaultGroupChat)
-            default:
-                break
-            }
+        case .community:
+            avatarView.setImage(withImageURL: channel.avatarURL, placeholder: AmityIconSet.defaultGroupChat)
+        default:
+            break
         }
     }
 }

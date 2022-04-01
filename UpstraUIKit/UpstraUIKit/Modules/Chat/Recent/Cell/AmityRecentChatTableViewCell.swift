@@ -70,45 +70,36 @@ final class AmityRecentChatTableViewCell: UITableViewCell, Nibbable {
         badgeView.badge = channel.unreadCount
         memberLabel.text = ""
         dateTimeLabel.text = AmityDateFormatter.Chat.getDate(date: channel.lastActivity)
-        titleLabel.text = AmityLocalizedStringSet.General.anonymous.localizedString
+        titleLabel.text = channel.displayName
         avatarView.placeholder = AmityIconSet.defaultAvatar
         
-        if channel.isDirectChat() {
+        switch channel.channelType {
+        case .standard:
+            avatarView.setImage(withImageURL: channel.avatarURL, placeholder: AmityIconSet.defaultGroupChat)
+            memberLabel.text = "(\(channel.memberCount))"
+        case .conversation:
+            avatarView.setImage(withImageURL: channel.avatarURL, placeholder: AmityIconSet.defaultAvatar)
+            memberLabel.text = nil
+            titleLabel.text = channel.displayName
+            
             token?.invalidate()
             if !channel.getOtherUserId().isEmpty {
-                token = repository?.getUser(channel.getOtherUserId()).observe({ [weak self] user, error in
-                    guard let weakSelf = self else { return }
-                    if let userObject = user.object {
-                        weakSelf.titleLabel.text = userObject.displayName
-                        weakSelf.avatarView.setImage(withImageURL: userObject.avatarCustomUrl,
-                                                     placeholder: AmityIconSet.defaultAvatar)
-                        weakSelf.token?.invalidate()
-                    }
-
-                })
+                token = repository?.getUser(channel.getOtherUserId()).observeOnce { [weak self] user, error in
+                    guard let userObject = user.object else { return }
+                    self?.titleLabel.text = userObject.displayName
+                    self?.avatarView.setImage(withImageURL: userObject.avatarCustomUrl,
+                                              placeholder: AmityIconSet.defaultAvatar)
+                }
             }
-        } else {
-            titleLabel.text = channel.displayName
-            switch channel.channelType {
-            case .standard:
-                avatarView.setImage(withImageURL: channel.avatarURL, placeholder: AmityIconSet.defaultGroupChat)
-                memberLabel.text = "(\(channel.memberCount))"
-            case .conversation:
-                avatarView.setImage(withImageURL: channel.avatarURL, placeholder: AmityIconSet.defaultAvatar)
-                memberLabel.text = nil
-                titleLabel.text = channel.displayName
-            case .private:
-                break
-            case .broadcast:
-                break
-            case .unknown:
-                break
-            case .community:
-                avatarView.setImage(withImageURL: channel.avatarURL, placeholder: AmityIconSet.defaultGroupChat)
-                memberLabel.text = "(\(channel.memberCount))"
-            @unknown default:
-                break
-            }
+        case .community:
+            avatarView.setImage(withImageURL: channel.avatarURL, placeholder: AmityIconSet.defaultGroupChat)
+            memberLabel.text = "(\(channel.memberCount))"
+        case .private, .live, .broadcast, .unknown:
+            break
+        @unknown default:
+            break
         }
+        
+        
     }
 }

@@ -67,7 +67,7 @@ extension AmityPostReviewSettingsScreenViewModel {
     }
     
     private func performAction(content: AmityPostReviewSettingsAction, isPostReview: Bool) {
-        if Reachability.isConnectedToNetwork() {
+        if Reachability.shared.isConnectedToNetwork {
             let builder = AmityCommunityUpdateDataBuilder()
             builder.isPostReviewEnabled(isPostReview)
             communityRepository.updateCommunity(withId: communityId, builder: builder) { [weak self] (community, error) in

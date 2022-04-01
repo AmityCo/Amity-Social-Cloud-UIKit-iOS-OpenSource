@@ -52,11 +52,11 @@ final class AmityNewsfeedEmptyView: AmityView {
         createCommunityButton.setTitleFont(AmityFontSet.body)
         createCommunityButton.setTitleColor(AmityColorSet.primary, for: .normal)
         createCommunityButton.setTitleColor(AmityColorSet.primary.blend(.shade2), for: .disabled)
-        createCommunityButton.isEnabled = Reachability.isConnectedToNetwork()
+        createCommunityButton.isEnabled = Reachability.shared.isConnectedToNetwork
     }
     
     func setNeedsUpdateState() {
-        createCommunityButton.isEnabled = Reachability.isConnectedToNetwork()
+        createCommunityButton.isEnabled = Reachability.shared.isConnectedToNetwork
     }
     
 }

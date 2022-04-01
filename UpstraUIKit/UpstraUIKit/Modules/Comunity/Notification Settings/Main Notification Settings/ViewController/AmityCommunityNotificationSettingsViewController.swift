@@ -45,7 +45,7 @@ private extension AmityCommunityNotificationSettingsViewController {
     }
     
     private func setupTableView() {
-        tableView.isEmptyViewHidden = Reachability.isConnectedToNetwork()
+        tableView.isEmptyViewHidden = Reachability.shared.isConnectedToNetwork
         tableView.updateEmptyView(title: AmityLocalizedStringSet.noInternetConnection.localizedString, subtitle: nil, image: AmityIconSet.noInternetConnection)
         tableView.actionHandler = { [weak self] settingsItem in
             self?.handleActionItem(settingsItem: settingsItem)
