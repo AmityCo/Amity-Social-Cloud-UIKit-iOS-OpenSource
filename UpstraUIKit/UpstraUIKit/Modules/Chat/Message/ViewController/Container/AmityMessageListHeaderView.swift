@@ -92,7 +92,24 @@ extension AmityMessageListHeaderView {
                 }
             }
         case .community:
-            avatarView.setImage(withImageURL: channel.avatarURL, placeholder: AmityIconSet.defaultGroupChat)
+            avatarView.setImage(withImageURL: channel.avatarURL, placeholder: AmityIconSet.defaultAvatar)
+            if !channel.getOtherUserId().isEmpty {
+                token?.invalidate()
+                token = repository?.getUser(channel.getOtherUserId()).observeOnce { [weak self] user, error in
+                    guard let weakSelf = self else { return }
+                    if let userObject = user.object {
+                        let userModel = AmityUserModel(user: userObject)
+                        if !userModel.avatarCustomURL.isEmpty {
+                            weakSelf.avatarView.setImage(withCustomURL: userModel.avatarCustomURL,
+                                                         placeholder: AmityIconSet.defaultAvatar)
+                        } else {
+                            weakSelf.avatarView.setImage(withImageURL: userModel.avatarURL,
+                                                         placeholder: AmityIconSet.defaultAvatar)
+                        }
+                        weakSelf.displayNameLabel.text = userObject.displayName
+                    }
+                }
+            }
         default:
             break
         }

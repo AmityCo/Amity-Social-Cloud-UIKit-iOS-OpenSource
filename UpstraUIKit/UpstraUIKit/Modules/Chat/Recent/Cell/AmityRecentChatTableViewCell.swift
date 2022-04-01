@@ -100,8 +100,21 @@ final class AmityRecentChatTableViewCell: UITableViewCell, Nibbable {
                 }
             }
         case .community:
-            avatarView.setImage(withImageURL: channel.avatarURL, placeholder: AmityIconSet.defaultGroupChat)
-            memberLabel.text = "(\(channel.memberCount))"
+            token?.invalidate()
+            if !channel.getOtherUserId().isEmpty {
+                token = repository?.getUser(channel.getOtherUserId()).observeOnce { [weak self] user, error in
+                    guard let userObject = user.object else { return }
+                    self?.titleLabel.text = userObject.displayName
+                    let userModel = AmityUserModel(user: userObject)
+                    if !userModel.avatarCustomURL.isEmpty {
+                        self?.avatarView.setImage(withCustomURL: userModel.avatarCustomURL,
+                                                 placeholder: AmityIconSet.defaultAvatar)
+                    } else {
+                        self?.avatarView.setImage(withImageURL: userModel.avatarURL,
+                                                  placeholder: AmityIconSet.defaultAvatar)
+                    }
+                }
+            }
         case .private, .live, .broadcast, .unknown:
             break
         @unknown default:

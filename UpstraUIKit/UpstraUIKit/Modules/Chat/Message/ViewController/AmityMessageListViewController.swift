@@ -556,24 +556,34 @@ extension AmityMessageListViewController: AmityMessageListScreenViewModelDelegat
             messageViewController.tableView.reloadData()
         case .didSendText:
             composeBar.clearText()
-            screenViewModel.shouldScrollToBottom(force: true)
+//            screenViewModel.shouldScrollToBottom(force: true)
+            screenViewModelScrollTableviewToLastIndex()
         case .didEditText:
             break
         case .didDelete(let indexPath):
             AmityHUD.hide()
             messageViewController.tableView.reloadRows(at: [indexPath], with: .none)
         case .didSendImage:
-            screenViewModel.shouldScrollToBottom(force: true)
+//            screenViewModel.shouldScrollToBottom(force: true)
+            screenViewModelScrollTableviewToLastIndex()
             break
         case .didUploadImage:
-            screenViewModel.shouldScrollToBottom(force: true)
+//            screenViewModel.shouldScrollToBottom(force: true)
+            screenViewModelScrollTableviewToLastIndex()
             break
         case .didDeeleteErrorMessage:
             AmityHUD.show(.success(message: AmityLocalizedStringSet.HUD.delete.localizedString))
         case .didSendAudio:
             circular.hide()
             audioRecordingViewController?.stopRecording()
-            screenViewModel.shouldScrollToBottom(force: true)
+//            screenViewModel.shouldScrollToBottom(force: true)
+            screenViewModelScrollTableviewToLastIndex()
+        }
+    }
+    
+    func screenViewModelScrollTableviewToLastIndex() {
+        if let lastIndexPath = messageViewController.tableView.lastIndexPath {
+            messageViewController.tableView.scrollToRow(at: lastIndexPath, at: .bottom, animated: false)
         }
     }
     
