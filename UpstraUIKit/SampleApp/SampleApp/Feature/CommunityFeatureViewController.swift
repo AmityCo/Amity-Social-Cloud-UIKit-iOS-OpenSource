@@ -38,7 +38,7 @@ class CommunityFeatureViewController: UIViewController {
         case ph
         case vn
         case en
-        case my
+        case mm
         case gallery
         case notification
         case client
@@ -75,8 +75,8 @@ class CommunityFeatureViewController: UIViewController {
                 return "vn"
             case .en:
                 return "en"
-            case .my:
-                return "my"
+            case .mm:
+                return "mm"
             case .gallery:
                 return "gallery"
             case .notification:
@@ -223,8 +223,8 @@ extension CommunityFeatureViewController: UITableViewDelegate {
         case .en:
             AmityUIKitManager.setLanguage(language: "en")
             openHomePage()
-        case .my:
-            AmityUIKitManager.setLanguage(language: "my")
+        case .mm:
+            AmityUIKitManager.setLanguage(language: "mm")
             openHomePage()
         case .gallery:
             let galleryVC = AmityPostGalleryViewController.makeByTrueID(targetType: .user, targetId: UserDefaults.standard.value(forKey: UserDefaultsKey.userId) as! String, isHiddenButtonCreate: false)
