@@ -11,7 +11,27 @@ import Foundation
 
 final class customAPIRequest {
     static func getDiscoveryData(page_number: Int, completion: @escaping(_ discoveryArray: [DiscoveryDataModel]) -> () ) {
-        let url = URL(string: "https://qojeq6vaa8.execute-api.ap-southeast-1.amazonaws.com/media?page=\(page_number)")!
+        
+        var region: String {
+            switch AmityUIKitManagerInternal.shared.amityLanguage {
+            case "th", "en":
+                return "th"
+            case "id":
+                return "id"
+            case "km":
+                return "kh"
+            case "ph":
+                return "ph"
+            case "vn":
+                return "vn"
+            case "mm":
+                return "mm"
+            default:
+                return "staging"
+            }
+        }
+        
+        let url = URL(string: "https://qojeq6vaa8.execute-api.ap-southeast-1.amazonaws.com/media?page=\(page_number)&region=\(region)")!
         
         var tempDiscoveryData: [DiscoveryDataModel] = []
         
@@ -64,7 +84,7 @@ final class customAPIRequest {
                 return "ph"
             case "vn":
                 return "vn"
-            case "my":
+            case "mm":
                 return "mm"
             default:
                 return "th"
