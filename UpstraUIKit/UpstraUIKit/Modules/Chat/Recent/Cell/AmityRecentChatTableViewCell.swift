@@ -89,13 +89,14 @@ final class AmityRecentChatTableViewCell: UITableViewCell, Nibbable {
                 token = repository?.getUser(channel.getOtherUserId()).observeOnce { [weak self] user, error in
                     guard let userObject = user.object else { return }
                     self?.titleLabel.text = userObject.displayName
+                    let userModel = AmityUserModel(user: userObject)
 					if !userModel.avatarCustomURL.isEmpty {
-                    weakSelf.avatarView.setImage(withCustomURL: userModel.avatarCustomURL,
-                                                         placeholder: AmityIconSet.defaultAvatar)
-                        } else {
-                            weakSelf.avatarView.setImage(withImageURL: userModel.avatarURL,
-                                                         placeholder: AmityIconSet.defaultAvatar)
-                        }
+                        self?.avatarView.setImage(withCustomURL: userModel.avatarCustomURL,
+                                                 placeholder: AmityIconSet.defaultAvatar)
+                    } else {
+                        self?.avatarView.setImage(withImageURL: userModel.avatarURL,
+                                                  placeholder: AmityIconSet.defaultAvatar)
+                    }
                 }
             }
         case .community:
