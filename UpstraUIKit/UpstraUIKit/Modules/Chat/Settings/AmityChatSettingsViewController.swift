@@ -61,9 +61,9 @@ extension AmityChatSettingsViewController: UITableViewDataSource {
             if let cell = cell as? AmitySettingsItemTextContentTableViewCell {
                 let item = AmitySettingsItem.TextContent(identifier: "",
                                                          icon: screenViewModel.dataSource.getOptionImage(with: indexPath.row),
-                                                               title: screenViewModel.dataSource.getOptionTitle(with: indexPath.row),
-                                                               description: "",
-                                                               titleTextColor: screenViewModel.dataSource.getOptionTextColor(with: indexPath.row))
+                                                         title: screenViewModel.dataSource.getOptionTitle(with: indexPath.row),
+                                                         description: "",
+                                                         titleTextColor: screenViewModel.dataSource.getOptionTextColor(with: indexPath.row))
                 cell.display(content: item)
             }
         case .members:

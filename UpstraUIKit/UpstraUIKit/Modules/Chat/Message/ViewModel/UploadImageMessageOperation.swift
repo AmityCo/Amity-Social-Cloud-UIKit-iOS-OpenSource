@@ -38,32 +38,40 @@ class UploadImageMessageOperation: AsyncOperation {
         
         // Perform actual task on main queue.
         DispatchQueue.main.async { [weak self] in
-            self?.media.getLocalURLForUploading(completion: { (url) in
-                guard let imageUrl = url else {
+            self?.media.getImageForUploading { result in
+                switch result {
+                case .success(let image):
+                    
+                    // save image to temp directory and send local url path for uploading
+                    let imageName = "\(UUID().uuidString).jpg"
+                    
+                    let imageUrl = FileManager.default.temporaryDirectory.appendingPathComponent(imageName)
+                    let data = image.scalePreservingAspectRatio().jpegData(compressionQuality: 0.8)
+                    try? data?.write(to: imageUrl)
+                    
+                    let messageId = repository.createImageMessage(withChannelId: channelId, imageFile: imageUrl, caption: nil, fullImage: true, tags: nil, parentId: nil, completion: nil)
+                    self?.token = repository.getMessage(messageId)?.observe { (liveObject, error) in
+                        guard error == nil, let message = liveObject.object else {
+                            self?.token = nil
+                            self?.finish()
+                            return
+                        }
+                        switch message.syncState {
+                        case .syncing, .default:
+                            // We don't cache local file URL as sdk handles itself
+                            break
+                        case .synced, .error:
+                            self?.token = nil
+                            self?.finish()
+                        @unknown default:
+                            fatalError()
+                        }
+                    }
+                case .failure:
                     self?.finish()
-                    return
                 }
-                let messageId = repository.createImageMessage(withChannelId: channelId, imageFile: imageUrl, caption: nil, fullImage: true, tags: nil, parentId: nil, completion: nil)
-                self?.token = repository.getMessage(messageId)?.observe { (liveObject, error) in
-                    guard error == nil, let message = liveObject.object else {
-                        self?.token = nil
-                        self?.finish()
-                        return
-                    }
-                    switch message.syncState {
-                    case .syncing, .default:
-                        // We don't cache local file URL as sdk handles itself
-                        break
-                    case .synced, .error:
-                        self?.token = nil
-                        self?.finish()
-                    @unknown default:
-                        fatalError()
-                    }
-                }
-                
-            })
-
+            }
+            
         }
         
     }

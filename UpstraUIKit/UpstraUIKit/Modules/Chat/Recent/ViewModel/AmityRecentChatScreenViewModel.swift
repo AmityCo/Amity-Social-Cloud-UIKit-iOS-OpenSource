@@ -34,11 +34,8 @@ public struct AmityChannelModel {
         self.metadata = object.metadata ?? [:]
     }
     
-    func isDirectChat() -> Bool {
-        if let isDirectChat = metadata["isDirectChat"] as? Bool {
-            return isDirectChat
-        }
-        return false
+    var isConversationChannel: Bool {
+        return channelType == .conversation
     }
     
     func getOtherUserId() -> String {

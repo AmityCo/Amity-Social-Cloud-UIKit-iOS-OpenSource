@@ -218,7 +218,7 @@ private extension AmityMessageListViewController {
     }
     
     private func observeConnectionStatus() {
-        connectionStatatusObservation = AmityUIKitManagerInternal.shared.client.observe(\.connectionStatus) { [weak self] client, change in
+        connectionStatatusObservation = Reachability.shared.observe(\.isConnectedToNetwork, options: [.initial]) { [weak self] _, _ in
             DispatchQueue.main.async {
                 self?.updateConnectionStatusBar(animated: true)
             }
@@ -230,18 +230,16 @@ private extension AmityMessageListViewController {
     }
     
     private func updateConnectionStatusBar(animated: Bool) {
-        
         var barVisibilityIsUpdate = false
         let barIsShowing = (connectionStatusBarTopSpace.constant == -connectionStatusBarHeight.constant)
-        switch AmityUIKitManagerInternal.shared.client.connectionStatus {
-        case .connected:
+        if Reachability.shared.isConnectedToNetwork {
             // online
             if !barIsShowing {
                 connectionStatusBarTopSpace.constant = -connectionStatusBarHeight.constant
                 view.setNeedsLayout()
                 barVisibilityIsUpdate = true
             }
-        default:
+        } else {
             // not online
             if barIsShowing {
                 connectionStatusBarTopSpace.constant = 0
@@ -373,14 +371,12 @@ extension AmityMessageListViewController: UIImagePickerControllerDelegate & UINa
         
         guard let image = info[.originalImage] as? UIImage else { return }
         
-        // save image to temp directory and send local url path for uploading
-        let imageName = "\(UUID().uuidString).png"
-        let imageURL = FileManager.default.temporaryDirectory.appendingPathComponent(imageName)
-        
         picker.dismiss(animated: true) { [weak self] in
             do {
-                try image.fixedOrientation().pngData()?.write(to: imageURL)
-                let media = AmityMedia(state: .localURL(url: imageURL), type: .image)
+                let resizedImage = image
+                    .fixedOrientation()
+                    .scalePreservingAspectRatio()
+                let media = AmityMedia(state: .image(resizedImage), type: .image)
                 self?.screenViewModel.action.send(withMedias: [media])
             } catch {
                 Log.add(error.localizedDescription)
