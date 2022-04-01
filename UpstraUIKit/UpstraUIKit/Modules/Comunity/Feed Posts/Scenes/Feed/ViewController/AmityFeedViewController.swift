@@ -174,7 +174,7 @@ public final class AmityFeedViewController: AmityViewController, AmityRefreshabl
     }
     
     @objc private func handleRefreshingControl() {
-        guard Reachability.isConnectedToNetwork() && AmityUIKitManagerInternal.shared.client.connectionStatus == .connected else {
+        guard Reachability.shared.isConnectedToNetwork && AmityUIKitManagerInternal.shared.client.connectionStatus == .connected else {
             tableView.reloadData()
             dataDidUpdateHandler?(0)
             refreshControl.endRefreshing()

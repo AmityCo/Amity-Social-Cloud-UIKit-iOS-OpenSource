@@ -121,7 +121,7 @@ final class AmityChatSettingsScreenViewModel: AmityChatSettingsScreenViewModelTy
         channelRepository = AmityChannelRepository(client: AmityUIKitManagerInternal.shared.client)
         userRepository = AmityUserRepository(client: AmityUIKitManagerInternal.shared.client)
         
-        directChatSetting = [.report(isUserReported), .leave]
+        directChatSetting = [.report(isUserReported)]
         
         self.channelId = channelId
         
@@ -133,7 +133,7 @@ final class AmityChatSettingsScreenViewModel: AmityChatSettingsScreenViewModelTy
             let channelModel = AmityChannelModel(object: model)
             weakSelf.channelModel = channelModel
             weakSelf.memberCount = "\(model.memberCount)"
-            if channelModel.isDirectChat() {
+            if channelModel.isConversationChannel {
                 weakSelf.getReportUserStatus()
             }
             weakSelf.delegate?.screenViewModelDidUpdate(viewModel: weakSelf)
@@ -152,7 +152,7 @@ extension AmityChatSettingsScreenViewModel {
         guard let model = channelModel else {
             return 1
         }
-        if model.isDirectChat() {
+        if model.isConversationChannel {
             return directChatSetting.count
         }
         return groupChatSetting.count
@@ -162,7 +162,7 @@ extension AmityChatSettingsScreenViewModel {
         guard let model = channelModel else {
             return OptionsList.leave.text
         }
-        if model.isDirectChat() {
+        if model.isConversationChannel {
             return directChatSetting[index].text
         }
         return groupChatSetting[index].text
@@ -172,7 +172,7 @@ extension AmityChatSettingsScreenViewModel {
         guard let model = channelModel else {
             return OptionsList.leave.textColor
         }
-        if model.isDirectChat() {
+        if model.isConversationChannel {
             return directChatSetting[index].textColor
         }
         return groupChatSetting[index].textColor
@@ -182,7 +182,7 @@ extension AmityChatSettingsScreenViewModel {
         guard let model = channelModel else {
             return OptionsList.leave.image
         }
-        if model.isDirectChat() {
+        if model.isConversationChannel {
             return directChatSetting[index].image
         }
         return groupChatSetting[index].image
@@ -192,7 +192,7 @@ extension AmityChatSettingsScreenViewModel {
         guard let model = channelModel else {
             return OptionsList.leave
         }
-        if model.isDirectChat() {
+        if model.isConversationChannel {
             return directChatSetting[index]
         }
         return groupChatSetting[index]
@@ -284,7 +284,7 @@ extension AmityChatSettingsScreenViewModel {
     func didClickCell(index: Int) {
         var optionSetting: [OptionsList] = [.leave]
         if let model = channelModel {
-            if model.isDirectChat() {
+            if model.isConversationChannel {
                 optionSetting =  directChatSetting
             } else {
                 optionSetting = groupChatSetting

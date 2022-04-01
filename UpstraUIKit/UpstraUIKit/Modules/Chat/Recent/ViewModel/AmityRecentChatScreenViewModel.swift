@@ -36,11 +36,8 @@ public struct AmityChannelModel {
         self.recentMessage = AmityLocalizedStringSet.RecentMessage.noMessage.localizedString
     }
     
-    func isDirectChat() -> Bool {
-        if let isDirectChat = metadata["isDirectChat"] as? Bool {
-            return isDirectChat
-        }
-        return false
+    var isConversationChannel: Bool {
+        return channelType == .conversation
     }
     
     func getOtherUserId() -> String {

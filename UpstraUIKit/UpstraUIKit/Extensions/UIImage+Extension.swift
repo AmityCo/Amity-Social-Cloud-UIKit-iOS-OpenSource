@@ -99,4 +99,35 @@ extension UIImage {
         return context.makeImage().map { UIImage(cgImage: $0) } ?? self
     }
     
+    func scalePreservingAspectRatio(targetSize: CGSize = CGSize(width: 1600, height: 1600)) -> UIImage {
+        // Determine the scale factor that preserves aspect ratio
+        let widthRatio = targetSize.width / size.width
+        let heightRatio = targetSize.height / size.height
+        
+        let scaleFactor = min(widthRatio, heightRatio)
+        
+        // If the current size is smaller than target size, returns the current size.
+        guard scaleFactor < 1 else { return self }
+        
+        // Compute the new image size that preserves aspect ratio
+        let scaledImageSize = CGSize(
+            width: size.width * scaleFactor,
+            height: size.height * scaleFactor
+        )
+        
+        // Draw and return the resized UIImage
+        let renderer = UIGraphicsImageRenderer(
+            size: scaledImageSize
+        )
+        
+        let scaledImage = renderer.image { _ in
+            self.draw(in: CGRect(
+                origin: .zero,
+                size: scaledImageSize
+            ))
+        }
+        
+        return scaledImage
+    }
+    
 }
