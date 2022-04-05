@@ -87,7 +87,7 @@ final class customAPIRequest {
             case "mm":
                 return "mm"
             default:
-                return "th"
+                return "staging"
             }
         }
         
