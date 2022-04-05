@@ -42,7 +42,7 @@ public final class AmityRecentChatViewController: AmityViewController, Indicator
         screenViewModel = viewModel
         self.channelID = channelID
         super.init(nibName: AmityRecentChatViewController.identifier, bundle: AmityUIKitManager.bundle)
-        AmityHUD.show(.loading)
+//        AmityHUD.show(.loading)
     }
     
     required init?(coder: NSCoder) {
