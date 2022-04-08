@@ -94,6 +94,7 @@ extension AmityUserProfileHeaderScreenViewModel {
     }
     
     func createChannel() {
+        
         let builder = AmityConversationChannelBuilder()
         builder.setUserId(userId)
         builder.setDisplayName(user?.displayName ?? "")
