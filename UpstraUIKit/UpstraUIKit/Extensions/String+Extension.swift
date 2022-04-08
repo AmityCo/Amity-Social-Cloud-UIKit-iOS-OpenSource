@@ -34,11 +34,11 @@ public extension String {
             return NSLocalizedString(self, tableName: "LocalizedIndonesia", bundle: AmityUIKitManager.bundle, value: "", comment: "")
         case "km":
             return NSLocalizedString(self, tableName: "LocalizedCambodia", bundle: AmityUIKitManager.bundle, value: "", comment: "")
-        case "ph":
+        case "fil":
             return NSLocalizedString(self, tableName: "LocalizedPhilippin", bundle: AmityUIKitManager.bundle, value: "", comment: "")
-        case "vn":
+        case "vi":
             return NSLocalizedString(self, tableName: "LocalizedVietnam", bundle: AmityUIKitManager.bundle, value: "", comment: "")
-        case "mm":
+        case "my":
             return NSLocalizedString(self, tableName: "LocalizedMyanmar", bundle: AmityUIKitManager.bundle, value: "", comment: "")
         case "en":
             return NSLocalizedString(self, tableName: "LocalizedEnglish", bundle: AmityUIKitManager.bundle, value: "", comment: "")
