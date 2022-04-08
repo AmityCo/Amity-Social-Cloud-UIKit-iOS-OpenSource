@@ -20,11 +20,11 @@ final class customAPIRequest {
                 return "id"
             case "km":
                 return "kh"
-            case "ph":
+            case "fil":
                 return "ph"
-            case "vn":
+            case "vi":
                 return "vn"
-            case "mm":
+            case "my":
                 return "mm"
             default:
                 return "staging"
@@ -80,11 +80,11 @@ final class customAPIRequest {
                 return "id"
             case "km":
                 return "kh"
-            case "ph":
+            case "fil":
                 return "ph"
-            case "vn":
+            case "vi":
                 return "vn"
-            case "mm":
+            case "my":
                 return "mm"
             default:
                 return "staging"

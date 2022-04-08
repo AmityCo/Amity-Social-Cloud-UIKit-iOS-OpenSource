@@ -215,16 +215,16 @@ extension CommunityFeatureViewController: UITableViewDelegate {
             AmityUIKitManager.setLanguage(language: "km")
             openHomePage()
         case .ph:
-            AmityUIKitManager.setLanguage(language: "ph")
+            AmityUIKitManager.setLanguage(language: "fil")
             openHomePage()
         case .vn:
-            AmityUIKitManager.setLanguage(language: "vn")
+            AmityUIKitManager.setLanguage(language: "vi")
             openHomePage()
         case .en:
             AmityUIKitManager.setLanguage(language: "en")
             openHomePage()
         case .mm:
-            AmityUIKitManager.setLanguage(language: "mm")
+            AmityUIKitManager.setLanguage(language: "my")
             openHomePage()
         case .gallery:
             let galleryVC = AmityPostGalleryViewController.makeByTrueID(targetType: .user, targetId: UserDefaults.standard.value(forKey: UserDefaultsKey.userId) as! String, isHiddenButtonCreate: false)
