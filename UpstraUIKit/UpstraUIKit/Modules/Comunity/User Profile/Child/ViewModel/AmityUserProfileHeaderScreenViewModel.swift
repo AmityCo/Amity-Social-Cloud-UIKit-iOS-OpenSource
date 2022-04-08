@@ -93,32 +93,33 @@ extension AmityUserProfileHeaderScreenViewModel {
         }
     }
     
-//    func createChannel() {
-//        let builder = AmityConversationChannelBuilder()
-//        builder.setUserId(userId)
-//        builder.setDisplayName(user?.displayName ?? "")
-//
-//        let channel: AmityObject<AmityChannel> = channelRepository.createChannel().conversation(with: builder)
-//        channelToken?.invalidate()
-//        channelToken = channel.observeOnce { [weak self] channelObject, _ in
-//            guard let strongSelf = self else { return }
-//            switch channelObject.dataStatus {
-//            case .fresh:
-//                if let channel = channelObject.object {
-//                    strongSelf.delegate?.screenViewModel(strongSelf, didCreateChannel: channel)
-//                }
-//                strongSelf.channelToken?.invalidate()
-//            case .local:
-//                if let channel = channelObject.object {
-//                    strongSelf.delegate?.screenViewModel(strongSelf, didCreateChannel: channel)
-//                }
-//            case .error, .notExist:
-//                strongSelf.channelToken?.invalidate()
-//            @unknown default:
-//                break
-//            }
-//        }
-//    }
+    func createChannel() {
+        
+        let builder = AmityConversationChannelBuilder()
+        builder.setUserId(userId)
+        builder.setDisplayName(user?.displayName ?? "")
+
+        let channel: AmityObject<AmityChannel> = channelRepository.createChannel(with: builder)
+        channelToken?.invalidate()
+        channelToken = channel.observeOnce { [weak self] channelObject, _ in
+            guard let strongSelf = self else { return }
+            switch channelObject.dataStatus {
+            case .fresh:
+                if let channel = channelObject.object {
+                    strongSelf.delegate?.screenViewModel(strongSelf, didCreateChannel: channel)
+                }
+                strongSelf.channelToken?.invalidate()
+            case .local:
+                if let channel = channelObject.object {
+                    strongSelf.delegate?.screenViewModel(strongSelf, didCreateChannel: channel)
+                }
+            case .error, .notExist:
+                strongSelf.channelToken?.invalidate()
+            @unknown default:
+                break
+            }
+        }
+    }
     
     func follow() {
         followManager.followUser(withUserId: userId) { [weak self] success, result, error in
@@ -147,49 +148,49 @@ extension AmityUserProfileHeaderScreenViewModel {
     }
     
     //Create chat with Community Type
-    public func createChannel() {
-        var allUsers = [user]
-        var currentUser: AmityUserModel?
-        if let user = AmityUIKitManagerInternal.shared.client.currentUser?.object {
-            let userModel = AmityUserModel(user: user)
-            currentUser = userModel
-            allUsers.append(userModel)
-        }
-        let builder = AmityCommunityChannelBuilder()
-        let userIds = allUsers.map{ $0!.userId }
-        let channelId = userIds.sorted().joined(separator: "-")
-        let channelDisplayName = allUsers.map { $0!.displayName }.joined(separator: "-")
-        var userArrayWithDisplayName: [String] = []
-        for name in allUsers{
-            userArrayWithDisplayName.append("\(name!.userId):\(name!.displayName)")
-        }
-        builder.setUserIds(userIds)
-        builder.setId(channelId)
-        let metaData: [String:Any] = [
-            "isDirectChat": allUsers.count == 2,
-            "creatorId": currentUser?.userId ?? "",
-            "sdk_type":"ios",
-            "userIds": userIds,
-            "chatDisplayName": userArrayWithDisplayName
-        ]
-        builder.setMetadata(metaData)
-        builder.setDisplayName(channelDisplayName)
-        builder.setTags(["ch-comm","ios-sdk"])
-        existingChannelToken?.invalidate()
-        existingChannelToken = channelRepository.getChannel(channelId).observe({ [weak self] (channel, error) in
-            guard let weakSelf = self else { return }
-            if error != nil {
-                weakSelf.createNewCommiunityChannel(builder: builder)
-            }
-            guard channel.object != nil else { return }
-            weakSelf.channelRepository.joinChannel(channelId)
-            weakSelf.existingChannelToken?.invalidate()
-            if let channelObject = channel.object {
-                weakSelf.delegate?.screenViewModel(weakSelf, didCreateChannel: channelObject)
-            }
-        })
-
-    }
+//    public func createChannel() {
+//        var allUsers = [user]
+//        var currentUser: AmityUserModel?
+//        if let user = AmityUIKitManagerInternal.shared.client.currentUser?.object {
+//            let userModel = AmityUserModel(user: user)
+//            currentUser = userModel
+//            allUsers.append(userModel)
+//        }
+//        let builder = AmityCommunityChannelBuilder()
+//        let userIds = allUsers.map{ $0!.userId }
+//        let channelId = userIds.sorted().joined(separator: "-")
+//        let channelDisplayName = allUsers.map { $0!.displayName }.joined(separator: "-")
+//        var userArrayWithDisplayName: [String] = []
+//        for name in allUsers{
+//            userArrayWithDisplayName.append("\(name!.userId):\(name!.displayName)")
+//        }
+//        builder.setUserIds(userIds)
+//        builder.setId(channelId)
+//        let metaData: [String:Any] = [
+//            "isDirectChat": allUsers.count == 2,
+//            "creatorId": currentUser?.userId ?? "",
+//            "sdk_type":"ios",
+//            "userIds": userIds,
+//            "chatDisplayName": userArrayWithDisplayName
+//        ]
+//        builder.setMetadata(metaData)
+//        builder.setDisplayName(channelDisplayName)
+//        builder.setTags(["ch-comm","ios-sdk"])
+//        existingChannelToken?.invalidate()
+//        existingChannelToken = channelRepository.getChannel(channelId).observe({ [weak self] (channel, error) in
+//            guard let weakSelf = self else { return }
+//            if error != nil {
+//                weakSelf.createNewCommiunityChannel(builder: builder)
+//            }
+//            guard channel.object != nil else { return }
+//            weakSelf.channelRepository.joinChannel(channelId)
+//            weakSelf.existingChannelToken?.invalidate()
+//            if let channelObject = channel.object {
+//                weakSelf.delegate?.screenViewModel(weakSelf, didCreateChannel: channelObject)
+//            }
+//        })
+//
+//    }
 
     func createNewCommiunityChannel(builder: AmityCommunityChannelBuilder) {
         let channelObject = channelRepository.createChannel(with: builder)

@@ -131,7 +131,7 @@ private extension AmityCommunityHomePageViewController {
     }
     
     @objc func chatTap() {
-        let chatVC = AmityRecentChatViewController.make(channelType: .community)
+        let chatVC = AmityRecentChatViewController.make(channelType: .conversation)
         chatVC.modalPresentationStyle = .fullScreen
         chatVC.modalTransitionStyle = .crossDissolve
         navigationController?.pushViewController(chatVC, animated: true)

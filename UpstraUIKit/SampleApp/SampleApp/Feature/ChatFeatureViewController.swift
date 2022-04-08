@@ -104,7 +104,7 @@ extension ChatFeatureViewController: UITableViewDelegate {
             let vc = AmityChatHomePageViewController.make()
             navigationController?.pushViewController(vc, animated: true)
         case .chatList:
-            let vc = AmityRecentChatViewController.make(channelType: .community)
+            let vc = AmityRecentChatViewController.make(channelType: .conversation)
             navigationController?.pushViewController(vc, animated: true)
         case .chatListCustomize:
             let vc = AmityChatHomePageViewController.make()
