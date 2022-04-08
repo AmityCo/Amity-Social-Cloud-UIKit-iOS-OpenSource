@@ -94,7 +94,7 @@ extension AmityUserProfileHeaderScreenViewModel {
     }
     
     func createChannel() {
-        
+        AmityHUD.show(.loading)
         let builder = AmityConversationChannelBuilder()
         builder.setUserId(userId)
         builder.setDisplayName(user?.displayName ?? "")
@@ -102,6 +102,7 @@ extension AmityUserProfileHeaderScreenViewModel {
         let channel: AmityObject<AmityChannel> = channelRepository.createChannel(with: builder)
         channelToken?.invalidate()
         channelToken = channel.observeOnce { [weak self] channelObject, _ in
+            AmityHUD.hide()
             guard let strongSelf = self else { return }
             switch channelObject.dataStatus {
             case .fresh:
