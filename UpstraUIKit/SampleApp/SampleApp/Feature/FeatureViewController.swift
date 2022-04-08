@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import AmityUIKit
 
 class FeatureViewController: UIViewController {
     
@@ -15,6 +16,7 @@ class FeatureViewController: UIViewController {
         case community
         case data
         case chatFromProfile
+        case testUnreadFromOutsideAmity
         
         var text: String {
             switch self {
@@ -26,6 +28,8 @@ class FeatureViewController: UIViewController {
                 return "Data"
             case .chatFromProfile:
                 return "Test chat from profile"
+            case .testUnreadFromOutsideAmity:
+                return "Test get unreadCount from outside Amity"
             }
         }
     }
@@ -43,6 +47,7 @@ class FeatureViewController: UIViewController {
         
         logoutButtonItem = UIBarButtonItem(title: "Logout", style: .plain, target: self, action: #selector(logoutTap))
         navigationItem.rightBarButtonItem = logoutButtonItem
+        
     }
     
     @objc private func logoutTap() {
@@ -72,6 +77,26 @@ extension FeatureViewController: UITableViewDelegate {
             let vc = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "ChatFromCommunityViewController")
             vc.hidesBottomBarWhenPushed = true
             navigationController?.pushViewController(vc, animated: true)
+        case .testUnreadFromOutsideAmity:
+            var unreadCount = 0
+            
+            AmityChatHandler.shared.getNotiCountFromAPI{ result in
+                switch result {
+                case .success(let count):
+                    unreadCount = count
+                    let alert = UIAlertController(title: "Test unreadCount", message: "Total unread count = \(unreadCount)", preferredStyle: .alert)
+                    alert.addAction(UIAlertAction(title: "Ok", style: .default, handler: { UIAlertAction in
+                        
+                    }))
+                    DispatchQueue.main.async {
+                        self.present(alert, animated: true, completion: nil)
+                    }
+                case .failure(let error):
+                    print(error.localizedDescription)
+                }
+            }
+            
+            
         }
         
     }
