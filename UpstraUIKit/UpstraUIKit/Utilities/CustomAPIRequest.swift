@@ -31,7 +31,8 @@ final class customAPIRequest {
             }
         }
         
-        let url = URL(string: "https://qojeq6vaa8.execute-api.ap-southeast-1.amazonaws.com/media?page=\(page_number)&region=\(region)")!
+        let urlString = "https://qojeq6vaa8.execute-api.ap-southeast-1.amazonaws.com/media?page=\(page_number)&region=\(region)".addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)
+        let url = URL(string: urlString ?? "")!
         
         var tempDiscoveryData: [DiscoveryDataModel] = []
         
@@ -91,7 +92,8 @@ final class customAPIRequest {
             }
         }
         
-        let url = URL(string: "https://qojeq6vaa8.execute-api.ap-southeast-1.amazonaws.com/getRedNoseTrueId?userId=\(userId)&region=\(region)")!
+        let urlString = "https://qojeq6vaa8.execute-api.ap-southeast-1.amazonaws.com/getRedNoseTrueId?userId=\(userId)&region=\(region)".addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)
+        let url = URL(string: urlString ?? "")!
         var badge: Int = 0
         print("URL:::::: ", url)
         var request = URLRequest(url: url)

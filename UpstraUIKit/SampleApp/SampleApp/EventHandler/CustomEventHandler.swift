@@ -123,6 +123,10 @@ class AmityCustomEventHandler: AmityEventHandler {
         debugPrint("Close")
     }
     
+    override func communityJoinButtonTracking(screenName: String, communityModel: AmityCommunityModelExternal) {
+        debugPrint("Screen name: \(screenName) | Community Model: \(communityModel)")
+    }
+    
 //    override func timelineFeedDidScroll(_ scrollView: UIScrollView) {
 //        debugPrint(scrollView as Any)
 //    }

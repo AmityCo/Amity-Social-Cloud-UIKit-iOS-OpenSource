@@ -10,7 +10,7 @@ import UIKit
 import AmitySDK
 
 
-public class AmityCommunityHomePageViewController: AmityPageViewController {
+public class AmityCommunityHomePageViewController: AmityPageViewController, AmityProfilePagerAwareProtocol {
     
     private enum UserDefaultsKey {
         static let userId = "userId"
@@ -117,6 +117,18 @@ public class AmityCommunityHomePageViewController: AmityPageViewController {
             navigationItem.leftBarButtonItem = leftBarButtonItem
         }
     }
+    
+    //AmityProfilePagerAware
+    weak var pageDelegate: AmityProfileBottomPageDelegate?
+    
+    var currentViewController: UIViewController? {
+        return viewControllers[currentIndex]
+    }
+    
+    var pagerTabHeight: CGFloat? {
+        return 44
+    }
+
 }
 
 // MARK: - Action
@@ -207,3 +219,4 @@ extension AmityCommunityHomePageViewController: AmityCommunityHomePageScreenView
         }
     }
 }
+
