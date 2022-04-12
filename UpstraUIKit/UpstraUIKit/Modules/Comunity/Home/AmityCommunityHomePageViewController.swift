@@ -10,7 +10,7 @@ import UIKit
 import AmitySDK
 
 
-public class AmityCommunityHomePageViewController: AmityPageViewController, AmityProfilePagerAwareProtocol {
+public class AmityCommunityHomePageViewController: AmityProfileBottomViewController {
     
     private enum UserDefaultsKey {
         static let userId = "userId"
@@ -35,7 +35,7 @@ public class AmityCommunityHomePageViewController: AmityPageViewController, Amit
     
     private init(amityCommunityEventType: AmityCommunityEventTypeModel? = nil) {
         screenViewModel = AmityCommunityHomePageScreenViewModel(amityCommunityEventTypeModel: amityCommunityEventType)
-        super.init(nibName: AmityCommunityHomePageViewController.identifier, bundle: AmityUIKitManager.bundle)
+        super.init()
         screenViewModel.delegate = self
         title = AmityLocalizedStringSet.communityHomeTitle.localizedString
     }
@@ -119,15 +119,15 @@ public class AmityCommunityHomePageViewController: AmityPageViewController, Amit
     }
     
     //AmityProfilePagerAware
-    weak var pageDelegate: AmityProfileBottomPageDelegate?
-    
-    var currentViewController: UIViewController? {
-        return viewControllers[currentIndex]
-    }
-    
-    var pagerTabHeight: CGFloat? {
-        return 44
-    }
+//    weak var pageDelegate: AmityProfileBottomPageDelegate?
+//
+//    var currentViewController: UIViewController? {
+//        return viewControllers[currentIndex]
+//    }
+//
+//    var pagerTabHeight: CGFloat? {
+//        return 100
+//    }
 
 }
 
@@ -219,4 +219,3 @@ extension AmityCommunityHomePageViewController: AmityCommunityHomePageScreenView
         }
     }
 }
-

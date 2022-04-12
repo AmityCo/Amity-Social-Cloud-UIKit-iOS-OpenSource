@@ -32,7 +32,7 @@ public class AmityNewsfeedViewController: AmityViewController, IndicatorInfoProv
         setupFeedView()
         setupHeaderView()
         setupEmptyView()
-        setupPostButton()
+//        setupPostButton()
     }
     
     public override func viewWillAppear(_ animated: Bool) {
@@ -58,6 +58,7 @@ private extension AmityNewsfeedViewController {
     
     private func setupFeedView() {
         addChild(viewController: feedViewController)
+        
         feedViewController.dataDidUpdateHandler = { [weak self] itemCount in
             self?.emptyView.setNeedsUpdateState()
         }

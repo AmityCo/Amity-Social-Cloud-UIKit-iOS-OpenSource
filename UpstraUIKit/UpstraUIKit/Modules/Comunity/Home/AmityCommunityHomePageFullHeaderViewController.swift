@@ -60,12 +60,6 @@ public class AmityCommunityHomePageFullHeaderViewController: AmityProfileViewCon
         postButton.add(to: view, position: .bottomRight)
         postButton.actionHandler = { [weak self] _ in
             guard let strongSelf = self else { return }
-            
-//            let vc = AmityPostCreatorViewController.make(postTarget: .myFeed)
-//            let nav = UINavigationController(rootViewController: vc)
-//            nav.modalPresentationStyle = .overFullScreen
-//            strongSelf.present(nav, animated: true, completion: nil)
-//
             AmityEventHandler.shared.createPostBeingPrepared(from: strongSelf, postTarget: .myFeed)
         }
         postButton.isHidden = !screenViewModel.isCurrentUser
