@@ -21,6 +21,7 @@ public class AmityCommunityHomePageViewController: AmityProfileBottomViewControl
     // MARK: - Properties
 //    public let newsFeedVC = AmityNewsfeedViewController.make()
     public let newsFeedVC = AmityFeedViewController.make(feedType: .customPostRankingGlobalFeed)
+    public let newfeedHeader = AmityMyCommunityPreviewViewController.make()
     public let exploreVC = AmityCommunityExplorerViewController.make()
     public let discoveryVC = AmityDiscoveryViewController.makeByTrueIDWithoutTargetId(targetType: .community, isHiddenButtonCreate: true)
     
@@ -36,6 +37,7 @@ public class AmityCommunityHomePageViewController: AmityProfileBottomViewControl
     
     private init(amityCommunityEventType: AmityCommunityEventTypeModel? = nil) {
         screenViewModel = AmityCommunityHomePageScreenViewModel(amityCommunityEventTypeModel: amityCommunityEventType)
+//        super.init(nibName: AmityCommunityHomePageViewController.identifier, bundle: AmityUIKitManager.bundle)
         super.init()
         screenViewModel.delegate = self
         title = AmityLocalizedStringSet.communityHomeTitle.localizedString
@@ -69,11 +71,15 @@ public class AmityCommunityHomePageViewController: AmityProfileBottomViewControl
     
     override func viewControllers(for pagerTabStripController: AmityPagerTabViewController) -> [UIViewController] {
         newsFeedVC.pageTitle = AmityLocalizedStringSet.newsfeedTitle.localizedString
-        let newfeedHeader = AmityMyCommunityPreviewViewController.make()
         newfeedHeader.retrieveCommunityList()
         newsFeedVC.headerView = newfeedHeader
+        
+        newfeedHeader.delegate = self
+        
         exploreVC.pageTitle = AmityLocalizedStringSet.exploreTitle.localizedString
+        
         discoveryVC.pageTitle = AmityLocalizedStringSet.discoveryTitle.localizedString
+        
         return [newsFeedVC, exploreVC, discoveryVC]
     }
     
@@ -209,6 +215,28 @@ extension AmityCommunityHomePageViewController: AmityCommunityHomePageScreenView
             if badgeView != nil {
                 badgeView.removeFromSuperview()
             }
+        }
+    }
+}
+
+extension AmityCommunityHomePageViewController: AmityMyCommunityPreviewViewControllerDelegate {
+
+    public func viewController(_ viewController: AmityMyCommunityPreviewViewController, didPerformAction action: AmityMyCommunityPreviewViewController.ActionType) {
+        switch action {
+        case .seeAll:
+            AmityEventHandler.shared.communityMyCommunitySectionTracking()
+            let vc = AmityMyCommunityViewController.make()
+            navigationController?.pushViewController(vc, animated: true)
+        case .communityItem(let communityId):
+            AmityEventHandler.shared.communityDidTap(from: self, communityId: communityId)
+        }
+    }
+
+    public func viewController(_ viewController: AmityMyCommunityPreviewViewController, shouldShowMyCommunityPreview: Bool) {
+        if shouldShowMyCommunityPreview {
+            newsFeedVC.headerView = newfeedHeader
+        } else {
+            newsFeedVC.headerView = nil
         }
     }
 }

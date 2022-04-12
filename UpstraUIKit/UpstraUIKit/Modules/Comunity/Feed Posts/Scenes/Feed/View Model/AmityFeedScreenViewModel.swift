@@ -99,6 +99,7 @@ extension AmityFeedScreenViewModel {
     func fetchPosts() {
         isLoading = true
         postController.retrieveFeed(withFeedType: feedType) { [weak self] (result) in
+            print(self?.feedType == .customPostRankingGlobalFeed)
             guard let strongSelf = self else { return }
             switch result {
             case .success(let posts):

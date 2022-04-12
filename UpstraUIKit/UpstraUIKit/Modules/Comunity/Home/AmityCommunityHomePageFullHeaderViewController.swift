@@ -19,6 +19,7 @@ public class AmityCommunityHomePageFullHeaderViewController: AmityProfileViewCon
 //    private var bottom: AmityUserProfileBottomViewController!
     private let postButton: AmityFloatingButton = AmityFloatingButton()
     private var screenViewModel: AmityCommunityHomePageFullHeaderScreenViewModelType!
+    private var permissionCanLive: Bool = false
     
     // MARK: - Initializer
     
@@ -31,6 +32,7 @@ public class AmityCommunityHomePageFullHeaderViewController: AmityProfileViewCon
         vc.bottom = AmityCommunityHomePageViewController.make()
 //        vc.bottom = AmityUserProfileBottomViewController.make(withUserId: userId)
         vc.screenViewModel = viewModel
+        vc.screenViewModel.action.fetchUserProfile(with: AmityUIKitManagerInternal.shared.currentUserId)
         return vc
     }
     
@@ -60,7 +62,7 @@ public class AmityCommunityHomePageFullHeaderViewController: AmityProfileViewCon
         postButton.add(to: view, position: .bottomRight)
         postButton.actionHandler = { [weak self] _ in
             guard let strongSelf = self else { return }
-            AmityEventHandler.shared.createPostBeingPrepared(from: strongSelf, postTarget: .myFeed)
+            AmityEventHandler.shared.createPostBeingPrepared(from: strongSelf, liveStreamPermission: strongSelf.permissionCanLive)
         }
         postButton.isHidden = !screenViewModel.isCurrentUser
     }
@@ -105,5 +107,21 @@ extension AmityCommunityHomePageFullHeaderViewController: AmityCommunityHomePage
             break
         }
     }
+}
+
+// MARK: - Delegate
+extension AmityCommunityHomePageFullHeaderViewController: AmityNewsFeedScreenViewModelDelegate {
+    
+    func didFetchUserProfile(user: AmityUser) {
+        switch AmityUIKitManagerInternal.shared.envByApiKey {
+        case .staging:
+            let summaryRoles = user.roles + AmityUIKitManagerInternal.shared.stagingLiveRoleID
+            Array(Dictionary(grouping: summaryRoles, by: {$0}).filter { $1.count > 1 }.keys).count > 0 ? (permissionCanLive = true) : (permissionCanLive = false)
+        case .production:
+            let summaryRoles = user.roles + AmityUIKitManagerInternal.shared.productionLiveRoleID
+            Array(Dictionary(grouping: summaryRoles, by: {$0}).filter { $1.count > 1 }.keys).count > 0 ? (permissionCanLive = true) : (permissionCanLive = false)
+        }
+    }
+    
 }
 

@@ -27,4 +27,13 @@ final class AmityCommunityHomePageFullHeaderScreenViewModel: AmityCommunityHomeP
         return userId == AmityUIKitManagerInternal.shared.client.currentUserId
     }
     
+    func fetchUserProfile(with userId: String) {
+        userToken?.invalidate()
+        userToken = userRepository.getUser(userId).observe { [weak self] object, error in
+            self?.userToken?.invalidate()
+            guard let user = object.object else { return }
+            self?.delegate?.didFetchUserProfile(user: user)
+        }
+    }
+    
 }

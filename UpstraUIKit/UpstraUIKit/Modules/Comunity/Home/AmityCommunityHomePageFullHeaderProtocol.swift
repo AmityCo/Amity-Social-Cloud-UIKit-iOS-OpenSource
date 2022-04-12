@@ -11,6 +11,7 @@ import AmitySDK
 
 protocol AmityCommunityHomePageFullHeaderScreenViewModelDelegate: AnyObject {
     func screenViewModel(_ viewModel: AmityCommunityHomePageFullHeaderScreenViewModelType, failure error: AmityError)
+    func didFetchUserProfile(user: AmityUser)
 }
 
 protocol AmityCommunityHomePageFullHeaderScreenViewModelDataSource {
@@ -19,6 +20,7 @@ protocol AmityCommunityHomePageFullHeaderScreenViewModelDataSource {
 }
 
 protocol AmityCommunityHomePageFullHeaderScreenViewModelAction {
+    func fetchUserProfile(with userId: String)
 }
 
 protocol AmityCommunityHomePageFullHeaderScreenViewModelType: AmityCommunityHomePageFullHeaderScreenViewModelDataSource, AmityCommunityHomePageFullHeaderScreenViewModelAction {
