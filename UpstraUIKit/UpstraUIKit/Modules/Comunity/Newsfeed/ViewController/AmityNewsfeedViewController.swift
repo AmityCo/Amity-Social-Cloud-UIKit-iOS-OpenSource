@@ -16,6 +16,7 @@ public class AmityNewsfeedViewController: AmityViewController, IndicatorInfoProv
     }
     
     // MARK: - Properties
+    
     var pageTitle: String?
     
     private let emptyView = AmityNewsfeedEmptyView()
@@ -159,3 +160,4 @@ extension AmityNewsfeedViewController: AmityNewsFeedScreenViewModelDelegate {
     }
     
 }
+

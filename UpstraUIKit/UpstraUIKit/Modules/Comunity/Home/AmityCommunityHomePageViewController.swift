@@ -19,7 +19,8 @@ public class AmityCommunityHomePageViewController: AmityProfileBottomViewControl
     }
     
     // MARK: - Properties
-    public let newsFeedVC = AmityNewsfeedViewController.make()
+//    public let newsFeedVC = AmityNewsfeedViewController.make()
+    public let newsFeedVC = AmityFeedViewController.make(feedType: .customPostRankingGlobalFeed)
     public let exploreVC = AmityCommunityExplorerViewController.make()
     public let discoveryVC = AmityDiscoveryViewController.makeByTrueIDWithoutTargetId(targetType: .community, isHiddenButtonCreate: true)
     
@@ -68,6 +69,9 @@ public class AmityCommunityHomePageViewController: AmityProfileBottomViewControl
     
     override func viewControllers(for pagerTabStripController: AmityPagerTabViewController) -> [UIViewController] {
         newsFeedVC.pageTitle = AmityLocalizedStringSet.newsfeedTitle.localizedString
+        let newfeedHeader = AmityMyCommunityPreviewViewController.make()
+        newfeedHeader.retrieveCommunityList()
+        newsFeedVC.headerView = newfeedHeader
         exploreVC.pageTitle = AmityLocalizedStringSet.exploreTitle.localizedString
         discoveryVC.pageTitle = AmityLocalizedStringSet.discoveryTitle.localizedString
         return [newsFeedVC, exploreVC, discoveryVC]
@@ -117,17 +121,6 @@ public class AmityCommunityHomePageViewController: AmityProfileBottomViewControl
             navigationItem.leftBarButtonItem = leftBarButtonItem
         }
     }
-    
-    //AmityProfilePagerAware
-//    weak var pageDelegate: AmityProfileBottomPageDelegate?
-//
-//    var currentViewController: UIViewController? {
-//        return viewControllers[currentIndex]
-//    }
-//
-//    var pagerTabHeight: CGFloat? {
-//        return 100
-//    }
 
 }
 
