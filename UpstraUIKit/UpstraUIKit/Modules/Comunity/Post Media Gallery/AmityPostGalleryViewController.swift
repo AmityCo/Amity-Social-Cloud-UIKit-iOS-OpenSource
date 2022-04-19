@@ -207,8 +207,14 @@ extension AmityPostGalleryViewController {
     
     public func scrollViewDidScroll(_ scrollView: UIScrollView) {
         AmityEventHandler.shared.galleryDidScroll(scrollView)
+        
+        let height = scrollView.frame.size.height
+        let contentYoffset = scrollView.contentOffset.y
+        let distanceFromBottom = scrollView.contentSize.height - contentYoffset
+        if distanceFromBottom < height {
+            screenViewModel.action.loadMore()
+        }
     }
-    
 }
 
 
