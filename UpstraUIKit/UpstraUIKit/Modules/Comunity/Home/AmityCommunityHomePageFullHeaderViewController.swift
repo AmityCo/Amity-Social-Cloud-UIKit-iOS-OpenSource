@@ -14,7 +14,7 @@ public class AmityCommunityHomePageFullHeaderViewController: AmityProfileViewCon
     // MARK: - Properties
     
     private var settings: AmityUserProfilePageSettings!
-    private var header: AmityUserProfileHeaderViewController!
+    private var header: AmityCommunityHomePageHeaderViewController!
     private var bottom: AmityCommunityHomePageViewController!
 //    private var bottom: AmityUserProfileBottomViewController!
     private let postButton: AmityFloatingButton = AmityFloatingButton()
@@ -28,7 +28,7 @@ public class AmityCommunityHomePageFullHeaderViewController: AmityProfileViewCon
         let viewModel: AmityCommunityHomePageFullHeaderScreenViewModelType = AmityCommunityHomePageFullHeaderScreenViewModel(userId: userId)
         
         let vc = AmityCommunityHomePageFullHeaderViewController()
-        vc.header = AmityUserProfileHeaderViewController.make(withUserId: userId, settings: settings)
+        vc.header = AmityCommunityHomePageHeaderViewController.make()
         vc.bottom = AmityCommunityHomePageViewController.make()
 //        vc.bottom = AmityUserProfileBottomViewController.make(withUserId: userId)
         vc.screenViewModel = viewModel
