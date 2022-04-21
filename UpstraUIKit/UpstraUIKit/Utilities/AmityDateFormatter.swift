@@ -22,14 +22,7 @@ private extension Date {
     }
     
     var isToday: Bool {
-        if isInYesterday {
-            return false
-        }
-        
-        if daysFromNow > 1 {
-            return false
-        }
-        return true
+        return daysFromNow == 0
     }
 }
 

@@ -23,6 +23,7 @@ final class AmityRecentChatTableViewCell: UITableViewCell, Nibbable {
     @IBOutlet private var dateTimeLabel: UILabel!
     
     private var token: AmityNotificationToken?
+    private var participateToken: AmityNotificationToken?
     private var repository: AmityUserRepository?
     
     override func awakeFromNib() {
@@ -71,52 +72,63 @@ final class AmityRecentChatTableViewCell: UITableViewCell, Nibbable {
         badgeView.badge = channel.unreadCount
         memberLabel.text = ""
         dateTimeLabel.text = AmityDateFormatter.Chat.getDate(date: channel.lastActivity)
-        titleLabel.text = AmityLocalizedStringSet.General.anonymous.localizedString
+        titleLabel.text = channel.displayName
         avatarView.placeholder = AmityIconSet.defaultAvatar
         previewMessageLabel.text = channel.recentMessage
         
-        if channel.isDirectChat() {
+        switch channel.channelType {
+        case .standard:
+            avatarView.setImage(withImageURL: channel.avatarURL, placeholder: AmityIconSet.defaultGroupChat)
+            memberLabel.text = "(\(channel.memberCount))"
+        case .conversation:
+            avatarView.setImage(withImageURL: channel.avatarURL, placeholder: AmityIconSet.defaultAvatar)
+            memberLabel.text = nil
+            titleLabel.text = channel.displayName
+            
+            participateToken?.invalidate()
+            participateToken = channel.participation.getMembers(filter: .all, sortBy: .firstCreated, roles: []).observe { collection, change, error in
+                for i in 0..<collection.count(){
+                    let userId = collection.object(at: i)?.userId
+                    if userId != AmityUIKitManagerInternal.shared.currentUserId {
+                        self.token = self.repository?.getUser(userId ?? "").observe { [weak self] user, error in
+                            self?.token?.invalidate()
+                            guard let userObject = user.object else { return }
+                            self?.titleLabel.text = userObject.displayName
+                            let userModel = AmityUserModel(user: userObject)
+                            if !userModel.avatarCustomURL.isEmpty {
+                                self?.avatarView.setImage(withCustomURL: userModel.avatarCustomURL,
+                                                         placeholder: AmityIconSet.defaultAvatar)
+                            } else {
+                                self?.avatarView.setImage(withImageURL: userModel.avatarURL,
+                                                          placeholder: AmityIconSet.defaultAvatar)
+                            }
+                        }
+                    }
+                }
+            }
+            
+        case .community:
             token?.invalidate()
             if !channel.getOtherUserId().isEmpty {
-                token = repository?.getUser(channel.getOtherUserId()).observe({ [weak self] user, error in
-                    guard let weakSelf = self else { return }
-                    if let userObject = user.object {
-                        let userModel = AmityUserModel(user: userObject)
-                        if !userModel.avatarCustomURL.isEmpty {
-                            weakSelf.avatarView.setImage(withCustomURL: userModel.avatarCustomURL,
-                                                         placeholder: AmityIconSet.defaultAvatar)
-                        } else {
-                            weakSelf.avatarView.setImage(withImageURL: userModel.avatarURL,
-                                                         placeholder: AmityIconSet.defaultAvatar)
-                        }
-                        weakSelf.titleLabel.text = userObject.displayName
-                        weakSelf.token?.invalidate()
+                token = repository?.getUser(channel.getOtherUserId()).observeOnce { [weak self] user, error in
+                    guard let userObject = user.object else { return }
+                    self?.titleLabel.text = userObject.displayName
+                    let userModel = AmityUserModel(user: userObject)
+                    if !userModel.avatarCustomURL.isEmpty {
+                        self?.avatarView.setImage(withCustomURL: userModel.avatarCustomURL,
+                                                 placeholder: AmityIconSet.defaultAvatar)
+                    } else {
+                        self?.avatarView.setImage(withImageURL: userModel.avatarURL,
+                                                  placeholder: AmityIconSet.defaultAvatar)
                     }
-
-                })
+                }
             }
-        } else {
-            titleLabel.text = channel.displayName
-            switch channel.channelType {
-            case .standard:
-                avatarView.setImage(withImageURL: channel.avatarURL, placeholder: AmityIconSet.defaultGroupChat)
-                memberLabel.text = "(\(channel.memberCount))"
-            case .conversation:
-                avatarView.setImage(withImageURL: channel.avatarURL, placeholder: AmityIconSet.defaultAvatar)
-                memberLabel.text = nil
-                titleLabel.text = channel.displayName
-            case .private:
-                break
-            case .broadcast:
-                break
-            case .unknown:
-                break
-            case .community:
-                avatarView.setImage(withImageURL: channel.avatarURL, placeholder: AmityIconSet.defaultGroupChat)
-                memberLabel.text = "(\(channel.memberCount))"
-            @unknown default:
-                break
-            }
+        case .private, .live, .broadcast, .unknown:
+            break
+        @unknown default:
+            break
         }
+        
+        
     }
 }

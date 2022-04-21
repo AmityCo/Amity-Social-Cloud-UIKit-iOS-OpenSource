@@ -76,8 +76,6 @@ public final class AmityMessageListViewController: AmityViewController {
     private var didEnterBackgroundObservation: NSObjectProtocol?
     private var willEnterForegroundObservation: NSObjectProtocol?
     
-    private var channelLastActivity: Date?
-    
     // MARK: - View lifecyle
     public override func viewDidLoad() {
         super.viewDidLoad()
@@ -255,7 +253,7 @@ private extension AmityMessageListViewController {
     }
     
     private func observeConnectionStatus() {
-        connectionStatatusObservation = AmityUIKitManagerInternal.shared.client.observe(\.connectionStatus) { [weak self] client, change in
+        connectionStatatusObservation = Reachability.shared.observe(\.isConnectedToNetwork, options: [.initial]) { [weak self] _, _ in
             DispatchQueue.main.async {
                 self?.updateConnectionStatusBar(animated: true)
             }
@@ -267,18 +265,16 @@ private extension AmityMessageListViewController {
     }
     
     private func updateConnectionStatusBar(animated: Bool) {
-        
         var barVisibilityIsUpdate = false
         let barIsShowing = (connectionStatusBarTopSpace.constant == -connectionStatusBarHeight.constant)
-        switch AmityUIKitManagerInternal.shared.client.connectionStatus {
-        case .connected:
+        if Reachability.shared.isConnectedToNetwork {
             // online
             if !barIsShowing {
                 connectionStatusBarTopSpace.constant = -connectionStatusBarHeight.constant
                 view.setNeedsLayout()
                 barVisibilityIsUpdate = true
             }
-        default:
+        } else {
             // not online
             if barIsShowing {
                 connectionStatusBarTopSpace.constant = 0
@@ -463,14 +459,12 @@ extension AmityMessageListViewController: UIImagePickerControllerDelegate & UINa
         
         guard let image = info[.originalImage] as? UIImage else { return }
         
-        // save image to temp directory and send local url path for uploading
-        let imageName = "\(UUID().uuidString).png"
-        let imageURL = FileManager.default.temporaryDirectory.appendingPathComponent(imageName)
-        
         picker.dismiss(animated: true) { [weak self] in
             do {
-                try image.fixedOrientation().pngData()?.write(to: imageURL)
-                let media = AmityMedia(state: .localURL(url: imageURL), type: .image)
+                let resizedImage = image
+                    .fixedOrientation()
+                    .scalePreservingAspectRatio()
+                let media = AmityMedia(state: .image(resizedImage), type: .image)
                 self?.screenViewModel.action.send(withMedias: [media])
             } catch {
                 Log.add(error.localizedDescription)
@@ -525,20 +519,7 @@ extension AmityMessageListViewController: AmityMessageListScreenViewModelDelegat
     func screenViewModelDidGetChannel(channel: AmityChannelModel) {
         setupCustomNavigationBar()
         navigationHeaderViewController?.updateViews(channel: channel)
-        
-        // Prevent auto scrolling to bottom if there's no new message
-        if channelLastActivity == nil {
-            channelLastActivity = channel.lastActivity
-        }
-        
-        // New message -> Scroll to bottom
-        if channel.lastActivity != channelLastActivity {
-            screenViewModel.action.shouldScrollToBottom(force: true)
-            channelLastActivity = channel.lastActivity
-        }else {
-            // No new message -> Don't scroll to bottom
-            screenViewModel.action.shouldScrollToBottom(force: false)
-        }
+        screenViewModel.action.shouldScrollToBottom(force: false)
     }
     
     func screenViewModelScrollToBottom(for indexPath: IndexPath) {
@@ -575,24 +556,34 @@ extension AmityMessageListViewController: AmityMessageListScreenViewModelDelegat
             messageViewController.tableView.reloadData()
         case .didSendText:
             composeBar.clearText()
-            screenViewModel.shouldScrollToBottom(force: true)
+//            screenViewModel.shouldScrollToBottom(force: true)
+            screenViewModelScrollTableviewToLastIndex()
         case .didEditText:
             break
         case .didDelete(let indexPath):
             AmityHUD.hide()
             messageViewController.tableView.reloadRows(at: [indexPath], with: .none)
         case .didSendImage:
-            screenViewModel.shouldScrollToBottom(force: true)
+//            screenViewModel.shouldScrollToBottom(force: true)
+            screenViewModelScrollTableviewToLastIndex()
             break
         case .didUploadImage:
-            screenViewModel.shouldScrollToBottom(force: true)
+//            screenViewModel.shouldScrollToBottom(force: true)
+            screenViewModelScrollTableviewToLastIndex()
             break
         case .didDeeleteErrorMessage:
             AmityHUD.show(.success(message: AmityLocalizedStringSet.HUD.delete.localizedString))
         case .didSendAudio:
             circular.hide()
             audioRecordingViewController?.stopRecording()
-            screenViewModel.shouldScrollToBottom(force: true)
+//            screenViewModel.shouldScrollToBottom(force: true)
+            screenViewModelScrollTableviewToLastIndex()
+        }
+    }
+    
+    func screenViewModelScrollTableviewToLastIndex() {
+        if let lastIndexPath = messageViewController.tableView.lastIndexPath {
+            messageViewController.tableView.scrollToRow(at: lastIndexPath, at: .bottom, animated: false)
         }
     }
     

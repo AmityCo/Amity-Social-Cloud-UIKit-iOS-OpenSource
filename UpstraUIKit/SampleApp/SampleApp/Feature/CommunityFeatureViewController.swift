@@ -38,7 +38,7 @@ class CommunityFeatureViewController: UIViewController {
         case ph
         case vn
         case en
-        case my
+        case mm
         case gallery
         case notification
         case client
@@ -75,8 +75,8 @@ class CommunityFeatureViewController: UIViewController {
                 return "vn"
             case .en:
                 return "en"
-            case .my:
-                return "my"
+            case .mm:
+                return "mm"
             case .gallery:
                 return "gallery"
             case .notification:
@@ -215,15 +215,15 @@ extension CommunityFeatureViewController: UITableViewDelegate {
             AmityUIKitManager.setLanguage(language: "km")
             openHomePage()
         case .ph:
-            AmityUIKitManager.setLanguage(language: "ph")
+            AmityUIKitManager.setLanguage(language: "fil")
             openHomePage()
         case .vn:
-            AmityUIKitManager.setLanguage(language: "vn")
+            AmityUIKitManager.setLanguage(language: "vi")
             openHomePage()
         case .en:
             AmityUIKitManager.setLanguage(language: "en")
             openHomePage()
-        case .my:
+        case .mm:
             AmityUIKitManager.setLanguage(language: "my")
             openHomePage()
         case .gallery:

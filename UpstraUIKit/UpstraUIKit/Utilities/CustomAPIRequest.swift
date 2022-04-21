@@ -11,7 +11,27 @@ import Foundation
 
 final class customAPIRequest {
     static func getDiscoveryData(page_number: Int, completion: @escaping(_ discoveryArray: [DiscoveryDataModel]) -> () ) {
-        let url = URL(string: "https://qojeq6vaa8.execute-api.ap-southeast-1.amazonaws.com/media?page=\(page_number)")!
+        
+        var region: String {
+            switch AmityUIKitManagerInternal.shared.amityLanguage {
+            case "th", "en":
+                return "th"
+            case "id":
+                return "id"
+            case "km":
+                return "kh"
+            case "fil":
+                return "ph"
+            case "vi":
+                return "vn"
+            case "my":
+                return "mm"
+            default:
+                return "staging"
+            }
+        }
+        
+        let url = URL(string: "https://qojeq6vaa8.execute-api.ap-southeast-1.amazonaws.com/media?page=\(page_number)&region=\(region)")!
         
         var tempDiscoveryData: [DiscoveryDataModel] = []
         
@@ -44,6 +64,55 @@ final class customAPIRequest {
             }
             
             completion(tempDiscoveryData)
+            
+        }
+
+        task.resume()
+    }
+    
+    static func getChatBadgeCount(userId: String, completion: @escaping(_ completion:Result<Int,Error>) -> () ) {
+        
+        var region: String {
+            switch AmityUIKitManagerInternal.shared.amityLanguage {
+            case "th", "en":
+                return "th"
+            case "id":
+                return "id"
+            case "km":
+                return "kh"
+            case "fil":
+                return "ph"
+            case "vi":
+                return "vn"
+            case "my":
+                return "mm"
+            default:
+                return "staging"
+            }
+        }
+        
+        let url = URL(string: "https://qojeq6vaa8.execute-api.ap-southeast-1.amazonaws.com/getRedNoseTrueId?userId=\(userId)&region=\(region)")!
+        var badge: Int = 0
+        print("URL:::::: ", url)
+        var request = URLRequest(url: url)
+        request.httpMethod = "GET"
+        
+        request.allHTTPHeaderFields = [
+            "Content-Type" : "application/json"
+        ]
+        
+        let task = URLSession.shared.dataTask(with: request) { data, response, error in
+            
+            guard let data = data, error == nil else {
+                print(error?.localizedDescription ?? "No data.")
+                completion(.failure(error!))
+                return
+            }
+
+            guard let jsonDecode = try? JSONDecoder().decode(Int.self, from: data) else { return }
+            badge = jsonDecode
+            
+            completion(.success(badge))
             
         }
 

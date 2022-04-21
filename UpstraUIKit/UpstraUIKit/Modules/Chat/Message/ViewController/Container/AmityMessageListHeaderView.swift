@@ -19,6 +19,7 @@ final class AmityMessageListHeaderView: AmityView {
     // MARK: - Collections
     private var repository: AmityUserRepository?
     private var token: AmityNotificationToken?
+    private var participateToken: AmityNotificationToken?
     
     // MARK: - Properties
     private var screenViewModel: AmityMessageListScreenViewModelType?
@@ -68,11 +69,38 @@ private extension AmityMessageListHeaderView {
 extension AmityMessageListHeaderView {
     
     func updateViews(channel: AmityChannelModel) {
-        if channel.isDirectChat() {
-            displayNameLabel.text = AmityLocalizedStringSet.General.anonymous.localizedString
-            token?.invalidate()
+        displayNameLabel.text = channel.displayName
+        switch channel.channelType {
+        case .standard:
+            avatarView.setImage(withImageURL: channel.avatarURL, placeholder: AmityIconSet.defaultGroupChat)
+        case .conversation:
+            avatarView.setImage(withImageURL: channel.avatarURL, placeholder: AmityIconSet.defaultAvatar)
+            participateToken?.invalidate()
+            participateToken = channel.participation.getMembers(filter: .all, sortBy: .firstCreated, roles: []).observe { collection, change, error in
+                for i in 0..<collection.count(){
+                    let userId = collection.object(at: i)?.userId
+                    if userId != AmityUIKitManagerInternal.shared.currentUserId {
+                        self.token = self.repository?.getUser(userId ?? "").observe { [weak self] user, error in
+                            self?.token?.invalidate()
+                            guard let userObject = user.object else { return }
+                            self?.displayNameLabel.text = userObject.displayName
+                            let userModel = AmityUserModel(user: userObject)
+                            if !userModel.avatarCustomURL.isEmpty {
+                                self?.avatarView.setImage(withCustomURL: userModel.avatarCustomURL,
+                                                         placeholder: AmityIconSet.defaultAvatar)
+                            } else {
+                                self?.avatarView.setImage(withImageURL: userModel.avatarURL,
+                                                          placeholder: AmityIconSet.defaultAvatar)
+                            }
+                        }
+                    }
+                }
+            }
+        case .community:
+            avatarView.setImage(withImageURL: channel.avatarURL, placeholder: AmityIconSet.defaultAvatar)
             if !channel.getOtherUserId().isEmpty {
-                token = repository?.getUser(channel.getOtherUserId()).observeOnce({ [weak self] user, error in
+                token?.invalidate()
+                token = repository?.getUser(channel.getOtherUserId()).observeOnce { [weak self] user, error in
                     guard let weakSelf = self else { return }
                     if let userObject = user.object {
                         let userModel = AmityUserModel(user: userObject)
@@ -85,21 +113,10 @@ extension AmityMessageListHeaderView {
                         }
                         weakSelf.displayNameLabel.text = userObject.displayName
                     }
-                    
-                })
+                }
             }
-        } else {
-            displayNameLabel.text = channel.displayName
-            switch channel.channelType {
-            case .standard:
-                avatarView.setImage(withImageURL: channel.avatarURL, placeholder: AmityIconSet.defaultGroupChat)
-            case .conversation:
-                avatarView.setImage(withImageURL: channel.avatarURL, placeholder: AmityIconSet.defaultAvatar)
-            case .community:
-                avatarView.setImage(withImageURL: channel.avatarURL, placeholder: AmityIconSet.defaultGroupChat)
-            default:
-                break
-            }
+        default:
+            break
         }
     }
 }

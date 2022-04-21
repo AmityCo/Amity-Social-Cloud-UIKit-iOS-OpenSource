@@ -19,6 +19,7 @@ class PostGalleryItemCell: UICollectionViewCell, Nibbable {
     @IBOutlet private weak var streamStateContainer: UIView!
     @IBOutlet private weak var streamStateLabel: UILabel!
     
+    @IBOutlet private weak var mediaPlayIcon: UIImageView!
     @IBOutlet private weak var mediaTitleLabel: UILabel!
     
     @IBOutlet private weak var streamEndView: UIView!
@@ -139,10 +140,12 @@ class PostGalleryItemCell: UICollectionViewCell, Nibbable {
         
         // durationText
         if let durationText = durationText {
-            durationView.isHidden = false
+//            durationView.isHidden = false
             durationLabel.text = durationText
+            mediaPlayIcon.isHidden = false
         } else {
-            durationView.isHidden = true
+//            durationView.isHidden = true
+            mediaPlayIcon.isHidden = true
         }
         
         // streamEndView

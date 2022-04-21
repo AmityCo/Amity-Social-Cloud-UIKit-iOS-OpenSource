@@ -30,10 +30,13 @@ public class AmityCommunityHomePageViewController: AmityPageViewController {
     private var isPresent: Bool = false
     
     private var leftBarButtonItem: UIBarButtonItem?
+    private var chatIconView: UIButton!
+    private var badgeView: AmityBadgeView!
     
     private init(amityCommunityEventType: AmityCommunityEventTypeModel? = nil) {
         screenViewModel = AmityCommunityHomePageScreenViewModel(amityCommunityEventTypeModel: amityCommunityEventType)
         super.init(nibName: AmityCommunityHomePageViewController.identifier, bundle: AmityUIKitManager.bundle)
+        screenViewModel.delegate = self
         title = AmityLocalizedStringSet.communityHomeTitle.localizedString
     }
     
@@ -56,6 +59,7 @@ public class AmityCommunityHomePageViewController: AmityPageViewController {
     public override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         runDeeplinksRouter()
+        getChatBadge()
     }
    
     public static func make(amityCommunityEventType: AmityCommunityEventTypeModel? = nil) -> AmityCommunityHomePageViewController {
@@ -76,7 +80,8 @@ public class AmityCommunityHomePageViewController: AmityPageViewController {
         let searchItem = UIBarButtonItem(image: AmityIconSet.iconSearch, style: .plain, target: self, action: #selector(searchTap))
         searchItem.tintColor = AmityColorSet.base
         
-        let chatIconView = UIButton(type: .custom)
+        badgeView = AmityBadgeView()
+        chatIconView = UIButton(type: .custom)
         chatIconView.frame = CGRect(x: 0, y: 0, width: 24, height: 24)
         chatIconView.setBackgroundImage(AmityIconSet.iconChatInCommunity, for: .normal)
         chatIconView.contentMode = .scaleAspectFit
@@ -126,7 +131,7 @@ private extension AmityCommunityHomePageViewController {
     }
     
     @objc func chatTap() {
-        let chatVC = AmityRecentChatViewController.make(channelType: .community)
+        let chatVC = AmityRecentChatViewController.make(channelType: .conversation)
         chatVC.modalPresentationStyle = .fullScreen
         chatVC.modalTransitionStyle = .crossDissolve
         navigationController?.pushViewController(chatVC, animated: true)
@@ -182,3 +187,23 @@ private extension AmityCommunityHomePageViewController {
     }
 }
 
+private extension AmityCommunityHomePageViewController {
+    func getChatBadge() {
+        screenViewModel.getChatBadge()
+    }
+}
+
+extension AmityCommunityHomePageViewController: AmityCommunityHomePageScreenViewModelDelegate {
+    func screenViewModelDidGetChatBadge(_ badge: Int) {
+        if badge != 0 {
+            badgeView?.badge = badge
+            badgeView.isUserInteractionEnabled = false
+            badgeView.frame = CGRect(x: 14, y: -10, width: badgeView.badge > 9 ? 30 : 20, height: 20)
+            chatIconView.addSubview(badgeView)
+        }else {
+            if badgeView != nil {
+                badgeView.removeFromSuperview()
+            }
+        }
+    }
+}

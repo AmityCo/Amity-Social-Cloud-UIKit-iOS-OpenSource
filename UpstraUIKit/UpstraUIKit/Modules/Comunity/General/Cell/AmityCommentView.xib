@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="19455" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="20037" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="19454"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="20020"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -19,13 +19,16 @@
                 <outlet property="labelContainerView" destination="hZ6-HJ-hVz" id="it3-aK-Syp"/>
                 <outlet property="leadingAvatarImageViewConstraint" destination="QQS-Sp-FlV" id="8ej-7a-Hj3"/>
                 <outlet property="likeButton" destination="cdk-6j-3dY" id="QwM-FZ-zrU"/>
+                <outlet property="likeButtonWidth" destination="HcE-uy-jcw" id="dc1-D6-wcP"/>
                 <outlet property="optionButton" destination="pLS-uH-QHV" id="0Mp-Zi-52t"/>
                 <outlet property="replyButton" destination="qnc-ja-fPs" id="bB9-Bw-oVR"/>
+                <outlet property="replyButtonWidth" destination="LAJ-ts-zjy" id="GXO-j0-bVm"/>
                 <outlet property="separatorLineView" destination="cA7-hE-AlO" id="oAK-RT-Hqo"/>
                 <outlet property="timeLabel" destination="a9t-KZ-yaY" id="2Gd-xV-vnr"/>
                 <outlet property="titleLabel" destination="W8H-Za-fho" id="thL-pp-Q6b"/>
                 <outlet property="topAvatarImageViewConstraint" destination="l5y-tf-gdR" id="cMv-3y-6LR"/>
                 <outlet property="viewReplyButton" destination="dLv-l7-hxu" id="wcu-WL-LG7"/>
+                <outlet property="viewReplyButtonWidth" destination="GZa-0R-Hmr" id="YMP-3X-QdE"/>
             </connections>
         </placeholder>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
@@ -87,30 +90,39 @@
                 <stackView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" axis="vertical" alignment="top" spacing="12" translatesAutoresizingMaskIntoConstraints="NO" id="dTi-yd-Jpy">
                     <rect key="frame" x="52" y="113.5" width="267" height="46.5"/>
                     <subviews>
-                        <stackView opaque="NO" contentMode="scaleToFill" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="zfW-e0-XHF">
-                            <rect key="frame" x="0.0" y="0.0" width="131" height="22"/>
+                        <stackView opaque="NO" contentMode="scaleToFill" spacing="5" id="zfW-e0-XHF">
+                            <rect key="frame" x="0.0" y="0.0" width="119" height="16"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <subviews>
                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="cdk-6j-3dY" customClass="AmityButton" customModule="AmityUIKit" customModuleProvider="target">
-                                    <rect key="frame" x="0.0" y="0.0" width="45" height="22"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="60" height="22"/>
+                                    <constraints>
+                                        <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="60" id="HcE-uy-jcw"/>
+                                    </constraints>
                                     <fontDescription key="fontDescription" type="system" pointSize="13"/>
                                     <color key="tintColor" red="0.090196078430000007" green="0.094117647060000004" blue="0.10980392160000001" alpha="1" colorSpace="calibratedRGB"/>
+                                    <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="4" maxY="0.0"/>
                                     <state key="normal" title="Liked" image="icon_like">
                                         <color key="titleColor" red="0.090196078430000007" green="0.094117647060000004" blue="0.10980392160000001" alpha="1" colorSpace="calibratedRGB"/>
                                     </state>
                                 </button>
                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="qnc-ja-fPs" userLabel="Reply" customClass="AmityButton" customModule="AmityUIKit" customModuleProvider="target">
-                                    <rect key="frame" x="53" y="0.0" width="48" height="22"/>
+                                    <rect key="frame" x="65" y="0.0" width="80" height="22"/>
+                                    <constraints>
+                                        <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="80" id="LAJ-ts-zjy"/>
+                                    </constraints>
                                     <fontDescription key="fontDescription" type="system" pointSize="13"/>
                                     <color key="tintColor" red="0.090196078430000007" green="0.094117647060000004" blue="0.10980392160000001" alpha="1" colorSpace="calibratedRGB"/>
+                                    <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="4" maxY="0.0"/>
                                     <state key="normal" title="Reply" image="icon_reply">
                                         <color key="titleColor" red="0.090196078430000007" green="0.094117647060000004" blue="0.10980392160000001" alpha="1" colorSpace="calibratedRGB"/>
                                     </state>
                                 </button>
                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="pLS-uH-QHV">
-                                    <rect key="frame" x="109" y="0.0" width="22" height="22"/>
+                                    <rect key="frame" x="150" y="0.0" width="23" height="22"/>
                                     <constraints>
                                         <constraint firstAttribute="height" constant="22" id="AEH-iD-CJj"/>
-                                        <constraint firstAttribute="width" constant="22" id="S8u-xH-YNO"/>
+                                        <constraint firstAttribute="width" constant="23" id="FAE-5z-0o5"/>
                                     </constraints>
                                     <state key="normal" image="icon_option"/>
                                 </button>
@@ -120,8 +132,9 @@
                             </constraints>
                         </stackView>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dLv-l7-hxu" userLabel="View Reply Button" customClass="AmityButton" customModule="AmityUIKit" customModuleProvider="target">
-                            <rect key="frame" x="0.0" y="34" width="113" height="12.5"/>
+                            <rect key="frame" x="0.0" y="34" width="160" height="12.5"/>
                             <constraints>
+                                <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="160" id="GZa-0R-Hmr"/>
                                 <constraint firstAttribute="height" priority="750" constant="28" id="HVJ-YR-zj5"/>
                             </constraints>
                             <state key="normal" title="View Reply" image="icon_arrow_right">

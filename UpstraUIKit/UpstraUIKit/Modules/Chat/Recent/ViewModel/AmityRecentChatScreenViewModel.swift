@@ -36,11 +36,8 @@ public struct AmityChannelModel {
         self.recentMessage = AmityLocalizedStringSet.RecentMessage.noMessage.localizedString
     }
     
-    func isDirectChat() -> Bool {
-        if let isDirectChat = metadata["isDirectChat"] as? Bool {
-            return isDirectChat
-        }
-        return false
+    var isConversationChannel: Bool {
+        return channelType == .conversation
     }
     
     func getOtherUserId() -> String {
@@ -244,6 +241,7 @@ private extension AmityRecentChatScreenViewModel {
         case .conversation:
             let query = AmityChannelQuery()
             query.types = [AmityChannelQueryType.conversation]
+            query.filter = .userIsMember
             query.includeDeleted = false
             channelsCollection = channelRepository.getChannels(with: query)
         default:

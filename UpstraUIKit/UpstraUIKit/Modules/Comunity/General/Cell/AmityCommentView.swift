@@ -36,9 +36,12 @@ class AmityCommentView: AmityView {
     @IBOutlet private var labelContainerView: UIView!
     @IBOutlet private weak var actionStackView: UIStackView!
     @IBOutlet private weak var likeButton: AmityButton!
+    @IBOutlet weak var likeButtonWidth: NSLayoutConstraint!
     @IBOutlet private weak var replyButton: AmityButton!
+    @IBOutlet weak var replyButtonWidth: NSLayoutConstraint!
     @IBOutlet private weak var optionButton: UIButton!
     @IBOutlet private weak var viewReplyButton: AmityButton!
+    @IBOutlet weak var viewReplyButtonWidth: NSLayoutConstraint!
     @IBOutlet private weak var separatorLineView: UIView!
     @IBOutlet private weak var leadingAvatarImageViewConstraint: NSLayoutConstraint!
     @IBOutlet private weak var topAvatarImageViewConstraint: NSLayoutConstraint!
@@ -81,6 +84,8 @@ class AmityCommentView: AmityView {
         likeButton.setTintColor(AmityColorSet.base.blend(.shade2), for: .normal)
         likeButton.addTarget(self, action: #selector(likeButtonTap), for: .touchUpInside)
         likeButton.setInsets(forContentPadding: .zero, imageTitlePadding: 4)
+        likeButtonWidth.constant = (likeButton.titleLabel!.text! as NSString).size().width + 30
+        
         replyButton.setTitle(AmityLocalizedStringSet.General.reply.localizedString, for: .normal)
         replyButton.setTitleFont(AmityFontSet.captionBold)
         replyButton.setImage(AmityIconSet.iconReply, for: .normal)
@@ -89,6 +94,9 @@ class AmityCommentView: AmityView {
         replyButton.setTitleColor(AmityColorSet.base.blend(.shade2), for: .normal)
         replyButton.addTarget(self, action: #selector(replyButtonTap), for: .touchUpInside)
         replyButton.setInsets(forContentPadding: .zero, imageTitlePadding: 4)
+        replyButton.sizeToFit()
+        replyButtonWidth.constant = (replyButton.titleLabel!.text! as NSString).size().width + 30
+        
         optionButton.addTarget(self, action: #selector(optionButtonTap), for: .touchUpInside)
         optionButton.tintColor = AmityColorSet.base.blend(.shade2)
         viewReplyButton.setTitle(AmityLocalizedStringSet.General.viewReply.localizedString, for: .normal)
@@ -101,6 +109,8 @@ class AmityCommentView: AmityView {
         viewReplyButton.layer.cornerRadius = 4
         viewReplyButton.setInsets(forContentPadding: UIEdgeInsets(top: 6, left: 12, bottom: 6, right: 16), imageTitlePadding: 8)
         viewReplyButton.addTarget(self, action: #selector(viewReplyButtonTap), for: .touchUpInside)
+        viewReplyButton.sizeToFit()
+        viewReplyButtonWidth.constant = (viewReplyButton.titleLabel!.text! as NSString).size().width + 80
     }
     
     func configure(with comment: AmityCommentModel, layout: AmityCommentViewLayout) {
@@ -142,6 +152,7 @@ class AmityCommentView: AmityView {
         } else {
             likeButton.setTitle(AmityLocalizedStringSet.General.like.localizedString, for: .normal)
         }
+        likeButtonWidth.constant = (likeButton.titleLabel!.text! as NSString).size().width + 30
         
         switch layout {
         case .comment(let contentExpanded, let shouldActionShow,  _):
