@@ -11,9 +11,13 @@ import SwiftUI
 
 struct AmityFullHeaderScrollValue: PreferenceKey {
     static var defaultValue: String = ""
-    static var scrollValue: Int = 0
+    static var scrollValue: CGFloat = 0
 
     static func reduce(value: inout String, nextValue: () -> String) {
+        value = nextValue()
+    }
+    
+    static func reduceCGFloat(value: inout CGFloat, nextValue: () -> CGFloat) {
         value = nextValue()
     }
 }

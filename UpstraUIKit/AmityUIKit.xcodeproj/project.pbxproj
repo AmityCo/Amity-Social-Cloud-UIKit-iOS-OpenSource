@@ -505,6 +505,7 @@
 		A0B68B6126E7238E007D7B5B /* AmityPostLiveStreamTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = A0B68B5F26E7238E007D7B5B /* AmityPostLiveStreamTableViewCell.xib */; };
 		A0E2B23226B7B68200F1C4D5 /* AmityPostGalleryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0E2B23026B7B68200F1C4D5 /* AmityPostGalleryViewController.swift */; };
 		A0E2B23326B7B68200F1C4D5 /* AmityPostGalleryViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = A0E2B23126B7B68200F1C4D5 /* AmityPostGalleryViewController.xib */; };
+		B48A893E28113E0900AAFEAF /* AppPreferenceKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = B48A893D28113E0900AAFEAF /* AppPreferenceKey.swift */; };
 		B704D1432578CB2F0038BA78 /* AmityPulseAnimation.swift in Sources */ = {isa = PBXBuildFile; fileRef = B704D1422578CB2F0038BA78 /* AmityPulseAnimation.swift */; };
 		B704D1492578E23A0038BA78 /* AmityAudioPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = B704D1482578E23A0038BA78 /* AmityAudioPlayer.swift */; };
 		B704D14E2578E2570038BA78 /* AmityAudioRecorder.swift in Sources */ = {isa = PBXBuildFile; fileRef = B704D14D2578E2570038BA78 /* AmityAudioRecorder.swift */; };
@@ -1180,6 +1181,7 @@
 		A0B68B5F26E7238E007D7B5B /* AmityPostLiveStreamTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = AmityPostLiveStreamTableViewCell.xib; sourceTree = "<group>"; };
 		A0E2B23026B7B68200F1C4D5 /* AmityPostGalleryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AmityPostGalleryViewController.swift; sourceTree = "<group>"; };
 		A0E2B23126B7B68200F1C4D5 /* AmityPostGalleryViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = AmityPostGalleryViewController.xib; sourceTree = "<group>"; };
+		B48A893D28113E0900AAFEAF /* AppPreferenceKey.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppPreferenceKey.swift; sourceTree = "<group>"; };
 		B704D1422578CB2F0038BA78 /* AmityPulseAnimation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AmityPulseAnimation.swift; sourceTree = "<group>"; };
 		B704D1482578E23A0038BA78 /* AmityAudioPlayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AmityAudioPlayer.swift; sourceTree = "<group>"; };
 		B704D14D2578E2570038BA78 /* AmityAudioRecorder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AmityAudioRecorder.swift; sourceTree = "<group>"; };
@@ -2684,6 +2686,7 @@
 				72AFAC0B24F9008B00269019 /* Services */,
 				0A7682C327B16D2200F6BA41 /* AmityMediaConverter.swift */,
 				7F72958327FE934500F463EC /* SwiftUIPreferenceKey.swift */,
+				B48A893D28113E0900AAFEAF /* AppPreferenceKey.swift */,
 			);
 			path = Utilities;
 			sourceTree = "<group>";
@@ -5073,6 +5076,7 @@
 				72A3516924EA820800DA9D46 /* AmityImagePickerController+ButtonActions.swift in Sources */,
 				B704D14E2578E2570038BA78 /* AmityAudioRecorder.swift in Sources */,
 				97D7C4DD264BFF3900EA24F5 /* AmityChannelRoleController.swift in Sources */,
+				B48A893E28113E0900AAFEAF /* AppPreferenceKey.swift in Sources */,
 				B7D9429925619A00009B0832 /* AmityDateFormatter.swift in Sources */,
 				B76A101D252B7E1D00AFC7A8 /* AmityTrendingCommunityViewController.swift in Sources */,
 				97D723712695A690000735F5 /* AmityUserProfileHeaderViewController.swift in Sources */,

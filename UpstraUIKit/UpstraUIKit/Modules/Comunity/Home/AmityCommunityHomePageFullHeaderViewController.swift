@@ -9,7 +9,7 @@
 import UIKit
 import AmitySDK
 
-public class AmityCommunityHomePageFullHeaderViewController: AmityProfileViewController {
+public class AmityCommunityHomePageFullHeaderViewController: AmityProfileViewController, UIScrollViewDelegate {
 
     // MARK: - Properties
     
@@ -53,6 +53,13 @@ public class AmityCommunityHomePageFullHeaderViewController: AmityProfileViewCon
     public override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         navigationController?.reset()
+    }
+    
+    override func scrollView(_ scrollView: UIScrollView, didUpdate progress: CGFloat) {
+        let offset = scrollView.contentOffset.y
+        
+        let appPreference = AppPreferenceKey()
+        appPreference.setValueDouble(AppPreferenceKey.scrollValue, value: offset)
     }
     
     // MARK: - Private functions
@@ -124,4 +131,3 @@ extension AmityCommunityHomePageFullHeaderViewController: AmityNewsFeedScreenVie
     }
     
 }
-

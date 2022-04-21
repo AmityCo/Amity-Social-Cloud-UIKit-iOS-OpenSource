@@ -17,11 +17,11 @@
         </placeholder>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
         <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" restorationIdentifier="AmityCommunityHomePageHeaderViewController" id="N9d-oI-4Zi">
-            <rect key="frame" x="0.0" y="0.0" width="543" height="132"/>
+            <rect key="frame" x="0.0" y="0.0" width="543" height="152"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Community" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="JYM-5B-RhB">
-                    <rect key="frame" x="10" y="34" width="106" height="47"/>
+                    <rect key="frame" x="18" y="38" width="106" height="47"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="47" id="BCq-02-XsN"/>
                         <constraint firstAttribute="width" constant="106" id="gp0-bV-FG5"/>
@@ -31,12 +31,12 @@
                     <nil key="highlightedColor"/>
                 </label>
                 <searchBar contentMode="redraw" translatesAutoresizingMaskIntoConstraints="NO" id="v1R-Jl-5wM">
-                    <rect key="frame" x="10" y="81" width="523" height="51"/>
+                    <rect key="frame" x="10" y="91" width="523" height="61"/>
                     <gestureRecognizers/>
                     <textInputTraits key="textInputTraits"/>
                 </searchBar>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="GFR-Io-aAa">
-                    <rect key="frame" x="10" y="81" width="523" height="51"/>
+                    <rect key="frame" x="10" y="91" width="523" height="61"/>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <color key="tintColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <state key="normal" title="Button"/>
@@ -50,18 +50,19 @@
             <color key="backgroundColor" systemColor="systemBackgroundColor"/>
             <constraints>
                 <constraint firstItem="GFR-Io-aAa" firstAttribute="top" secondItem="v1R-Jl-5wM" secondAttribute="top" id="0EI-Mj-AzL"/>
-                <constraint firstItem="JYM-5B-RhB" firstAttribute="leading" secondItem="e5a-UV-9UZ" secondAttribute="leading" constant="10" id="EBV-ug-jJE"/>
+                <constraint firstItem="JYM-5B-RhB" firstAttribute="leading" secondItem="e5a-UV-9UZ" secondAttribute="leading" constant="18" id="EBV-ug-jJE"/>
                 <constraint firstItem="GFR-Io-aAa" firstAttribute="bottom" secondItem="v1R-Jl-5wM" secondAttribute="bottom" id="PHf-W4-mls"/>
-                <constraint firstItem="e5a-UV-9UZ" firstAttribute="top" secondItem="JYM-5B-RhB" secondAttribute="top" constant="10" id="Pin-CQ-aZE"/>
+                <constraint firstItem="e5a-UV-9UZ" firstAttribute="top" secondItem="JYM-5B-RhB" secondAttribute="top" constant="6" id="Pin-CQ-aZE"/>
                 <constraint firstAttribute="bottom" secondItem="v1R-Jl-5wM" secondAttribute="bottom" id="Wiw-fb-qaD"/>
                 <constraint firstItem="GFR-Io-aAa" firstAttribute="trailing" secondItem="v1R-Jl-5wM" secondAttribute="trailing" id="aLS-kA-xyR"/>
                 <constraint firstItem="v1R-Jl-5wM" firstAttribute="leading" secondItem="e5a-UV-9UZ" secondAttribute="leading" constant="10" id="g1V-QN-EGi"/>
+                <constraint firstItem="e5a-UV-9UZ" firstAttribute="trailing" secondItem="JYM-5B-RhB" secondAttribute="trailing" constant="419" id="k2p-w6-9JC"/>
                 <constraint firstItem="e5a-UV-9UZ" firstAttribute="trailing" secondItem="v1R-Jl-5wM" secondAttribute="trailing" constant="10" id="mjc-n3-04y"/>
-                <constraint firstItem="v1R-Jl-5wM" firstAttribute="top" secondItem="JYM-5B-RhB" secondAttribute="bottom" id="pd5-Iu-QEb"/>
+                <constraint firstItem="v1R-Jl-5wM" firstAttribute="top" secondItem="JYM-5B-RhB" secondAttribute="bottom" constant="6" id="pd5-Iu-QEb"/>
                 <constraint firstItem="GFR-Io-aAa" firstAttribute="leading" secondItem="v1R-Jl-5wM" secondAttribute="leading" id="vw1-yT-OJs"/>
             </constraints>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
-            <point key="canvasLocation" x="958.69565217391312" y="-173.4375"/>
+            <point key="canvasLocation" x="958.69565217391312" y="-166.74107142857142"/>
         </view>
     </objects>
     <resources>
