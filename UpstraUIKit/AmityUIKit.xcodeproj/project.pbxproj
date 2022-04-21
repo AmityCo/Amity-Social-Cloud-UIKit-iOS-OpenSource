@@ -385,7 +385,7 @@
 		7F8C387E2803E611000041F3 /* AmityCommunityHomePageFullHeaderProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F8C387D2803E611000041F3 /* AmityCommunityHomePageFullHeaderProtocol.swift */; };
 		7F8C38802803E61F000041F3 /* AmityCommunityHomePageFullHeaderScreenViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F8C387F2803E61F000041F3 /* AmityCommunityHomePageFullHeaderScreenViewModel.swift */; };
 		7FDCC8A0280FE9BF0029D255 /* AmityCommunityHomePageHeaderViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7FDCC89E280FE9BF0029D255 /* AmityCommunityHomePageHeaderViewController.swift */; };
-		7FDCC8A1280FE9BF0029D255 /* AmityCommunityHomePageHeaderViewControllerViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7FDCC89F280FE9BF0029D255 /* AmityCommunityHomePageHeaderViewControllerViewController.xib */; };
+		7FDCC8A1280FE9BF0029D255 /* AmityCommunityHomePageHeaderViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7FDCC89F280FE9BF0029D255 /* AmityCommunityHomePageHeaderViewController.xib */; };
 		970E784726429FA500E5FCEE /* ChatSettingsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 970E784526429FA500E5FCEE /* ChatSettingsTableViewCell.swift */; };
 		970E784826429FA500E5FCEE /* ChatSettingsTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 970E784626429FA500E5FCEE /* ChatSettingsTableViewCell.xib */; };
 		970E784E26429FB300E5FCEE /* AmityChatSettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 970E784C26429FB300E5FCEE /* AmityChatSettingsViewController.swift */; };
@@ -1060,7 +1060,7 @@
 		7F8C387D2803E611000041F3 /* AmityCommunityHomePageFullHeaderProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AmityCommunityHomePageFullHeaderProtocol.swift; sourceTree = "<group>"; };
 		7F8C387F2803E61F000041F3 /* AmityCommunityHomePageFullHeaderScreenViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AmityCommunityHomePageFullHeaderScreenViewModel.swift; sourceTree = "<group>"; };
 		7FDCC89E280FE9BF0029D255 /* AmityCommunityHomePageHeaderViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AmityCommunityHomePageHeaderViewController.swift; sourceTree = "<group>"; };
-		7FDCC89F280FE9BF0029D255 /* AmityCommunityHomePageHeaderViewControllerViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = AmityCommunityHomePageHeaderViewControllerViewController.xib; sourceTree = "<group>"; };
+		7FDCC89F280FE9BF0029D255 /* AmityCommunityHomePageHeaderViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = AmityCommunityHomePageHeaderViewController.xib; sourceTree = "<group>"; };
 		970E784526429FA500E5FCEE /* ChatSettingsTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatSettingsTableViewCell.swift; sourceTree = "<group>"; };
 		970E784626429FA500E5FCEE /* ChatSettingsTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ChatSettingsTableViewCell.xib; sourceTree = "<group>"; };
 		970E784C26429FB300E5FCEE /* AmityChatSettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AmityChatSettingsViewController.swift; sourceTree = "<group>"; };
@@ -3137,7 +3137,7 @@
 			isa = PBXGroup;
 			children = (
 				7FDCC89E280FE9BF0029D255 /* AmityCommunityHomePageHeaderViewController.swift */,
-				7FDCC89F280FE9BF0029D255 /* AmityCommunityHomePageHeaderViewControllerViewController.xib */,
+				7FDCC89F280FE9BF0029D255 /* AmityCommunityHomePageHeaderViewController.xib */,
 			);
 			name = header;
 			sourceTree = "<group>";
@@ -4740,7 +4740,7 @@
 				B7B31C59250F4ACF000AC6E4 /* ButtonCell.xib in Resources */,
 				FC1DE9B02769D8D800ECB45F /* LocalizedPhilippin.strings in Resources */,
 				72A3518E24EA820800DA9D46 /* AmityCommunityTableViewCell.xib in Resources */,
-				7FDCC8A1280FE9BF0029D255 /* AmityCommunityHomePageHeaderViewControllerViewController.xib in Resources */,
+				7FDCC8A1280FE9BF0029D255 /* AmityCommunityHomePageHeaderViewController.xib in Resources */,
 				A0E2B23326B7B68200F1C4D5 /* AmityPostGalleryViewController.xib in Resources */,
 				0D41DA4625D0EF860061A46D /* AmityPostFileTableViewCell.xib in Resources */,
 				0DA0BD2325D9802B004804BA /* AmityPostDetailViewController.xib in Resources */,

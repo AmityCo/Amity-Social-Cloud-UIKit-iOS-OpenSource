@@ -26,3 +26,15 @@ class AmityCommunityHomePageHeaderViewController: UIViewController {
         super.viewDidLoad()
     }
 }
+
+private extension AmityCommunityHomePageHeaderViewController {
+    
+    @IBAction func searchBarTap(_ sender: UIButton) {
+        AmityEventHandler.shared.communityTopbarSearchTracking()
+        let searchVC = AmitySearchViewController.make()
+        let nav = UINavigationController(rootViewController: searchVC)
+        nav.modalPresentationStyle = .fullScreen
+        nav.modalTransitionStyle = .crossDissolve
+        present(nav, animated: true, completion: nil)
+    }
+}

@@ -12,7 +12,7 @@ protocol AmityRefreshable {
     func handleRefreshing()
 }
 
-public class AmityProfileViewController: AmityViewController, AmityProfileDataSource, AmityProfileProgressDelegate {
+public class AmityProfileViewController: AmityViewController, AmityProfileDataSource, AmityProfileProgressDelegate, UIScrollViewDelegate {
     
     private let refreshControl = UIRefreshControl()
     
