@@ -87,6 +87,10 @@ class AmityCustomEventHandler: AmityEventHandler {
 //
 //    }
     
+    override func homeCommunityDidScroll(_ scrollValue: CGFloat) {
+        debugPrint(scrollValue)
+    }
+    
     override func createLiveStreamPost(from source: AmityViewController, targetId: String?, targetType: AmityPostTargetType, openByProfileTrueID: Bool = false, destinationToUnwindBackAfterFinish: UIViewController) {
         
         debugPrint(openByProfileTrueID)

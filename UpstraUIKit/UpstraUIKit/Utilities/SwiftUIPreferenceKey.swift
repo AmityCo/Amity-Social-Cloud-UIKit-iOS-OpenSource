@@ -16,8 +16,4 @@ struct AmityFullHeaderScrollValue: PreferenceKey {
     static func reduce(value: inout String, nextValue: () -> String) {
         value = nextValue()
     }
-    
-    static func reduceCGFloat(value: inout CGFloat, nextValue: () -> CGFloat) {
-        value = nextValue()
-    }
 }

@@ -56,10 +56,7 @@ public class AmityCommunityHomePageFullHeaderViewController: AmityProfileViewCon
     }
     
     override func scrollView(_ scrollView: UIScrollView, didUpdate progress: CGFloat) {
-        let offset = scrollView.contentOffset.y
-        
-        let appPreference = AppPreferenceKey()
-        appPreference.setValueDouble(AppPreferenceKey.scrollValue, value: offset)
+        AmityEventHandler.shared.homeCommunityDidScroll(scrollView.contentOffset.y)
     }
     
     // MARK: - Private functions
