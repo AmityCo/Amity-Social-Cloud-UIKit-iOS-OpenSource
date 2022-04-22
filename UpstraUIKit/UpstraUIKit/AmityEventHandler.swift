@@ -272,6 +272,9 @@ open class AmityEventHandler {
     /// TrueID Scroll Home Detect
     open func homeCommunityDidScroll(_ scrollValue: CGFloat) {}
     
+    /// TrueID ScanQRCode Seartch Tapped
+    open func homeCommunityScanQRCodeTapped() {}
+    
     //MARK: - AnalyticNCCEvent
     open func communityTopbarSearchTracking() {}
     open func communityTopbarProfileTracking() {}

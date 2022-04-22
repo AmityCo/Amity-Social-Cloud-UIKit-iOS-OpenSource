@@ -13,6 +13,8 @@ class AmityCommunityHomePageHeaderViewController: UIViewController {
     
     // MARK: - IBOutlet Properties
     @IBOutlet weak private var searchBar: UISearchBar!
+    @IBOutlet weak private var headerTitleLabel: UILabel!
+    @IBOutlet weak private var searchContentView: UIView!
     
     // MARK: Initializer
     static func make() -> AmityCommunityHomePageHeaderViewController {
@@ -25,16 +27,64 @@ class AmityCommunityHomePageHeaderViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
     }
+    
+    private func setupHeaderTitle() {
+        headerTitleLabel.font = AmityFontSet.headerLine.withSize(36)
+        headerTitleLabel.textColor = AmityColorSet.base
+    }
+    
+    private func setupSearchView() {
+        searchContentView.layer.cornerRadius = 20
+        searchContentView.layer.borderWidth = 0.5
+        searchContentView.layer.borderColor = UIColor.gray.cgColor
+        searchContentView.clipsToBounds = true
+    }
 }
 
 private extension AmityCommunityHomePageHeaderViewController {
     
-    @IBAction func searchBarTap(_ sender: UIButton) {
+    @IBAction func searchBarTapped(_ sender: UIButton) {
         AmityEventHandler.shared.communityTopbarSearchTracking()
         let searchVC = AmitySearchViewController.make()
         let nav = UINavigationController(rootViewController: searchVC)
         nav.modalPresentationStyle = .fullScreen
         nav.modalTransitionStyle = .crossDissolve
         present(nav, animated: true, completion: nil)
+    }
+    
+    @IBAction func scanQRTapped(_ sender: UIButton) {
+        AmityEventHandler.shared.homeCommunityScanQRCodeTapped()
+    }
+}
+
+@IBDesignable extension UIView {
+    @IBInspectable var cornerRadius: CGFloat {
+        get { return layer.cornerRadius }
+        set {
+            layer.cornerRadius = newValue
+            
+            // If masksToBounds is true, subviews will be
+            // clipped to the rounded corners.
+            layer.masksToBounds = (newValue > 0)
+        }
+    }
+    
+    @IBInspectable var borderColor: UIColor? {
+        get {
+            guard let cgColor = layer.borderColor else {
+                return nil
+            }
+            return UIColor(cgColor: cgColor)
+        }
+        set { layer.borderColor = newValue?.cgColor }
+    }
+    
+    @IBInspectable var borderWidth: CGFloat {
+        get {
+            return layer.borderWidth
+        }
+        set {
+            layer.borderWidth = newValue
+        }
     }
 }
