@@ -106,6 +106,7 @@ class PostGalleryItemCell: UICollectionViewCell, Nibbable {
             durationText = PostGalleryItemCell.durationFormatter.string(from: duration)
             mediaTitle = nil
             streamStatus = nil
+            mediaPlayIcon.isHidden = false
         case "liveStream":
             let livestreamPlaceholder = UIImage(named: "default_livestream", in: AmityUIKitManager.bundle, compatibleWith: nil)
             if let streamInfo = post.getLiveStreamInfo() {
@@ -142,10 +143,8 @@ class PostGalleryItemCell: UICollectionViewCell, Nibbable {
         if let durationText = durationText {
 //            durationView.isHidden = false
             durationLabel.text = durationText
-            mediaPlayIcon.isHidden = false
         } else {
 //            durationView.isHidden = true
-            mediaPlayIcon.isHidden = true
         }
         
         // streamEndView
