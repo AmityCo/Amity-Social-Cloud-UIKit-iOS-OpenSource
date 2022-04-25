@@ -88,6 +88,7 @@ class PostGalleryItemCell: UICollectionViewCell, Nibbable {
             durationText = nil
             mediaTitle = nil
             streamStatus = nil
+            mediaPlayIcon.isHidden = true
         case "video":
             let thumbnailInfo = post.getVideoThumbnailInfo()
             let videoInfo = post.getVideoInfo(for: .original)
@@ -126,12 +127,14 @@ class PostGalleryItemCell: UICollectionViewCell, Nibbable {
                 placeholder = livestreamPlaceholder
             }
             durationText = nil
+            mediaPlayIcon.isHidden = true
         default:
             durationText = nil
             streamStatus = nil
             mediaTitle = nil
             imageUrl = nil
             placeholder = nil
+            mediaPlayIcon.isHidden = true
         }
         
         // Render UI from properties above.
