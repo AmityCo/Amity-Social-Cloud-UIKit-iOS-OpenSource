@@ -110,7 +110,7 @@ to watch shortly.</string>
                             <constraint firstItem="ZX2-62-uaJ" firstAttribute="leading" secondItem="jls-aQ-8QM" secondAttribute="leading" constant="15" id="yLV-Dg-9xU"/>
                         </constraints>
                     </view>
-                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="play_livestream_button" translatesAutoresizingMaskIntoConstraints="NO" id="iM3-sq-lpm">
+                    <imageView hidden="YES" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="play_livestream_button" translatesAutoresizingMaskIntoConstraints="NO" id="iM3-sq-lpm">
                         <rect key="frame" x="77.5" y="64" width="40" height="40"/>
                         <constraints>
                             <constraint firstAttribute="width" secondItem="iM3-sq-lpm" secondAttribute="height" multiplier="1:1" id="EOL-A5-D8Q"/>
