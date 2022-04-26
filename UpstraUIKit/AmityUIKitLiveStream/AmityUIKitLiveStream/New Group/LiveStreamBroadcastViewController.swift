@@ -96,6 +96,7 @@ final public class LiveStreamBroadcastViewController: UIViewController {
     @IBOutlet weak var streamingContainer: UIView!
     @IBOutlet weak var streamingStatusLabel: UILabel!
     @IBOutlet weak var finishButton: UIButton!
+    @IBOutlet weak var streamingViewerCountLabel: UILabel!
     
     // MARK: - UI Container End Components
     @IBOutlet weak var uiContainerEnd: UIView!
