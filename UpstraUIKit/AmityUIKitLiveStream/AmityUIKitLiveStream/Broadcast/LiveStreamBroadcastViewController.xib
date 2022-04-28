@@ -26,6 +26,8 @@
                 <outlet property="streamEndLabel" destination="aEB-qR-Pd5" id="45w-wx-ZOK"/>
                 <outlet property="streamingContainer" destination="5gV-fy-gT7" id="AdJ-Bu-LM9"/>
                 <outlet property="streamingStatusLabel" destination="fad-VJ-pDA" id="ejT-5y-fL1"/>
+                <outlet property="streamingViewerContainer" destination="jc4-a6-tmq" id="1vI-PI-mEZ"/>
+                <outlet property="streamingViewerCountLabel" destination="WyA-J8-uUF" id="5IL-Al-cfT"/>
                 <outlet property="targetImageView" destination="2ss-4b-Qu0" id="5dT-jd-Mvu"/>
                 <outlet property="targetNameLabel" destination="5Qa-JJ-7K8" id="MXY-gi-P0x"/>
                 <outlet property="titleTextField" destination="tos-Jq-m56" id="sRy-03-6V7"/>
