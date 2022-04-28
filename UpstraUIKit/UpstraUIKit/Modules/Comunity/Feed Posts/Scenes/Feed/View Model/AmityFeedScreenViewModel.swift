@@ -147,6 +147,8 @@ extension AmityFeedScreenViewModel {
     @objc private func feedNeedsUpdate(_ notification: NSNotification) {
         // Feed can't get notified from SDK after posting because backend handles a query step.
         // So, it needs to be notified from our side over NotificationCenter.
+        if feedType == .globalFeed {
+        }
         fetchPosts()
         if notification.name == Notification.Name.Post.didCreate {
             delegate?.screenViewModelScrollToTop(self)

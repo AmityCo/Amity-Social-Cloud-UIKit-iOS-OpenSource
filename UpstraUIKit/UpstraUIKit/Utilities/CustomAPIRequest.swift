@@ -118,4 +118,64 @@ final class customAPIRequest {
 
         task.resume()
     }
+    
+    static func getPinPostData(completion: @escaping(_ postArray: [AmityNewsFeedAmDataModel]) -> () ) {
+        
+        var region: String {
+            switch AmityUIKitManagerInternal.shared.amityLanguage {
+            case "th", "en":
+                return "th"
+            case "id":
+                return "id"
+            case "km":
+                return "kh"
+            case "fil":
+                return "ph"
+            case "vi":
+                return "vn"
+            case "my":
+                return "mm"
+            default:
+                return "staging"
+            }
+        }
+        
+        let url = URL(string: "https://qojeq6vaa8.execute-api.ap-southeast-1.amazonaws.com/getPinPost?region=\(region)")!
+        
+        var tempPinPostData: [AmityNewsFeedAmDataModel] = []
+        
+        var request = URLRequest(url: url)
+        request.httpMethod = "GET"
+        
+        request.allHTTPHeaderFields = [
+            "Content-Type" : "application/json"
+        ]
+        
+//        let parameter: [String:Any] = [:]
+//
+//        let jsonParameter = try? JSONSerialization.data(withJSONObject: parameter, options: [])
+//        request.httpBody = jsonParameter!
+        
+        //Get Request
+        let task = URLSession.shared.dataTask(with: request) { data, response, error in
+            
+            guard let data = data, error == nil else {
+                print(error?.localizedDescription ?? "No data.")
+                return
+            }
+
+            do {
+                let jsonResponse = try? JSONSerialization.jsonObject(with: data, options: [])
+                guard let jsonDecode = try? JSONDecoder().decode([AmityNewsFeedAmDataModel].self, from: data) else { return }
+                tempPinPostData = jsonDecode
+            } catch let error {
+                print("Error: \(error)")
+            }
+            
+            completion(tempPinPostData)
+            
+        }
+
+        task.resume()
+    }
 }

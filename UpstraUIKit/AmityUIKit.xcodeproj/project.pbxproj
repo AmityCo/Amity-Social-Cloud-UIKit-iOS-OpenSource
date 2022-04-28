@@ -500,6 +500,7 @@
 		A0B68B6126E7238E007D7B5B /* AmityPostLiveStreamTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = A0B68B5F26E7238E007D7B5B /* AmityPostLiveStreamTableViewCell.xib */; };
 		A0E2B23226B7B68200F1C4D5 /* AmityPostGalleryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0E2B23026B7B68200F1C4D5 /* AmityPostGalleryViewController.swift */; };
 		A0E2B23326B7B68200F1C4D5 /* AmityPostGalleryViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = A0E2B23126B7B68200F1C4D5 /* AmityPostGalleryViewController.xib */; };
+		B48A8940281A432B00AAFEAF /* AmityNewsFeedDataModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B48A893F281A432B00AAFEAF /* AmityNewsFeedDataModel.swift */; };
 		B704D1432578CB2F0038BA78 /* AmityPulseAnimation.swift in Sources */ = {isa = PBXBuildFile; fileRef = B704D1422578CB2F0038BA78 /* AmityPulseAnimation.swift */; };
 		B704D1492578E23A0038BA78 /* AmityAudioPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = B704D1482578E23A0038BA78 /* AmityAudioPlayer.swift */; };
 		B704D14E2578E2570038BA78 /* AmityAudioRecorder.swift in Sources */ = {isa = PBXBuildFile; fileRef = B704D14D2578E2570038BA78 /* AmityAudioRecorder.swift */; };
@@ -1170,6 +1171,7 @@
 		A0B68B5F26E7238E007D7B5B /* AmityPostLiveStreamTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = AmityPostLiveStreamTableViewCell.xib; sourceTree = "<group>"; };
 		A0E2B23026B7B68200F1C4D5 /* AmityPostGalleryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AmityPostGalleryViewController.swift; sourceTree = "<group>"; };
 		A0E2B23126B7B68200F1C4D5 /* AmityPostGalleryViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = AmityPostGalleryViewController.xib; sourceTree = "<group>"; };
+		B48A893F281A432B00AAFEAF /* AmityNewsFeedDataModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AmityNewsFeedDataModel.swift; sourceTree = "<group>"; };
 		B704D1422578CB2F0038BA78 /* AmityPulseAnimation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AmityPulseAnimation.swift; sourceTree = "<group>"; };
 		B704D1482578E23A0038BA78 /* AmityAudioPlayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AmityAudioPlayer.swift; sourceTree = "<group>"; };
 		B704D14D2578E2570038BA78 /* AmityAudioRecorder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AmityAudioRecorder.swift; sourceTree = "<group>"; };
@@ -4430,6 +4432,7 @@
 			isa = PBXGroup;
 			children = (
 				FC2F9C4C27A91A390023C4D1 /* AmityNewsFeedScreenViewModel.swift */,
+				B48A893F281A432B00AAFEAF /* AmityNewsFeedDataModel.swift */,
 				FC2F9C4E27A928470023C4D1 /* AmityNewsFeedScreenViewModelType.swift */,
 			);
 			path = ViewModel;
@@ -5054,6 +5057,7 @@
 				97D0EB6026A1461E00E9FE6A /* AmityMedia.swift in Sources */,
 				72A3519224EA820800DA9D46 /* Helper.swift in Sources */,
 				0DC1999F25E637F500A655AE /* AmityCommunityCategoryController.swift in Sources */,
+				B48A8940281A432B00AAFEAF /* AmityNewsFeedDataModel.swift in Sources */,
 				7F7704FD27B2461A00600D85 /* AmityCreateChannelHandler.swift in Sources */,
 				970E784726429FA500E5FCEE /* ChatSettingsTableViewCell.swift in Sources */,
 				B7B31C58250F4ACF000AC6E4 /* AmityProfileProgressDelegate.swift in Sources */,

@@ -21,7 +21,8 @@ public final class AmityPostHeaderTableViewCell: UITableViewCell, Nibbable, Amit
     @IBOutlet private var badgeLabel: UILabel!
     @IBOutlet private var datetimeLabel: UILabel!
     @IBOutlet private var optionButton: UIButton!
-    
+    @IBOutlet private var pinIconImageView: UIImageView!
+
     private(set) public var post: AmityPostModel?
     
     public override func awakeFromNib() {
