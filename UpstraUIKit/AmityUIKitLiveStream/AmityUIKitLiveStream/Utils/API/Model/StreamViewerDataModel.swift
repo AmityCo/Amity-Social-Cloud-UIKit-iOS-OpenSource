@@ -15,5 +15,5 @@ struct StreamViewerDataModel: Decodable {
     }
     
     let count: Int
-    let maxPage: String
+    let maxPage: Int
 }

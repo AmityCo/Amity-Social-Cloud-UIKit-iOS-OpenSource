@@ -164,6 +164,10 @@ public final class AmityUIKitManager {
     public static var AmityLanguage: String {
         AmityUIKitManagerInternal.shared.amityLanguage
     }
+    
+    public static var currentUserId: String {
+        AmityUIKitManagerInternal.shared.currentUserId
+    }
    
 }
 

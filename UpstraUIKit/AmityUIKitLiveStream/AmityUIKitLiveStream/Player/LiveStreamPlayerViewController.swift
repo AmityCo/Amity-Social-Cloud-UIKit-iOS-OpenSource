@@ -15,6 +15,8 @@ public class LiveStreamPlayerViewController: UIViewController {
     private let streamIdToWatch: String
     private let streamRepository: AmityStreamRepository
     
+    private let postId: String
+    
     private var stream: AmityStream?
     private var getStreamToken: AmityNotificationToken?
     
@@ -22,6 +24,9 @@ public class LiveStreamPlayerViewController: UIViewController {
     
     @IBOutlet weak var statusContainer: UIView!
     @IBOutlet weak var statusLabel: UILabel!
+    
+    @IBOutlet weak var streamingViewerContainer: UIView!
+    @IBOutlet weak var streamingViewerCountLabel: UILabel!
     
     /// The view above renderView to intercept tap gestuere for show/hide control container.
     @IBOutlet private weak var renderGestureView: UIView!
@@ -48,6 +53,8 @@ public class LiveStreamPlayerViewController: UIViewController {
     ///
     private var player: AmityVideoPlayer
     
+    var timer = Timer()
+    
     /// Indicate that the user request to play the stream
     private var isStarting = true {
         didSet {
@@ -67,11 +74,12 @@ public class LiveStreamPlayerViewController: UIViewController {
     
     private var videoView: UIView!
     
-    public init(streamIdToWatch: String) {
+    public init(streamIdToWatch: String, postId: String) {
         
         self.streamRepository = AmityStreamRepository(client: AmityUIKitManager.client)
         self.streamIdToWatch = streamIdToWatch
         self.player = AmityVideoPlayer(client: AmityUIKitManager.client)
+        self.postId = postId
         
         let bundle = Bundle(for: type(of: self))
         super.init(nibName: "LiveStreamPlayerViewController", bundle: bundle)
@@ -97,6 +105,7 @@ public class LiveStreamPlayerViewController: UIViewController {
         isStarting = true
         requestingStreamObject = true
         observeStreamObject()
+        getLiveStreamViwerCount()
     }
     
     private func setupStreamView() {
@@ -109,7 +118,7 @@ public class LiveStreamPlayerViewController: UIViewController {
         renderView.addSubview(videoView)
         // Tell the player to render the video in this view.
         player.renderView = videoView
-        player.delegate = self
+        player.delegate = self        
     }
     
     private func setupView() {
@@ -123,6 +132,12 @@ public class LiveStreamPlayerViewController: UIViewController {
         
         // We show "LIVE" static label while playing.
         statusContainer.isHidden = true
+        
+        streamingViewerContainer.clipsToBounds = true
+        streamingViewerContainer.layer.cornerRadius = 4
+        streamingViewerContainer.backgroundColor = UIColor(red: 1, green: 1, blue: 1, alpha: 0.2)
+        streamingViewerCountLabel.textColor = .white
+        streamingViewerCountLabel.font = AmityFontSet.captionBold
         
         streamEndTitleLabel.font = AmityFontSet.title
         streamEndDescriptionLabel.font = AmityFontSet.body
@@ -138,6 +153,20 @@ public class LiveStreamPlayerViewController: UIViewController {
         
         renderGestureView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(playerContainerDidTap)))
         
+    }
+    
+    func getLiveStreamViwerCount() {
+        
+        customAPIRequest.saveLiveStreamViewerData(postId: self.postId, liveStreamId: self.streamIdToWatch, userId: AmityUIKitManager.currentUserId, action: "join") { value in
+            self.timer = Timer.scheduledTimer(withTimeInterval: 5, repeats: true, block: {_ in
+                print("call fuction")
+                customAPIRequest.getLiveStreamViewerData(page_number: 1, liveStreamId: self.streamIdToWatch, type: "watching") { value in
+                    DispatchQueue.main.async {
+                        self.streamingViewerCountLabel.text = String(value.count.formatUsingAbbrevation())
+                    }
+                }
+            })
+        }
     }
     
     @objc private func playerContainerDidTap() {
@@ -343,6 +372,8 @@ public class LiveStreamPlayerViewController: UIViewController {
     }
     
     @IBAction func closeButtonDidTouch() {
+        customAPIRequest.saveLiveStreamViewerData(postId: self.postId, liveStreamId: self.streamIdToWatch, userId: AmityUIKitManager.currentUserId, action: "leave") { value in
+        }
         dismiss(animated: true, completion: nil)
     }
     
