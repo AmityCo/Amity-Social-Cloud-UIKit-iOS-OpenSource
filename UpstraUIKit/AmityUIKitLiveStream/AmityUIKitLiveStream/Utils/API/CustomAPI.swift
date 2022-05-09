@@ -8,7 +8,8 @@
 import Foundation
 
 final class customAPIRequest {
-    static func getDiscoveryData(page_number: Int, liveStreamId: String, type: String, completion: @escaping(_ value: StreamViewerDataModel) -> () ) {
+    
+    static func getLiveStreamViewerData(page_number: Int, liveStreamId: String, type: String, completion: @escaping(_ value: StreamViewerDataModel) -> () ) {
         
         let url = URL(string: "https://qojeq6vaa8.execute-api.ap-southeast-1.amazonaws.com/media?liveStreamId=\(liveStreamId)&page=\(page_number)&type=\(type)")!
         

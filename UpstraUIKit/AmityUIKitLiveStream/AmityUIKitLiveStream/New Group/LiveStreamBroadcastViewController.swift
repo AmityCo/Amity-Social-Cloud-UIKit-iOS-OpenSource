@@ -209,7 +209,12 @@ final public class LiveStreamBroadcastViewController: UIViewController {
     /// Call function Timer With Interval
     func getLiveStreamViwerCount() {
         timer = Timer.scheduledTimer(withTimeInterval: 5, repeats: true, block: {_ in
-            
+            customAPIRequest.getLiveStreamViewerData(page_number: 1, liveStreamId: "", type: "") { value in
+                DispatchQueue.main.async {
+                    guard let data = value else { return }
+                    let count = data.count
+                }
+            }
         })
     }
     
