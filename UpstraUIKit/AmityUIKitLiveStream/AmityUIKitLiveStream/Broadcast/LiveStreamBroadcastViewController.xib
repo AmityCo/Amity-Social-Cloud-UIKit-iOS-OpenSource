@@ -103,7 +103,7 @@
                             </constraints>
                         </view>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="jc4-a6-tmq" userLabel="Status Container">
-                            <rect key="frame" x="113" y="15" width="47.5" height="24"/>
+                            <rect key="frame" x="113" y="15" width="40" height="24"/>
                             <subviews>
                                 <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="view_eye" translatesAutoresizingMaskIntoConstraints="NO" id="rv0-5d-hgG">
                                     <rect key="frame" x="0.0" y="0.0" width="24" height="24"/>
@@ -112,8 +112,8 @@
                                         <constraint firstAttribute="width" constant="24" id="tc4-vO-iY9"/>
                                     </constraints>
                                 </imageView>
-                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="30" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="WyA-J8-uUF">
-                                    <rect key="frame" x="24" y="5" width="15.5" height="14.5"/>
+                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="WyA-J8-uUF">
+                                    <rect key="frame" x="24" y="5" width="8" height="14.5"/>
                                     <fontDescription key="fontDescription" type="system" pointSize="12"/>
                                     <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                     <nil key="highlightedColor"/>
@@ -147,7 +147,7 @@
                     <rect key="frame" x="0.0" y="44" width="414" height="818"/>
                     <subviews>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Gcy-TZ-EG4" userLabel="Close Button">
-                            <rect key="frame" x="8" y="15" width="48" height="48"/>
+                            <rect key="frame" x="350" y="15" width="48" height="48"/>
                             <inset key="contentEdgeInsets" minX="10" minY="10" maxX="10" maxY="10"/>
                             <state key="normal" image="close_button"/>
                             <connections>
@@ -155,7 +155,7 @@
                             </connections>
                         </button>
                         <stackView opaque="NO" contentMode="scaleToFill" alignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="xig-em-oET" userLabel="Top Right Stack View">
-                            <rect key="frame" x="283" y="15" width="121" height="48"/>
+                            <rect key="frame" x="277" y="88" width="121" height="48"/>
                             <subviews>
                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="LKa-dh-65R" userLabel="Switch Camera Button">
                                     <rect key="frame" x="0.0" y="0.0" width="48" height="48"/>
@@ -282,11 +282,11 @@
                         <constraint firstItem="xLF-im-up6" firstAttribute="leading" secondItem="upf-ZY-xH0" secondAttribute="leading" constant="16" id="KlF-Nu-CdU"/>
                         <constraint firstAttribute="trailing" secondItem="xLF-im-up6" secondAttribute="trailing" constant="16" id="KyN-E6-x9t"/>
                         <constraint firstItem="w7A-pv-4b8" firstAttribute="leading" secondItem="upf-ZY-xH0" secondAttribute="leading" constant="16" id="O8H-UH-6Sz"/>
-                        <constraint firstItem="xig-em-oET" firstAttribute="top" secondItem="upf-ZY-xH0" secondAttribute="top" constant="15" id="SBF-wl-kDZ"/>
                         <constraint firstItem="Gcy-TZ-EG4" firstAttribute="top" secondItem="upf-ZY-xH0" secondAttribute="top" constant="15" id="Uco-My-LMr"/>
                         <constraint firstItem="w7A-pv-4b8" firstAttribute="top" secondItem="Gcy-TZ-EG4" secondAttribute="bottom" constant="25" id="VS3-QO-BJc"/>
-                        <constraint firstItem="Gcy-TZ-EG4" firstAttribute="leading" secondItem="upf-ZY-xH0" secondAttribute="leading" constant="8" id="gBS-PI-4AV"/>
-                        <constraint firstAttribute="trailing" secondItem="xig-em-oET" secondAttribute="trailing" constant="10" id="gvd-2p-Fvk"/>
+                        <constraint firstItem="xig-em-oET" firstAttribute="top" secondItem="Gcy-TZ-EG4" secondAttribute="bottom" constant="25" id="cew-7H-bLN"/>
+                        <constraint firstAttribute="trailing" secondItem="xig-em-oET" secondAttribute="trailing" constant="16" id="gvd-2p-Fvk"/>
+                        <constraint firstItem="QSE-HE-6Qp" firstAttribute="trailing" secondItem="Gcy-TZ-EG4" secondAttribute="trailing" constant="16" id="svZ-1S-JsY"/>
                     </constraints>
                 </view>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="aoJ-cp-xbY" userLabel="UI Container (End)">

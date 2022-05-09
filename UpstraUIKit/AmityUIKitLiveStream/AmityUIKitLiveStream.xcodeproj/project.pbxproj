@@ -33,6 +33,8 @@
 		A0BD0B5E26DF37160054088B /* LiveStreamBroadcastVC+Keyboard.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0BD0B5D26DF37160054088B /* LiveStreamBroadcastVC+Keyboard.swift */; };
 		A0BD0B6026DF377A0054088B /* LiveStreamBroadcastVC+CoverImagePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0BD0B5F26DF377A0054088B /* LiveStreamBroadcastVC+CoverImagePicker.swift */; };
 		A0BD0B6226DF3A3F0054088B /* LiveStreamBroadcast+UIContainerState.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0BD0B6126DF3A3F0054088B /* LiveStreamBroadcast+UIContainerState.swift */; };
+		B43EF4BD282912460081CB8C /* CustomAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = B43EF4BC282912460081CB8C /* CustomAPI.swift */; };
+		B43EF4C0282915360081CB8C /* StreamViewerDataModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B43EF4BF282915360081CB8C /* StreamViewerDataModel.swift */; };
 		FCCD2CB927D23EC5000088DC /* UIView+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = FCCD2CB827D23EC5000088DC /* UIView+Extension.swift */; };
 /* End PBXBuildFile section */
 
@@ -67,6 +69,8 @@
 		A0BD0B5D26DF37160054088B /* LiveStreamBroadcastVC+Keyboard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "LiveStreamBroadcastVC+Keyboard.swift"; sourceTree = "<group>"; };
 		A0BD0B5F26DF377A0054088B /* LiveStreamBroadcastVC+CoverImagePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "LiveStreamBroadcastVC+CoverImagePicker.swift"; sourceTree = "<group>"; };
 		A0BD0B6126DF3A3F0054088B /* LiveStreamBroadcast+UIContainerState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "LiveStreamBroadcast+UIContainerState.swift"; sourceTree = "<group>"; };
+		B43EF4BC282912460081CB8C /* CustomAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomAPI.swift; sourceTree = "<group>"; };
+		B43EF4BF282915360081CB8C /* StreamViewerDataModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StreamViewerDataModel.swift; sourceTree = "<group>"; };
 		FCCD2CB827D23EC5000088DC /* UIView+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+Extension.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -199,6 +203,7 @@
 				A0B68B3426E077CD007D7B5B /* Operation */,
 				A0BD0B5826DE26700054088B /* Error */,
 				A0BD0B5726DE23010054088B /* UIViewController */,
+				B43EF4BE2829124D0081CB8C /* API */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -217,6 +222,23 @@
 				A0BD0B5926DE26940054088B /* GeneralError.swift */,
 			);
 			path = Error;
+			sourceTree = "<group>";
+		};
+		B43EF4BE2829124D0081CB8C /* API */ = {
+			isa = PBXGroup;
+			children = (
+				B43EF4C12829158F0081CB8C /* Model */,
+				B43EF4BC282912460081CB8C /* CustomAPI.swift */,
+			);
+			path = API;
+			sourceTree = "<group>";
+		};
+		B43EF4C12829158F0081CB8C /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				B43EF4BF282915360081CB8C /* StreamViewerDataModel.swift */,
+			);
+			path = Model;
 			sourceTree = "<group>";
 		};
 		FCCD2CB727D23EA7000088DC /* Extensions */ = {
@@ -318,6 +340,7 @@
 				A0B68B4326E07928007D7B5B /* CreateStream.swift in Sources */,
 				A0BD0B6226DF3A3F0054088B /* LiveStreamBroadcast+UIContainerState.swift in Sources */,
 				A0BD0B5E26DF37160054088B /* LiveStreamBroadcastVC+Keyboard.swift in Sources */,
+				B43EF4C0282915360081CB8C /* StreamViewerDataModel.swift in Sources */,
 				A0B68B4726E07960007D7B5B /* GoLive.swift in Sources */,
 				A0B68B3F26E07912007D7B5B /* CreatePost.swift in Sources */,
 				A0BD0B5C26DF35C80054088B /* LiveStreamBroadcastVC+Permission.swift in Sources */,
@@ -328,6 +351,7 @@
 				FCCD2CB927D23EC5000088DC /* UIView+Extension.swift in Sources */,
 				A0B68B6426E73522007D7B5B /* LiveStreamPlayerViewController.swift in Sources */,
 				A0B68B3626E07824007D7B5B /* AsyncOperation.swift in Sources */,
+				B43EF4BD282912460081CB8C /* CustomAPI.swift in Sources */,
 				A0B68B4A26E0952E007D7B5B /* LiveStreamBroadcastViewController+FinishLive.swift in Sources */,
 				A0B68B5426E0BF5D007D7B5B /* LiveStreamViewController+Streaming.swift in Sources */,
 				A0BD0B5626DE22F60054088B /* ErrorPresentation.swift in Sources */,

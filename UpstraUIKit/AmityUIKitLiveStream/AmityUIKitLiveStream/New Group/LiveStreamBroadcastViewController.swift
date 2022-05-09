@@ -117,6 +117,9 @@ final public class LiveStreamBroadcastViewController: UIViewController {
     var keyboardObservationTokens: [NSObjectProtocol] = []
     
     var isClose: Bool = false
+    
+    var timer = Timer()
+    
     // MARK: - Init / Deinit
     
     public init(client: AmityClient, targetId: String?, targetType: AmityPostTargetType) {
@@ -171,6 +174,7 @@ final public class LiveStreamBroadcastViewController: UIViewController {
         mentionManager.delegate = self
         mentionManager.setFont(AmityFontSet.body, highlightFont: AmityFontSet.bodyBold)
         mentionManager.setColor(.white, highlightColor: .white)
+        getLiveStreamViwerCount()
     }
     
     public override func viewDidAppear(_ animated: Bool) {
@@ -201,6 +205,13 @@ final public class LiveStreamBroadcastViewController: UIViewController {
     }
     
     // MARK: - Internal Functions
+    
+    /// Call function Timer With Interval
+    func getLiveStreamViwerCount() {
+        timer = Timer.scheduledTimer(withTimeInterval: 5, repeats: true, block: {_ in
+            
+        })
+    }
     
     /// goLiveButtomSpace will change base on keyboard frame.
     func updateUIBaseOnKeyboardFrame() {
@@ -310,7 +321,6 @@ final public class LiveStreamBroadcastViewController: UIViewController {
         setupMentionTableView()
         
         streamEndLabel.text = AmityLocalizedStringSet.LiveStream.Live.endingLiveStream.localizedString
-        
     }
     
     private func trySetupBroadcaster() {
