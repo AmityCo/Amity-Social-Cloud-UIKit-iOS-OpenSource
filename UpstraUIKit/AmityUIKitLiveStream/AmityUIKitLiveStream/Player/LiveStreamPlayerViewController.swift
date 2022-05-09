@@ -374,6 +374,7 @@ public class LiveStreamPlayerViewController: UIViewController {
     @IBAction func closeButtonDidTouch() {
         customAPIRequest.saveLiveStreamViewerData(postId: self.postId, liveStreamId: self.streamIdToWatch, userId: AmityUIKitManager.currentUserId, action: "leave") { value in
         }
+        timer.invalidate()
         dismiss(animated: true, completion: nil)
     }
     
