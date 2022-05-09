@@ -10,6 +10,7 @@ import UIKit
 import Foundation
 
 final class customAPIRequest {
+    
     static func getDiscoveryData(page_number: Int, completion: @escaping(_ discoveryArray: [DiscoveryDataModel]) -> () ) {
         
         var region: String {
@@ -37,24 +38,16 @@ final class customAPIRequest {
         
         var request = URLRequest(url: url)
         request.httpMethod = "GET"
-        
         request.allHTTPHeaderFields = [
             "Content-Type" : "application/json"
         ]
         
-//        let parameter: [String:Any] = [:]
-//
-//        let jsonParameter = try? JSONSerialization.data(withJSONObject: parameter, options: [])
-//        request.httpBody = jsonParameter!
-        
         //Get Request
         let task = URLSession.shared.dataTask(with: request) { data, response, error in
-            
             guard let data = data, error == nil else {
                 print(error?.localizedDescription ?? "No data.")
                 return
             }
-
             do {
                 let jsonResponse = try? JSONSerialization.jsonObject(with: data, options: [])
                 guard let jsonDecode = try? JSONDecoder().decode([DiscoveryDataModel].self, from: data) else { return }
@@ -64,9 +57,8 @@ final class customAPIRequest {
             }
             
             completion(tempDiscoveryData)
-            
         }
-
+        
         task.resume()
     }
     
@@ -93,33 +85,29 @@ final class customAPIRequest {
         
         let url = URL(string: "https://qojeq6vaa8.execute-api.ap-southeast-1.amazonaws.com/getRedNoseTrueId?userId=\(userId)&region=\(region)")!
         var badge: Int = 0
-        print("URL:::::: ", url)
         var request = URLRequest(url: url)
         request.httpMethod = "GET"
-        
         request.allHTTPHeaderFields = [
             "Content-Type" : "application/json"
         ]
         
         let task = URLSession.shared.dataTask(with: request) { data, response, error in
-            
             guard let data = data, error == nil else {
                 print(error?.localizedDescription ?? "No data.")
                 completion(.failure(error!))
                 return
             }
-
+            
             guard let jsonDecode = try? JSONDecoder().decode(Int.self, from: data) else { return }
             badge = jsonDecode
             
             completion(.success(badge))
-            
         }
-
+        
         task.resume()
     }
     
-    static func getPinPostData(completion: @escaping(_ postArray: [AmityNewsFeedAmDataModel]) -> () ) {
+    static func getPinPostData(completion: @escaping(_ postArray: AmityNewsFeedDataModel?) -> () ) {
         
         var region: String {
             switch AmityUIKitManagerInternal.shared.amityLanguage {
@@ -142,40 +130,47 @@ final class customAPIRequest {
         
         let url = URL(string: "https://qojeq6vaa8.execute-api.ap-southeast-1.amazonaws.com/getPinPost?region=\(region)")!
         
-        var tempPinPostData: [AmityNewsFeedAmDataModel] = []
+        var tempPinPostData: AmityNewsFeedDataModel = AmityNewsFeedDataModel(posts: [])
         
         var request = URLRequest(url: url)
         request.httpMethod = "GET"
-        
         request.allHTTPHeaderFields = [
             "Content-Type" : "application/json"
         ]
-        
-//        let parameter: [String:Any] = [:]
-//
-//        let jsonParameter = try? JSONSerialization.data(withJSONObject: parameter, options: [])
-//        request.httpBody = jsonParameter!
-        
+
         //Get Request
-        let task = URLSession.shared.dataTask(with: request) { data, response, error in
-            
-            guard let data = data, error == nil else {
-                print(error?.localizedDescription ?? "No data.")
+        URLSession.shared.dataTask(with: request) { data, response, error in
+            if let data = data {
+                do {
+                    let json = try? JSONSerialization.jsonObject(with: data, options: [])
+                    let jsonResponse = try? JSONDecoder().decode(AmityNewsFeedDataModel.self, from: data)
+                    DispatchQueue.main.async {
+                        tempPinPostData = jsonResponse ?? AmityNewsFeedDataModel(posts: [])
+                    }
+                } catch let jsonError as NSError {
+                    print("Error: \(jsonError.localizedDescription)")
+                }
+                
                 return
             }
-
-            do {
-                let jsonResponse = try? JSONSerialization.jsonObject(with: data, options: [])
-                guard let jsonDecode = try? JSONDecoder().decode([AmityNewsFeedAmDataModel].self, from: data) else { return }
-                tempPinPostData = jsonDecode
-            } catch let error {
-                print("Error: \(error)")
-            }
-            
-            completion(tempPinPostData)
-            
-        }
-
-        task.resume()
+        }.resume()
+//        let task = URLSession.shared.dataTask(with: request) { data, response, error in
+//            guard let data = data, error == nil else {
+//                print(error?.localizedDescription ?? "No data.")
+//                return
+//            }
+//            do {
+//                let jsonResponse = try? JSONSerialization.jsonObject(with: data, options: [])
+//                guard let jsonDecode = try? JSONDecoder().decode(AmityNewsFeedDataModel.self, from: data) else { return }
+//                tempPinPostData = jsonDecode
+//            } catch let error {
+//                print("Error: \(error)")
+//            }
+//
+//            completion(tempPinPostData)
+//
+//        }
+//
+//        task.resume()
     }
 }

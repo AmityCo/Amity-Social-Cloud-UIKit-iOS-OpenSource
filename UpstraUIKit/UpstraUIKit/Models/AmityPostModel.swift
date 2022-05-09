@@ -263,6 +263,8 @@ public class AmityPostModel {
     
     public var poll: Poll?
     
+    public var isPin: Bool = false
+    
     // MARK: - Internal variables
     
     var dataTypeInternal: DataType = .unknown

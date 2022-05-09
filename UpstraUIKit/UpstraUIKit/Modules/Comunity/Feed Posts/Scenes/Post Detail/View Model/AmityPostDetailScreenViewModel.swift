@@ -190,7 +190,7 @@ extension AmityPostDetailScreenViewModel {
     // MARK: Post
     
     func fetchPost() {
-        postController.getPostForPostId(withPostId: postId) { [weak self] (result) in
+        postController.getPostForPostId(withPostId: postId, isPin: false) { [weak self] (result) in
             switch result {
             case .success(let post):
                 self?.post = post

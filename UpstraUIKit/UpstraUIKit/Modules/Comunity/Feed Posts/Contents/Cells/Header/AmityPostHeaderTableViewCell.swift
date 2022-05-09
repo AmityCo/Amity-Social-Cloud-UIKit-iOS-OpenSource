@@ -56,7 +56,6 @@ public final class AmityPostHeaderTableViewCell: UITableViewCell, Nibbable, Amit
                                    shouldShowCommunityName: post.appearance.shouldShowCommunityName, shouldShowBannedSymbol: post.postedUser?.isGlobalBan ?? false)
         displayNameLabel.delegate = self
         datetimeLabel.text = post.subtitle
-        
 
         switch post.feedType {
         case .reviewing:
@@ -73,6 +72,11 @@ public final class AmityPostHeaderTableViewCell: UITableViewCell, Nibbable, Amit
         
         displayNameLabel.delegate = self
         datetimeLabel.text = post.subtitle
+        
+        if post.isPin {
+            pinIconImageView.isHidden = false
+            optionButton.isHidden = true
+        }
     }
 
     // MARK: - Setup views

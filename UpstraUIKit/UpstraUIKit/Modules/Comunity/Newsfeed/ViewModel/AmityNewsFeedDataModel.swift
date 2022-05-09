@@ -8,32 +8,56 @@
 
 import Foundation
 
-struct AmityNewsFeedAmDataModel: Decodable {
+struct AmityNewsFeedDataModel: Decodable {
+        
+//    enum CodingKeys: String, CodingKey {
+//        case posts = "posts"
+//    }
     
-    let post: AmityFeedPostModel
-    let dataType: String
-    let postId: String
-    let parentPostId: String
-    
-    enum CodingKeys: String, CodingKey {
-        case post = "post"
-        case dataType = "dataType"
-        case postId = "postId"
-        case parentPostId = "parentPostId"
-    }
+    var posts: [AmityFeedPostModel]
 }
 
 struct AmityFeedPostModel: Decodable {
     
-    let post: String
-    let dataType: String
-    let postId: String
-    let parentPostId: String
+//    enum CodingKeys: String, CodingKey {
+//        case id = "_id"
+//        case path = "path"
+//        case sharedCount = "sharedCount"
+//        case tragetType = "targetType"
+//        case dataType = "dataType"
+//        case commentsCount = "commentsCount"
+//        case editedAt = "editedAt"
+//        case createdAt = "createdAt"
+//        case updateAt = "updatedAt"
+//        case isDeleted = "isDeleted"
+//        case hasFlaggedComment = "hasFlaggedComment"
+//        case hasFlaggedChildren = "hasFlaggedChildren"
+//        case postId = "postId"
+//        case postedUserId = "postedUserId"
+//        case targetId = "targetId"
+//        case flagCount = "flagCount"
+//        case hashFlag = "hashFlag"
+//        case reactionsCount = "reactionsCount"
+//        case feedId = "feedId"
+//    }
     
-    enum CodingKeys: String, CodingKey {
-        case post = "post"
-        case dataType = "dataType"
-        case postId = "postId"
-        case parentPostId = "parentPostId"
-    }
+    let id: String
+    let path: String
+    let sharedCount: Int
+    let tragetType: String
+    let dataType: String
+    let commentsCount: String
+    let editedAt: String
+    let createdAt: String
+    let updateAt: String
+    let isDeleted: Bool
+    let hasFlaggedComment: Bool
+    let hasFlaggedChildren: Bool
+    let postId: String
+    let postedUserId: String
+    let targetId: String
+    let flagCount: Int
+    let hashFlag: String
+    let reactionsCount: Int
+    let feedId: String
 }
