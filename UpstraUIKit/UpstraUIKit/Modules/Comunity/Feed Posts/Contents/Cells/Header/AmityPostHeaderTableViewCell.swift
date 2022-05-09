@@ -76,6 +76,9 @@ public final class AmityPostHeaderTableViewCell: UITableViewCell, Nibbable, Amit
         if post.isPin {
             pinIconImageView.isHidden = false
             optionButton.isHidden = true
+        } else {
+            pinIconImageView.isHidden = true
+            optionButton.isHidden = false
         }
     }
 
