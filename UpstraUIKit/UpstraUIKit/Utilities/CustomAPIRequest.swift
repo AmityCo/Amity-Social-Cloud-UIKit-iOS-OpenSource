@@ -130,30 +130,44 @@ final class customAPIRequest {
         
         let url = URL(string: "https://qojeq6vaa8.execute-api.ap-southeast-1.amazonaws.com/getPinPost?region=\(region)")!
         
-        var tempPinPostData: AmityNewsFeedDataModel = AmityNewsFeedDataModel(posts: [])
+        var tempData: AmityNewsFeedDataModel = AmityNewsFeedDataModel(posts: [])
         
         var request = URLRequest(url: url)
         request.httpMethod = "GET"
         request.allHTTPHeaderFields = [
             "Content-Type" : "application/json"
         ]
-
+        
         //Get Request
-        URLSession.shared.dataTask(with: request) { data, response, error in
-            if let data = data {
-                do {
-                    let json = try? JSONSerialization.jsonObject(with: data, options: [])
-                    let jsonResponse = try? JSONDecoder().decode(AmityNewsFeedDataModel.self, from: data)
-                    DispatchQueue.main.async {
-                        tempPinPostData = jsonResponse ?? AmityNewsFeedDataModel(posts: [])
-                    }
-                } catch let jsonError as NSError {
-                    print("Error: \(jsonError.localizedDescription)")
-                }
-                
+        let task = URLSession.shared.dataTask(with: request) { data, response, error in
+            guard let data = data, error == nil else {
+                print(error?.localizedDescription ?? "No data.")
                 return
             }
-        }.resume()
+            do {
+                let jsonResponse = try? JSONSerialization.jsonObject(with: data, options: [])
+                guard let jsonDecode = try? JSONDecoder().decode(AmityNewsFeedDataModel.self, from: data) else { return }
+                tempData = jsonDecode
+            } catch let error {
+                print("Error: \(error)")
+            }
+            
+            completion(tempData)
+        }
+        
+        task.resume()
+        
+//        let url = URL(string: "https://qojeq6vaa8.execute-api.ap-southeast-1.amazonaws.com/getPinPost?region=\(region)")!
+//
+//        var tempPinPostData = Data()
+//
+//        var request = URLRequest(url: url)
+//        request.httpMethod = "GET"
+//        request.allHTTPHeaderFields = [
+//            "Content-Type" : "application/json"
+//        ]
+
+        //Get Request
 //        let task = URLSession.shared.dataTask(with: request) { data, response, error in
 //            guard let data = data, error == nil else {
 //                print(error?.localizedDescription ?? "No data.")

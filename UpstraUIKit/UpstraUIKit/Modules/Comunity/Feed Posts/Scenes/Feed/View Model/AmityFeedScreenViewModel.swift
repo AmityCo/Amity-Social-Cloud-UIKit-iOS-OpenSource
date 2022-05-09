@@ -126,26 +126,23 @@ extension AmityFeedScreenViewModel {
     func fetchPosts() {
         if feedType == .customPostRankingGlobalFeed {
             isLoading = true
-//            customAPIRequest.getPinPostData() { postArray in
-//                DispatchQueue.main.async {
-//                    print(postArray)
-//                    guard let posts = postArray else { return }
-                    let postId = "62776f26ab17b400d9f372b4"//posts.posts[0].postId
-            self.postController.getPostForPostId(withPostId: postId, isPin: true) { [weak self] (result) in
-                        guard let strongSelf = self else { return }
-                        switch result {
-                        case .success(let post):
-                            strongSelf.prepareComponentsPinPost(posts: post, isEmpty: true)
-//                            self?.post = post
-//                            self?.debouncer.run {
-//                                self?.prepareData()
-//                            }
-                        case .failure:
-                            break
+            customAPIRequest.getPinPostData() { postArray in
+                DispatchQueue.main.async {
+                    guard let postsData = postArray else { return }
+                    for posts in postsData.posts {
+                        let postId = posts.postId
+                        self.postController.getPostForPostId(withPostId: postId, isPin: true) { [weak self] (result) in
+                            guard let strongSelf = self else { return }
+                            switch result {
+                            case .success(let post):
+                                strongSelf.prepareComponentsPinPost(posts: post, isEmpty: true)
+                            case .failure:
+                                break
+                            }
                         }
                     }
-//                }
-//            }
+                }
+            }
             postController.retrieveFeed(withFeedType: feedType) { [weak self] (result) in
                 guard let strongSelf = self else { return }
                 switch result {
