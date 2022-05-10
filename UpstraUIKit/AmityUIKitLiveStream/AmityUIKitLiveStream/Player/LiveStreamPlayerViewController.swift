@@ -158,15 +158,16 @@ public class LiveStreamPlayerViewController: UIViewController {
     func getLiveStreamViwerCount() {
         
         customAPIRequest.saveLiveStreamViewerData(postId: self.postId, liveStreamId: self.streamIdToWatch, userId: AmityUIKitManager.currentUserId, action: "join") { value in
-            self.timer = Timer.scheduledTimer(withTimeInterval: 5, repeats: true, block: {_ in
-                print("call fuction")
-                customAPIRequest.getLiveStreamViewerData(page_number: 1, liveStreamId: self.streamIdToWatch, type: "watching") { value in
-                    DispatchQueue.main.async {
-                        self.streamingViewerCountLabel.text = String(value.count.formatUsingAbbrevation())
-                    }
-                }
-            })
         }
+        
+        self.timer = Timer.scheduledTimer(withTimeInterval: 5, repeats: true, block: {_ in
+            print("call fuction")
+            customAPIRequest.getLiveStreamViewerData(page_number: 1, liveStreamId: self.streamIdToWatch, type: "watching") { value in
+                DispatchQueue.main.async {
+                    self.streamingViewerCountLabel.text = String(value.count.formatUsingAbbrevation())
+                }
+            }
+        })
     }
     
     @objc private func playerContainerDidTap() {
@@ -374,8 +375,8 @@ public class LiveStreamPlayerViewController: UIViewController {
     @IBAction func closeButtonDidTouch() {
         customAPIRequest.saveLiveStreamViewerData(postId: self.postId, liveStreamId: self.streamIdToWatch, userId: AmityUIKitManager.currentUserId, action: "leave") { value in
         }
-        timer.invalidate()
-        dismiss(animated: true, completion: nil)
+        self.timer.invalidate()
+        self.dismiss(animated: true, completion: nil)
     }
     
 }

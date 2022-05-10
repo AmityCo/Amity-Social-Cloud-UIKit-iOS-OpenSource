@@ -42,13 +42,22 @@ final class customAPIRequest {
     
     static func saveLiveStreamViewerData(postId: String, liveStreamId: String, userId: String, action: String, completion: @escaping(_ value: String) -> () ) {
         
-        let url = URL(string: "https://qojeq6vaa8.execute-api.ap-southeast-1.amazonaws.com/saveStreamViewer?postId=\(postId)&userId=\(userId)&liveId=\(liveStreamId)&action=\(action)")!
+        let url = URL(string: "https://qojeq6vaa8.execute-api.ap-southeast-1.amazonaws.com/saveStreamViewer")!
         
+        let params: [String:Any?] = [
+            "postId": postId,
+            "userId": userId,
+            "liveId": liveStreamId,
+            "action": action
+        ]
+                
         var request = URLRequest(url: url)
         request.httpMethod = "POST"
         request.allHTTPHeaderFields = [
             "Content-Type" : "application/json"
         ]
+        request.httpBody = try? JSONSerialization.data(withJSONObject: params, options: [])
+        
         let task = URLSession.shared.dataTask(with: request) { data, response, error in
             
             guard let data = data, error == nil else {
@@ -56,9 +65,9 @@ final class customAPIRequest {
                 completion(error?.localizedDescription ?? "No data.")
                 return
             }
-            
-            guard let jsonDecode = try? JSONDecoder().decode(Int.self, from: data) else { return }
-            
+
+            guard let jsonDecode = try? JSONDecoder().decode(String.self, from: data) else { return }
+            print("Post Success")
             completion("Success")
         }
         

@@ -156,7 +156,7 @@ to watch shortly.</string>
                                 <constraint firstAttribute="height" constant="47" id="4OF-KG-YV0"/>
                                 <constraint firstAttribute="width" constant="60" id="yzF-En-GVf"/>
                             </constraints>
-                            <state key="normal" image="close"/>
+                            <state key="normal" image="media_player_close_button"/>
                             <connections>
                                 <action selector="closeButtonDidTouch" destination="-1" eventType="touchUpInside" id="u2a-OD-FOA"/>
                             </connections>
@@ -221,7 +221,7 @@ to watch shortly.</string>
         </view>
     </objects>
     <resources>
-        <image name="close" width="32" height="32"/>
+        <image name="media_player_close_button" width="60" height="47"/>
         <image name="pause" catalog="system" width="88" height="128"/>
         <image name="play.fill" catalog="system" width="116" height="128"/>
         <image name="view_eye" width="12" height="12"/>
