@@ -118,6 +118,7 @@ final public class LiveStreamBroadcastViewController: UIViewController {
     
     var isClose: Bool = false
     
+    var streamId: String?
     var timer = Timer()
     
     // MARK: - Init / Deinit
@@ -210,7 +211,7 @@ final public class LiveStreamBroadcastViewController: UIViewController {
     func getLiveStreamViwerCount() {
         
         timer = Timer.scheduledTimer(withTimeInterval: 5, repeats: true, block: {_ in
-            customAPIRequest.getLiveStreamViewerData(page_number: 1, liveStreamId: self.targetId ?? "", type: "watching") { value in
+            customAPIRequest.getLiveStreamViewerData(page_number: 1, liveStreamId: self.streamId ?? "", type: "watching") { value in
                 print("call fuction")
                 DispatchQueue.main.async {
                     self.streamingViewerCountLabel.text = String(value.count.formatUsingAbbrevation())
