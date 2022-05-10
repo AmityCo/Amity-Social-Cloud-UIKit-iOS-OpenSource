@@ -38,8 +38,8 @@ extension AmityPostController {
 
 // MARK: - Fetch Post
 extension AmityPostController {
-    func getPostForPostId(withPostId postId: String, completion: ((Result<AmityPostModel, AmityError>) -> Void)?) {
-        fetchPostController.getPostForPostId(withPostId: postId, completion: completion)
+    func getPostForPostId(withPostId postId: String, isPin: Bool, completion: ((Result<AmityPostModel, AmityError>) -> Void)?) {
+        fetchPostController.getPostForPostId(withPostId: postId, isPin: isPin, completion: completion)
     }
 }
 

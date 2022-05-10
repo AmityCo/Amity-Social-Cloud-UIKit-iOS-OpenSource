@@ -21,7 +21,8 @@ public final class AmityPostHeaderTableViewCell: UITableViewCell, Nibbable, Amit
     @IBOutlet private var badgeLabel: UILabel!
     @IBOutlet private var datetimeLabel: UILabel!
     @IBOutlet private var optionButton: UIButton!
-    
+    @IBOutlet private var pinIconImageView: UIImageView!
+
     private(set) public var post: AmityPostModel?
     
     public override func awakeFromNib() {
@@ -55,7 +56,6 @@ public final class AmityPostHeaderTableViewCell: UITableViewCell, Nibbable, Amit
                                    shouldShowCommunityName: post.appearance.shouldShowCommunityName, shouldShowBannedSymbol: post.postedUser?.isGlobalBan ?? false)
         displayNameLabel.delegate = self
         datetimeLabel.text = post.subtitle
-        
 
         switch post.feedType {
         case .reviewing:
@@ -72,6 +72,14 @@ public final class AmityPostHeaderTableViewCell: UITableViewCell, Nibbable, Amit
         
         displayNameLabel.delegate = self
         datetimeLabel.text = post.subtitle
+        
+        if post.isPin {
+            pinIconImageView.isHidden = false
+            optionButton.isHidden = true
+        } else {
+            pinIconImageView.isHidden = true
+            optionButton.isHidden = false
+        }
     }
 
     // MARK: - Setup views
