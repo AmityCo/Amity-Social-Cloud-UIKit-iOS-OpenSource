@@ -157,7 +157,7 @@ extension CommunityFeatureViewController: UITableViewDelegate {
             AmityFeedUISettings.shared.delegate = self
             AmityFeedUISettings.shared.dataSource = self
             
-            let homepage = AmityCommunityHomePageViewController.make()
+            let homepage = AmityCommunityHomePageFullHeaderViewController.make(withUserId: AmityUIKitManager.client.currentUserId ?? "")
             let navigationController = UINavigationController(rootViewController: homepage)
             navigationController.modalPresentationStyle = .fullScreen
             present(navigationController, animated: true, completion: nil)

@@ -15,7 +15,7 @@ protocol AmityRefreshable {
 public class AmityProfileViewController: AmityViewController, AmityProfileDataSource, AmityProfileProgressDelegate {
     
     private let refreshControl = UIRefreshControl()
-    
+
     public override func viewDidLoad() {
         super.viewDidLoad()
         self.configure(with: self, delegate: self)
@@ -59,7 +59,6 @@ public class AmityProfileViewController: AmityViewController, AmityProfileDataSo
             self?.refreshControl.endRefreshing()
         }
     }
-    
 }
 
 public class AmityProfileBottomViewController: AmityButtonPagerTabSViewController, AmityProfilePagerAwareProtocol {

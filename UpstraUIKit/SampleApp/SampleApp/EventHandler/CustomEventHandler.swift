@@ -87,6 +87,10 @@ class AmityCustomEventHandler: AmityEventHandler {
 //
 //    }
     
+    override func homeCommunityDidScroll(_ scrollValue: CGFloat) {
+        debugPrint(scrollValue)
+    }
+    
     override func createLiveStreamPost(from source: AmityViewController, targetId: String?, targetType: AmityPostTargetType, openByProfileTrueID: Bool = false, destinationToUnwindBackAfterFinish: UIViewController) {
         
         debugPrint(openByProfileTrueID)
@@ -121,6 +125,10 @@ class AmityCustomEventHandler: AmityEventHandler {
     
     override func closeAmityCommunityViewController() {
         debugPrint("Close")
+    }
+    
+    override func communityJoinButtonTracking(screenName: String, communityModel: AmityCommunityModelExternal) {
+        debugPrint("Screen name: \(screenName) | Community Model: \(communityModel)")
     }
     
 //    override func timelineFeedDidScroll(_ scrollView: UIScrollView) {

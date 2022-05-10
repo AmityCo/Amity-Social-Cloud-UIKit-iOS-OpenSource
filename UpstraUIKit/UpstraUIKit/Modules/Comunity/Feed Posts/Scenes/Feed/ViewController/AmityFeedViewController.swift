@@ -183,6 +183,7 @@ public final class AmityFeedViewController: AmityViewController, AmityRefreshabl
         pullRefreshHandler?()
         screenViewModel.action.fetchPosts()
     }
+    
 }
 
 // MARK: - AmityPostTableViewDelegate
