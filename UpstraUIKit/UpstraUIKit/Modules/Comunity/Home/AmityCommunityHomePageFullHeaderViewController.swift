@@ -23,7 +23,7 @@ public class AmityCommunityHomePageFullHeaderViewController: AmityProfileViewCon
     
     // MARK: - Initializer
     
-    public static func make(withUserId userId: String, settings: AmityUserProfilePageSettings = AmityUserProfilePageSettings()) -> AmityCommunityHomePageFullHeaderViewController {
+    public static func make(withUserId userId: String, EventTypeModel: AmityCommunityEventTypeModel? = nil, settings: AmityUserProfilePageSettings = AmityUserProfilePageSettings()) -> AmityCommunityHomePageFullHeaderViewController {
         
         let viewModel: AmityCommunityHomePageFullHeaderScreenViewModelType = AmityCommunityHomePageFullHeaderScreenViewModel(userId: userId)
         
@@ -56,7 +56,7 @@ public class AmityCommunityHomePageFullHeaderViewController: AmityProfileViewCon
     }
     
     override func scrollView(_ scrollView: UIScrollView, didUpdate progress: CGFloat) {
-        AmityEventHandler.shared.homeCommunityDidScroll(scrollView.contentOffset.y)
+        AmityEventHandler.shared.homeCommunityDidScroll(scrollView)
     }
     
     // MARK: - Private functions

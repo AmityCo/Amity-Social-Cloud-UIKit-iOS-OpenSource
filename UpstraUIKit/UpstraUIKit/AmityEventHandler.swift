@@ -270,7 +270,7 @@ open class AmityEventHandler {
     open func galleryDidScroll(_ scrollView: UIScrollView) {}
     
     /// TrueID Scroll Home Detect
-    open func homeCommunityDidScroll(_ scrollValue: CGFloat) {}
+    open func homeCommunityDidScroll(_ scrollView: UIScrollView) {}
     
     /// TrueID ScanQRCode Seartch Tapped
     open func homeCommunityScanQRCodeTapped() {}
