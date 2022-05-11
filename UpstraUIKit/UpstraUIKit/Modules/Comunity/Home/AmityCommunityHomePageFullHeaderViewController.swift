@@ -23,9 +23,9 @@ public class AmityCommunityHomePageFullHeaderViewController: AmityProfileViewCon
     
     // MARK: - Initializer
     
-    public static func make(withUserId userId: String, EventTypeModel: AmityCommunityEventTypeModel? = nil, settings: AmityUserProfilePageSettings = AmityUserProfilePageSettings()) -> AmityCommunityHomePageFullHeaderViewController {
+    public static func make(amityCommunityEventType: AmityCommunityEventTypeModel? = nil) -> AmityCommunityHomePageFullHeaderViewController {
         
-        let viewModel: AmityCommunityHomePageFullHeaderScreenViewModelType = AmityCommunityHomePageFullHeaderScreenViewModel(userId: userId)
+        let viewModel: AmityCommunityHomePageFullHeaderScreenViewModelType = AmityCommunityHomePageFullHeaderScreenViewModel(amityCommunityEventTypeModel: amityCommunityEventType)
         
         let vc = AmityCommunityHomePageFullHeaderViewController()
         vc.header = AmityCommunityHomePageHeaderViewController.make()

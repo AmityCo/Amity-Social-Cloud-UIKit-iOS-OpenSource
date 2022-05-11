@@ -16,11 +16,13 @@ final class AmityCommunityHomePageFullHeaderScreenViewModel: AmityCommunityHomeP
     let userId: String
     private let userRepository: AmityUserRepository
     private var userToken: AmityNotificationToken?
-    
+    var amityCommunityEventTypeModel: AmityCommunityEventTypeModel?
+
     // MARK: - Initializer
-    init(userId: String) {
+    init(amityCommunityEventTypeModel: AmityCommunityEventTypeModel? = nil) {
         userRepository = AmityUserRepository(client: AmityUIKitManagerInternal.shared.client)
-        self.userId = userId
+        self.userId = ""
+        self.amityCommunityEventTypeModel = amityCommunityEventTypeModel
     }
     
     var isCurrentUser: Bool {

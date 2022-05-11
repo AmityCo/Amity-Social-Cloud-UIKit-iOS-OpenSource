@@ -17,6 +17,7 @@ protocol AmityCommunityHomePageFullHeaderScreenViewModelDelegate: AnyObject {
 protocol AmityCommunityHomePageFullHeaderScreenViewModelDataSource {
     var userId: String { get }
     var isCurrentUser: Bool { get }
+    var amityCommunityEventTypeModel: AmityCommunityEventTypeModel? { get set }
 }
 
 protocol AmityCommunityHomePageFullHeaderScreenViewModelAction {

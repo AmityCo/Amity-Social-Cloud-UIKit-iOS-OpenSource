@@ -415,3 +415,5 @@
 "amity_video_stream_title_photo" = "Photo";
 "amirt_video_stream_please_allow_access_photo" = "Please allow access photo library";
 "amirt_video_stream_please_allow_access_camera" = "Please allow access camera library";
+"community_title" = "Community";
+"community_search" = "Search";

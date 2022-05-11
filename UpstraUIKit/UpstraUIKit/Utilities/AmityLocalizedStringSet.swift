@@ -187,6 +187,8 @@ public struct AmityLocalizedStringSet {
     
     // MARK: - Community home page
     public static let communityHomeTitle = "community_home_title"
+    public static let communityTitle = "community_title"
+    public static let communitySearchTitle = "community_search"
     
     // MARK: - Community detail page
     static let communityDetailJoinButton = "community_detail_join_button"

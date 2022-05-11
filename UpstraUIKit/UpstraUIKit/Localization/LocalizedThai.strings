@@ -408,3 +408,5 @@
 "amity_video_stream_title_photo" = "รูปถ่าย";
 "amirt_video_stream_please_allow_access_photo" = "โปรดอนุญาตให้เข้าถึงคลังภาพ";
 "amirt_video_stream_please_allow_access_camera" = "โปรดอนุญาตให้เข้าถึงไลบรารีของกล้อง";
+"community_title" = "คอมมูนิตี้";
+"community_search" = "ค้นหา";
