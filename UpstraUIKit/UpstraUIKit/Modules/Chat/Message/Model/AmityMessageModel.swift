@@ -49,3 +49,29 @@ public final class AmityMessageModel {
         return data?["text"] as? String
     }
 }
+
+extension AmityMessageModel: Hashable {
+    
+    public static func == (lhs: AmityMessageModel, rhs: AmityMessageModel) -> Bool {
+        return lhs.hashValue == rhs.hashValue
+    }
+    
+    public func hash(into hasher: inout Hasher) {
+        hasher.combine(messageId)
+        hasher.combine(userId)
+        hasher.combine(displayName)
+        hasher.combine(syncState)
+        hasher.combine(isDeleted)
+        hasher.combine(isEdited)
+        hasher.combine(flagCount)
+        hasher.combine(messageType)
+        hasher.combine(createdAtDate)
+        hasher.combine(date)
+        hasher.combine(time)
+        hasher.combine(text)
+        if let dataDesc = data?.description {
+            hasher.combine(dataDesc)
+        }
+    }
+    
+}

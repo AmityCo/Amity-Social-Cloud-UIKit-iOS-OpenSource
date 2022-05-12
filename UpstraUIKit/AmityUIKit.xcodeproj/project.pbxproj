@@ -279,6 +279,7 @@
 		72A974DE25E7595700706EB4 /* AmityPostViewAllCommentsTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 72A974DC25E7595700706EB4 /* AmityPostViewAllCommentsTableViewCell.xib */; };
 		72AFAC0D24F9009F00269019 /* AmityFileService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72AFAC0C24F9009F00269019 /* AmityFileService.swift */; };
 		72AFAC0F24F902AD00269019 /* Error+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72AFAC0E24F902AD00269019 /* Error+Extension.swift */; };
+		72BD0711282D2BFD00178B22 /* Array+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72BD0710282D2BFD00178B22 /* Array+Extension.swift */; };
 		72C1210B25BEAEB400CE105E /* AmityCommunityMembership+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72C1210A25BEAEB400CE105E /* AmityCommunityMembership+Extension.swift */; };
 		72C67DC124EB62EB00B637F5 /* AmityCommunityHomePageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72C67DC024EB62EB00B637F5 /* AmityCommunityHomePageViewController.swift */; };
 		72D4B6EA253D6795006693E8 /* Notification+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72D4B6E9253D6795006693E8 /* Notification+Extension.swift */; };
@@ -918,6 +919,7 @@
 		72A974DC25E7595700706EB4 /* AmityPostViewAllCommentsTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = AmityPostViewAllCommentsTableViewCell.xib; sourceTree = "<group>"; };
 		72AFAC0C24F9009F00269019 /* AmityFileService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AmityFileService.swift; sourceTree = "<group>"; };
 		72AFAC0E24F902AD00269019 /* Error+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Error+Extension.swift"; sourceTree = "<group>"; };
+		72BD0710282D2BFD00178B22 /* Array+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Array+Extension.swift"; sourceTree = "<group>"; };
 		72C1210A25BEAEB400CE105E /* AmityCommunityMembership+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AmityCommunityMembership+Extension.swift"; sourceTree = "<group>"; };
 		72C67DC024EB62EB00B637F5 /* AmityCommunityHomePageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AmityCommunityHomePageViewController.swift; sourceTree = "<group>"; };
 		72D4B6E9253D6795006693E8 /* Notification+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Notification+Extension.swift"; sourceTree = "<group>"; };
@@ -2108,6 +2110,7 @@
 				72A3508224EA820700DA9D46 /* UIViewController+Extension.swift */,
 				A062145327004E9800037C34 /* UIViewController+PostCreateDialogue.swift */,
 				0A19AE1227C3F703005A24C1 /* CGImage+Extension.swift */,
+				72BD0710282D2BFD00178B22 /* Array+Extension.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -4971,6 +4974,7 @@
 				72A3512D24EA820800DA9D46 /* AmityPostTextEditorViewController.swift in Sources */,
 				97D7C4D2264BFDC600EA24F5 /* AmityChannelRemoveMemberController.swift in Sources */,
 				B70D2B9E25763FD600E2D56B /* AmityRecordingButton.swift in Sources */,
+				72BD0711282D2BFD00178B22 /* Array+Extension.swift in Sources */,
 				B77D392424FB501C004907CF /* Sequence+Extension.swift in Sources */,
 				B773618225552BA40072B182 /* AmityChatHomePageViewController.swift in Sources */,
 				789F81FC26E2C1A600C16C68 /* AmityPollCreatorMultipleSelectionTableViewCell.swift in Sources */,
@@ -5181,7 +5185,7 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				MARKETING_VERSION = 2.16.0;
+				MARKETING_VERSION = 2.16.1;
 				PRODUCT_BUNDLE_IDENTIFIER = com.amity.amityuikit;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
@@ -5214,7 +5218,7 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				MARKETING_VERSION = 2.16.0;
+				MARKETING_VERSION = 2.16.1;
 				PRODUCT_BUNDLE_IDENTIFIER = com.amity.amityuikit;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;

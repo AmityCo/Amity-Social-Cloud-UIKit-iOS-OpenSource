@@ -92,15 +92,20 @@ extension AmityMessageListTableViewController {
         if viewHeight >= contentHeight {
             return
         }
-
-        // State 2:
-        //
-        // User is seeing the latest message. So we just scroll to the bottom when new message appears
-        if contentYOffset + viewHeight >= contentHeight {
+        
+        tableView.layoutIfNeeded()
+        
+        let pageThreshold = 2.25 // It means user scroll up more than 2 and a quarter of pages.
+        if contentHeight - contentYOffset <= (viewHeight * pageThreshold) {
+            // State 2:
+            //
+            // User is at the bottom-most page. So we just scroll to the bottom when new message appears.
             Log.add("Scrolling tableview to show latest message")
-            tableView.layoutIfNeeded()
             tableView.scrollToRow(at: indexPath, at: .bottom, animated: false)
-            return
+        } else {
+            // State 3:
+            //
+            // User is looking at older messages. Prevent bringing user to the bottom.
         }
         
     }

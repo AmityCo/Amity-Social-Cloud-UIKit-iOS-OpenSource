@@ -36,6 +36,7 @@ protocol AmityMessageListScreenViewModelDataSource {
     var allCells: [String: UINib] { get }
     
     func message(at indexPath: IndexPath) -> AmityMessageModel?
+    func numberOfMessages() -> Int
     func numberOfSection() -> Int
     func numberOfMessage(in section: Int) -> Int
     func getChannelId() -> String
