@@ -5,7 +5,7 @@
 //  Created by Nontapat Siengsanor on 26/3/2564 BE.
 //  Copyright © 2564 BE Amity. All rights reserved.
 //
-
+import Foundation
 import Network
 import SystemConfiguration
 
