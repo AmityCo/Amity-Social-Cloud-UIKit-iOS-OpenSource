@@ -21,7 +21,7 @@ final class AmityCommunityHomePageFullHeaderScreenViewModel: AmityCommunityHomeP
     // MARK: - Initializer
     init(amityCommunityEventTypeModel: AmityCommunityEventTypeModel? = nil) {
         userRepository = AmityUserRepository(client: AmityUIKitManagerInternal.shared.client)
-        self.userId = ""
+        self.userId = AmityUIKitManagerInternal.shared.client.currentUserId ?? ""
         self.amityCommunityEventTypeModel = amityCommunityEventTypeModel
     }
     
