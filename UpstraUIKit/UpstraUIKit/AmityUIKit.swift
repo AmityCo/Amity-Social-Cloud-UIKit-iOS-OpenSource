@@ -120,6 +120,10 @@ public final class AmityUIKitManager {
         AmityUIKitManagerInternal.shared.env = env
     }
     
+    public static func setUrlByTrueID(_ url: String) {
+        AmityUIKitManagerInternal.shared.urlByTrueId = url
+    }
+    
     // MARK: - Variable
     
     /// Public instance of `AmityClient` from `AmitySDK`. If you are using both`AmitySDK` & `AmityUIKit` in a same project, we recommend to have only one instance of `AmityClient`. You can use this instance instead.
@@ -232,6 +236,8 @@ final class AmityUIKitManagerInternal: NSObject {
     var amityLanguage: String { return language }
     
     var env: [String: Any] = [:]
+    
+    var urlByTrueId: String = ""
     
     // MARK: - Initializer
     
