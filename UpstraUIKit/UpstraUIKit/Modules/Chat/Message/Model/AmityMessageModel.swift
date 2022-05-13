@@ -45,7 +45,7 @@ public final class AmityMessageModel {
         self.data = object.data
     }
     
-    var text: String? {
+    public var text: String? {
         return data?["text"] as? String
     }
 }

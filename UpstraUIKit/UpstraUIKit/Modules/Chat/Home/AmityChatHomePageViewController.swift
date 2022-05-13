@@ -13,13 +13,6 @@ public class AmityChatHomePageViewController: AmityPageViewController {
     
     // MARK: - Properties
     var recentsChatViewController = AmityRecentChatViewController.make()
-    public var messageDataSource: AmityMessageListDataSource? {
-        get {
-            return recentsChatViewController.messageDataSource
-        } set {
-            recentsChatViewController.messageDataSource = newValue
-        }
-    }
     
     // MARK: - View lifecycle
     private init() {

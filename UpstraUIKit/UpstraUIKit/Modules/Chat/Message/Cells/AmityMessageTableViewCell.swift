@@ -11,6 +11,8 @@ import AmitySDK
 
 class AmityMessageTableViewCell: UITableViewCell, AmityMessageCellProtocol {
     
+    static let deletedMessageCellHeight: CGFloat = 52
+    
     // MARK: - Delegate
     weak var delegate: AmityMessageCellDelegate?
     
@@ -65,6 +67,10 @@ class AmityMessageTableViewCell: UITableViewCell, AmityMessageCellProtocol {
         metadataLabel?.isHidden = false
         errorButton?.isHidden = true
         avatarView?.image = nil
+    }
+    
+    class func height(for message: AmityMessageModel, boundingWidth: CGFloat) -> CGFloat {
+        fatalError("This function need to be implemented.")
     }
     
     func setViewModel(with viewModel: AmityMessageListScreenViewModelType) {

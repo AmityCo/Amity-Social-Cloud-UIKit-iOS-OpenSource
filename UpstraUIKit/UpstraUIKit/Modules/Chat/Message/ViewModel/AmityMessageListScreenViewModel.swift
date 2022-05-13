@@ -100,7 +100,8 @@ final class AmityMessageListScreenViewModel: AmityMessageListScreenViewModelType
         }
     }
     
-    private(set) var allCells: [String: UINib] = [:]
+    private(set) var allCellNibs: [String: UINib] = [:]
+    private(set) var allCellClasses: [String: AmityMessageCellProtocol.Type] = [:]
     
     func message(at indexPath: IndexPath) -> AmityMessageModel? {
         guard !messages.isEmpty else { return nil }
@@ -180,22 +181,25 @@ final class AmityMessageListScreenViewModel: AmityMessageListScreenViewModelType
 // MARK: - Action
 extension AmityMessageListScreenViewModel {
     
-    func registerCell() {
+    func registerCellNibs() {
         AmityMessageTypes.allCases.forEach { item in
-            if self.allCells[item.identifier] == nil {
-                self.allCells[item.identifier] = item.nib
+            if allCellNibs[item.identifier] == nil {
+                allCellNibs[item.identifier] = item.nib
+                allCellClasses[item.identifier] = item.class
             }
         }
     }
     
     func register(items: [AmityMessageTypes : AmityMessageCellProtocol.Type]) {
-        for (key, _) in allCells {
+        for (key, _) in allCellNibs {
             for item in items {
                 if item.key.identifier == key {
-                    allCells[key] = UINib(nibName: item.value.cellIdentifier, bundle: nil)
+                    allCellNibs[key] = UINib(nibName: item.value.cellIdentifier, bundle: nil)
+                    allCellClasses[key] = item.value
                 }
             }
         }
+        
     }
     
     func route(for route: Route) {
@@ -426,8 +430,11 @@ private extension AmityMessageListScreenViewModel {
             // Compare message hash
             // - if it's equal, the last message remains the same -> do nothing
             // - if it's not equal, there is new message -> scroll to bottom
+            
+            if lastMessageHash != -1 {
+                shouldScrollToBottom(force: false)
+            }
             lastMessageHash = lastMessage.hashValue
-            shouldScrollToBottom(force: false)
         }
         
     }
