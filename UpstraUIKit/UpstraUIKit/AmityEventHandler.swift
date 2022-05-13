@@ -275,6 +275,9 @@ open class AmityEventHandler {
     /// TrueID ScanQRCode Seartch Tapped
     open func homeCommunityScanQRCodeTapped() {}
     
+    /// TrueID Set URL Advertisement
+    open func setURLAdvertisement(_ url: String) {}
+    
     //MARK: - AnalyticNCCEvent
     open func communityTopbarSearchTracking() {}
     open func communityTopbarProfileTracking() {}

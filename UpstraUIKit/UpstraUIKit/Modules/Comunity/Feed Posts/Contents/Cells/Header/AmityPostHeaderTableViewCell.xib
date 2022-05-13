@@ -121,6 +121,11 @@
             <point key="canvasLocation" x="140.57971014492756" y="123.88392857142857"/>
         </tableViewCell>
     </objects>
+    <designables>
+        <designable name="hJ4-GE-kKa">
+            <size key="intrinsicContentSize" width="41.5" height="20.5"/>
+        </designable>
+    </designables>
     <resources>
         <image name="icon_pin" width="24" height="24"/>
         <systemColor name="systemBackgroundColor">

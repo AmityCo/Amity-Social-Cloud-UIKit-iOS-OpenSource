@@ -43,6 +43,18 @@ public final class AmityFeedViewController: AmityViewController, AmityRefreshabl
             }
         }
     }
+    public var shelfView: FeedHeaderPresentable? {
+        didSet {
+            debouncer.run { [weak self] in
+                DispatchQueue.main.async { [weak self] in
+                    self?.tableView.reloadData()
+                    self?.tableView.setNeedsLayout()
+                    self?.tableView.layoutIfNeeded()
+                    self?.tableView.reloadData()
+                }
+            }
+        }
+    }
     var emptyView: UIView?
     var dataDidUpdateHandler: ((Int) -> Void)?
     var emptyViewHandler: ((UIView?) -> Void)?
@@ -56,6 +68,8 @@ public final class AmityFeedViewController: AmityViewController, AmityRefreshabl
     private var isDataSourceDirty: Bool = false
     
     private let debouncer = Debouncer(delay: 0.3)
+    
+    private var feedType: AmityPostFeedType!
     
     // MARK: - View lifecycle
     deinit {
@@ -144,6 +158,7 @@ public final class AmityFeedViewController: AmityViewController, AmityRefreshabl
         tableView.registerCustomCell()
         tableView.registerPostCell()
         tableView.register(AmityFeedHeaderTableViewCell.self, forCellReuseIdentifier: AmityFeedHeaderTableViewCell.identifier)
+        tableView.register(ShelfWebViewTableViewCell.self, forCellReuseIdentifier: ShelfWebViewTableViewCell.identifier)
         tableView.register(AmityEmptyStateHeaderFooterView.self, forHeaderFooterViewReuseIdentifier: AmityEmptyStateHeaderFooterView.identifier)
         tableView.postDataSource = self
         tableView.postDelegate = self
@@ -205,10 +220,18 @@ extension AmityFeedViewController: AmityPostTableViewDelegate {
 
     func tableView(_ tableView: AmityPostTableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         if indexPath.section == 0 {
-            guard let headerView = headerView else {
-                return 0
+            if indexPath.row == 0 {
+                guard let headerView = headerView else {
+                    return 0
+                }
+                return headerView.height
+            } else {
+                if AmityUIKitManagerInternal.shared.urlAdvertisement.isEmpty {
+                    return 0
+                } else {
+                    return 150
+                }
             }
-            return headerView.height
         } else {
             return UITableView.automaticDimension
         }
@@ -222,7 +245,13 @@ extension AmityFeedViewController: AmityPostTableViewDelegate {
     
     func tableView(_ tableView: AmityPostTableView, didSelectRowAt indexPath: IndexPath) {
         // skip header section handling
-        guard indexPath.section > 0 else { return }
+        guard indexPath.section > 0 else {
+            if indexPath.row == 1 {
+                print("webView!!!")
+            }
+            return
+            
+        }
         
         let singleComponent = screenViewModel.dataSource.postComponents(in: indexPath.section)
         let postId = singleComponent._composable.post.postId
@@ -278,7 +307,17 @@ extension AmityFeedViewController: AmityPostTableViewDataSource {
     
     func tableView(_ tableView: AmityPostTableView, numberOfRowsInSection section: Int) -> Int {
         if section == 0 {
-            return headerView == nil ? 0 : 1
+            if screenViewModel.getFeedType() == .customPostRankingGlobalFeed {
+                if headerView == nil && AmityUIKitManagerInternal.shared.urlAdvertisement.isEmpty {
+                    return 0
+                } else if headerView == nil || AmityUIKitManagerInternal.shared.urlAdvertisement.isEmpty {
+                    return 1
+                } else {
+                    return 2
+                }
+            } else {
+                return headerView == nil ? 0 : 1
+            }
         } else {
             let singleComponent = screenViewModel.dataSource.postComponents(in: section)
             if let component = tableView.feedDataSource?.getUIComponentForPost(post: singleComponent._composable.post, at: section) {
@@ -291,8 +330,13 @@ extension AmityFeedViewController: AmityPostTableViewDataSource {
     
     func tableView(_ tableView: AmityPostTableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         if indexPath.section == 0 {
-            let cell: AmityFeedHeaderTableViewCell = tableView.dequeueReusableCell(for: indexPath)
-            return cell
+            if indexPath.row == 0 {
+                let cell: AmityFeedHeaderTableViewCell = tableView.dequeueReusableCell(for: indexPath)
+                return cell
+            } else if indexPath.row == 1 {
+                let cell: ShelfWebViewTableViewCell = tableView.dequeueReusableCell(withIdentifier: ShelfWebViewTableViewCell.identifier) as! ShelfWebViewTableViewCell
+                return cell
+            }
         }
         
         let singleComponent = screenViewModel.dataSource.postComponents(in: indexPath.section)
