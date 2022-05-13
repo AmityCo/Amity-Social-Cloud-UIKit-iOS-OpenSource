@@ -88,7 +88,7 @@ class AmitySocialNotificationSettingsScreenViewModel: AmityPostNotificationSetti
                 var isEnabled = false
                 switch setting.selectedOption {
                 case .everyOne:
-                    roleFilter = AmityRoleFilter.all()
+                    roleFilter = AmityRoleFilter.allFilter()
                     isEnabled = true
                 case .onlyModerator:
                     roleFilter = AmityRoleFilter.onlyFilter(withRoleIds: [AmityCommunityRole.moderator.rawValue, AmityCommunityRole.communityModerator.rawValue])
