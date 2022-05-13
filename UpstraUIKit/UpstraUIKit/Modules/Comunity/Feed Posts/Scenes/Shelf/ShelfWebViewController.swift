@@ -44,7 +44,8 @@ public final class ShelfWebViewController: UIViewController, WKUIDelegate, WKNav
         
         if navigationAction.navigationType == .linkActivated {
             if let url = navigationAction.request.url, UIApplication.shared.canOpenURL(url) {
-                UIApplication.shared.open(url)
+//                UIApplication.shared.open(url)
+                UIApplication.shared.open(url, options: [:], completionHandler: nil)
                 decisionHandler(.cancel)
                 return
             } else {

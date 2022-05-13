@@ -37,7 +37,7 @@ public class AmityCommunityHomePageViewController: AmityProfileBottomViewControl
     private var badgeView: AmityBadgeView!
     
     private init(amityCommunityEventType: AmityCommunityEventTypeModel? = nil) {
-        screenViewModel = AmityCommunityHomePageScreenViewModel(userId: <#String#>, amityCommunityEventTypeModel: amityCommunityEventType)
+        screenViewModel = AmityCommunityHomePageScreenViewModel(amityCommunityEventTypeModel: amityCommunityEventType)
 //        super.init(nibName: AmityCommunityHomePageViewController.identifier, bundle: AmityUIKitManager.bundle)
         super.init()
         screenViewModel.delegate = self

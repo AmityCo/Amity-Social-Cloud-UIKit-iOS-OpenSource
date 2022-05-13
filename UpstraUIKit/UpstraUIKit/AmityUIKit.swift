@@ -120,8 +120,8 @@ public final class AmityUIKitManager {
         AmityUIKitManagerInternal.shared.env = env
     }
     
-    public static func setUrlByTrueID(_ url: String) {
-        AmityUIKitManagerInternal.shared.urlByTrueId = url
+    public static func setUrlAdvertisement(_ url: String) {
+        AmityUIKitManagerInternal.shared.urlAdvertisement = url
     }
     
     // MARK: - Variable
@@ -237,7 +237,7 @@ final class AmityUIKitManagerInternal: NSObject {
     
     var env: [String: Any] = [:]
     
-    var urlByTrueId: String = ""
+    var urlAdvertisement: String = ""
     
     // MARK: - Initializer
     
