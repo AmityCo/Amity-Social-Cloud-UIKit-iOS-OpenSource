@@ -74,6 +74,8 @@ final class AmityMessageListScreenViewModel: AmityMessageListScreenViewModelType
     // MARK: - Properties
     private let channelId: String
     private var isFirstTimeLoaded: Bool = true
+    private var dataSourceHash: Int = -1 // to track if data source changes
+    private var lastMessageHash: Int = -1 // to track if the last message changes
     
     private var didEnterBackgroundObservation: NSObjectProtocol?
     private var connectionObservation: NSKeyValueObservation?
@@ -94,6 +96,7 @@ final class AmityMessageListScreenViewModel: AmityMessageListScreenViewModelType
     private let queue = OperationQueue()
     private var channelModel: AmityChannelModel?
     private var messages: [[AmityMessageModel]] = []
+    private var unsortedMessages: [AmityMessageModel] = []
     private var keyboardEvents: KeyboardInputEvents = .default
     private var keyboardVisible: Bool = false
     private var text: String = "" {
@@ -103,8 +106,6 @@ final class AmityMessageListScreenViewModel: AmityMessageListScreenViewModelType
     }
     
     private(set) var allCells: [String: UINib] = [:]
-    
-    private var messageQueue = DispatchQueue(label: "group.message.queue", qos: .background)
     
     func message(at indexPath: IndexPath) -> AmityMessageModel? {
         guard !messages.isEmpty else { return nil }
@@ -117,6 +118,10 @@ final class AmityMessageListScreenViewModel: AmityMessageListScreenViewModelType
     
     func numberOfSection() -> Int {
         return messages.count
+    }
+    
+    func numberOfMessages() -> Int {
+        return messages.reduce(0, { $0 + $1.count })
     }
     
     func numberOfMessage(in section: Int) -> Int {
@@ -230,7 +235,7 @@ extension AmityMessageListScreenViewModel {
         messagesCollection = messageRepository.getMessages(channelId: channelId, includingTags: [], excludingTags: [], filterByParentId: false, parentId: nil, reverse: true)
         
         messagesNotificationToken = messagesCollection?.observe { [weak self] (liveCollection, change, error) in
-            self?.groupMessages(in: liveCollection)
+            self?.groupMessages(in: liveCollection, change: change)
         }
         
         didEnterBackgroundObservation = NotificationCenter.default.addObserver(forName: UIApplication.didEnterBackgroundNotification, object: nil, queue: .main) { [weak self] notification in
@@ -408,18 +413,36 @@ private extension AmityMessageListScreenViewModel {
      Now we loop through whole collection and update the tableview for messages. The observer block also
      provides collection `change` object which can be used to track which indexpaths to add/remove/change.
      */
-    func groupMessages(in collection: AmityCollection<AmityMessage>) {
+    func groupMessages(in collection: AmityCollection<AmityMessage>, change: AmityCollectionChange?) {
         
         // First we get message from the collection
-        var storedMessages: [AmityMessageModel] = []
-        for index in 0..<collection.count() {
-            guard let message = collection.object(at: UInt(index)) else { return }
-            storedMessages.append(AmityMessageModel(object: message))
+        let storedMessages: [AmityMessageModel] = collection.allObjects().map(AmityMessageModel.init)
+        
+        // Ignore performing data if it don't change.
+        guard dataSourceHash != storedMessages.hashValue else {
+            return
+        }
+        dataSourceHash = storedMessages.hashValue
+        
+        // Preapare messages
+        if unsortedMessages.isEmpty || storedMessages.count > unsortedMessages.count{
+            unsortedMessages = storedMessages
+        } else if let insertIndexes = change?.insertions as? [Int] {
+            
+            // Insert new messages
+            for index in insertIndexes {
+                unsortedMessages.append(storedMessages[index])
+            }
+            
+            // Update messages
+            for storedMessage in storedMessages {
+                if let index = unsortedMessages.firstIndex(where: { $0.messageId == storedMessage.messageId }) {
+                    unsortedMessages[index] = storedMessage
+                }
+            }
         }
         
-        let groupedMessage = storedMessages.groupSort(byDate: { $0.createdAtDate })
-            
-        messages = groupedMessage
+        messages = unsortedMessages.groupSort(byDate: { $0.createdAtDate })
         delegate?.screenViewModelLoadingState(for: .loaded)
         delegate?.screenViewModelEvents(for: .updateMessages)
                         
@@ -428,7 +451,12 @@ private extension AmityMessageListScreenViewModel {
             // If this screen is opened for first time, we want to scroll to bottom.
             shouldScrollToBottom(force: true)
             isFirstTimeLoaded = false
-        } else {
+        } else if let lastMessage = messages.last?.last,
+                  lastMessageHash != lastMessage.hashValue {
+            // Compare message hash
+            // - if it's equal, the last message remains the same -> do nothing
+            // - if it's not equal, there is new message -> scroll to bottom
+            lastMessageHash = lastMessage.hashValue
             shouldScrollToBottom(force: false)
         }
         

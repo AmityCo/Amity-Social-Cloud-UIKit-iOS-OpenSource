@@ -30,10 +30,10 @@
                 <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="KFx-xS-ZtL">
                     <rect key="frame" x="0.0" y="44" width="414" height="818"/>
                     <subviews>
-                        <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="hBh-SR-CLm" userLabel="Message Section">
+                        <view clipsSubviews="YES" contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="hBh-SR-CLm" userLabel="Message Section">
                             <rect key="frame" x="0.0" y="0.0" width="414" height="768"/>
                             <subviews>
-                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="mUQ-dS-Mpp" userLabel="Message List Container">
+                                <view contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="mUQ-dS-Mpp" userLabel="Message List Container">
                                     <rect key="frame" x="0.0" y="0.0" width="414" height="768"/>
                                     <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                 </view>
@@ -67,11 +67,11 @@
                                 <constraint firstAttribute="trailing" secondItem="mUQ-dS-Mpp" secondAttribute="trailing" id="nHi-8J-nKF"/>
                             </constraints>
                         </view>
-                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="JeI-s9-deV" userLabel="Compose Bar Container">
+                        <view contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="JeI-s9-deV" userLabel="Compose Bar Container">
                             <rect key="frame" x="0.0" y="768" width="414" height="50"/>
                             <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                             <constraints>
-                                <constraint firstAttribute="height" constant="50" id="snE-Yu-zA3"/>
+                                <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="50" id="snE-Yu-zA3"/>
                             </constraints>
                         </view>
                     </subviews>
