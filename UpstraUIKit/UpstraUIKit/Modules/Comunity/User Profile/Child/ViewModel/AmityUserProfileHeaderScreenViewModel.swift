@@ -201,13 +201,13 @@ extension AmityUserProfileHeaderScreenViewModel {
             if let error = error {
                 AmityHUD.show(.error(message: error.localizedDescription))
             }
-            if let channelId = channelObject.object?.channelId,
-               let meta = builder.channelMetadata,
-               let creatorId = meta["creatorId"] as? String {
-                weakSelf.channelToken?.invalidate()
-                if let channel = channelObject.object {
-                    weakSelf.delegate?.screenViewModel(weakSelf, didCreateChannel: channel)
-                }
+            if let channelId = channelObject.object?.channelId {
+//               let meta = builder.channelMetadata,
+//               let creatorId = meta["creatorId"] as? String {
+            }
+            weakSelf.channelToken?.invalidate()
+            if let channel = channelObject.object {
+                weakSelf.delegate?.screenViewModel(weakSelf, didCreateChannel: channel)
             }
         }
     }

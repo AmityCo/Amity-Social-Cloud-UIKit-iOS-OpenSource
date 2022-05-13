@@ -90,9 +90,9 @@ public class AmityCreateChannelHandler {
                 completion(.failure(error))
                 AmityHUD.show(.error(message: error.localizedDescription))
             }
-            if let channelId = channelObject.object?.channelId,
-               let meta = builder.channelMetadata,
-               let creatorId = meta["creatorId"] as? String {
+            if let channelId = channelObject.object?.channelId {
+//               let meta = builder.channelMetadata,
+//               let creatorId = meta["creatorId"] as? String {
                 weakSelf.channelToken?.invalidate()
                 completion(.success(channelId))
             }
