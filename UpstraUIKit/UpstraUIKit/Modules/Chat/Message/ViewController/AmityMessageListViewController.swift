@@ -122,7 +122,8 @@ public final class AmityMessageListViewController: AmityViewController {
     }
     
     private func shouldCellOverride() {
-        screenViewModel.action.registerCell()
+        screenViewModel.action.registerCellNibs()
+        
         if let dataSource = dataSource {
             screenViewModel.action.register(items: dataSource.cellForMessageTypes())
         }
@@ -461,7 +462,17 @@ extension AmityMessageListViewController: AmityMessageListScreenViewModelDelegat
     func screenViewModelEvents(for events: AmityMessageListScreenViewModel.Events) {
         switch events {
         case .updateMessages:
+            
+            let offset = messageViewController.tableView.contentOffset.y
+            let contentHeight = messageViewController.tableView.contentSize.height
+
             messageViewController.tableView.reloadData()
+            messageViewController.tableView.layoutIfNeeded()
+            
+            let newcontentHeight = self.messageViewController.tableView.contentSize.height
+            let newOffset = (newcontentHeight - contentHeight) + offset
+            self.messageViewController.tableView.setContentOffset(CGPoint(x: 0, y: newOffset), animated: false)
+            
         case .didSendText:
             composeBar.clearText()
             screenViewModel.shouldScrollToBottom(force: true)

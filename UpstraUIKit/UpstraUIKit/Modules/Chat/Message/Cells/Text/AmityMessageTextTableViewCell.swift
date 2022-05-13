@@ -47,6 +47,28 @@ class AmityMessageTextTableViewCell: AmityMessageTableViewCell {
         setText(message)
     }
     
+    override class func height(for message: AmityMessageModel, boundingWidth: CGFloat) -> CGFloat {
+        if message.isDeleted {
+            let displaynameHeight: CGFloat = message.isOwner ? 0 : 22
+            return AmityMessageTableViewCell.deletedMessageCellHeight + displaynameHeight
+        }
+        
+        // for cell layout and calculation, please go check this pull request https://github.com/EkoCommunications/EkoMessagingSDKUIKitIOS/pull/713
+        if message.isOwner {
+            let horizontalPadding: CGFloat = 112
+            let actualWidth = boundingWidth - horizontalPadding
+            var height = message.text?.height(withConstrainedWidth: actualWidth, font: AmityFontSet.body) ?? 0.0
+            height += 64
+            return height
+        } else {
+            let horizontalPadding: CGFloat = 164
+            let actualWidth = boundingWidth - horizontalPadding
+            var height = message.text?.height(withConstrainedWidth: actualWidth, font: AmityFontSet.body) ?? 0.0
+            height += 98
+            return height
+        }
+    }
+    
     private func setText(_ message: AmityMessageModel) {
         if message.messageType == .text {
             textMessageView.text = message.text
