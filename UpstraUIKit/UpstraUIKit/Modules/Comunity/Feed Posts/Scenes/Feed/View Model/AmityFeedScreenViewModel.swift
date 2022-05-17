@@ -89,27 +89,30 @@ extension AmityFeedScreenViewModel {
         delegate?.screenViewModelDidUpdateDataSuccess(self)
     }
     
-    private func prepareComponentsPinPost(posts: AmityPostModel, isEmpty: Bool) {
+    private func prepareComponentsPinPost(posts: AmityPostModel?, isEmpty: Bool) {
         if isEmpty {
             postComponents = []
         }
-//        for post in posts {
-        posts.appearance.displayType = .feed
-        switch posts.dataTypeInternal {
-        case .text:
-            addComponent(component: AmityPostTextComponent(post: posts))
-        case .image, .video:
-            addComponent(component: AmityPostMediaComponent(post: posts))
-        case .file:
-            addComponent(component: AmityPostFileComponent(post: posts))
-        case .poll:
-            addComponent(component: AmityPostPollComponent(post: posts))
-        case .liveStream:
-            addComponent(component: AmityPostLiveStreamComponent(post: posts))
-        case .unknown:
-            addComponent(component: AmityPostPlaceHolderComponent(post: posts))
+        guard let post = posts else {
+            isLoading = false
+            delegate?.screenViewModelDidUpdateDataSuccess(self)
+            return
         }
-//        }
+        post.appearance.displayType = .feed
+        switch post.dataTypeInternal {
+        case .text:
+            addComponent(component: AmityPostTextComponent(post: post))
+        case .image, .video:
+            addComponent(component: AmityPostMediaComponent(post: post))
+        case .file:
+            addComponent(component: AmityPostFileComponent(post: post))
+        case .poll:
+            addComponent(component: AmityPostPollComponent(post: post))
+        case .liveStream:
+            addComponent(component: AmityPostLiveStreamComponent(post: post))
+        case .unknown:
+            addComponent(component: AmityPostPlaceHolderComponent(post: post))
+        }
         isLoading = false
         delegate?.screenViewModelDidUpdateDataSuccess(self)
     }
@@ -128,6 +131,7 @@ extension AmityFeedScreenViewModel {
             isLoading = true
             customAPIRequest.getPinPostData() { postArray in
                 DispatchQueue.main.async {
+                    self.prepareComponentsPinPost(posts: nil, isEmpty: true)
                     guard let postsData = postArray else { return }
                     for posts in postsData.posts {
                         let postId = posts.postId
