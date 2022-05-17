@@ -19,6 +19,7 @@ class PostGalleryItemCell: UICollectionViewCell, Nibbable {
     @IBOutlet private weak var streamStateContainer: UIView!
     @IBOutlet private weak var streamStateLabel: UILabel!
     
+    @IBOutlet private weak var mediaPlayIcon: UIImageView!
     @IBOutlet private weak var mediaTitleLabel: UILabel!
     
     @IBOutlet private weak var streamEndView: UIView!
@@ -87,6 +88,7 @@ class PostGalleryItemCell: UICollectionViewCell, Nibbable {
             durationText = nil
             mediaTitle = nil
             streamStatus = nil
+            mediaPlayIcon.isHidden = true
         case "video":
             let thumbnailInfo = post.getVideoThumbnailInfo()
             let videoInfo = post.getVideoInfo(for: .original)
@@ -105,6 +107,7 @@ class PostGalleryItemCell: UICollectionViewCell, Nibbable {
             durationText = PostGalleryItemCell.durationFormatter.string(from: duration)
             mediaTitle = nil
             streamStatus = nil
+            mediaPlayIcon.isHidden = false
         case "liveStream":
             let livestreamPlaceholder = UIImage(named: "default_livestream", in: AmityUIKitManager.bundle, compatibleWith: nil)
             if let streamInfo = post.getLiveStreamInfo() {
@@ -124,12 +127,14 @@ class PostGalleryItemCell: UICollectionViewCell, Nibbable {
                 placeholder = livestreamPlaceholder
             }
             durationText = nil
+            mediaPlayIcon.isHidden = true
         default:
             durationText = nil
             streamStatus = nil
             mediaTitle = nil
             imageUrl = nil
             placeholder = nil
+            mediaPlayIcon.isHidden = true
         }
         
         // Render UI from properties above.
@@ -139,10 +144,10 @@ class PostGalleryItemCell: UICollectionViewCell, Nibbable {
         
         // durationText
         if let durationText = durationText {
-            durationView.isHidden = false
+//            durationView.isHidden = false
             durationLabel.text = durationText
         } else {
-            durationView.isHidden = true
+//            durationView.isHidden = true
         }
         
         // streamEndView
