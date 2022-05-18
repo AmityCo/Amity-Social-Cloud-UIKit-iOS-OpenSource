@@ -395,6 +395,26 @@ extension AmityPostDetailViewController: AmityPostDetailScreenViewModelDelegate 
         present(bottomSheet, animated: false, completion: nil)
     }
     
+    func screenViewModelDidShowAlertDialog() {
+        self.navigationController?.popViewController(animated: true)
+        let firstAction = AmityDefaultModalModel.Action(title: AmityLocalizedStringSet.General.ok,
+                                                        textColor: UIColor.white,
+                                                        backgroundColor: UIColor.black)
+
+        let communityPostModel = AmityDefaultModalModel(image: AmityIconSet.iconNotFound,
+                                                          title: AmityLocalizedStringSet.Modal.contentNotfoundTitle,
+                                                          description: AmityLocalizedStringSet.Modal.contentNotfoundDesc,
+                                                            firstAction: firstAction, secondAction: nil,
+                                                            layout: .single)
+        let communityPostModalView = AmityDefaultModalView.make(content: communityPostModel)
+        communityPostModalView.firstActionHandler = {
+            AmityHUD.hide { [weak self] in
+            }
+        }
+    
+        AmityHUD.show(.custom(view: communityPostModalView))
+    }
+    
     // MARK: Comment
     func screenViewModelDidCreateComment(_ viewModel: AmityPostDetailScreenViewModelType) {
         // Do something with success

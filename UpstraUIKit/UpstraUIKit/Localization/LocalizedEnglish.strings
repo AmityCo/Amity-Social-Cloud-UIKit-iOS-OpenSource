@@ -290,6 +290,8 @@
 "post_review_settings_alert_fail_title_turn_off" = "Unable to turn off post review";
 "modal_community_settings_title" = "Customize your community";
 "modal_community_settings_desc" = "You’ve successfully created a community! Now let's manage permissions that work best for you";
+"modal_community_not_found_title" = "Content Not Available";
+"modal_community_not_found_desc" = "This content is currently not available in your country or removed.";
 "member_list_title" = "Members";
 "chat_setting_leave_channel" = "Leave Chat";
 "chat_setting_member" = "Members";

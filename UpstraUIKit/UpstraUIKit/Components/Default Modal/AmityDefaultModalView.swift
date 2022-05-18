@@ -12,7 +12,7 @@ import UIKit
  * Default modal model
  */
 enum AmityDefaultModalModelType {
-    case vertical, horizontal
+    case vertical, horizontal, single
 }
 
 struct AmityDefaultModalModel {
@@ -60,6 +60,10 @@ final class AmityDefaultModalView: AmityView {
     @IBOutlet private var firstHorizontalActionButton: UIButton!
     @IBOutlet private var secondHorizontalActionButton: UIButton!
     
+    // Single action views
+    @IBOutlet private var singleActionView: UIView!
+    @IBOutlet private var singleActionButton: UIButton!
+
     // MARK: - Properties
     var firstActionHandler: (() -> Void)?
     var secondActionHandler: (() -> Void)?
@@ -116,10 +120,17 @@ final class AmityDefaultModalView: AmityView {
         case .horizontal:
             updateActionButton(firstHorizontalActionButton, contentAction: content?.firstAction)
             updateActionButton(secondHorizontalActionButton, contentAction: content?.secondAction)
-        
+        case .single:
+            updateActionButton(singleActionButton, contentAction: content?.firstAction)
         }
         verticalActionStackView.isHidden = content?.layout == .horizontal
         horizontalActionStackView.isHidden = content?.layout == .vertical
+        singleActionView.isHidden = content?.layout != .single
+        
+        if content?.layout == .single {
+            verticalActionStackView.isHidden = content?.layout == .single
+            horizontalActionStackView.isHidden = content?.layout == .single
+        }
     }
     
     private func updateActionButton(_ sender: UIButton, contentAction: AmityDefaultModalModel.Action?) {

@@ -276,6 +276,8 @@
 "post_review_settings_alert_fail_title_turn_off" = "Không thể tắt đánh giá bài đăng";
 "modal_community_settings_title" = "Tùy chỉnh cộng đồng";
 "modal_community_settings_desc" = "Bạn đã tạo thành công một cộng đồng! Bây giờ, hãy quản lý các quyền phù hợp nhất với bạn";
+"modal_community_settings_title" = "Nội dung không khả dụng";
+"modal_community_settings_desc" = "Nội dung này hiện không có sẵn ở quốc gia của bạn hoặc đã bị xóa.";
 "member_list_title" = "Thành viên";
 "chat_setting_leave_channel" = "Rời khỏi Trò chuyện";
 "chat_setting_member" = "Thành viên";
