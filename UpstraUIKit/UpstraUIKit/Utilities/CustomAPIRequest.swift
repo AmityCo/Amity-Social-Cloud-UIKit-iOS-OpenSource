@@ -148,10 +148,13 @@ final class customAPIRequest {
             }
             do {
                 let jsonResponse = try? JSONSerialization.jsonObject(with: data, options: [])
-                guard let jsonDecode = try? JSONDecoder().decode(AmityNewsFeedDataModel.self, from: data) else { return }
+                guard let jsonDecode = try? JSONDecoder().decode(AmityNewsFeedDataModel.self, from: data) else {
+                    completion(tempData)
+                    return
+                }
                 tempData = jsonDecode
-            } catch let error {
-                print("Error: \(error)")
+            } catch let response {
+                print("Error: \(response)")
             }
             
             completion(tempData)
