@@ -52,6 +52,26 @@ public struct AmityChannelModel {
     }
 }
 
+class RecentChatAvatarArray {
+    static var shared = RecentChatAvatarArray()
+    var avatarArray: [RecentChatAvatar] = []
+}
+
+struct RecentChatAvatar {
+    let channelId: String
+    let avatarURL: String
+    let displayName: String
+    let isCustom: Bool
+    
+    init(channelId: String, avatarURL: String, displayName: String, isCustom: Bool){
+        self.channelId = channelId
+        self.avatarURL = avatarURL
+        self.displayName = displayName
+        self.isCustom = isCustom
+    }
+}
+
+
 final class AmityRecentChatScreenViewModel: AmityRecentChatScreenViewModelType {
     weak var delegate: AmityRecentChatScreenViewModelDelegate?
     
@@ -78,6 +98,8 @@ final class AmityRecentChatScreenViewModel: AmityRecentChatScreenViewModelType {
     init(channelType: AmityChannelType) {
         self.channelType = channelType
         channelRepository = AmityChannelRepository(client: AmityUIKitManagerInternal.shared.client)
+        
+        RecentChatAvatarArray.shared.avatarArray = []
     }
     
     required init?(coder: NSCoder) {
