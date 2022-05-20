@@ -221,18 +221,21 @@ class PostGalleryItemCell: UICollectionViewCell, Nibbable {
             durationText = nil
             mediaTitle = nil
             streamStatus = nil
+            mediaTitleLabel.isHidden = true
         case "video":
             imageUrl = model.file_url
             placeholder = nil
             durationText = nil
             mediaTitle = nil
             streamStatus = nil
+            mediaTitleLabel.isHidden = false
         default:
             durationText = nil
             streamStatus = nil
             mediaTitle = nil
             imageUrl = nil
             placeholder = nil
+            mediaTitleLabel.isHidden = true
         }
         
         // Render UI from properties above.
