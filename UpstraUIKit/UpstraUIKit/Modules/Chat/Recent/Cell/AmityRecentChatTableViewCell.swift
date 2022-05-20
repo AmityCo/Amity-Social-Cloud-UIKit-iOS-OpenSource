@@ -81,26 +81,40 @@ final class AmityRecentChatTableViewCell: UITableViewCell, Nibbable {
             avatarView.setImage(withImageURL: channel.avatarURL, placeholder: AmityIconSet.defaultGroupChat)
             memberLabel.text = "(\(channel.memberCount))"
         case .conversation:
-            avatarView.setImage(withImageURL: channel.avatarURL, placeholder: AmityIconSet.defaultAvatar)
             memberLabel.text = nil
-            titleLabel.text = channel.displayName
+//            avatarView.setImage(withImageURL: channel.avatarURL, placeholder: AmityIconSet.defaultAvatar)
+//            titleLabel.text = channel.displayName
             
-            participateToken?.invalidate()
-            participateToken = channel.participation.getMembers(filter: .all, sortBy: .firstCreated, roles: []).observe { collection, change, error in
-                for i in 0..<collection.count(){
-                    let userId = collection.object(at: i)?.userId
-                    if userId != AmityUIKitManagerInternal.shared.currentUserId {
-                        self.token = self.repository?.getUser(userId ?? "").observe { [weak self] user, error in
-                            self?.token?.invalidate()
-                            guard let userObject = user.object else { return }
-                            self?.titleLabel.text = userObject.displayName
-                            let userModel = AmityUserModel(user: userObject)
-                            if !userModel.avatarCustomURL.isEmpty {
-                                self?.avatarView.setImage(withCustomURL: userModel.avatarCustomURL,
-                                                         placeholder: AmityIconSet.defaultAvatar)
-                            } else {
-                                self?.avatarView.setImage(withImageURL: userModel.avatarURL,
-                                                          placeholder: AmityIconSet.defaultAvatar)
+            if let userIndex = RecentChatAvatarArray.shared.avatarArray.firstIndex(where: {$0.channelId == channel.channelId }) {
+                let currentArray = RecentChatAvatarArray.shared.avatarArray[userIndex]
+                titleLabel.text = currentArray.displayName
+                if currentArray.isCustom {
+                    avatarView.setImage(withCustomURL: currentArray.avatarURL,
+                                             placeholder: AmityIconSet.defaultAvatar)
+                } else {
+                    avatarView.setImage(withImageURL: currentArray.avatarURL,
+                                             placeholder: AmityIconSet.defaultAvatar)
+                }
+            } else {
+                participateToken?.invalidate()
+                participateToken = channel.participation.getMembers(filter: .all, sortBy: .firstCreated, roles: []).observe { collection, change, error in
+                    for i in 0..<collection.count(){
+                        let userId = collection.object(at: i)?.userId
+                        if userId != AmityUIKitManagerInternal.shared.currentUserId {
+                            self.token = self.repository?.getUser(userId ?? "").observe { [weak self] user, error in
+                                self?.token?.invalidate()
+                                guard let userObject = user.object else { return }
+                                self?.titleLabel.text = userObject.displayName
+                                let userModel = AmityUserModel(user: userObject)
+                                if !userModel.avatarCustomURL.isEmpty {
+                                    self?.avatarView.setImage(withCustomURL: userModel.avatarCustomURL,
+                                                             placeholder: AmityIconSet.defaultAvatar)
+                                    RecentChatAvatarArray.shared.avatarArray.append(RecentChatAvatar(channelId: channel.channelId, avatarURL: userModel.avatarCustomURL, displayName: userModel.displayName, isCustom: true))
+                                } else {
+                                    self?.avatarView.setImage(withImageURL: userModel.avatarURL,
+                                                              placeholder: AmityIconSet.defaultAvatar)
+                                    RecentChatAvatarArray.shared.avatarArray.append(RecentChatAvatar(channelId: channel.channelId, avatarURL: userModel.avatarURL, displayName: userModel.displayName, isCustom: false))
+                                }
                             }
                         }
                     }
