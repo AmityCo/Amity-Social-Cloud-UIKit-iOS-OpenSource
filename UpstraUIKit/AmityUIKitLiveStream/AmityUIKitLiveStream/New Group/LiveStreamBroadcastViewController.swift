@@ -117,9 +117,7 @@ final public class LiveStreamBroadcastViewController: UIViewController {
     var keyboardObservationTokens: [NSObjectProtocol] = []
     
     var isClose: Bool = false
-    
-    var amityPost: AmityPost
-    
+        
     var streamId: String?
     var timer = Timer()
     
@@ -454,7 +452,8 @@ final public class LiveStreamBroadcastViewController: UIViewController {
     }
     
     @IBAction func shareButtonDidTouch() {
-        AmityEventHandler.shared.shareLiveStreamDidTap(from: self, amityPost: self.amityPost)
+        guard  let post = createdPost else { return }
+//        AmityEventHandler.shared.shareLiveStreamDidTap(from: self, amityPost: post)
     }
     
 }
