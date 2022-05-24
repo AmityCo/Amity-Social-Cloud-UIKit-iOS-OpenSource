@@ -22,7 +22,6 @@ public class AmityCommunityHomePageViewController: AmityProfileBottomViewControl
 //    public let newsFeedVC = AmityNewsfeedViewController.make()
     public let newsFeedVC = AmityFeedViewController.make(feedType: .customPostRankingGlobalFeed)
     public let newfeedHeader = AmityMyCommunityPreviewViewController.make()
-    public let newfeedShelf = ShelfWebViewController.make()
     public let exploreVC = AmityCommunityExplorerViewController.make()
     public let discoveryVC = AmityDiscoveryViewController.makeByTrueIDWithoutTargetId(targetType: .community, isHiddenButtonCreate: true)
     
@@ -74,7 +73,6 @@ public class AmityCommunityHomePageViewController: AmityProfileBottomViewControl
         newsFeedVC.pageTitle = AmityLocalizedStringSet.newsfeedTitle.localizedString
         newfeedHeader.retrieveCommunityList()
         newsFeedVC.headerView = newfeedHeader
-        newsFeedVC.shelfView = newfeedShelf
         
         newfeedHeader.delegate = self
         
