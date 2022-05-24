@@ -73,9 +73,10 @@ final class AmityMessageListScreenViewModel: AmityMessageListScreenViewModelType
     // MARK: - Properties
     private let channelId: String
     private var isFirstTimeLoaded: Bool = true
+    
+    private let debouncer = Debouncer(delay: 0.6)
     private var dataSourceHash: Int = -1 // to track if data source changes
     private var lastMessageHash: Int = -1 // to track if the last message changes
-    
     private var didEnterBackgroundObservation: NSObjectProtocol?
     private var connectionObservation: NSKeyValueObservation?
     private var lastNotOnline: Date?
@@ -405,7 +406,9 @@ private extension AmityMessageListScreenViewModel {
             
             // Insert new messages
             for index in insertIndexes {
-                unsortedMessages.append(storedMessages[index])
+                if !unsortedMessages.contains(where: { $0.messageId == storedMessages[index].messageId}) {
+                    unsortedMessages.append(storedMessages[index])
+                }
             }
             
             // Update messages
@@ -416,6 +419,32 @@ private extension AmityMessageListScreenViewModel {
             }
         }
         
+        // We use debouncer to prevent data updating too frequently and interupting UI.
+        // When data is settled for a particular second, then updating UI in one time.
+        debouncer.run { [weak self] in
+            self?.notifyView()
+        }
+    }
+    
+    func getReportMessageStatus(at indexPath: IndexPath, completion: ((Bool) -> Void)?) {
+        guard let message = message(at: indexPath) else { return }
+        messageFlagger = AmityMessageFlagger(client: AmityUIKitManagerInternal.shared.client, messageId: message.messageId)
+        messageFlagger?.isFlaggedByMe {
+            completion?($0)
+        }
+    }
+    
+    func handleReportResponse(at indexPath: IndexPath, isSuccess: Bool, error: Error?) {
+        if isSuccess {
+            delegate?.screenViewModelDidReportMessage(at: indexPath)
+        } else {
+            delegate?.screenViewModelDidFailToReportMessage(at: indexPath, with: error)
+        }
+    }
+    
+    // MARK: - Helper
+    
+    private func notifyView() {
         messages = unsortedMessages.groupSort(byDate: { $0.createdAtDate })
         delegate?.screenViewModelLoadingState(for: .loaded)
         delegate?.screenViewModelEvents(for: .updateMessages)
@@ -439,21 +468,6 @@ private extension AmityMessageListScreenViewModel {
         
     }
     
-    func getReportMessageStatus(at indexPath: IndexPath, completion: ((Bool) -> Void)?) {
-        guard let message = message(at: indexPath) else { return }
-        messageFlagger = AmityMessageFlagger(client: AmityUIKitManagerInternal.shared.client, messageId: message.messageId)
-        messageFlagger?.isFlaggedByMe {
-            completion?($0)
-        }
-    }
-    
-    func handleReportResponse(at indexPath: IndexPath, isSuccess: Bool, error: Error?) {
-        if isSuccess {
-            delegate?.screenViewModelDidReportMessage(at: indexPath)
-        } else {
-            delegate?.screenViewModelDidFailToReportMessage(at: indexPath, with: error)
-        }
-    }
 }
 
 // MARK: - Send Image

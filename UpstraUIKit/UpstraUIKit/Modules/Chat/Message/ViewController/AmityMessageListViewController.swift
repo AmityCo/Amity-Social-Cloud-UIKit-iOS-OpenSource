@@ -375,7 +375,6 @@ extension AmityMessageListViewController: UIImagePickerControllerDelegate & UINa
         picker.dismiss(animated: true) { [weak self] in
             do {
                 let resizedImage = image
-                    .fixedOrientation()
                     .scalePreservingAspectRatio()
                 let media = AmityMedia(state: .image(resizedImage), type: .image)
                 self?.screenViewModel.action.send(withMedias: [media])
@@ -474,7 +473,6 @@ extension AmityMessageListViewController: AmityMessageListScreenViewModelDelegat
             self.messageViewController.tableView.setContentOffset(CGPoint(x: 0, y: newOffset), animated: false)
             
         case .didSendText:
-            composeBar.clearText()
             screenViewModel.shouldScrollToBottom(force: true)
         case .didEditText:
             break
