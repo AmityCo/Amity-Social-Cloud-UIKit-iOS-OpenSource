@@ -118,6 +118,8 @@ final public class LiveStreamBroadcastViewController: UIViewController {
     
     var isClose: Bool = false
     
+    var amityPost: AmityPost
+    
     var streamId: String?
     var timer = Timer()
     
@@ -449,6 +451,10 @@ final public class LiveStreamBroadcastViewController: UIViewController {
     
     @IBAction func finishButtonDidTouch() {
         presentEndLiveStreamConfirmationDialogue()
+    }
+    
+    @IBAction func shareButtonDidTouch() {
+        AmityEventHandler.shared.shareLiveStreamDidTap(from: self, amityPost: self.amityPost)
     }
     
 }
