@@ -453,7 +453,7 @@ final public class LiveStreamBroadcastViewController: UIViewController {
     
     @IBAction func shareButtonDidTouch() {
         guard  let post = createdPost else { return }
-//        AmityEventHandler.shared.shareLiveStreamDidTap(from: self, amityPost: post)
+        AmityEventHandler.shared.shareLiveStreamDidTap(from: self, amityPost: post)
     }
     
 }

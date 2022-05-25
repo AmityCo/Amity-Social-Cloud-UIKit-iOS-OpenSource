@@ -32,7 +32,7 @@ public enum AmityPostContentType {
 
 open class AmityEventHandler {
     
-    static var shared = AmityEventHandler()
+    public static var shared = AmityEventHandler()
     
     public init() { }
     
@@ -240,7 +240,7 @@ open class AmityEventHandler {
     ///   - source: The source view controller that trigger the event.
     ///   - postId: The post id to watch the live stream.
     ///   - streamId: The stream id to watch.
-    open func openLiveStreamPlayer(from source: AmityViewController, postId: String, streamId: String) {
+    open func openLiveStreamPlayer(from source: AmityViewController, postId: String, streamId: String, post: AmityPost) {
         print("To present live stream, please override \(AmityEventHandler.self).\(#function), see https://docs.amity.co for more details.")
     }
     
@@ -261,7 +261,7 @@ open class AmityEventHandler {
     /// TrueID Project
     open func shareCommunityPostDidTap(from source: UIViewController, title: String?, postId: String, communityId: String) {}
     open func shareCommunityProfileDidTap(from source: UIViewController, communityModelExternal: AmityCommunityModelExternal) {}
-    open func shareLiveStreamDidTap(from source: UIViewController, amityPost: AmityPost) {}
+    open func shareLiveStreamDidTap(from source: UIViewController, amityPost: AmityPost? = nil) {}
     
     /// TrueID Detect Close view
     open func closeAmityCommunityViewController() {}

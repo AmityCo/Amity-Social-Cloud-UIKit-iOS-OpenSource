@@ -36,6 +36,15 @@ public class AmityCommunityHomePageFullHeaderViewController: AmityProfileViewCon
         return vc
     }
     
+    public static func navigateTo(amityCommunityEventType: AmityCommunityEventTypeModel? = nil) {
+        
+        let viewModel: AmityCommunityHomePageFullHeaderScreenViewModelType = AmityCommunityHomePageFullHeaderScreenViewModel(amityCommunityEventTypeModel: amityCommunityEventType)
+        
+        let vc = AmityCommunityHomePageFullHeaderViewController()
+        vc.screenViewModel = viewModel
+        vc.screenViewModel.action.fetchUserProfile(with: AmityUIKitManagerInternal.shared.currentUserId)
+    }
+    
     // MARK: - View's life cycle
     
     public override func viewDidLoad() {
