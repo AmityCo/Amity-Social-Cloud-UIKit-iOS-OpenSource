@@ -70,12 +70,6 @@ private extension AmityMessageListHeaderView {
 
 extension AmityMessageListHeaderView {
     
-    func updateHeaderView(displayName: String, avatarURL: String){
-        displayNameLabel.text = displayName
-        avatarView.setImage(withCustomURL: avatarURL,
-                                 placeholder: AmityIconSet.defaultAvatar)
-    }
-    
     func updateViews(channel: AmityChannelModel) {
         displayNameLabel.text = channel.displayName
         switch channel.channelType {

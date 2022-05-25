@@ -438,13 +438,6 @@ private extension AmityMessageListViewController {
     
 }
 
-// MARK: - Update Header function
-private extension AmityMessageListViewController {
-    func updateHeaderView() {
-        navigationHeaderViewController.updateHeaderView(displayName: "Mono", avatarURL: "aabb.com")
-    }
-}
-
 extension AmityMessageListViewController: AmityKeyboardServiceDelegate {
     func keyboardWillChange(service: AmityKeyboardService, height: CGFloat, animationDuration: TimeInterval) {
         
