@@ -48,15 +48,16 @@ public class AmityCommunityHomePageFullHeaderViewController: AmityProfileViewCon
     
     public override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        runDeeplinksRouter()
         navigationController?.setBackgroundColor(with: .white)
+        runDeeplinksRouter()
     }
     
     public override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         navigationController?.reset()
+        screenViewModel = nil
     }
-    
+        
     override func scrollView(_ scrollView: UIScrollView, didUpdate progress: CGFloat) {
         AmityEventHandler.shared.homeCommunityDidScroll(scrollView)
     }
