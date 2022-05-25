@@ -20,6 +20,7 @@ public class AmityCommunityHomePageFullHeaderViewController: AmityProfileViewCon
     private let postButton: AmityFloatingButton = AmityFloatingButton()
     private var screenViewModel: AmityCommunityHomePageFullHeaderScreenViewModelType!
     private var permissionCanLive: Bool = false
+    private var deeplinkFinished: Bool = false
     
     // MARK: - Initializer
     
@@ -48,13 +49,15 @@ public class AmityCommunityHomePageFullHeaderViewController: AmityProfileViewCon
     public override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         navigationController?.setBackgroundColor(with: .white)
+        runDeeplinksRouter()
     }
     
     public override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         navigationController?.reset()
+        screenViewModel = nil
     }
-    
+        
     override func scrollView(_ scrollView: UIScrollView, didUpdate progress: CGFloat) {
         AmityEventHandler.shared.homeCommunityDidScroll(scrollView)
     }
@@ -109,6 +112,46 @@ extension AmityCommunityHomePageFullHeaderViewController: AmityCommunityHomePage
             AmityHUD.show(.error(message: AmityLocalizedStringSet.HUD.somethingWentWrong.localizedString))
         default:
             break
+        }
+    }
+}
+
+// MARK: - Action
+
+private extension AmityCommunityHomePageFullHeaderViewController {
+   
+    func runDeeplinksRouter() {
+        if deeplinkFinished { return }
+        
+        if screenViewModel.dataSource.amityCommunityEventTypeModel != nil {
+            deeplinkFinished = true
+            switch screenViewModel.dataSource.amityCommunityEventTypeModel?.openType {
+            case .post:
+                if screenViewModel.dataSource.amityCommunityEventTypeModel?.communityID != "" && screenViewModel.dataSource.amityCommunityEventTypeModel?.communityID != nil {
+                    let viewController = AmityCommunityProfilePageViewController.make(withCommunityId: screenViewModel.dataSource.amityCommunityEventTypeModel?.communityID ?? "", postId: screenViewModel.dataSource.amityCommunityEventTypeModel?.postID, fromDeeplinks: true)
+                    navigationController?.pushViewController(viewController, animated: true)
+                } else {
+                    let postVC = AmityPostDetailViewController.make(withPostId: screenViewModel.dataSource.amityCommunityEventTypeModel?.postID ?? "")
+                    navigationController?.pushViewController(postVC, animated: true)
+                }
+            case .community:
+                guard let communityID = screenViewModel.dataSource.amityCommunityEventTypeModel?.communityID else { return }
+                let viewController = AmityCommunityProfilePageViewController.make(withCommunityId: communityID)
+                navigationController?.pushViewController(viewController, animated: true)
+            case .category:
+                guard let categoryID = screenViewModel.dataSource.amityCommunityEventTypeModel?.categoryID else { return }
+                let viewController = AmityCategoryCommunityListViewController.make(categoryId: categoryID)
+                navigationController?.pushViewController(viewController, animated: true)
+            case .chat:
+                guard let channelID = screenViewModel.dataSource.amityCommunityEventTypeModel?.channelID else { return }
+                let viewController = AmityRecentChatViewController.make(channelID: channelID)
+                navigationController?.pushViewController(viewController, animated: true)
+            default :
+                return
+            }
+        } else {
+            deeplinkFinished = true
+            return
         }
     }
 }

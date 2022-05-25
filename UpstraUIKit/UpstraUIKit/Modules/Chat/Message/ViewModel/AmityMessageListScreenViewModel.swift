@@ -74,9 +74,10 @@ final class AmityMessageListScreenViewModel: AmityMessageListScreenViewModelType
     // MARK: - Properties
     private let channelId: String
     private var isFirstTimeLoaded: Bool = true
+    
+    private let debouncer = Debouncer(delay: 0.6)
     private var dataSourceHash: Int = -1 // to track if data source changes
     private var lastMessageHash: Int = -1 // to track if the last message changes
-    
     private var didEnterBackgroundObservation: NSObjectProtocol?
     private var connectionObservation: NSKeyValueObservation?
     private var lastNotOnline: Date?
@@ -105,7 +106,8 @@ final class AmityMessageListScreenViewModel: AmityMessageListScreenViewModelType
         }
     }
     
-    private(set) var allCells: [String: UINib] = [:]
+    private(set) var allCellNibs: [String: UINib] = [:]
+    private(set) var allCellClasses: [String: AmityMessageCellProtocol.Type] = [:]
     
     func message(at indexPath: IndexPath) -> AmityMessageModel? {
         guard !messages.isEmpty else { return nil }
@@ -193,22 +195,25 @@ final class AmityMessageListScreenViewModel: AmityMessageListScreenViewModelType
 // MARK: - Action
 extension AmityMessageListScreenViewModel {
     
-    func registerCell() {
+    func registerCellNibs() {
         AmityMessageTypes.allCases.forEach { item in
-            if self.allCells[item.identifier] == nil {
-                self.allCells[item.identifier] = item.nib
+            if allCellNibs[item.identifier] == nil {
+                allCellNibs[item.identifier] = item.nib
+                allCellClasses[item.identifier] = item.class
             }
         }
     }
     
     func register(items: [AmityMessageTypes : AmityMessageCellProtocol.Type]) {
-        for (key, _) in allCells {
+        for (key, _) in allCellNibs {
             for item in items {
                 if item.key.identifier == key {
-                    allCells[key] = UINib(nibName: item.value.cellIdentifier, bundle: nil)
+                    allCellNibs[key] = UINib(nibName: item.value.cellIdentifier, bundle: nil)
+                    allCellClasses[key] = item.value
                 }
             }
         }
+        
     }
     
     func route(for route: Route) {
@@ -431,7 +436,9 @@ private extension AmityMessageListScreenViewModel {
             
             // Insert new messages
             for index in insertIndexes {
-                unsortedMessages.append(storedMessages[index])
+                if !unsortedMessages.contains(where: { $0.messageId == storedMessages[index].messageId}) {
+                    unsortedMessages.append(storedMessages[index])
+                }
             }
             
             // Update messages
@@ -442,24 +449,11 @@ private extension AmityMessageListScreenViewModel {
             }
         }
         
-        messages = unsortedMessages.groupSort(byDate: { $0.createdAtDate })
-        delegate?.screenViewModelLoadingState(for: .loaded)
-        delegate?.screenViewModelEvents(for: .updateMessages)
-                        
-        if isFirstTimeLoaded {
-            delegate?.screenViewModelIsRefreshing(false)
-            // If this screen is opened for first time, we want to scroll to bottom.
-            shouldScrollToBottom(force: true)
-            isFirstTimeLoaded = false
-        } else if let lastMessage = messages.last?.last,
-                  lastMessageHash != lastMessage.hashValue {
-            // Compare message hash
-            // - if it's equal, the last message remains the same -> do nothing
-            // - if it's not equal, there is new message -> scroll to bottom
-            lastMessageHash = lastMessage.hashValue
-            shouldScrollToBottom(force: false)
+        // We use debouncer to prevent data updating too frequently and interupting UI.
+        // When data is settled for a particular second, then updating UI in one time.
+        debouncer.run { [weak self] in
+            self?.notifyView()
         }
-        
     }
     
     func getReportMessageStatus(at indexPath: IndexPath, completion: ((Bool) -> Void)?) {
@@ -477,6 +471,33 @@ private extension AmityMessageListScreenViewModel {
             delegate?.screenViewModelDidFailToReportMessage(at: indexPath, with: error)
         }
     }
+    
+    // MARK: - Helper
+    
+    private func notifyView() {
+        messages = unsortedMessages.groupSort(byDate: { $0.createdAtDate })
+        delegate?.screenViewModelLoadingState(for: .loaded)
+        delegate?.screenViewModelEvents(for: .updateMessages)
+                        
+        if isFirstTimeLoaded {
+            delegate?.screenViewModelIsRefreshing(false)
+            // If this screen is opened for first time, we want to scroll to bottom.
+            shouldScrollToBottom(force: true)
+            isFirstTimeLoaded = false
+        } else if let lastMessage = messages.last?.last,
+                  lastMessageHash != lastMessage.hashValue {
+            // Compare message hash
+            // - if it's equal, the last message remains the same -> do nothing
+            // - if it's not equal, there is new message -> scroll to bottom
+            
+            if lastMessageHash != -1 {
+                shouldScrollToBottom(force: false)
+            }
+            lastMessageHash = lastMessage.hashValue
+        }
+        
+    }
+    
 }
 
 // MARK: - Send Image

@@ -19,4 +19,12 @@ final class AmityMessageImageIncomingTableViewCell: AmityMessageImageTableViewCe
         super.display(message: message)
     }
     
+    override class func height(for message: AmityMessageModel, boundingWidth: CGFloat) -> CGFloat {
+        let displaynameHeight: CGFloat = 22
+        if message.isDeleted {
+            return AmityMessageTableViewCell.deletedMessageCellHeight + displaynameHeight
+        }
+        return 180 + displaynameHeight
+    }
+    
 }

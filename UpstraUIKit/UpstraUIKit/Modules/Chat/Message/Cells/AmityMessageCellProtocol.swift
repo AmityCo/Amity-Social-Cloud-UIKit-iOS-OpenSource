@@ -11,6 +11,7 @@ import AmitySDK
 
 public protocol AmityMessageCellProtocol: UITableViewCell, AmityCellIdentifiable {
     func display(message: AmityMessageModel)
+    static func height(for message: AmityMessageModel, boundingWidth: CGFloat) -> CGFloat
 }
 
 protocol AmityMessageCellDelegate: AnyObject {

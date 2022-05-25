@@ -17,11 +17,11 @@ public enum AmityCommunityEventOpenType {
 }
 
 public struct AmityCommunityEventTypeModel {
-    var openType:AmityCommunityEventOpenType = .none
-    var postID: String?
-    var communityID: String?
-    var categoryID: String?
-    var channelID: String?
+    public var openType:AmityCommunityEventOpenType = .none
+    public var postID: String?
+    public var communityID: String?
+    public var categoryID: String?
+    public var channelID: String?
     public init(openType: AmityCommunityEventOpenType, postID: String? = nil, communityID: String? = nil, categoryID: String? = nil, channelID: String? = nil) {
         self.openType = openType
         self.postID = postID

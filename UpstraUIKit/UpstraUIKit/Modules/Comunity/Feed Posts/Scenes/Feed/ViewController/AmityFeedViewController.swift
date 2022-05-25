@@ -43,18 +43,6 @@ public final class AmityFeedViewController: AmityViewController, AmityRefreshabl
             }
         }
     }
-    public var shelfView: FeedHeaderPresentable? {
-        didSet {
-            debouncer.run { [weak self] in
-                DispatchQueue.main.async { [weak self] in
-                    self?.tableView.reloadData()
-                    self?.tableView.setNeedsLayout()
-                    self?.tableView.layoutIfNeeded()
-                    self?.tableView.reloadData()
-                }
-            }
-        }
-    }
     var emptyView: UIView?
     var dataDidUpdateHandler: ((Int) -> Void)?
     var emptyViewHandler: ((UIView?) -> Void)?
