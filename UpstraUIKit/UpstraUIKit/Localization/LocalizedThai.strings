@@ -275,6 +275,8 @@
 "post_review_settings_alert_fail_title_turn_off" = "ไม่สามารถปิดการรีวิวโพสต์ได้";
 "modal_community_settings_title" = "ปรับแต่งคอมมูนิตี้ของคุณ";
 "modal_community_settings_desc" = "คุณสร้างคอมมูนิตี้สำเร็จแล้ว! มาตั้งค่าเรื่องการอนุญาตที่เหมาะที่สุดสำหรับคุณกันเถอะ";
+"modal_community_not_found_title" = "ไม่พบเนื้อหา";
+"modal_community_not_found_desc" = "เนื้อหานี้อาจไม่มีอยู่\nหรือไม่พร้อมให้รับชมในภูมิภาคของคุณ";
 "member_list_title" = "สมาชิก";
 "chat_setting_leave_channel" = "ออกจากแชต?";
 "chat_setting_member" = "สมาชิก";

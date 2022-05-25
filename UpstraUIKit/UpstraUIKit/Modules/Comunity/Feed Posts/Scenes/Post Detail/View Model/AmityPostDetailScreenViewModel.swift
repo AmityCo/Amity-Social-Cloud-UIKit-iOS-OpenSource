@@ -173,6 +173,9 @@ extension AmityPostDetailScreenViewModel {
         delegate?.screenViewModelDidUpdateData(self)
     }
     
+    private func showAlertDialog() {
+        delegate?.screenViewModelDidShowAlertDialog()
+    }
     
     private func loadChild(commentId: String) {
         childrenController.fetchChildren(for: commentId) { [weak self] in
@@ -198,7 +201,7 @@ extension AmityPostDetailScreenViewModel {
                     self?.prepareData()
                 }
             case .failure:
-                break
+                self?.showAlertDialog()
             }
         }
     }

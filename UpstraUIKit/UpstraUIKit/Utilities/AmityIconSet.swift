@@ -66,7 +66,8 @@ public struct AmityIconSet {
     public static var iconDropdown = UIImage(named: "icon_dropdown", in: AmityUIKitManager.bundle, compatibleWith: nil)
     public static var iconDownChevron = UIImage(named: "Icon_down_chevron", in: AmityUIKitManager.bundle, compatibleWith: nil)
     public static var iconPlayVideo = UIImage(named: "icon_play_video", in: AmityUIKitManager.bundle, compatibleWith: nil)
-    
+    public static var iconNotFound = UIImage(named: "icon_not_found", in: AmityUIKitManager.bundle, compatibleWith: nil)
+
     public struct File {
         public static var iconFileAudio = UIImage(named: "icon_file_audio", in: AmityUIKitManager.bundle, compatibleWith: nil)
         public static var iconFileAVI = UIImage(named: "icon_file_avi", in: AmityUIKitManager.bundle, compatibleWith: nil)

@@ -92,6 +92,18 @@
                                 <action selector="switchCameraButtonDidTouch" destination="-1" eventType="touchUpInside" id="dxs-t1-pJg"/>
                             </connections>
                         </button>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="teJ-FP-yPK" userLabel="Switch Camera Button">
+                            <rect key="frame" x="15" y="743" width="60" height="60"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="60" id="8DR-rj-mOJ"/>
+                                <constraint firstAttribute="width" constant="60" id="BGk-eO-eqM"/>
+                            </constraints>
+                            <inset key="contentEdgeInsets" minX="10" minY="10" maxX="10" maxY="10"/>
+                            <state key="normal" image="shared"/>
+                            <connections>
+                                <action selector="shareButtonDidTouch" destination="-1" eventType="touchUpInside" id="36z-OG-HnQ"/>
+                            </connections>
+                        </button>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="5gV-fy-gT7" userLabel="Status Container">
                             <rect key="frame" x="15" y="15" width="90" height="24"/>
                             <subviews>
@@ -142,6 +154,7 @@
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <constraints>
                         <constraint firstItem="xoP-1u-M6Z" firstAttribute="centerX" secondItem="hb4-4n-9QZ" secondAttribute="centerX" constant="1" id="2Xo-4u-AKa"/>
+                        <constraint firstItem="tUC-ur-UUT" firstAttribute="bottom" secondItem="teJ-FP-yPK" secondAttribute="bottom" constant="15" id="7RL-cP-rPg"/>
                         <constraint firstAttribute="trailing" secondItem="hb4-4n-9QZ" secondAttribute="trailing" constant="16" id="SfJ-O5-enB"/>
                         <constraint firstItem="jc4-a6-tmq" firstAttribute="leading" secondItem="5gV-fy-gT7" secondAttribute="trailing" constant="8" symbolic="YES" id="bFH-aQ-FSw"/>
                         <constraint firstItem="hb4-4n-9QZ" firstAttribute="top" secondItem="tUC-ur-UUT" secondAttribute="top" id="fXf-e5-Sbs"/>
@@ -149,6 +162,7 @@
                         <constraint firstItem="xoP-1u-M6Z" firstAttribute="top" secondItem="hb4-4n-9QZ" secondAttribute="bottom" constant="8" symbolic="YES" id="kuA-oU-Nhz"/>
                         <constraint firstItem="5gV-fy-gT7" firstAttribute="leading" secondItem="tUC-ur-UUT" secondAttribute="leading" constant="15" id="o3C-V4-Hjg"/>
                         <constraint firstItem="5gV-fy-gT7" firstAttribute="top" secondItem="tUC-ur-UUT" secondAttribute="top" constant="15" id="qGB-dy-xmm"/>
+                        <constraint firstItem="teJ-FP-yPK" firstAttribute="leading" secondItem="tUC-ur-UUT" secondAttribute="leading" constant="15" id="tf1-Ni-vmx"/>
                         <constraint firstItem="jc4-a6-tmq" firstAttribute="height" secondItem="5gV-fy-gT7" secondAttribute="height" id="x5n-xz-GL0"/>
                     </constraints>
                 </view>
@@ -373,10 +387,16 @@
             <point key="canvasLocation" x="-26.086956521739133" y="103.79464285714285"/>
         </view>
     </objects>
+    <designables>
+        <designable name="tos-Jq-m56">
+            <size key="intrinsicContentSize" width="46.5" height="31.5"/>
+        </designable>
+    </designables>
     <resources>
         <image name="close" width="32" height="32"/>
         <image name="close_button" width="28" height="28"/>
         <image name="flip_camera" width="32" height="32"/>
+        <image name="shared" width="38" height="38"/>
         <image name="switch_camera" width="28" height="28"/>
         <image name="view_eye" width="12" height="12"/>
         <systemColor name="labelColor">

@@ -128,7 +128,8 @@ extension AmityPostProtocolHandler: AmityPostDelegate {
                 AmityEventHandler.shared.openLiveStreamPlayer(
                     from: viewController!,
                     postId: post.postId,
-                    streamId: stream.streamId
+                    streamId: stream.streamId,
+                    post: post.post
                 )
             }
         case .tapOnMentionWithUserId(let userId):

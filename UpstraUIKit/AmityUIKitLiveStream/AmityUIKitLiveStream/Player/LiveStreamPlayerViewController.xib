@@ -86,6 +86,18 @@
                                 <constraint firstItem="wjf-vg-vcO" firstAttribute="leading" secondItem="sGh-zA-lpL" secondAttribute="leading" id="uXl-oX-NAk"/>
                             </constraints>
                         </view>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="EDg-Pp-1na" userLabel="Share Button">
+                            <rect key="frame" x="15" y="821" width="60" height="60"/>
+                            <constraints>
+                                <constraint firstAttribute="width" constant="60" id="Dfe-kj-vg6"/>
+                                <constraint firstAttribute="height" constant="60" id="ri5-Si-8fv"/>
+                            </constraints>
+                            <inset key="contentEdgeInsets" minX="10" minY="10" maxX="10" maxY="10"/>
+                            <state key="normal" image="shared"/>
+                            <connections>
+                                <action selector="shareButtonDidTouch" destination="-1" eventType="touchUpInside" id="ikU-wG-t0W"/>
+                            </connections>
+                        </button>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="rcm-LB-Fz3" userLabel="Gesture View">
                             <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -100,8 +112,10 @@
                         <constraint firstItem="rha-6m-7Zi" firstAttribute="top" secondItem="VsJ-qj-eVf" secondAttribute="top" id="MaA-1A-smH"/>
                         <constraint firstAttribute="trailing" secondItem="rha-6m-7Zi" secondAttribute="trailing" id="QIY-jG-IuT"/>
                         <constraint firstItem="rcm-LB-Fz3" firstAttribute="leading" secondItem="VsJ-qj-eVf" secondAttribute="leading" id="chJ-p2-Wcs"/>
+                        <constraint firstItem="EDg-Pp-1na" firstAttribute="leading" secondItem="VsJ-qj-eVf" secondAttribute="leading" constant="15" id="ctT-sV-cfm"/>
                         <constraint firstItem="sGh-zA-lpL" firstAttribute="height" secondItem="rQa-vC-jCd" secondAttribute="height" multiplier="0.842105" id="e8c-52-IrZ"/>
                         <constraint firstItem="sGh-zA-lpL" firstAttribute="centerY" secondItem="rQa-vC-jCd" secondAttribute="centerY" id="gBn-2J-0DU"/>
+                        <constraint firstAttribute="bottom" secondItem="EDg-Pp-1na" secondAttribute="bottom" constant="15" id="h4v-gC-jdk"/>
                         <constraint firstItem="sGh-zA-lpL" firstAttribute="leading" secondItem="rQa-vC-jCd" secondAttribute="trailing" constant="8" symbolic="YES" id="pDK-aR-jIS"/>
                         <constraint firstAttribute="bottom" secondItem="rcm-LB-Fz3" secondAttribute="bottom" id="qMH-Mi-kx8"/>
                     </constraints>
@@ -224,6 +238,7 @@ to watch shortly.</string>
         <image name="media_player_close_button" width="60" height="47"/>
         <image name="pause" catalog="system" width="88" height="128"/>
         <image name="play.fill" catalog="system" width="116" height="128"/>
+        <image name="shared" width="38" height="38"/>
         <image name="view_eye" width="12" height="12"/>
         <systemColor name="secondarySystemBackgroundColor">
             <color red="0.94901960784313721" green="0.94901960784313721" blue="0.96862745098039216" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
