@@ -44,4 +44,17 @@ public enum AmityMessageTypes: CaseIterable {
         }
     }
     
+    var `class`: AmityMessageCellProtocol.Type {
+        switch self {
+        case .textIncoming, .textOutgoing:
+            return AmityMessageTextTableViewCell.self
+        case .imageIncoming:
+            return AmityMessageImageIncomingTableViewCell.self
+        case .imageOutgoing:
+            return AmityMessageImageOutgoingTableViewCell.self
+        case .audioIncoming, .audioOutgoing:
+            return AmityMessageAudioTableViewCell.self
+        }
+    }
+    
 }

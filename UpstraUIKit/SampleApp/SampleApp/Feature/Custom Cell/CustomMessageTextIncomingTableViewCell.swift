@@ -37,4 +37,13 @@ class CustomMessageTextIncomingTableViewCell: UITableViewCell, AmityMessageCellP
             }
         }
     }
+    
+    static func height(for message: AmityMessageModel, boundingWidth: CGFloat) -> CGFloat {
+        let horizontalPadding: CGFloat = 32 // left + right padding
+        let actualWidth = boundingWidth - horizontalPadding
+        var height = message.text?.height(withConstrainedWidth: actualWidth, font: AmityFontSet.body) ?? 0.0
+        height += 32 // top + bottom padding
+        return height
+    }
+    
 }

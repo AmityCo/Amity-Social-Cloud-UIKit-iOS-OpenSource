@@ -19,13 +19,10 @@ public final class AmityRecentChatViewController: AmityViewController, Indicator
         return IndicatorInfo(title: pageTitle)
     }
     
-    public var messageDataSource: AmityMessageListDataSource?
-    
     // MARK: - IBOutlet Properties
     @IBOutlet private var tableView: UITableView!
     
     // MARK: - Properties
-    private var messageListVC: AmityMessageListViewController?
     private var screenViewModel: AmityRecentChatScreenViewModelType!
     
     private lazy var emptyView: AmityEmptyView = {

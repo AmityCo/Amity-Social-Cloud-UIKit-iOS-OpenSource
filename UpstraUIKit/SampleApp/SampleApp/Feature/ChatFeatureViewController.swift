@@ -108,7 +108,6 @@ extension ChatFeatureViewController: UITableViewDelegate {
             navigationController?.pushViewController(vc, animated: true)
         case .chatListCustomize:
             let vc = AmityChatHomePageViewController.make()
-            vc.messageDataSource = self
             navigationController?.pushViewController(vc, animated: true)
         case .messageListWithTextOnlyKeyboard:
             presentSpecificChatDialogue()

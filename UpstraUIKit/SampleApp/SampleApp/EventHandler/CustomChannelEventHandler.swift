@@ -16,7 +16,21 @@ class CustomChannelEventHandler: AmityChannelEventHandler {
         var settings = AmityMessageListViewController.Settings()
         settings.shouldShowChatSettingBarButton = true
         let viewController = AmityMessageListViewController.make(channelId: channelId, settings: settings)
+//        if ChatFeatureSetting.shared.iscustomMessageEnabled {
+//            viewController.dataSource = self
+//        } else {
+//            viewController.dataSource = nil
+//        }
         source.navigationController?.pushViewController(viewController, animated: true)
     }
     
 }
+
+extension CustomChannelEventHandler: AmityMessageListDataSource {
+    func cellForMessageTypes() -> [AmityMessageTypes : AmityMessageCellProtocol.Type] {
+        return [
+            .textIncoming: CustomMessageTextIncomingTableViewCell.self
+        ]
+    }
+}
+
