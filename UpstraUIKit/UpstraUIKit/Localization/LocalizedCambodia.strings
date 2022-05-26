@@ -281,8 +281,8 @@
 "post_review_settings_hud_title_turn_off_post_review" = "មាតិកាដែលមិនបានបង្ហោះទាំងអស់ត្រូវបានបង្ហោះ ក្នុងសហគមន៍";
 "post_review_settings_alert_fail_title_turn_on" = "មិនអាចបើកការត្រួតពិនិត្យមាតិកា";
 "post_review_settings_alert_fail_title_turn_off" = "មិនអាចបិទការត្រួតពិនិត្យមាតិកា";
-"modal_community_settings_title" = "រៀបចំំសហគមន៍របស់អ្នក";
-"modal_community_settings_desc" = "អ្នកបានបង្កើតសហគមន៍រួចរាល់ហើយ។​ ឥឡូវអ្នកអាចជ្រើសរើសការអនុញាតដែលអ្នកពេញចិត្ត។";
+"modal_community_settings_title" = "មិនមានមាតិកា";
+"modal_community_settings_desc" = "មាតិកានេះមិនមាននៅក្នុងប្រទេសរបស់អ្នកទេ";
 "member_list_title" = "សមាជិក";
 "chat_setting_leave_channel" = "ចាកចេញពីប្រអប់សារ";
 "chat_setting_member" = "សមាជិក";

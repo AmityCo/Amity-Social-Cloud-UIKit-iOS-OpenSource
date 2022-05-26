@@ -419,6 +419,8 @@ public struct AmityLocalizedStringSet {
     enum Modal {
         static let communitySettingsTitle = "modal_community_settings_title"
         static let communitySettingsDesc = "modal_community_settings_desc"
+        static let contentNotfoundTitle = "modal_community_not_found_title"
+        static let contentNotfoundDesc = "modal_community_not_found_desc"
     }
     
     // MARK: - Chat setting

@@ -43,6 +43,7 @@ protocol AmityPostDetailScreenViewModelDelegate: AnyObject {
     func screenViewModelDidLikePost(_ viewModel: AmityPostDetailScreenViewModelType)
     func screenViewModelDidUnLikePost(_ viewModel: AmityPostDetailScreenViewModelType)
     func screenViewModel(_ viewModel: AmityPostDetailScreenViewModelType, didReceiveReportStatus isReported: Bool)
+    func screenViewModelDidShowAlertDialog()
     
     // MARK: Comment
     func screenViewModelDidDeleteComment(_ viewModel: AmityPostDetailScreenViewModelType)

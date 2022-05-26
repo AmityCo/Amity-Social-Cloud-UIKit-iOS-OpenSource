@@ -276,6 +276,8 @@
 "post_review_settings_alert_fail_title_turn_off" = "Gagal mematikan tinjau unggahan";
 "modal_community_settings_title" = "Sesuaikan komunitas anda";
 "modal_community_settings_desc" = "Anda berhasil membuat komunitas! Sekarang atur dan sesuaikan";
+"modal_community_not_found_title" = "Konten Tidak Tersedia";
+"modal_community_not_found_desc" = "Konten ini tidak tersedia di negara anda atau sudah dihapus.";
 "member_list_title" = "Anggota";
 "chat_setting_leave_channel" = "Tinggalkan obrolan";
 "chat_setting_member" = "Anggota";

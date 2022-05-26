@@ -20,6 +20,8 @@ public class LiveStreamPlayerViewController: UIViewController {
     private var stream: AmityStream?
     private var getStreamToken: AmityNotificationToken?
     
+    private var amityPost: AmityPost?
+    
     @IBOutlet private weak var renderView: UIView!
     
     @IBOutlet weak var statusContainer: UIView!
@@ -74,12 +76,13 @@ public class LiveStreamPlayerViewController: UIViewController {
     
     private var videoView: UIView!
     
-    public init(streamIdToWatch: String, postId: String) {
+    public init(streamIdToWatch: String, postId: String, post: AmityPost) {
         
         self.streamRepository = AmityStreamRepository(client: AmityUIKitManager.client)
         self.streamIdToWatch = streamIdToWatch
         self.player = AmityVideoPlayer(client: AmityUIKitManager.client)
         self.postId = postId
+        self.amityPost = post
         
         let bundle = Bundle(for: type(of: self))
         super.init(nibName: "LiveStreamPlayerViewController", bundle: bundle)
@@ -377,6 +380,11 @@ public class LiveStreamPlayerViewController: UIViewController {
         }
         self.timer.invalidate()
         self.dismiss(animated: true, completion: nil)
+    }
+    
+    @IBAction func shareButtonDidTouch() {
+        guard  let post = amityPost else { return }
+        AmityEventHandler.shared.shareLiveStreamDidTap(from: self, amityPost: post)
     }
     
 }

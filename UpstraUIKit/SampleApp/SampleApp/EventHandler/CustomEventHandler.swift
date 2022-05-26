@@ -106,9 +106,9 @@ class AmityCustomEventHandler: AmityEventHandler {
                 #endif
     }
     
-    override func openLiveStreamPlayer(from source: AmityViewController, postId: String, streamId: String) {
+    override func openLiveStreamPlayer(from source: AmityViewController, postId: String, streamId: String, post: AmityPost) {
         #if canImport(AmityUIKitLiveStream)
-        let liveStreamPlayerVC = LiveStreamPlayerViewController(streamIdToWatch: streamId, postId: postId)
+        let liveStreamPlayerVC = LiveStreamPlayerViewController(streamIdToWatch: streamId, postId: postId, post: post)
         source.present(liveStreamPlayerVC, animated: true, completion: nil)
         #else
         print("To watch live stream, please install AmityUIKitLiveStream, see also `SampleApp/INSTALLATION.md`")
