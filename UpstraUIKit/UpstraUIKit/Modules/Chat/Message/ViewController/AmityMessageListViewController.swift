@@ -629,6 +629,7 @@ extension AmityMessageListViewController: AmityMessageListScreenViewModelDelegat
             alertViewController.addAction(delete)
             present(alertViewController, animated: true)
         case .deleteErrorMessage(let indexPath):
+            self.view.endEditing(true)
             guard let message = screenViewModel.dataSource.message(at: indexPath) else { return }
             let alertViewController = UIAlertController(title: AmityLocalizedStringSet.MessageList.alertErrorMessageTitle.localizedString,
                                                         message: nil, preferredStyle: .actionSheet)
