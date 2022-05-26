@@ -397,27 +397,9 @@ private extension AmityMessageListScreenViewModel {
         guard dataSourceHash != storedMessages.hashValue else {
             return
         }
-        dataSourceHash = storedMessages.hashValue
         
-        // Preapare messages
-        if unsortedMessages.isEmpty || storedMessages.count > unsortedMessages.count{
-            unsortedMessages = storedMessages
-        } else if let insertIndexes = change?.insertions as? [Int] {
-            
-            // Insert new messages
-            for index in insertIndexes {
-                if !unsortedMessages.contains(where: { $0.messageId == storedMessages[index].messageId}) {
-                    unsortedMessages.append(storedMessages[index])
-                }
-            }
-            
-            // Update messages
-            for storedMessage in storedMessages {
-                if let index = unsortedMessages.firstIndex(where: { $0.messageId == storedMessage.messageId }) {
-                    unsortedMessages[index] = storedMessage
-                }
-            }
-        }
+        dataSourceHash = storedMessages.hashValue
+        unsortedMessages = storedMessages
         
         // We use debouncer to prevent data updating too frequently and interupting UI.
         // When data is settled for a particular second, then updating UI in one time.
