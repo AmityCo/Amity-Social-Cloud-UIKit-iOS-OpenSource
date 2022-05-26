@@ -44,6 +44,8 @@ public class AmityCommunityHomePageFullHeaderViewController: AmityProfileViewCon
         vc.screenViewModel = viewModel
         vc.screenViewModel.action.fetchUserProfile(with: AmityUIKitManagerInternal.shared.currentUserId)
         vc.runDeeplinksRouter()
+        
+        debugPrint("EventType: \(amityCommunityEventType)")
     }
     
     // MARK: - View's life cycle
@@ -132,26 +134,35 @@ private extension AmityCommunityHomePageFullHeaderViewController {
     func runDeeplinksRouter() {
         if deeplinkFinished { return }
         
+        debugPrint(navigationController?.topViewController)
+        
+        navigationController?.visibleViewController?.navigationController?.pushViewController(<#T##viewController: UIViewController##UIViewController#>, animated: <#T##Bool#>)
+                
         if screenViewModel.dataSource.amityCommunityEventTypeModel != nil {
             deeplinkFinished = true
             switch screenViewModel.dataSource.amityCommunityEventTypeModel?.openType {
             case .post:
                 if screenViewModel.dataSource.amityCommunityEventTypeModel?.communityID != "" && screenViewModel.dataSource.amityCommunityEventTypeModel?.communityID != nil {
-                    let viewController = AmityCommunityProfilePageViewController.make(withCommunityId: screenViewModel.dataSource.amityCommunityEventTypeModel?.communityID ?? "", postId: screenViewModel.dataSource.amityCommunityEventTypeModel?.postID, fromDeeplinks: true)
+                    let viewController = AmityCommunityProfilePageViewController.make(withCommunityId: screenViewModel.dataSource.amityCommunityEventTypeModel?.communityID ?? "", postId: screenViewModel.dataSource.amityCommunityEventTypeModel?.postID ?? "", fromDeeplinks: true)
+                    debugPrint("EventType: \(screenViewModel.dataSource.amityCommunityEventTypeModel)")
                     navigationController?.pushViewController(viewController, animated: true)
                 } else {
                     let postVC = AmityPostDetailViewController.make(withPostId: screenViewModel.dataSource.amityCommunityEventTypeModel?.postID ?? "")
+                    debugPrint("EventType: \(screenViewModel.dataSource.amityCommunityEventTypeModel)")
                     navigationController?.pushViewController(postVC, animated: true)
                 }
             case .community:
+                debugPrint("EventType: \(screenViewModel.dataSource.amityCommunityEventTypeModel)")
                 guard let communityID = screenViewModel.dataSource.amityCommunityEventTypeModel?.communityID else { return }
                 let viewController = AmityCommunityProfilePageViewController.make(withCommunityId: communityID)
                 navigationController?.pushViewController(viewController, animated: true)
             case .category:
+                debugPrint("EventType: \(screenViewModel.dataSource.amityCommunityEventTypeModel)")
                 guard let categoryID = screenViewModel.dataSource.amityCommunityEventTypeModel?.categoryID else { return }
                 let viewController = AmityCategoryCommunityListViewController.make(categoryId: categoryID)
                 navigationController?.pushViewController(viewController, animated: true)
             case .chat:
+                debugPrint("EventType: \(screenViewModel.dataSource.amityCommunityEventTypeModel)")
                 guard let channelID = screenViewModel.dataSource.amityCommunityEventTypeModel?.channelID else { return }
                 let viewController = AmityRecentChatViewController.make(channelID: channelID)
                 navigationController?.pushViewController(viewController, animated: true)
