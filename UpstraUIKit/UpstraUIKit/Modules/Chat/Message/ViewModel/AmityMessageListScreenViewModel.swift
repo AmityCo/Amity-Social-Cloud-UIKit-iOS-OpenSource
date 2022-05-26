@@ -270,9 +270,10 @@ extension AmityMessageListScreenViewModel {
         guard !textMessage.isEmpty else {
             return
         }
+        self.text = ""
         delegate?.screenViewModelEvents(for: .didSendText)
         messageRepository.createTextMessage(withChannelId: channelId, text: textMessage, tags: nil, parentId: nil) { [weak self] _,_ in
-            self?.text = ""
+            
         }
     }
     
