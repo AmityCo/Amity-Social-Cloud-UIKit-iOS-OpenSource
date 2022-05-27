@@ -22,6 +22,8 @@ public class AmityCommunityHomePageFullHeaderViewController: AmityProfileViewCon
     private var permissionCanLive: Bool = false
     private var deeplinkFinished: Bool = false
     
+    private var currentViewController: UIViewController?
+    
     // MARK: - Initializer
     
     public static func make(amityCommunityEventType: AmityCommunityEventTypeModel? = nil) -> AmityCommunityHomePageFullHeaderViewController {
@@ -37,15 +39,20 @@ public class AmityCommunityHomePageFullHeaderViewController: AmityProfileViewCon
         return vc
     }
     
-    public static func navigateTo(amityCommunityEventType: AmityCommunityEventTypeModel? = nil) {
+    public static func navigateTo(amityCommunityEventType: AmityCommunityEventTypeModel? = nil, viewController: UIViewController? = nil) {
         let viewModel: AmityCommunityHomePageFullHeaderScreenViewModelType = AmityCommunityHomePageFullHeaderScreenViewModel(amityCommunityEventTypeModel: amityCommunityEventType)
         
         let vc = AmityCommunityHomePageFullHeaderViewController()
+        
+        if viewController != nil {
+            vc.currentViewController = viewController
+        }
+        
         vc.screenViewModel = viewModel
         vc.screenViewModel.action.fetchUserProfile(with: AmityUIKitManagerInternal.shared.currentUserId)
         vc.runDeeplinksRouter()
         
-        debugPrint("EventType: \(amityCommunityEventType)")
+        debugPrint("--->EventType: \(amityCommunityEventType)")
     }
     
     // MARK: - View's life cycle
@@ -134,38 +141,90 @@ private extension AmityCommunityHomePageFullHeaderViewController {
     func runDeeplinksRouter() {
         if deeplinkFinished { return }
         
-        debugPrint(navigationController?.topViewController)
-        
-        navigationController?.visibleViewController?.navigationController?.pushViewController(<#T##viewController: UIViewController##UIViewController#>, animated: <#T##Bool#>)
-                
+        debugPrint("--->Before case: \(navigationController as Any)")
+                        
         if screenViewModel.dataSource.amityCommunityEventTypeModel != nil {
             deeplinkFinished = true
             switch screenViewModel.dataSource.amityCommunityEventTypeModel?.openType {
             case .post:
                 if screenViewModel.dataSource.amityCommunityEventTypeModel?.communityID != "" && screenViewModel.dataSource.amityCommunityEventTypeModel?.communityID != nil {
                     let viewController = AmityCommunityProfilePageViewController.make(withCommunityId: screenViewModel.dataSource.amityCommunityEventTypeModel?.communityID ?? "", postId: screenViewModel.dataSource.amityCommunityEventTypeModel?.postID ?? "", fromDeeplinks: true)
-                    debugPrint("EventType: \(screenViewModel.dataSource.amityCommunityEventTypeModel)")
+                    debugPrint("--->Post: \(screenViewModel.dataSource.amityCommunityEventTypeModel)")
                     navigationController?.pushViewController(viewController, animated: true)
                 } else {
                     let postVC = AmityPostDetailViewController.make(withPostId: screenViewModel.dataSource.amityCommunityEventTypeModel?.postID ?? "")
-                    debugPrint("EventType: \(screenViewModel.dataSource.amityCommunityEventTypeModel)")
+                    debugPrint("--->Post: \(screenViewModel.dataSource.amityCommunityEventTypeModel)")
                     navigationController?.pushViewController(postVC, animated: true)
                 }
             case .community:
-                debugPrint("EventType: \(screenViewModel.dataSource.amityCommunityEventTypeModel)")
+                debugPrint("--->Community: \(screenViewModel.dataSource.amityCommunityEventTypeModel)")
                 guard let communityID = screenViewModel.dataSource.amityCommunityEventTypeModel?.communityID else { return }
                 let viewController = AmityCommunityProfilePageViewController.make(withCommunityId: communityID)
                 navigationController?.pushViewController(viewController, animated: true)
             case .category:
-                debugPrint("EventType: \(screenViewModel.dataSource.amityCommunityEventTypeModel)")
+                debugPrint("--->Category: \(screenViewModel.dataSource.amityCommunityEventTypeModel)")
                 guard let categoryID = screenViewModel.dataSource.amityCommunityEventTypeModel?.categoryID else { return }
                 let viewController = AmityCategoryCommunityListViewController.make(categoryId: categoryID)
                 navigationController?.pushViewController(viewController, animated: true)
             case .chat:
-                debugPrint("EventType: \(screenViewModel.dataSource.amityCommunityEventTypeModel)")
+                debugPrint("--->Chat: \(screenViewModel.dataSource.amityCommunityEventTypeModel)")
                 guard let channelID = screenViewModel.dataSource.amityCommunityEventTypeModel?.channelID else { return }
                 let viewController = AmityRecentChatViewController.make(channelID: channelID)
                 navigationController?.pushViewController(viewController, animated: true)
+            case .topView:
+                if screenViewModel.dataSource.amityCommunityEventTypeModel?.communityID != "" && screenViewModel.dataSource.amityCommunityEventTypeModel?.communityID != nil {
+                    let viewController = AmityCommunityProfilePageViewController.make(withCommunityId: screenViewModel.dataSource.amityCommunityEventTypeModel?.communityID ?? "", postId: screenViewModel.dataSource.amityCommunityEventTypeModel?.postID ?? "", fromDeeplinks: true)
+                    debugPrint("--->topView: \(screenViewModel.dataSource.amityCommunityEventTypeModel)")
+                    
+                    let nav = AmityCommunityHomePageFullHeaderViewController.topViewController(base: self)
+                    nav?.navigationController?.topViewController?.navigationController?.pushViewController(viewController, animated: true)
+                } else {
+                    let postVC = AmityPostDetailViewController.make(withPostId: screenViewModel.dataSource.amityCommunityEventTypeModel?.postID ?? "")
+                    debugPrint("--->topView: \(screenViewModel.dataSource.amityCommunityEventTypeModel)")
+
+                    let nav = AmityCommunityHomePageFullHeaderViewController.topViewController(base: self)
+                    nav?.navigationController?.pushViewController(postVC, animated: true)
+                }
+            case .visibleView:
+                if screenViewModel.dataSource.amityCommunityEventTypeModel?.communityID != "" && screenViewModel.dataSource.amityCommunityEventTypeModel?.communityID != nil {
+                    let viewController = AmityCommunityProfilePageViewController.make(withCommunityId: screenViewModel.dataSource.amityCommunityEventTypeModel?.communityID ?? "", postId: screenViewModel.dataSource.amityCommunityEventTypeModel?.postID ?? "", fromDeeplinks: true)
+                    debugPrint("--->visibleView: \(screenViewModel.dataSource.amityCommunityEventTypeModel)")
+                    
+                    let nav = AmityCommunityHomePageFullHeaderViewController.visibleViewController()
+                    nav?.navigationController?.pushViewController(viewController, animated: true)
+                } else {
+                    let postVC = AmityPostDetailViewController.make(withPostId: screenViewModel.dataSource.amityCommunityEventTypeModel?.postID ?? "")
+                    debugPrint("--->visibleView: \(screenViewModel.dataSource.amityCommunityEventTypeModel)")
+                    
+                    let nav = AmityCommunityHomePageFullHeaderViewController.visibleViewController()
+                    nav?.navigationController?.pushViewController(postVC, animated: true)
+                }
+            case .rootView:
+                if screenViewModel.dataSource.amityCommunityEventTypeModel?.communityID != "" && screenViewModel.dataSource.amityCommunityEventTypeModel?.communityID != nil {
+                    let viewController = AmityCommunityProfilePageViewController.make(withCommunityId: screenViewModel.dataSource.amityCommunityEventTypeModel?.communityID ?? "", postId: screenViewModel.dataSource.amityCommunityEventTypeModel?.postID ?? "", fromDeeplinks: true)
+                    debugPrint("--->rootView: \(screenViewModel.dataSource.amityCommunityEventTypeModel)")
+
+                    let nav = AmityCommunityHomePageFullHeaderViewController.rootViewController()
+                    nav?.navigationController?.pushViewController(viewController, animated: true)
+                } else {
+                    let postVC = AmityPostDetailViewController.make(withPostId: screenViewModel.dataSource.amityCommunityEventTypeModel?.postID ?? "")
+                    debugPrint("--->rootView: \(screenViewModel.dataSource.amityCommunityEventTypeModel)")
+
+                    let nav = AmityCommunityHomePageFullHeaderViewController.rootViewController()
+                    nav?.navigationController?.pushViewController(postVC, animated: true)
+                }
+            case .currentView:
+                if screenViewModel.dataSource.amityCommunityEventTypeModel?.communityID != "" && screenViewModel.dataSource.amityCommunityEventTypeModel?.communityID != nil {
+                    let viewController = AmityCommunityProfilePageViewController.make(withCommunityId: screenViewModel.dataSource.amityCommunityEventTypeModel?.communityID ?? "", postId: screenViewModel.dataSource.amityCommunityEventTypeModel?.postID ?? "", fromDeeplinks: true)
+                    debugPrint("--->currentView: \(screenViewModel.dataSource.amityCommunityEventTypeModel)")
+
+                    currentViewController?.navigationController?.pushViewController(viewController, animated: true)
+                } else {
+                    let postVC = AmityPostDetailViewController.make(withPostId: screenViewModel.dataSource.amityCommunityEventTypeModel?.postID ?? "")
+                    debugPrint("--->currentView: \(screenViewModel.dataSource.amityCommunityEventTypeModel)")
+
+                    currentViewController?.navigationController?.pushViewController(postVC, animated: true)
+                }
             default :
                 return
             }
@@ -190,4 +249,62 @@ extension AmityCommunityHomePageFullHeaderViewController: AmityNewsFeedScreenVie
         }
     }
     
+}
+
+extension AmityCommunityHomePageFullHeaderViewController {
+    
+    class func topViewController(base: UIViewController? = UIApplication.shared.windows.first?.rootViewController) -> UIViewController? {
+        if let nav = base as? UINavigationController {
+            return topViewController(base: nav.visibleViewController)
+        }
+        if let tab = base as? UITabBarController {
+            let moreNavigationController = tab.moreNavigationController
+            if let top = moreNavigationController.topViewController, top.view.window != nil {
+                return topViewController(base: top)
+            } else if let selected = tab.selectedViewController {
+                return topViewController(base: selected)
+            }
+        }
+        if let presented = base?.presentedViewController {
+            return topViewController(base: presented)
+        }
+        return base
+    }
+    
+    class func rootViewController() -> UIViewController? {
+        guard let delegate = UIApplication.shared.delegate else { return nil }
+        
+        guard let window = delegate.window else { return nil }
+        
+        guard let rootViewController = window?.rootViewController else { return nil }
+        
+        return rootViewController
+        
+    }
+    
+    class func topMostViewController() -> UIViewController? {
+        guard let delegate = UIApplication.shared.delegate else { return nil }
+        
+        guard let window = delegate.window else { return nil }
+        
+        guard let rootViewController = window?.rootViewController else { return nil }
+        
+        var topController = rootViewController
+        
+        while let newTopController = topController.presentedViewController {
+            topController = newTopController
+        }
+        
+        return topController
+    }
+    
+    class func visibleViewController() -> UIViewController? {
+        // This one get only last ViewController visible only
+        // Example : In case current ViewController was appearing only half-screen. It will return only last layer visibility
+        guard let lastWindow = UIApplication.shared.windows.last else { return nil }
+        
+        let rootViewController = lastWindow.rootViewController
+
+        return rootViewController
+    }
 }

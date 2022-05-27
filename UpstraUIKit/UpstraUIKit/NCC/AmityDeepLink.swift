@@ -14,6 +14,10 @@ public enum AmityCommunityEventOpenType {
     case category
     case chat
     case none
+    case topView
+    case visibleView
+    case rootView
+    case currentView
 }
 
 public struct AmityCommunityEventTypeModel {
