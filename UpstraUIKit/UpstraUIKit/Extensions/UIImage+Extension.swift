@@ -52,53 +52,6 @@ extension UIImage {
         return thumbnail
     }
     
-    // Picking cameara photo sometime meets 90 degree rotation problem.
-    // call this function to correcting it.
-    // See more: https://stackoverflow.com/questions/38139850/imageview-rotating-when-using-imagepicker/51289712
-    func fixedOrientation() -> UIImage {
-        guard imageOrientation != .up else { return self }
-        
-        var transform: CGAffineTransform = .identity
-        switch imageOrientation {
-        case .down, .downMirrored:
-            transform = transform
-                .translatedBy(x: size.width, y: size.height).rotated(by: .pi)
-        case .left, .leftMirrored:
-            transform = transform
-                .translatedBy(x: size.width, y: 0).rotated(by: .pi)
-        case .right, .rightMirrored:
-            transform = transform
-                .translatedBy(x: 0, y: size.height).rotated(by: -.pi/2)
-        case .upMirrored:
-            transform = transform
-                .translatedBy(x: size.width, y: 0).scaledBy(x: -1, y: 1)
-        default:
-            break
-        }
-        
-        guard
-            let cgImage = cgImage,
-            let colorSpace = cgImage.colorSpace,
-            let context = CGContext(
-                data: nil, width: Int(size.width), height: Int(size.height),
-                bitsPerComponent: cgImage.bitsPerComponent, bytesPerRow: 0,
-                space: colorSpace, bitmapInfo: cgImage.bitmapInfo.rawValue
-            )
-        else { return self }
-        context.concatenate(transform)
-        
-        var rect: CGRect
-        switch imageOrientation {
-        case .left, .leftMirrored, .right, .rightMirrored:
-            rect = CGRect(x: 0, y: 0, width: size.height, height: size.width)
-        default:
-            rect = CGRect(x: 0, y: 0, width: size.width, height: size.height)
-        }
-        
-        context.draw(cgImage, in: rect)
-        return context.makeImage().map { UIImage(cgImage: $0) } ?? self
-    }
-    
     func scalePreservingAspectRatio(targetSize: CGSize = CGSize(width: 1600, height: 1600)) -> UIImage {
         // Determine the scale factor that preserves aspect ratio
         let widthRatio = targetSize.width / size.width

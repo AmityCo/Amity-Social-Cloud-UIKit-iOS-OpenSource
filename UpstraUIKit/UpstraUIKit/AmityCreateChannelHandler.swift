@@ -36,16 +36,15 @@ public class AmityCreateChannelHandler {
                     currentUser = userModel
                     allUsers.append(userModel)
                 }
-                let builder = AmityCommunityChannelBuilder()
+                let builder = AmityConversationChannelBuilder()
                 let userIds = allUsers.map{ $0.userId }
-                let channelId = userIds.sorted().joined(separator: "-")
+                let channelId = "\(userIds.sorted().joined(separator: "-"))_CONVER"
                 let channelDisplayName = users.count == 1 ? users.first?.displayName ?? "" : allUsers.map { $0.displayName ?? "" }.joined(separator: "-")
                 var userArrayWithDisplayName: [String] = []
                 for name in allUsers{
                     userArrayWithDisplayName.append("\(name.userId):\(name.displayName ?? "")")
                 }
                 builder.setUserIds(userIds)
-                builder.setId(channelId)
                 let metaData: [String:Any] = [
                     "isDirectChat": allUsers.count == 2,
                     "creatorId": currentUser?.userId ?? "",
@@ -60,7 +59,7 @@ public class AmityCreateChannelHandler {
                 self.existingChannelToken = self.channelRepository?.getChannel(channelId).observe({ [weak self] (channel, error) in
                     guard let weakSelf = self else { return }
                     if error != nil {
-                        weakSelf.createNewCommiunityChannel(builder: builder) { result in
+                        weakSelf.createNewConversationChannel(builder: builder) { result in
                             switch result {
                             case .success(let channelId):
                                 completion(.success(channelId))
@@ -81,7 +80,7 @@ public class AmityCreateChannelHandler {
         
     }
     
-    func createNewCommiunityChannel(builder: AmityCommunityChannelBuilder, completion: @escaping(Result<String,Error>) -> ()) {
+    func createNewConversationChannel(builder: AmityConversationChannelBuilder, completion: @escaping(Result<String,Error>) -> ()) {
         let channelObject = channelRepository?.createChannel(with: builder)
         channelToken?.invalidate()
         channelToken = channelObject?.observe {[weak self] channelObject, error in
@@ -91,8 +90,6 @@ public class AmityCreateChannelHandler {
                 AmityHUD.show(.error(message: error.localizedDescription))
             }
             if let channelId = channelObject.object?.channelId {
-//               let meta = builder.channelMetadata,
-//               let creatorId = meta["creatorId"] as? String {
                 weakSelf.channelToken?.invalidate()
                 completion(.success(channelId))
             }

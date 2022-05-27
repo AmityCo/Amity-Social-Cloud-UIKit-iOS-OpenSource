@@ -15,13 +15,6 @@ final class AmityMessageListTableViewController: UITableViewController {
     private var screenViewModel: AmityMessageListScreenViewModelType!
     private var cacheIndexPath: Int = 0
     
-    struct Constant {
-        static let estimatedTextMessageCellHeight: CGFloat = 112
-        static let estimatedImageMessageCellHeight: CGFloat = 226
-    }
-    
-    private let estimatedCellHeight: CGFloat = 112
-    
     // MARK: - View lifecycle
     private convenience init(viewModel: AmityMessageListScreenViewModelType) {
         self.init(style: .plain)
@@ -53,8 +46,9 @@ extension AmityMessageListTableViewController {
         tableView.separatorInset.left = UIScreen.main.bounds.width
         tableView.tableFooterView = UIView()
         tableView.keyboardDismissMode = .onDrag
+        tableView.estimatedRowHeight = 0
         tableView.backgroundColor = AmityColorSet.backgroundColor
-        screenViewModel.dataSource.allCells.forEach {
+        screenViewModel.dataSource.allCellNibs.forEach {
             tableView.register($0.value, forCellReuseIdentifier: $0.key)
         }
         tableView.dataSource = self
@@ -127,13 +121,9 @@ extension AmityMessageListTableViewController {
     
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         guard let message = screenViewModel.dataSource.message(at: indexPath) else { return 0 }
-        switch message.messageType {
-        case .image where !message.isDeleted:
-            return UITableView.automaticDimension
-        case .file: return 0
-        default:
-            return UITableView.automaticDimension
-        }
+        
+        return cellType(for: message)?
+            .height(for: message, boundingWidth: tableView.bounds.width) ?? 0.0
     }
     
     override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
@@ -147,19 +137,6 @@ extension AmityMessageListTableViewController {
         return dateView
     }
     
-    override func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
-        guard let message = screenViewModel.dataSource.message(at: indexPath)else { return Constant.estimatedTextMessageCellHeight }
-        let messageType = message.messageType
-        
-        switch messageType {
-        case .text:
-            return Constant.estimatedTextMessageCellHeight
-        case .image:
-            return Constant.estimatedImageMessageCellHeight
-        default:
-            return 0
-        }
-    }
 }
 
 // MARK: - DataSource
@@ -247,22 +224,23 @@ extension AmityMessageListTableViewController {
     
     private func cellIdentifier(for message: AmityMessageModel) -> String? {
         switch message.messageType {
-        case .custom where message.isOwner:
-            fallthrough
-        case .text where message.isOwner:
-            return AmityMessageTypes.textOutgoing.identifier
         case .text:
-            return AmityMessageTypes.textIncoming.identifier
-        case .image where message.isOwner:
-            return AmityMessageTypes.imageOutgoing.identifier
-        case .image:
-            return AmityMessageTypes.imageIncoming.identifier
-        case .audio where message.isOwner:
-            return AmityMessageTypes.audioOutgoing.identifier
+            return message.isOwner ? AmityMessageTypes.textOutgoing.identifier : AmityMessageTypes.textIncoming.identifier
+        case .image :
+            return message.isOwner ? AmityMessageTypes.imageOutgoing.identifier : AmityMessageTypes.imageIncoming.identifier
         case .audio:
-            return AmityMessageTypes.audioIncoming.identifier
+            return message.isOwner ? AmityMessageTypes.audioOutgoing.identifier : AmityMessageTypes.audioIncoming.identifier
+        case .custom:
+            fallthrough
         default:
             return nil
         }
+
     }
+    
+    private func cellType(for message: AmityMessageModel) -> AmityMessageCellProtocol.Type? {
+        guard let identifier = cellIdentifier(for: message) else { return nil }
+        return screenViewModel.allCellClasses[identifier]
+    }
+    
 }

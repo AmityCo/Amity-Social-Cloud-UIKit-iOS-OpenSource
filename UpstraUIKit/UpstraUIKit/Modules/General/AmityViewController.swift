@@ -130,7 +130,8 @@ open class AmityViewController: UIViewController {
             leftBarButtonItem?.image = AmityIconSet.iconBack
             navigationItem.leftBarButtonItem = leftBarButtonItem
         case .custom:
-            navigationItem.leftBarButtonItem = nil
+            //It call after setup navi in MessageList, so I comment it.
+//            navigationItem.leftBarButtonItem = nil
             break
         }
     }

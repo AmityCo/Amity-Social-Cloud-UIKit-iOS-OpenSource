@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="18122" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="20037" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="18093"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="20020"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="Stack View standard spacing" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
@@ -26,7 +26,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="195" height="168"/>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     </view>
-                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="top" translatesAutoresizingMaskIntoConstraints="NO" id="prP-No-67k" userLabel="Duration View">
+                    <stackView hidden="YES" opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="top" translatesAutoresizingMaskIntoConstraints="NO" id="prP-No-67k" userLabel="Duration View">
                         <rect key="frame" x="8" y="110" width="50" height="50"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="NUY-8g-6t9">
@@ -110,6 +110,12 @@ to watch shortly.</string>
                             <constraint firstItem="ZX2-62-uaJ" firstAttribute="leading" secondItem="jls-aQ-8QM" secondAttribute="leading" constant="15" id="yLV-Dg-9xU"/>
                         </constraints>
                     </view>
+                    <imageView hidden="YES" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="play_livestream_button" translatesAutoresizingMaskIntoConstraints="NO" id="iM3-sq-lpm">
+                        <rect key="frame" x="77.5" y="64" width="40" height="40"/>
+                        <constraints>
+                            <constraint firstAttribute="width" secondItem="iM3-sq-lpm" secondAttribute="height" multiplier="1:1" id="EOL-A5-D8Q"/>
+                        </constraints>
+                    </imageView>
                 </subviews>
             </view>
             <viewLayoutGuide key="safeArea" id="ZTg-uK-7eu"/>
@@ -120,15 +126,18 @@ to watch shortly.</string>
                 <constraint firstItem="jls-aQ-8QM" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" id="J31-vn-OkZ"/>
                 <constraint firstAttribute="bottom" secondItem="prP-No-67k" secondAttribute="bottom" constant="8" id="JHj-QG-pU8"/>
                 <constraint firstAttribute="trailing" secondItem="jls-aQ-8QM" secondAttribute="trailing" id="Kpd-ST-t3n"/>
+                <constraint firstItem="iM3-sq-lpm" firstAttribute="width" secondItem="neD-Dq-xH1" secondAttribute="height" multiplier="5:21" id="MSV-vH-Phb"/>
                 <constraint firstAttribute="trailing" secondItem="neD-Dq-xH1" secondAttribute="trailing" id="P1J-uk-dhM"/>
                 <constraint firstAttribute="bottom" secondItem="Vo3-Oq-ikP" secondAttribute="bottom" id="TWd-st-fQT"/>
                 <constraint firstItem="6K2-hc-0d8" firstAttribute="top" secondItem="gTV-IL-0wX" secondAttribute="top" constant="12" id="atG-c6-m0C"/>
                 <constraint firstAttribute="trailing" secondItem="Vo3-Oq-ikP" secondAttribute="trailing" id="dFg-wd-PPR"/>
                 <constraint firstItem="jls-aQ-8QM" firstAttribute="top" secondItem="gTV-IL-0wX" secondAttribute="top" id="gOb-vu-5Lc"/>
+                <constraint firstItem="iM3-sq-lpm" firstAttribute="centerY" secondItem="neD-Dq-xH1" secondAttribute="centerY" id="htV-T2-xtW"/>
                 <constraint firstItem="neD-Dq-xH1" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" id="iz0-gs-WaU"/>
                 <constraint firstItem="Vo3-Oq-ikP" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" id="jNL-84-4aM"/>
                 <constraint firstAttribute="bottom" secondItem="neD-Dq-xH1" secondAttribute="bottom" id="kmR-EO-2yW"/>
                 <constraint firstItem="Vo3-Oq-ikP" firstAttribute="top" secondItem="gTV-IL-0wX" secondAttribute="top" id="lAL-bX-PLT"/>
+                <constraint firstItem="iM3-sq-lpm" firstAttribute="centerX" secondItem="neD-Dq-xH1" secondAttribute="centerX" id="lWI-oH-Pc9"/>
                 <constraint firstItem="6K2-hc-0d8" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" constant="12" id="qBD-CM-vOf"/>
                 <constraint firstItem="prP-No-67k" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" constant="8" id="wS6-Hz-EO6"/>
             </constraints>
@@ -138,6 +147,7 @@ to watch shortly.</string>
                 <outlet property="durationLabel" destination="aPN-3C-wHh" id="KxJ-M0-6ne"/>
                 <outlet property="durationView" destination="prP-No-67k" id="bXM-PH-Cbz"/>
                 <outlet property="imageView" destination="neD-Dq-xH1" id="zl2-QK-4HC"/>
+                <outlet property="mediaPlayIcon" destination="iM3-sq-lpm" id="62F-Fx-ZUn"/>
                 <outlet property="mediaTitleLabel" destination="YDs-Dy-8bi" id="ONC-0W-xHF"/>
                 <outlet property="streamEndDescriptionLabel" destination="Tsc-2T-RJh" id="L7X-Wa-B11"/>
                 <outlet property="streamEndTitleLabel" destination="yln-xz-ApI" id="KSB-dq-j3s"/>
@@ -149,6 +159,7 @@ to watch shortly.</string>
         </collectionViewCell>
     </objects>
     <resources>
+        <image name="play_livestream_button" width="40" height="40"/>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>

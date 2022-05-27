@@ -128,7 +128,8 @@ public final class AmityMessageListViewController: AmityViewController {
     }
     
     private func shouldCellOverride() {
-        screenViewModel.action.registerCell()
+        screenViewModel.action.registerCellNibs()
+        
         if let dataSource = dataSource {
             screenViewModel.action.register(items: dataSource.cellForMessageTypes())
         }
@@ -201,6 +202,7 @@ private extension AmityMessageListViewController {
 private extension AmityMessageListViewController {
     
     func setupView() {
+        setupCustomNavigationBar()
         view.backgroundColor = AmityColorSet.backgroundColor
         setRefreshOverlay(visible: false)
         setupMessageContainer()
@@ -209,18 +211,19 @@ private extension AmityMessageListViewController {
     }
     
     func setupCustomNavigationBar() {
+        navigationBarType = .custom
+        navigationHeaderViewController = AmityMessageListHeaderView(viewModel: screenViewModel)
+        let headerType: AmityNavigationBarType
         if navigationController?.viewControllers.count ?? 0 <= 1 {
             if presentingViewController != nil {
-                navigationBarType = .present
+                headerType = .present
             } else {
-                navigationBarType = .push
+                headerType = .push
             }
         } else {
-            navigationBarType = .push
+            headerType = .push
         }
-        navigationHeaderViewController = AmityMessageListHeaderView(viewModel: screenViewModel)
-        navigationHeaderViewController.amityNavigationBarType = navigationBarType
-        navigationHeaderViewController.setupData()
+        navigationHeaderViewController.amityNavigationBarType = headerType
         let item = UIBarButtonItem(customView: navigationHeaderViewController)
         navigationItem.leftBarButtonItem = item
     }
@@ -432,6 +435,7 @@ private extension AmityMessageListViewController {
         screenViewModel.delegate = self
         screenViewModel.action.getChannel()
     }
+    
 }
 
 extension AmityMessageListViewController: AmityKeyboardServiceDelegate {
@@ -462,7 +466,6 @@ extension AmityMessageListViewController: UIImagePickerControllerDelegate & UINa
         picker.dismiss(animated: true) { [weak self] in
             do {
                 let resizedImage = image
-                    .fixedOrientation()
                     .scalePreservingAspectRatio()
                 let media = AmityMedia(state: .image(resizedImage), type: .image)
                 self?.screenViewModel.action.send(withMedias: [media])
@@ -517,7 +520,6 @@ extension AmityMessageListViewController: AmityMessageListScreenViewModelDelegat
     }
     
     func screenViewModelDidGetChannel(channel: AmityChannelModel) {
-        setupCustomNavigationBar()
         navigationHeaderViewController?.updateViews(channel: channel)
         screenViewModel.action.shouldScrollToBottom(force: false)
     }
@@ -553,7 +555,17 @@ extension AmityMessageListViewController: AmityMessageListScreenViewModelDelegat
     func screenViewModelEvents(for events: AmityMessageListScreenViewModel.Events) {
         switch events {
         case .updateMessages:
+            
+            let offset = messageViewController.tableView.contentOffset.y
+            let contentHeight = messageViewController.tableView.contentSize.height
+
             messageViewController.tableView.reloadData()
+            messageViewController.tableView.layoutIfNeeded()
+            
+            let newcontentHeight = self.messageViewController.tableView.contentSize.height
+            let newOffset = (newcontentHeight - contentHeight) + offset
+            self.messageViewController.tableView.setContentOffset(CGPoint(x: 0, y: newOffset), animated: false)
+            
         case .didSendText:
             composeBar.clearText()
 //            screenViewModel.shouldScrollToBottom(force: true)

@@ -24,11 +24,13 @@ final class AmityMessageListHeaderView: AmityView {
     // MARK: - Properties
     private var screenViewModel: AmityMessageListScreenViewModelType?
     var amityNavigationBarType: AmityNavigationBarType = .push
+    var avatarURL: String?
 
     convenience init(viewModel: AmityMessageListScreenViewModelType) {
         self.init(frame: .zero)
         loadNibContent()
         screenViewModel = viewModel
+        setupView()
     }
 }
 
@@ -74,7 +76,7 @@ extension AmityMessageListHeaderView {
         case .standard:
             avatarView.setImage(withImageURL: channel.avatarURL, placeholder: AmityIconSet.defaultGroupChat)
         case .conversation:
-            avatarView.setImage(withImageURL: channel.avatarURL, placeholder: AmityIconSet.defaultAvatar)
+//            avatarView.setImage(withImageURL: channel.avatarURL, placeholder: AmityIconSet.defaultAvatar)
             participateToken?.invalidate()
             participateToken = channel.participation.getMembers(filter: .all, sortBy: .firstCreated, roles: []).observe { collection, change, error in
                 for i in 0..<collection.count(){
@@ -86,11 +88,18 @@ extension AmityMessageListHeaderView {
                             self?.displayNameLabel.text = userObject.displayName
                             let userModel = AmityUserModel(user: userObject)
                             if !userModel.avatarCustomURL.isEmpty {
-                                self?.avatarView.setImage(withCustomURL: userModel.avatarCustomURL,
-                                                         placeholder: AmityIconSet.defaultAvatar)
+                                if self?.avatarURL != userModel.avatarCustomURL {
+                                    self?.avatarView.setImage(withCustomURL: userModel.avatarCustomURL,
+                                                             placeholder: AmityIconSet.defaultAvatar)
+                                    self?.avatarURL = userModel.avatarCustomURL
+                                }
+                                
                             } else {
-                                self?.avatarView.setImage(withImageURL: userModel.avatarURL,
-                                                          placeholder: AmityIconSet.defaultAvatar)
+                                if self?.avatarURL != userModel.avatarURL {
+                                    self?.avatarView.setImage(withImageURL: userModel.avatarURL,
+                                                              placeholder: AmityIconSet.defaultAvatar)
+                                    self?.avatarURL = userModel.avatarURL
+                                }
                             }
                         }
                     }
