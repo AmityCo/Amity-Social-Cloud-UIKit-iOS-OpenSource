@@ -319,6 +319,7 @@ extension AmityPostDetailScreenViewModel {
                     strongSelf.fetchComments()
                     strongSelf.delegate?.screenViewModel(strongSelf, didFinishWithError: amityError ?? .unknown)
                 } else {
+                    strongSelf.fetchComments()
                     strongSelf.delegate?.screenViewModelDidCreateComment(strongSelf)
                 }
             } else {
