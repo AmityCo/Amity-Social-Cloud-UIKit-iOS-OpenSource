@@ -41,8 +41,10 @@ class AmityCustomEventHandler: AmityEventHandler {
     }
     
     override func postDidtap(from source: AmityViewController, postId: String) {
-        let vc = AmityPostDetailViewController.make(withPostId: postId)
-        source.navigationController?.pushViewController(vc, animated: true)
+        guard !(source is AmityPostDetailViewController) else { return }
+        
+        let viewController = AmityPostDetailViewController.make(withPostId: postId)
+        source.navigationController?.pushViewController(viewController, animated: true)
     }
     
 //    override func createPostDidTap(from source: AmityViewController, postTarget: AmityPostTarget, postContentType: AmityPostContentType = .post) {
