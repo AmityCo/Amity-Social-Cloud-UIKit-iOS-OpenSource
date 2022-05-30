@@ -24,6 +24,7 @@ final class AmityFeedScreenViewModel: AmityFeedScreenViewModelType {
     private let debouncer = Debouncer(delay: 0.3)
     private let feedType: AmityPostFeedType
     private var postComponents = [AmityPostComponent]()
+    private var pinPostComponents = [AmityPostComponent]()
     private(set) var isPrivate: Bool
     private(set) var isLoading: Bool {
         didSet {
@@ -64,10 +65,10 @@ extension AmityFeedScreenViewModel {
         return postComponents.count + 1
     }
     
-    private func prepareComponents(posts: [AmityPostModel], isEmpty: Bool) {
-        if isEmpty {
-            postComponents = []
-        }
+    private func prepareComponents(posts: [AmityPostModel]) {
+        postComponents = []
+        postComponents = pinPostComponents
+        
         for post in posts {
             post.appearance.displayType = .feed
             switch post.dataTypeInternal {
@@ -89,36 +90,35 @@ extension AmityFeedScreenViewModel {
         delegate?.screenViewModelDidUpdateDataSuccess(self)
     }
     
-    private func prepareComponentsPinPost(posts: AmityPostModel?, isEmpty: Bool) {
-        if isEmpty {
-            postComponents = []
-        }
+    private func prepareComponentsPinPost(posts: AmityPostModel?) {
+        pinPostComponents = []
+        
         guard let post = posts else {
-            isLoading = false
-            delegate?.screenViewModelDidUpdateDataSuccess(self)
             return
         }
         post.appearance.displayType = .feed
         switch post.dataTypeInternal {
         case .text:
-            addComponent(component: AmityPostTextComponent(post: post))
+            addPinPostComponent(component: AmityPostTextComponent(post: post))
         case .image, .video:
-            addComponent(component: AmityPostMediaComponent(post: post))
+            addPinPostComponent(component: AmityPostMediaComponent(post: post))
         case .file:
-            addComponent(component: AmityPostFileComponent(post: post))
+            addPinPostComponent(component: AmityPostFileComponent(post: post))
         case .poll:
-            addComponent(component: AmityPostPollComponent(post: post))
+            addPinPostComponent(component: AmityPostPollComponent(post: post))
         case .liveStream:
-            addComponent(component: AmityPostLiveStreamComponent(post: post))
+            addPinPostComponent(component: AmityPostLiveStreamComponent(post: post))
         case .unknown:
-            addComponent(component: AmityPostPlaceHolderComponent(post: post))
+            addPinPostComponent(component: AmityPostPlaceHolderComponent(post: post))
         }
-        isLoading = false
-        delegate?.screenViewModelDidUpdateDataSuccess(self)
     }
 
     private func addComponent(component: AmityPostComposable) {
         postComponents.append(AmityPostComponent(component: component))
+    }
+    
+    private func addPinPostComponent(component: AmityPostComposable) {
+        pinPostComponents.append(AmityPostComponent(component: component))
     }
 }
 
@@ -131,7 +131,7 @@ extension AmityFeedScreenViewModel {
             isLoading = true
             customAPIRequest.getPinPostData() { postArray in
                 DispatchQueue.main.async {
-                    self.prepareComponentsPinPost(posts: nil, isEmpty: true)
+                    self.prepareComponentsPinPost(posts: nil)
                     guard let postsData = postArray else { return }
                     for posts in postsData.posts {
                         let postId = posts.postId
@@ -139,7 +139,7 @@ extension AmityFeedScreenViewModel {
                             guard let strongSelf = self else { return }
                             switch result {
                             case .success(let post):
-                                strongSelf.prepareComponentsPinPost(posts: post, isEmpty: true)
+                                strongSelf.prepareComponentsPinPost(posts: post)
                             case .failure:
                                 break
                             }
@@ -152,7 +152,7 @@ extension AmityFeedScreenViewModel {
                 switch result {
                 case .success(let posts):
                     strongSelf.debouncer.run {
-                        strongSelf.prepareComponents(posts: posts, isEmpty: false)
+                        strongSelf.prepareComponents(posts: posts)
 
                     }
                 case .failure(let error):
@@ -164,7 +164,7 @@ extension AmityFeedScreenViewModel {
                             strongSelf.isPrivate = false
                         }
                         strongSelf.debouncer.run {
-                            strongSelf.prepareComponents(posts: [], isEmpty: false)
+                            strongSelf.prepareComponents(posts: [])
                         }
                         strongSelf.delegate?.screenViewModelDidFail(strongSelf, failure: amityError)
                     } else {
@@ -179,7 +179,7 @@ extension AmityFeedScreenViewModel {
                 switch result {
                 case .success(let posts):
                     strongSelf.debouncer.run {
-                        strongSelf.prepareComponents(posts: posts, isEmpty: true)
+                        strongSelf.prepareComponents(posts: posts)
                     }
                 case .failure(let error):
                     if let amityError = AmityError(error: error), amityError == .noUserAccessPermission {
@@ -190,7 +190,7 @@ extension AmityFeedScreenViewModel {
                             strongSelf.isPrivate = false
                         }
                         strongSelf.debouncer.run {
-                            strongSelf.prepareComponents(posts: [], isEmpty: true)
+                            strongSelf.prepareComponents(posts: [])
                         }
                         strongSelf.delegate?.screenViewModelDidFail(strongSelf, failure: amityError)
                     } else {

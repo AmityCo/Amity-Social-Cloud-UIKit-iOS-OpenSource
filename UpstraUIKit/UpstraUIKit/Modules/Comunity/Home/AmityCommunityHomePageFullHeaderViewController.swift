@@ -22,6 +22,8 @@ public class AmityCommunityHomePageFullHeaderViewController: AmityProfileViewCon
     private var permissionCanLive: Bool = false
     private var deeplinkFinished: Bool = false
     
+    private var currentViewController: UIViewController?
+    
     // MARK: - Initializer
     
     public static func make(amityCommunityEventType: AmityCommunityEventTypeModel? = nil) -> AmityCommunityHomePageFullHeaderViewController {
@@ -37,13 +39,18 @@ public class AmityCommunityHomePageFullHeaderViewController: AmityProfileViewCon
         return vc
     }
     
-    public static func navigateTo(amityCommunityEventType: AmityCommunityEventTypeModel? = nil) {
-        
+    public static func navigateTo(amityCommunityEventType: AmityCommunityEventTypeModel? = nil, viewController: UIViewController? = nil) {
         let viewModel: AmityCommunityHomePageFullHeaderScreenViewModelType = AmityCommunityHomePageFullHeaderScreenViewModel(amityCommunityEventTypeModel: amityCommunityEventType)
         
         let vc = AmityCommunityHomePageFullHeaderViewController()
+        
+        if let viewController = viewController {
+            vc.currentViewController = viewController
+        }
+        
         vc.screenViewModel = viewModel
         vc.screenViewModel.action.fetchUserProfile(with: AmityUIKitManagerInternal.shared.currentUserId)
+        vc.runDeeplinksRouter()
     }
     
     // MARK: - View's life cycle
@@ -53,12 +60,13 @@ public class AmityCommunityHomePageFullHeaderViewController: AmityProfileViewCon
         setupView()
         setupNavigationItem()
         setupViewModel()
+        runDeeplinksRouter()
     }
     
     public override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         navigationController?.setBackgroundColor(with: .white)
-        runDeeplinksRouter()
+//        runDeeplinksRouter()
     }
     
     public override func viewWillDisappear(_ animated: Bool) {
@@ -131,30 +139,53 @@ private extension AmityCommunityHomePageFullHeaderViewController {
    
     func runDeeplinksRouter() {
         if deeplinkFinished { return }
-        
+                                
         if screenViewModel.dataSource.amityCommunityEventTypeModel != nil {
             deeplinkFinished = true
             switch screenViewModel.dataSource.amityCommunityEventTypeModel?.openType {
             case .post:
                 if screenViewModel.dataSource.amityCommunityEventTypeModel?.communityID != "" && screenViewModel.dataSource.amityCommunityEventTypeModel?.communityID != nil {
-                    let viewController = AmityCommunityProfilePageViewController.make(withCommunityId: screenViewModel.dataSource.amityCommunityEventTypeModel?.communityID ?? "", postId: screenViewModel.dataSource.amityCommunityEventTypeModel?.postID, fromDeeplinks: true)
-                    navigationController?.pushViewController(viewController, animated: true)
+                    let viewController = AmityCommunityProfilePageViewController.make(withCommunityId: screenViewModel.dataSource.amityCommunityEventTypeModel?.communityID ?? "", postId: screenViewModel.dataSource.amityCommunityEventTypeModel?.postID ?? "", fromDeeplinks: true)
+                    guard let navigate = currentViewController else {
+                        navigationController?.pushViewController(viewController, animated: true)
+                        return
+                    }
+                    navigate.navigationController?.pushViewController(viewController, animated: true)
                 } else {
                     let postVC = AmityPostDetailViewController.make(withPostId: screenViewModel.dataSource.amityCommunityEventTypeModel?.postID ?? "")
-                    navigationController?.pushViewController(postVC, animated: true)
+                    guard let navigate = currentViewController else {
+                        navigationController?.pushViewController(postVC, animated: true)
+                        return
+                    }
+                    navigate.navigationController?.pushViewController(postVC, animated: true)
                 }
             case .community:
                 guard let communityID = screenViewModel.dataSource.amityCommunityEventTypeModel?.communityID else { return }
                 let viewController = AmityCommunityProfilePageViewController.make(withCommunityId: communityID)
-                navigationController?.pushViewController(viewController, animated: true)
+                
+                guard let navigate = currentViewController else {
+                    navigationController?.pushViewController(viewController, animated: true)
+                    return
+                }
+                navigate.navigationController?.pushViewController(viewController, animated: true)
             case .category:
                 guard let categoryID = screenViewModel.dataSource.amityCommunityEventTypeModel?.categoryID else { return }
                 let viewController = AmityCategoryCommunityListViewController.make(categoryId: categoryID)
-                navigationController?.pushViewController(viewController, animated: true)
+                
+                guard let navigate = currentViewController else {
+                    navigationController?.pushViewController(viewController, animated: true)
+                    return
+                }
+                navigate.navigationController?.pushViewController(viewController, animated: true)
             case .chat:
                 guard let channelID = screenViewModel.dataSource.amityCommunityEventTypeModel?.channelID else { return }
                 let viewController = AmityRecentChatViewController.make(channelID: channelID)
-                navigationController?.pushViewController(viewController, animated: true)
+                
+                guard let navigate = currentViewController else {
+                    navigationController?.pushViewController(viewController, animated: true)
+                    return
+                }
+                navigate.navigationController?.pushViewController(viewController, animated: true)
             default :
                 return
             }
