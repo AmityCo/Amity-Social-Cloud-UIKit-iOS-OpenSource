@@ -24,7 +24,7 @@ public class LiveStreamPlayerViewController: UIViewController {
     private var reactionRepository: AmityReactionRepository?
     
     private var amityPost: AmityPost?
-    
+        
     @IBOutlet private weak var renderView: UIView!
     
     @IBOutlet weak var statusContainer: UIView!
@@ -62,6 +62,7 @@ public class LiveStreamPlayerViewController: UIViewController {
     private var player: AmityVideoPlayer
     
     var timer = Timer()
+    var isLike = false
     
     /// Indicate that the user request to play the stream
     private var isStarting = true {
@@ -153,8 +154,8 @@ public class LiveStreamPlayerViewController: UIViewController {
         streamEndTitleLabel.font = AmityFontSet.title
         streamEndDescriptionLabel.font = AmityFontSet.body
         
-        likeButton.setImage(UIImage(named: "like"), for: .normal)
-        likeButton.setImage(UIImage(named: "like_fill"), for: .selected)
+        likeButton.setImage(UIImage(named: "like_button"), for: .normal)
+        likeButton.setImage(UIImage(named: "like_fill_button"), for: .selected)
         
         loadingOverlay.isHidden = true
         
@@ -169,15 +170,21 @@ public class LiveStreamPlayerViewController: UIViewController {
         
     }
     
-    func getMyReaction() {
-        
-    }
-    
     /// Call function get reaction count
-    func getLikeCount() {
+    func getReactionData() {
         getStreamToken = postRepository?.getPostForPostId(self.postId).observe { liveObject, error in
             guard let post = liveObject.object else { return }
-            self.likeCountLabel.text = String(post.reactionsCount)
+            var allReactions: [String] = []
+            var myReactions: [AmityReactionType]
+            allReactions = post.myReactions
+            myReactions = allReactions.compactMap(AmityReactionType.init)
+            
+            self.isLike = myReactions.contains(.like)
+            
+            DispatchQueue.main.async {
+                self.likeButton.isSelected = self.isLike
+                self.likeCountLabel.text = String(post.reactionsCount)
+            }
         }
     }
     
@@ -187,8 +194,7 @@ public class LiveStreamPlayerViewController: UIViewController {
         }
         
         self.timer = Timer.scheduledTimer(withTimeInterval: 5, repeats: true, block: {_ in
-            print("call fuction")
-            self.getLikeCount()
+            self.getReactionData()
             customAPIRequest.getLiveStreamViewerData(page_number: 1, liveStreamId: self.streamIdToWatch, type: "watching") { value in
                 DispatchQueue.main.async {
                     self.streamingViewerCountLabel.text = String(value.count.formatUsingAbbrevation())
@@ -406,23 +412,27 @@ public class LiveStreamPlayerViewController: UIViewController {
     }
     
     @IBAction func shareButtonDidTouch() {
+        print("Shared")
+
         guard  let post = amityPost else { return }
         AmityEventHandler.shared.shareLiveStreamDidTap(from: self, amityPost: post)
     }
     
     @IBAction private func likeButtonDidTouch() {
-        if self.likeButton.isSelected {
-            reactionRepository?.addReaction("like", referenceId: self.postId, referenceType: .post) { success, error in
+        if self.isLike {
+            reactionRepository?.removeReaction("like", referenceId: self.postId, referenceType: .post) { success, error in
                 if success {
-                    self.getLikeCount()
-                    self.likeButton.isSelected = true
+                    print("Unlike")
+                    self.getReactionData()
+                    self.likeButton.isSelected = false
                 }
             }
         } else {
-            reactionRepository?.removeReaction("like", referenceId: self.postId, referenceType: .post) { success, error in
+            reactionRepository?.addReaction("like", referenceId: self.postId, referenceType: .post) { success, error in
                 if success {
-                    self.getLikeCount()
-                    self.likeButton.isSelected = false
+                    print("Like")
+                    self.getReactionData()
+                    self.likeButton.isSelected = true
                 }
             }
         }

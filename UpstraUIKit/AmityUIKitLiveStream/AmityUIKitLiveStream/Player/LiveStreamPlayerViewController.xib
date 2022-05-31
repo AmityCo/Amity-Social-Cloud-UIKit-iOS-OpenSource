@@ -13,8 +13,8 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="LiveStreamPlayerViewController" customModule="AmityUIKitLiveStream" customModuleProvider="target">
             <connections>
                 <outlet property="controlContainer" destination="aMJ-3v-4eD" id="4Lz-vE-u6M"/>
-                <outlet property="likeButton" destination="AjK-Kc-EKi" id="39N-Ny-OeI"/>
-                <outlet property="likeCountLabel" destination="dOM-us-xHH" id="aSf-Di-fZp"/>
+                <outlet property="likeButton" destination="Trc-GE-dDu" id="008-ma-6ch"/>
+                <outlet property="likeCountLabel" destination="OpI-Sn-EgU" id="oJy-Os-s5I"/>
                 <outlet property="loadingActivityIndicator" destination="oZo-fU-T19" id="ot4-Sy-bxW"/>
                 <outlet property="loadingOverlay" destination="S6e-xR-XMI" id="qPS-9T-GhM"/>
                 <outlet property="playButton" destination="eMx-8g-uCW" id="2g8-DX-d5r"/>
@@ -88,44 +88,6 @@
                                 <constraint firstItem="wjf-vg-vcO" firstAttribute="leading" secondItem="sGh-zA-lpL" secondAttribute="leading" id="uXl-oX-NAk"/>
                             </constraints>
                         </view>
-                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="EDg-Pp-1na" userLabel="Share Button">
-                            <rect key="frame" x="15" y="791.5" width="60" height="60"/>
-                            <constraints>
-                                <constraint firstAttribute="width" constant="60" id="Dfe-kj-vg6"/>
-                                <constraint firstAttribute="height" constant="60" id="ri5-Si-8fv"/>
-                            </constraints>
-                            <inset key="contentEdgeInsets" minX="10" minY="10" maxX="10" maxY="10"/>
-                            <state key="normal" image="shared"/>
-                            <connections>
-                                <action selector="shareButtonDidTouch" destination="-1" eventType="touchUpInside" id="ikU-wG-t0W"/>
-                            </connections>
-                        </button>
-                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="U36-hr-UuE">
-                            <rect key="frame" x="91" y="791.5" width="1" height="60"/>
-                            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                            <constraints>
-                                <constraint firstAttribute="width" constant="1" id="ViI-1X-y7u"/>
-                                <constraint firstAttribute="height" constant="60" id="yGg-0o-dJF"/>
-                            </constraints>
-                        </view>
-                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="AjK-Kc-EKi" userLabel="Like Button">
-                            <rect key="frame" x="108" y="791.5" width="60" height="60"/>
-                            <constraints>
-                                <constraint firstAttribute="height" constant="60" id="WD7-u0-HnS"/>
-                                <constraint firstAttribute="width" constant="60" id="krP-fE-HeG"/>
-                            </constraints>
-                            <inset key="contentEdgeInsets" minX="10" minY="10" maxX="10" maxY="10"/>
-                            <state key="normal" image="like"/>
-                            <connections>
-                                <action selector="likeButtonDidTouch" destination="-1" eventType="touchUpInside" id="gA6-DB-2cn"/>
-                            </connections>
-                        </button>
-                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dOM-us-xHH">
-                            <rect key="frame" x="117.5" y="855.5" width="41.5" height="20.5"/>
-                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                            <nil key="textColor"/>
-                            <nil key="highlightedColor"/>
-                        </label>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="rcm-LB-Fz3" userLabel="Gesture View">
                             <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -139,19 +101,11 @@
                         <constraint firstAttribute="trailing" secondItem="rcm-LB-Fz3" secondAttribute="trailing" id="H0J-xn-Ud8"/>
                         <constraint firstItem="rha-6m-7Zi" firstAttribute="top" secondItem="VsJ-qj-eVf" secondAttribute="top" id="MaA-1A-smH"/>
                         <constraint firstAttribute="trailing" secondItem="rha-6m-7Zi" secondAttribute="trailing" id="QIY-jG-IuT"/>
-                        <constraint firstItem="dOM-us-xHH" firstAttribute="top" secondItem="AjK-Kc-EKi" secondAttribute="bottom" constant="4" id="TSp-zm-Ixg"/>
-                        <constraint firstAttribute="bottom" secondItem="dOM-us-xHH" secondAttribute="bottom" constant="20" id="WD5-KC-fOj"/>
-                        <constraint firstItem="dOM-us-xHH" firstAttribute="centerX" secondItem="AjK-Kc-EKi" secondAttribute="centerX" id="bfS-Up-Yu8"/>
                         <constraint firstItem="rcm-LB-Fz3" firstAttribute="leading" secondItem="VsJ-qj-eVf" secondAttribute="leading" id="chJ-p2-Wcs"/>
-                        <constraint firstItem="EDg-Pp-1na" firstAttribute="leading" secondItem="VsJ-qj-eVf" secondAttribute="leading" constant="15" id="ctT-sV-cfm"/>
                         <constraint firstItem="sGh-zA-lpL" firstAttribute="height" secondItem="rQa-vC-jCd" secondAttribute="height" multiplier="0.842105" id="e8c-52-IrZ"/>
                         <constraint firstItem="sGh-zA-lpL" firstAttribute="centerY" secondItem="rQa-vC-jCd" secondAttribute="centerY" id="gBn-2J-0DU"/>
-                        <constraint firstItem="U36-hr-UuE" firstAttribute="leading" secondItem="EDg-Pp-1na" secondAttribute="trailing" constant="16" id="j6f-7x-rnE"/>
                         <constraint firstItem="sGh-zA-lpL" firstAttribute="leading" secondItem="rQa-vC-jCd" secondAttribute="trailing" constant="8" symbolic="YES" id="pDK-aR-jIS"/>
                         <constraint firstAttribute="bottom" secondItem="rcm-LB-Fz3" secondAttribute="bottom" id="qMH-Mi-kx8"/>
-                        <constraint firstItem="AjK-Kc-EKi" firstAttribute="leading" secondItem="U36-hr-UuE" secondAttribute="trailing" constant="16" id="rLi-Bj-PZQ"/>
-                        <constraint firstItem="U36-hr-UuE" firstAttribute="centerY" secondItem="EDg-Pp-1na" secondAttribute="centerY" id="wR0-Tv-seJ"/>
-                        <constraint firstItem="AjK-Kc-EKi" firstAttribute="centerY" secondItem="U36-hr-UuE" secondAttribute="centerY" id="yTL-KF-DcZ"/>
                     </constraints>
                 </view>
                 <view userInteractionEnabled="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="S6e-xR-XMI" userLabel="Loading Overlay">
@@ -210,7 +164,7 @@ to watch shortly.</string>
                             </connections>
                         </button>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="eMx-8g-uCW" userLabel="Play Button">
-                            <rect key="frame" x="188" y="379.5" width="38.5" height="59"/>
+                            <rect key="frame" x="188" y="424" width="38.5" height="59"/>
                             <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <state key="normal" image="play.fill" catalog="system">
                                 <preferredSymbolConfiguration key="preferredSymbolConfiguration" configurationType="pointSize" pointSize="44"/>
@@ -220,7 +174,7 @@ to watch shortly.</string>
                             </connections>
                         </button>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="GsN-Z4-b5d" userLabel="Stop Button">
-                            <rect key="frame" x="184" y="388.5" width="46" height="41.5"/>
+                            <rect key="frame" x="184" y="433" width="46" height="41.5"/>
                             <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <state key="normal" image="pause" catalog="system">
                                 <preferredSymbolConfiguration key="preferredSymbolConfiguration" configurationType="pointSize" pointSize="44"/>
@@ -229,16 +183,63 @@ to watch shortly.</string>
                                 <action selector="stopButtonDidTouch" destination="-1" eventType="touchUpInside" id="gfa-Qd-QP7"/>
                             </connections>
                         </button>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="guv-EO-DGA" userLabel="Share Button">
+                            <rect key="frame" x="37" y="709.5" width="60" height="60"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="60" id="90W-BU-KNV"/>
+                                <constraint firstAttribute="width" constant="60" id="Z1N-vX-lrm"/>
+                            </constraints>
+                            <inset key="contentEdgeInsets" minX="10" minY="10" maxX="10" maxY="10"/>
+                            <state key="normal" image="shared"/>
+                            <connections>
+                                <action selector="shareButtonDidTouch" destination="-1" eventType="touchUpInside" id="ZQA-HF-U94"/>
+                            </connections>
+                        </button>
+                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="D6n-y9-Evb">
+                            <rect key="frame" x="113" y="720.5" width="1" height="38"/>
+                            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="38" id="DS1-Wa-nYN"/>
+                                <constraint firstAttribute="width" constant="1" id="xAx-hU-05n"/>
+                            </constraints>
+                        </view>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Trc-GE-dDu" userLabel="Like Button">
+                            <rect key="frame" x="131" y="709.5" width="60" height="60"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="60" id="Rrv-FY-feG"/>
+                                <constraint firstAttribute="width" constant="60" id="xj6-tp-t3v"/>
+                            </constraints>
+                            <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <inset key="contentEdgeInsets" minX="10" minY="10" maxX="10" maxY="10"/>
+                            <state key="normal" image="like"/>
+                            <connections>
+                                <action selector="likeButtonDidTouch" destination="-1" eventType="touchUpInside" id="ejB-gh-osV"/>
+                            </connections>
+                        </button>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="OpI-Sn-EgU">
+                            <rect key="frame" x="140.5" y="777.5" width="41.5" height="20.5"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                            <nil key="textColor"/>
+                            <nil key="highlightedColor"/>
+                        </label>
                     </subviews>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <constraints>
+                        <constraint firstItem="D6n-y9-Evb" firstAttribute="leading" secondItem="guv-EO-DGA" secondAttribute="trailing" constant="16" id="4je-gw-6Bi"/>
                         <constraint firstItem="GsN-Z4-b5d" firstAttribute="centerY" secondItem="eMx-8g-uCW" secondAttribute="centerY" id="AeY-lc-8lG"/>
+                        <constraint firstItem="D6n-y9-Evb" firstAttribute="centerY" secondItem="guv-EO-DGA" secondAttribute="centerY" id="CVC-1T-6jm"/>
                         <constraint firstItem="eMx-8g-uCW" firstAttribute="centerX" secondItem="aMJ-3v-4eD" secondAttribute="centerX" id="CXO-ki-q1E"/>
                         <constraint firstItem="GsN-Z4-b5d" firstAttribute="centerX" secondItem="eMx-8g-uCW" secondAttribute="centerX" id="IX1-J0-YtN"/>
+                        <constraint firstItem="Trc-GE-dDu" firstAttribute="centerY" secondItem="guv-EO-DGA" secondAttribute="centerY" id="NQj-mZ-VsI"/>
                         <constraint firstItem="GsN-Z4-b5d" firstAttribute="height" secondItem="eMx-8g-uCW" secondAttribute="height" multiplier="0.705882" id="Trc-WI-pLg"/>
                         <constraint firstItem="e3Z-YA-P5g" firstAttribute="top" secondItem="aMJ-3v-4eD" secondAttribute="top" constant="10" id="Ugk-NE-qfH"/>
-                        <constraint firstItem="eMx-8g-uCW" firstAttribute="centerY" secondItem="aMJ-3v-4eD" secondAttribute="centerY" id="pLQ-1K-2s7"/>
+                        <constraint firstItem="OpI-Sn-EgU" firstAttribute="top" secondItem="Trc-GE-dDu" secondAttribute="bottom" constant="8" symbolic="YES" id="WKo-ut-f2i"/>
+                        <constraint firstItem="guv-EO-DGA" firstAttribute="leading" secondItem="aMJ-3v-4eD" secondAttribute="leading" constant="37" id="YeE-rF-yan"/>
+                        <constraint firstItem="OpI-Sn-EgU" firstAttribute="centerX" secondItem="Trc-GE-dDu" secondAttribute="centerX" id="iM8-Hp-6UZ"/>
+                        <constraint firstItem="eMx-8g-uCW" firstAttribute="centerY" secondItem="aMJ-3v-4eD" secondAttribute="centerY" constant="44.5" id="pLQ-1K-2s7"/>
                         <constraint firstItem="GsN-Z4-b5d" firstAttribute="width" secondItem="eMx-8g-uCW" secondAttribute="width" multiplier="1.19481" id="qMF-sM-EBX"/>
+                        <constraint firstAttribute="bottom" secondItem="OpI-Sn-EgU" secondAttribute="bottom" constant="20" id="sPi-42-kP3"/>
+                        <constraint firstItem="Trc-GE-dDu" firstAttribute="leading" secondItem="D6n-y9-Evb" secondAttribute="trailing" constant="17" id="tS6-ZQ-gcw"/>
                         <constraint firstAttribute="trailing" secondItem="e3Z-YA-P5g" secondAttribute="trailing" constant="30" id="vwH-IG-mBe"/>
                     </constraints>
                 </view>
@@ -255,7 +256,7 @@ to watch shortly.</string>
                 <constraint firstItem="S6e-xR-XMI" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="FZ4-0m-NNB"/>
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="bottom" secondItem="S6e-xR-XMI" secondAttribute="bottom" id="FqP-jd-Q9V"/>
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="bottom" secondItem="dWE-Vp-cX4" secondAttribute="bottom" id="GuJ-11-WeM"/>
-                <constraint firstItem="fnl-2z-Ty3" firstAttribute="bottom" secondItem="aMJ-3v-4eD" secondAttribute="bottom" id="JMy-NL-ue5"/>
+                <constraint firstAttribute="bottom" secondItem="aMJ-3v-4eD" secondAttribute="bottom" constant="34" id="JMy-NL-ue5"/>
                 <constraint firstItem="dWE-Vp-cX4" firstAttribute="top" secondItem="fnl-2z-Ty3" secondAttribute="top" id="VzO-aY-fZH"/>
                 <constraint firstItem="VsJ-qj-eVf" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="bnl-53-sfY"/>
                 <constraint firstAttribute="bottom" secondItem="VsJ-qj-eVf" secondAttribute="bottom" id="dUB-pY-NA2"/>
@@ -265,7 +266,7 @@ to watch shortly.</string>
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="aMJ-3v-4eD" secondAttribute="trailing" id="wIv-Mj-Ieb"/>
                 <constraint firstItem="aMJ-3v-4eD" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="wLE-Gv-9QM"/>
             </constraints>
-            <point key="canvasLocation" x="-20" y="100"/>
+            <point key="canvasLocation" x="-20.289855072463769" y="99.776785714285708"/>
         </view>
     </objects>
     <resources>
