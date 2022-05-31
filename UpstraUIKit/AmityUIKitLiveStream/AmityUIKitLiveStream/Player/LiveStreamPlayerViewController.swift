@@ -169,6 +169,10 @@ public class LiveStreamPlayerViewController: UIViewController {
         
     }
     
+    func getMyReaction() {
+        
+    }
+    
     /// Call function get reaction count
     func getLikeCount() {
         getStreamToken = postRepository?.getPostForPostId(self.postId).observe { liveObject, error in
@@ -407,12 +411,21 @@ public class LiveStreamPlayerViewController: UIViewController {
     }
     
     @IBAction private func likeButtonDidTouch() {
-//        streamRepository = reactionRepository?.addReaction("like", referenceId: self.postId, referenceType: AmityReactionReferenceType.post) { success, error in
-//            if success {
-//                self.getLikeCount()
-//                self.likeButton.isSelected = success
-//            }
-//        }
+        if self.likeButton.isSelected {
+            reactionRepository?.addReaction("like", referenceId: self.postId, referenceType: .post) { success, error in
+                if success {
+                    self.getLikeCount()
+                    self.likeButton.isSelected = true
+                }
+            }
+        } else {
+            reactionRepository?.removeReaction("like", referenceId: self.postId, referenceType: .post) { success, error in
+                if success {
+                    self.getLikeCount()
+                    self.likeButton.isSelected = false
+                }
+            }
+        }
     }
     
 }
