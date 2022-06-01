@@ -412,8 +412,6 @@ public class LiveStreamPlayerViewController: UIViewController {
     }
     
     @IBAction func shareButtonDidTouch() {
-        print("Shared")
-
         guard  let post = amityPost else { return }
         AmityEventHandler.shared.shareLiveStreamDidTap(from: self, amityPost: post)
     }

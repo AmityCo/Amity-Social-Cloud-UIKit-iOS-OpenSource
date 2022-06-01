@@ -211,7 +211,7 @@ to watch shortly.</string>
                             </constraints>
                             <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <inset key="contentEdgeInsets" minX="10" minY="10" maxX="10" maxY="10"/>
-                            <state key="normal" image="like"/>
+                            <state key="normal" image="like_button"/>
                             <connections>
                                 <action selector="likeButtonDidTouch" destination="-1" eventType="touchUpInside" id="ejB-gh-osV"/>
                             </connections>
@@ -270,7 +270,7 @@ to watch shortly.</string>
         </view>
     </objects>
     <resources>
-        <image name="like" width="45" height="44"/>
+        <image name="like_button" width="45" height="44"/>
         <image name="media_player_close_button" width="60" height="47"/>
         <image name="pause" catalog="system" width="88" height="128"/>
         <image name="play.fill" catalog="system" width="116" height="128"/>
