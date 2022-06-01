@@ -193,7 +193,29 @@ extension AmityFeedScreenViewModel {
                                     }
                                 }
                             case .failure:
-                                break
+                                //Get Feed's posts after get Pin-post data
+                                strongSelf.postController.retrieveFeed(withFeedType: strongSelf.feedType) { [weak self] (result) in
+                                    guard let strongSelf = self else { return }
+                                    switch result {
+                                    case .success(let posts):
+                                        strongSelf.prepareComponents(posts: posts)
+                                    case .failure(let error):
+                                        if let amityError = AmityError(error: error), amityError == .noUserAccessPermission {
+                                            switch strongSelf.feedType {
+                                            case .userFeed:
+                                                strongSelf.isPrivate = true
+                                            default:
+                                                strongSelf.isPrivate = false
+                                            }
+                                            strongSelf.debouncer.run {
+                                                strongSelf.prepareComponents(posts: [])
+                                            }
+                                            strongSelf.delegate?.screenViewModelDidFail(strongSelf, failure: amityError)
+                                        } else {
+                                            strongSelf.delegate?.screenViewModelDidFail(strongSelf, failure: AmityError(error: error) ?? .unknown)
+                                        }
+                                    }
+                                }
                             }
                         }
                     }
