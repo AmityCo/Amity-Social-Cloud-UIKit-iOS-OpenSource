@@ -161,35 +161,5 @@ final class customAPIRequest {
         }
         
         task.resume()
-        
-//        let url = URL(string: "https://qojeq6vaa8.execute-api.ap-southeast-1.amazonaws.com/getPinPost?region=\(region)")!
-//
-//        var tempPinPostData = Data()
-//
-//        var request = URLRequest(url: url)
-//        request.httpMethod = "GET"
-//        request.allHTTPHeaderFields = [
-//            "Content-Type" : "application/json"
-//        ]
-
-        //Get Request
-//        let task = URLSession.shared.dataTask(with: request) { data, response, error in
-//            guard let data = data, error == nil else {
-//                print(error?.localizedDescription ?? "No data.")
-//                return
-//            }
-//            do {
-//                let jsonResponse = try? JSONSerialization.jsonObject(with: data, options: [])
-//                guard let jsonDecode = try? JSONDecoder().decode(AmityNewsFeedDataModel.self, from: data) else { return }
-//                tempPinPostData = jsonDecode
-//            } catch let error {
-//                print("Error: \(error)")
-//            }
-//
-//            completion(tempPinPostData)
-//
-//        }
-//
-//        task.resume()
     }
 }

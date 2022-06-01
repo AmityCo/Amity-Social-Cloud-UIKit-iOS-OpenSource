@@ -358,7 +358,6 @@ extension AmityFeedViewController: AmityFeedScreenViewModelDelegate {
             isDataSourceDirty = true
             return
         }
-        print("---> Fetch Finish")
         tableView.reloadData()
         dataDidUpdateHandler?(screenViewModel.dataSource.numberOfPostComponents())
         refreshControl.endRefreshing()
