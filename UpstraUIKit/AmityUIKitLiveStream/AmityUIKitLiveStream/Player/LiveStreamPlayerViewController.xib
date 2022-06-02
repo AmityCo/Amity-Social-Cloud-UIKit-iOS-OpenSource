@@ -165,7 +165,11 @@ to watch shortly.</string>
                             </connections>
                         </button>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="eMx-8g-uCW" userLabel="Play Button">
-                            <rect key="frame" x="175" y="408" width="64" height="91"/>
+                            <rect key="frame" x="175" y="421.5" width="64" height="64"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="64" id="Qaw-OQ-I6R"/>
+                                <constraint firstAttribute="width" constant="64" id="hkM-4c-qh8"/>
+                            </constraints>
                             <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <state key="normal" image="play_button">
                                 <preferredSymbolConfiguration key="preferredSymbolConfiguration" configurationType="pointSize" pointSize="44"/>
@@ -175,7 +179,11 @@ to watch shortly.</string>
                             </connections>
                         </button>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="GsN-Z4-b5d" userLabel="Stop Button">
-                            <rect key="frame" x="169" y="421.5" width="76" height="64"/>
+                            <rect key="frame" x="175" y="421.5" width="64" height="64"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="64" id="oat-yl-MWN"/>
+                                <constraint firstAttribute="width" constant="64" id="pUz-Gt-63S"/>
+                            </constraints>
                             <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <state key="normal" image="pause_button">
                                 <preferredSymbolConfiguration key="preferredSymbolConfiguration" configurationType="pointSize" pointSize="44"/>
@@ -190,10 +198,8 @@ to watch shortly.</string>
                         <constraint firstItem="GsN-Z4-b5d" firstAttribute="centerY" secondItem="eMx-8g-uCW" secondAttribute="centerY" id="AeY-lc-8lG"/>
                         <constraint firstItem="eMx-8g-uCW" firstAttribute="centerX" secondItem="aMJ-3v-4eD" secondAttribute="centerX" id="CXO-ki-q1E"/>
                         <constraint firstItem="GsN-Z4-b5d" firstAttribute="centerX" secondItem="eMx-8g-uCW" secondAttribute="centerX" id="IX1-J0-YtN"/>
-                        <constraint firstItem="GsN-Z4-b5d" firstAttribute="height" secondItem="eMx-8g-uCW" secondAttribute="height" multiplier="0.705882" id="Trc-WI-pLg"/>
                         <constraint firstItem="e3Z-YA-P5g" firstAttribute="top" secondItem="aMJ-3v-4eD" secondAttribute="top" constant="10" id="Ugk-NE-qfH"/>
                         <constraint firstItem="eMx-8g-uCW" firstAttribute="centerY" secondItem="aMJ-3v-4eD" secondAttribute="centerY" constant="44.5" id="pLQ-1K-2s7"/>
-                        <constraint firstItem="GsN-Z4-b5d" firstAttribute="width" secondItem="eMx-8g-uCW" secondAttribute="width" multiplier="1.19481" id="qMF-sM-EBX"/>
                         <constraint firstAttribute="trailing" secondItem="e3Z-YA-P5g" secondAttribute="trailing" constant="30" id="vwH-IG-mBe"/>
                     </constraints>
                 </view>
