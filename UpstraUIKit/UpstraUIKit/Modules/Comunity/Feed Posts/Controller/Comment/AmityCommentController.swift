@@ -39,8 +39,8 @@ extension AmityCommentController {
 
 // MARK: - Comment Editor
 extension AmityCommentController {
-    func delete(withComment comment: AmityCommentModel, completion: AmityRequestCompletion?) {
-        editorController.delete(withComment: comment, completion: completion)
+    func delete(withCommentId commentId: String, completion: AmityRequestCompletion?) {
+        editorController.delete(withCommentId: commentId, completion: completion)
     }
     
     func edit(withComment comment: AmityCommentModel, text: String, metadata: [String : Any]?, mentionees: AmityMentioneesBuilder?, completion: AmityRequestCompletion?) {

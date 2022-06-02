@@ -274,6 +274,7 @@
 		72A351A924EA821900DA9D46 /* AmityLocalizedStringSet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72A351A324EA821900DA9D46 /* AmityLocalizedStringSet.swift */; };
 		72A351AA24EA821900DA9D46 /* AmityUserDefaults.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72A351A424EA821900DA9D46 /* AmityUserDefaults.swift */; };
 		72A351AC24EA821F00DA9D46 /* AmityUIKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72A351AB24EA821F00DA9D46 /* AmityUIKit.swift */; };
+		72A659E7283CF0DD00A12BEF /* AmityExpandableLabelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72A659E6283CF0DD00A12BEF /* AmityExpandableLabelTests.swift */; };
 		72A974DD25E7595700706EB4 /* AmityPostViewAllCommentsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72A974DB25E7595700706EB4 /* AmityPostViewAllCommentsTableViewCell.swift */; };
 		72A974DE25E7595700706EB4 /* AmityPostViewAllCommentsTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 72A974DC25E7595700706EB4 /* AmityPostViewAllCommentsTableViewCell.xib */; };
 		72AFAC0D24F9009F00269019 /* AmityFileService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72AFAC0C24F9009F00269019 /* AmityFileService.swift */; };
@@ -913,6 +914,7 @@
 		72A351A324EA821900DA9D46 /* AmityLocalizedStringSet.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AmityLocalizedStringSet.swift; sourceTree = "<group>"; };
 		72A351A424EA821900DA9D46 /* AmityUserDefaults.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AmityUserDefaults.swift; sourceTree = "<group>"; };
 		72A351AB24EA821F00DA9D46 /* AmityUIKit.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AmityUIKit.swift; sourceTree = "<group>"; };
+		72A659E6283CF0DD00A12BEF /* AmityExpandableLabelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AmityExpandableLabelTests.swift; sourceTree = "<group>"; };
 		72A974DB25E7595700706EB4 /* AmityPostViewAllCommentsTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AmityPostViewAllCommentsTableViewCell.swift; sourceTree = "<group>"; };
 		72A974DC25E7595700706EB4 /* AmityPostViewAllCommentsTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = AmityPostViewAllCommentsTableViewCell.xib; sourceTree = "<group>"; };
 		72AFAC0C24F9009F00269019 /* AmityFileService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AmityFileService.swift; sourceTree = "<group>"; };
@@ -2012,6 +2014,7 @@
 		72A3503D24EA811500DA9D46 /* UpstraUIKitTests */ = {
 			isa = PBXGroup;
 			children = (
+				72A659E5283CF08E00A12BEF /* Components */,
 				72A3503E24EA811500DA9D46 /* AmityUIKitTests.swift */,
 				72A3504024EA811500DA9D46 /* Info.plist */,
 			);
@@ -2586,6 +2589,14 @@
 				0A7682C327B16D2200F6BA41 /* AmityMediaConverter.swift */,
 			);
 			path = Utilities;
+			sourceTree = "<group>";
+		};
+		72A659E5283CF08E00A12BEF /* Components */ = {
+			isa = PBXGroup;
+			children = (
+				72A659E6283CF0DD00A12BEF /* AmityExpandableLabelTests.swift */,
+			);
+			path = Components;
 			sourceTree = "<group>";
 		};
 		72A974DA25E7590D00706EB4 /* View All Comments */ = {
@@ -5023,6 +5034,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				72A3503F24EA811500DA9D46 /* AmityUIKitTests.swift in Sources */,
+				72A659E7283CF0DD00A12BEF /* AmityExpandableLabelTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -5181,7 +5193,7 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				MARKETING_VERSION = 2.17.1;
+				MARKETING_VERSION = 2.18.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.amity.amityuikit;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
@@ -5214,7 +5226,7 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				MARKETING_VERSION = 2.17.1;
+				MARKETING_VERSION = 2.18.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.amity.amityuikit;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;

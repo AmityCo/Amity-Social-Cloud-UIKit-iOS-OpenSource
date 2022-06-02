@@ -168,6 +168,19 @@ class AmityMessageTableViewCell: UITableViewCell, AmityMessageCellProtocol {
         metadataLabel?.attributedText = fullString
     }
     
+    // MARK: - Setup View
+    private func setupView() {
+        selectionStyle = .none
+        
+        statusMetadataImageView?.isHidden = true
+        containerView?.backgroundColor = UIColor.gray.withAlphaComponent(0.25)
+        containerView?.layer.cornerRadius = 4
+        containerView?.menuItems = [editMenuItem, deleteMenuItem, reportMenuItem]
+        errorButton?.isHidden = true
+        
+        contentView.backgroundColor = AmityColorSet.backgroundColor
+    }
+    
     private func setDisplayName(for message: AmityMessageModel) {
         setDisplayName(message.displayName)
     }
@@ -216,19 +229,5 @@ private extension AmityMessageTableViewCell {
     @IBAction func errorTap() {
         screenViewModel.action.performCellEvent(for: .deleteErrorMessage(indexPath: indexPath))
     }
-}
-
-// MARK: - Setup View
-private extension AmityMessageTableViewCell {
-    private func setupView() {
-        selectionStyle = .none
-        
-        statusMetadataImageView?.isHidden = true
-        containerView?.backgroundColor = UIColor.gray.withAlphaComponent(0.25)
-        containerView?.layer.cornerRadius = 4
-        containerView?.menuItems = [editMenuItem, deleteMenuItem, reportMenuItem]
-        errorButton?.isHidden = true
-        
-        contentView.backgroundColor = AmityColorSet.backgroundColor
-    }
+    
 }

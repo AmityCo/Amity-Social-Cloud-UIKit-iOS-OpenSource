@@ -49,7 +49,7 @@ protocol AmityPostDetailScreenViewModelDelegate: AnyObject {
     func screenViewModelDidEditComment(_ viewModel: AmityPostDetailScreenViewModelType)
     func screenViewModelDidLikeComment(_ viewModel: AmityPostDetailScreenViewModelType)
     func screenViewModelDidUnLikeComment(_ viewModel: AmityPostDetailScreenViewModelType)
-    func screenViewModelDidCreateComment(_ viewModel: AmityPostDetailScreenViewModelType)
+    func screenViewModelDidCreateComment(_ viewModel: AmityPostDetailScreenViewModelType, comment: AmityCommentModel)
     func screenViewModel(_ viewModel: AmityPostDetailScreenViewModelType, comment: AmityCommentModel, didReceiveCommentReportStatus isReported: Bool)
     func screenViewModel(_ viewModel: AmityPostDetailScreenViewModelType, didFinishWithMessage message: String)
     func screenViewModel(_ viewModel: AmityPostDetailScreenViewModelType, didFinishWithError error: AmityError)

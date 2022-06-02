@@ -367,8 +367,13 @@ extension AmityPostDetailViewController: AmityPostDetailScreenViewModelDelegate 
     }
     
     // MARK: Comment
-    func screenViewModelDidCreateComment(_ viewModel: AmityPostDetailScreenViewModelType) {
-        // Do something with success
+    func screenViewModelDidCreateComment(_ viewModel: AmityPostDetailScreenViewModelType, comment: AmityCommentModel) {
+        
+        if comment.parentId == nil {
+            // When new parent comment is created, it will not show in query stream.
+            // We forcibly fetch a comment list to include new added comments.
+            screenViewModel.action.fetchComments()
+        }
     }
     
     func screenViewModelDidDeleteComment(_ viewModel: AmityPostDetailScreenViewModelType) {
