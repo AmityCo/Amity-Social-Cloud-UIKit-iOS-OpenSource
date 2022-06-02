@@ -33,6 +33,7 @@ public class LiveStreamPlayerViewController: UIViewController {
     @IBOutlet weak var streamingViewerContainer: UIView!
     @IBOutlet weak var streamingViewerCountLabel: UILabel!
     
+    @IBOutlet weak var dislikeButton: UIButton!
     @IBOutlet weak var likeButton: UIButton!
     @IBOutlet weak var likeCountLabel: UILabel!
     
@@ -154,9 +155,6 @@ public class LiveStreamPlayerViewController: UIViewController {
         streamEndTitleLabel.font = AmityFontSet.title
         streamEndDescriptionLabel.font = AmityFontSet.body
         
-        likeButton.setImage(UIImage(named: "like_button"), for: .normal)
-        likeButton.setImage(UIImage(named: "like_fill_button"), for: .selected)
-        
         loadingOverlay.isHidden = true
         
         // Show control at start by default
@@ -182,7 +180,13 @@ public class LiveStreamPlayerViewController: UIViewController {
             self.isLike = myReactions.contains(.like)
             
             DispatchQueue.main.async {
-                self.likeButton.isSelected = self.isLike
+                if self.isLike {
+                    self.likeButton.isHidden = true
+                    self.dislikeButton.isHidden = false
+                } else {
+                    self.likeButton.isHidden = false
+                    self.dislikeButton.isHidden = true
+                }
                 self.likeCountLabel.text = String(post.reactionsCount)
             }
         }
@@ -194,7 +198,7 @@ public class LiveStreamPlayerViewController: UIViewController {
         }
         
         self.timer = Timer.scheduledTimer(withTimeInterval: 5, repeats: true, block: {_ in
-            self.getReactionData()
+//            self.getReactionData()
             customAPIRequest.getLiveStreamViewerData(page_number: 1, liveStreamId: self.streamIdToWatch, type: "watching") { value in
                 DispatchQueue.main.async {
                     self.streamingViewerCountLabel.text = String(value.count.formatUsingAbbrevation())
@@ -417,21 +421,19 @@ public class LiveStreamPlayerViewController: UIViewController {
     }
     
     @IBAction private func likeButtonDidTouch() {
-        if self.isLike {
-            reactionRepository?.removeReaction("like", referenceId: self.postId, referenceType: .post) { success, error in
-                if success {
-                    print("Unlike")
-                    self.getReactionData()
-                    self.likeButton.isSelected = false
-                }
+        reactionRepository?.addReaction("like", referenceId: self.postId, referenceType: .post) { success, error in
+            if success {
+                print("Like")
+                self.getReactionData()
             }
-        } else {
-            reactionRepository?.addReaction("like", referenceId: self.postId, referenceType: .post) { success, error in
-                if success {
-                    print("Like")
-                    self.getReactionData()
-                    self.likeButton.isSelected = true
-                }
+        }
+    }
+    
+    @IBAction private func dislikeButtonDidTouch() {
+        reactionRepository?.removeReaction("like", referenceId: self.postId, referenceType: .post) { success, error in
+            if success {
+                print("Unlike")
+                self.getReactionData()
             }
         }
     }
