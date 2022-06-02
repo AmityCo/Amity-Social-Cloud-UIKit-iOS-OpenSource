@@ -59,7 +59,6 @@ class ShelfWebViewTableViewCell: UITableViewCell, WKUIDelegate, WKNavigationDele
     }
     
     func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
-        print("Finish")
     }
     
     func set(shelfView: UIView?) {

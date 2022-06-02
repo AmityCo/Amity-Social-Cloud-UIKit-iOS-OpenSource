@@ -27,14 +27,15 @@ class AmityCommunityHomePageHeaderViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        setupHeaderTitle()
+        setupSearchView()
     }
     
     private func setupHeaderTitle() {
 //        headerTitleLabel.font = AmityFontSet.headerLine.withSize(36)
         headerTitleLabel.textColor = AmityColorSet.base
-        headerTitleLabel.font = UIFont(name: "NotoSans-Bold.ttf", size: 36)
+//        headerTitleLabel.font = UIFont(name: "NotoSans-Bold.ttf", size: 36)
         headerTitleLabel.text = AmityLocalizedStringSet.communityTitle.localizedString
-        searchitleLabel.text = AmityLocalizedStringSet.communitySearchTitle.localizedString
     }
     
     private func setupSearchView() {
@@ -42,6 +43,7 @@ class AmityCommunityHomePageHeaderViewController: UIViewController {
         searchContentView.layer.borderWidth = 0.5
         searchContentView.layer.borderColor = UIColor.gray.cgColor
         searchContentView.clipsToBounds = true
+        searchitleLabel.text = AmityLocalizedStringSet.communitySearchTitle.localizedString
     }
 }
 

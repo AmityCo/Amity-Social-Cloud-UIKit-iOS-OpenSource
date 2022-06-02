@@ -132,46 +132,96 @@ extension AmityFeedScreenViewModel {
             customAPIRequest.getPinPostData() { postArray in
                 DispatchQueue.main.async {
                     self.prepareComponentsPinPost(posts: nil)
-                    guard let postsData = postArray else { return }
+                    guard let postsData = postArray else {
+                        
+                        //Get Feed's posts after get Pin-post data
+                        self.postController.retrieveFeed(withFeedType: self.feedType) { [weak self] (result) in
+                            guard let strongSelf = self else { return }
+                            switch result {
+                            case .success(let posts):
+                                strongSelf.prepareComponents(posts: posts)
+                            case .failure(let error):
+                                if let amityError = AmityError(error: error), amityError == .noUserAccessPermission {
+                                    switch strongSelf.feedType {
+                                    case .userFeed:
+                                        strongSelf.isPrivate = true
+                                    default:
+                                        strongSelf.isPrivate = false
+                                    }
+                                    strongSelf.debouncer.run {
+                                        strongSelf.prepareComponents(posts: [])
+                                    }
+                                    strongSelf.delegate?.screenViewModelDidFail(strongSelf, failure: amityError)
+                                } else {
+                                    strongSelf.delegate?.screenViewModelDidFail(strongSelf, failure: AmityError(error: error) ?? .unknown)
+                                }
+                            }
+                        }
+                        return
+                    }
                     for posts in postsData.posts {
                         let postId = posts.postId
+                        
+                        //Get Pin-post data
                         self.postController.getPostForPostId(withPostId: postId, isPin: true) { [weak self] (result) in
                             guard let strongSelf = self else { return }
                             switch result {
                             case .success(let post):
                                 strongSelf.prepareComponentsPinPost(posts: post)
+                                
+                                //Get Feed's posts after get Pin-post data
+                                strongSelf.postController.retrieveFeed(withFeedType: strongSelf.feedType) { [weak self] (result) in
+                                    guard let strongSelf = self else { return }
+                                    switch result {
+                                    case .success(let posts):
+                                        strongSelf.prepareComponents(posts: posts)
+                                    case .failure(let error):
+                                        if let amityError = AmityError(error: error), amityError == .noUserAccessPermission {
+                                            switch strongSelf.feedType {
+                                            case .userFeed:
+                                                strongSelf.isPrivate = true
+                                            default:
+                                                strongSelf.isPrivate = false
+                                            }
+                                            strongSelf.debouncer.run {
+                                                strongSelf.prepareComponents(posts: [])
+                                            }
+                                            strongSelf.delegate?.screenViewModelDidFail(strongSelf, failure: amityError)
+                                        } else {
+                                            strongSelf.delegate?.screenViewModelDidFail(strongSelf, failure: AmityError(error: error) ?? .unknown)
+                                        }
+                                    }
+                                }
                             case .failure:
-                                break
+                                //Get Feed's posts after get Pin-post data
+                                strongSelf.postController.retrieveFeed(withFeedType: strongSelf.feedType) { [weak self] (result) in
+                                    guard let strongSelf = self else { return }
+                                    switch result {
+                                    case .success(let posts):
+                                        strongSelf.prepareComponents(posts: posts)
+                                    case .failure(let error):
+                                        if let amityError = AmityError(error: error), amityError == .noUserAccessPermission {
+                                            switch strongSelf.feedType {
+                                            case .userFeed:
+                                                strongSelf.isPrivate = true
+                                            default:
+                                                strongSelf.isPrivate = false
+                                            }
+                                            strongSelf.debouncer.run {
+                                                strongSelf.prepareComponents(posts: [])
+                                            }
+                                            strongSelf.delegate?.screenViewModelDidFail(strongSelf, failure: amityError)
+                                        } else {
+                                            strongSelf.delegate?.screenViewModelDidFail(strongSelf, failure: AmityError(error: error) ?? .unknown)
+                                        }
+                                    }
+                                }
                             }
                         }
                     }
                 }
             }
-            postController.retrieveFeed(withFeedType: feedType) { [weak self] (result) in
-                guard let strongSelf = self else { return }
-                switch result {
-                case .success(let posts):
-                    strongSelf.debouncer.run {
-                        strongSelf.prepareComponents(posts: posts)
-
-                    }
-                case .failure(let error):
-                    if let amityError = AmityError(error: error), amityError == .noUserAccessPermission {
-                        switch strongSelf.feedType {
-                        case .userFeed:
-                            strongSelf.isPrivate = true
-                        default:
-                            strongSelf.isPrivate = false
-                        }
-                        strongSelf.debouncer.run {
-                            strongSelf.prepareComponents(posts: [])
-                        }
-                        strongSelf.delegate?.screenViewModelDidFail(strongSelf, failure: amityError)
-                    } else {
-                        strongSelf.delegate?.screenViewModelDidFail(strongSelf, failure: AmityError(error: error) ?? .unknown)
-                    }
-                }
-            }
+            
         } else {
             isLoading = true
             postController.retrieveFeed(withFeedType: feedType) { [weak self] (result) in
@@ -182,6 +232,7 @@ extension AmityFeedScreenViewModel {
                         strongSelf.prepareComponents(posts: posts)
                     }
                 case .failure(let error):
+                    print("---> ERROR !! \(error.localizedDescription.description)")
                     if let amityError = AmityError(error: error), amityError == .noUserAccessPermission {
                         switch strongSelf.feedType {
                         case .userFeed:

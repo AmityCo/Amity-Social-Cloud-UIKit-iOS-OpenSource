@@ -14,18 +14,18 @@ final class customAPIRequest {
     static func getDiscoveryData(page_number: Int, completion: @escaping(_ discoveryArray: [DiscoveryDataModel]) -> () ) {
         
         var region: String {
-            switch AmityUIKitManagerInternal.shared.amityLanguage {
-            case "th", "en":
+            switch AmityUIKitManagerInternal.shared.envByApiKey {
+            case .production:
                 return "th"
-            case "id":
+            case .id:
                 return "id"
-            case "km":
+            case .km:
                 return "kh"
-            case "fil":
+            case .fil:
                 return "ph"
-            case "vi":
+            case .vi:
                 return "vn"
-            case "my":
+            case .my:
                 return "mm"
             default:
                 return "staging"
@@ -66,18 +66,18 @@ final class customAPIRequest {
     static func getChatBadgeCount(userId: String, completion: @escaping(_ completion:Result<Int,Error>) -> () ) {
         
         var region: String {
-            switch AmityUIKitManagerInternal.shared.amityLanguage {
-            case "th", "en":
+            switch AmityUIKitManagerInternal.shared.envByApiKey {
+            case .production:
                 return "th"
-            case "id":
+            case .id:
                 return "id"
-            case "km":
+            case .km:
                 return "kh"
-            case "fil":
+            case .fil:
                 return "ph"
-            case "vi":
+            case .vi:
                 return "vn"
-            case "my":
+            case .my:
                 return "mm"
             default:
                 return "staging"
@@ -112,18 +112,18 @@ final class customAPIRequest {
     static func getPinPostData(completion: @escaping(_ postArray: AmityNewsFeedDataModel?) -> () ) {
         
         var region: String {
-            switch AmityUIKitManagerInternal.shared.amityLanguage {
-            case "th", "en":
+            switch AmityUIKitManagerInternal.shared.envByApiKey {
+            case .production:
                 return "th"
-            case "id":
+            case .id:
                 return "id"
-            case "km":
+            case .km:
                 return "kh"
-            case "fil":
+            case .fil:
                 return "ph"
-            case "vi":
+            case .vi:
                 return "vn"
-            case "my":
+            case .my:
                 return "mm"
             default:
                 return "staging"
@@ -161,35 +161,5 @@ final class customAPIRequest {
         }
         
         task.resume()
-        
-//        let url = URL(string: "https://qojeq6vaa8.execute-api.ap-southeast-1.amazonaws.com/getPinPost?region=\(region)")!
-//
-//        var tempPinPostData = Data()
-//
-//        var request = URLRequest(url: url)
-//        request.httpMethod = "GET"
-//        request.allHTTPHeaderFields = [
-//            "Content-Type" : "application/json"
-//        ]
-
-        //Get Request
-//        let task = URLSession.shared.dataTask(with: request) { data, response, error in
-//            guard let data = data, error == nil else {
-//                print(error?.localizedDescription ?? "No data.")
-//                return
-//            }
-//            do {
-//                let jsonResponse = try? JSONSerialization.jsonObject(with: data, options: [])
-//                guard let jsonDecode = try? JSONDecoder().decode(AmityNewsFeedDataModel.self, from: data) else { return }
-//                tempPinPostData = jsonDecode
-//            } catch let error {
-//                print("Error: \(error)")
-//            }
-//
-//            completion(tempPinPostData)
-//
-//        }
-//
-//        task.resume()
     }
 }
