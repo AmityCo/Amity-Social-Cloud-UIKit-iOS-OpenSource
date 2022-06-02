@@ -82,12 +82,10 @@ final class AmityRecentChatTableViewCell: UITableViewCell, Nibbable {
             memberLabel.text = "(\(channel.memberCount))"
         case .conversation:
             memberLabel.text = nil
-//            avatarView.setImage(withImageURL: channel.avatarURL, placeholder: AmityIconSet.defaultAvatar)
-//            titleLabel.text = channel.displayName
             
             if let userIndex = RecentChatAvatarArray.shared.avatarArray.firstIndex(where: {$0.channelId == channel.channelId }) {
                 let currentArray = RecentChatAvatarArray.shared.avatarArray[userIndex]
-                titleLabel.text = currentArray.displayName
+                titleLabel.text = (currentArray.displayName != "") ? currentArray.displayName : channel.displayName
                 if currentArray.isCustom {
                     avatarView.setImage(withCustomURL: currentArray.avatarURL,
                                              placeholder: AmityIconSet.defaultAvatar)

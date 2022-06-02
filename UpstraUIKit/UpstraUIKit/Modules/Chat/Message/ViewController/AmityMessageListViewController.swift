@@ -568,7 +568,6 @@ extension AmityMessageListViewController: AmityMessageListScreenViewModelDelegat
             
         case .didSendText:
             composeBar.clearText()
-//            screenViewModel.shouldScrollToBottom(force: true)
             screenViewModelScrollTableviewToLastIndex()
         case .didEditText:
             break
@@ -576,11 +575,9 @@ extension AmityMessageListViewController: AmityMessageListScreenViewModelDelegat
             AmityHUD.hide()
             messageViewController.tableView.reloadRows(at: [indexPath], with: .none)
         case .didSendImage:
-//            screenViewModel.shouldScrollToBottom(force: true)
             screenViewModelScrollTableviewToLastIndex()
             break
         case .didUploadImage:
-//            screenViewModel.shouldScrollToBottom(force: true)
             screenViewModelScrollTableviewToLastIndex()
             break
         case .didDeeleteErrorMessage:
@@ -588,7 +585,6 @@ extension AmityMessageListViewController: AmityMessageListScreenViewModelDelegat
         case .didSendAudio:
             circular.hide()
             audioRecordingViewController?.stopRecording()
-//            screenViewModel.shouldScrollToBottom(force: true)
             screenViewModelScrollTableviewToLastIndex()
         }
     }
@@ -631,6 +627,7 @@ extension AmityMessageListViewController: AmityMessageListScreenViewModelDelegat
             alertViewController.addAction(delete)
             present(alertViewController, animated: true)
         case .deleteErrorMessage(let indexPath):
+            self.view.endEditing(true)
             guard let message = screenViewModel.dataSource.message(at: indexPath) else { return }
             let alertViewController = UIAlertController(title: AmityLocalizedStringSet.MessageList.alertErrorMessageTitle.localizedString,
                                                         message: nil, preferredStyle: .actionSheet)

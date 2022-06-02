@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="20037" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="19529" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="20020"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="19519"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="Stack View standard spacing" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
@@ -13,6 +13,9 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="LiveStreamPlayerViewController" customModule="AmityUIKitLiveStream" customModuleProvider="target">
             <connections>
                 <outlet property="controlContainer" destination="aMJ-3v-4eD" id="4Lz-vE-u6M"/>
+                <outlet property="dislikeButton" destination="3YZ-Az-dkB" id="iFt-dd-EqX"/>
+                <outlet property="likeButton" destination="Trc-GE-dDu" id="008-ma-6ch"/>
+                <outlet property="likeCountLabel" destination="OpI-Sn-EgU" id="oJy-Os-s5I"/>
                 <outlet property="loadingActivityIndicator" destination="oZo-fU-T19" id="ot4-Sy-bxW"/>
                 <outlet property="loadingOverlay" destination="S6e-xR-XMI" id="qPS-9T-GhM"/>
                 <outlet property="playButton" destination="eMx-8g-uCW" id="2g8-DX-d5r"/>
@@ -86,18 +89,6 @@
                                 <constraint firstItem="wjf-vg-vcO" firstAttribute="leading" secondItem="sGh-zA-lpL" secondAttribute="leading" id="uXl-oX-NAk"/>
                             </constraints>
                         </view>
-                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="EDg-Pp-1na" userLabel="Share Button">
-                            <rect key="frame" x="15" y="821" width="60" height="60"/>
-                            <constraints>
-                                <constraint firstAttribute="width" constant="60" id="Dfe-kj-vg6"/>
-                                <constraint firstAttribute="height" constant="60" id="ri5-Si-8fv"/>
-                            </constraints>
-                            <inset key="contentEdgeInsets" minX="10" minY="10" maxX="10" maxY="10"/>
-                            <state key="normal" image="shared"/>
-                            <connections>
-                                <action selector="shareButtonDidTouch" destination="-1" eventType="touchUpInside" id="ikU-wG-t0W"/>
-                            </connections>
-                        </button>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="rcm-LB-Fz3" userLabel="Gesture View">
                             <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -112,10 +103,8 @@
                         <constraint firstItem="rha-6m-7Zi" firstAttribute="top" secondItem="VsJ-qj-eVf" secondAttribute="top" id="MaA-1A-smH"/>
                         <constraint firstAttribute="trailing" secondItem="rha-6m-7Zi" secondAttribute="trailing" id="QIY-jG-IuT"/>
                         <constraint firstItem="rcm-LB-Fz3" firstAttribute="leading" secondItem="VsJ-qj-eVf" secondAttribute="leading" id="chJ-p2-Wcs"/>
-                        <constraint firstItem="EDg-Pp-1na" firstAttribute="leading" secondItem="VsJ-qj-eVf" secondAttribute="leading" constant="15" id="ctT-sV-cfm"/>
                         <constraint firstItem="sGh-zA-lpL" firstAttribute="height" secondItem="rQa-vC-jCd" secondAttribute="height" multiplier="0.842105" id="e8c-52-IrZ"/>
                         <constraint firstItem="sGh-zA-lpL" firstAttribute="centerY" secondItem="rQa-vC-jCd" secondAttribute="centerY" id="gBn-2J-0DU"/>
-                        <constraint firstAttribute="bottom" secondItem="EDg-Pp-1na" secondAttribute="bottom" constant="15" id="h4v-gC-jdk"/>
                         <constraint firstItem="sGh-zA-lpL" firstAttribute="leading" secondItem="rQa-vC-jCd" secondAttribute="trailing" constant="8" symbolic="YES" id="pDK-aR-jIS"/>
                         <constraint firstAttribute="bottom" secondItem="rcm-LB-Fz3" secondAttribute="bottom" id="qMH-Mi-kx8"/>
                     </constraints>
@@ -176,9 +165,9 @@ to watch shortly.</string>
                             </connections>
                         </button>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="eMx-8g-uCW" userLabel="Play Button">
-                            <rect key="frame" x="188" y="379.5" width="38.5" height="59"/>
+                            <rect key="frame" x="175" y="408" width="64" height="91"/>
                             <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                            <state key="normal" image="play.fill" catalog="system">
+                            <state key="normal" image="play_button">
                                 <preferredSymbolConfiguration key="preferredSymbolConfiguration" configurationType="pointSize" pointSize="44"/>
                             </state>
                             <connections>
@@ -186,9 +175,9 @@ to watch shortly.</string>
                             </connections>
                         </button>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="GsN-Z4-b5d" userLabel="Stop Button">
-                            <rect key="frame" x="184" y="388.5" width="46" height="41.5"/>
+                            <rect key="frame" x="169" y="421.5" width="76" height="64"/>
                             <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                            <state key="normal" image="pause" catalog="system">
+                            <state key="normal" image="pause_button">
                                 <preferredSymbolConfiguration key="preferredSymbolConfiguration" configurationType="pointSize" pointSize="44"/>
                             </state>
                             <connections>
@@ -203,9 +192,82 @@ to watch shortly.</string>
                         <constraint firstItem="GsN-Z4-b5d" firstAttribute="centerX" secondItem="eMx-8g-uCW" secondAttribute="centerX" id="IX1-J0-YtN"/>
                         <constraint firstItem="GsN-Z4-b5d" firstAttribute="height" secondItem="eMx-8g-uCW" secondAttribute="height" multiplier="0.705882" id="Trc-WI-pLg"/>
                         <constraint firstItem="e3Z-YA-P5g" firstAttribute="top" secondItem="aMJ-3v-4eD" secondAttribute="top" constant="10" id="Ugk-NE-qfH"/>
-                        <constraint firstItem="eMx-8g-uCW" firstAttribute="centerY" secondItem="aMJ-3v-4eD" secondAttribute="centerY" id="pLQ-1K-2s7"/>
+                        <constraint firstItem="eMx-8g-uCW" firstAttribute="centerY" secondItem="aMJ-3v-4eD" secondAttribute="centerY" constant="44.5" id="pLQ-1K-2s7"/>
                         <constraint firstItem="GsN-Z4-b5d" firstAttribute="width" secondItem="eMx-8g-uCW" secondAttribute="width" multiplier="1.19481" id="qMF-sM-EBX"/>
                         <constraint firstAttribute="trailing" secondItem="e3Z-YA-P5g" secondAttribute="trailing" constant="30" id="vwH-IG-mBe"/>
+                    </constraints>
+                </view>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="vhx-J6-EZs">
+                    <rect key="frame" x="0.0" y="734" width="414" height="128"/>
+                    <subviews>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="guv-EO-DGA" userLabel="Share Button">
+                            <rect key="frame" x="16" y="27" width="60" height="60"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="60" id="90W-BU-KNV"/>
+                                <constraint firstAttribute="width" constant="60" id="Z1N-vX-lrm"/>
+                            </constraints>
+                            <inset key="contentEdgeInsets" minX="10" minY="10" maxX="10" maxY="10"/>
+                            <state key="normal" image="shared"/>
+                            <connections>
+                                <action selector="shareButtonDidTouch" destination="-1" eventType="touchUpInside" id="ZQA-HF-U94"/>
+                            </connections>
+                        </button>
+                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="D6n-y9-Evb">
+                            <rect key="frame" x="84" y="38" width="1" height="38"/>
+                            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="38" id="DS1-Wa-nYN"/>
+                                <constraint firstAttribute="width" constant="1" id="xAx-hU-05n"/>
+                            </constraints>
+                        </view>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Trc-GE-dDu" userLabel="Like Button">
+                            <rect key="frame" x="93" y="27" width="60" height="60"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="60" id="Rrv-FY-feG"/>
+                                <constraint firstAttribute="width" constant="60" id="xj6-tp-t3v"/>
+                            </constraints>
+                            <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <inset key="contentEdgeInsets" minX="10" minY="10" maxX="10" maxY="10"/>
+                            <state key="normal" image="like_button"/>
+                            <connections>
+                                <action selector="likeButtonDidTouch" destination="-1" eventType="touchUpInside" id="ejB-gh-osV"/>
+                            </connections>
+                        </button>
+                        <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="3YZ-Az-dkB" userLabel="Like Button">
+                            <rect key="frame" x="93" y="27" width="60" height="60"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="60" id="IH7-j2-WKb"/>
+                                <constraint firstAttribute="width" constant="60" id="toj-BV-bbF"/>
+                            </constraints>
+                            <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <inset key="contentEdgeInsets" minX="10" minY="10" maxX="10" maxY="10"/>
+                            <state key="normal" image="like_fill_button"/>
+                            <connections>
+                                <action selector="dislikeButtonDidTouch" destination="-1" eventType="touchUpInside" id="AHh-we-iEV"/>
+                            </connections>
+                        </button>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="OpI-Sn-EgU">
+                            <rect key="frame" x="123" y="91" width="0.0" height="17"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="17" id="azu-CQ-aQX"/>
+                            </constraints>
+                            <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                            <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                    </subviews>
+                    <constraints>
+                        <constraint firstItem="Trc-GE-dDu" firstAttribute="leading" secondItem="D6n-y9-Evb" secondAttribute="trailing" constant="8" symbolic="YES" id="6gL-UU-stR"/>
+                        <constraint firstItem="OpI-Sn-EgU" firstAttribute="top" secondItem="Trc-GE-dDu" secondAttribute="bottom" constant="4" id="IJQ-jr-gCq"/>
+                        <constraint firstAttribute="height" constant="128" id="NaD-wR-qzG"/>
+                        <constraint firstItem="D6n-y9-Evb" firstAttribute="centerY" secondItem="guv-EO-DGA" secondAttribute="centerY" id="Qfh-a8-Cr1"/>
+                        <constraint firstAttribute="bottom" secondItem="OpI-Sn-EgU" secondAttribute="bottom" constant="20" id="UTV-Sl-1ei"/>
+                        <constraint firstItem="3YZ-Az-dkB" firstAttribute="centerX" secondItem="Trc-GE-dDu" secondAttribute="centerX" id="VuQ-q6-WMe"/>
+                        <constraint firstItem="OpI-Sn-EgU" firstAttribute="centerX" secondItem="Trc-GE-dDu" secondAttribute="centerX" id="W27-Og-WXp"/>
+                        <constraint firstItem="3YZ-Az-dkB" firstAttribute="centerY" secondItem="Trc-GE-dDu" secondAttribute="centerY" id="doK-3M-ddv"/>
+                        <constraint firstItem="D6n-y9-Evb" firstAttribute="leading" secondItem="guv-EO-DGA" secondAttribute="trailing" constant="8" symbolic="YES" id="mZt-5H-xac"/>
+                        <constraint firstItem="Trc-GE-dDu" firstAttribute="centerY" secondItem="guv-EO-DGA" secondAttribute="centerY" id="nXH-a6-vQO"/>
+                        <constraint firstItem="guv-EO-DGA" firstAttribute="leading" secondItem="vhx-J6-EZs" secondAttribute="leading" constant="16" id="riD-04-Vdv"/>
                     </constraints>
                 </view>
             </subviews>
@@ -221,8 +283,11 @@ to watch shortly.</string>
                 <constraint firstItem="S6e-xR-XMI" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="FZ4-0m-NNB"/>
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="bottom" secondItem="S6e-xR-XMI" secondAttribute="bottom" id="FqP-jd-Q9V"/>
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="bottom" secondItem="dWE-Vp-cX4" secondAttribute="bottom" id="GuJ-11-WeM"/>
-                <constraint firstItem="fnl-2z-Ty3" firstAttribute="bottom" secondItem="aMJ-3v-4eD" secondAttribute="bottom" id="JMy-NL-ue5"/>
+                <constraint firstAttribute="bottom" secondItem="aMJ-3v-4eD" secondAttribute="bottom" constant="34" id="JMy-NL-ue5"/>
+                <constraint firstItem="vhx-J6-EZs" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="URC-7w-Jl2"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="bottom" secondItem="vhx-J6-EZs" secondAttribute="bottom" id="VyE-JA-ydP"/>
                 <constraint firstItem="dWE-Vp-cX4" firstAttribute="top" secondItem="fnl-2z-Ty3" secondAttribute="top" id="VzO-aY-fZH"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="vhx-J6-EZs" secondAttribute="trailing" id="acY-sz-hwQ"/>
                 <constraint firstItem="VsJ-qj-eVf" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="bnl-53-sfY"/>
                 <constraint firstAttribute="bottom" secondItem="VsJ-qj-eVf" secondAttribute="bottom" id="dUB-pY-NA2"/>
                 <constraint firstItem="dWE-Vp-cX4" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="l3b-bd-Ere"/>
@@ -231,13 +296,15 @@ to watch shortly.</string>
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="aMJ-3v-4eD" secondAttribute="trailing" id="wIv-Mj-Ieb"/>
                 <constraint firstItem="aMJ-3v-4eD" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="wLE-Gv-9QM"/>
             </constraints>
-            <point key="canvasLocation" x="-20" y="100"/>
+            <point key="canvasLocation" x="-20.289855072463769" y="99.776785714285708"/>
         </view>
     </objects>
     <resources>
+        <image name="like_button" width="45" height="44"/>
+        <image name="like_fill_button" width="43" height="42"/>
         <image name="media_player_close_button" width="60" height="47"/>
-        <image name="pause" catalog="system" width="88" height="128"/>
-        <image name="play.fill" catalog="system" width="116" height="128"/>
+        <image name="pause_button" width="64" height="64"/>
+        <image name="play_button" width="64" height="64"/>
         <image name="shared" width="38" height="38"/>
         <image name="view_eye" width="12" height="12"/>
         <systemColor name="secondarySystemBackgroundColor">
