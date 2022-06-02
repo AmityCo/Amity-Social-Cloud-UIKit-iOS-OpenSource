@@ -14,18 +14,18 @@ final class customAPIRequest {
     static func getDiscoveryData(page_number: Int, completion: @escaping(_ discoveryArray: [DiscoveryDataModel]) -> () ) {
         
         var region: String {
-            switch AmityUIKitManagerInternal.shared.amityLanguage {
-            case "th", "en":
+            switch AmityUIKitManagerInternal.shared.envByApiKey {
+            case .production:
                 return "th"
-            case "id":
+            case .id:
                 return "id"
-            case "km":
+            case .km:
                 return "kh"
-            case "fil":
+            case .fil:
                 return "ph"
-            case "vi":
+            case .vi:
                 return "vn"
-            case "my":
+            case .my:
                 return "mm"
             default:
                 return "staging"
@@ -66,18 +66,18 @@ final class customAPIRequest {
     static func getChatBadgeCount(userId: String, completion: @escaping(_ completion:Result<Int,Error>) -> () ) {
         
         var region: String {
-            switch AmityUIKitManagerInternal.shared.amityLanguage {
-            case "th", "en":
+            switch AmityUIKitManagerInternal.shared.envByApiKey {
+            case .production:
                 return "th"
-            case "id":
+            case .id:
                 return "id"
-            case "km":
+            case .km:
                 return "kh"
-            case "fil":
+            case .fil:
                 return "ph"
-            case "vi":
+            case .vi:
                 return "vn"
-            case "my":
+            case .my:
                 return "mm"
             default:
                 return "staging"
@@ -112,18 +112,18 @@ final class customAPIRequest {
     static func getPinPostData(completion: @escaping(_ postArray: AmityNewsFeedDataModel?) -> () ) {
         
         var region: String {
-            switch AmityUIKitManagerInternal.shared.amityLanguage {
-            case "th", "en":
+            switch AmityUIKitManagerInternal.shared.envByApiKey {
+            case .production:
                 return "th"
-            case "id":
+            case .id:
                 return "id"
-            case "km":
+            case .km:
                 return "kh"
-            case "fil":
+            case .fil:
                 return "ph"
-            case "vi":
+            case .vi:
                 return "vn"
-            case "my":
+            case .my:
                 return "mm"
             default:
                 return "staging"
