@@ -14,7 +14,7 @@
 "general_done" = "เสร็จ";
 "general_ok" = "ตกลง";
 "general_post" = "โพสต์";
-"general_discard" = "ลบ";
+"general_discard" = "ยืนยัน";
 "general_leave" = "ออก";
 "general_like" = "ถูกใจ";
 "general_liked" = "ถูกใจ";
@@ -145,7 +145,7 @@
 "post_creation_edit_post" = "แก้ไขโพสต์";
 "post_creation_my_timeline" = "ไทม์ไลน์ของฉัน";
 "post_creation_text_placeholder" = "เกิดอะไรขึ้น...";
-"post_creation_discard_post_title" = "ต้องการลบโพสต์ใช่ไหม";
+"post_creation_discard_post_title" = "ต้องการยกเลิกการแก้ไขโพสต์หรือไม่";
 "post_creation_discard_post_message" = "โพสต์ของคุณจะถูกลบและจะไม่โพสต์ไปยังไทม์ไลน์";
 "post_creation_select_image" = "เลือกรูปภาพ";
 "post_creation_select_video" = "เลือกวิดีโอ";
