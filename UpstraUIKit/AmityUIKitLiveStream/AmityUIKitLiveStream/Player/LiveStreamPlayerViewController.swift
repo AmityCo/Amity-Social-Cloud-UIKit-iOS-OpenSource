@@ -117,6 +117,7 @@ public class LiveStreamPlayerViewController: UIViewController {
         isStarting = true
         requestingStreamObject = true
         observeStreamObject()
+        getReactionData()
         getLiveStreamViwerCount()
     }
     
@@ -154,8 +155,8 @@ public class LiveStreamPlayerViewController: UIViewController {
         streamEndTitleLabel.font = AmityFontSet.title
         streamEndDescriptionLabel.font = AmityFontSet.body
         
-        likeButton.setImage(UIImage(named: "like_button"), for: .normal)
-        likeButton.setImage(UIImage(named: "like_fill_button"), for: .selected)
+//        likeButton.setImage(UIImage(named: "like_button"), for: .normal)
+//        likeButton.setImage(UIImage(named: "like_fill_button"), for: .selected)
         
         loadingOverlay.isHidden = true
         
@@ -182,7 +183,7 @@ public class LiveStreamPlayerViewController: UIViewController {
             self.isLike = myReactions.contains(.like)
             
             DispatchQueue.main.async {
-                self.likeButton.isSelected = self.isLike
+                self.likeButton.setImage(self.isLike ? UIImage(named: "like_button") : UIImage(named: "like_fill_button"), for: .normal)
                 self.likeCountLabel.text = String(post.reactionsCount)
             }
         }
@@ -422,7 +423,7 @@ public class LiveStreamPlayerViewController: UIViewController {
                 if success {
                     print("Unlike")
                     self.getReactionData()
-                    self.likeButton.isSelected = false
+//                    self.likeButton.setImage(UIImage(named: "like_button"), for: .normal)
                 }
             }
         } else {
@@ -430,7 +431,7 @@ public class LiveStreamPlayerViewController: UIViewController {
                 if success {
                     print("Like")
                     self.getReactionData()
-                    self.likeButton.isSelected = true
+//                    self.likeButton.setImage(UIImage(named: "like_fill_button"), for: .selected)
                 }
             }
         }
