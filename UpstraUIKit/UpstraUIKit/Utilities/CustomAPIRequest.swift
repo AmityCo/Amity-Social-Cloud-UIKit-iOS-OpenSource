@@ -15,20 +15,22 @@ final class customAPIRequest {
         
         var region: String {
             switch AmityUIKitManagerInternal.shared.envByApiKey {
+            case .staging:
+                return "staging"
             case .production:
                 return "th"
-            case .id:
+            case .indonesia:
                 return "id"
-            case .km:
+            case .cambodia:
                 return "kh"
-            case .fil:
+            case .philippin:
                 return "ph"
-            case .vi:
+            case .vietnam:
                 return "vn"
-            case .my:
+            case .myanmar:
                 return "mm"
             default:
-                return "staging"
+                return "th"
             }
         }
         
@@ -67,20 +69,22 @@ final class customAPIRequest {
         
         var region: String {
             switch AmityUIKitManagerInternal.shared.envByApiKey {
+            case .staging:
+                return "staging"
             case .production:
                 return "th"
-            case .id:
+            case .indonesia:
                 return "id"
-            case .km:
+            case .cambodia:
                 return "kh"
-            case .fil:
+            case .philippin:
                 return "ph"
-            case .vi:
+            case .vietnam:
                 return "vn"
-            case .my:
+            case .myanmar:
                 return "mm"
             default:
-                return "staging"
+                return "th"
             }
         }
         
@@ -113,20 +117,22 @@ final class customAPIRequest {
         
         var region: String {
             switch AmityUIKitManagerInternal.shared.envByApiKey {
+            case .staging:
+                return "staging"
             case .production:
                 return "th"
-            case .id:
+            case .indonesia:
                 return "id"
-            case .km:
+            case .cambodia:
                 return "kh"
-            case .fil:
+            case .philippin:
                 return "ph"
-            case .vi:
+            case .vietnam:
                 return "vn"
-            case .my:
+            case .myanmar:
                 return "mm"
             default:
-                return "staging"
+                return "th"
             }
         }
         
