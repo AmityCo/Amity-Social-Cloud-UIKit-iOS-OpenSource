@@ -171,6 +171,7 @@ public class LiveStreamPlayerViewController: UIViewController {
     /// Call function get reaction count
     func getReactionData() {
         getStreamToken = postRepository?.getPostForPostId(self.postId).observe { liveObject, error in
+            getStreamToken?.invalidate()
             guard let post = liveObject.object else { return }
             var allReactions: [String] = []
             var myReactions: [AmityReactionType]
@@ -198,7 +199,7 @@ public class LiveStreamPlayerViewController: UIViewController {
         }
         
         self.timer = Timer.scheduledTimer(withTimeInterval: 5, repeats: true, block: {_ in
-//            self.getReactionData()
+            self.getReactionData()
             customAPIRequest.getLiveStreamViewerData(page_number: 1, liveStreamId: self.streamIdToWatch, type: "watching") { value in
                 DispatchQueue.main.async {
                     self.streamingViewerCountLabel.text = String(value.count.formatUsingAbbrevation())
