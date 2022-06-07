@@ -34,7 +34,9 @@ class AmityCommunityHomePageHeaderViewController: UIViewController {
     private func setupHeaderTitle() {
 //        headerTitleLabel.font = AmityFontSet.headerLine.withSize(36)
         headerTitleLabel.textColor = AmityColorSet.base
-//        headerTitleLabel.font = UIFont(name: "NotoSans-Bold.ttf", size: 36)
+        if AmityUIKitManagerInternal.shared.amityLanguage == "th" {
+            headerTitleLabel.font = UIFont(name: "NotoSansThai-Bold", size: 36)
+        }
         headerTitleLabel.text = AmityLocalizedStringSet.communityTitle.localizedString
     }
     
