@@ -32,11 +32,8 @@ class AmityCommunityHomePageHeaderViewController: UIViewController {
     }
     
     private func setupHeaderTitle() {
-//        headerTitleLabel.font = AmityFontSet.headerLine.withSize(36)
+        headerTitleLabel.font = AmityFontSet.headerLine.withSize(28)
         headerTitleLabel.textColor = AmityColorSet.base
-        if AmityUIKitManagerInternal.shared.amityLanguage == "th" {
-            headerTitleLabel.font = UIFont(name: "NotoSansThai-Bold", size: 36)
-        }
         headerTitleLabel.text = AmityLocalizedStringSet.communityTitle.localizedString
     }
     
@@ -45,6 +42,7 @@ class AmityCommunityHomePageHeaderViewController: UIViewController {
         searchContentView.layer.borderWidth = 0.5
         searchContentView.layer.borderColor = UIColor.gray.cgColor
         searchContentView.clipsToBounds = true
+        searchitleLabel.font = AmityFontSet.caption.withSize(16)
         searchitleLabel.text = AmityLocalizedStringSet.communitySearchTitle.localizedString
     }
 }

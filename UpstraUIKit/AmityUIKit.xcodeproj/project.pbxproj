@@ -511,7 +511,6 @@
 		B4C71FA7284E48A600744B0F /* NotoSans-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = B4C71FA1284E48A500744B0F /* NotoSans-Regular.ttf */; };
 		B4C71FA8284E48A600744B0F /* NotoSans-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = B4C71FA2284E48A500744B0F /* NotoSans-Light.ttf */; };
 		B4C71FA9284E48A600744B0F /* NotoSans-SemiBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = B4C71FA3284E48A600744B0F /* NotoSans-SemiBold.ttf */; };
-		B4C71FAA284E48A600744B0F /* NotoSansThai-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = B4C71FA4284E48A600744B0F /* NotoSansThai-Bold.ttf */; };
 		B4C71FAB284E48A600744B0F /* NotoSans-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = B4C71FA5284E48A600744B0F /* NotoSans-Bold.ttf */; };
 		B4C71FAC284E48A600744B0F /* NotoSans-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = B4C71FA6284E48A600744B0F /* NotoSans-Medium.ttf */; };
 		B704D1432578CB2F0038BA78 /* AmityPulseAnimation.swift in Sources */ = {isa = PBXBuildFile; fileRef = B704D1422578CB2F0038BA78 /* AmityPulseAnimation.swift */; };
@@ -1195,7 +1194,6 @@
 		B4C71FA1284E48A500744B0F /* NotoSans-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "NotoSans-Regular.ttf"; sourceTree = "<group>"; };
 		B4C71FA2284E48A500744B0F /* NotoSans-Light.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "NotoSans-Light.ttf"; sourceTree = "<group>"; };
 		B4C71FA3284E48A600744B0F /* NotoSans-SemiBold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "NotoSans-SemiBold.ttf"; sourceTree = "<group>"; };
-		B4C71FA4284E48A600744B0F /* NotoSansThai-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "NotoSansThai-Bold.ttf"; sourceTree = "<group>"; };
 		B4C71FA5284E48A600744B0F /* NotoSans-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "NotoSans-Bold.ttf"; sourceTree = "<group>"; };
 		B4C71FA6284E48A600744B0F /* NotoSans-Medium.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "NotoSans-Medium.ttf"; sourceTree = "<group>"; };
 		B704D1422578CB2F0038BA78 /* AmityPulseAnimation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AmityPulseAnimation.swift; sourceTree = "<group>"; };
@@ -3870,7 +3868,6 @@
 				B4C71FA6284E48A600744B0F /* NotoSans-Medium.ttf */,
 				B4C71FA1284E48A500744B0F /* NotoSans-Regular.ttf */,
 				B4C71FA3284E48A600744B0F /* NotoSans-SemiBold.ttf */,
-				B4C71FA4284E48A600744B0F /* NotoSansThai-Bold.ttf */,
 			);
 			path = Fonts;
 			sourceTree = "<group>";
@@ -4687,7 +4684,6 @@
 				789F81FD26E2C1A600C16C68 /* AmityPollCreatorMultipleSelectionTableViewCell.xib in Resources */,
 				727A2CEE26CD18740061E7C7 /* AmityImageView.xib in Resources */,
 				0D44378F25CCFEBD00C03616 /* AmityPostFooterTableViewCell.xib in Resources */,
-				B4C71FAA284E48A600744B0F /* NotoSansThai-Bold.ttf in Resources */,
 				97D723982695ADC3000735F5 /* AmitySearchCommunityTableViewCell.xib in Resources */,
 				B7B6050724FBF1CA005FB53D /* AmitySelectMemberListCollectionViewCell.xib in Resources */,
 				97D0EB9B26A14A3A00E9FE6A /* AmityPendingPostsHeaderView.xib in Resources */,

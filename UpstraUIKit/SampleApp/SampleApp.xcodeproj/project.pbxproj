@@ -39,6 +39,9 @@
 		A0BD0B5026DDFAF20054088B /* AmityVideoPlayerKit.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = A0BD0B3F26DDE0020054088B /* AmityVideoPlayerKit.xcframework */; };
 		A0BD0B5126DDFAF20054088B /* AmityVideoPlayerKit.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = A0BD0B3F26DDE0020054088B /* AmityVideoPlayerKit.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		A0BD0B5226DDFAF20054088B /* MobileVLCKit.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = A0BD0B4026DDE0020054088B /* MobileVLCKit.xcframework */; };
+		B4C71FAE2850DD2400744B0F /* NotoSansThai-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = B4C71FAD2850DD2400744B0F /* NotoSansThai-Bold.ttf */; };
+		B4C71FB22850F44F00744B0F /* NotoSansThai-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = B4C71FB02850F44F00744B0F /* NotoSansThai-Regular.ttf */; };
+		B4C71FB32850F44F00744B0F /* NotoSansThai-SemiBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = B4C71FB12850F44F00744B0F /* NotoSansThai-SemiBold.ttf */; };
 		B72861D924C573B100ECC563 /* TabbarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B72861D824C573B100ECC563 /* TabbarViewController.swift */; };
 		B72CDA3B256B9BEB00F7CAC3 /* CustomMessageTextIncomingTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B72CDA39256B9BEB00F7CAC3 /* CustomMessageTextIncomingTableViewCell.swift */; };
 		B72CDA3C256B9BEB00F7CAC3 /* CustomMessageTextIncomingTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = B72CDA3A256B9BEB00F7CAC3 /* CustomMessageTextIncomingTableViewCell.xib */; };
@@ -135,6 +138,9 @@
 		A0BD0B3F26DDE0020054088B /* AmityVideoPlayerKit.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = AmityVideoPlayerKit.xcframework; path = ../Shared/AmityVideoPlayerKit.xcframework; sourceTree = "<group>"; };
 		A0BD0B4026DDE0020054088B /* MobileVLCKit.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = MobileVLCKit.xcframework; path = ../Shared/MobileVLCKit.xcframework; sourceTree = "<group>"; };
 		A0BD0B4726DDE0E30054088B /* AmityUIKitLiveStream.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = AmityUIKitLiveStream.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		B4C71FAD2850DD2400744B0F /* NotoSansThai-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "NotoSansThai-Bold.ttf"; sourceTree = "<group>"; };
+		B4C71FB02850F44F00744B0F /* NotoSansThai-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "NotoSansThai-Regular.ttf"; sourceTree = "<group>"; };
+		B4C71FB12850F44F00744B0F /* NotoSansThai-SemiBold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "NotoSansThai-SemiBold.ttf"; sourceTree = "<group>"; };
 		B72861D824C573B100ECC563 /* TabbarViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabbarViewController.swift; sourceTree = "<group>"; };
 		B72CDA39256B9BEB00F7CAC3 /* CustomMessageTextIncomingTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomMessageTextIncomingTableViewCell.swift; sourceTree = "<group>"; };
 		B72CDA3A256B9BEB00F7CAC3 /* CustomMessageTextIncomingTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CustomMessageTextIncomingTableViewCell.xib; sourceTree = "<group>"; };
@@ -319,6 +325,16 @@
 			path = "Post Creator Settings";
 			sourceTree = "<group>";
 		};
+		B4C71FAF2850DD2B00744B0F /* Fonts */ = {
+			isa = PBXGroup;
+			children = (
+				B4C71FAD2850DD2400744B0F /* NotoSansThai-Bold.ttf */,
+				B4C71FB02850F44F00744B0F /* NotoSansThai-Regular.ttf */,
+				B4C71FB12850F44F00744B0F /* NotoSansThai-SemiBold.ttf */,
+			);
+			path = Fonts;
+			sourceTree = "<group>";
+		};
 		B72CDA38256B9BC100F7CAC3 /* Custom Cell */ = {
 			isa = PBXGroup;
 			children = (
@@ -361,6 +377,7 @@
 				B78DA4AD24BED88000EE902B /* Feature */,
 				729CAF40273CC93D000AE162 /* Manager */,
 				B78DA47824BED7D300EE902B /* AppDelegate.swift */,
+				B4C71FAF2850DD2B00744B0F /* Fonts */,
 				B78DA47A24BED7D300EE902B /* SceneDelegate.swift */,
 				B78DA48124BED7DA00EE902B /* Assets.xcassets */,
 				B78DA48324BED7DA00EE902B /* LaunchScreen.storyboard */,
@@ -550,11 +567,14 @@
 			buildActionMask = 2147483647;
 			files = (
 				B78DA48524BED7DA00EE902B /* LaunchScreen.storyboard in Resources */,
+				B4C71FB22850F44F00744B0F /* NotoSansThai-Regular.ttf in Resources */,
 				0D73AC9425DB8CB5000D73CA /* AmityPostThumbsupTableViewCell.xib in Resources */,
 				0D8FFC2A25DCBFD900943538 /* AmityCustomFooterTableViewCell.xib in Resources */,
 				B78DA48224BED7DA00EE902B /* Assets.xcassets in Resources */,
 				B78DA48024BED7D300EE902B /* Main.storyboard in Resources */,
 				0D73AC9625DB8CB5000D73CA /* AmityPostBirthdayTableViewCell.xib in Resources */,
+				B4C71FAE2850DD2400744B0F /* NotoSansThai-Bold.ttf in Resources */,
+				B4C71FB32850F44F00744B0F /* NotoSansThai-SemiBold.ttf in Resources */,
 				D4AFF1CE25ECE8AD002C001C /* PostPreviewTableViewCell.xib in Resources */,
 				B72CDA3C256B9BEB00F7CAC3 /* CustomMessageTextIncomingTableViewCell.xib in Resources */,
 				0D73AC9725DB8CB5000D73CA /* AmityPostNewJoinerTableViewCell.xib in Resources */,

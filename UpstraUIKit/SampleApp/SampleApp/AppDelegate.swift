@@ -24,6 +24,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Setup AmityUIKit
         AppManager.shared.setupAmityUIKit()
 
+        let myTypography = AmityTypography(
+            headerLine: UIFont(name: "NotoSansThai-Bold", size: 28)!,
+            caption: UIFont(name: "NotoSansThai-Regular", size: 16)!)
+        AmityUIKitManager.set(typography: myTypography)
+        
         if #available(iOS 13.0, *) {
             // on newer 13.0 version, the window setup finished on `SceneDelegate`
         } else {
