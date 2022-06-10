@@ -57,6 +57,8 @@ public final class AmityFeedViewController: AmityViewController, AmityRefreshabl
     
     private var feedType: AmityPostFeedType!
     
+    var timer = Timer()
+    
     // MARK: - View lifecycle
     deinit {
         screenViewModel.action.stopObserveFeedUpdate()
@@ -66,7 +68,8 @@ public final class AmityFeedViewController: AmityViewController, AmityRefreshabl
         super.viewDidLoad()
         setupView()
         setupProtocolHandler()
-        setupScreenViewModel()   
+        setupScreenViewModel()
+        fetchUtillAppear()
     }
     
     public override func viewWillAppear(_ animated: Bool) {
@@ -105,6 +108,17 @@ public final class AmityFeedViewController: AmityViewController, AmityRefreshabl
         let vc = AmityFeedViewController(nibName: AmityFeedViewController.identifier, bundle: AmityUIKitManager.bundle)
         vc.screenViewModel = viewModel
         return vc
+    }
+    
+    // MARK: Private function
+    private func fetchUtillAppear() {
+        self.timer = Timer.scheduledTimer(withTimeInterval: 1, repeats: true, block: {_ in
+            if self.screenViewModel.numberOfPostComponents() <= 1 {
+                self.screenViewModel.action.fetchPosts()
+            } else {
+                self.timer.invalidate()
+            }
+        })
     }
 
     // MARK: Setup Post Protocol Handler

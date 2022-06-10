@@ -155,14 +155,16 @@ extension AmityMyCommunityPreviewViewController: AmityMyCommunityPreviewScreenVi
         
         // When view is invisible but data source request updates, mark it as a dirty data source.
         // Then after view already appear, reload table view for refreshing data.
-        guard isVisible else {
-            isDataSourceDirty = true
-            return
-        }
+//        guard isVisible else {
+//            isDataSourceDirty = true
+//            return
+//        }
         
         delegate?.viewController(self, shouldShowMyCommunityPreview: shouldShowMyCommunityPreview)
         if shouldShowMyCommunityPreview {
             collectionView?.reloadData()
+        } else {
+            retrieveCommunityList()
         }
     }
     

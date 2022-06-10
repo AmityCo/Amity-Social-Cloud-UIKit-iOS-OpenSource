@@ -26,9 +26,9 @@ final class AmityCommunityListRepositoryManager: AmityCommunityListRepositoryMan
     
     func search(withText text: String?, filter: AmityCommunityQueryFilter, _ completion: (([AmityCommunityModel]) -> Void)?) {
         collection = repository.getCommunities(displayName: text, filter: filter, sortBy: .displayName, categoryId: nil, includeDeleted: false)
-        token?.invalidate()
+//        token?.invalidate()
         token = collection?.observe { (collection, change, error) in
-            if collection.dataStatus == .fresh {
+//            if collection.dataStatus == .fresh {
                 var communityList: [AmityCommunityModel] = []
                 for index in 0..<collection.count() {
                     guard let object = collection.object(at: index) else { continue }
@@ -36,7 +36,7 @@ final class AmityCommunityListRepositoryManager: AmityCommunityListRepositoryMan
                     communityList.append(model)
                 }
                 completion?(communityList)
-            }
+//            }
         }
     }
     
