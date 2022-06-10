@@ -182,11 +182,11 @@ final class AmityUIKitManagerInternal: NSObject {
     enum Env {
         case production
         case staging
-        case id
-        case km
-        case fil
-        case vi
-        case my
+        case indonesia
+        case cambodia
+        case philippin
+        case vietnam
+        case myanmar
     }
     
     public static let shared = AmityUIKitManagerInternal()
@@ -225,16 +225,21 @@ final class AmityUIKitManagerInternal: NSObject {
         }
         return client
     }
-    
+        
     var envByApiKey:Env {
         switch apiKey {
         case "b0eceb5e68ddf36545308f4e000b12dcd90985e2bf3d6a2e": return .staging
         case "b3bde15c3989f86045658e4a530a1688d1088be0be3d6f25": return .production
-        case "b0ece908338da6314c61df1a5701408e865d8be7bf366f79": return .id
-        case "b0ecbd0e3a8df46c48308b48515e128bd65a8ee3e8333b2b": return .km
-        case "b0ece9086bdbf5654c61df1a5701148ad7088be7bf366d7f": return .fil
-        case "b0ece9086bdbf9604c61df1a5701458ad40e8be7bf366b25": return .vi
-        case "b0edb9523cd3f26644368b1c51011f8ad0008be1b3336e7a": return .my
+        case "b0ece908338da6314c61df1a5701408e865d8be7bf366f79": return .indonesia
+        case "b0ece9086bdbf1334c61df1a570114d9860b8be7bf366e78": return .indonesia
+        case "b0ecbd0e3a8df46c48308b48515e128bd65a8ee3e8333b2b": return .cambodia
+        case "b0ecbd0e3a8df36c4c66dc4852091481820d84b7e9643b78": return .cambodia
+        case "b0ece9086bdbf5654c61df1a5701148ad7088be7bf366d7f": return .philippin
+        case "b0ece9086bdbf7644c61df1a57011fdad50d8be7bf366c24": return .philippin
+        case "b0ece9086bdbf9604c61df1a5701458ad40e8be7bf366b25": return .vietnam
+        case "b0ece9086bdba2604c61df1a570114dcd15f8be7bf366a2a": return .vietnam
+        case "b0edb9523cd3f26644368b1c51011f8ad0008be1b3336e7a": return .myanmar
+        case "b0edb9523cdcf7344c328d1a570912dcd10d8fe5bb3d6b2a": return .myanmar
         default: return .staging
         }
     }

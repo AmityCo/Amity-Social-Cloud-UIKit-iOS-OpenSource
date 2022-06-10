@@ -49,7 +49,7 @@ final class AmityFeedRepositoryManager: AmityFeedRepositoryManagerProtocol {
         case .globalFeed:
             collection = repository.getGlobalFeed()
         case .customPostRankingGlobalFeed:
-            collection = repository.getCustomPostRankingGlobalfeed()
+            collection = repository.getGlobalFeed()
         case .myFeed:
             collection = repository.getMyFeedSorted(by: .lastCreated, includeDeleted: false)
         case .userFeed(let userId):

@@ -86,6 +86,12 @@ final public class AmityMyCommunityPreviewViewController: UIViewController {
         actionButton.tintColor = AmityColorSet.base
         separatorView.backgroundColor = AmityColorSet.secondary.blend(.shade4)
         
+        if screenViewModel.dataSource.numberOfCommunity() == 0 {
+            actionButton.isHidden = true
+        } else {
+            actionButton.isHidden = false
+        }
+        
         let layout = (collectionView.collectionViewLayout as? UICollectionViewFlowLayout)
         layout?.scrollDirection = .horizontal
         layout?.itemSize = CGSize(width: 68, height: 64)

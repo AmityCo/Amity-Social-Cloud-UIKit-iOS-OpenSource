@@ -9,6 +9,7 @@
 		<string>NotoSans-Regular.ttf</string>
 		<string>NotoSans-SemiBold.ttf</string>
 		<string>NotoSans-Bold.ttf</string>
+		<string>NotoSansThai-Bold.ttf</string>
 	</array>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
