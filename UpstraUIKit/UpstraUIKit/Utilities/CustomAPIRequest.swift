@@ -26,9 +26,9 @@ final class customAPIRequest {
             case .philippin:
                 return "ph"
             case .vietnam:
-                return "vi"
+                return "vn"
             case .myanmar:
-                return "my"
+                return "mm"
             default:
                 return "th"
             }
@@ -132,7 +132,7 @@ final class customAPIRequest {
             case .myanmar:
                 return "mm"
             default:
-                return "th"
+                return ""
             }
         }
         
