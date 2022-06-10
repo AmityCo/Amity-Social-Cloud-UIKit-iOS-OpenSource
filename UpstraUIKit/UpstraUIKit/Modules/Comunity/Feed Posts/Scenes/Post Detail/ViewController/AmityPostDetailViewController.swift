@@ -396,7 +396,6 @@ extension AmityPostDetailViewController: AmityPostDetailScreenViewModelDelegate 
     }
     
     func screenViewModelDidShowAlertDialog() {
-        self.navigationController?.popViewController(animated: true)
         let firstAction = AmityDefaultModalModel.Action(title: AmityLocalizedStringSet.General.ok,
                                                         textColor: UIColor.white,
                                                         backgroundColor: UIColor.black)
@@ -409,6 +408,7 @@ extension AmityPostDetailViewController: AmityPostDetailScreenViewModelDelegate 
         let communityPostModalView = AmityDefaultModalView.make(content: communityPostModel)
         communityPostModalView.firstActionHandler = {
             AmityHUD.hide { [weak self] in
+                self?.navigationController?.popViewController(animated: true)
             }
         }
     
