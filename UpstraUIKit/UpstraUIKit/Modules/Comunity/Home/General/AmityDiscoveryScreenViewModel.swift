@@ -85,7 +85,6 @@ class AmityDiscoveryScreenViewModel {
     }
     
     func getDiscoveryItem(){
-        AmityHUD.show(.loading)
         customAPIRequest.getDiscoveryData(page_number: paginateNumber) { discoveryArray in
             let shuffleDiscoveryArray = discoveryArray.shuffled()
             self.discoveryItems.append(contentsOf: shuffleDiscoveryArray)
@@ -117,7 +116,6 @@ extension AmityDiscoveryScreenViewModel: AmityDiscoveryScreenViewModelAction {
     }
     
     func loadMore() {
-        AmityHUD.show(.loading)
         paginateNumber += 1
         customAPIRequest.getDiscoveryData(page_number: paginateNumber) { discoveryArray in
             let shuffleDiscoveryArray = discoveryArray.shuffled()

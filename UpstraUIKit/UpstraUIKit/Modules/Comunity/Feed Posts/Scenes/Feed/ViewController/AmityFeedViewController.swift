@@ -36,10 +36,8 @@ public final class AmityFeedViewController: AmityViewController, AmityRefreshabl
     
     public var headerView: FeedHeaderPresentable? {
         didSet {
-            debouncer.run { [weak self] in
-                DispatchQueue.main.async { [weak self] in
-                    self?.tableView.reloadData()
-                }
+            DispatchQueue.main.async { [weak self] in
+                self?.tableView.reloadData()
             }
         }
     }
@@ -360,9 +358,7 @@ extension AmityFeedViewController: AmityFeedScreenViewModelDelegate {
             isDataSourceDirty = true
             return
         }
-        debouncer.run { [weak self] in
-            self?.tableView.reloadData()
-        }
+        tableView.reloadData()
         dataDidUpdateHandler?(screenViewModel.dataSource.numberOfPostComponents())
         refreshControl.endRefreshing()
     }
@@ -391,9 +387,7 @@ extension AmityFeedViewController: AmityFeedScreenViewModelDelegate {
         case .unknown:
             AmityHUD.show(.error(message: AmityLocalizedStringSet.HUD.somethingWentWrong.localizedString))
         case .noUserAccessPermission:
-            debouncer.run { [weak self] in
-                self?.tableView.reloadData()
-            }
+            tableView.reloadData()
         default:
             break
         }
@@ -430,9 +424,7 @@ extension AmityFeedViewController: AmityFeedScreenViewModelDelegate {
     }
     
     func screenViewModelDidGetUserSettings(_ viewModel: AmityFeedScreenViewModelType) {
-        debouncer.run { [weak self] in
-            self?.tableView.reloadData()
-        }
+        tableView.reloadData()
     }
     
     func screenViewModelLoadingStatusDidChange(_ viewModel: AmityFeedScreenViewModelType, isLoading: Bool) {

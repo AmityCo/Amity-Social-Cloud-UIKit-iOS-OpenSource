@@ -67,7 +67,6 @@ final class customAPIRequest {
             }
 
             guard let jsonDecode = try? JSONDecoder().decode(String.self, from: data) else { return }
-            print("Post Success")
             completion("Success")
         }
         

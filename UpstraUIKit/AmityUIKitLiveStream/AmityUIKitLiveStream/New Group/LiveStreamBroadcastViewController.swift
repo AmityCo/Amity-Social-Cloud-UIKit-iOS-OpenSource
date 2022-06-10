@@ -26,6 +26,7 @@ final public class LiveStreamBroadcastViewController: UIViewController {
     let fileRepository: AmityFileRepository
     let streamRepository: AmityStreamRepository
     let postRepository: AmityPostRepository
+    let reactionReposity: AmityReactionRepository
     var broadcaster: AmityStreamBroadcaster?
     
     // MARK: - Internal Const Properties
@@ -98,7 +99,8 @@ final public class LiveStreamBroadcastViewController: UIViewController {
     @IBOutlet weak var finishButton: UIButton!
     @IBOutlet weak var streamingViewerContainer: UIView!
     @IBOutlet weak var streamingViewerCountLabel: UILabel!
-    
+    @IBOutlet weak var likeCountLabel: UILabel!
+
     // MARK: - UI Container End Components
     @IBOutlet weak var uiContainerEnd: UIView!
     @IBOutlet weak var streamEndActivityIndicator: UIActivityIndicatorView!
@@ -134,6 +136,7 @@ final public class LiveStreamBroadcastViewController: UIViewController {
         fileRepository = AmityFileRepository(client: client)
         streamRepository = AmityStreamRepository(client: client)
         postRepository = AmityPostRepository(client: client)
+        reactionReposity = AmityReactionRepository(client: client)
         broadcaster = AmityStreamBroadcaster(client: client)
         mentionManager = AmityMentionManager(withType: .post(communityId: targetId))
         
@@ -207,10 +210,20 @@ final public class LiveStreamBroadcastViewController: UIViewController {
     
     // MARK: - Internal Functions
     
+    /// Call function get reaction count
+    func getLikeCount() {
+        guard let postId = createdPost?.postId else { return }
+        liveObjectQueryToken = postRepository.getPostForPostId(postId).observe { liveObject, error in
+            guard let post = liveObject.object else { return }
+            self.likeCountLabel.text = String(post.reactionsCount)
+        }
+    }
+    
     /// Call function Timer With Interval
     func getLiveStreamViwerCount() {
         
         timer = Timer.scheduledTimer(withTimeInterval: 5, repeats: true, block: {_ in
+            self.getLikeCount()
             customAPIRequest.getLiveStreamViewerData(page_number: 1, liveStreamId: self.streamId ?? "", type: "watching") { value in
                 print("call fuction")
                 DispatchQueue.main.async {

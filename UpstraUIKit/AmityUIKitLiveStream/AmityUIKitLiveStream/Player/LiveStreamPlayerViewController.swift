@@ -13,15 +13,18 @@ import AmityVideoPlayerKit
 public class LiveStreamPlayerViewController: UIViewController {
     
     private let streamIdToWatch: String
-    private let streamRepository: AmityStreamRepository
+    private var streamRepository: AmityStreamRepository
     
     private let postId: String
     
     private var stream: AmityStream?
     private var getStreamToken: AmityNotificationToken?
     
-    private var amityPost: AmityPost?
+    private var postRepository: AmityPostRepository?
+    private var reactionRepository: AmityReactionRepository?
     
+    private var amityPost: AmityPost?
+        
     @IBOutlet private weak var renderView: UIView!
     
     @IBOutlet weak var statusContainer: UIView!
@@ -29,6 +32,10 @@ public class LiveStreamPlayerViewController: UIViewController {
     
     @IBOutlet weak var streamingViewerContainer: UIView!
     @IBOutlet weak var streamingViewerCountLabel: UILabel!
+    
+    @IBOutlet weak var dislikeButton: UIButton!
+    @IBOutlet weak var likeButton: UIButton!
+    @IBOutlet weak var likeCountLabel: UILabel!
     
     /// The view above renderView to intercept tap gestuere for show/hide control container.
     @IBOutlet private weak var renderGestureView: UIView!
@@ -45,7 +52,7 @@ public class LiveStreamPlayerViewController: UIViewController {
     @IBOutlet private weak var streamEndContainer: UIView!
     @IBOutlet private weak var streamEndTitleLabel: UILabel!
     @IBOutlet private weak var streamEndDescriptionLabel: UILabel!
-    
+        
     /// This sample app uses AmityVideoPlayer to play live videos.
     /// The player consumes the stream instance, and works automatically.
     /// At the this moment, the player only provide basic functionality, play and stop.
@@ -56,6 +63,7 @@ public class LiveStreamPlayerViewController: UIViewController {
     private var player: AmityVideoPlayer
     
     var timer = Timer()
+    var isLike = false
     
     /// Indicate that the user request to play the stream
     private var isStarting = true {
@@ -78,6 +86,8 @@ public class LiveStreamPlayerViewController: UIViewController {
     
     public init(streamIdToWatch: String, postId: String, post: AmityPost) {
         
+        self.postRepository = AmityPostRepository(client: AmityUIKitManager.client)
+        self.reactionRepository = AmityReactionRepository(client: AmityUIKitManager.client)
         self.streamRepository = AmityStreamRepository(client: AmityUIKitManager.client)
         self.streamIdToWatch = streamIdToWatch
         self.player = AmityVideoPlayer(client: AmityUIKitManager.client)
@@ -158,13 +168,38 @@ public class LiveStreamPlayerViewController: UIViewController {
         
     }
     
+    /// Call function get reaction count
+    func getReactionData() {
+        getStreamToken = postRepository?.getPostForPostId(self.postId).observe { liveObject, error in
+            self.getStreamToken?.invalidate()
+            guard let post = liveObject.object else { return }
+            var allReactions: [String] = []
+            var myReactions: [AmityReactionType]
+            allReactions = post.myReactions
+            myReactions = allReactions.compactMap(AmityReactionType.init)
+            
+            self.isLike = myReactions.contains(.like)
+            
+            DispatchQueue.main.async {
+                if self.isLike {
+                    self.likeButton.isHidden = true
+                    self.dislikeButton.isHidden = false
+                } else {
+                    self.likeButton.isHidden = false
+                    self.dislikeButton.isHidden = true
+                }
+                self.likeCountLabel.text = String(post.reactionsCount)
+            }
+        }
+    }
+    
     func getLiveStreamViwerCount() {
         
         customAPIRequest.saveLiveStreamViewerData(postId: self.postId, liveStreamId: self.streamIdToWatch, userId: AmityUIKitManager.currentUserId, action: "join") { value in
         }
         
         self.timer = Timer.scheduledTimer(withTimeInterval: 5, repeats: true, block: {_ in
-            print("call fuction")
+            self.getReactionData()
             customAPIRequest.getLiveStreamViewerData(page_number: 1, liveStreamId: self.streamIdToWatch, type: "watching") { value in
                 DispatchQueue.main.async {
                     self.streamingViewerCountLabel.text = String(value.count.formatUsingAbbrevation())
@@ -252,7 +287,6 @@ public class LiveStreamPlayerViewController: UIViewController {
         default:
             assertionFailure("Unexpected state")
         }
-        
         
     }
     
@@ -385,6 +419,24 @@ public class LiveStreamPlayerViewController: UIViewController {
     @IBAction func shareButtonDidTouch() {
         guard  let post = amityPost else { return }
         AmityEventHandler.shared.shareLiveStreamDidTap(from: self, amityPost: post)
+    }
+    
+    @IBAction private func likeButtonDidTouch() {
+        reactionRepository?.addReaction("like", referenceId: self.postId, referenceType: .post) { success, error in
+            if success {
+                print("Like")
+                self.getReactionData()
+            }
+        }
+    }
+    
+    @IBAction private func dislikeButtonDidTouch() {
+        reactionRepository?.removeReaction("like", referenceId: self.postId, referenceType: .post) { success, error in
+            if success {
+                print("Unlike")
+                self.getReactionData()
+            }
+        }
     }
     
 }
