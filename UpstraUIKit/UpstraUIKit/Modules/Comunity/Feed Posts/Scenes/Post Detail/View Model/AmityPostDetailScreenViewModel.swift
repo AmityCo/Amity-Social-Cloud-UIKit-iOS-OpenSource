@@ -197,8 +197,12 @@ extension AmityPostDetailScreenViewModel {
             switch result {
             case .success(let post):
                 self?.post = post
-                self?.debouncer.run {
-                    self?.prepareData()
+                if post.post.isDeleted {
+                    self?.showAlertDialog()
+                } else {
+                    self?.debouncer.run {
+                        self?.prepareData()
+                    }
                 }
             case .failure:
                 self?.showAlertDialog()
