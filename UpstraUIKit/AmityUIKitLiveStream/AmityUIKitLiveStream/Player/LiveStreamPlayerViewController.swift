@@ -177,7 +177,7 @@ public class LiveStreamPlayerViewController: UIViewController {
             var myReactions: [AmityReactionType]
             allReactions = post.myReactions
             myReactions = allReactions.compactMap(AmityReactionType.init)
-            
+                        
             self.isLike = myReactions.contains(.like)
             
             DispatchQueue.main.async {
@@ -418,7 +418,7 @@ public class LiveStreamPlayerViewController: UIViewController {
     
     @IBAction func shareButtonDidTouch() {
         guard  let post = amityPost else { return }
-        AmityEventHandler.shared.shareLiveStreamDidTap(from: self, amityPost: post)
+        AmityEventHandler.shared.shareCommunityPostDidTap(from: self, title: nil, postId: self.postId, communityId: post.targetCommunity?.communityId ?? "")
     }
     
     @IBAction private func likeButtonDidTouch() {
