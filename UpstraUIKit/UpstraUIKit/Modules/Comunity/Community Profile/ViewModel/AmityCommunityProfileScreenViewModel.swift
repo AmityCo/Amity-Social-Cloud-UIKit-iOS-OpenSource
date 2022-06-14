@@ -104,7 +104,7 @@ extension AmityCommunityProfileScreenViewModel {
                 self?.community = community
                 self?.prepareDataToShowCommunityProfile(community: community)
             case .failure:
-                break
+                self?.delegate?.screenViewModelDidShowAlertDialog()
             }
         }
     }
