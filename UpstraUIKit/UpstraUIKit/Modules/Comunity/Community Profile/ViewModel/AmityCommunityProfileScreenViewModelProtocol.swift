@@ -21,6 +21,7 @@ protocol AmityCommunityProfileScreenViewModelDelegate: AnyObject {
     func screenViewModelDidGetCommunity(with community: AmityCommunityModel)
     func screenViewModelFailure()
     func screenViewModelRoute(_ viewModel: AmityCommunityProfileScreenViewModel, route: AmityCommunityProfileRoute)
+    func screenViewModelDidShowAlertDialog()
 }
 
 protocol AmityCommunityProfileScreenViewModelDataSource {
