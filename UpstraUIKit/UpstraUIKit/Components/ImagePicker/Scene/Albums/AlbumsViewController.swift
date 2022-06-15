@@ -54,7 +54,7 @@ class AlbumsViewController: UIViewController {
         tableView.sectionFooterHeight = .leastNormalMagnitude
         tableView.showsVerticalScrollIndicator = false
         tableView.showsHorizontalScrollIndicator = false
-        tableView.register(AlbumCell.self, forCellReuseIdentifier: AlbumCell.identifier)
+        tableView.register(AlbumCell.self, forCellReuseIdentifier: AlbumCell.amityIdentifier)
         tableView.dataSource = dataSource
         tableView.delegate = self
         tableView.backgroundColor = .clear

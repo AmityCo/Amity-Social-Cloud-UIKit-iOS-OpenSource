@@ -66,12 +66,12 @@ extension UITableView {
     // MARK: - Dequeue
     
     func dequeueReusableCell<T: UITableViewCell>(for indexPath: IndexPath) -> T {
-        return dequeueReusableCell(withIdentifier: T.identifier, for: indexPath) as! T
+        return dequeueReusableCell(withIdentifier: T.amityIdentifier, for: indexPath) as! T
     }
     
     /// help to map cell for register with Nib&Identifier
     func register<T: UITableViewCell&Nibbable>(cell: T.Type) {
-        register(cell.nib, forCellReuseIdentifier: cell.identifier)
+        register(cell.nib, forCellReuseIdentifier: cell.amityIdentifier)
     }
     
     func showLoadingIndicator() {

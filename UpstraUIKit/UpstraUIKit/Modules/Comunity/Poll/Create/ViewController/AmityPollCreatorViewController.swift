@@ -230,7 +230,7 @@ extension AmityPollCreatorViewController: UITableViewDataSource {
     
     public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         if tableView == mentionTableView {
-            guard let cell = tableView.dequeueReusableCell(withIdentifier: AmityMentionTableViewCell.identifier) as? AmityMentionTableViewCell, let model = mentionManager?.item(at: indexPath) else { return UITableViewCell() }
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: AmityMentionTableViewCell.amityIdentifier) as? AmityMentionTableViewCell, let model = mentionManager?.item(at: indexPath) else { return UITableViewCell() }
             cell.display(with: model)
             return cell
         }

@@ -78,7 +78,7 @@ private extension AmityKeyboardComposeBarViewController {
             layout.sectionInset = UIEdgeInsets(top: margin, left: spacing, bottom: margin, right: spacing)
         }
         collectionView.showsHorizontalScrollIndicator = false
-        collectionView.register(AmityKeyboardComposeBarCollectionViewCell.nib, forCellWithReuseIdentifier: AmityKeyboardComposeBarCollectionViewCell.identifier)
+        collectionView.register(AmityKeyboardComposeBarCollectionViewCell.nib, forCellWithReuseIdentifier: AmityKeyboardComposeBarCollectionViewCell.amityIdentifier)
         collectionView.delegate = self
         collectionView.dataSource = self
     }
@@ -109,7 +109,7 @@ extension AmityKeyboardComposeBarViewController: UICollectionViewDataSource {
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: AmityKeyboardComposeBarCollectionViewCell.identifier, for: indexPath)
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: AmityKeyboardComposeBarCollectionViewCell.amityIdentifier, for: indexPath)
         return cell
     }
 }

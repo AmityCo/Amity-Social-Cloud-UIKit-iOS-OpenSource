@@ -59,7 +59,7 @@ class AmityFileTableView: UITableView {
     
     private func commonInit() {
         contentInset = UIEdgeInsets(top: 12, left: 0, bottom: 0, right: 0)
-        register(AmityFileTableViewCell.nib, forCellReuseIdentifier: AmityFileTableViewCell.identifier)
+        register(AmityFileTableViewCell.nib, forCellReuseIdentifier: AmityFileTableViewCell.amityIdentifier)
         isScrollEnabled = false
         separatorStyle = .none
         dataSource = self
@@ -127,7 +127,7 @@ extension AmityFileTableView: UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: AmityFileTableViewCell.identifier, for: indexPath) as! AmityFileTableViewCell
+        let cell = tableView.dequeueReusableCell(withIdentifier: AmityFileTableViewCell.amityIdentifier, for: indexPath) as! AmityFileTableViewCell
         let item = files[indexPath.row]
         cell.delegate = self
         cell.configure(with: item, isEditingMode: isEditingMode)

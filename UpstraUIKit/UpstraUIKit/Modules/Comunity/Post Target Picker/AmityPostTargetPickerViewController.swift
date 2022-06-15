@@ -55,7 +55,7 @@ final public class AmityPostTargetPickerViewController: AmityViewController {
     }
     
     private func setupTableView() {
-        tableView.register(AmityCommunityTableViewCell.nib, forCellReuseIdentifier: AmityCommunityTableViewCell.identifier)
+        tableView.register(AmityCommunityTableViewCell.nib, forCellReuseIdentifier: AmityCommunityTableViewCell.amityIdentifier)
         tableView.dataSource = self
         tableView.delegate = self
         tableView.separatorStyle = .none

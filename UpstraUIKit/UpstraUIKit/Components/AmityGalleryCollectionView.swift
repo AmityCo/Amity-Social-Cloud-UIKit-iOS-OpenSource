@@ -47,7 +47,7 @@ class AmityGalleryCollectionView: UICollectionView {
         setupLayout()
         contentInset = UIEdgeInsets(top: Constant.paddingSpacing, left: Constant.paddingSpacing, bottom: Constant.paddingSpacing, right: Constant.paddingSpacing)
         isScrollEnabled = false
-        register(UINib(nibName: AmityGalleryCollectionViewCell.identifier, bundle: AmityUIKitManager.bundle), forCellWithReuseIdentifier: AmityGalleryCollectionViewCell.identifier)
+        register(UINib(nibName: AmityGalleryCollectionViewCell.amityIdentifier, bundle: AmityUIKitManager.bundle), forCellWithReuseIdentifier: AmityGalleryCollectionViewCell.amityIdentifier)
         dataSource = self
         delegate = self
     }
@@ -147,7 +147,7 @@ extension AmityGalleryCollectionView: UICollectionViewDataSource {
     }
     
     public func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        return collectionView.dequeueReusableCell(withReuseIdentifier: AmityGalleryCollectionViewCell.identifier, for: indexPath)
+        return collectionView.dequeueReusableCell(withReuseIdentifier: AmityGalleryCollectionViewCell.amityIdentifier, for: indexPath)
     }
     
 }

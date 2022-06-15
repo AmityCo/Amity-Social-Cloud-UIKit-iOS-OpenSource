@@ -67,7 +67,7 @@ final class AmityFollowersListViewController: AmityViewController, IndicatorInfo
     }
     
     private func setupTableView() {
-        tableView.register(AmityFollowerTableViewCell.nib, forCellReuseIdentifier: AmityFollowerTableViewCell.identifier)
+        tableView.register(AmityFollowerTableViewCell.nib, forCellReuseIdentifier: AmityFollowerTableViewCell.amityIdentifier)
         tableView.separatorColor = .clear
         tableView.keyboardDismissMode = .onDrag
         tableView.backgroundColor = AmityColorSet.backgroundColor
@@ -153,7 +153,7 @@ extension AmityFollowersListViewController: UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        return tableView.dequeueReusableCell(withIdentifier: AmityFollowerTableViewCell.identifier, for: indexPath)
+        return tableView.dequeueReusableCell(withIdentifier: AmityFollowerTableViewCell.amityIdentifier, for: indexPath)
     }
     
 }

@@ -48,7 +48,7 @@ final class AlbumsTableViewDataSource : NSObject, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: AlbumCell.identifier, for: indexPath) as! AlbumCell
+        let cell = tableView.dequeueReusableCell(withIdentifier: AlbumCell.amityIdentifier, for: indexPath) as! AlbumCell
         
         // Fetch album
         let album = albums[indexPath.row]
@@ -72,7 +72,7 @@ final class AlbumsTableViewDataSource : NSObject, UITableViewDataSource {
     }
 
     func registerCells(in tableView: UITableView) {
-        tableView.register(AlbumCell.self, forCellReuseIdentifier: AlbumCell.identifier)
+        tableView.register(AlbumCell.self, forCellReuseIdentifier: AlbumCell.amityIdentifier)
     }
 
     private func titleForAlbum(_ album: PHAssetCollection) -> NSAttributedString {

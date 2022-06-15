@@ -73,7 +73,7 @@ private extension AmityCommunityMemberViewController {
     }
     
     func setupTableView() {
-        tableView.register(AmityCommunityMemberSettingsTableViewCell.nib, forCellReuseIdentifier: AmityCommunityMemberSettingsTableViewCell.identifier)
+        tableView.register(AmityCommunityMemberSettingsTableViewCell.nib, forCellReuseIdentifier: AmityCommunityMemberSettingsTableViewCell.amityIdentifier)
         tableView.separatorColor = .clear
         tableView.backgroundColor = AmityColorSet.backgroundColor
         tableView.tableFooterView = UIView()
@@ -102,7 +102,7 @@ extension AmityCommunityMemberViewController: UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: AmityCommunityMemberSettingsTableViewCell.identifier, for: indexPath)
+        let cell = tableView.dequeueReusableCell(withIdentifier: AmityCommunityMemberSettingsTableViewCell.amityIdentifier, for: indexPath)
         configure(for: cell, at: indexPath)
         return cell
     }

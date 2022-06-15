@@ -42,8 +42,8 @@ public class AmityCategoryCommunityListViewController: AmityViewController {
     
     private func setupTableView() {
         tableView.separatorStyle = .none
-        tableView.register(AmityMyCommunityTableViewCell.nib, forCellReuseIdentifier: AmityMyCommunityTableViewCell.identifier)
-        tableView.register(AmityEmptyStateHeaderFooterView.self, forHeaderFooterViewReuseIdentifier: AmityEmptyStateHeaderFooterView.identifier)
+        tableView.register(AmityMyCommunityTableViewCell.nib, forCellReuseIdentifier: AmityMyCommunityTableViewCell.amityIdentifier)
+        tableView.register(AmityEmptyStateHeaderFooterView.self, forHeaderFooterViewReuseIdentifier: AmityEmptyStateHeaderFooterView.amityIdentifier)
         tableView.dataSource = self
         tableView.delegate = self
     }
@@ -85,7 +85,7 @@ extension AmityCategoryCommunityListViewController: UITableViewDelegate {
     }
     
     public func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
-        guard let bottomView = tableView.dequeueReusableHeaderFooterView(withIdentifier: AmityEmptyStateHeaderFooterView.identifier) as? AmityEmptyStateHeaderFooterView else {
+        guard let bottomView = tableView.dequeueReusableHeaderFooterView(withIdentifier: AmityEmptyStateHeaderFooterView.amityIdentifier) as? AmityEmptyStateHeaderFooterView else {
             return nil
         }
         let emptyView = AmityCategoryCommunityListViewEmptyView()

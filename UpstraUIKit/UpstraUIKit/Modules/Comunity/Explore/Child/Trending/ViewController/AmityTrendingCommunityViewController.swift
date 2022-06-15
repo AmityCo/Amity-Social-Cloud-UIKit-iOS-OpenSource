@@ -65,7 +65,7 @@ private extension AmityTrendingCommunityViewController {
     }
     
     func setupTableView() {
-        tableView.register(AmityTrendingCommunityTableViewCell.nib, forCellReuseIdentifier: AmityTrendingCommunityTableViewCell.identifier)
+        tableView.register(AmityTrendingCommunityTableViewCell.nib, forCellReuseIdentifier: AmityTrendingCommunityTableViewCell.amityIdentifier)
         tableView.delegate = self
         tableView.dataSource = self
         tableView.tableFooterView = UIView()

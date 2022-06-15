@@ -246,7 +246,7 @@ extension AmityPostDetailViewController: AmityPostTableViewDelegate {
     
     func tableView(_ tableView: AmityPostTableView, didSelectRowAt indexPath: IndexPath) {
         // load more reply did tap
-        if tableView.cellForRow(at: indexPath)?.reuseIdentifier == AmityViewMoreReplyTableViewCell.identifier {
+        if tableView.cellForRow(at: indexPath)?.reuseIdentifier == AmityViewMoreReplyTableViewCell.amityIdentifier {
             screenViewModel.action.getReplyComments(at: indexPath.section)
         }
     }
@@ -694,7 +694,7 @@ extension AmityPostDetailViewController: UITableViewDataSource {
     
     public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: AmityMentionTableViewCell.identifier) as? AmityMentionTableViewCell, let model = mentionManager?.item(at: indexPath) else { return UITableViewCell() }
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: AmityMentionTableViewCell.amityIdentifier) as? AmityMentionTableViewCell, let model = mentionManager?.item(at: indexPath) else { return UITableViewCell() }
         cell.display(with: model)
         return cell
     }

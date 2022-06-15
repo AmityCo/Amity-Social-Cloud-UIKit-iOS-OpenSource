@@ -368,7 +368,7 @@ final public class LiveStreamBroadcastViewController: UIViewController {
         mentionTableView.isHidden = true
         mentionTableView.delegate = self
         mentionTableView.dataSource = self
-        mentionTableView.register(AmityMentionTableViewCell.nib, forCellReuseIdentifier: AmityMentionTableViewCell.identifier)
+        mentionTableView.register(AmityMentionTableViewCell.nib, forCellReuseIdentifier: AmityMentionTableViewCell.amityIdentifier)
     }
     
     private func showAlertForMaximumCharacters() {
@@ -492,7 +492,7 @@ extension LiveStreamBroadcastViewController: UITableViewDataSource {
     }
     
     public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: AmityMentionTableViewCell.identifier) as? AmityMentionTableViewCell else { return UITableViewCell() }
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: AmityMentionTableViewCell.amityIdentifier) as? AmityMentionTableViewCell else { return UITableViewCell() }
         if let model = mentionManager.item(at: indexPath) {
             cell.display(with: model)
         }

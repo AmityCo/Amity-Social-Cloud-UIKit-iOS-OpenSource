@@ -12,11 +12,11 @@ extension UICollectionView {
     
     /// help to map cell for register with Nib&Identifier
     func register<T: UICollectionViewCell&Nibbable>(_ cellClass: T.Type) {
-        register(cellClass.nib, forCellWithReuseIdentifier: cellClass.identifier)
+        register(cellClass.nib, forCellWithReuseIdentifier: cellClass.amityIdentifier)
     }
     
     func dequeueReusableCell<T: UICollectionViewCell>(for indexPath: IndexPath) -> T {
-        return dequeueReusableCell(withReuseIdentifier: T.identifier, for: indexPath) as! T
+        return dequeueReusableCell(withReuseIdentifier: T.amityIdentifier, for: indexPath) as! T
     }
     
 }

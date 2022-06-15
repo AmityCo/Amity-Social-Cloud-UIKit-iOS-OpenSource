@@ -26,7 +26,7 @@ public final class AmityMentionTableView: UITableView {
     }
     
     private func setup() {
-        register(AmityMentionTableViewCell.nib, forCellReuseIdentifier: AmityMentionTableViewCell.identifier)
+        register(AmityMentionTableViewCell.nib, forCellReuseIdentifier: AmityMentionTableViewCell.amityIdentifier)
         backgroundColor = AmityColorSet.backgroundColor
         tableFooterView = UIView()
         separatorColor = .clear

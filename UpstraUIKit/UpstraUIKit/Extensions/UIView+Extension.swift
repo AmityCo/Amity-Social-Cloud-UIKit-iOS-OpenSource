@@ -10,7 +10,7 @@ import UIKit
 
 extension UIView {
     
-    public static var identifier: String {
+    public static var amityIdentifier: String {
         return String(describing: self)
     }
     

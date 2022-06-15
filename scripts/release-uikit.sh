@@ -45,7 +45,7 @@ xcodebuild clean archive \
     -workspace UpstraUIKit.xcworkspace \
     -scheme AmityUIKit \
     -configuration Release \
-    -arch x86_64 \
+    -arch arm64 \
     -sdk "iphonesimulator" \
     -archivePath "${BUILD_FOLDER}/uikit/ios_sim.xcarchive" \
     SKIP_INSTALL=NO

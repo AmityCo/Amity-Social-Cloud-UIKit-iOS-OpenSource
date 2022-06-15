@@ -49,7 +49,7 @@ final class AmityMemberSearchViewController: AmityViewController, IndicatorInfoP
     }
     
     private func setupTableView() {
-        tableView.register(AmitySearchMemberTableViewCell.nib, forCellReuseIdentifier: AmitySearchMemberTableViewCell.identifier)
+        tableView.register(AmitySearchMemberTableViewCell.nib, forCellReuseIdentifier: AmitySearchMemberTableViewCell.amityIdentifier)
         tableView.separatorColor = .clear
         tableView.backgroundColor = AmityColorSet.backgroundColor
         tableView.tableFooterView = UIView()
@@ -83,7 +83,7 @@ extension AmityMemberSearchViewController: UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: AmitySearchMemberTableViewCell.identifier, for: indexPath)
+        let cell = tableView.dequeueReusableCell(withIdentifier: AmitySearchMemberTableViewCell.amityIdentifier, for: indexPath)
         configure(for: cell, at: indexPath)
         return cell
     }

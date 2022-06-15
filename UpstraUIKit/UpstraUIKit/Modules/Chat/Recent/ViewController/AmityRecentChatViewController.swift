@@ -75,7 +75,7 @@ private extension AmityRecentChatViewController {
     
     func setupTableView() {
         view.backgroundColor = AmityColorSet.backgroundColor
-        tableView.register(AmityRecentChatTableViewCell.nib, forCellReuseIdentifier: AmityRecentChatTableViewCell.identifier)
+        tableView.register(AmityRecentChatTableViewCell.nib, forCellReuseIdentifier: AmityRecentChatTableViewCell.amityIdentifier)
         tableView.backgroundColor = AmityColorSet.backgroundColor
         tableView.separatorInset.left = 64
         tableView.showsVerticalScrollIndicator = false
@@ -115,7 +115,7 @@ extension AmityRecentChatViewController: UITableViewDataSource {
     }
     
     public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: AmityRecentChatTableViewCell.identifier, for: indexPath)
+        let cell = tableView.dequeueReusableCell(withIdentifier: AmityRecentChatTableViewCell.amityIdentifier, for: indexPath)
             configure(for: cell, at: indexPath)
         return cell
     }

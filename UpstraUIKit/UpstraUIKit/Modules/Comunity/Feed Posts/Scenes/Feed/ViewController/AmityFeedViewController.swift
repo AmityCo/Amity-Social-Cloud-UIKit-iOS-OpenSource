@@ -142,8 +142,8 @@ public final class AmityFeedViewController: AmityViewController, AmityRefreshabl
         tableView.showsVerticalScrollIndicator = false
         tableView.registerCustomCell()
         tableView.registerPostCell()
-        tableView.register(AmityFeedHeaderTableViewCell.self, forCellReuseIdentifier: AmityFeedHeaderTableViewCell.identifier)
-        tableView.register(AmityEmptyStateHeaderFooterView.self, forHeaderFooterViewReuseIdentifier: AmityEmptyStateHeaderFooterView.identifier)
+        tableView.register(AmityFeedHeaderTableViewCell.self, forCellReuseIdentifier: AmityFeedHeaderTableViewCell.amityIdentifier)
+        tableView.register(AmityEmptyStateHeaderFooterView.self, forHeaderFooterViewReuseIdentifier: AmityEmptyStateHeaderFooterView.amityIdentifier)
         tableView.postDataSource = self
         tableView.postDelegate = self
     }
@@ -232,7 +232,7 @@ extension AmityFeedViewController: AmityPostTableViewDelegate {
     }
 
     func tableView(_ tableView: AmityPostTableView, viewForFooterInSection section: Int) -> UIView?  {
-        guard let bottomView = tableView.dequeueReusableHeaderFooterView(withIdentifier: AmityEmptyStateHeaderFooterView.identifier) as? AmityEmptyStateHeaderFooterView else {
+        guard let bottomView = tableView.dequeueReusableHeaderFooterView(withIdentifier: AmityEmptyStateHeaderFooterView.amityIdentifier) as? AmityEmptyStateHeaderFooterView else {
             return nil
         }
         

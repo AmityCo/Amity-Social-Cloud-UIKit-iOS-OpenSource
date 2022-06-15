@@ -292,7 +292,7 @@ public class AmityCommunityProfileEditorViewController: AmityViewController {
             communityAddMemberTitleLabel.textColor = AmityColorSet.base
             communityAddMemberTitleLabel.markAsMandatoryField()
             communityAddMemberView.isHidden = true
-            communityAddMemberCollectionView.register(UINib(nibName: AmityMemberCollectionViewCell.identifier, bundle: AmityUIKitManager.bundle), forCellWithReuseIdentifier: AmityMemberCollectionViewCell.identifier)
+            communityAddMemberCollectionView.register(UINib(nibName: AmityMemberCollectionViewCell.amityIdentifier, bundle: AmityUIKitManager.bundle), forCellWithReuseIdentifier: AmityMemberCollectionViewCell.amityIdentifier)
             
             
             addMemberLineView.backgroundColor = AmityColorSet.secondary.blend(.shade4)
@@ -590,7 +590,7 @@ extension AmityCommunityProfileEditorViewController: UICollectionViewDataSource 
     }
     
     public func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: AmityMemberCollectionViewCell.identifier, for: indexPath)
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: AmityMemberCollectionViewCell.amityIdentifier, for: indexPath)
         configure(for: cell, at: indexPath)
         return cell
     }

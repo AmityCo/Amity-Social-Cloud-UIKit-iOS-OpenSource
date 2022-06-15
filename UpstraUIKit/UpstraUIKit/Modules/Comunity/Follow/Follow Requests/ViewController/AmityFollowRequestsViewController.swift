@@ -51,7 +51,7 @@ private extension AmityFollowRequestsViewController {
     }
     
     func setupTableView() {
-        tableView.register(AmityFollowRequestTableViewCell.nib, forCellReuseIdentifier: AmityFollowRequestTableViewCell.identifier)
+        tableView.register(AmityFollowRequestTableViewCell.nib, forCellReuseIdentifier: AmityFollowRequestTableViewCell.amityIdentifier)
         tableView.separatorColor = .clear
         tableView.backgroundColor = AmityColorSet.backgroundColor
         tableView.tableFooterView = UIView()
@@ -95,7 +95,7 @@ extension AmityFollowRequestsViewController: UITableViewDataSource {
     }
     
     public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: AmityFollowRequestTableViewCell.identifier, for: indexPath)
+        let cell = tableView.dequeueReusableCell(withIdentifier: AmityFollowRequestTableViewCell.amityIdentifier, for: indexPath)
         configure(for: cell, at: indexPath)
         return cell
     }

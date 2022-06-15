@@ -69,7 +69,7 @@ final class ItemOptionView<T: ItemOption>: UIView, BottomSheetComponent, UITable
     private func setupViews() {
         backgroundColor = AmityColorSet.backgroundColor
         tableView.translatesAutoresizingMaskIntoConstraints = false
-        tableView.register(ItemOptionTableViewCell.nib, forCellReuseIdentifier: ItemOptionTableViewCell.identifier)
+        tableView.register(ItemOptionTableViewCell.nib, forCellReuseIdentifier: ItemOptionTableViewCell.amityIdentifier)
         tableView.dataSource = self
         tableView.delegate = self
         tableView.separatorStyle = .none
@@ -94,7 +94,7 @@ final class ItemOptionView<T: ItemOption>: UIView, BottomSheetComponent, UITable
     // Table View DataSource
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        return tableView.dequeueReusableCell(withIdentifier: ItemOptionTableViewCell.identifier, for: indexPath)
+        return tableView.dequeueReusableCell(withIdentifier: ItemOptionTableViewCell.amityIdentifier, for: indexPath)
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {

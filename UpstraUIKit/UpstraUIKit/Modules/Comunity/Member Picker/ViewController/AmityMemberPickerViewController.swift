@@ -108,7 +108,7 @@ private extension AmityMemberPickerViewController {
     }
     
     func setupTableView() {
-        tableView.register(UINib(nibName: AmitySelectMemberListTableViewCell.identifier, bundle: AmityUIKitManager.bundle), forCellReuseIdentifier: AmitySelectMemberListTableViewCell.identifier)
+        tableView.register(UINib(nibName: AmitySelectMemberListTableViewCell.amityIdentifier, bundle: AmityUIKitManager.bundle), forCellReuseIdentifier: AmitySelectMemberListTableViewCell.amityIdentifier)
         tableView.tableFooterView = UIView()
         tableView.backgroundColor = AmityColorSet.backgroundColor
         tableView.delegate = self
@@ -116,7 +116,7 @@ private extension AmityMemberPickerViewController {
     }
     
     func setupCollectionView() {
-        collectionView.register(UINib(nibName: AmitySelectMemberListCollectionViewCell.identifier, bundle: AmityUIKitManager.bundle), forCellWithReuseIdentifier: AmitySelectMemberListCollectionViewCell.identifier)
+        collectionView.register(UINib(nibName: AmitySelectMemberListCollectionViewCell.amityIdentifier, bundle: AmityUIKitManager.bundle), forCellWithReuseIdentifier: AmitySelectMemberListCollectionViewCell.amityIdentifier)
         (collectionView.collectionViewLayout as? UICollectionViewFlowLayout)?.scrollDirection = .horizontal
         collectionView.showsHorizontalScrollIndicator = false
         collectionView.isHidden = screenViewModel.dataSource.numberOfSelectedUsers() == 0
@@ -161,7 +161,7 @@ extension AmityMemberPickerViewController: UITableViewDataSource {
     }
     
     public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: AmitySelectMemberListTableViewCell.identifier, for: indexPath)
+        let cell = tableView.dequeueReusableCell(withIdentifier: AmitySelectMemberListTableViewCell.amityIdentifier, for: indexPath)
         configure(tableView, for: cell, at: indexPath)
         return cell
     }
@@ -183,7 +183,7 @@ extension AmityMemberPickerViewController: UICollectionViewDataSource {
     }
     
     public func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: AmitySelectMemberListCollectionViewCell.identifier, for: indexPath)
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: AmitySelectMemberListCollectionViewCell.amityIdentifier, for: indexPath)
         configure(for: cell, at: indexPath)
         return cell
     }

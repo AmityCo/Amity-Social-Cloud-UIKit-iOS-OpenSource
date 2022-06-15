@@ -37,9 +37,9 @@ final class AmityChatSettingsViewController: AmityViewController {
         tableView.dataSource = self
         tableView.tableFooterView = UIView()
         tableView.register(AmitySettingsItemNavigationContentTableViewCell.nib,
-                           forCellReuseIdentifier: AmitySettingsItemNavigationContentTableViewCell.identifier)
+                           forCellReuseIdentifier: AmitySettingsItemNavigationContentTableViewCell.amityIdentifier)
         tableView.register(AmitySettingsItemTextContentTableViewCell.nib,
-                           forCellReuseIdentifier: AmitySettingsItemTextContentTableViewCell.identifier)
+                           forCellReuseIdentifier: AmitySettingsItemTextContentTableViewCell.amityIdentifier)
     }
 }
 
@@ -47,10 +47,10 @@ extension AmityChatSettingsViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         switch screenViewModel.dataSource.getOption(with: indexPath.row) {
         case .leave, .report(let _) :
-            let cell = tableView.dequeueReusableCell(withIdentifier: AmitySettingsItemTextContentTableViewCell.identifier) as! AmitySettingsItemTextContentTableViewCell
+            let cell = tableView.dequeueReusableCell(withIdentifier: AmitySettingsItemTextContentTableViewCell.amityIdentifier) as! AmitySettingsItemTextContentTableViewCell
             return cell
         default:
-            let cell = tableView.dequeueReusableCell(withIdentifier: AmitySettingsItemNavigationContentTableViewCell.identifier) as! AmitySettingsItemNavigationContentTableViewCell
+            let cell = tableView.dequeueReusableCell(withIdentifier: AmitySettingsItemNavigationContentTableViewCell.amityIdentifier) as! AmitySettingsItemNavigationContentTableViewCell
             return cell
         }
     }
