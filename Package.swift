@@ -4,15 +4,15 @@
 import PackageDescription
 
 let package = Package(
-    name: "NoomAmitySocialUIKit",
+    name: "AmityUIKit",
     platforms: [
             .iOS(.v13)
         ],
     products: [
         // Products define the executables and libraries a package produces, and make them visible to other packages.
         .library(
-            name: "NoomAmitySocialUIKit",
-            targets: ["NoomAmitySocialUIKit"]),
+            name: "AmityUIKit",
+            targets: ["AmityUIKit"]),
     ],
     dependencies: [
         .package(
@@ -22,7 +22,7 @@ let package = Package(
     ],
     targets: [
         .target(
-            name: "NoomAmitySocialUIKit",
+            name: "AmityUIKit",
             dependencies: ["AmitySDK"],
             path: "UpstraUIKit/UpstraUIKit"
         )
