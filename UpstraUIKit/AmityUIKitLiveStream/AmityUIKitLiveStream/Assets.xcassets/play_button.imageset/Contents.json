@@ -11,7 +11,7 @@
           "value" : "light"
         }
       ],
-      "filename" : "play_button_64-1.pdf",
+      "filename" : "icon play-1.svg",
       "idiom" : "universal"
     },
     {
@@ -21,7 +21,7 @@
           "value" : "dark"
         }
       ],
-      "filename" : "icon play.svg",
+      "filename" : "play_button_64-1.pdf",
       "idiom" : "universal"
     }
   ],

@@ -11,7 +11,7 @@
           "value" : "light"
         }
       ],
-      "filename" : "Pause.pdf",
+      "filename" : "icon pause-1.svg",
       "idiom" : "universal"
     },
     {
@@ -21,7 +21,7 @@
           "value" : "dark"
         }
       ],
-      "filename" : "icon pause.svg",
+      "filename" : "Pause-2.pdf",
       "idiom" : "universal"
     }
   ],
