@@ -28,7 +28,7 @@ struct AmityCommunityMembershipModel {
         self.displayName = member.displayName == "" ? AmityLocalizedStringSet.General.anonymous.localizedString : member.displayName
         self.userId = member.userId
         self.roles = member.roles
-        self.avatarURL = member.user?.getAvatarInfo()?.fileURL ?? ""
+        self.avatarURL = member.user?.avatarCustomUrl ?? member.user?.avatarCustomUrl ?? member.user?.getAvatarInfo()?.fileURL ?? ""
         self.isModerator = roles.contains { $0 == AmityCommunityRole.moderator.rawValue || $0 == AmityCommunityRole.communityModerator.rawValue }
         self.isGlobalBan = member.user?.isGlobalBan ?? false
     }

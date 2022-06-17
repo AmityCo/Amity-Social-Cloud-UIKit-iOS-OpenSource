@@ -96,10 +96,24 @@ class AmityFileService {
             return
         }
         
-        let imageCacheKey = key(forImageURL: imageURL, size: size)
+        var imageCacheKey = ""
+        let isAmityURL = imageURL.contains("https://api.amity.co/api")
+        print(">>>>\(isAmityURL)")
+        if (!isAmityURL){
         
+            imageCacheKey = imageURL
+            
+        }
+        else{
+            imageCacheKey = key(forImageURL: imageURL, size: size)
+        }
+        print(pathCache[imageCacheKey])
         if let path = pathCache[imageCacheKey],
+           
+            
            let image = UIImage(contentsOfFile: path) {
+            print(path)
+            
             completion?(.success(image))
             return
         } else if optimisticLoad {
@@ -118,6 +132,7 @@ class AmityFileService {
         }
         
         guard let fileRepository = fileRepository else {
+         
             completion?(.failure(AmityError.fileServiceIsNotReady))
             return
         }
@@ -127,14 +142,47 @@ class AmityFileService {
                let image = UIImage(contentsOfFile: imagePath) {
                 self?.pathCache[imageCacheKey] = imagePath
                 completion?(.success(image))
-            } else if let error = error {
-                completion?(.failure(error))
+            } else if error != nil {
+                print("load custom URL")
+                if let url = URL(string: imageURL) {
+                    print("Download Started")
+                    self?.getData(from: url) { data, response, error in
+                        guard let data = data, error == nil else { return }
+                        print(response?.suggestedFilename ?? url.lastPathComponent)
+                        print("Download Finished")
+                        // always update the UI from the main thread
+                        let uiImage = UIImage(data: data)
+                        self?.pathCache[imageCacheKey] = self!.saveImage(uiImage!, name: "String(imageURL)")?.path
+                        DispatchQueue.main.async() { [weak self] in
+                            
+                            completion?(.success(UIImage(data: data)!))
+                        }
+                    }
+                }
             } else {
                 let error = AmityError.unknown
+                print(">>>>>3")
                 completion?(.failure(error))
             }
         }
         
+    }
+    
+    func getData(from url: URL, completion: @escaping (Data?, URLResponse?, Error?) -> ()) {
+        URLSession.shared.dataTask(with: url, completionHandler: completion).resume()
+    }
+    
+    func saveImage(_ image: UIImage, name: String) -> URL? {
+        guard let imageData = image.jpegData(compressionQuality: 1) else {
+                return nil
+            }
+        do {
+            let imageURL = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!.appendingPathComponent(name)
+            try imageData.write(to: imageURL)
+            return imageURL
+        } catch {
+            return nil
+        }
     }
     
     func loadFile(fileURL: String, completion: ((Result<Data, Error>) -> Void)?) {

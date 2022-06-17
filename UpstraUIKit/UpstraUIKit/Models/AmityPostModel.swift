@@ -296,7 +296,7 @@ public class AmityPostModel {
         childrenPosts = post.childrenPosts ?? []
         parentPostId = post.parentPostId
         postedUser = Author(
-            avatarURL: post.postedUser?.getAvatarInfo()?.fileURL,
+            avatarURL:  post.postedUser?.avatarCustomUrl ?? post.postedUser?.getAvatarInfo()?.fileURL,
             displayName: post.postedUser?.displayName ?? AmityLocalizedStringSet.General.anonymous.localizedString, isGlobalBan: post.postedUser?.isGlobalBan ?? false)
         subtitle = post.isEdited ? String.localizedStringWithFormat(AmityLocalizedStringSet.PostDetail.postDetailCommentEdit.localizedString, post.createdAt.relativeTime) : post.createdAt.relativeTime
         postedUserId = post.postedUserId

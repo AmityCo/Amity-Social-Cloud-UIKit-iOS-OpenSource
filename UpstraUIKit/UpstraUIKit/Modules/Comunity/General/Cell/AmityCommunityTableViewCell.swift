@@ -40,7 +40,7 @@ class AmityCommunityTableViewCell: UITableViewCell, Nibbable {
     func configure(with type: CommunityCellType) {
         switch type {
         case .myFeed:
-            avatarView.setImage(withImageURL: AmityUIKitManagerInternal.shared.client.currentUser?.object?.getAvatarInfo()?.fileURL ?? "", placeholder: AmityIconSet.defaultAvatar)
+            avatarView.setImage(withImageURL: AmityUIKitManagerInternal.shared.client.currentUser?.object?.avatarCustomUrl ?? AmityUIKitManagerInternal.shared.client.currentUser?.object?.getAvatarInfo()?.fileURL ?? "", placeholder: AmityIconSet.defaultAvatar)
             avatarView.placeholderPostion = .center
             titleLabel.text = AmityLocalizedStringSet.postCreationMyTimelineTitle.localizedString
             badgeImageView.isHidden = true

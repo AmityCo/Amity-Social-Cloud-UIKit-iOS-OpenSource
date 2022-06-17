@@ -31,7 +31,7 @@ struct AmityChannelMembershipModel {
         }
         self.userId = member.userId
         self.roles = member.roles
-        self.avatarURL = member.user?.getAvatarInfo()?.fileURL ?? ""
+        self.avatarURL = member.user?.avatarCustomUrl ?? member.user?.getAvatarInfo()?.fileURL ?? ""
         
         self.isModerator = roles.contains { $0 == AmityChannelRole.moderator.rawValue || $0 == AmityChannelRole.channelModerator.rawValue }
     }
