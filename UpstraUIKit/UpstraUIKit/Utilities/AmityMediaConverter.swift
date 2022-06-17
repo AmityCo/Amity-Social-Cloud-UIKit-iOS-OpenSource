@@ -25,16 +25,12 @@ class AmityMediaConverter {
         let uuid = UUID().uuidString
         let suffix = "\(uuid).png"
         
-        let orientation = CGImagePropertyOrientation(rawValue: (properties["Orientation"] as? UInt32) ?? 1)
-        
         guard let directory = try? FileManager.default.url(for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: false) as NSURL else { return nil }
         
         directory.appendingPathComponent(suffix)
         guard let absoluteString = directory.absoluteString, let destinationURL = URL(string: "\(absoluteString)\(suffix)"), let destination = CGImageDestinationCreateWithURL(destinationURL as CFURL, kUTTypePNG, 1, nil) else { return nil }
         
-        let imageToSave: CGImage = cgImage.rotate(fromOrientation: orientation ?? .up) ?? cgImage
-        
-        CGImageDestinationAddImage(destination, imageToSave, options)
+        CGImageDestinationAddImage(destination, cgImage, options)
         if CGImageDestinationFinalize(destination) {
             return destinationURL
         }

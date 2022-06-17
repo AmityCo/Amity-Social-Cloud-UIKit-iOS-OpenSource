@@ -10,6 +10,14 @@ import UIKit
 import AmityUIKit
 import AmitySDK
 
+class ChatFeatureSetting {
+    
+    static let shared = ChatFeatureSetting()
+    var iscustomMessageEnabled: Bool = false
+    
+    private init() { }
+}
+
 class ChatFeatureViewController: UIViewController {
     
     enum FeatureList: CaseIterable {
@@ -69,10 +77,11 @@ class ChatFeatureViewController: UIViewController {
     }
     
     private func presentChat(channelId: String) {
+        ChatFeatureSetting.shared.iscustomMessageEnabled = true
+        
         var settings = AmityMessageListViewController.Settings()
         settings.composeBarStyle = .textOnly
         let vc = AmityMessageListViewController.make(channelId: channelId, settings: settings)
-        vc.dataSource = self
         navigationController?.pushViewController(vc, animated: true)
     }
     
@@ -101,14 +110,16 @@ extension ChatFeatureViewController: UITableViewDelegate {
         tableView.deselectRow(at: indexPath, animated: true)
         switch FeatureList.allCases[indexPath.row] {
         case .chatHome:
+            ChatFeatureSetting.shared.iscustomMessageEnabled = false
             let vc = AmityChatHomePageViewController.make()
             navigationController?.pushViewController(vc, animated: true)
         case .chatList:
+            ChatFeatureSetting.shared.iscustomMessageEnabled = false
             let vc = AmityRecentChatViewController.make(channelType: .community)
             navigationController?.pushViewController(vc, animated: true)
         case .chatListCustomize:
-            let vc = AmityChatHomePageViewController.make()
-            vc.messageDataSource = self
+            ChatFeatureSetting.shared.iscustomMessageEnabled = true
+            let vc = AmityRecentChatViewController.make(channelType: .community)
             navigationController?.pushViewController(vc, animated: true)
         case .messageListWithTextOnlyKeyboard:
             presentSpecificChatDialogue()
@@ -125,13 +136,5 @@ extension ChatFeatureViewController: UITableViewDataSource {
         let cell = tableView.dequeueReusableCell(withIdentifier: "CellID", for: indexPath)
         cell.textLabel?.text = FeatureList.allCases[indexPath.row].text
         return cell
-    }
-}
-
-extension ChatFeatureViewController: AmityMessageListDataSource {
-    func cellForMessageTypes() -> [AmityMessageTypes : AmityMessageCellProtocol.Type] {
-        return [
-            .textIncoming: CustomMessageTextIncomingTableViewCell.self
-        ]
     }
 }

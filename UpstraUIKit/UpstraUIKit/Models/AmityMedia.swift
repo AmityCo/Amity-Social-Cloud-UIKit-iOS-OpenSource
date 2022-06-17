@@ -18,8 +18,8 @@ enum AmityMediaState {
     case localAsset(PHAsset)
     case image(UIImage)
     case localURL(url: URL)
-    case downloadableImage(fileURL: String, placeholder: UIImage)
-    case downloadableVideo(videoURL: String, thumbnailUrl: String?)
+    case downloadableImage(imageData: AmityImageData, placeholder: UIImage)
+    case downloadableVideo(videoData: AmityVideoData, thumbnailUrl: String?)
     case none
     case error
     
@@ -85,8 +85,8 @@ public class AmityMedia: Equatable, Hashable {
         case .localAsset(let asset):
             showImage(from: asset, in: imageView, size: preferredSize)
             
-        case .downloadableImage(let fileURL, let placeholder):
-            imageView.loadImage(with: fileURL, size: .medium, placeholder: placeholder)
+        case .downloadableImage(let imageData, let placeholder):
+            imageView.loadImage(with: imageData.fileURL, size: .medium, placeholder: placeholder)
             
         case .downloadableVideo(_ , let thumbnailUrl):
             if let thumbnailUrl = thumbnailUrl {

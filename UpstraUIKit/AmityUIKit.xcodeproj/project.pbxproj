@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		0A19AE1327C3F703005A24C1 /* CGImage+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A19AE1227C3F703005A24C1 /* CGImage+Extension.swift */; };
 		0A7682C427B16D2200F6BA41 /* AmityMediaConverter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A7682C327B16D2200F6BA41 /* AmityMediaConverter.swift */; };
 		0D123ECE25DA85DD009171D8 /* AmityCommentCreateController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D123ECD25DA85DD009171D8 /* AmityCommentCreateController.swift */; };
 		0D12BD2B25D4307100D3E4BC /* AmityPostHeaderProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D12BD2A25D4307100D3E4BC /* AmityPostHeaderProtocol.swift */; };
@@ -275,6 +274,7 @@
 		72A351A924EA821900DA9D46 /* AmityLocalizedStringSet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72A351A324EA821900DA9D46 /* AmityLocalizedStringSet.swift */; };
 		72A351AA24EA821900DA9D46 /* AmityUserDefaults.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72A351A424EA821900DA9D46 /* AmityUserDefaults.swift */; };
 		72A351AC24EA821F00DA9D46 /* AmityUIKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72A351AB24EA821F00DA9D46 /* AmityUIKit.swift */; };
+		72A659E7283CF0DD00A12BEF /* AmityExpandableLabelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72A659E6283CF0DD00A12BEF /* AmityExpandableLabelTests.swift */; };
 		72A974DD25E7595700706EB4 /* AmityPostViewAllCommentsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72A974DB25E7595700706EB4 /* AmityPostViewAllCommentsTableViewCell.swift */; };
 		72A974DE25E7595700706EB4 /* AmityPostViewAllCommentsTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 72A974DC25E7595700706EB4 /* AmityPostViewAllCommentsTableViewCell.xib */; };
 		72AFAC0D24F9009F00269019 /* AmityFileService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72AFAC0C24F9009F00269019 /* AmityFileService.swift */; };
@@ -645,7 +645,6 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		0A19AE1227C3F703005A24C1 /* CGImage+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CGImage+Extension.swift"; sourceTree = "<group>"; };
 		0A7682C327B16D2200F6BA41 /* AmityMediaConverter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AmityMediaConverter.swift; sourceTree = "<group>"; };
 		0D123ECD25DA85DD009171D8 /* AmityCommentCreateController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AmityCommentCreateController.swift; sourceTree = "<group>"; };
 		0D12BD2A25D4307100D3E4BC /* AmityPostHeaderProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AmityPostHeaderProtocol.swift; sourceTree = "<group>"; };
@@ -915,6 +914,7 @@
 		72A351A324EA821900DA9D46 /* AmityLocalizedStringSet.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AmityLocalizedStringSet.swift; sourceTree = "<group>"; };
 		72A351A424EA821900DA9D46 /* AmityUserDefaults.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AmityUserDefaults.swift; sourceTree = "<group>"; };
 		72A351AB24EA821F00DA9D46 /* AmityUIKit.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AmityUIKit.swift; sourceTree = "<group>"; };
+		72A659E6283CF0DD00A12BEF /* AmityExpandableLabelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AmityExpandableLabelTests.swift; sourceTree = "<group>"; };
 		72A974DB25E7595700706EB4 /* AmityPostViewAllCommentsTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AmityPostViewAllCommentsTableViewCell.swift; sourceTree = "<group>"; };
 		72A974DC25E7595700706EB4 /* AmityPostViewAllCommentsTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = AmityPostViewAllCommentsTableViewCell.xib; sourceTree = "<group>"; };
 		72AFAC0C24F9009F00269019 /* AmityFileService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AmityFileService.swift; sourceTree = "<group>"; };
@@ -2014,6 +2014,7 @@
 		72A3503D24EA811500DA9D46 /* UpstraUIKitTests */ = {
 			isa = PBXGroup;
 			children = (
+				72A659E5283CF08E00A12BEF /* Components */,
 				72A3503E24EA811500DA9D46 /* AmityUIKitTests.swift */,
 				72A3504024EA811500DA9D46 /* Info.plist */,
 			);
@@ -2109,7 +2110,6 @@
 				72A3507F24EA820700DA9D46 /* UIView+Extension.swift */,
 				72A3508224EA820700DA9D46 /* UIViewController+Extension.swift */,
 				A062145327004E9800037C34 /* UIViewController+PostCreateDialogue.swift */,
-				0A19AE1227C3F703005A24C1 /* CGImage+Extension.swift */,
 				72BD0710282D2BFD00178B22 /* Array+Extension.swift */,
 			);
 			path = Extensions;
@@ -2589,6 +2589,14 @@
 				0A7682C327B16D2200F6BA41 /* AmityMediaConverter.swift */,
 			);
 			path = Utilities;
+			sourceTree = "<group>";
+		};
+		72A659E5283CF08E00A12BEF /* Components */ = {
+			isa = PBXGroup;
+			children = (
+				72A659E6283CF0DD00A12BEF /* AmityExpandableLabelTests.swift */,
+			);
+			path = Components;
 			sourceTree = "<group>";
 		};
 		72A974DA25E7590D00706EB4 /* View All Comments */ = {
@@ -4566,7 +4574,6 @@
 				B748E1802591FDF4000CF4CC /* AmityCommunityFetchMemberController.swift in Sources */,
 				B71AD6572537F9E400AFB3D0 /* AmityCommunityMemberSettingsTableViewCell.swift in Sources */,
 				72A3512F24EA820800DA9D46 /* AmityPostTextEditorMenuView.swift in Sources */,
-				0A19AE1327C3F703005A24C1 /* CGImage+Extension.swift in Sources */,
 				726067E4260AE04D00A6E12C /* CommunityNotificationSettingModel.swift in Sources */,
 				72A3515224EA820800DA9D46 /* AmityMessageCellProtocol.swift in Sources */,
 				727A2CE926CD185D0061E7C7 /* AmityImageView.swift in Sources */,
@@ -5027,6 +5034,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				72A3503F24EA811500DA9D46 /* AmityUIKitTests.swift in Sources */,
+				72A659E7283CF0DD00A12BEF /* AmityExpandableLabelTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -5185,7 +5193,7 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				MARKETING_VERSION = 2.16.1;
+				MARKETING_VERSION = 2.19.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.amity.amityuikit;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
@@ -5218,7 +5226,7 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				MARKETING_VERSION = 2.16.1;
+				MARKETING_VERSION = 2.19.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.amity.amityuikit;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;

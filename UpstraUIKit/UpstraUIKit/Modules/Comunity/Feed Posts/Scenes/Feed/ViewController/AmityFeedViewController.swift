@@ -517,7 +517,7 @@ extension AmityFeedViewController: AmityPostPreviewCommentDelegate {
             let alert = UIAlertController(title: AmityLocalizedStringSet.PostDetail.deleteCommentTitle.localizedString, message: AmityLocalizedStringSet.PostDetail.deleteCommentMessage.localizedString, preferredStyle: .alert)
             alert.addAction(UIAlertAction(title: AmityLocalizedStringSet.General.cancel.localizedString, style: .cancel, handler: nil))
             alert.addAction(UIAlertAction(title: AmityLocalizedStringSet.General.delete.localizedString, style: .destructive) { [weak self] _ in
-                self?.screenViewModel.action.delete(withComment: comment)
+                self?.screenViewModel.action.delete(withCommentId: comment.id)
             })
             self?.present(alert, animated: true, completion: nil)
         }

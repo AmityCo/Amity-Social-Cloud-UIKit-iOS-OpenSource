@@ -87,8 +87,6 @@ final class AmityRecentChatTableViewCell: UITableViewCell, Nibbable {
                 token = repository?.getUser(channel.getOtherUserId()).observeOnce { [weak self] user, error in
                     guard let userObject = user.object else { return }
                     self?.titleLabel.text = userObject.displayName
-                    self?.avatarView.setImage(withImageURL: userObject.avatarCustomUrl,
-                                              placeholder: AmityIconSet.defaultAvatar)
                 }
             }
         case .community:

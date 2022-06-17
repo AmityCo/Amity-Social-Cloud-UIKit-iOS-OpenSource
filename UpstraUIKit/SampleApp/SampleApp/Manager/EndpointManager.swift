@@ -51,29 +51,7 @@ struct EnvironmentSettingModel: Codable {
     }
     
     static func defaultConfig(for environment: EnvironmentType) -> EndpointConfigModel {
-        switch environment {
-        case .staging:
-            let stagingEndpoint = "https://api.staging.amity.co"
-            return EndpointConfigModel(apiKey: "b3bee858328ef4344a308e4a5a091688d05fdee2be353a2b",
-                                    httpEndpoint: stagingEndpoint,
-                                    socketEndpoint: stagingEndpoint)
-        case .production:
-            return EndpointConfigModel(apiKey: "b3bee90c39d9a5644831d84e5a0d1688d100ddebef3c6e78",
-                                    httpEndpoint: AmityRegionalEndpoint.SG,
-                                    socketEndpoint: AmityRegionalEndpoint.SG)
-        case .eu:
-            return EndpointConfigModel(apiKey: "b0ecbd0f33d2f8371e63de14070a1f8ed009ddeabf3d687e",
-                                    httpEndpoint: AmityRegionalEndpoint.EU,
-                                    socketEndpoint: AmityRegionalEndpoint.EU)
-        case .us:
-            return EndpointConfigModel(apiKey: "b0ecbd0f33d2a4344937d84a530a118e85088be5e83d6c2a",
-                                    httpEndpoint: AmityRegionalEndpoint.US,
-                                    socketEndpoint: AmityRegionalEndpoint.US)
-        case .custom:
-            return EndpointConfigModel(apiKey: "b3babb0b3a89f4341d31dc1a01091edcd70f8de7b23d697f",
-                                       httpEndpoint: AmityRegionalEndpoint.GLOBAL,
-                                       socketEndpoint: AmityRegionalEndpoint.GLOBAL)
-        }
+        return EndpointConfigModel(apiKey: "YOUR_API_KEY", httpEndpoint: AmityRegionalEndpoint.SG, socketEndpoint: AmityRegionalEndpoint.SG)
     }
 }
 
