@@ -190,17 +190,10 @@ class AmityMessageTableViewCell: UITableViewCell, AmityMessageCellProtocol {
     }
     
     private func setAvatarImage(_ messageModel: AmityMessageModel) {
-        if let customURL = messageModel.object.user?.avatarCustomUrl,
-           !customURL.isEmpty {
-            avatarView.setImage(withImageURL: customURL,
-                                placeholder: AmityIconSet.defaultAvatar)
-        } else if
-            let url = messageModel.object.user?.getAvatarInfo()?.fileURL,
-            !url.isEmpty {
-            avatarView.setImage(withImageURL: url,
-                                placeholder: AmityIconSet.defaultAvatar)
-        }
+        let url = messageModel.object.user?.getAvatarInfo()?.fileURL
+        avatarView.setImage(withImageURL: url, placeholder: AmityIconSet.defaultAvatar)
     }
+
 }
 
 // MARK: - Action

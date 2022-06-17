@@ -19,9 +19,6 @@ final class AmityPostDetailScreenViewModel: AmityPostDetailScreenViewModelType {
     private let childrenController: AmityCommentChildrenController
     private let pollRepository: AmityPollRepository
     
-    private var commentCollectionToken: AmityNotificationToken?
-    private var commentCollection: AmityCollection<AmityComment>?
-    
     private let postId: String
     private(set) var post: AmityPostModel?
     private var comments: [AmityCommentModel] = []
@@ -169,6 +166,7 @@ extension AmityPostDetailScreenViewModel {
         
         self.viewModelArrays = viewModels
         delegate?.screenViewModelDidUpdateData(self)
+        delegate?.screenViewModel(self, didUpdateloadingState: .loaded)
     }
     
     
@@ -212,6 +210,13 @@ extension AmityPostDetailScreenViewModel {
             case .failure:
                 break
             }
+        }
+    }
+    
+    func loadMoreComments() {
+        if commentController.hasMoreComments {
+            delegate?.screenViewModel(self, didUpdateloadingState: .loading)
+            commentController.loadMoreComments()
         }
     }
     

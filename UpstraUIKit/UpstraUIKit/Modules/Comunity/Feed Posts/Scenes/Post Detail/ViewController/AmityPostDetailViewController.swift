@@ -184,8 +184,8 @@ open class AmityPostDetailViewController: AmityViewController {
                 let closePoll = TextItemOption(title: AmityLocalizedStringSet.Poll.Option.closeTitle.localizedString) { [weak self] in
                     guard let strongSelf = self else { return }
                     let cancel = AmityAlertController.Action.cancel(style: .default, handler: nil)
-                    let close = AmityAlertController.Action.custom(title: AmityLocalizedStringSet.Poll.Option.closeTitle.lowercased(), style: .destructive) {
-                        
+                    let close = AmityAlertController.Action.custom(title: AmityLocalizedStringSet.Poll.Option.closeTitle.localizedString, style: .destructive) {
+                        self?.screenViewModel.close(withPollId: post.poll?.id)
                     }
                     AmityAlertController.present(title: AmityLocalizedStringSet.Poll.Option.alertCloseTitle.localizedString, message: AmityLocalizedStringSet.Poll.Option.alertCloseDesc.localizedString, actions: [cancel, close], from: strongSelf)
                     
@@ -261,6 +261,12 @@ extension AmityPostDetailViewController: AmityPostTableViewDelegate {
         return separatorView
     }
     
+    func tableView(_ tableView: AmityPostTableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        if tableView.isBottomReached {
+            screenViewModel.loadMoreComments()
+        }
+    }
+    
 }
 
 // MARK: - AmityPostTableViewDataSource
@@ -323,7 +329,19 @@ extension AmityPostDetailViewController: AmityPostTableViewDataSource {
 
 extension AmityPostDetailViewController: AmityPostDetailScreenViewModelDelegate {
     
-    // MARK: Post
+    // MARK: - Loading state
+    func screenViewModel(_ viewModel: AmityPostDetailScreenViewModelType, didUpdateloadingState state: AmityLoadingState) {
+        switch state {
+        case .loading:
+            tableView.showLoadingIndicator()
+        case .loaded:
+            tableView.tableFooterView = nil
+        case .initial:
+            break
+        }
+    }
+    
+    // MARK: - Post
     func screenViewModelDidUpdateData(_ viewModel: AmityPostDetailScreenViewModelType) {
         tableView.reloadData()
         if let post = screenViewModel.post {
@@ -366,7 +384,7 @@ extension AmityPostDetailViewController: AmityPostDetailScreenViewModelDelegate 
         present(bottomSheet, animated: false, completion: nil)
     }
     
-    // MARK: Comment
+    // MARK: - Comment
     func screenViewModelDidCreateComment(_ viewModel: AmityPostDetailScreenViewModelType, comment: AmityCommentModel) {
         
         if comment.parentId == nil {
@@ -426,6 +444,7 @@ extension AmityPostDetailViewController: AmityPostDetailScreenViewModelDelegate 
             break
         }
     }
+    
 }
 
 // MARK: - AmityPostHeaderProtocolHandlerDelegate

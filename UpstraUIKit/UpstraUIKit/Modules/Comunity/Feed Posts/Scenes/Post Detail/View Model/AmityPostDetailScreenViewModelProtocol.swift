@@ -37,14 +37,17 @@ enum PostDetailViewModel {
 }
 
 protocol AmityPostDetailScreenViewModelDelegate: AnyObject {
-    // MARK: Post
+    // MARK: - Loading state
+    func screenViewModel(_ viewModel: AmityPostDetailScreenViewModelType, didUpdateloadingState state: AmityLoadingState)
+    
+    // MARK: - Post
     func screenViewModelDidUpdateData(_ viewModel: AmityPostDetailScreenViewModelType)
     func screenViewModelDidUpdatePost(_ viewModel: AmityPostDetailScreenViewModelType)
     func screenViewModelDidLikePost(_ viewModel: AmityPostDetailScreenViewModelType)
     func screenViewModelDidUnLikePost(_ viewModel: AmityPostDetailScreenViewModelType)
     func screenViewModel(_ viewModel: AmityPostDetailScreenViewModelType, didReceiveReportStatus isReported: Bool)
     
-    // MARK: Comment
+    // MARK: - Comment
     func screenViewModelDidDeleteComment(_ viewModel: AmityPostDetailScreenViewModelType)
     func screenViewModelDidEditComment(_ viewModel: AmityPostDetailScreenViewModelType)
     func screenViewModelDidLikeComment(_ viewModel: AmityPostDetailScreenViewModelType)
@@ -68,6 +71,7 @@ protocol AmityPostDetailScreenViewModelAction {
     // MARK: Fetch data
     func fetchPost()
     func fetchComments()
+    func loadMoreComments()
     
     // MARK: Post
     func updatePost(withText text: String)

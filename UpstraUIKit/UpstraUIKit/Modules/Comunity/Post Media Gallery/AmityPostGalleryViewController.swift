@@ -226,10 +226,10 @@ extension AmityPostGalleryViewController: UICollectionViewDelegateFlowLayout {
                     print("unable to find video url for post: \(postObject.postId)")
                 }
             case "image":
-                if let imageInfo = postObject.getImageInfo() {
+                if let imageData = postObject.getImageInfo() {
                     let placeholder = AmityColorSet.base.blend(.shade4).asImage()
                     let itemCell = collectionView.cellForItem(at: indexPath) as! PostGalleryItemCell
-                    let state = AmityMediaState.downloadableImage(fileURL: imageInfo.fileURL, placeholder: placeholder)
+                    let state = AmityMediaState.downloadableImage(imageData: imageData, placeholder: placeholder)
                     let media = AmityMedia(state: state, type: .image)
                     presentPhotoViewer(
                         referenceView: itemCell.imageView,
@@ -327,8 +327,8 @@ extension AmityPostGalleryViewController: AmityPhotoViewerControllerDataSource {
         }
         
         switch currentMedia.state {
-        case .downloadableImage(let fileURL, _):
-            imageView.loadImage(with: fileURL, size: .full, placeholder: nil, optimisticLoad: true)
+        case .downloadableImage(let imageData, _):
+            imageView.loadImage(with: imageData.fileURL, size: .full, placeholder: nil, optimisticLoad: true)
         default:
             assertionFailure("Not supported")
             break
