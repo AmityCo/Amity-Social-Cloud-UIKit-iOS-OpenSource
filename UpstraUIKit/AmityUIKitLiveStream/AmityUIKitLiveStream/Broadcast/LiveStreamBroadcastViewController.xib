@@ -423,6 +423,11 @@
             <point key="canvasLocation" x="-26.086956521739133" y="103.79464285714285"/>
         </view>
     </objects>
+    <designables>
+        <designable name="tos-Jq-m56">
+            <size key="intrinsicContentSize" width="46.5" height="31.5"/>
+        </designable>
+    </designables>
     <resources>
         <image name="close" width="32" height="32"/>
         <image name="close_button" width="28" height="28"/>
