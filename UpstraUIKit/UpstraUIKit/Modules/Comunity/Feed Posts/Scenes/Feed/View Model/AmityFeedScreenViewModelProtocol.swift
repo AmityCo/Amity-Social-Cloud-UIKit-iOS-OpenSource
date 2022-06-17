@@ -59,7 +59,7 @@ protocol AmityFeedScreenViewModelAction {
     func getReportStatus(withPostId postId: String)
     
     // MARK: Comment
-    func delete(withComment comment: AmityCommentModel)
+    func delete(withCommentId commentId: String)
     func edit(withComment comment: AmityCommentModel, text: String, metadata: [String : Any]?, mentionees: AmityMentioneesBuilder?)
     func report(withCommentId commentId: String)
     func unreport(withCommentId commentId: String)

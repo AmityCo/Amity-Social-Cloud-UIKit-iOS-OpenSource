@@ -115,8 +115,8 @@ public class AmityGalleryCollectionViewCell: UICollectionViewCell {
         switch media.state {
         case .image(let image):
             imageView.image = image
-        case .downloadableImage(let imageURL, _):
-            loadThumbnailImage(at: imageURL)
+        case .downloadableImage(let imageData, _):
+            loadThumbnailImage(at: imageData.fileURL)
         case .downloadableVideo(_, let thumbnailUrl):
             if let thumbnailUrl = thumbnailUrl {
                 loadThumbnailImage(at: thumbnailUrl)
