@@ -520,10 +520,12 @@ private extension AmityMentionManager {
     
     // Configures the indexes of remaining mentions after removing a mention or text in the given range
     func configureMentions(inRange range: NSRange, forText text: String) {
+        guard range.length > 0 else { return }
+        
         // If there is no mention in the selected range then change the indexes of every mention from mentions array
         var space = 0
         
-        if (range.location != 0 || range.length != 1 || range.length != 0) && range.location + range.length < text.count {
+        if (range.location > 0) && range.location + range.length < text.count {
             let charBefore = text[text.index(text.startIndex, offsetBy: range.location - 1)]
             let charAfter = text[text.index(text.startIndex, offsetBy: range.location + range.length)]
             

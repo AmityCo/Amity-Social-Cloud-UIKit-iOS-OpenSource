@@ -24,6 +24,13 @@ public final class AmityMessageModel {
     public var date: String
     public var time: String
     public var data: [AnyHashable : Any]?
+    public var tags: [String]
+    public var channelSegment: UInt
+    
+    /**
+     * The post appearance settings
+     */
+    public var appearance: AmityMessageModelAppearance
     
     public var isOwner: Bool {
         return userId == AmityUIKitManagerInternal.shared.client.currentUserId
@@ -43,11 +50,31 @@ public final class AmityMessageModel {
         self.time = AmityDateFormatter.Message.getTime(date: self.isEdited ? object.editedAtDate : object.createdAtDate)
         self.flagCount = object.flagCount
         self.data = object.data
+        self.tags = object.tags
+        self.channelSegment = object.channelSegment
+        self.appearance = AmityMessageModelAppearance()
     }
     
     public var text: String? {
         return data?["text"] as? String
     }
+}
+
+extension AmityMessageModel {
+    
+    // MARK: - Appearance
+    
+    open class AmityMessageModelAppearance {
+        
+        public init () { }
+        /**
+         * The flag marking a message for how it will display
+         *  - true : display a full content
+         *  - false : display a partial content with read more button
+         */
+        public var isExpanding: Bool = false
+    }
+    
 }
 
 extension AmityMessageModel: Hashable {
@@ -69,6 +96,8 @@ extension AmityMessageModel: Hashable {
         hasher.combine(date)
         hasher.combine(time)
         hasher.combine(text)
+        hasher.combine(tags)
+        hasher.combine(channelSegment)
         if let dataDesc = data?.description {
             hasher.combine(dataDesc)
         }

@@ -267,9 +267,9 @@ public class AmityPhotoViewerController: UIViewController {
         media.loadImage(to: imageView)
         // Full size
         switch media.state {
-        case .downloadableImage(let fileURL, _):
+        case .downloadableImage(let imageData, _):
             imageView.loadImage(
-                with: fileURL,
+                with: imageData.fileURL,
                 size: .full,
                 placeholder: nil,
                 optimisticLoad: true

@@ -37,7 +37,10 @@ enum PostDetailViewModel {
 }
 
 protocol AmityPostDetailScreenViewModelDelegate: AnyObject {
-    // MARK: Post
+    // MARK: - Loading state
+    func screenViewModel(_ viewModel: AmityPostDetailScreenViewModelType, didUpdateloadingState state: AmityLoadingState)
+    
+    // MARK: - Post
     func screenViewModelDidUpdateData(_ viewModel: AmityPostDetailScreenViewModelType)
     func screenViewModelDidUpdatePost(_ viewModel: AmityPostDetailScreenViewModelType)
     func screenViewModelDidLikePost(_ viewModel: AmityPostDetailScreenViewModelType)
@@ -45,12 +48,12 @@ protocol AmityPostDetailScreenViewModelDelegate: AnyObject {
     func screenViewModel(_ viewModel: AmityPostDetailScreenViewModelType, didReceiveReportStatus isReported: Bool)
     func screenViewModelDidShowAlertDialog()
     
-    // MARK: Comment
+    // MARK: - Comment
     func screenViewModelDidDeleteComment(_ viewModel: AmityPostDetailScreenViewModelType)
     func screenViewModelDidEditComment(_ viewModel: AmityPostDetailScreenViewModelType)
     func screenViewModelDidLikeComment(_ viewModel: AmityPostDetailScreenViewModelType)
     func screenViewModelDidUnLikeComment(_ viewModel: AmityPostDetailScreenViewModelType)
-    func screenViewModelDidCreateComment(_ viewModel: AmityPostDetailScreenViewModelType)
+    func screenViewModelDidCreateComment(_ viewModel: AmityPostDetailScreenViewModelType, comment: AmityCommentModel)
     func screenViewModel(_ viewModel: AmityPostDetailScreenViewModelType, comment: AmityCommentModel, didReceiveCommentReportStatus isReported: Bool)
     func screenViewModel(_ viewModel: AmityPostDetailScreenViewModelType, didFinishWithMessage message: String)
     func screenViewModel(_ viewModel: AmityPostDetailScreenViewModelType, didFinishWithError error: AmityError)
@@ -69,6 +72,7 @@ protocol AmityPostDetailScreenViewModelAction {
     // MARK: Fetch data
     func fetchPost()
     func fetchComments()
+    func loadMoreComments()
     
     // MARK: Post
     func updatePost(withText text: String)

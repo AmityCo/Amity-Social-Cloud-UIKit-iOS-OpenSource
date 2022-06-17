@@ -318,8 +318,8 @@ extension AmityDiscoveryViewController: AmityPhotoViewerControllerDataSource {
         }
         
         switch currentMedia.state {
-        case .downloadableImage(let fileURL, _):
-            imageView.loadImage(with: fileURL, size: .full, placeholder: nil, optimisticLoad: true)
+        case .downloadableImage(imageData: currentMedia.image, placeholder: imageView):
+            imageView.loadImage(with: currentMedia.image?.fileURL ?? "", size: .full, placeholder: nil, optimisticLoad: true)
         default:
             assertionFailure("Not supported")
             break

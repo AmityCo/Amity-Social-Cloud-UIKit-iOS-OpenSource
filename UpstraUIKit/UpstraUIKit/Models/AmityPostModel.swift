@@ -364,15 +364,15 @@ public class AmityPostModel {
             switch aChild.dataType {
             case "image":
                 let placeholder = AmityColorSet.base.blend(.shade4).asImage()
-                if let imageInfo = aChild.getImageInfo() {
+                if let imageData = aChild.getImageInfo() {
                     let state = AmityMediaState.downloadableImage(
-                        fileURL: imageInfo.fileURL,
+                        imageData: imageData,
                         placeholder: placeholder
                     )
                     let media = AmityMedia(state: state, type: .image)
-                    media.image = imageInfo
+                    media.image = imageData
                     medias.append(media)
-                    fileMap[imageInfo.fileId] = aChild.postId
+                    fileMap[imageData.fileId] = aChild.postId
                     dataTypeInternal = .image
                 }
             case "file":
@@ -386,7 +386,7 @@ public class AmityPostModel {
                 if let videoData = aChild.getVideoInfo(for: .original) {
                     let thumbnail = aChild.getVideoThumbnailInfo()
                     let state = AmityMediaState.downloadableVideo(
-                        videoURL: videoData.fileURL,
+                        videoData: videoData,
                         thumbnailUrl: thumbnail?.fileURL
                     )
                     let media = AmityMedia(state: state, type: .video)

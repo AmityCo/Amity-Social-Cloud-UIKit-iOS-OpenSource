@@ -19,9 +19,6 @@ final class AmityPostDetailScreenViewModel: AmityPostDetailScreenViewModelType {
     private let childrenController: AmityCommentChildrenController
     private let pollRepository: AmityPollRepository
     
-    private var commentCollectionToken: AmityNotificationToken?
-    private var commentCollection: AmityCollection<AmityComment>?
-    
     private let postId: String
     private(set) var post: AmityPostModel?
     private var comments: [AmityCommentModel] = []
@@ -155,7 +152,7 @@ extension AmityPostDetailScreenViewModel {
             let isAllLoaded = loadedItems.count == totalItemCount
             
             // visible items are limited by itemToDisplay.
-            // see more: ChildrenCommentsController.swift
+            // see more: AmityCommentChildrenController.swift
             let postDetailViewModels: [PostDetailViewModel] = loadedItems.map({ PostDetailViewModel.replyComment($0) })
             commentsModels += Array(postDetailViewModels.prefix(itemToDisplay))
             
@@ -171,6 +168,7 @@ extension AmityPostDetailScreenViewModel {
         
         self.viewModelArrays = viewModels
         delegate?.screenViewModelDidUpdateData(self)
+        delegate?.screenViewModel(self, didUpdateloadingState: .loaded)
     }
     
     private func showAlertDialog() {
@@ -221,6 +219,13 @@ extension AmityPostDetailScreenViewModel {
             case .failure:
                 break
             }
+        }
+    }
+    
+    func loadMoreComments() {
+        if commentController.hasMoreComments {
+            delegate?.screenViewModel(self, didUpdateloadingState: .loading)
+            commentController.loadMoreComments()
         }
     }
     
@@ -327,16 +332,24 @@ extension AmityPostDetailScreenViewModel {
                     strongSelf.delegate?.screenViewModel(strongSelf, didFinishWithError: amityError ?? .unknown)
                 } else {
                     strongSelf.fetchComments()
-                    strongSelf.delegate?.screenViewModelDidCreateComment(strongSelf)
+                    strongSelf.delegate?.screenViewModelDidCreateComment(strongSelf, comment: AmityCommentModel(comment: comment))
                 }
+            }
+            
+            if AmityError(error: error) == .bannedWord {
+                // check if the recent comment is contains banned word
+                // if containts, delete the particular comment
+                strongSelf.delegate?.screenViewModel(strongSelf, didFinishWithError: .bannedWord)
+            } else if let comment = comment {
+                strongSelf.delegate?.screenViewModelDidCreateComment(strongSelf, comment: AmityCommentModel(comment: comment))
             } else {
-                strongSelf.delegate?.screenViewModelDidCreateComment(strongSelf)
+                strongSelf.delegate?.screenViewModel(strongSelf, didFinishWithError: .unknown)
             }
         }
     }
     
     func deleteComment(with comment: AmityCommentModel) {
-        commentController.delete(withComment: comment) { [weak self] (success, error) in
+        commentController.delete(withCommentId: comment.id) { [weak self] (success, error) in
             guard let strongSelf = self else { return }
             if success {
                 strongSelf.delegate?.screenViewModelDidDeleteComment(strongSelf)

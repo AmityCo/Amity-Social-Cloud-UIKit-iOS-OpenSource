@@ -164,9 +164,9 @@ extension AmityPostGalleryTableViewCell: AmityPhotoViewerControllerDataSource {
         let media = galleryCollectionView.medias[index]
         
         switch media.state {
-        case .downloadableImage(let fileURL, _):
+        case .downloadableImage(let imageData, _):
             imageView.loadImage(
-                with: fileURL,
+                with: imageData.fileURL,
                 size: .full,
                 placeholder: nil,
                 optimisticLoad: true
