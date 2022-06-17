@@ -46,6 +46,7 @@ class AmityUserProfileEditorScreenViewModel: AmityUserProfileEditorScreenViewMod
         dispatchGroup.enter()
         amityUserUpdateBuilder.setDisplayName(displayName)
         amityUserUpdateBuilder.setUserDescription(about)
+        amityUserUpdateBuilder.setAvatarCustomUrl(nil)
         AmityUIKitManagerInternal.shared.client.updateUser(amityUserUpdateBuilder, completion: completion)
         
         dispatchGroup.notify(queue: DispatchQueue.main) { error in
