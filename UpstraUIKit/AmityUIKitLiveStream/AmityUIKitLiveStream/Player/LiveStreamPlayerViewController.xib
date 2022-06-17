@@ -159,7 +159,7 @@ to watch shortly.</string>
                                 <constraint firstAttribute="height" constant="47" id="4OF-KG-YV0"/>
                                 <constraint firstAttribute="width" constant="60" id="yzF-En-GVf"/>
                             </constraints>
-                            <state key="normal" image="media_player_close_button"/>
+                            <state key="normal" image="close"/>
                             <connections>
                                 <action selector="closeButtonDidTouch" destination="-1" eventType="touchUpInside" id="u2a-OD-FOA"/>
                             </connections>
@@ -252,8 +252,8 @@ to watch shortly.</string>
                                 <action selector="dislikeButtonDidTouch" destination="-1" eventType="touchUpInside" id="AHh-we-iEV"/>
                             </connections>
                         </button>
-                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="OpI-Sn-EgU">
-                            <rect key="frame" x="123" y="91" width="0.0" height="17"/>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="OpI-Sn-EgU">
+                            <rect key="frame" x="118.5" y="91" width="9" height="17"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="17" id="azu-CQ-aQX"/>
                             </constraints>
@@ -306,9 +306,9 @@ to watch shortly.</string>
         </view>
     </objects>
     <resources>
+        <image name="close" width="32" height="32"/>
         <image name="like_button" width="45" height="44"/>
         <image name="like_fill_button" width="43" height="42"/>
-        <image name="media_player_close_button" width="60" height="47"/>
         <image name="pause_button" width="64" height="64"/>
         <image name="play_button" width="64" height="64"/>
         <image name="shared" width="38" height="38"/>
