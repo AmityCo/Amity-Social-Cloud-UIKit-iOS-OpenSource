@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="17701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="20037" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17703"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="20020"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
-        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="AmityCommunityProfileEditorViewController" customModule="AmityUIKit" customModuleProvider="target">
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="AmityCommunityProfileEditorViewController" customModule="AmityUIKit">
             <connections>
                 <outlet property="aboutLineView" destination="tfG-Zq-bQj" id="9hf-Wm-yRi"/>
                 <outlet property="addMemberLineView" destination="6Vi-bH-53Y" id="Oa4-pC-fhI"/>
@@ -65,7 +65,7 @@
                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="uic-5e-PGy" userLabel="Community Picture">
                                     <rect key="frame" x="0.0" y="0.0" width="414" height="310.5"/>
                                     <subviews>
-                                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="nFf-MO-rk6" customClass="AmityImageView" customModule="AmityUIKit" customModuleProvider="target">
+                                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="nFf-MO-rk6" customClass="AmityImageView" customModule="AmityUIKit">
                                             <rect key="frame" x="0.0" y="0.0" width="414" height="310.5"/>
                                             <constraints>
                                                 <constraint firstAttribute="width" secondItem="nFf-MO-rk6" secondAttribute="height" multiplier="4:3" id="ghC-oA-QlY"/>
@@ -130,7 +130,7 @@
                                                 <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="4" translatesAutoresizingMaskIntoConstraints="NO" id="FYA-YD-BwE">
                                                     <rect key="frame" x="0.0" y="28.5" width="382" height="180.5"/>
                                                     <subviews>
-                                                        <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="rXD-AP-32g" customClass="AmityTextField" customModule="AmityUIKit" customModuleProvider="target">
+                                                        <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="rXD-AP-32g" customClass="AmityTextField" customModule="AmityUIKit">
                                                             <rect key="frame" x="0.0" y="0.0" width="382" height="40"/>
                                                             <constraints>
                                                                 <constraint firstAttribute="height" constant="40" id="tlA-l6-edw"/>
@@ -193,7 +193,7 @@
                                                         <stackView opaque="NO" contentMode="scaleToFill" alignment="top" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="Jxv-H5-npx">
                                                             <rect key="frame" x="0.0" y="0.0" width="382" height="112.5"/>
                                                             <subviews>
-                                                                <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" scrollEnabled="NO" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="3bC-Dd-eE1" customClass="AmityTextView" customModule="AmityUIKit" customModuleProvider="target">
+                                                                <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" scrollEnabled="NO" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="3bC-Dd-eE1" customClass="AmityTextView" customModule="AmityUIKit">
                                                                     <rect key="frame" x="0.0" y="0.0" width="344" height="40"/>
                                                                     <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                                                     <constraints>
@@ -399,7 +399,7 @@
                                                             <rect key="frame" x="0.0" y="4.5" width="40" height="40"/>
                                                             <subviews>
                                                                 <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon_private" translatesAutoresizingMaskIntoConstraints="NO" id="5Wf-El-1zn">
-                                                                    <rect key="frame" x="8" y="8" width="24" height="24"/>
+                                                                    <rect key="frame" x="10" y="10" width="20" height="20"/>
                                                                 </imageView>
                                                             </subviews>
                                                             <color key="backgroundColor" systemColor="systemBackgroundColor"/>
@@ -486,7 +486,7 @@
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" ambiguous="YES" dataMode="none" translatesAutoresizingMaskIntoConstraints="NO" id="wws-Xt-lDI" customClass="AmityDynamicHeightCollectionView" customModule="AmityUIKit" customModuleProvider="target">
+                                                <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" ambiguous="YES" dataMode="none" translatesAutoresizingMaskIntoConstraints="NO" id="wws-Xt-lDI" customClass="AmityDynamicHeightCollectionView" customModule="AmityUIKit">
                                                     <rect key="frame" x="0.0" y="40.5" width="382" height="327"/>
                                                     <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                     <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="Hra-FL-ym3">
@@ -571,7 +571,7 @@
     </objects>
     <resources>
         <image name="icon_close_with_background" width="16" height="16"/>
-        <image name="icon_private" width="24" height="24"/>
+        <image name="icon_private" width="20" height="20"/>
         <image name="icon_public" width="18" height="18"/>
         <image name="icon_radio_off" width="24" height="24"/>
         <systemColor name="labelColor">
