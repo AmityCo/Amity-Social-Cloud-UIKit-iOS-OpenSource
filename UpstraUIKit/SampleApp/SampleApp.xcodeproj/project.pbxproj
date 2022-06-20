@@ -826,8 +826,8 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 2.19.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.ekoapp.sample;
+				MARKETING_VERSION = 2.19.0.8.1;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.amity.professional-service-team";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_INCLUDE_PATHS = "";
 				SWIFT_VERSION = 5.0;
@@ -853,8 +853,8 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 2.19.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.ekoapp.sample;
+				MARKETING_VERSION = 2.19.0.8.1;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.amity.professional-service-team";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = RELEASE;
 				SWIFT_INCLUDE_PATHS = "";

@@ -8,10 +8,19 @@
 
 import UIKit
 
+public enum PostFromTodayType {
+    case generic
+    case camera
+    case photo
+    case video
+    case poll
+}
+
 final public class AmityPostTargetPickerViewController: AmityViewController {
     
     /// Set this variable to indicate post type to create.
     var postContentType: AmityPostContentType = .post
+    var postType: PostFromTodayType?
 
     private let tableView = UITableView(frame: .zero, style: .plain)
     private let screenViewModel = AmityPostTargetPickerScreenViewModel()
@@ -28,6 +37,12 @@ final public class AmityPostTargetPickerViewController: AmityViewController {
     public static func make(postContentType: AmityPostContentType = .post) -> AmityPostTargetPickerViewController {
         let vc = AmityPostTargetPickerViewController()
         vc.postContentType = postContentType
+        return vc
+    }
+    
+    public static func makeFromToday(postType: PostFromTodayType? = nil) -> AmityPostTargetPickerViewController {
+        let vc = AmityPostTargetPickerViewController()
+        vc.postType = postType
         return vc
     }
 
@@ -130,7 +145,11 @@ extension AmityPostTargetPickerViewController: UITableViewDelegate {
             postTarget = .community(object: community)
         }
         
-        AmityEventHandler.shared.postTargetDidSelect(from: self, postTarget: postTarget, postContentType: self.postContentType)
+        if postType != nil {
+            AmityEventHandler.shared.postTargetDidSelectFromToday(from: self, postTarget: postTarget, postType: self.postType!)
+        } else {
+            AmityEventHandler.shared.postTargetDidSelect(from: self, postTarget: postTarget, postContentType: self.postContentType)
+        }
     }
     
 }

@@ -110,6 +110,15 @@ open class AmityEventHandler {
     ) {
         createPostDidTap(from: source, postTarget: postTarget, postContentType: postContentType, openByProfileTrueID: openByProfileTrueID)
     }
+    
+    open func postTargetDidSelectFromToday(
+        from source: AmityViewController,
+        postTarget: AmityPostTarget,
+        postType: PostFromTodayType,
+        openByProfileTrueID: Bool = false
+    ) {
+        createPostDidTapFromToday(from: source, postTarget: postTarget, postType: postType)
+    }
         
     /// Event for post creator
     /// It will be triggered when post button is tapped
@@ -206,6 +215,58 @@ open class AmityEventHandler {
         }
         
     }
+    
+    open func createPostDidTapFromToday(from source: AmityViewController, postTarget: AmityPostTarget, postType: PostFromTodayType) {
+        
+        var viewController: AmityViewController
+        switch postType {
+        case .generic:
+            viewController = AmityPostCreatorViewController.make(postTarget: postTarget, postType: postType)
+            source.navigationController?.pushViewController(viewController, animated: true)
+        case .camera:
+            viewController = AmityPostCreatorViewController.make(postTarget: postTarget, postType: postType)
+            source.navigationController?.pushViewController(viewController, animated: true)
+        case .photo:
+            viewController = AmityPostCreatorViewController.make(postTarget: postTarget, postType: postType)
+            source.navigationController?.pushViewController(viewController, animated: true)
+        case .video:
+            viewController = AmityPostCreatorViewController.make(postTarget: postTarget, postType: postType)
+            source.navigationController?.pushViewController(viewController, animated: true)
+        case .poll:
+            viewController = AmityPollCreatorViewController.make(postTarget: postTarget)
+            source.navigationController?.pushViewController(viewController, animated: true)
+        }
+        
+        
+        
+//        if openByProfileTrueID {
+//            let navigationController = UINavigationController(rootViewController: viewController)
+//            navigationController.modalPresentationStyle = .overFullScreen
+//            source.present(navigationController, animated: true, completion: nil)
+//        } else {
+//            if source.isModalPresentation {
+//                // a source is presenting. push a new vc.
+//                if source.isKind(of: AmityPostTargetPickerViewController.self) {
+//                    source.navigationController?.pushViewController(viewController, animated: true)
+//                    return
+//                }
+//
+//                if case .myFeed = postTarget {
+//                    source.navigationController?.pushViewController(viewController, animated: true)
+//                    return
+//                }
+//
+//                let navigationController = UINavigationController(rootViewController: viewController)
+//                navigationController.modalPresentationStyle = .overFullScreen
+//                source.present(navigationController, animated: true, completion: nil)
+//            } else {
+//                let navigationController = UINavigationController(rootViewController: viewController)
+//                navigationController.modalPresentationStyle = .overFullScreen
+//                source.present(navigationController, animated: true, completion: nil)
+//            }
+//        }
+        
+    }
     /// This function will triggered when the user choose to "create live stream post".
     ///
     /// - Parameters:
@@ -278,6 +339,9 @@ open class AmityEventHandler {
     
     /// TrueID Set URL Advertisement
     open func setURLAdvertisement(_ url: String) {}
+    
+    /// TrueID finish post from Today
+    open func finishPostFromToday(_ success: Bool) {}
     
     //MARK: - AnalyticNCCEvent
     open func communityTopbarSearchTracking() {}
