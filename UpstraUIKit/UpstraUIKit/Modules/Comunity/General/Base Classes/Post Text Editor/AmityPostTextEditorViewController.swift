@@ -788,9 +788,9 @@ extension AmityPostTextEditorViewController: TrueIDGalleryCollectionViewDelegate
                 break
             case .localURL(url: _):
                 break
-            case .downloadableImage(fileURL: _, placeholder: _):
+            case .downloadableImage(imageData: _, placeholder: _):
                 break
-            case .downloadableVideo(videoURL: _, thumbnailUrl: _):
+            case .downloadableVideo(videoData: _, thumbnailUrl: _):
                 break
             case .none:
                 break

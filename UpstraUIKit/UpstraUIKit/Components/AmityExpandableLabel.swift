@@ -203,6 +203,20 @@ open class AmityExpandableLabel: UILabel {
         expandedAttributedLink = NSMutableAttributedString(string: lessLink,
                                                            attributes: alignedattributes)
     }
+    
+    open class func height(for text: String, font: UIFont, boundingWidth: CGFloat, maximumLines: Int) -> CGFloat {
+        let attributedString = NSAttributedString(string: text, attributes: [NSAttributedString.Key.font: font])
+        let linesCount = attributedString.lines(for: boundingWidth).count
+        let actualHeight = attributedString.boundingRect(for: boundingWidth).height
+        
+        if maximumLines == 0 || linesCount <= maximumLines {
+            return ceil(actualHeight)
+        } else {
+            let oneLineHeight = actualHeight / CGFloat(linesCount)
+            return ceil(oneLineHeight * CGFloat(maximumLines))
+        }
+    }
+    
 }
 
 // MARK: - Touch Handling
@@ -424,7 +438,7 @@ extension AmityExpandableLabel {
 
 // MARK: Convenience Methods
 
-private extension NSAttributedString {
+extension NSAttributedString {
     func hasFontAttribute() -> Bool {
         guard !self.string.isEmpty else { return false }
         let font = self.attribute(.font, at: 0, effectiveRange: nil) as? UIFont
@@ -488,6 +502,7 @@ private extension NSAttributedString {
         return self.boundingRect(with: CGSize(width: width, height: .greatestFiniteMagnitude),
                                  options: .usesLineFragmentOrigin, context: nil)
     }
+    
 }
 
 extension String {

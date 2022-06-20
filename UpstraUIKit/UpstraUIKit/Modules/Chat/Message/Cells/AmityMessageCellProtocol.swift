@@ -16,6 +16,7 @@ public protocol AmityMessageCellProtocol: UITableViewCell, AmityCellIdentifiable
 
 protocol AmityMessageCellDelegate: AnyObject {
     func performEvent(_ cell: AmityMessageTableViewCell, events: AmityMessageCellEvents)
+    func performEvent(_ cell: AmityMessageTableViewCell, labelEvents: AmityMessageLabelEvents)
 }
 
 enum AmityMessageCellEvents {
@@ -27,3 +28,10 @@ enum AmityMessageCellEvents {
     case audioFinishPlaying
 }
 
+enum AmityMessageLabelEvents {
+    case tapExpandableLabel(label: AmityExpandableLabel)
+    case willExpandExpandableLabel(label: AmityExpandableLabel)
+    case didExpandExpandableLabel(label: AmityExpandableLabel)
+    case willCollapseExpandableLabel(label: AmityExpandableLabel)
+    case didCollapseExpandableLabel(label: AmityExpandableLabel)
+}

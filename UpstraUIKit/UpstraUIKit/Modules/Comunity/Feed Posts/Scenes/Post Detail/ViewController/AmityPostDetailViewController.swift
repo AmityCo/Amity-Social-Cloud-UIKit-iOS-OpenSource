@@ -288,6 +288,12 @@ extension AmityPostDetailViewController: AmityPostTableViewDelegate {
         return separatorView
     }
     
+    func tableView(_ tableView: AmityPostTableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        if tableView.isBottomReached {
+            screenViewModel.loadMoreComments()
+        }
+    }
+    
 }
 
 // MARK: - AmityPostTableViewDataSource
@@ -350,7 +356,19 @@ extension AmityPostDetailViewController: AmityPostTableViewDataSource {
 
 extension AmityPostDetailViewController: AmityPostDetailScreenViewModelDelegate {
     
-    // MARK: Post
+    // MARK: - Loading state
+    func screenViewModel(_ viewModel: AmityPostDetailScreenViewModelType, didUpdateloadingState state: AmityLoadingState) {
+        switch state {
+        case .loading:
+            tableView.showLoadingIndicator()
+        case .loaded:
+            tableView.tableFooterView = nil
+        case .initial:
+            break
+        }
+    }
+    
+    // MARK: - Post
     func screenViewModelDidUpdateData(_ viewModel: AmityPostDetailScreenViewModelType) {
         tableView.reloadData()
         if let post = screenViewModel.post {
@@ -419,12 +437,16 @@ extension AmityPostDetailViewController: AmityPostDetailScreenViewModelDelegate 
             isEverFetch = true
         }
     }
-    
-    // MARK: Comment
-    func screenViewModelDidCreateComment(_ viewModel: AmityPostDetailScreenViewModelType) {
+    // MARK: - Comment
+    func screenViewModelDidCreateComment(_ viewModel: AmityPostDetailScreenViewModelType, comment: AmityCommentModel) {
         // Do something with success
         if isFromEditTextViewController {
             editTextViewController?.dismiss(animated: true, completion: nil)
+        }
+        if comment.parentId == nil {
+            // When new parent comment is created, it will not show in query stream.
+            // We forcibly fetch a comment list to include new added comments.
+            screenViewModel.action.fetchComments()
         }
     }
     
@@ -476,6 +498,7 @@ extension AmityPostDetailViewController: AmityPostDetailScreenViewModelDelegate 
             handleCreatePostError(error)
         }
     }
+    
 }
 
 // MARK: - AmityPostHeaderProtocolHandlerDelegate

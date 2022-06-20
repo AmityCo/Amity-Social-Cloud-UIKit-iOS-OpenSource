@@ -411,8 +411,8 @@ extension AmityPostGalleryViewController: AmityPhotoViewerControllerDataSource {
         }
         
         switch currentMedia.state {
-        case .downloadableImage(let fileURL, _):
-            imageView.loadImage(with: fileURL, size: .full, placeholder: nil, optimisticLoad: true)
+        case .downloadableImage(let imageData, _):
+            imageView.loadImage(with: imageData.fileURL, size: .full, placeholder: nil, optimisticLoad: true)
         default:
             assertionFailure("Not supported")
             break
