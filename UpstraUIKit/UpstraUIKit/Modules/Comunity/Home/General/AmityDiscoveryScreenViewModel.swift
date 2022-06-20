@@ -86,8 +86,7 @@ class AmityDiscoveryScreenViewModel {
     
     func getDiscoveryItem(){
         customAPIRequest.getDiscoveryData(page_number: paginateNumber) { discoveryArray in
-            let shuffleDiscoveryArray = discoveryArray.shuffled()
-            self.discoveryItems.append(contentsOf: shuffleDiscoveryArray)
+//            let shuffleDiscoveryArray = discoveryArray.shuffled()
             self.discoveryItems.append(contentsOf: discoveryArray)
             DispatchQueue.main.async {
                 AmityHUD.hide()

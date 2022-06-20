@@ -41,7 +41,7 @@ public extension AmityMessageListViewController {
 }
 
 /// Amity Message List
-public final class AmityMessageListViewController: AmityViewController {
+public final class AmityMessageListViewController: AmityViewController, AmityMessageListHeaderViewDelegate {
     
     public weak var dataSource: AmityMessageListDataSource?
     
@@ -135,6 +135,10 @@ public final class AmityMessageListViewController: AmityViewController {
         }
         messageViewController.setupView()
     }
+    
+    func avatarDidTapGesture(userId: String) {
+        AmityEventHandler.shared.userDidTap(from: self, userId: userId)
+    }
 }
 
 // MARK: - Action
@@ -213,6 +217,7 @@ private extension AmityMessageListViewController {
     func setupCustomNavigationBar() {
         navigationBarType = .custom
         navigationHeaderViewController = AmityMessageListHeaderView(viewModel: screenViewModel)
+        navigationHeaderViewController.delegate = self
         let headerType: AmityNavigationBarType
         if navigationController?.viewControllers.count ?? 0 <= 1 {
             if presentingViewController != nil {
