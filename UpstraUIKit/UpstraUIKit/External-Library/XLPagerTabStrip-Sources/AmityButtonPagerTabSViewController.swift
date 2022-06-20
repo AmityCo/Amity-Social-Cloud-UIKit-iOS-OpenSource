@@ -98,8 +98,12 @@ public class AmityButtonPagerTabSViewController: AmityPagerTabViewController, Pa
 
     public override func viewDidLoad() {
         super.viewDidLoad()
-        
+        #if SWIFT_PACKAGE
+        var bundle = Bundle.module
+        #else
         var bundle = Bundle(for: ButtonBarViewCell.self)
+        #endif
+
         if let resourcePath = bundle.path(forResource: "XLPagerTabStrip", ofType: "bundle") {
             if let resourcesBundle = Bundle(path: resourcePath) {
                 bundle = resourcesBundle

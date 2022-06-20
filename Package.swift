@@ -24,7 +24,10 @@ let package = Package(
         .target(
             name: "AmityUIKit",
             dependencies: ["AmitySDK"],
-            path: "UpstraUIKit/UpstraUIKit"
+            path: "UpstraUIKit/UpstraUIKit",
+            resources: [
+                .process("Localization/AmityLocalizable.strings")
+            ]
         )
     ]
 )
