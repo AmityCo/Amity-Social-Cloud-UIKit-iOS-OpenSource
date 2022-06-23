@@ -133,6 +133,31 @@ class AmityCustomEventHandler: AmityEventHandler {
         debugPrint("Screen name: \(screenName) | Community Model: \(communityModel)")
     }
     
+    override func finishPostFromToday(_ success: Bool) {
+//        var alertMessage = ""
+        if success {
+            debugPrint("Success to post.")
+//            alertMessage = "Success to post."
+        } else {
+            debugPrint("Fail to post.")
+//            alertMessage = "Fail to post."
+        }
+//        
+//        let alertVC = UIAlertController(title: "Post status.", message: alertMessage, preferredStyle: .alert)
+//        alertVC.addAction(UIAlertAction(title: "ok", style: .default, handler: nil))
+//        
+//        let keyWindow = UIApplication.shared.windows.filter {$0.isKeyWindow}.first
+//
+//        if var topController = keyWindow?.rootViewController {
+//            while let presentedViewController = topController.presentedViewController {
+//                topController = presentedViewController
+//            }
+//
+//            // topController should now be your topmost view controller
+//            topController.present(alertVC, animated: true, completion: nil)
+//        }
+    }
+    
 //    override func timelineFeedDidScroll(_ scrollView: UIScrollView) {
 //        debugPrint(scrollView as Any)
 //    }

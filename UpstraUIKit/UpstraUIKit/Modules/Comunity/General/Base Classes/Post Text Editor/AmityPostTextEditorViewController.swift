@@ -46,6 +46,7 @@ public class AmityPostTextEditorViewController: AmityViewController {
     private let settings: AmityPostEditorSettings
     private var screenViewModel: AmityPostTextEditorScreenViewModelType = AmityPostTextEditorScreenViewModel()
     private let postTarget: AmityPostTarget
+    private let postType: PostFromTodayType?
     private let postMode: AmityPostMode
     
     private let comunityPanelView = AmityComunityPanelView(frame: .zero)
@@ -80,6 +81,31 @@ public class AmityPostTextEditorViewController: AmityViewController {
     init(postTarget: AmityPostTarget, postMode: AmityPostMode, settings: AmityPostEditorSettings) {
         
         self.postTarget = postTarget
+        self.postType = nil
+        self.postMode = postMode
+        self.settings = settings
+        self.postMenuView = AmityPostTextEditorMenuView(allowPostAttachments: settings.allowPostAttachments)
+        self.mentionTableView = AmityMentionTableView(frame: .zero)
+        
+        if postMode == .create {
+            var communityId: String? = nil
+            switch postTarget {
+            case .community(let community):
+                communityId = community.isPublic ? nil : community.communityId
+            default: break
+            }
+            mentionManager = AmityMentionManager(withType: .post(communityId: communityId))
+        }
+        
+        super.init(nibName: nil, bundle: nil)
+        
+        screenViewModel.delegate = self
+    }
+    
+    init(postTarget: AmityPostTarget, postType: PostFromTodayType, postMode: AmityPostMode, settings: AmityPostEditorSettings) {
+        
+        self.postTarget = postTarget
+        self.postType = postType
         self.postMode = postMode
         self.settings = settings
         self.postMenuView = AmityPostTextEditorMenuView(allowPostAttachments: settings.allowPostAttachments)
@@ -235,6 +261,19 @@ public class AmityPostTextEditorViewController: AmityViewController {
         mentionTableView.delegate = self
         mentionTableView.dataSource = self
         mentionManager?.delegate = self
+        
+        if postType != nil {
+            switch postType {
+            case .video:
+                postMenuView(postMenuView, didTap: .video)
+            case .photo:
+                postMenuView(postMenuView, didTap: .album)
+            case .camera:
+                postMenuView(postMenuView, didTap: .camera)
+            default:
+                break
+            }
+        }
     }
     
     public override func viewWillAppear(_ animated: Bool) {
@@ -749,9 +788,9 @@ extension AmityPostTextEditorViewController: TrueIDGalleryCollectionViewDelegate
                 break
             case .localURL(url: _):
                 break
-            case .downloadableImage(fileURL: _, placeholder: _):
+            case .downloadableImage(imageData: _, placeholder: _):
                 break
-            case .downloadableVideo(videoURL: _, thumbnailUrl: _):
+            case .downloadableVideo(videoData: _, thumbnailUrl: _):
                 break
             case .none:
                 break
@@ -834,6 +873,7 @@ extension AmityPostTextEditorViewController: AmityPostTextEditorScreenViewModelD
     }
     
     func screenViewModelDidCreatePost(_ viewModel: AmityPostTextEditorScreenViewModel, post: AmityPost?, error: Error?) {
+        
         if let post = post {
             switch post.getFeedType() {
             case .reviewing:
@@ -851,6 +891,15 @@ extension AmityPostTextEditorViewController: AmityPostTextEditorScreenViewModelD
         } else {
             postButton.isEnabled = true
             dismiss(animated: true, completion: nil)
+        }
+        
+        //If post from 'Today' page. Tell client to redirect
+        if postType != nil {
+            if error == nil {
+                AmityEventHandler.shared.finishPostFromToday(true)
+            } else {
+                AmityEventHandler.shared.finishPostFromToday(false)
+            }
         }
     }
     
@@ -1136,19 +1185,19 @@ extension AmityPostTextEditorViewController: AmityMentionManagerDelegate {
     }
     
     public func didGetUsers(users: [AmityMentionUserModel]) {
-//        if users.isEmpty {
-//            mentionTableViewHeightConstraint.constant = 0
-//            mentionTableView.isHidden = true
-//        } else {
-//            var heightConstant:CGFloat = 240.0
-//            if users.count < 5 {
-//                heightConstant = CGFloat(users.count) * 52.0
-//            }
-//            mentionTableViewHeightConstraint.constant = heightConstant
-//            mentionTableView.isHidden = false
-//            mentionTableView.reloadData()
-//        }
-        mentionTableView.isHidden = true
+        if users.isEmpty {
+            mentionTableViewHeightConstraint.constant = 0
+            mentionTableView.isHidden = true
+        } else {
+            var heightConstant:CGFloat = 240.0
+            if users.count < 5 {
+                heightConstant = CGFloat(users.count) * 52.0
+            }
+            mentionTableViewHeightConstraint.constant = heightConstant
+            mentionTableView.isHidden = false
+            mentionTableView.reloadData()
+        }
+//        mentionTableView.isHidden = true
     }
     
     public func didMentionsReachToMaximumLimit() {

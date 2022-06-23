@@ -79,6 +79,16 @@ public class AmityEditTextViewController: AmityViewController {
         }
     }
     
+    public override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        AmityKeyboardService.shared.delegate = self
+    }
+    
+    public override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        AmityKeyboardService.shared.delegate = nil
+    }
+    
     public override func didTapLeftBarButton() {
         dismissHandler?()
     }
@@ -112,7 +122,6 @@ public class AmityEditTextViewController: AmityViewController {
         textView.placeholder = AmityLocalizedStringSet.textMessagePlaceholder.localizedString
         textView.showsVerticalScrollIndicator = false
         textView.customTextViewDelegate = self
-        AmityKeyboardService.shared.delegate = self
     }
     
     private func setupMentionTableView() {
@@ -221,19 +230,19 @@ extension AmityEditTextViewController: AmityMentionManagerDelegate {
     }
     
     public func didGetUsers(users: [AmityMentionUserModel]) {
-//        if users.isEmpty {
-//            mentionTableViewHeightConstraint.constant = 0
-//            mentionTableView.isHidden = true
-//        } else {
-//            var heightConstant:CGFloat = 240.0
-//            if users.count < 5 {
-//                heightConstant = CGFloat(users.count) * 52.0
-//            }
-//            mentionTableViewHeightConstraint.constant = heightConstant
-//            mentionTableView.isHidden = false
-//            mentionTableView.reloadData()
-//        }
-        mentionTableView.isHidden = true
+        if users.isEmpty {
+            mentionTableViewHeightConstraint.constant = 0
+            mentionTableView.isHidden = true
+        } else {
+            var heightConstant:CGFloat = 240.0
+            if users.count < 5 {
+                heightConstant = CGFloat(users.count) * 52.0
+            }
+            mentionTableViewHeightConstraint.constant = heightConstant
+            mentionTableView.isHidden = false
+            mentionTableView.reloadData()
+        }
+//        mentionTableView.isHidden = true
     }
     
     public func didMentionsReachToMaximumLimit() {

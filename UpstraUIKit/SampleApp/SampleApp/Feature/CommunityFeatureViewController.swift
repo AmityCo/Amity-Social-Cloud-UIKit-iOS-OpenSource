@@ -28,7 +28,6 @@ class CommunityFeatureViewController: UIViewController {
         case customPostRankingGlobalFeed
         case myProfile
         case postCreator
-        case multipleFeeds
         case PostCreator
         case myFeed
         case homeByDeeplink
@@ -42,6 +41,11 @@ class CommunityFeatureViewController: UIViewController {
         case gallery
         case notification
         case client
+        case postFromTodayText
+        case postFromTodayGallery
+        case postFromTodayCamera
+        case postFromTodayVideo
+        case postFromTodayPoll
         
         var text: String {
             switch self {
@@ -57,8 +61,6 @@ class CommunityFeatureViewController: UIViewController {
                 return "My Profile"
             case .postCreator:
                 return "Post Creator"
-            case .multipleFeeds:
-                return "Multiple Feeds"
             case .myFeed:
                 return "MyFeed"
             case .homeByDeeplink:
@@ -85,6 +87,16 @@ class CommunityFeatureViewController: UIViewController {
                 return "client"
             case .PostCreator:
                 return "postCreator"
+            case .postFromTodayText:
+                return "Post from Today - Text"
+            case .postFromTodayGallery:
+                return "Post from Today - Gallery"
+            case .postFromTodayCamera:
+                return "Post from Today - Camera"
+            case .postFromTodayVideo:
+                return "Post from Today - Video"
+            case .postFromTodayPoll:
+                return "Post from Today - Poll"
             }
         }
     }
@@ -182,9 +194,6 @@ extension CommunityFeatureViewController: UITableViewDelegate {
         case .myProfile:
             let myUserProfileViewController = AmityUserProfilePageViewController.make(withUserId: AmityUIKitManager.client.currentUserId ?? "")
             navigationController?.pushViewController(myUserProfileViewController, animated: true)
-        case .multipleFeeds:
-            let samplePageViewController = SamplePageViewController()
-            navigationController?.pushViewController(samplePageViewController, animated: true)
         case .postCreator:
             if #available(iOS 14.0, *) {
                 var postCreateSettingsPage = PostCreatorSettingsPage()
@@ -244,6 +253,31 @@ extension CommunityFeatureViewController: UITableViewDelegate {
             debugPrint(AmityUIKitManager.client)
         case .PostCreator:
             break
+        case .postFromTodayText:
+            let postTarget = AmityPostTargetPickerViewController.makeFromToday(postType: .generic)
+            let nav = UINavigationController(rootViewController: postTarget)
+            nav.modalPresentationStyle = .fullScreen
+            present(nav, animated: true, completion: nil)
+        case .postFromTodayGallery:
+            let postTarget = AmityPostTargetPickerViewController.makeFromToday(postType: .photo)
+            let nav = UINavigationController(rootViewController: postTarget)
+            nav.modalPresentationStyle = .fullScreen
+            present(nav, animated: true, completion: nil)
+        case .postFromTodayCamera:
+            let postTarget = AmityPostTargetPickerViewController.makeFromToday(postType: .camera)
+            let nav = UINavigationController(rootViewController: postTarget)
+            nav.modalPresentationStyle = .fullScreen
+            present(nav, animated: true, completion: nil)
+        case .postFromTodayVideo:
+            let postTarget = AmityPostTargetPickerViewController.makeFromToday(postType: .video)
+            let nav = UINavigationController(rootViewController: postTarget)
+            nav.modalPresentationStyle = .fullScreen
+            present(nav, animated: true, completion: nil)
+        case .postFromTodayPoll:
+            let postTarget = AmityPostTargetPickerViewController.makeFromToday(postType: .poll)
+            let nav = UINavigationController(rootViewController: postTarget)
+            nav.modalPresentationStyle = .fullScreen
+            present(nav, animated: true, completion: nil)
         }
         
     }

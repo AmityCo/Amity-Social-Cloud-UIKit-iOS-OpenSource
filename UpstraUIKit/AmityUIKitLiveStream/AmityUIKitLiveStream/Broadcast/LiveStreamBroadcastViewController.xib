@@ -125,8 +125,8 @@
                                 <action selector="shareButtonDidTouch" destination="-1" eventType="touchUpInside" id="kZp-DV-qai"/>
                             </connections>
                         </button>
-                        <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="vhD-qv-wl6">
-                            <rect key="frame" x="138" y="781" width="0.0" height="17"/>
+                        <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="vhD-qv-wl6">
+                            <rect key="frame" x="133.5" y="781" width="9" height="17"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="17" id="zwz-kQ-P9W"/>
                             </constraints>

@@ -162,6 +162,30 @@ extension AmityMessageListTableViewController {
 }
 
 extension AmityMessageListTableViewController: AmityMessageCellDelegate {
+    
+    func performEvent(_ cell: AmityMessageTableViewCell, labelEvents: AmityMessageLabelEvents) {
+        guard let message = cell.message else { return }
+        
+        switch labelEvents {
+        case .tapExpandableLabel:
+            break
+        case .willExpandExpandableLabel, .willCollapseExpandableLabel:
+            tableView.beginUpdates()
+        case .didExpandExpandableLabel(let label):
+            message.appearance.isExpanding = true
+            tableView.endUpdates()
+            let point = label.convert(CGPoint.zero, to: tableView)
+            if let indexPath = tableView.indexPathForRow(at: point) as IndexPath? {
+                DispatchQueue.main.async { [weak self] in
+                    self?.tableView.scrollToRow(at: indexPath, at: .top, animated: true)
+                }
+            }
+        case .didCollapseExpandableLabel:
+            message.appearance.isExpanding = false
+            tableView.endUpdates()
+        }
+    }
+    
     func performEvent(_ cell: AmityMessageTableViewCell, events: AmityMessageCellEvents) {
         
         switch cell.message.messageType {
@@ -180,33 +204,6 @@ extension AmityMessageListTableViewController: AmityMessageCellDelegate {
     }
 }
 
-extension AmityMessageListTableViewController: AmityExpandableLabelDelegate {
-    
-    public func expandableLabeldidTap(_ label: AmityExpandableLabel) {
-        // Intentionally left empty
-    }
-    
-    public func willExpandLabel(_ label: AmityExpandableLabel) {
-        tableView.beginUpdates()
-    }
-    
-    public func didExpandLabel(_ label: AmityExpandableLabel) {
-        tableView.endUpdates()
-    }
-    
-    public func willCollapseLabel(_ label: AmityExpandableLabel) {
-        tableView.beginUpdates()
-    }
-    
-    public func didCollapseLabel(_ label: AmityExpandableLabel) {
-        tableView.endUpdates()
-    }
-    
-    public func didTapOnMention(_ label: AmityExpandableLabel, withUserId userId: String) {
-        // Intentionally left empty
-    }
-}
-
 // MARK: - Private functions
 extension AmityMessageListTableViewController {
     
@@ -216,7 +213,6 @@ extension AmityMessageListTableViewController {
             cell.delegate = self
             cell.setViewModel(with: screenViewModel)
             cell.setIndexPath(with: indexPath)
-            (cell as? AmityMessageTextTableViewCell)?.textDelegate = self
         }
         
         (cell as? AmityMessageCellProtocol)?.display(message: message)

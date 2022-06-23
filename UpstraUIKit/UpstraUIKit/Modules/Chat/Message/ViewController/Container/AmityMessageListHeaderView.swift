@@ -9,6 +9,10 @@
 import UIKit
 import AmitySDK
 
+protocol AmityMessageListHeaderViewDelegate {
+    func avatarDidTapGesture(userId: String)
+}
+
 final class AmityMessageListHeaderView: AmityView {
     
     // MARK: - Properties
@@ -25,7 +29,10 @@ final class AmityMessageListHeaderView: AmityView {
     private var screenViewModel: AmityMessageListScreenViewModelType?
     var amityNavigationBarType: AmityNavigationBarType = .push
     var avatarURL: String?
-
+    var userId: String?
+    
+    var delegate: AmityMessageListHeaderViewDelegate?
+    
     convenience init(viewModel: AmityMessageListScreenViewModelType) {
         self.init(frame: .zero)
         loadNibContent()
@@ -42,6 +49,11 @@ private extension AmityMessageListHeaderView {
         } else {
             screenViewModel?.action.route(for: .dissmiss)
         }
+    }
+    
+    @objc func avatarTap(_ sender: UITapGestureRecognizer) {
+        guard let userId = userId else { return }
+        delegate?.avatarDidTapGesture(userId: userId)
     }
 }
 
@@ -65,6 +77,11 @@ private extension AmityMessageListHeaderView {
         
         avatarView.image = nil
         avatarView.placeholder = AmityIconSet.defaultAvatar
+        
+        let tap = UITapGestureRecognizer(target: self, action: #selector(avatarTap))
+        let tapLabel = UITapGestureRecognizer(target: self, action: #selector(avatarTap))
+        avatarView.addGestureRecognizer(tap)
+        displayNameLabel.addGestureRecognizer(tapLabel)
     }
 }
 
@@ -85,6 +102,7 @@ extension AmityMessageListHeaderView {
                         self.token = self.repository?.getUser(userId ?? "").observe { [weak self] user, error in
                             self?.token?.invalidate()
                             guard let userObject = user.object else { return }
+                            self?.userId = userObject.userId
                             self?.displayNameLabel.text = userObject.displayName
                             let userModel = AmityUserModel(user: userObject)
                             if !userModel.avatarCustomURL.isEmpty {

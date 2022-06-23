@@ -11,10 +11,9 @@ import AmitySDK
 
 class AmityMessageTextTableViewCell: AmityMessageTableViewCell {
     
-    weak var textDelegate: AmityExpandableLabelDelegate? {
-        didSet {
-            textMessageView.delegate = textDelegate
-        }
+    enum Constant {
+        static let maximumLines: Int = 8
+        static let textMessageFont = AmityFontSet.body
     }
     
     @IBOutlet private var textMessageView: AmityExpandableLabel!
@@ -27,10 +26,11 @@ class AmityMessageTextTableViewCell: AmityMessageTableViewCell {
     private func setupView() {
         textMessageView.text = ""
         textMessageView.textAlignment = .left
-        textMessageView.numberOfLines = 8
+        textMessageView.numberOfLines = Constant.maximumLines
         textMessageView.isExpanded = false
-        textMessageView.font = AmityFontSet.body
+        textMessageView.font = Constant.textMessageFont
         textMessageView.backgroundColor = .clear
+        textMessageView.delegate = self
     }
         
     override func display(message: AmityMessageModel) {
@@ -38,13 +38,13 @@ class AmityMessageTextTableViewCell: AmityMessageTableViewCell {
         if message.isOwner {
             textMessageView.textColor = AmityColorSet.baseInverse
             textMessageView.readMoreColor = AmityColorSet.baseInverse
-            textMessageView.preferredMaxLayoutWidth = UIScreen.main.bounds.width - 108 // [Large Spacing + Text Padding + Spacing] -> [72 + 24 + 12]
         } else {
             textMessageView.textColor = AmityColorSet.base
             textMessageView.readMoreColor = AmityColorSet.highlight
-            textMessageView.preferredMaxLayoutWidth = UIScreen.main.bounds.width - 160 // [Spacing + Avatar + Text Padding + Large Spacing] -> [12 + 40 + 24 + 72]
         }
-        setText(message)
+        
+        textMessageView.text = message.text
+        textMessageView.isExpanded = message.appearance.isExpanding
     }
     
     override class func height(for message: AmityMessageModel, boundingWidth: CGFloat) -> CGFloat {
@@ -53,25 +53,66 @@ class AmityMessageTextTableViewCell: AmityMessageTableViewCell {
             return AmityMessageTableViewCell.deletedMessageCellHeight + displaynameHeight
         }
         
+        var height: CGFloat = 0
+        var actualWidth: CGFloat = 0
+        
         // for cell layout and calculation, please go check this pull request https://github.com/EkoCommunications/EkoMessagingSDKUIKitIOS/pull/713
         if message.isOwner {
             let horizontalPadding: CGFloat = 112
-            let actualWidth = boundingWidth - horizontalPadding
-            var height = message.text?.height(withConstrainedWidth: actualWidth, font: AmityFontSet.body) ?? 0.0
-            height += 64
-            return height
+            actualWidth = boundingWidth - horizontalPadding
+            
+            let verticalPadding: CGFloat = 64
+            height += verticalPadding
         } else {
             let horizontalPadding: CGFloat = 164
-            let actualWidth = boundingWidth - horizontalPadding
-            var height = message.text?.height(withConstrainedWidth: actualWidth, font: AmityFontSet.body) ?? 0.0
-            height += 98
-            return height
+            actualWidth = boundingWidth - horizontalPadding
+            
+            let verticalPadding: CGFloat = 98
+            height += verticalPadding
         }
+        
+        if let text = message.text {
+            let maximumLines = message.appearance.isExpanding ? 0 : Constant.maximumLines
+            let messageHeight = AmityExpandableLabel.height(for: text, font: Constant.textMessageFont, boundingWidth: actualWidth, maximumLines: maximumLines)
+            height += messageHeight
+        }
+        
+        return height
+        
     }
     
-    private func setText(_ message: AmityMessageModel) {
-        if message.messageType == .text {
-            textMessageView.text = message.text
-        }
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        textMessageView.isExpanded = false
     }
+    
+}
+
+extension AmityMessageTextTableViewCell: AmityExpandableLabelDelegate {
+    
+    public func expandableLabeldidTap(_ label: AmityExpandableLabel) {
+        delegate?.performEvent(self, labelEvents: .tapExpandableLabel(label: label))
+    }
+    
+    public func willExpandLabel(_ label: AmityExpandableLabel) {
+        delegate?.performEvent(self, labelEvents: .willExpandExpandableLabel(label: label))
+    }
+    
+    public func didExpandLabel(_ label: AmityExpandableLabel) {
+        delegate?.performEvent(self, labelEvents: .didExpandExpandableLabel(label: label))
+    }
+    
+    public func willCollapseLabel(_ label: AmityExpandableLabel) {
+        delegate?.performEvent(self, labelEvents: .willCollapseExpandableLabel(label: label))
+    }
+    
+    public func didCollapseLabel(_ label: AmityExpandableLabel) {
+        delegate?.performEvent(self, labelEvents: .didCollapseExpandableLabel(label: label))
+    }
+    
+    func didTapOnMention(_ label: AmityExpandableLabel, withUserId userId: String) {
+        // Intentionally left empty
+    }
+    
+    
 }

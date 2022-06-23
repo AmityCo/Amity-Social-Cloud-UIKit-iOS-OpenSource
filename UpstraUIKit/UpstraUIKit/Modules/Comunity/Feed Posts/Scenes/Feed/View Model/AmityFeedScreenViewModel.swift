@@ -315,8 +315,8 @@ extension AmityFeedScreenViewModel {
 
 // MARK: Comment
 extension AmityFeedScreenViewModel {
-    func delete(withComment comment: AmityCommentModel) {
-        commentController.delete(withComment: comment) { [weak self] (success, error) in
+    func delete(withCommentId commentId: String) {
+        commentController.delete(withCommentId: commentId) { [weak self] (success, error) in
             guard let strongSelf = self else { return }
             if success {
                 strongSelf.delegate?.screenViewModelDidDeleteCommentSuccess(strongSelf)
