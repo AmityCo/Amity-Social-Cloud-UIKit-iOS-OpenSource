@@ -115,9 +115,8 @@ public final class AmityFeedViewController: AmityViewController, AmityRefreshabl
         self.timer = Timer.scheduledTimer(withTimeInterval: 1, repeats: true, block: {_ in
             if self.screenViewModel.numberOfPostComponents() <= 1 {
                 self.screenViewModel.action.fetchPosts()
-            } else {
-                self.timer.invalidate()
             }
+            self.timer.invalidate()
         })
     }
 

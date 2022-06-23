@@ -283,8 +283,8 @@
 "post_review_settings_alert_fail_title_turn_off" = "ပို့စ်ပြန်လည်သုံးသပ်ခြင်းကို ပိတ်၍မရပါ";
 "modal_community_settings_title" = "သင့်အဖွဲ့အစည်းကို စိတ်ကြိုက်လုပ်ပါ။";
 "modal_community_settings_desc" = "သင်သည် အဖွဲ့အစည်းတစ်ခုကို အောင်မြင်စွာ ဖန်တီးပြီးဖြစ်သည်။ ယခု သင့်အတွက် အကောင်းဆုံး လုပ်ဆောင်နိုင်သော ခွင့်ပြုချက်များကို စီမံခန့်ခွဲကြပါစို့";
-"modal_community_settings_title" = "အကြောင်းအရာ မရှိသေးပါ။";
-"modal_community_settings_desc" = "ဤအကြောင်းအရာကို လက်ရှိတွင်မြန်မာနိုင်ငံမှာ မရှိသေးပါ။";
+"modal_community_not_found_title" = "အကြောင်းအရာ မရှိသေးပါ။";
+"modal_community_not_found_desc" = "ဤအကြောင်းအရာကို လက်ရှိတွင်မြန်မာနိုင်ငံမှာ မရှိသေးပါ။";
 "member_list_title" = "အဖွဲ့ဝင်များ";
 "chat_setting_leave_channel" = "စကားပြောခန်း မှထွက်ပါ။";
 "chat_setting_member" = "အဖွဲ့ဝင်များ";
