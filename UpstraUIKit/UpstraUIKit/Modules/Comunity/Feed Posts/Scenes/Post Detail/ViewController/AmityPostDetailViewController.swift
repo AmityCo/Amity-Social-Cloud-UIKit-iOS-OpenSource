@@ -816,19 +816,19 @@ extension AmityPostDetailViewController: AmityMentionManagerDelegate {
     }
     
     public func didGetUsers(users: [AmityMentionUserModel]) {
-//        if users.isEmpty {
-//            mentionTableViewHeightConstraint.constant = 0
-//            mentionTableView.isHidden = true
-//        } else {
-//            var heightConstant:CGFloat = 240.0
-//            if users.count < 5 {
-//                heightConstant = CGFloat(users.count) * 52.0
-//            }
-//            mentionTableViewHeightConstraint.constant = heightConstant
-//            mentionTableView.isHidden = false
-//            mentionTableView.reloadData()
-//        }
-        mentionTableView.isHidden = true
+        if users.isEmpty {
+            mentionTableViewHeightConstraint.constant = 0
+            mentionTableView.isHidden = true
+        } else {
+            var heightConstant:CGFloat = 240.0
+            if users.count < 5 {
+                heightConstant = CGFloat(users.count) * 52.0
+            }
+            mentionTableViewHeightConstraint.constant = heightConstant
+            mentionTableView.isHidden = false
+            mentionTableView.reloadData()
+        }
+//        mentionTableView.isHidden = true
     }
     
     public func didMentionsReachToMaximumLimit() {
