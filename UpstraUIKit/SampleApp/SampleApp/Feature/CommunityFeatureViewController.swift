@@ -201,8 +201,8 @@ extension CommunityFeatureViewController: UITableViewDelegate {
             let feedViewController = AmityUserFeedViewController.makeUserFeedByTrueIDProfile(withUserId: "victimIOS")
             navigationController?.pushViewController(feedViewController, animated: true)
         case .homeByDeeplink:
-            let home = AmityCommunityHomePageFullHeaderViewController.make(amityCommunityEventType: AmityCommunityEventTypeModel(openType: .post, postID: "62a6b9e151859300da9144be"))
-//            let home = AmityCommunityHomePageFullHeaderViewController.make(amityCommunityEventType: AmityCommunityEventTypeModel(openType: .community, communityID: "56701fa0443c1e92b43d89961fdc0cd4"))
+            let home = AmityCommunityHomePageFullHeaderViewController.make(amityCommunityEventType: AmityCommunityEventTypeModel(openType: .post, postID: "628c5143a4a89a00d91e6305"))
+//            let home = AmityCommunityHomePageFullHeaderViewController.make(amityCommunityEventType: AmityCommunityEventTypeModel(openType: .community, communityID: "622997f1a7693500dbf0e9df"))
 //            let home = AmityCommunityHomePageViewController.make(amityCommunityEventType: AmityCommunityEventTypeModel(openType: .category, categoryID: "b2f4c60313f99a7cb59a222cfcaccda1"))
 //            let home = AmityCommunityHomePageViewController.make(amityCommunityEventType: AmityCommunityEventTypeModel(openType: .chat, channelID: "AmityTestDeepLink"))
             navigationController?.pushViewController(home, animated: true)
