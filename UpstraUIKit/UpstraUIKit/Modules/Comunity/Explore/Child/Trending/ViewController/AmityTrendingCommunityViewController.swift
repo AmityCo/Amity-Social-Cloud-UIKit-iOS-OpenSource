@@ -107,7 +107,11 @@ extension AmityTrendingCommunityViewController: AmityTrendingCommunityScreenView
         tableViewHeight = 0
         heightTableViewContraint.constant = 0
         self.tableView.layoutIfNeeded()
-        heightTableViewContraint.constant = CGFloat(trending.count * 65)
+        if AmityUIKitManager.AmityLanguage == "my" {
+            heightTableViewContraint.constant = CGFloat(trending.count * 85)
+        } else {
+            heightTableViewContraint.constant = CGFloat(trending.count * 65)
+        }
         self.tableView.layoutIfNeeded()
         tableView.reloadData()
     }

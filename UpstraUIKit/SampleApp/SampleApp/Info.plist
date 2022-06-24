@@ -66,6 +66,8 @@
 	</array>
 	<key>UIAppFonts</key>
 	<array>
+		<string>NotoSansMyanmar-Regular.tft</string>
+		<string>NotoSansMyanmar-Bold.tft</string>
 		<string>NotoSans-Medium.ttf</string>
 		<string>NotoSans-Light.ttf</string>
 		<string>NotoSans-Regular.ttf</string>

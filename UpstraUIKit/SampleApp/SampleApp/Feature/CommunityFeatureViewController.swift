@@ -209,6 +209,15 @@ extension CommunityFeatureViewController: UITableViewDelegate {
         
         case .th:
             AmityUIKitManager.setLanguage(language: "th")
+            let myTypography = AmityTypography(
+                headerLine: UIFont(name: "NotoSansThai-Bold", size: 20)!,
+                title: UIFont(name: "NotoSansThai-Bold", size: 18)!,
+                bodyBold: UIFont(name: "NotoSansThai-Regular", size: 16)!,
+                body: UIFont(name: "NotoSansThai-Regular", size: 16)!,
+                captionBold: UIFont(name: "NotoSansThai-Regular", size: 14)!,
+                caption: UIFont(name: "NotoSansThai-Regular", size: 14)!)
+            
+            AmityUIKitManager.set(typography: myTypography)
             openHomePage()
         case .id:
             AmityUIKitManager.setLanguage(language: "id")
@@ -227,6 +236,15 @@ extension CommunityFeatureViewController: UITableViewDelegate {
             openHomePage()
         case .mm:
             AmityUIKitManager.setLanguage(language: "my")
+            let myTypography = AmityTypography(
+                headerLine: UIFont(name: "NotoSansMyanmar-Bold", size: 20)!,
+                title: UIFont(name: "NotoSansMyanmar-Bold", size: 18)!,
+                bodyBold: UIFont(name: "NotoSansMyanmar-Regular", size: 16)!,
+                body: UIFont(name: "NotoSansMyanmar-Regular", size: 16)!,
+                captionBold: UIFont(name: "NotoSansMyanmar-Regular", size: 14)!,
+                caption: UIFont(name: "NotoSansMyanmar-Regular", size: 14)!)
+            AmityUIKitManager.set(typography: myTypography)
+
             openHomePage()
         case .gallery:
             let galleryVC = AmityPostGalleryViewController.makeByTrueID(targetType: .user, targetId: UserDefaults.standard.value(forKey: UserDefaultsKey.userId) as! String, isHiddenButtonCreate: false)

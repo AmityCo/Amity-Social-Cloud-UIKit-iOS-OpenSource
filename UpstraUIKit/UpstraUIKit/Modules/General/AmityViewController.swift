@@ -193,7 +193,7 @@ open class AmityViewController: UIViewController {
 extension AmityViewController: UIGestureRecognizerDelegate {
     
     open func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
-        let isSystemSwipeToBackEnabled = navigationController?.interactivePopGestureRecognizer?.isEnabled == true
+        let isSystemSwipeToBackEnabled = navigationController?.interactivePopGestureRecognizer?.isEnabled == false
         let isThereStackedViewControllers = navigationController?.viewControllers.count ?? 0 > 1
         return isSystemSwipeToBackEnabled && isThereStackedViewControllers
     }
