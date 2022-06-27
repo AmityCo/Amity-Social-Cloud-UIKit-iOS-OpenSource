@@ -10,6 +10,7 @@ import UIKit
 import AmitySDK
 import AmityUIKit
 import SwiftUI
+import Photos
 
 class CommunityFeatureViewController: UIViewController {
     
@@ -46,6 +47,7 @@ class CommunityFeatureViewController: UIViewController {
         case postFromTodayCamera
         case postFromTodayVideo
         case postFromTodayPoll
+        case selectFromGallery
         
         var text: String {
             switch self {
@@ -97,6 +99,8 @@ class CommunityFeatureViewController: UIViewController {
                 return "Post from Today - Video"
             case .postFromTodayPoll:
                 return "Post from Today - Poll"
+            case .selectFromGallery:
+                return "Select media from gallery"
             }
         }
     }
@@ -278,6 +282,28 @@ extension CommunityFeatureViewController: UITableViewDelegate {
             let nav = UINavigationController(rootViewController: postTarget)
             nav.modalPresentationStyle = .fullScreen
             present(nav, animated: true, completion: nil)
+        case .selectFromGallery:
+            let supportedMediaTypes: Set<Settings.Fetch.Assets.MediaTypes>
+            var selectedAssets: [PHAsset] = []
+            // The closue to execute when picker finish picking the media.
+            let finish: ([PHAsset]) -> Void
+            
+            supportedMediaTypes = [.image]
+            finish = { [weak self] assets in
+                guard let strongSelf = self else { return }
+                
+                let postTarget = AmityPostTargetPickerViewController.makeFromToday(asset: assets)
+                let nav = UINavigationController(rootViewController: postTarget)
+                nav.modalPresentationStyle = .fullScreen
+                strongSelf.present(nav, animated: true, completion: nil)
+            }
+            
+            let imagePicker = AmityImagePickerController(selectedAssets: selectedAssets)
+//            imagePicker.settings.theme.selectionStyle = .numbered
+//            imagePicker.settings.fetch.assets.supportedMediaTypes = supportedMediaTypes
+//            imagePicker.settings.selection.max = maxNumberOfSelection
+//            imagePicker.settings.selection.unselectOnReachingMax = false
+            presentImagePicker(imagePicker, select: nil, deselect: nil, cancel: nil, finish: finish, completion: nil)
         }
         
     }

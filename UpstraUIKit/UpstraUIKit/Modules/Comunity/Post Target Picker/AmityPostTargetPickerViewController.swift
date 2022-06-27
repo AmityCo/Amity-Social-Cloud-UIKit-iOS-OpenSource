@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Photos
 
 public enum PostFromTodayType {
     case generic
@@ -21,6 +22,7 @@ final public class AmityPostTargetPickerViewController: AmityViewController {
     /// Set this variable to indicate post type to create.
     var postContentType: AmityPostContentType = .post
     var postType: PostFromTodayType?
+    var galleryAsset: [PHAsset]?
 
     private let tableView = UITableView(frame: .zero, style: .plain)
     private let screenViewModel = AmityPostTargetPickerScreenViewModel()
@@ -43,6 +45,12 @@ final public class AmityPostTargetPickerViewController: AmityViewController {
     public static func makeFromToday(postType: PostFromTodayType? = nil) -> AmityPostTargetPickerViewController {
         let vc = AmityPostTargetPickerViewController()
         vc.postType = postType
+        return vc
+    }
+    
+    public static func makeFromToday(asset:[PHAsset] = []) -> AmityPostTargetPickerViewController {
+        let vc = AmityPostTargetPickerViewController()
+        vc.galleryAsset = asset
         return vc
     }
 
@@ -148,7 +156,12 @@ extension AmityPostTargetPickerViewController: UITableViewDelegate {
         if postType != nil {
             AmityEventHandler.shared.postTargetDidSelectFromToday(from: self, postTarget: postTarget, postType: self.postType!)
         } else {
-            AmityEventHandler.shared.postTargetDidSelect(from: self, postTarget: postTarget, postContentType: self.postContentType)
+            if galleryAsset != nil {
+                AmityEventHandler.shared.postTargetDidSelectFromGallery(from: self, postTarget: postTarget, asset: galleryAsset!)
+            } else {
+                AmityEventHandler.shared.postTargetDidSelect(from: self, postTarget: postTarget, postContentType: self.postContentType)
+            }
+            
         }
     }
     
