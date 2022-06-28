@@ -203,7 +203,7 @@ to watch shortly.</string>
                         <constraint firstAttribute="trailing" secondItem="e3Z-YA-P5g" secondAttribute="trailing" constant="30" id="vwH-IG-mBe"/>
                     </constraints>
                 </view>
-                <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="vhx-J6-EZs">
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="vhx-J6-EZs">
                     <rect key="frame" x="0.0" y="734" width="414" height="128"/>
                     <subviews>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="guv-EO-DGA" userLabel="Share Button">

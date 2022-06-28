@@ -223,7 +223,7 @@ final public class LiveStreamBroadcastViewController: UIViewController {
     func getLiveStreamViwerCount() {
         
         timer = Timer.scheduledTimer(withTimeInterval: 5, repeats: true, block: {_ in
-//            self.getLikeCount()
+            self.getLikeCount()
             customAPIRequest.getLiveStreamViewerData(page_number: 1, liveStreamId: self.streamId ?? "", type: "watching") { value in
                 print("call fuction")
                 DispatchQueue.main.async {

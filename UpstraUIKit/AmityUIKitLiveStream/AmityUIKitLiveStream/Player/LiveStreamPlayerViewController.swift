@@ -199,7 +199,7 @@ public class LiveStreamPlayerViewController: UIViewController {
         }
         
         self.timer = Timer.scheduledTimer(withTimeInterval: 5, repeats: true, block: {_ in
-//            self.getReactionData()
+            self.getReactionData()
             customAPIRequest.getLiveStreamViewerData(page_number: 1, liveStreamId: self.streamIdToWatch, type: "watching") { value in
                 DispatchQueue.main.async {
                     self.streamingViewerCountLabel.text = String(value.count.formatUsingAbbrevation())
