@@ -29,17 +29,19 @@ final class AmityCommunityProfileScreenViewModel: AmityCommunityProfileScreenVie
     var isModerator: Bool = false
     var postId: String?
     var fromDeeplinks: Bool
+    var openType: AmityCommunityEventOpenType?
     
     var postCount: Int {
         return community?.object.getPostCount(feedType: .published) ?? 0
     }
     
-    init(communityId: String, postId: String? = nil, fromDeeplinks: Bool = false,
+    init(communityId: String, postId: String? = nil, openType: AmityCommunityEventOpenType?, fromDeeplinks: Bool = false,
          communityRepositoryManager: AmityCommunityRepositoryManagerProtocol) {
         self.communityId = communityId
         self.communityRepositoryManager = communityRepositoryManager
         self.postId = postId
         self.fromDeeplinks = fromDeeplinks
+        self.openType = openType
     }
     
 }

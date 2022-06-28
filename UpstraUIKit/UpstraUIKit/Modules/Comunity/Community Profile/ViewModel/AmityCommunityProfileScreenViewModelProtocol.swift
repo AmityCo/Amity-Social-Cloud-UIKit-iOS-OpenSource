@@ -34,6 +34,7 @@ protocol AmityCommunityProfileScreenViewModelDataSource {
     
     var fromDeeplinks: Bool { get set }
     var postId: String? { get set }
+    var openType: AmityCommunityEventOpenType? { get set }
 }
 
 protocol AmityCommunityProfileScreenViewModelAction {
