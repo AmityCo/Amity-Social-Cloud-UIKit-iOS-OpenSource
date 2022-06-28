@@ -29,7 +29,7 @@ class AmityCustomEventHandler: AmityEventHandler {
         let settings = AmityCommunityProfilePageSettings()
         settings.shouldChatButtonHide = false
         
-        let viewController = AmityCommunityProfilePageViewController.make(withCommunityId: communityId, settings: settings)
+        let viewController = AmityCommunityProfilePageViewController.make(withCommunityId: communityId, openType: .community, settings: settings)
         source.navigationController?.pushViewController(viewController, animated: true)
     }
     
