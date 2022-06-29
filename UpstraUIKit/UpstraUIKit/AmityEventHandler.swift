@@ -41,7 +41,7 @@ open class AmityEventHandler {
     ///
     /// A default behavior is navigating to `AmityCommunityProfilePageViewController`
     open func communityDidTap(from source: AmityViewController, communityId: String) {
-        let viewController = AmityCommunityProfilePageViewController.make(withCommunityId: communityId, openType: .community)
+        let viewController = AmityCommunityProfilePageViewController.make(withCommunityId: communityId)
         source.navigationController?.pushViewController(viewController, animated: true)
     }
     

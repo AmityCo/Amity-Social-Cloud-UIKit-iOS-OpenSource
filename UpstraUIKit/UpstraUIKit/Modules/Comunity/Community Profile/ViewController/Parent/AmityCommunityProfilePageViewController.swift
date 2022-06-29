@@ -30,13 +30,14 @@ public final class AmityCommunityProfilePageViewController: AmityProfileViewCont
     private var permissionCanLive: Bool = false
     
     private var isEverFetch: Bool = false
+    private var isEverRoute: Bool = false
 
     public override func viewDidLoad() {
         super.viewDidLoad()
         screenViewModel.delegate = self
         setupFeed()
         setupScreenViewModelNewsFeed()
-        routeToDeeplinksPostIfNeed()
+//        routeToDeeplinksPostIfNeed()
     }
     
     public override func viewWillAppear(_ animated: Bool) {
@@ -58,14 +59,13 @@ public final class AmityCommunityProfilePageViewController: AmityProfileViewCont
     }
     
     public static func make(
-        withCommunityId communityId: String, postId: String? = nil, openType: AmityCommunityEventOpenType?, fromDeeplinks: Bool = false, settings: AmityCommunityProfilePageSettings = .init()
+        withCommunityId communityId: String, postId: String? = nil, fromDeeplinks: Bool = false, settings: AmityCommunityProfilePageSettings = .init()
     ) -> AmityCommunityProfilePageViewController {
         
         let communityRepositoryManager = AmityCommunityRepositoryManager(communityId: communityId)
         let viewModel = AmityCommunityProfileScreenViewModel(
             communityId: communityId,
             postId: postId,
-            openType: openType,
             fromDeeplinks: fromDeeplinks,
             communityRepositoryManager: communityRepositoryManager
         )
@@ -198,6 +198,14 @@ private extension AmityCommunityProfilePageViewController {
 
 extension AmityCommunityProfilePageViewController: AmityCommunityProfileScreenViewModelDelegate {
     
+    func screenViewModelRouteDeeplink() {
+        if !isEverRoute {
+            routeToDeeplinksPostIfNeed()
+        }
+        isEverRoute = true
+    }
+    
+    
     func screenViewModelDidGetCommunity(with community: AmityCommunityModel) {
         postButton.isHidden = !community.isJoined
         header.updateView()
@@ -212,26 +220,24 @@ extension AmityCommunityProfilePageViewController: AmityCommunityProfileScreenVi
     }
     
     func screenViewModelDidShowAlertDialog() {
-        if screenViewModel.dataSource.openType == .community {
-            if !isEverFetch {
-                let firstAction = AmityDefaultModalModel.Action(title: AmityLocalizedStringSet.General.ok,
-                                                                textColor: UIColor.white,
-                                                                backgroundColor: UIColor.black)
-                
-                let communityPostModel = AmityDefaultModalModel(image: AmityIconSet.iconNotFound,
-                                                                title: AmityLocalizedStringSet.Modal.contentNotfoundTitle,
-                                                                description: AmityLocalizedStringSet.Modal.contentNotfoundDesc,
-                                                                firstAction: firstAction, secondAction: nil,
-                                                                layout: .single)
-                let communityPostModalView = AmityDefaultModalView.make(content: communityPostModel)
-                communityPostModalView.firstActionHandler = {
-                    AmityHUD.hide { [weak self] in
-                        self?.navigationController?.popViewController(animated: true)
-                    }
+        if !isEverFetch {
+            let firstAction = AmityDefaultModalModel.Action(title: AmityLocalizedStringSet.General.ok,
+                                                            textColor: UIColor.white,
+                                                            backgroundColor: UIColor.black)
+            
+            let communityPostModel = AmityDefaultModalModel(image: AmityIconSet.iconNotFound,
+                                                            title: AmityLocalizedStringSet.Modal.contentNotfoundTitle,
+                                                            description: AmityLocalizedStringSet.Modal.contentNotfoundDesc,
+                                                            firstAction: firstAction, secondAction: nil,
+                                                            layout: .single)
+            let communityPostModalView = AmityDefaultModalView.make(content: communityPostModel)
+            communityPostModalView.firstActionHandler = {
+                AmityHUD.hide { [weak self] in
+                    self?.navigationController?.popViewController(animated: true)
                 }
-                
-                AmityHUD.show(.custom(view: communityPostModalView))
             }
+            
+            AmityHUD.show(.custom(view: communityPostModalView))
         }
         isEverFetch = true
     }

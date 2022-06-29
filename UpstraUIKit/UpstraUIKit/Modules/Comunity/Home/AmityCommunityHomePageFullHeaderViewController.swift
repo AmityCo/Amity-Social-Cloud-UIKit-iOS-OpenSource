@@ -145,7 +145,7 @@ private extension AmityCommunityHomePageFullHeaderViewController {
             switch screenViewModel.dataSource.amityCommunityEventTypeModel?.openType {
             case .post:
                 if screenViewModel.dataSource.amityCommunityEventTypeModel?.communityID != "" && screenViewModel.dataSource.amityCommunityEventTypeModel?.communityID != nil {
-                    let viewController = AmityCommunityProfilePageViewController.make(withCommunityId: screenViewModel.dataSource.amityCommunityEventTypeModel?.communityID ?? "", postId: screenViewModel.dataSource.amityCommunityEventTypeModel?.postID ?? "", openType: screenViewModel.dataSource.amityCommunityEventTypeModel?.openType ?? .post, fromDeeplinks: true)
+                    let viewController = AmityCommunityProfilePageViewController.make(withCommunityId: screenViewModel.dataSource.amityCommunityEventTypeModel?.communityID ?? "", postId: screenViewModel.dataSource.amityCommunityEventTypeModel?.postID ?? "", fromDeeplinks: true)
                     guard let navigate = currentViewController else {
                         navigationController?.pushViewController(viewController, animated: true)
                         return
@@ -161,7 +161,7 @@ private extension AmityCommunityHomePageFullHeaderViewController {
                 }
             case .community:
                 guard let communityID = screenViewModel.dataSource.amityCommunityEventTypeModel?.communityID else { return }
-                let viewController = AmityCommunityProfilePageViewController.make(withCommunityId: communityID, openType: .community)
+                let viewController = AmityCommunityProfilePageViewController.make(withCommunityId: communityID)
                 
                 guard let navigate = currentViewController else {
                     navigationController?.pushViewController(viewController, animated: true)

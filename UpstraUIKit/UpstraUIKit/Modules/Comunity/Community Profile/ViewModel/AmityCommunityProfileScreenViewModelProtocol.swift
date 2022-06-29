@@ -22,6 +22,7 @@ protocol AmityCommunityProfileScreenViewModelDelegate: AnyObject {
     func screenViewModelFailure()
     func screenViewModelRoute(_ viewModel: AmityCommunityProfileScreenViewModel, route: AmityCommunityProfileRoute)
     func screenViewModelDidShowAlertDialog()
+    func screenViewModelRouteDeeplink()
 }
 
 protocol AmityCommunityProfileScreenViewModelDataSource {
@@ -34,7 +35,6 @@ protocol AmityCommunityProfileScreenViewModelDataSource {
     
     var fromDeeplinks: Bool { get set }
     var postId: String? { get set }
-    var openType: AmityCommunityEventOpenType? { get set }
 }
 
 protocol AmityCommunityProfileScreenViewModelAction {
