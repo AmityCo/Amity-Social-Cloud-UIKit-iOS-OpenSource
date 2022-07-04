@@ -387,6 +387,11 @@ public struct AmityLocalizedStringSet {
         static let delete = "hud_delete"
     }
     
+    // MARK: - HUD Message
+    public struct LiveStreamViewver {
+        public static let somethingWentWrong = "hud_somthing_went_wrong"
+    }
+    
     enum PopoverText {
         static let popoverMessageIsTooShort = "Message is too short."
     }

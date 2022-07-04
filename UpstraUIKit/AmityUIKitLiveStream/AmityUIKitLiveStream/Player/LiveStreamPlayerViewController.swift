@@ -121,6 +121,14 @@ public class LiveStreamPlayerViewController: UIViewController {
         getLiveStreamViwerCount()
     }
     
+    public override func viewWillAppear(_ animated: Bool) {
+        UIApplication.shared.isIdleTimerDisabled = true
+    }
+    
+    public override func viewDidDisappear(_ animated: Bool) {
+        UIApplication.shared.isIdleTimerDisabled = false
+    }
+    
     private func setupStreamView() {
         // Create video view and embed in playerContainer
         videoView = UIView(frame: renderView.bounds)
@@ -170,8 +178,9 @@ public class LiveStreamPlayerViewController: UIViewController {
     
     /// Call function get reaction count
     func getReactionData() {
+        getStreamToken?.invalidate()
         getStreamToken = postRepository?.getPostForPostId(self.postId).observe { liveObject, error in
-            self.getStreamToken?.invalidate()
+            guard liveObject.dataStatus == .fresh else { return }
             guard let post = liveObject.object else { return }
             var allReactions: [String] = []
             var myReactions: [AmityReactionType]
@@ -180,6 +189,8 @@ public class LiveStreamPlayerViewController: UIViewController {
                         
             self.isLike = myReactions.contains(.like)
             
+            print("---------------> \(liveObject.dataStatus)")
+                        
             DispatchQueue.main.async {
                 if self.isLike {
                     self.likeButton.isHidden = true
@@ -424,8 +435,10 @@ public class LiveStreamPlayerViewController: UIViewController {
     @IBAction private func likeButtonDidTouch() {
         reactionRepository?.addReaction("like", referenceId: self.postId, referenceType: .post) { success, error in
             if success {
-                print("Like")
+                print("-----------> Like")
                 self.getReactionData()
+            } else {
+                AmityHUD.show(.error(message: AmityLocalizedStringSet.LiveStreamViewver.somethingWentWrong.localizedString))
             }
         }
     }
@@ -433,8 +446,10 @@ public class LiveStreamPlayerViewController: UIViewController {
     @IBAction private func dislikeButtonDidTouch() {
         reactionRepository?.removeReaction("like", referenceId: self.postId, referenceType: .post) { success, error in
             if success {
-                print("Unlike")
+                print("-----------> Unlike")
                 self.getReactionData()
+            }  else {
+                AmityHUD.show(.error(message: AmityLocalizedStringSet.LiveStreamViewver.somethingWentWrong.localizedString))
             }
         }
     }
