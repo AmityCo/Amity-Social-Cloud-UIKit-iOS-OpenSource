@@ -1179,30 +1179,30 @@ extension AmityPostTextEditorViewController: UIImagePickerControllerDelegate, UI
 // MARK: - UIGestureRecognizerDelegate
 extension AmityPostTextEditorViewController {
     
-    public override func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
-        guard isValueChanged, !(mentionManager?.isSearchingStarted ?? false) else {
-            return super.gestureRecognizerShouldBegin(gestureRecognizer)
-        }
-            
-        if let view = gestureRecognizer.view,
-            let directions = (gestureRecognizer as? UIPanGestureRecognizer)?.direction(in: view),
-            directions.contains(.right) {
-            let alertController = UIAlertController(title: AmityLocalizedStringSet.postCreationDiscardPostTitle.localizedString, message: AmityLocalizedStringSet.postCreationDiscardPostMessage.localizedString, preferredStyle: .alert)
-            let cancelAction = UIAlertAction(title: AmityLocalizedStringSet.General.cancel.localizedString, style: .cancel, handler: nil)
-            let discardAction = UIAlertAction(title: AmityLocalizedStringSet.General.discard.localizedString, style: .destructive) { [weak self] _ in
-                self?.generalDismiss()
-            }
-            alertController.addAction(cancelAction)
-            alertController.addAction(discardAction)
-            present(alertController, animated: true, completion: nil)
-
-            // prevents swiping back and present confirmation message
-            return false
-        }
-        
-        // falls back to normal behaviour, swipe back to previous page
-        return super.gestureRecognizerShouldBegin(gestureRecognizer)
-    }
+//    public override func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
+//        guard isValueChanged, !(mentionManager?.isSearchingStarted ?? false) else {
+//            return super.gestureRecognizerShouldBegin(gestureRecognizer)
+//        }
+//
+//        if let view = gestureRecognizer.view,
+//            let directions = (gestureRecognizer as? UIPanGestureRecognizer)?.direction(in: view),
+//            directions.contains(.right) {
+//            let alertController = UIAlertController(title: AmityLocalizedStringSet.postCreationDiscardPostTitle.localizedString, message: AmityLocalizedStringSet.postCreationDiscardPostMessage.localizedString, preferredStyle: .alert)
+//            let cancelAction = UIAlertAction(title: AmityLocalizedStringSet.General.cancel.localizedString, style: .cancel, handler: nil)
+//            let discardAction = UIAlertAction(title: AmityLocalizedStringSet.General.discard.localizedString, style: .destructive) { [weak self] _ in
+//                self?.generalDismiss()
+//            }
+//            alertController.addAction(cancelAction)
+//            alertController.addAction(discardAction)
+//            present(alertController, animated: true, completion: nil)
+//
+//            // prevents swiping back and present confirmation message
+//            return false
+//        }
+//
+//        // falls back to normal behaviour, swipe back to previous page
+//        return super.gestureRecognizerShouldBegin(gestureRecognizer)
+//    }
 }
 
 // MARK: - UITableViewDelegate

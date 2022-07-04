@@ -34,7 +34,7 @@ final class AmityPostFetchPostController: AmityPostFetchPostControllerProtocol {
             }
         }
     }
-    
+        
     private func prepareData(isPin: Bool) -> AmityPostModel? {
         guard let _post = postObject?.object else { return nil }
         let post = AmityPostModel(post: _post)

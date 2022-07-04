@@ -39,6 +39,8 @@
 		A0BD0B5026DDFAF20054088B /* AmityVideoPlayerKit.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = A0BD0B3F26DDE0020054088B /* AmityVideoPlayerKit.xcframework */; };
 		A0BD0B5126DDFAF20054088B /* AmityVideoPlayerKit.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = A0BD0B3F26DDE0020054088B /* AmityVideoPlayerKit.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		A0BD0B5226DDFAF20054088B /* MobileVLCKit.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = A0BD0B4026DDE0020054088B /* MobileVLCKit.xcframework */; };
+		B42AD33428657F7900349D67 /* NotoSansMyanmar-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = B42AD33228657F7800349D67 /* NotoSansMyanmar-Bold.ttf */; };
+		B42AD33528657F7900349D67 /* NotoSansMyanmar-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = B42AD33328657F7900349D67 /* NotoSansMyanmar-Regular.ttf */; };
 		B4C71FAE2850DD2400744B0F /* NotoSansThai-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = B4C71FAD2850DD2400744B0F /* NotoSansThai-Bold.ttf */; };
 		B4C71FB22850F44F00744B0F /* NotoSansThai-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = B4C71FB02850F44F00744B0F /* NotoSansThai-Regular.ttf */; };
 		B4C71FB32850F44F00744B0F /* NotoSansThai-SemiBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = B4C71FB12850F44F00744B0F /* NotoSansThai-SemiBold.ttf */; };
@@ -138,6 +140,8 @@
 		A0BD0B3F26DDE0020054088B /* AmityVideoPlayerKit.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = AmityVideoPlayerKit.xcframework; path = ../Shared/AmityVideoPlayerKit.xcframework; sourceTree = "<group>"; };
 		A0BD0B4026DDE0020054088B /* MobileVLCKit.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = MobileVLCKit.xcframework; path = ../Shared/MobileVLCKit.xcframework; sourceTree = "<group>"; };
 		A0BD0B4726DDE0E30054088B /* AmityUIKitLiveStream.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = AmityUIKitLiveStream.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		B42AD33228657F7800349D67 /* NotoSansMyanmar-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "NotoSansMyanmar-Bold.ttf"; sourceTree = "<group>"; };
+		B42AD33328657F7900349D67 /* NotoSansMyanmar-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "NotoSansMyanmar-Regular.ttf"; sourceTree = "<group>"; };
 		B4C71FAD2850DD2400744B0F /* NotoSansThai-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "NotoSansThai-Bold.ttf"; sourceTree = "<group>"; };
 		B4C71FB02850F44F00744B0F /* NotoSansThai-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "NotoSansThai-Regular.ttf"; sourceTree = "<group>"; };
 		B4C71FB12850F44F00744B0F /* NotoSansThai-SemiBold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "NotoSansThai-SemiBold.ttf"; sourceTree = "<group>"; };
@@ -328,6 +332,8 @@
 		B4C71FAF2850DD2B00744B0F /* Fonts */ = {
 			isa = PBXGroup;
 			children = (
+				B42AD33228657F7800349D67 /* NotoSansMyanmar-Bold.ttf */,
+				B42AD33328657F7900349D67 /* NotoSansMyanmar-Regular.ttf */,
 				B4C71FAD2850DD2400744B0F /* NotoSansThai-Bold.ttf */,
 				B4C71FB02850F44F00744B0F /* NotoSansThai-Regular.ttf */,
 				B4C71FB12850F44F00744B0F /* NotoSansThai-SemiBold.ttf */,
@@ -567,6 +573,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				B78DA48524BED7DA00EE902B /* LaunchScreen.storyboard in Resources */,
+				B42AD33428657F7900349D67 /* NotoSansMyanmar-Bold.ttf in Resources */,
 				B4C71FB22850F44F00744B0F /* NotoSansThai-Regular.ttf in Resources */,
 				0D73AC9425DB8CB5000D73CA /* AmityPostThumbsupTableViewCell.xib in Resources */,
 				0D8FFC2A25DCBFD900943538 /* AmityCustomFooterTableViewCell.xib in Resources */,
@@ -575,6 +582,7 @@
 				0D73AC9625DB8CB5000D73CA /* AmityPostBirthdayTableViewCell.xib in Resources */,
 				B4C71FAE2850DD2400744B0F /* NotoSansThai-Bold.ttf in Resources */,
 				B4C71FB32850F44F00744B0F /* NotoSansThai-SemiBold.ttf in Resources */,
+				B42AD33528657F7900349D67 /* NotoSansMyanmar-Regular.ttf in Resources */,
 				D4AFF1CE25ECE8AD002C001C /* PostPreviewTableViewCell.xib in Resources */,
 				B72CDA3C256B9BEB00F7CAC3 /* CustomMessageTextIncomingTableViewCell.xib in Resources */,
 				0D73AC9725DB8CB5000D73CA /* AmityPostNewJoinerTableViewCell.xib in Resources */,
@@ -814,7 +822,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = SampleApp/SampleApp.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 2;
 				DEVELOPMENT_TEAM = 37Z583JR6K;
 				"EXCLUDED_ARCHS[sdk=iphonesimulator*]" = arm64;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -841,7 +849,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = SampleApp/SampleApp.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 2;
 				DEVELOPMENT_TEAM = 37Z583JR6K;
 				"EXCLUDED_ARCHS[sdk=iphonesimulator*]" = arm64;
 				FRAMEWORK_SEARCH_PATHS = (

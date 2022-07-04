@@ -103,6 +103,7 @@ extension AmityCommunityProfileScreenViewModel {
             case .success(let community):
                 self?.community = community
                 self?.prepareDataToShowCommunityProfile(community: community)
+                self?.delegate?.screenViewModelRouteDeeplink()
             case .failure:
                 self?.delegate?.screenViewModelDidShowAlertDialog()
             }

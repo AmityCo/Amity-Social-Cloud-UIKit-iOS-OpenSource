@@ -379,7 +379,7 @@ extension AmityPostDetailViewController: AmityPostDetailScreenViewModelDelegate 
         if viewModel.post?.dataTypeInternal != .poll {
         }
         
-            tableView.isHidden = false
+        tableView.isHidden = false
     }
     
     func screenViewModelDidUpdatePost(_ viewModel: AmityPostDetailScreenViewModelType) {

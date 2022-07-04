@@ -112,12 +112,11 @@ public final class AmityFeedViewController: AmityViewController, AmityRefreshabl
     
     // MARK: Private function
     private func fetchUtillAppear() {
-        self.timer = Timer.scheduledTimer(withTimeInterval: 1, repeats: true, block: {_ in
+        self.timer = Timer.scheduledTimer(withTimeInterval: 3, repeats: true, block: {_ in
             if self.screenViewModel.numberOfPostComponents() <= 1 {
                 self.screenViewModel.action.fetchPosts()
-            } else {
-                self.timer.invalidate()
             }
+            self.timer.invalidate()
         })
     }
 

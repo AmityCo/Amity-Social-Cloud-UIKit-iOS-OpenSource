@@ -230,7 +230,6 @@ final public class LiveStreamBroadcastViewController: UIViewController {
         timer = Timer.scheduledTimer(withTimeInterval: 5, repeats: true, block: {_ in
             self.getLikeCount()
             customAPIRequest.getLiveStreamViewerData(page_number: 1, liveStreamId: self.streamId ?? "", type: "watching") { value in
-                print("call fuction")
                 DispatchQueue.main.async {
                     self.streamingViewerCountLabel.text = String(value.count.formatUsingAbbrevation())
                 }
@@ -407,6 +406,7 @@ final public class LiveStreamBroadcastViewController: UIViewController {
         let alertController = UIAlertController(title: title, message: AmityLocalizedStringSet.LiveStream.Live.descriptionStopLive.localizedString, preferredStyle: .alert)
         let end = UIAlertAction(title: AmityLocalizedStringSet.LiveStream.Live.stopLive.localizedString, style: .default) { [weak self] action in
             self?.finishLive()
+            self?.timer.invalidate()
         }
         let cancel = UIAlertAction(title: AmityLocalizedStringSet.General.cancel.localizedString, style: .cancel, handler: nil)
         alertController.addAction(end)
