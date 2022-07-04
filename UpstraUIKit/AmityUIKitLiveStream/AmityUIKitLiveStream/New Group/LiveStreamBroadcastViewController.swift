@@ -201,6 +201,11 @@ final public class LiveStreamBroadcastViewController: UIViewController {
             presentPermissionRequiredDialogue()
         }
         
+        UIApplication.shared.isIdleTimerDisabled = true
+    }
+    
+    public override func viewDidDisappear(_ animated: Bool) {
+        UIApplication.shared.isIdleTimerDisabled = false
     }
     
     public override func viewDidLayoutSubviews() {
