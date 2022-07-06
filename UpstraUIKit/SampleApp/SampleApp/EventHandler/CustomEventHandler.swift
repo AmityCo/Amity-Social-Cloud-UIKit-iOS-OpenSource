@@ -133,6 +133,20 @@ class AmityCustomEventHandler: AmityEventHandler {
         debugPrint("Screen name: \(screenName) | Community Model: \(communityModel)")
     }
     
+    override func openContactPageEvent() {
+        let alert = UIAlertController(title: "Contact button", message: "You have success click contact button on Recent Chat page.", preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "Ok", style: .default, handler: nil))
+        
+        if var topController = UIApplication.shared.keyWindow?.rootViewController {
+            while let presentedViewController = topController.presentedViewController {
+                topController = presentedViewController
+            }
+
+            // topController should now be your topmost view controller
+            topController.present(alert, animated: true, completion: nil)
+        }
+    }
+    
     override func finishPostFromToday(_ success: Bool) {
 //        var alertMessage = ""
         if success {
