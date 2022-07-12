@@ -46,6 +46,7 @@ class CommunityFeatureViewController: UIViewController {
         case postFromTodayCamera
         case postFromTodayVideo
         case postFromTodayPoll
+        case todayNewsFeed
         
         var text: String {
             switch self {
@@ -97,6 +98,8 @@ class CommunityFeatureViewController: UIViewController {
                 return "Post from Today - Video"
             case .postFromTodayPoll:
                 return "Post from Today - Poll"
+            case .todayNewsFeed:
+                return "Today NewsFeed"
             }
         }
     }
@@ -161,7 +164,6 @@ extension CommunityFeatureViewController: UITableViewDelegate {
         
         switch FeatureList.allCases[indexPath.row] {
         case .home:
-            
             AmityFeedUISettings.shared.register(UINib(nibName: "AmityPostBirthdayTableViewCell", bundle: nil), forCellReuseIdentifier: "AmityPostBirthdayTableViewCell")
             AmityFeedUISettings.shared.register(UINib(nibName: "AmityPostThumbsupTableViewCell", bundle: nil), forCellReuseIdentifier: "AmityPostThumbsupTableViewCell")
             AmityFeedUISettings.shared.register(UINib(nibName: "AmityPostNewJoinerTableViewCell", bundle: nil), forCellReuseIdentifier: "AmityPostNewJoinerTableViewCell")
@@ -278,6 +280,11 @@ extension CommunityFeatureViewController: UITableViewDelegate {
             let nav = UINavigationController(rootViewController: postTarget)
             nav.modalPresentationStyle = .fullScreen
             present(nav, animated: true, completion: nil)
+        case .todayNewsFeed:
+            let vc = TodayNewsFeedViewController.make()
+            let navigationController = UINavigationController(rootViewController: vc)
+            navigationController.modalPresentationStyle = .fullScreen
+            present(navigationController, animated: true, completion: nil)
         }
         
     }
