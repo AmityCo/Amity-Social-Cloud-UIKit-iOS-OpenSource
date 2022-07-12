@@ -283,6 +283,8 @@
 "post_review_settings_alert_fail_title_turn_off" = "មិនអាចបិទការត្រួតពិនិត្យមាតិកា";
 "modal_community_settings_title" = "មិនមានមាតិកា";
 "modal_community_settings_desc" = "មាតិកានេះមិនមាននៅក្នុងប្រទេសរបស់អ្នកទេ";
+"modal_community_not_found_title" = "មិនមានមាតិកា";
+"modal_community_not_found_desc" = "មាតិកានេះមិនមាននៅក្នុងប្រទេសរបស់អ្នកទេ";
 "member_list_title" = "សមាជិក";
 "chat_setting_leave_channel" = "ចាកចេញពីប្រអប់សារ";
 "chat_setting_member" = "សមាជិក";

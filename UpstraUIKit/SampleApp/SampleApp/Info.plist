@@ -30,6 +30,8 @@
 	<string>$(PRODUCT_NAME) Would like to use photo library permission</string>
 	<key>UIAppFonts</key>
 	<array>
+		<string>NotoSansMyanmar-Regular.tft</string>
+		<string>NotoSansMyanmar-Bold.tft</string>
 		<string>NotoSans-Medium.ttf</string>
 		<string>NotoSans-Light.ttf</string>
 		<string>NotoSans-Regular.ttf</string>

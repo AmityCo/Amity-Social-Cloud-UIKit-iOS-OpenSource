@@ -8,6 +8,7 @@
 
 import UIKit
 import AmitySDK
+import Photos
 
 /// Global event handler for function overriding
 ///
@@ -118,6 +119,15 @@ open class AmityEventHandler {
         openByProfileTrueID: Bool = false
     ) {
         createPostDidTapFromToday(from: source, postTarget: postTarget, postType: postType)
+    }
+    
+    open func postTargetDidSelectFromGallery(
+        from source: AmityViewController,
+        postTarget: AmityPostTarget,
+        openByProfileTrueID: Bool = false,
+        asset: [PHAsset]
+    ) {
+        createPostDidTapFromGallery(from: source, postTarget: postTarget, asset: asset)
     }
         
     /// Event for post creator
@@ -237,36 +247,16 @@ open class AmityEventHandler {
             source.navigationController?.pushViewController(viewController, animated: true)
         }
         
+    }
+    
+    open func createPostDidTapFromGallery(from source: AmityViewController, postTarget: AmityPostTarget, asset: [PHAsset]) {
         
-        
-//        if openByProfileTrueID {
-//            let navigationController = UINavigationController(rootViewController: viewController)
-//            navigationController.modalPresentationStyle = .overFullScreen
-//            source.present(navigationController, animated: true, completion: nil)
-//        } else {
-//            if source.isModalPresentation {
-//                // a source is presenting. push a new vc.
-//                if source.isKind(of: AmityPostTargetPickerViewController.self) {
-//                    source.navigationController?.pushViewController(viewController, animated: true)
-//                    return
-//                }
-//
-//                if case .myFeed = postTarget {
-//                    source.navigationController?.pushViewController(viewController, animated: true)
-//                    return
-//                }
-//
-//                let navigationController = UINavigationController(rootViewController: viewController)
-//                navigationController.modalPresentationStyle = .overFullScreen
-//                source.present(navigationController, animated: true, completion: nil)
-//            } else {
-//                let navigationController = UINavigationController(rootViewController: viewController)
-//                navigationController.modalPresentationStyle = .overFullScreen
-//                source.present(navigationController, animated: true, completion: nil)
-//            }
-//        }
+        var viewController: AmityViewController
+        viewController = AmityPostCreatorViewController.make(postTarget: postTarget, asset: asset)
+        source.navigationController?.pushViewController(viewController, animated: true)
         
     }
+    
     /// This function will triggered when the user choose to "create live stream post".
     ///
     /// - Parameters:

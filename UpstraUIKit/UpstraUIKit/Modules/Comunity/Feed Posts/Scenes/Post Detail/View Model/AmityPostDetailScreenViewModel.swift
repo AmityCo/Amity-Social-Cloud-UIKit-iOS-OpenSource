@@ -194,10 +194,10 @@ extension AmityPostDetailScreenViewModel {
         postController.getPostForPostId(withPostId: postId, isPin: false) { [weak self] (result) in
             switch result {
             case .success(let post):
-                self?.post = post
                 if post.post.isDeleted {
                     self?.showAlertDialog()
                 } else {
+                    self?.post = post
                     self?.debouncer.run {
                         self?.prepareData()
                     }

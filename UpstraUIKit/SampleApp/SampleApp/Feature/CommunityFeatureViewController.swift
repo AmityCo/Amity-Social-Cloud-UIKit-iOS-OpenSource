@@ -10,6 +10,7 @@ import UIKit
 import AmitySDK
 import AmityUIKit
 import SwiftUI
+import Photos
 
 class CommunityFeatureViewController: UIViewController {
     
@@ -46,6 +47,7 @@ class CommunityFeatureViewController: UIViewController {
         case postFromTodayCamera
         case postFromTodayVideo
         case postFromTodayPoll
+        case selectFromGallery
         
         var text: String {
             switch self {
@@ -97,6 +99,8 @@ class CommunityFeatureViewController: UIViewController {
                 return "Post from Today - Video"
             case .postFromTodayPoll:
                 return "Post from Today - Poll"
+            case .selectFromGallery:
+                return "Select media from gallery"
             }
         }
     }
@@ -210,14 +214,25 @@ extension CommunityFeatureViewController: UITableViewDelegate {
             let feedViewController = AmityUserFeedViewController.makeUserFeedByTrueIDProfile(withUserId: "victimIOS")
             navigationController?.pushViewController(feedViewController, animated: true)
         case .homeByDeeplink:
-            let home = AmityCommunityHomePageFullHeaderViewController.make(amityCommunityEventType: AmityCommunityEventTypeModel(openType: .post, postID: "62a6b9e151859300da9144be"))
-//            let home = AmityCommunityHomePageFullHeaderViewController.make(amityCommunityEventType: AmityCommunityEventTypeModel(openType: .community, communityID: "56701fa0443c1e92b43d89961fdc0cd4"))
+            let home = AmityCommunityHomePageFullHeaderViewController.make(amityCommunityEventType: AmityCommunityEventTypeModel(openType: .post, postID: "62b96a07cf822700d972834b", communityID: "629704bb55861a00d9e46534", categoryID: nil, channelID: nil))
+            
+//            let home = AmityCommunityHomePageFullHeaderViewController.make(amityCommunityEventType: AmityCommunityEventTypeModel(openType: .post, postID: "628c5143a4a89a00d91e6305"))
+//            let home = AmityCommunityHomePageFullHeaderViewController.make(amityCommunityEventType: AmityCommunityEventTypeModel(openType: .community, communityID: "622997f1a7693500dbf0e9df"))
 //            let home = AmityCommunityHomePageViewController.make(amityCommunityEventType: AmityCommunityEventTypeModel(openType: .category, categoryID: "b2f4c60313f99a7cb59a222cfcaccda1"))
 //            let home = AmityCommunityHomePageViewController.make(amityCommunityEventType: AmityCommunityEventTypeModel(openType: .chat, channelID: "AmityTestDeepLink"))
             navigationController?.pushViewController(home, animated: true)
         
         case .th:
             AmityUIKitManager.setLanguage(language: "th")
+            let myTypography = AmityTypography(
+                headerLine: UIFont(name: "NotoSansThai-Bold", size: 20)!,
+                title: UIFont(name: "NotoSansThai-Bold", size: 18)!,
+                bodyBold: UIFont(name: "NotoSansThai-Regular", size: 16)!,
+                body: UIFont(name: "NotoSansThai-Regular", size: 16)!,
+                captionBold: UIFont(name: "NotoSansThai-Regular", size: 14)!,
+                caption: UIFont(name: "NotoSansThai-Regular", size: 14)!)
+            
+            AmityUIKitManager.set(typography: myTypography)
             openHomePage()
         case .id:
             AmityUIKitManager.setLanguage(language: "id")
@@ -236,6 +251,15 @@ extension CommunityFeatureViewController: UITableViewDelegate {
             openHomePage()
         case .mm:
             AmityUIKitManager.setLanguage(language: "my")
+            let myTypography = AmityTypography(
+                headerLine: UIFont(name: "NotoSansMyanmar-Bold", size: 20)!,
+                title: UIFont(name: "NotoSansMyanmar-Bold", size: 18)!,
+                bodyBold: UIFont(name: "NotoSansMyanmar-Regular", size: 16)!,
+                body: UIFont(name: "NotoSansMyanmar-Regular", size: 16)!,
+                captionBold: UIFont(name: "NotoSansMyanmar-Regular", size: 14)!,
+                caption: UIFont(name: "NotoSansMyanmar-Regular", size: 14)!)
+            AmityUIKitManager.set(typography: myTypography)
+
             openHomePage()
         case .gallery:
             let galleryVC = AmityPostGalleryViewController.makeByTrueID(targetType: .user, targetId: UserDefaults.standard.value(forKey: UserDefaultsKey.userId) as! String, isHiddenButtonCreate: false)
@@ -278,6 +302,28 @@ extension CommunityFeatureViewController: UITableViewDelegate {
             let nav = UINavigationController(rootViewController: postTarget)
             nav.modalPresentationStyle = .fullScreen
             present(nav, animated: true, completion: nil)
+        case .selectFromGallery:
+            let supportedMediaTypes: Set<Settings.Fetch.Assets.MediaTypes>
+            var selectedAssets: [PHAsset] = []
+            // The closue to execute when picker finish picking the media.
+            let finish: ([PHAsset]) -> Void
+            
+            supportedMediaTypes = [.image]
+            finish = { [weak self] assets in
+                guard let strongSelf = self else { return }
+                
+                let postTarget = AmityPostTargetPickerViewController.makeFromToday(asset: assets)
+                let nav = UINavigationController(rootViewController: postTarget)
+                nav.modalPresentationStyle = .fullScreen
+                strongSelf.present(nav, animated: true, completion: nil)
+            }
+            
+            let imagePicker = AmityImagePickerController(selectedAssets: selectedAssets)
+//            imagePicker.settings.theme.selectionStyle = .numbered
+//            imagePicker.settings.fetch.assets.supportedMediaTypes = supportedMediaTypes
+//            imagePicker.settings.selection.max = maxNumberOfSelection
+//            imagePicker.settings.selection.unselectOnReachingMax = false
+            presentImagePicker(imagePicker, select: nil, deselect: nil, cancel: nil, finish: finish, completion: nil)
         }
         
     }

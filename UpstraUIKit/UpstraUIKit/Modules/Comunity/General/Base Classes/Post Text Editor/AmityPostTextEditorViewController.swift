@@ -49,6 +49,9 @@ public class AmityPostTextEditorViewController: AmityViewController {
     private let postType: PostFromTodayType?
     private let postMode: AmityPostMode
     
+    private var galleryAsset: [PHAsset] = []
+    private var fromGallery: Bool = false
+    
     private let comunityPanelView = AmityComunityPanelView(frame: .zero)
     private let scrollView = UIScrollView(frame: .zero)
     private let textView = AmityTextView(frame: .zero)
@@ -102,6 +105,7 @@ public class AmityPostTextEditorViewController: AmityViewController {
         screenViewModel.delegate = self
     }
     
+    //init from today page
     init(postTarget: AmityPostTarget, postType: PostFromTodayType, postMode: AmityPostMode, settings: AmityPostEditorSettings) {
         
         self.postTarget = postTarget
@@ -126,6 +130,34 @@ public class AmityPostTextEditorViewController: AmityViewController {
         screenViewModel.delegate = self
     }
     
+    //init when select media from gallery
+    init(postTarget: AmityPostTarget, postMode: AmityPostMode, settings: AmityPostEditorSettings, asset: [PHAsset]) {
+        
+        self.postTarget = postTarget
+        self.postType = nil
+        self.postMode = postMode
+        self.settings = settings
+        self.galleryAsset = asset
+        self.fromGallery = true
+        self.postMenuView = AmityPostTextEditorMenuView(allowPostAttachments: settings.allowPostAttachments)
+        self.mentionTableView = AmityMentionTableView(frame: .zero)
+        
+        if postMode == .create {
+            var communityId: String? = nil
+            switch postTarget {
+            case .community(let community):
+                communityId = community.isPublic ? nil : community.communityId
+            default: break
+            }
+            mentionManager = AmityMentionManager(withType: .post(communityId: communityId))
+        }
+        
+        super.init(nibName: nil, bundle: nil)
+        
+        screenViewModel.delegate = self
+        
+    }
+    
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
@@ -140,7 +172,7 @@ public class AmityPostTextEditorViewController: AmityViewController {
         navigationItem.rightBarButtonItem = postButton
         navigationItem.rightBarButtonItem?.isEnabled = false
         
-#warning("ViewController must be implemented with storyboard")
+        #warning("ViewController must be implemented with storyboard")
         scrollView.translatesAutoresizingMaskIntoConstraints = false
         scrollView.keyboardDismissMode = .onDrag
         scrollView.backgroundColor = AmityColorSet.backgroundColor
@@ -273,6 +305,10 @@ public class AmityPostTextEditorViewController: AmityViewController {
             default:
                 break
             }
+        }
+        
+        if !galleryAsset.isEmpty {
+            addMediasFromGallery()
         }
     }
     
@@ -676,69 +712,91 @@ public class AmityPostTextEditorViewController: AmityViewController {
     
     private func presentMediaPickerAlbum(type: AmityMediaType) {
             
-            let supportedMediaTypes: Set<Settings.Fetch.Assets.MediaTypes>
-            
-            // The closue to execute when picker finish picking the media.
-            let finish: ([PHAsset]) -> Void
-            
-            var selectedAssets: [PHAsset] = []
-            for media in galleryView.medias {
-                if let local = media.localAsset {
-                    selectedAssets.append(local)
-                }
+        let supportedMediaTypes: Set<Settings.Fetch.Assets.MediaTypes>
+        
+        // The closue to execute when picker finish picking the media.
+        let finish: ([PHAsset]) -> Void
+        
+        var selectedAssets: [PHAsset] = []
+        for media in galleryView.medias {
+            if let local = media.localAsset {
+                selectedAssets.append(local)
             }
-            let selectedAssetIds: [String] = selectedAssets.map { $0.localIdentifier }
-            
-            switch type {
-            case .image:
-                supportedMediaTypes = [.image]
-                finish = { [weak self] assets in
-                    guard let strongSelf = self else { return }
-                    
-                    var newMedias: [AmityMedia] = []
-                    for asset in assets {
-                        guard !selectedAssetIds.contains(asset.localIdentifier) else {
-                            continue
-                        }
-                        let media = AmityMedia(state: .localAsset(asset), type: .image)
-                        media.localAsset = asset
-                        newMedias.append(media)
-                    }
-                    strongSelf.addMedias(newMedias, type: .image)
-                }
-            case .video:
-                supportedMediaTypes = [.video]
-                finish = { [weak self] assets in
-                    guard let strongSelf = self else { return }
-                    
-                    var newMedias: [AmityMedia] = []
-                    for asset in assets {
-                        guard !selectedAssetIds.contains(asset.localIdentifier) else {
-                            continue
-                        }
-                        let media = AmityMedia(state: .localAsset(asset), type: .video)
-                        media.localAsset = asset
-                        newMedias.append(media)
-                    }
-                    strongSelf.addMedias(newMedias, type: .video)
-                }
-            }
-            
-            let maxNumberOfSelection: Int
-            switch postMode {
-            case .create:
-                maxNumberOfSelection = Constant.maximumNumberOfImages
-            case .edit:
-                maxNumberOfSelection = Constant.maximumNumberOfImages - galleryView.medias.count
-            }
-            let imagePicker = AmityImagePickerController(selectedAssets: selectedAssets)
-            imagePicker.settings.theme.selectionStyle = .numbered
-            imagePicker.settings.fetch.assets.supportedMediaTypes = supportedMediaTypes
-            imagePicker.settings.selection.max = maxNumberOfSelection
-            imagePicker.settings.selection.unselectOnReachingMax = false
-            presentImagePicker(imagePicker, select: nil, deselect: nil, cancel: nil, finish: finish, completion: nil)
-            
         }
+        let selectedAssetIds: [String] = selectedAssets.map { $0.localIdentifier }
+        
+        switch type {
+        case .image:
+            supportedMediaTypes = [.image]
+            finish = { [weak self] assets in
+                guard let strongSelf = self else { return }
+                
+                var newMedias: [AmityMedia] = []
+                for asset in assets {
+                    guard !selectedAssetIds.contains(asset.localIdentifier) else {
+                        continue
+                    }
+                    let media = AmityMedia(state: .localAsset(asset), type: .image)
+                    media.localAsset = asset
+                    newMedias.append(media)
+                }
+                strongSelf.addMedias(newMedias, type: .image)
+            }
+        case .video:
+            supportedMediaTypes = [.video]
+            finish = { [weak self] assets in
+                guard let strongSelf = self else { return }
+                
+                var newMedias: [AmityMedia] = []
+                for asset in assets {
+                    guard !selectedAssetIds.contains(asset.localIdentifier) else {
+                        continue
+                    }
+                    let media = AmityMedia(state: .localAsset(asset), type: .video)
+                    media.localAsset = asset
+                    newMedias.append(media)
+                }
+                strongSelf.addMedias(newMedias, type: .video)
+            }
+        }
+        
+        let maxNumberOfSelection: Int
+        switch postMode {
+        case .create:
+            maxNumberOfSelection = Constant.maximumNumberOfImages
+        case .edit:
+            maxNumberOfSelection = Constant.maximumNumberOfImages - galleryView.medias.count
+        }
+        let imagePicker = AmityImagePickerController(selectedAssets: selectedAssets)
+        imagePicker.settings.theme.selectionStyle = .numbered
+        imagePicker.settings.fetch.assets.supportedMediaTypes = supportedMediaTypes
+        imagePicker.settings.selection.max = maxNumberOfSelection
+        imagePicker.settings.selection.unselectOnReachingMax = false
+        presentImagePicker(imagePicker, select: nil, deselect: nil, cancel: nil, finish: finish, completion: nil)
+        
+    }
+    
+    func addMediasFromGallery(){
+        //Use asset from parameter to show on screen
+        var selectedAssets: [PHAsset] = []
+        for media in galleryView.medias {
+            if let local = media.localAsset {
+                selectedAssets.append(local)
+            }
+        }
+        let selectedAssetIds: [String] = selectedAssets.map { $0.localIdentifier }
+        
+        var newMedias: [AmityMedia] = []
+        for asset in self.galleryAsset {
+            guard !selectedAssetIds.contains(asset.localIdentifier) else {
+                continue
+            }
+            let media = AmityMedia(state: .localAsset(asset), type: .image)
+            media.localAsset = asset
+            newMedias.append(media)
+        }
+        addMedias(newMedias, type: .image)
+    }
     
 }
 
@@ -894,7 +952,7 @@ extension AmityPostTextEditorViewController: AmityPostTextEditorScreenViewModelD
         }
         
         //If post from 'Today' page. Tell client to redirect
-        if postType != nil {
+        if postType != nil || fromGallery{
             if error == nil {
                 AmityEventHandler.shared.finishPostFromToday(true)
             } else {
@@ -1121,30 +1179,30 @@ extension AmityPostTextEditorViewController: UIImagePickerControllerDelegate, UI
 // MARK: - UIGestureRecognizerDelegate
 extension AmityPostTextEditorViewController {
     
-    public override func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
-        guard isValueChanged, !(mentionManager?.isSearchingStarted ?? false) else {
-            return super.gestureRecognizerShouldBegin(gestureRecognizer)
-        }
-            
-        if let view = gestureRecognizer.view,
-            let directions = (gestureRecognizer as? UIPanGestureRecognizer)?.direction(in: view),
-            directions.contains(.right) {
-            let alertController = UIAlertController(title: AmityLocalizedStringSet.postCreationDiscardPostTitle.localizedString, message: AmityLocalizedStringSet.postCreationDiscardPostMessage.localizedString, preferredStyle: .alert)
-            let cancelAction = UIAlertAction(title: AmityLocalizedStringSet.General.cancel.localizedString, style: .cancel, handler: nil)
-            let discardAction = UIAlertAction(title: AmityLocalizedStringSet.General.discard.localizedString, style: .destructive) { [weak self] _ in
-                self?.generalDismiss()
-            }
-            alertController.addAction(cancelAction)
-            alertController.addAction(discardAction)
-            present(alertController, animated: true, completion: nil)
-
-            // prevents swiping back and present confirmation message
-            return false
-        }
-        
-        // falls back to normal behaviour, swipe back to previous page
-        return super.gestureRecognizerShouldBegin(gestureRecognizer)
-    }
+//    public override func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
+//        guard isValueChanged, !(mentionManager?.isSearchingStarted ?? false) else {
+//            return super.gestureRecognizerShouldBegin(gestureRecognizer)
+//        }
+//
+//        if let view = gestureRecognizer.view,
+//            let directions = (gestureRecognizer as? UIPanGestureRecognizer)?.direction(in: view),
+//            directions.contains(.right) {
+//            let alertController = UIAlertController(title: AmityLocalizedStringSet.postCreationDiscardPostTitle.localizedString, message: AmityLocalizedStringSet.postCreationDiscardPostMessage.localizedString, preferredStyle: .alert)
+//            let cancelAction = UIAlertAction(title: AmityLocalizedStringSet.General.cancel.localizedString, style: .cancel, handler: nil)
+//            let discardAction = UIAlertAction(title: AmityLocalizedStringSet.General.discard.localizedString, style: .destructive) { [weak self] _ in
+//                self?.generalDismiss()
+//            }
+//            alertController.addAction(cancelAction)
+//            alertController.addAction(discardAction)
+//            present(alertController, animated: true, completion: nil)
+//
+//            // prevents swiping back and present confirmation message
+//            return false
+//        }
+//
+//        // falls back to normal behaviour, swipe back to previous page
+//        return super.gestureRecognizerShouldBegin(gestureRecognizer)
+//    }
 }
 
 // MARK: - UITableViewDelegate
