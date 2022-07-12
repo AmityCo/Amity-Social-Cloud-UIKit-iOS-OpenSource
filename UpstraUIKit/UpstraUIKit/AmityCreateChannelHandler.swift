@@ -80,6 +80,63 @@ public class AmityCreateChannelHandler {
         
     }
     
+    public func createChatFromContactPage(trueUser: TrueUser, completion: @escaping(Result<String,Error>) -> ()) {
+        getOtherUserDisplayName(userId: trueUser.userId){ result in
+            switch result {
+            case .success(let displayName):
+                let userFromTrue = TrueUser(userId: trueUser.userId, displayName: displayName)
+                let users = [userFromTrue]
+                var allUsers = users
+                var currentUser: TrueUser?
+                if let user = AmityUIKitManagerInternal.shared.client.currentUser?.object {
+                    let userModel = TrueUser(userId: user.userId, displayName: user.displayName ?? "")
+                    currentUser = userModel
+                    allUsers.append(userModel)
+                }
+                let builder = AmityConversationChannelBuilder()
+                let userIds = allUsers.map{ $0.userId }
+                let channelId = "\(userIds.sorted().joined(separator: "-"))_CONVER"
+                let channelDisplayName = users.count == 1 ? users.first?.displayName ?? "" : allUsers.map { $0.displayName ?? "" }.joined(separator: "-")
+                var userArrayWithDisplayName: [String] = []
+                for name in allUsers{
+                    userArrayWithDisplayName.append("\(name.userId):\(name.displayName ?? "")")
+                }
+                builder.setUserIds(userIds)
+                let metaData: [String:Any] = [
+                    "isDirectChat": allUsers.count == 2,
+                    "creatorId": currentUser?.userId ?? "",
+                    "sdk_type":"ios",
+                    "userIds": userIds,
+                    "chatDisplayName": userArrayWithDisplayName
+                ]
+                builder.setMetadata(metaData)
+                builder.setDisplayName(channelDisplayName)
+                builder.setTags(["ch-comm","ios-sdk"])
+                self.existingChannelToken?.invalidate()
+                self.existingChannelToken = self.channelRepository?.getChannel(channelId).observe({ [weak self] (channel, error) in
+                    guard let weakSelf = self else { return }
+                    if error != nil {
+                        weakSelf.createNewConversationChannel(builder: builder) { result in
+                            switch result {
+                            case .success(let channelId):
+                                completion(.success(channelId))
+                            case .failure(let error):
+                                completion(.failure(error))
+                            }
+                        }
+                    }
+                    guard channel.object != nil else { return }
+                    weakSelf.channelRepository?.joinChannel(channelId)
+                    weakSelf.existingChannelToken?.invalidate()
+                    completion(.success(channelId))
+                })
+            case .failure(let error):
+                print("Error on create chat: \(error.localizedDescription)")
+            }
+        }
+        
+    }
+    
     func createNewConversationChannel(builder: AmityConversationChannelBuilder, completion: @escaping(Result<String,Error>) -> ()) {
         let channelObject = channelRepository?.createChannel(with: builder)
         channelToken?.invalidate()
