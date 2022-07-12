@@ -19,6 +19,7 @@ public class LiveStreamPlayerViewController: UIViewController {
     
     private var stream: AmityStream?
     private var getStreamToken: AmityNotificationToken?
+    private var getReactionToken: AmityNotificationToken?
     
     private var postRepository: AmityPostRepository?
     private var reactionRepository: AmityReactionRepository?
@@ -178,8 +179,8 @@ public class LiveStreamPlayerViewController: UIViewController {
     
     /// Call function get reaction count
     func getReactionData() {
-        getStreamToken?.invalidate()
-        getStreamToken = postRepository?.getPostForPostId(self.postId).observe { liveObject, error in
+        getReactionToken?.invalidate()
+        getReactionToken = postRepository?.getPostForPostId(self.postId).observe { liveObject, error in
             guard liveObject.dataStatus == .fresh else { return }
             guard let post = liveObject.object else { return }
             var allReactions: [String] = []
