@@ -17,6 +17,7 @@ class ChatFeatureViewController: UIViewController {
         case chatList
         case chatListCustomize
         case messageListWithTextOnlyKeyboard
+        case createFromContact
 
         var text: String {
             switch self {
@@ -28,6 +29,8 @@ class ChatFeatureViewController: UIViewController {
                 return "Chat List with customization"
             case .messageListWithTextOnlyKeyboard:
                 return "Message List with text only keyboard"
+            case .createFromContact:
+                return "Create chat from contact"
             }
         }
         
@@ -111,6 +114,17 @@ extension ChatFeatureViewController: UITableViewDelegate {
             navigationController?.pushViewController(vc, animated: true)
         case .messageListWithTextOnlyKeyboard:
             presentSpecificChatDialogue()
+        case .createFromContact:
+            let user = TrueUser(userId: "Mono29")
+            AmityCreateChannelHandler.shared.createChatFromContactPage(trueUser: user) { result in
+                switch result {
+                case .success(let channelId):
+                    let vc = AmityMessageListViewController.make(channelId: channelId)
+                    self.navigationController?.pushViewController(vc, animated: true)
+                case .failure(let error):
+                    print("Error from create channel: \(error.localizedDescription)")
+                }
+            }
         }
     }
 }
