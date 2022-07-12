@@ -333,6 +333,9 @@ open class AmityEventHandler {
     /// TrueID finish post from Today
     open func finishPostFromToday(_ success: Bool) {}
     
+    /// TrueID open contact page
+    open func openContactPageEvent() {}
+    
     //MARK: - AnalyticNCCEvent
     open func communityTopbarSearchTracking() {}
     open func communityTopbarProfileTracking() {}

@@ -73,6 +73,10 @@ private extension AmityRecentChatViewController {
 private extension AmityRecentChatViewController {
     func setupView() {
         self.title = "Chat"
+        let addImage = UIImage(named: "icon_chat_contact", in: AmityUIKitManager.bundle, compatibleWith: nil)
+        let barButton = UIBarButtonItem(image: addImage, style: .plain, target: self, action: #selector(didClickContact))
+        barButton.tintColor = .black
+        navigationItem.rightBarButtonItem = barButton
         setupTableView()
     }
     
@@ -95,6 +99,10 @@ private extension AmityRecentChatViewController {
                 guard let weakSelf = self else { return }
                 weakSelf.screenViewModel.action.createChannel(users: storeUsers)
         })
+    }
+    
+    @objc func didClickContact(){
+        AmityEventHandler.shared.openContactPageEvent()
     }
 }
 
