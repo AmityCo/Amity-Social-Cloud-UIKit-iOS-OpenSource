@@ -425,6 +425,7 @@ public class LiveStreamPlayerViewController: UIViewController {
         customAPIRequest.saveLiveStreamViewerData(postId: self.postId, liveStreamId: self.streamIdToWatch, userId: AmityUIKitManager.currentUserId, action: "leave") { value in
         }
         self.timer.invalidate()
+        self.stopStream()
         self.dismiss(animated: true, completion: nil)
     }
     
