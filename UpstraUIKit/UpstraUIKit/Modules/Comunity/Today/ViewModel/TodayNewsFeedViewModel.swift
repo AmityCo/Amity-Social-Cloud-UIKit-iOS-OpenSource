@@ -159,35 +159,29 @@ extension TodayNewsFeedScreenViewModel {
         
        var postArray: [AmityPostModel] = []
        for postId in postsData {
-           //                   let postId = posts.postId
-           
-           DispatchQueue.main.asyncAfter(deadline: .now() + 3.0) {
-               //Get Pin-post data
-               self.postController.getPostForPostId(withPostId: postId, isPin: true) { [weak self] (result) in
-                   guard let strongSelf = self else { return }
-                   switch result {
-                   case .success(let post):
-                       post.latestComments = []
-                       postArray.append(post)
-                       print("----> \(postArray.count)")
-//                       strongSelf.prepareComponentsPinPost(posts: post)
-                   case .failure(let error):
-                       if let amityError = AmityError(error: error), amityError == .noUserAccessPermission {
-                           strongSelf.isPrivate = false
-                           strongSelf.debouncer.run {
-                               strongSelf.prepareComponents(posts: [])
-                           }
-                           strongSelf.delegate?.screenViewModelDidFail(strongSelf, failure: amityError)
-                       } else {
-                           strongSelf.delegate?.screenViewModelDidFail(strongSelf, failure: AmityError(error: error) ?? .unknown)
+           //Get Pin-post data
+           self.postController.getPostForPostId(withPostId: postId, isPin: true) { [weak self] (result) in
+               guard let strongSelf = self else { return }
+               switch result {
+               case .success(let post):
+                   post.latestComments = []
+                   postArray.append(post)
+                   print("----> \(postArray.count)")
+                   //                       strongSelf.prepareComponentsPinPost(posts: post)
+               case .failure(let error):
+                   if let amityError = AmityError(error: error), amityError == .noUserAccessPermission {
+                       strongSelf.isPrivate = false
+                       strongSelf.debouncer.run {
+                           strongSelf.prepareComponents(posts: [])
                        }
+                       strongSelf.delegate?.screenViewModelDidFail(strongSelf, failure: amityError)
+                   } else {
+                       strongSelf.delegate?.screenViewModelDidFail(strongSelf, failure: AmityError(error: error) ?? .unknown)
                    }
                }
-               
-               DispatchQueue.main.async {
-                   self.prepareComponents(posts: postArray)
-               }
            }
+           
+           self.prepareComponents(posts: postArray)
        }
    }
    
