@@ -35,7 +35,6 @@ protocol TodayNewsFeedScreenViewModelDelegate: AnyObject {
 
 protocol TodayNewsFeedScreenViewModelDataSource {
     // MARK: PostComponents
-    var isPrivate: Bool { get }
     var isLoading: Bool { get }
     func postComponents(in section: Int) -> AmityPostComponent
     func numberOfPostComponents() -> Int

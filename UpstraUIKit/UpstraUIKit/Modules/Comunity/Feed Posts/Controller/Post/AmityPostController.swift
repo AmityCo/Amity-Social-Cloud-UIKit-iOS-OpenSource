@@ -41,6 +41,10 @@ extension AmityPostController {
     func getPostForPostId(withPostId postId: String, isPin: Bool, completion: ((Result<AmityPostModel, AmityError>) -> Void)?) {
         fetchPostController.getPostForPostId(withPostId: postId, isPin: isPin, completion: completion)
     }
+    
+    func getTodayPostForPostId(withPostId postId: String, isPin: Bool, completion: ((Result<AmityPostModel, AmityError>) -> Void)?) {
+        fetchPostController.getTodayPostForPostId(withPostId: postId, isPin: isPin, completion: completion)
+    }
 }
 
 // MARK: - Delete

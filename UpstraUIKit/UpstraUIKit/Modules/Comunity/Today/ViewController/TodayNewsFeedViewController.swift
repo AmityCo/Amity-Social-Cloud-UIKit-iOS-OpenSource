@@ -57,7 +57,6 @@ public final class TodayNewsFeedViewController: AmityViewController, AmityRefres
         setupView()
         setupProtocolHandler()
         setupScreenViewModel()
-//        fetchUtillAppear()
     }
     
     public override func viewWillAppear(_ animated: Bool) {

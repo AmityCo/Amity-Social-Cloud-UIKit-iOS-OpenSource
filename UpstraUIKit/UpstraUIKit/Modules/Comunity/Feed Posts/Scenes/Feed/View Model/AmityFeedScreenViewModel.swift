@@ -137,7 +137,7 @@ extension AmityFeedScreenViewModel {
                         let postId = posts.postId
                         
                         //Get Pin-post data
-                        self.postController.getPostForPostId(withPostId: postId, isPin: true) { [weak self] (result) in
+                        self.postController.getPostForPostId(withPostId: postId ?? "", isPin: true) { [weak self] (result) in
                             guard let strongSelf = self else { return }
                             switch result {
                             case .success(let post):
