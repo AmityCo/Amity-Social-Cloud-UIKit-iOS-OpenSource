@@ -133,13 +133,13 @@ class AmityCustomEventHandler: AmityEventHandler {
         debugPrint("Screen name: \(screenName) | Community Model: \(communityModel)")
     }
     
-    override func finishPostFromToday(_ success: Bool) {
+    override func finishPostEvent(_ success: Bool, userId: String) {
 //        var alertMessage = ""
         if success {
-            debugPrint("Success to post.")
+            debugPrint("Success to post from user: \(userId).")
 //            alertMessage = "Success to post."
         } else {
-            debugPrint("Fail to post.")
+            debugPrint("Fail to post from user: \(userId).")
 //            alertMessage = "Fail to post."
         }
 //        

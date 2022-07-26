@@ -42,13 +42,13 @@ final public class AmityPostTargetPickerViewController: AmityViewController {
         return vc
     }
     
-    public static func makeFromToday(postType: PostFromTodayType? = nil) -> AmityPostTargetPickerViewController {
+    public static func makePostBy(postType: PostFromTodayType? = nil) -> AmityPostTargetPickerViewController {
         let vc = AmityPostTargetPickerViewController()
         vc.postType = postType
         return vc
     }
     
-    public static func makeFromToday(asset:[PHAsset] = []) -> AmityPostTargetPickerViewController {
+    public static func makePostBy(asset:[PHAsset] = []) -> AmityPostTargetPickerViewController {
         let vc = AmityPostTargetPickerViewController()
         vc.galleryAsset = asset
         return vc

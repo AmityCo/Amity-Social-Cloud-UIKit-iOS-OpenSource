@@ -953,10 +953,11 @@ extension AmityPostTextEditorViewController: AmityPostTextEditorScreenViewModelD
         
         //If post from 'Today' page. Tell client to redirect
         if postType != nil || fromGallery{
+            let userId = AmityUIKitManagerInternal.shared.currentUserId
             if error == nil {
-                AmityEventHandler.shared.finishPostFromToday(true)
+                AmityEventHandler.shared.finishPostEvent(true, userId: userId)
             } else {
-                AmityEventHandler.shared.finishPostFromToday(false)
+                AmityEventHandler.shared.finishPostEvent(false, userId: userId)
             }
         }
     }
