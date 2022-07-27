@@ -21,7 +21,9 @@ public final class AmityRecentChatViewController: AmityViewController, Indicator
     
     // MARK: - IBOutlet Properties
     @IBOutlet private var tableView: UITableView!
-    
+    @IBOutlet private var announcementLabel: UILabel!
+    @IBOutlet private var announcementView: UIView!
+
     // MARK: - Properties
     private var screenViewModel: AmityRecentChatScreenViewModelType!
     
@@ -78,6 +80,18 @@ private extension AmityRecentChatViewController {
         barButton.tintColor = .black
         navigationItem.rightBarButtonItem = barButton
         setupTableView()
+        
+        /// Set attribute string
+        let announcementAttributeString = NSMutableAttributedString(string: AmityLocalizedStringSet.RecentMessage.announcementMessage.localizedString)
+        let underlineAttribute = [NSAttributedString.Key.underlineStyle: NSUnderlineStyle.thick.rawValue]
+        let underlineAttributeString = NSAttributedString(string: AmityLocalizedStringSet.RecentMessage.announcementUnderlineMessage.localizedString, attributes: underlineAttribute)
+        announcementAttributeString.append(underlineAttributeString)
+        
+        self.announcementLabel.font = AmityFontSet.body
+        self.announcementLabel.attributedText = announcementAttributeString
+                
+        let tap = UITapGestureRecognizer(target: self, action: #selector(self.didClickAnnouncement(_:)))
+        self.announcementView.addGestureRecognizer(tap)
     }
     
     func setupTableView() {
@@ -101,7 +115,11 @@ private extension AmityRecentChatViewController {
         })
     }
     
-    @objc func didClickContact(){
+    @objc func didClickAnnouncement(_ sender: UITapGestureRecognizer? = nil) {
+        AmityEventHandler.shared.routeToNewsfeedDidTap(from: self)
+    }
+
+    @objc func didClickContact() {
         AmityEventHandler.shared.openContactPageEvent()
     }
 }
@@ -127,7 +145,7 @@ extension AmityRecentChatViewController: UITableViewDataSource {
     
     public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: AmityRecentChatTableViewCell.identifier, for: indexPath)
-            configure(for: cell, at: indexPath)
+        configure(for: cell, at: indexPath)
         return cell
     }
     

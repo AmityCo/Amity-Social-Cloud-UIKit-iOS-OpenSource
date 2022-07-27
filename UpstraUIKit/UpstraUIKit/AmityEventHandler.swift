@@ -333,6 +333,9 @@ open class AmityEventHandler {
     /// TrueID finish post from Today
     open func finishPostEvent(_ success: Bool, userId: String) {}
     
+    /// TrueID route to newsfeed from recent hat
+    open func routeToNewsfeedDidTap(from source: UIViewController) {}
+
     /// TrueID open contact page
     open func openContactPageEvent() {}
     

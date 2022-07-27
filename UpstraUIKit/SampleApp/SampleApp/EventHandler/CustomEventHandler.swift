@@ -172,6 +172,13 @@ class AmityCustomEventHandler: AmityEventHandler {
 //        }
     }
     
+    override func routeToNewsfeedDidTap(from source: UIViewController) {            
+        let homepage = AmityCommunityHomePageFullHeaderViewController.make()
+        let navigationController = UINavigationController(rootViewController: homepage)
+        navigationController.modalPresentationStyle = .fullScreen
+        source.present(navigationController, animated: true, completion: nil)
+    }
+    
 //    override func timelineFeedDidScroll(_ scrollView: UIScrollView) {
 //        debugPrint(scrollView as Any)
 //    }
