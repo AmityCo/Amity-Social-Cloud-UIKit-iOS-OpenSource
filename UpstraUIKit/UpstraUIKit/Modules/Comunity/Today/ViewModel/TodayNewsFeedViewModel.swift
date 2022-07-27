@@ -1,47 +1,44 @@
 //
-//  AmityFeedScreenViewModel.swift
+//  TodayNewsFeedScreenViewModelType.swift
 //  AmityUIKit
 //
-//  Created by sarawoot khunsri on 2/13/21.
-//  Copyright © 2021 Amity. All rights reserved.
+//  Created by Jiratin Teean on 8/7/2565 BE.
+//  Copyright © 2565 BE Amity. All rights reserved.
 //
 
 import UIKit
 import AmitySDK
+import SwiftUI
+import Network
 
-final class AmityFeedScreenViewModel: AmityFeedScreenViewModelType {
+final class TodayNewsFeedScreenViewModel : TodayNewsFeedScreenViewModelType {
     
     // MARK: - Delegate
-    weak var delegate: AmityFeedScreenViewModelDelegate?
+    weak var delegate: TodayNewsFeedScreenViewModelDelegate?
     
     // MARK: - Controller
     private let postController: AmityPostControllerProtocol
-    private let commentController: AmityCommentControllerProtocol
     private let reactionController: AmityReactionControllerProtocol
     private let pollRepository: AmityPollRepository
     
     // MARK: - Properties
     private let debouncer = Debouncer(delay: 0.3)
-    private let feedType: AmityPostFeedType
     private var postComponents = [AmityPostComponent]()
     private var pinPostComponents = [AmityPostComponent]()
-    private(set) var isPrivate: Bool
     private(set) var isLoading: Bool {
         didSet {
             guard oldValue != isLoading else { return }
             delegate?.screenViewModelLoadingStatusDidChange(self, isLoading: isLoading)
         }
     }
-        
-    init(withFeedType feedType: AmityPostFeedType,
-        postController: AmityPostControllerProtocol,
-        commentController: AmityCommentControllerProtocol,
-        reactionController: AmityReactionControllerProtocol) {
-        self.feedType = feedType
+    private var index: Int = 0
+    private var postsObject: AmityTodayNewsFeedDataModel = AmityTodayNewsFeedDataModel(post: [])
+    private var array: [AmityPostModel] = []
+
+    init(postController: AmityPostControllerProtocol,
+         reactionController: AmityReactionControllerProtocol) {
         self.postController = postController
-        self.commentController = commentController
         self.reactionController = reactionController
-        self.isPrivate = false
         self.isLoading = false
         self.pollRepository = AmityPollRepository(client: AmityUIKitManagerInternal.shared.client)
     }
@@ -49,20 +46,15 @@ final class AmityFeedScreenViewModel: AmityFeedScreenViewModelType {
 }
 
 // MARK: - DataSource
-extension AmityFeedScreenViewModel {
-    
-    func getFeedType() -> AmityPostFeedType {
-        return feedType
-    }
+extension TodayNewsFeedScreenViewModel {
     
     func postComponents(in section: Int) -> AmityPostComponent {
-        return postComponents[section - 1]
+        return postComponents[section]
     }
     
-    // Plus 1 is for the header view section
     // We can be enhanced later
     func numberOfPostComponents() -> Int {
-        return postComponents.count + 1
+        return postComponents.count
     }
     
     private func prepareComponents(posts: [AmityPostModel]) {
@@ -91,28 +83,26 @@ extension AmityFeedScreenViewModel {
     }
     
     private func prepareComponentsPinPost(posts: AmityPostModel?) {
-        pinPostComponents = []
-        
         guard let post = posts else {
             return
         }
         post.appearance.displayType = .feed
         switch post.dataTypeInternal {
         case .text:
-            addPinPostComponent(component: AmityPostTextComponent(post: post))
+            addComponent(component: AmityPostTextComponent(post: post))
         case .image, .video:
-            addPinPostComponent(component: AmityPostMediaComponent(post: post))
+            addComponent(component: AmityPostMediaComponent(post: post))
         case .file:
-            addPinPostComponent(component: AmityPostFileComponent(post: post))
+            addComponent(component: AmityPostFileComponent(post: post))
         case .poll:
-            addPinPostComponent(component: AmityPostPollComponent(post: post))
+            addComponent(component: AmityPostPollComponent(post: post))
         case .liveStream:
-            addPinPostComponent(component: AmityPostLiveStreamComponent(post: post))
+            addComponent(component: AmityPostLiveStreamComponent(post: post))
         case .unknown:
-            addPinPostComponent(component: AmityPostPlaceHolderComponent(post: post))
+            addComponent(component: AmityPostPlaceHolderComponent(post: post))
         }
     }
-
+    
     private func addComponent(component: AmityPostComposable) {
         postComponents.append(AmityPostComponent(component: component))
     }
@@ -122,85 +112,46 @@ extension AmityFeedScreenViewModel {
     }
 }
 
-// MARK: - Actio
+// MARK: - Action
 // MARK: Fetch data
-extension AmityFeedScreenViewModel {
+extension TodayNewsFeedScreenViewModel {
     
     func fetchPosts() {
-        if feedType == .customPostRankingGlobalFeed {
-            isLoading = true
-            customAPIRequest.getPinPostData() { postArray in
-                DispatchQueue.main.async {
-                    self.prepareComponentsPinPost(posts: nil)
-                    guard let postsData = postArray else { return }
-                    for posts in postsData.posts {
-                        let postId = posts.postId
-                        
-                        //Get Pin-post data
-                        self.postController.getPostForPostId(withPostId: postId ?? "", isPin: true) { [weak self] (result) in
-                            guard let strongSelf = self else { return }
-                            switch result {
-                            case .success(let post):
-                                strongSelf.prepareComponentsPinPost(posts: post)
-                            case .failure:
-                                break
-                            }
-                        }
-                    }
-                }
-            }
-            DispatchQueue.main.async {
-                //Get Feed's posts after get Pin-post data
-                self.postController.retrieveFeed(withFeedType: self.feedType) { [weak self] (result) in
-                    guard let strongSelf = self else { return }
-                    switch result {
-                    case .success(let posts):
-                        strongSelf.prepareComponents(posts: posts)
-                    case .failure(let error):
-                        if let amityError = AmityError(error: error), amityError == .noUserAccessPermission {
-                            switch strongSelf.feedType {
-                            case .userFeed:
-                                strongSelf.isPrivate = true
-                            default:
-                                strongSelf.isPrivate = false
-                            }
-                            strongSelf.debouncer.run {
-                                strongSelf.prepareComponents(posts: [])
-                            }
-                            strongSelf.delegate?.screenViewModelDidFail(strongSelf, failure: amityError)
-                        } else {
-                            strongSelf.delegate?.screenViewModelDidFail(strongSelf, failure: AmityError(error: error) ?? .unknown)
-                        }
-                    }
-                }
-            }
-        } else {
-            isLoading = true
-            postController.retrieveFeed(withFeedType: feedType) { [weak self] (result) in
+        isLoading = true
+        customAPIRequest.getTodayPostData() { postArray in
+            guard let postsData = postArray else { return }
+            self.postsObject = postsData
+        }
+        
+        DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
+            self.prepareData()
+        }
+    }
+    
+    func prepareData() {
+        //Get post data
+        if postsObject.post.count != index {
+            self.postController.getTodayPostForPostId(withPostId: postsObject.post[index].postId ?? "", isPin: false) { [weak self] (result) in
                 guard let strongSelf = self else { return }
                 switch result {
-                case .success(let posts):
-                    strongSelf.debouncer.run {
-                        strongSelf.prepareComponents(posts: posts)
-                    }
+                case .success(let post):
+                    post.latestComments = []
+                    strongSelf.array.append(post)
+                    strongSelf.prepareComponents(posts: strongSelf.array)
+                    strongSelf.index += 1
+                    strongSelf.prepareData()
                 case .failure(let error):
-                    print("---> ERROR !! \(error.localizedDescription.description)")
                     if let amityError = AmityError(error: error), amityError == .noUserAccessPermission {
-                        switch strongSelf.feedType {
-                        case .userFeed:
-                            strongSelf.isPrivate = true
-                        default:
-                            strongSelf.isPrivate = false
-                        }
-                        strongSelf.debouncer.run {
-                            strongSelf.prepareComponents(posts: [])
-                        }
                         strongSelf.delegate?.screenViewModelDidFail(strongSelf, failure: amityError)
                     } else {
                         strongSelf.delegate?.screenViewModelDidFail(strongSelf, failure: AmityError(error: error) ?? .unknown)
                     }
+                    strongSelf.index += 1
+                    strongSelf.prepareData()
                 }
             }
+        } else {
+            index = 0
         }
     }
     
@@ -211,7 +162,7 @@ extension AmityFeedScreenViewModel {
 }
 
 // MARK: Observer
-extension AmityFeedScreenViewModel {
+extension TodayNewsFeedScreenViewModel {
     func startObserveFeedUpdate() {
         NotificationCenter.default.addObserver(self, selector: #selector(feedNeedsUpdate(_:)), name: Notification.Name.Post.didCreate, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(feedNeedsUpdate(_:)), name: Notification.Name.Post.didUpdate, object: nil)
@@ -239,7 +190,7 @@ extension AmityFeedScreenViewModel {
 }
 
 // MARK: Post&Comment
-extension AmityFeedScreenViewModel {
+extension TodayNewsFeedScreenViewModel {
     func like(id: String, referenceType: AmityReactionReferenceType) {
         reactionController.addReaction(withReaction: .like, referanceId: id, referenceType: referenceType) { [weak self] (success, error) in
             guard let strongSelf = self else { return }
@@ -279,7 +230,7 @@ extension AmityFeedScreenViewModel {
 }
 
 // MARK: Post
-extension AmityFeedScreenViewModel {
+extension TodayNewsFeedScreenViewModel {
     func delete(withPostId postId: String) {
         AmityHUD.show(.loading)
         postController.delete(withPostId: postId, parentId: nil) { [weak self] (success, error) in
@@ -305,7 +256,7 @@ extension AmityFeedScreenViewModel {
             self?.unreportHandler(success: success, error: error)
         }
     }
-
+    
     func getReportStatus(withPostId postId: String) {
         postController.getReportStatus(withPostId: postId) { [weak self] (isReported) in
             self?.delegate?.screenViewModelDidGetReportStatusPost(isReported: isReported)
@@ -313,50 +264,8 @@ extension AmityFeedScreenViewModel {
     }
 }
 
-// MARK: Comment
-extension AmityFeedScreenViewModel {
-    func delete(withCommentId commentId: String) {
-        commentController.delete(withCommentId: commentId) { [weak self] (success, error) in
-            guard let strongSelf = self else { return }
-            if success {
-                strongSelf.delegate?.screenViewModelDidDeleteCommentSuccess(strongSelf)
-            } else {
-                strongSelf.delegate?.screenViewModelDidFail(strongSelf, failure: AmityError(error: error) ?? .unknown)
-            }
-        }
-    }
-    
-    func edit(withComment comment: AmityCommentModel, text: String, metadata: [String : Any]?, mentionees: AmityMentioneesBuilder?) {
-        commentController.edit(withComment: comment, text: text, metadata: metadata, mentionees: mentionees) { [weak self] (success, error) in
-            guard let strongSelf = self else { return }
-            if success {
-                strongSelf.delegate?.screenViewModelDidEditCommentSuccess(strongSelf)
-            } else {
-                strongSelf.delegate?.screenViewModelDidFail(strongSelf, failure: AmityError(error: error) ?? .unknown)
-            }
-        }
-    }
-    
-    func report(withCommentId commentId: String) {
-        commentController.report(withCommentId: commentId) { [weak self] (success, error) in
-            self?.reportHandler(success: success, error: error)
-        }
-    }
-    
-    func unreport(withCommentId commentId: String) {
-        commentController.unreport(withCommentId: commentId) { [weak self] (success, error) in
-            self?.unreportHandler(success: success, error: error)
-        }
-    }
-    
-    
-    func getReportStatus(withCommendId commendId: String, completion: ((Bool) -> Void)?) {
-        commentController.getReportStatus(withCommentId: commendId, completion: completion)
-    }
-}
-
 // MARK: Report handler
-private extension AmityFeedScreenViewModel {
+private extension TodayNewsFeedScreenViewModel {
     func reportHandler(success: Bool, error: Error?) {
         if success {
             delegate?.screenViewModelDidSuccess(self, message: AmityLocalizedStringSet.HUD.reportSent)
@@ -374,23 +283,8 @@ private extension AmityFeedScreenViewModel {
     }
 }
 
-// MARK: User settings
-extension AmityFeedScreenViewModel {
-    func fetchUserSettings() {
-        switch feedType {
-        case .userFeed(let userId):
-            // retrieveFeed user settings
-            if userId != AmityUIKitManagerInternal.shared.currentUserId {
-                delegate?.screenViewModelDidGetUserSettings(self)
-            }
-            return
-        default: break
-        }
-    }
-}
-
 // MARK: Poll
-extension AmityFeedScreenViewModel {
+extension TodayNewsFeedScreenViewModel {
     
     func vote(withPollId pollId: String?, answerIds: [String]) {
         guard let pollId = pollId else { return }
@@ -419,4 +313,3 @@ extension AmityFeedScreenViewModel {
     }
     
 }
-

@@ -168,4 +168,58 @@ final class customAPIRequest {
         
         task.resume()
     }
+    
+    static func getTodayPostData(completion: @escaping(_ postArray: AmityTodayNewsFeedDataModel?) -> () ) {
+        
+        var region: String {
+            switch AmityUIKitManagerInternal.shared.envByApiKey {
+            case .staging:
+                return "staging"
+            case .production:
+                return "th"
+            case .indonesia:
+                return "id"
+            case .cambodia:
+                return "kh"
+            case .philippin:
+                return "ph"
+            case .vietnam:
+                return "vn"
+            case .myanmar:
+                return "mm"
+            default:
+                return ""
+            }
+        }
+        
+        let url = URL(string: "https://cpvp6wy03k.execute-api.ap-southeast-1.amazonaws.com/newsfeed/getNewsfeedNoUCG?region=\(region)")!
+        var tempData: AmityTodayNewsFeedDataModel = AmityTodayNewsFeedDataModel(post: [])
+        
+        var request = URLRequest(url: url)
+        request.httpMethod = "GET"
+        request.allHTTPHeaderFields = [
+            "Content-Type" : "application/json"
+        ]
+        
+        //Get Request
+        let task = URLSession.shared.dataTask(with: request) { data, response, error in
+            guard let data = data, error == nil else {
+                print(error?.localizedDescription ?? "No data.")
+                return
+            }
+            do {
+                let jsonResponse = try? JSONSerialization.jsonObject(with: data, options: [])
+                guard let jsonDecode = try? JSONDecoder().decode(AmityTodayNewsFeedDataModel.self, from: data) else {
+                    completion(tempData)
+                    return
+                }
+                tempData = jsonDecode
+                
+            } catch let response {
+                print("Error: \(response)")
+            }
+            completion(tempData)
+        }
+        task.resume()
+    }
 }

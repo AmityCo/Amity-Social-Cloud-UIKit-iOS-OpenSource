@@ -19,7 +19,6 @@ public class AmityCommunityHomePageViewController: AmityProfileBottomViewControl
     }
     
     // MARK: - Properties
-//    public let newsFeedVC = AmityNewsfeedViewController.make()
     public let newsFeedVC = AmityFeedViewController.make(feedType: .customPostRankingGlobalFeed)
     public let newfeedHeader = AmityMyCommunityPreviewViewController.make()
     public let exploreVC = AmityCommunityExplorerViewController.make()

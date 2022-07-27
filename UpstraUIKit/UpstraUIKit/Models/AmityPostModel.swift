@@ -144,7 +144,7 @@ public class AmityPostModel {
     /**
      * The unique identifier for the post
      */
-    public let postId: String
+    public var postId: String
     
     /**
      * The unique identifier for the post user id
@@ -270,7 +270,7 @@ public class AmityPostModel {
     var dataTypeInternal: DataType = .unknown
     var isModerator: Bool = false
     let parentPostId: String?
-    let latestComments: [AmityCommentModel]
+    var latestComments: [AmityCommentModel]
     let postAsModerator: Bool = false
     private(set) var text: String = ""
     private(set) var medias: [AmityMedia] = []

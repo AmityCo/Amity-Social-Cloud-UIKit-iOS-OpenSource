@@ -11,6 +11,7 @@ import AmitySDK
 
 protocol AmityPostFetchPostControllerProtocol {
     func getPostForPostId(withPostId postId: String, isPin: Bool, completion: ((Result<AmityPostModel, AmityError>) -> Void)?)
+    func getTodayPostForPostId(withPostId postId: String, isPin: Bool, completion: ((Result<AmityPostModel, AmityError>) -> Void)?)
 }
 
 final class AmityPostFetchPostController: AmityPostFetchPostControllerProtocol {
@@ -34,7 +35,25 @@ final class AmityPostFetchPostController: AmityPostFetchPostControllerProtocol {
             }
         }
     }
-        
+    
+    func getTodayPostForPostId(withPostId postId: String, isPin: Bool, completion: ((Result<AmityPostModel, AmityError>) -> Void)?) {
+        postObject = repository.getPostForPostId(postId)
+        token = postObject?.observe { [weak self] (object, error) in
+            guard let strongSelf = self else { return }
+            if let error = AmityError(error: error) {
+                completion?(.failure(error))
+            } else {
+                if object.dataStatus == .fresh {
+                    if let model = strongSelf.prepareData(isPin: isPin) {
+                        completion?(.success(model))
+                    } else {
+                        completion?(.failure(.unknown))
+                    }
+                }
+            }
+        }
+    }
+    
     private func prepareData(isPin: Bool) -> AmityPostModel? {
         guard let _post = postObject?.object else { return nil }
         let post = AmityPostModel(post: _post)
