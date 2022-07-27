@@ -331,7 +331,7 @@ open class AmityEventHandler {
     open func setURLAdvertisement(_ url: String) {}
     
     /// TrueID finish post from Today
-    open func finishPostFromToday(_ success: Bool) {}
+    open func finishPostEvent(_ success: Bool, userId: String) {}
     
     /// TrueID open contact page
     open func openContactPageEvent() {}

@@ -278,27 +278,27 @@ extension CommunityFeatureViewController: UITableViewDelegate {
         case .PostCreator:
             break
         case .postFromTodayText:
-            let postTarget = AmityPostTargetPickerViewController.makeFromToday(postType: .generic)
+            let postTarget = AmityPostTargetPickerViewController.makePostBy(postType: .generic)
             let nav = UINavigationController(rootViewController: postTarget)
             nav.modalPresentationStyle = .fullScreen
             present(nav, animated: true, completion: nil)
         case .postFromTodayGallery:
-            let postTarget = AmityPostTargetPickerViewController.makeFromToday(postType: .photo)
+            let postTarget = AmityPostTargetPickerViewController.makePostBy(postType: .photo)
             let nav = UINavigationController(rootViewController: postTarget)
             nav.modalPresentationStyle = .fullScreen
             present(nav, animated: true, completion: nil)
         case .postFromTodayCamera:
-            let postTarget = AmityPostTargetPickerViewController.makeFromToday(postType: .camera)
+            let postTarget = AmityPostTargetPickerViewController.makePostBy(postType: .camera)
             let nav = UINavigationController(rootViewController: postTarget)
             nav.modalPresentationStyle = .fullScreen
             present(nav, animated: true, completion: nil)
         case .postFromTodayVideo:
-            let postTarget = AmityPostTargetPickerViewController.makeFromToday(postType: .video)
+            let postTarget = AmityPostTargetPickerViewController.makePostBy(postType: .video)
             let nav = UINavigationController(rootViewController: postTarget)
             nav.modalPresentationStyle = .fullScreen
             present(nav, animated: true, completion: nil)
         case .postFromTodayPoll:
-            let postTarget = AmityPostTargetPickerViewController.makeFromToday(postType: .poll)
+            let postTarget = AmityPostTargetPickerViewController.makePostBy(postType: .poll)
             let nav = UINavigationController(rootViewController: postTarget)
             nav.modalPresentationStyle = .fullScreen
             present(nav, animated: true, completion: nil)
@@ -312,7 +312,7 @@ extension CommunityFeatureViewController: UITableViewDelegate {
             finish = { [weak self] assets in
                 guard let strongSelf = self else { return }
                 
-                let postTarget = AmityPostTargetPickerViewController.makeFromToday(asset: assets)
+                let postTarget = AmityPostTargetPickerViewController.makePostBy(asset: assets)
                 let nav = UINavigationController(rootViewController: postTarget)
                 nav.modalPresentationStyle = .fullScreen
                 strongSelf.present(nav, animated: true, completion: nil)
