@@ -243,7 +243,7 @@ open class AmityEventHandler {
             viewController = AmityPostCreatorViewController.make(postTarget: postTarget, postType: postType)
             source.navigationController?.pushViewController(viewController, animated: true)
         case .poll:
-            viewController = AmityPollCreatorViewController.make(postTarget: postTarget)
+            viewController = AmityPollCreatorViewController.make(postTarget: postTarget, postType: postType)
             source.navigationController?.pushViewController(viewController, animated: true)
         }
         

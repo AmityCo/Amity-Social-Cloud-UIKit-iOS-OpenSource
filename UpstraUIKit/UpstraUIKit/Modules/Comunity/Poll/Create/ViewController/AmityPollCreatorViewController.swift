@@ -31,6 +31,7 @@ public final class AmityPollCreatorViewController: AmityViewController {
     private var postButton: UIBarButtonItem?
     private var screenViewModel: AmityPollCreatorScreenViewModelType?
     private var mentionManager: AmityMentionManager?
+    private var postType: PostFromTodayType? = nil
     
     
     // MARK: - View's lifecycle
@@ -50,6 +51,23 @@ public final class AmityPollCreatorViewController: AmityViewController {
     public static func make(postTarget: AmityPostTarget) -> AmityPollCreatorViewController {
         let viewModel = AmityPollCreatorScreenViewModel(postTarget: postTarget)
         let vc = AmityPollCreatorViewController(nibName: AmityPollCreatorViewController.identifier, bundle: AmityUIKitManager.bundle)
+        vc.screenViewModel = viewModel
+        var communityId: String? = nil
+        switch postTarget {
+        case .community(let object):
+            if !object.isPublic {
+                communityId = object.communityId
+            }
+        default: break
+        }
+        vc.mentionManager = AmityMentionManager(withType: .post(communityId: communityId))
+        return vc
+    }
+    
+    public static func make(postTarget: AmityPostTarget, postType: PostFromTodayType) -> AmityPollCreatorViewController {
+        let viewModel = AmityPollCreatorScreenViewModel(postTarget: postTarget)
+        let vc = AmityPollCreatorViewController(nibName: AmityPollCreatorViewController.identifier, bundle: AmityUIKitManager.bundle)
+        vc.postType = postType
         vc.screenViewModel = viewModel
         var communityId: String? = nil
         switch postTarget {
@@ -150,6 +168,17 @@ extension AmityPollCreatorViewController: AmityPollCreatorScreenViewModelDelegat
             postButton?.isEnabled = true
             dismiss(animated: true, completion: nil)
         }
+        
+        //If post from 'Today' page. Tell client to redirect
+        if postType != nil {
+            let userId = AmityUIKitManagerInternal.shared.currentUserId
+            if error == nil {
+                AmityEventHandler.shared.finishPostEvent(true, userId: userId)
+            } else {
+                AmityEventHandler.shared.finishPostEvent(false, userId: userId)
+            }
+        }
+        
     }
     
     func screenViewModelCanPost(_ isEnabled: Bool) {
