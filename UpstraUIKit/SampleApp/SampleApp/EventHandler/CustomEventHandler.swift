@@ -159,7 +159,7 @@ class AmityCustomEventHandler: AmityEventHandler {
     }
     
     override func routeToNewsfeedDidTap() {
-        AmityHUD.show(.error(message: "Route to newsfeed"))
+        AmityHUD.show(.success(message: "Route to newsfeed"))
     }
     
 //    override func timelineFeedDidScroll(_ scrollView: UIScrollView) {

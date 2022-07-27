@@ -12,6 +12,7 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="AmityRecentChatViewController" customModule="AmityUIKit" customModuleProvider="target">
             <connections>
                 <outlet property="announcementLabel" destination="0dF-xB-wGs" id="0hE-Fs-BSl"/>
+                <outlet property="announcementView" destination="j3p-Ze-Z8y" id="tUP-IZ-U8R"/>
                 <outlet property="tableView" destination="ch1-l9-YPN" id="cJh-dc-8x2"/>
                 <outlet property="view" destination="iN0-l3-epB" id="J90-k2-aYS"/>
             </connections>
@@ -22,14 +23,14 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="ch1-l9-YPN">
-                    <rect key="frame" x="0.0" y="52" width="414" height="810"/>
+                    <rect key="frame" x="0.0" y="112" width="414" height="750"/>
                     <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                 </tableView>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="j3p-Ze-Z8y">
-                    <rect key="frame" x="0.0" y="44" width="414" height="0.0"/>
+                    <rect key="frame" x="0.0" y="44" width="414" height="60"/>
                     <subviews>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0dF-xB-wGs">
-                            <rect key="frame" x="8" y="0.0" width="398" height="0.0"/>
+                            <rect key="frame" x="8" y="30" width="398" height="0.0"/>
                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                             <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <nil key="highlightedColor"/>
@@ -39,7 +40,7 @@
                     <constraints>
                         <constraint firstItem="0dF-xB-wGs" firstAttribute="leading" secondItem="j3p-Ze-Z8y" secondAttribute="leading" constant="8" id="7Gc-pM-5jd"/>
                         <constraint firstItem="0dF-xB-wGs" firstAttribute="centerY" secondItem="j3p-Ze-Z8y" secondAttribute="centerY" id="Ggi-Po-QJN"/>
-                        <constraint firstAttribute="height" id="hen-zC-Ajw"/>
+                        <constraint firstAttribute="height" constant="60" id="hen-zC-Ajw"/>
                         <constraint firstAttribute="trailing" secondItem="0dF-xB-wGs" secondAttribute="trailing" constant="8" id="zI3-JS-dPS"/>
                     </constraints>
                 </view>

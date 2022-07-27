@@ -22,6 +22,7 @@ public final class AmityRecentChatViewController: AmityViewController, Indicator
     // MARK: - IBOutlet Properties
     @IBOutlet private var tableView: UITableView!
     @IBOutlet private var announcementLabel: UILabel!
+    @IBOutlet private var announcementView: UIView!
 
     // MARK: - Properties
     private var screenViewModel: AmityRecentChatScreenViewModelType!
@@ -74,15 +75,24 @@ private extension AmityRecentChatViewController {
 private extension AmityRecentChatViewController {
     func setupView() {
         self.title = "Chat"
-        self.announcementLabel.font = AmityFontSet.body
-        self.announcementLabel.text = AmityLocalizedStringSet.RecentMessage.announcementMessage.localizedString
         setupTableView()
+        
+        /// Set attribute string
+        let announcementAttributeString = NSMutableAttributedString(string: AmityLocalizedStringSet.RecentMessage.announcementMessage.localizedString)
+        let underlineAttribute = [NSAttributedString.Key.underlineStyle: NSUnderlineStyle.thick.rawValue]
+        let underlineAttributeString = NSAttributedString(string: AmityLocalizedStringSet.RecentMessage.announcementUnderlineMessage.localizedString, attributes: underlineAttribute)
+        announcementAttributeString.append(underlineAttributeString)
+        
+        self.announcementLabel.font = AmityFontSet.body
+        self.announcementLabel.attributedText = announcementAttributeString
+                
+        let tap = UITapGestureRecognizer(target: self, action: #selector(self.didClickAnnouncement(_:)))
+        self.announcementView.addGestureRecognizer(tap)
     }
     
     func setupTableView() {
         view.backgroundColor = AmityColorSet.backgroundColor
         tableView.register(AmityRecentChatTableViewCell.nib, forCellReuseIdentifier: AmityRecentChatTableViewCell.identifier)
-        tableView.register(AmityHeaderRecentChatTableViewCell.nib, forCellReuseIdentifier: AmityHeaderRecentChatTableViewCell.identifier)
         tableView.backgroundColor = AmityColorSet.backgroundColor
         tableView.separatorInset.left = 64
         tableView.showsVerticalScrollIndicator = false
@@ -100,16 +110,16 @@ private extension AmityRecentChatViewController {
                 weakSelf.screenViewModel.action.createChannel(users: storeUsers)
         })
     }
+    
+    @objc func didClickAnnouncement(_ sender: UITapGestureRecognizer? = nil) {
+        screenViewModel.action.routeToFeed()
+    }
 }
 
 // MARK: - UITableView Delegate
 extension AmityRecentChatViewController: UITableViewDelegate {
     public func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        if indexPath.row == 0 {
-            screenViewModel.action.routeToFeed()
-        } else {
-            screenViewModel.action.join(at: indexPath)
-        }
+        screenViewModel.action.join(at: indexPath)
     }
     
     public func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
@@ -122,18 +132,13 @@ extension AmityRecentChatViewController: UITableViewDelegate {
 // MARK: - UITableView DataSource
 extension AmityRecentChatViewController: UITableViewDataSource {
     public func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return screenViewModel.dataSource.numberOfRow(in: section) + 1
+        return screenViewModel.dataSource.numberOfRow(in: section)
     }
     
     public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        if indexPath.row == 0 {
-            let cell = tableView.dequeueReusableCell(withIdentifier: AmityHeaderRecentChatTableViewCell.identifier, for: indexPath)
-            return cell
-        } else {
-            let cell = tableView.dequeueReusableCell(withIdentifier: AmityRecentChatTableViewCell.identifier, for: indexPath)
-            configure(for: cell, at: indexPath)
-            return cell
-        }
+        let cell = tableView.dequeueReusableCell(withIdentifier: AmityRecentChatTableViewCell.identifier, for: indexPath)
+        configure(for: cell, at: indexPath)
+        return cell
     }
     
     private func configure(for cell: UITableViewCell, at indexPath: IndexPath) {
