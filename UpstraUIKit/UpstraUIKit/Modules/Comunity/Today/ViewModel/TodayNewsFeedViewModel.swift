@@ -9,6 +9,7 @@
 import UIKit
 import AmitySDK
 import SwiftUI
+import Network
 
 final class TodayNewsFeedScreenViewModel : TodayNewsFeedScreenViewModelType {
     
@@ -30,7 +31,10 @@ final class TodayNewsFeedScreenViewModel : TodayNewsFeedScreenViewModelType {
             delegate?.screenViewModelLoadingStatusDidChange(self, isLoading: isLoading)
         }
     }
-    
+    private var index: Int = 0
+    private var postsObject: AmityTodayNewsFeedDataModel = AmityTodayNewsFeedDataModel(post: [])
+    private var array: [AmityPostModel] = []
+
     init(postController: AmityPostControllerProtocol,
          reactionController: AmityReactionControllerProtocol) {
         self.postController = postController
@@ -114,34 +118,40 @@ extension TodayNewsFeedScreenViewModel {
     
     func fetchPosts() {
         isLoading = true
-        var postsObject: AmityTodayNewsFeedDataModel = AmityTodayNewsFeedDataModel(post: [])
         customAPIRequest.getTodayPostData() { postArray in
-            self.prepareComponentsPinPost(posts: nil)
             guard let postsData = postArray else { return }
-            postsObject = postsData
+            self.postsObject = postsData
         }
         
-        
-        //Get Pin-post data
         DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
-            for post in postsObject.post {
-                var array: [AmityPostModel] = []
-                self.postController.getPostForPostId(withPostId: post.postId ?? "", isPin: false) { [weak self] (result) in
-                    guard let strongSelf = self else { return }
-                    switch result {
-                    case .success(let post):
-                        post.latestComments = []
-                        array.append(post)
-                        strongSelf.prepareComponents(posts: array)
-                    case .failure(let error):
-                        if let amityError = AmityError(error: error), amityError == .noUserAccessPermission {
-                            strongSelf.delegate?.screenViewModelDidFail(strongSelf, failure: amityError)
-                        } else {
-                            strongSelf.delegate?.screenViewModelDidFail(strongSelf, failure: AmityError(error: error) ?? .unknown)
-                        }
+            self.prepareData()
+        }
+    }
+    
+    func prepareData() {
+        //Get post data
+        if postsObject.post.count != index {
+            self.postController.getTodayPostForPostId(withPostId: postsObject.post[index].postId ?? "", isPin: false) { [weak self] (result) in
+                guard let strongSelf = self else { return }
+                switch result {
+                case .success(let post):
+                    post.latestComments = []
+                    strongSelf.array.append(post)
+                    strongSelf.prepareComponents(posts: strongSelf.array)
+                    strongSelf.index += 1
+                    strongSelf.prepareData()
+                case .failure(let error):
+                    if let amityError = AmityError(error: error), amityError == .noUserAccessPermission {
+                        strongSelf.delegate?.screenViewModelDidFail(strongSelf, failure: amityError)
+                    } else {
+                        strongSelf.delegate?.screenViewModelDidFail(strongSelf, failure: AmityError(error: error) ?? .unknown)
                     }
+                    strongSelf.index += 1
+                    strongSelf.prepareData()
                 }
             }
+        } else {
+            index = 0
         }
     }
     
