@@ -334,7 +334,7 @@ open class AmityEventHandler {
     open func finishPostEvent(_ success: Bool, userId: String) {}
     
     /// TrueID route to newsfeed from recent hat
-    open func routeToNewsfeedDidTap() {}
+    open func routeToNewsfeedDidTap(from source: UIViewController) {}
     
     //MARK: - AnalyticNCCEvent
     open func communityTopbarSearchTracking() {}

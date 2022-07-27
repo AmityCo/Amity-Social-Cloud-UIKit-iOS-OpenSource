@@ -112,7 +112,7 @@ private extension AmityRecentChatViewController {
     }
     
     @objc func didClickAnnouncement(_ sender: UITapGestureRecognizer? = nil) {
-        screenViewModel.action.routeToFeed()
+        AmityEventHandler.shared.routeToNewsfeedDidTap(from: self)
     }
 }
 

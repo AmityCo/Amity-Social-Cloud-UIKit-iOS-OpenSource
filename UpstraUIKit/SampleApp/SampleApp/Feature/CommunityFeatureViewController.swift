@@ -172,9 +172,7 @@ extension CommunityFeatureViewController: UITableViewDelegate {
             
             AmityFeedUISettings.shared.delegate = self
             AmityFeedUISettings.shared.dataSource = self
-            
-            AmityUIKitManager.setUrlAdvertisement("https://home.trueid.net/campaign/nRNzQawWNm0R")
-            
+                        
             let homepage = AmityCommunityHomePageFullHeaderViewController.make()
             let navigationController = UINavigationController(rootViewController: homepage)
             navigationController.modalPresentationStyle = .fullScreen

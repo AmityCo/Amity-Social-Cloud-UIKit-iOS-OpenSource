@@ -247,10 +247,6 @@ extension AmityRecentChatScreenViewModel {
         channelRepository.joinChannel(channelId)
         delegate?.screenViewModelRoute(for: .messageView(channelId: channelId))
     }
-    
-    func routeToFeed() {
-        AmityEventHandler.shared.routeToNewsfeedDidTap()
-    }
 
 }
 

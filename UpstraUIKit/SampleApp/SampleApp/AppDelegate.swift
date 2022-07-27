@@ -41,6 +41,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             caption: UIFont(name: "NotoSansThai-Regular", size: 14)!)
         
         AmityUIKitManager.set(typography: myTypography)
+        AmityUIKitManager.setUrlAdvertisement("https://home.trueid.net/campaign/nRNzQawWNm0R")
 
         if #available(iOS 13.0, *) {
             // on newer 13.0 version, the window setup finished on `SceneDelegate`
