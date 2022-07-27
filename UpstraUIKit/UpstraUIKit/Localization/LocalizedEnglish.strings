@@ -86,6 +86,8 @@
 "no_internet_connection" = "No internet connection";
 "message_list_alert_error_message_title" = "Error sending message";
 "recent_chat_no_message" = "No message yet";
+"recent_chat_announcement_message" = "Explore new friends in TrueID and start chat ";
+"recent_chat_underline_message" = "Tap here";
 "message_list_alert_error_message_desc" = "Please try again";
 "message_list_alert_delete_error_title" = "Your message was not sent";
 "message_list_alert_delete_title" = "Delete this message?";

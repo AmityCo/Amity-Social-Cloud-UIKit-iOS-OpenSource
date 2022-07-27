@@ -21,7 +21,8 @@ public final class AmityRecentChatViewController: AmityViewController, Indicator
     
     // MARK: - IBOutlet Properties
     @IBOutlet private var tableView: UITableView!
-    
+    @IBOutlet private var announcementLabel: UILabel!
+
     // MARK: - Properties
     private var screenViewModel: AmityRecentChatScreenViewModelType!
     
@@ -73,12 +74,15 @@ private extension AmityRecentChatViewController {
 private extension AmityRecentChatViewController {
     func setupView() {
         self.title = "Chat"
+        self.announcementLabel.font = AmityFontSet.body
+        self.announcementLabel.text = AmityLocalizedStringSet.RecentMessage.announcementMessage.localizedString
         setupTableView()
     }
     
     func setupTableView() {
         view.backgroundColor = AmityColorSet.backgroundColor
         tableView.register(AmityRecentChatTableViewCell.nib, forCellReuseIdentifier: AmityRecentChatTableViewCell.identifier)
+        tableView.register(AmityHeaderRecentChatTableViewCell.nib, forCellReuseIdentifier: AmityHeaderRecentChatTableViewCell.identifier)
         tableView.backgroundColor = AmityColorSet.backgroundColor
         tableView.separatorInset.left = 64
         tableView.showsVerticalScrollIndicator = false
@@ -101,7 +105,11 @@ private extension AmityRecentChatViewController {
 // MARK: - UITableView Delegate
 extension AmityRecentChatViewController: UITableViewDelegate {
     public func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        screenViewModel.action.join(at: indexPath)
+        if indexPath.row == 0 {
+            screenViewModel.action.routeToFeed()
+        } else {
+            screenViewModel.action.join(at: indexPath)
+        }
     }
     
     public func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
@@ -114,13 +122,18 @@ extension AmityRecentChatViewController: UITableViewDelegate {
 // MARK: - UITableView DataSource
 extension AmityRecentChatViewController: UITableViewDataSource {
     public func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return screenViewModel.dataSource.numberOfRow(in: section)
+        return screenViewModel.dataSource.numberOfRow(in: section) + 1
     }
     
     public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: AmityRecentChatTableViewCell.identifier, for: indexPath)
+        if indexPath.row == 0 {
+            let cell = tableView.dequeueReusableCell(withIdentifier: AmityHeaderRecentChatTableViewCell.identifier, for: indexPath)
+            return cell
+        } else {
+            let cell = tableView.dequeueReusableCell(withIdentifier: AmityRecentChatTableViewCell.identifier, for: indexPath)
             configure(for: cell, at: indexPath)
-        return cell
+            return cell
+        }
     }
     
     private func configure(for cell: UITableViewCell, at indexPath: IndexPath) {
