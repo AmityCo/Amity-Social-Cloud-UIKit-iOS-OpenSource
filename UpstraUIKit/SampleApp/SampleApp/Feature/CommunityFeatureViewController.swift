@@ -48,6 +48,7 @@ class CommunityFeatureViewController: UIViewController {
         case postFromTodayVideo
         case postFromTodayPoll
         case selectFromGallery
+        case notificationHistory
         
         var text: String {
             switch self {
@@ -101,6 +102,8 @@ class CommunityFeatureViewController: UIViewController {
                 return "Post from Today - Poll"
             case .selectFromGallery:
                 return "Select media from gallery"
+            case .notificationHistory:
+                return "Notification History"
             }
         }
     }
@@ -324,6 +327,14 @@ extension CommunityFeatureViewController: UITableViewDelegate {
 //            imagePicker.settings.selection.max = maxNumberOfSelection
 //            imagePicker.settings.selection.unselectOnReachingMax = false
             presentImagePicker(imagePicker, select: nil, deselect: nil, cancel: nil, finish: finish, completion: nil)
+        case .notificationHistory:
+            AmityCommunityHandler.shared.getNotificationHistory() { result in
+                DispatchQueue.main.async {
+                    let alert = UIAlertController(title: "Noti Box result", message: "\(result)", preferredStyle: .alert)
+                    alert.addAction(UIAlertAction(title: "Ok", style: .default, handler: nil))
+                    self.present(alert, animated: true, completion: nil)
+                }
+            }
         }
         
     }

@@ -168,4 +168,51 @@ final class customAPIRequest {
         
         task.resume()
     }
+    
+    static func getNotificationHistory(completion: @escaping(_ postArray: NotificationHistory?) -> () ) {
+        var urlString = ""
+        
+        switch AmityUIKitManagerInternal.shared.envByApiKey {
+        case .staging:
+            urlString = "https://staging.amity.services/notifications/history"
+        default:
+            urlString = "https://beta.amity.services/notifications/history"
+        }
+        
+        let url = URL(string: urlString)!
+        
+        var tempData: NotificationHistory?
+        
+        let userToken = AmityUIKitManagerInternal.shared.currentUserToken
+        
+        var request = URLRequest(url: url)
+        request.httpMethod = "GET"
+        request.allHTTPHeaderFields = [
+            "Content-Type" : "application/json",
+            "Authorization" : "Bearer \(userToken)"
+        ]
+        
+        //Get Request
+        let task = URLSession.shared.dataTask(with: request) { data, response, error in
+            guard let data = data, error == nil else {
+                print(error?.localizedDescription ?? "No data.")
+                return
+            }
+            do {
+                let jsonResponse = try? JSONSerialization.jsonObject(with: data, options: [])
+                print("Noti History JSon: \(jsonResponse)")
+                guard let jsonDecode = try? JSONDecoder().decode(NotificationHistory.self, from: data) else {
+                    completion(tempData)
+                    return
+                }
+                tempData = jsonDecode
+            } catch let response {
+                print("Error: \(response)")
+            }
+            
+            completion(tempData)
+        }
+        
+        task.resume()
+    }
 }
