@@ -87,12 +87,13 @@ public final class AmityUIKitManager {
     ///   - displayName: Display name of the user. If display name is not provided, user id would be set as display name.
     ///   - authToken: Auth token for this user if you are using secure mode.
     ///   - completion: Completion handler.
+    @available(iOS 13.0.0, *)
     public static func registerDevice(
         withUserId userId: String,
         displayName: String?,
         authToken: String? = nil,
         completion: AmityRequestCompletion? = nil) {
-        AmityUIKitManagerInternal.shared.registerDevice(userId, displayName: displayName, authToken: authToken, completion: completion)
+            AmityUIKitManagerInternal.shared.registerDevice(userId, displayName: displayName, authToken: authToken, completion: completion)
     }
     
     /// Unregisters current user. This removes all data related to current user & terminates conenction with server. This is analogous to "logout" process.
@@ -195,6 +196,7 @@ final class AmityUIKitManagerInternal: NSObject {
     private var httpUrl: String = ""
     private var socketUrl: String = ""
     private var language: String = ""
+    private var userToken: String = ""
     
     var stagingLiveRoleID: [String] {
         return ["251a6a45-13f3-4c45-8bb5-bebd5d2a8819",
@@ -218,6 +220,7 @@ final class AmityUIKitManagerInternal: NSObject {
     private(set) var messageMediaService = AmityMessageMediaService()
     
     var currentUserId: String { return client.currentUserId ?? "" }
+    var currentUserToken: String { return self.userToken }
     
     var client: AmityClient {
         guard let client = _client else {
@@ -305,13 +308,15 @@ final class AmityUIKitManagerInternal: NSObject {
         _client?.clientErrorDelegate = self
     }
 
+    @available(iOS 13.0.0, *)
     func registerDevice(_ userId: String,
                         displayName: String?,
                         authToken: String?,
                         completion: AmityRequestCompletion?) {
-        
+    
         client.login(userId: userId, displayName: displayName, authToken: authToken) { [weak self] status, error in
             self?.didUpdateClient()
+            self?.registerUserToken(userId: userId)
             completion?(status, error)
         }
     }
@@ -338,6 +343,23 @@ final class AmityUIKitManagerInternal: NSObject {
     
     func setLanguage(language: String) {
         self.language = language.lowercased()
+    }
+
+    @available(iOS 13.0.0, *)
+    func registerUserToken(userId: String) {
+        Task {
+            let userTokenManager = AmityUserTokenManager(apiKey: apiKey, region: .SG)
+            let result = await userTokenManager.createUserToken(
+                userId: userId
+            )
+            switch result {
+            case .success(let auth):
+//                print("auth.accessToken: \(auth.accessToken)")
+                userToken = auth.accessToken
+            case .failure(let error):
+                print("unable to create a new user token: \(error.localizedDescription)")
+            }
+        }
     }
     
 }
