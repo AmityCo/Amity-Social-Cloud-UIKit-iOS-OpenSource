@@ -9,14 +9,14 @@
 import Foundation
 
 public struct NotificationHistory: Decodable {
-    var lastRecordDate: Int?
-    var lastRead: LastReadData?
-    var data: [NotificationModel]?
+    public var lastRecordDate: Int?
+    public var lastRead: LastReadData?
+    public var data: [NotificationModel]?
 }
 
-struct LastReadData: Decodable {
-    var ch_uid: String?
-    var lastReadDate: Int?
+public struct LastReadData: Decodable {
+    public var ch_uid: String?
+    public var lastReadDate: Int?
     
     enum CodingKeys: String, CodingKey {
         case ch_uid = "ch_uid"
@@ -24,18 +24,18 @@ struct LastReadData: Decodable {
     }
 }
 
-struct NotificationModel: Decodable {
-    var description: String
-    var networkId: String
-    var userId: String
-    var verb: String
-    var targetId: String
-    var imageUrl: String
-    var targetType: String
-    var hasRead: Bool
-    var lastUpdate: Int
-    var actors: [actorModel]
-    var actorsCount: Int
+public struct NotificationModel: Decodable {
+    public var description: String
+    public var networkId: String
+    public var userId: String
+    public var verb: String
+    public var targetId: String
+    public var imageUrl: String
+    public var targetType: String
+    public var hasRead: Bool
+    public var lastUpdate: Int
+    public var actors: [actorModel]
+    public var actorsCount: Int
     
     enum CodingKeys: String, CodingKey {
         case description = "description"
@@ -52,9 +52,9 @@ struct NotificationModel: Decodable {
     }
 }
 
-struct actorModel: Decodable {
-    var name: String
-    var id: String
+public struct actorModel: Decodable {
+    public var name: String
+    public var id: String
     
     enum CodingKeys: String, CodingKey {
         case name = "name"

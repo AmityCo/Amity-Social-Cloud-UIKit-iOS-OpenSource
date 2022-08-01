@@ -430,6 +430,50 @@
             </objects>
             <point key="canvasLocation" x="8835" y="-695"/>
         </scene>
+        <!--Notification Box View Controller-->
+        <scene sceneID="Gv1-f8-jVQ">
+            <objects>
+                <viewController storyboardIdentifier="NotificationBoxViewController" id="3Al-Jd-PGX" customClass="NotificationBoxViewController" customModule="SampleApp" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="LOc-ee-lZO">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="WD9-3a-S7S">
+                                <rect key="frame" x="0.0" y="44" width="414" height="852"/>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                <prototypes>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="NotificationTableCell" id="ETP-uC-OiI">
+                                        <rect key="frame" x="0.0" y="44.5" width="414" height="43.5"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="ETP-uC-OiI" id="udJ-dN-rRI">
+                                            <rect key="frame" x="0.0" y="0.0" width="414" height="43.5"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                        </tableViewCellContentView>
+                                    </tableViewCell>
+                                </prototypes>
+                                <connections>
+                                    <outlet property="dataSource" destination="3Al-Jd-PGX" id="eho-63-Ne6"/>
+                                    <outlet property="delegate" destination="3Al-Jd-PGX" id="PQ6-M3-bB2"/>
+                                </connections>
+                            </tableView>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="f3M-Te-dFz"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="WD9-3a-S7S" firstAttribute="leading" secondItem="f3M-Te-dFz" secondAttribute="leading" id="3Ss-1f-4QA"/>
+                            <constraint firstAttribute="trailing" secondItem="WD9-3a-S7S" secondAttribute="trailing" id="lNF-Vv-PeV"/>
+                            <constraint firstAttribute="bottom" secondItem="WD9-3a-S7S" secondAttribute="bottom" id="qSm-DQ-lOs"/>
+                            <constraint firstItem="WD9-3a-S7S" firstAttribute="top" secondItem="f3M-Te-dFz" secondAttribute="top" id="tBp-yK-APi"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="tableView" destination="WD9-3a-S7S" id="JVm-uM-2yg"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="aNG-iV-Ldc" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="9617" y="-695"/>
+        </scene>
     </scenes>
     <resources>
         <systemColor name="linkColor">

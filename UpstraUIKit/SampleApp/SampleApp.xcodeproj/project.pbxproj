@@ -44,6 +44,7 @@
 		B4C71FAE2850DD2400744B0F /* NotoSansThai-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = B4C71FAD2850DD2400744B0F /* NotoSansThai-Bold.ttf */; };
 		B4C71FB22850F44F00744B0F /* NotoSansThai-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = B4C71FB02850F44F00744B0F /* NotoSansThai-Regular.ttf */; };
 		B4C71FB32850F44F00744B0F /* NotoSansThai-SemiBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = B4C71FB12850F44F00744B0F /* NotoSansThai-SemiBold.ttf */; };
+		B4CD0D9B2897BE55009E54D6 /* NotificationBoxViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4CD0D9A2897BE55009E54D6 /* NotificationBoxViewController.swift */; };
 		B72861D924C573B100ECC563 /* TabbarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B72861D824C573B100ECC563 /* TabbarViewController.swift */; };
 		B72CDA3B256B9BEB00F7CAC3 /* CustomMessageTextIncomingTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B72CDA39256B9BEB00F7CAC3 /* CustomMessageTextIncomingTableViewCell.swift */; };
 		B72CDA3C256B9BEB00F7CAC3 /* CustomMessageTextIncomingTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = B72CDA3A256B9BEB00F7CAC3 /* CustomMessageTextIncomingTableViewCell.xib */; };
@@ -145,6 +146,7 @@
 		B4C71FAD2850DD2400744B0F /* NotoSansThai-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "NotoSansThai-Bold.ttf"; sourceTree = "<group>"; };
 		B4C71FB02850F44F00744B0F /* NotoSansThai-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "NotoSansThai-Regular.ttf"; sourceTree = "<group>"; };
 		B4C71FB12850F44F00744B0F /* NotoSansThai-SemiBold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "NotoSansThai-SemiBold.ttf"; sourceTree = "<group>"; };
+		B4CD0D9A2897BE55009E54D6 /* NotificationBoxViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationBoxViewController.swift; sourceTree = "<group>"; };
 		B72861D824C573B100ECC563 /* TabbarViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabbarViewController.swift; sourceTree = "<group>"; };
 		B72CDA39256B9BEB00F7CAC3 /* CustomMessageTextIncomingTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomMessageTextIncomingTableViewCell.swift; sourceTree = "<group>"; };
 		B72CDA3A256B9BEB00F7CAC3 /* CustomMessageTextIncomingTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CustomMessageTextIncomingTableViewCell.xib; sourceTree = "<group>"; };
@@ -445,6 +447,7 @@
 				D4AFF23125ED1E7C002C001C /* GlobalPostsFeedViewController.swift */,
 				D4AFF23525ED1F88002C001C /* GlobalPostsDataSource.swift */,
 				7F7704FE27B24F4100600D85 /* ChatFromCommunityViewController.swift */,
+				B4CD0D9A2897BE55009E54D6 /* NotificationBoxViewController.swift */,
 			);
 			path = Feature;
 			sourceTree = "<group>";
@@ -630,6 +633,7 @@
 				B78DA47B24BED7D300EE902B /* SceneDelegate.swift in Sources */,
 				0D8FFC2925DCBFD900943538 /* AmityCustomFooterTableViewCell.swift in Sources */,
 				7214C9D72632C0AD00192BB3 /* NotificationModuleTableViewCell.swift in Sources */,
+				B4CD0D9B2897BE55009E54D6 /* NotificationBoxViewController.swift in Sources */,
 				B78FC54024CAAA2F0083CBB4 /* UserDefault.swift in Sources */,
 				97F101F526A69FBF00AD84A1 /* CustomChannelEventHandler.swift in Sources */,
 				0D73ACA825DB9423000D73CA /* NewJoinerPostComponent.swift in Sources */,

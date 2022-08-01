@@ -330,9 +330,9 @@ extension CommunityFeatureViewController: UITableViewDelegate {
         case .notificationHistory:
             AmityCommunityHandler.shared.getNotificationHistory() { result in
                 DispatchQueue.main.async {
-                    let alert = UIAlertController(title: "Noti Box result", message: "\(result)", preferredStyle: .alert)
-                    alert.addAction(UIAlertAction(title: "Ok", style: .default, handler: nil))
-                    self.present(alert, animated: true, completion: nil)
+                    let vc = self.storyboard?.instantiateViewController(withIdentifier: "NotificationBoxViewController") as! NotificationBoxViewController
+                    vc.dataList = result?.data ?? []
+                    self.navigationController?.pushViewController(vc, animated: true)
                 }
             }
         case .todayNewsFeed:
