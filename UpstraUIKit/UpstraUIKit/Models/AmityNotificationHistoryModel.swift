@@ -25,17 +25,17 @@ public struct LastReadData: Decodable {
 }
 
 public struct NotificationModel: Decodable {
-    public var description: String
-    public var networkId: String
-    public var userId: String
-    public var verb: String
-    public var targetId: String
-    public var imageUrl: String
-    public var targetType: String
-    public var hasRead: Bool
-    public var lastUpdate: Int
-    public var actors: [actorModel]
-    public var actorsCount: Int
+    public var description: String?
+    public var networkId: String?
+    public var userId: String?
+    public var verb: String?
+    public var targetId: String?
+    public var imageUrl: String?
+    public var targetType: String?
+    public var hasRead: Bool?
+    public var lastUpdate: Int?
+    public var actors: [actorModel]?
+    public var actorsCount: Int?
     
     enum CodingKeys: String, CodingKey {
         case description = "description"
@@ -53,8 +53,8 @@ public struct NotificationModel: Decodable {
 }
 
 public struct actorModel: Decodable {
-    public var name: String
-    public var id: String
+    public var name: String?
+    public var id: String?
     
     enum CodingKeys: String, CodingKey {
         case name = "name"
