@@ -2412,8 +2412,6 @@
 		72A350B824EA820700DA9D46 /* Cell */ = {
 			isa = PBXGroup;
 			children = (
-				B401D70928910BFD0040F93C /* AmityHeaderRecentChatTableViewCell.xib */,
-				B401D70828910BFD0040F93C /* AmityHeaderRecentChatTableViewCell.swift */,
 				72A350B924EA820700DA9D46 /* AmityRecentChatTableViewCell.xib */,
 				72A350BA24EA820700DA9D46 /* AmityRecentChatTableViewCell.swift */,
 			);
@@ -4710,7 +4708,6 @@
 				B735CD6A254937C200A98B95 /* AmityKeyboardComposeBarViewController.xib in Resources */,
 				7270DEB825CD084900AB71BA /* AmityViewMoreReplyTableViewCell.xib in Resources */,
 				7855F9342636A92500D054FB /* AmityMyCommunityViewController.xib in Resources */,
-				B401D70B28910BFD0040F93C /* AmityHeaderRecentChatTableViewCell.xib in Resources */,
 				78C1C4DC25F3F29200D6F092 /* AmitySettingsItemNavigationContentTableViewCell.xib in Resources */,
 				FC6459D5274E452B00D1B491 /* PTNToastView.xib in Resources */,
 				B77E6C1D24F615F9003EEE49 /* AmityCommunityProfileEditorViewController.xib in Resources */,
@@ -5262,7 +5259,6 @@
 				724FBA8E2530141600EDC556 /* Data+Extension.swift in Sources */,
 				B7B31C65250F4ACF000AC6E4 /* BarPagerTabStripViewController.swift in Sources */,
 				72A3512E24EA820800DA9D46 /* AmityView.swift in Sources */,
-				B401D70A28910BFD0040F93C /* AmityHeaderRecentChatTableViewCell.swift in Sources */,
 				B797ED1224F6CCFA00F3B411 /* UIButton+Extension.swift in Sources */,
 				7214C9E52632D9BD00192BB3 /* AmityCommunityCreatorViewController.swift in Sources */,
 				97D0EB9626A14A3A00E9FE6A /* AmityPendingPostsFeedViewModel.swift in Sources */,
