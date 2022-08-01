@@ -117,6 +117,7 @@ public struct AmityLocalizedStringSet {
     enum RecentMessage {
         static let noMessage = "recent_chat_no_message"
         static let announcementMessage = "recent_chat_announcement_message"
+        static let announcementMessageExt = "recent_chat_announcement_message_ext"
         static let announcementUnderlineMessage = "recent_chat_underline_message"
     }
     

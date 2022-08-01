@@ -21,6 +21,8 @@ extension LiveStreamBroadcastViewController {
             return false
         }
         return true
+        
+        
     }
     
     func permissionsNotDetermined() -> Bool {

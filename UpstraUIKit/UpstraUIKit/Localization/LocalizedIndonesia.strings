@@ -85,7 +85,8 @@
 "something_went_wrong_with_try_again" = "Terjadi kesalahan. Silakan coba kembali";
 "no_internet_connection" = "Tak Ada Koneksi Internet";
 "recent_chat_no_message" = "No message yet";
-"recent_chat_announcement_message" = "Explore new friends in TrueID and start chat ";
+"recent_chat_announcement_message" = "Explore new friends in TrueID ";
+"recent_chat_announcement_message_ext" = " then tap on user avatar who you want to chat with";
 "recent_chat_underline_message" = "Tap here";
 "message_list_alert_error_message_title" = "Gagal mengirim pesan";
 "message_list_alert_error_message_desc" = "Silakan coba lagi";

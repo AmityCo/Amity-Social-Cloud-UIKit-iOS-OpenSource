@@ -81,9 +81,11 @@ private extension AmityRecentChatViewController {
         let announcementAttributeString = NSMutableAttributedString(string: AmityLocalizedStringSet.RecentMessage.announcementMessage.localizedString)
         let underlineAttribute = [NSAttributedString.Key.underlineStyle: NSUnderlineStyle.thick.rawValue]
         let underlineAttributeString = NSAttributedString(string: AmityLocalizedStringSet.RecentMessage.announcementUnderlineMessage.localizedString, attributes: underlineAttribute)
+        let announcementExtAttributeString = NSMutableAttributedString(string: AmityLocalizedStringSet.RecentMessage.announcementMessageExt.localizedString)
         announcementAttributeString.append(underlineAttributeString)
+        announcementAttributeString.append(announcementExtAttributeString)
         
-        self.announcementLabel.font = AmityFontSet.body
+        self.announcementLabel.font = AmityFontSet.caption
         self.announcementLabel.attributedText = announcementAttributeString
                 
         let tap = UITapGestureRecognizer(target: self, action: #selector(self.didClickAnnouncement(_:)))
