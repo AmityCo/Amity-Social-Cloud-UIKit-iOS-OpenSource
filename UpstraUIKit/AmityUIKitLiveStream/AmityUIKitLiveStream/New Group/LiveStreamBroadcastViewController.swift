@@ -456,23 +456,24 @@ final public class LiveStreamBroadcastViewController: UIViewController {
     }
     
     @IBAction private func goLiveButtonDidTouch() {
-        if permissionsNotDetermined() {
+        let titleCount = "\(titleTextField.text ?? "")\n\n".count
+        let metadata = mentionManager.getMetadata(shift: titleCount)
+        let mentionees = mentionManager.getMentionees()
+        
+        if !permissionsGoliveNotDetermined() {
             requestPermissions { [weak self] granted in
                 if granted {
-//                    self?.trySetupBroadcaster()
-                    let titleCount = "\(self?.titleTextField.text ?? "")\n\n".count
-                    let metadata = self?.mentionManager.getMetadata(shift: titleCount)
-                    let mentionees = self?.mentionManager.getMentionees()
-                    
+                    self?.trySetupBroadcaster()
                     self?.mentionManager.resetState()
-                    
                     self?.goLive(metadata: metadata, mentionees: mentionees)
                 } else {
                     self?.presentPermissionRequiredDialogue()
                 }
             }
         } else {
-            presentPermissionRequiredDialogue()
+            trySetupBroadcaster()
+            mentionManager.resetState()
+            goLive(metadata: metadata, mentionees: mentionees)
         }
     }
     
