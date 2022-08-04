@@ -20,9 +20,13 @@ public final class AmityRecentChatViewController: AmityViewController, Indicator
     }
     
     // MARK: - IBOutlet Properties
+    
     @IBOutlet private var tableView: UITableView!
     @IBOutlet private var announcementLabel: UILabel!
     @IBOutlet private var announcementView: UIView!
+    @IBOutlet private var announcementHeightConstant: NSLayoutConstraint!
+    @IBOutlet private var collectionView: UICollectionView!
+    @IBOutlet private var collectionViewHeightConstant: NSLayoutConstraint!
 
     // MARK: - Properties
     private var screenViewModel: AmityRecentChatScreenViewModelType!
@@ -80,6 +84,7 @@ private extension AmityRecentChatViewController {
         barButton.tintColor = .black
         navigationItem.rightBarButtonItem = barButton
         setupTableView()
+        setupCollectionView()
         
         /// Set attribute string
         let announcementAttributeString = NSMutableAttributedString(string: AmityLocalizedStringSet.RecentMessage.announcementMessage.localizedString)
@@ -108,6 +113,20 @@ private extension AmityRecentChatViewController {
         tableView.dataSource = self
     }
     
+    func setupCollectionView() {
+        let layout = (collectionView.collectionViewLayout as? UICollectionViewFlowLayout)
+        layout?.scrollDirection = .horizontal
+        layout?.itemSize = CGSize(width: 78, height: 105)
+        layout?.sectionInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
+        
+        collectionView.backgroundColor = AmityColorSet.backgroundColor
+        collectionView.showsVerticalScrollIndicator = false
+        collectionView.showsHorizontalScrollIndicator = false
+        collectionView.register(AmityFollowingRecentChatCollectionViewCell.self)
+        collectionView.delegate = self
+        collectionView.dataSource = self
+    }
+    
     @objc func didClickAdd(_ barButton: UIBarButtonItem) {
         AmityChannelEventHandler.shared.channelCreateNewChat(
             from: self,
@@ -123,6 +142,12 @@ private extension AmityRecentChatViewController {
 
     @objc func didClickContact() {
         AmityEventHandler.shared.openContactPageEvent()
+    }
+    
+    func setupHeaderView() {
+        if screenViewModel.dataSource.numberOfRow(in: 0) != 0 {
+            announcementHeightConstant.constant = 0
+        }
     }
 }
 
@@ -160,6 +185,19 @@ extension AmityRecentChatViewController: UITableViewDataSource {
 }
 
 extension AmityRecentChatViewController: AmityRecentChatScreenViewModelDelegate {
+    func screenViewModel(_ viewModel: AmityRecentChatScreenViewModelType, didCreateChannel channel: AmityChannel) {
+        AmityChannelEventHandler.shared.channelDidTap(from: self, channelId: channel.channelId)
+    }
+    
+    func screenViewModelDidGetListSuccess() {
+        setupHeaderView()
+        collectionView.reloadData()
+    }
+    
+    func screenViewModelDidGetListFail() {
+        setupHeaderView()
+    }
+    
     func screenViewModelDidCreateCommunity(channelId: String) {
         AmityChannelEventHandler.shared.channelDidTap(from: self, channelId: channelId)
     }
@@ -205,4 +243,39 @@ extension AmityRecentChatViewController {
         navigationController?.pushViewController(messageVC, animated: true)
     }
     
+}
+
+extension AmityRecentChatViewController: UICollectionViewDelegate {
+    public func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        if indexPath.row == screenViewModel.dataSource.numberOfItems() {
+            AmityEventHandler.shared.routeToNewsfeedDidTap(from: self)
+        } else {
+            guard let value = screenViewModel.dataSource.item(at: indexPath) else { return }
+            screenViewModel.action.createChat(with: value)
+        }
+    }
+}
+
+extension AmityRecentChatViewController: UICollectionViewDataSource {
+    
+    public func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return screenViewModel.dataSource.numberOfItems() + 1
+    }
+    
+    public func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let cell: AmityFollowingRecentChatCollectionViewCell = collectionView.dequeueReusableCell(for: indexPath)
+        if indexPath.row == screenViewModel.dataSource.numberOfItems() {
+            cell.displayDummy()
+        } else {
+            configure(for: cell, at: indexPath)
+        }
+        return cell
+    }
+    
+    private func configure(for cell: UICollectionViewCell, at indexPath: IndexPath) {
+        if let cell = cell as? AmityFollowingRecentChatCollectionViewCell {
+            guard let value = screenViewModel.dataSource.item(at: indexPath) else { return }
+            cell.display(with: value)
+        }
+    }
 }

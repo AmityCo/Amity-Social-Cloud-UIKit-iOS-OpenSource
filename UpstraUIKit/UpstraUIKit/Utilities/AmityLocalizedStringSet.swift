@@ -119,6 +119,7 @@ public struct AmityLocalizedStringSet {
         static let announcementMessage = "recent_chat_announcement_message"
         static let announcementMessageExt = "recent_chat_announcement_message_ext"
         static let announcementUnderlineMessage = "recent_chat_underline_message"
+        static let discoveryFriendsMessage = "discovery_friends_message"
     }
     
     

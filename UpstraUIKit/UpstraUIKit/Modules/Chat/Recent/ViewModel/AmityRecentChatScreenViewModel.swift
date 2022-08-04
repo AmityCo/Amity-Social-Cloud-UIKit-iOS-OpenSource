@@ -83,10 +83,10 @@ final class AmityRecentChatScreenViewModel: AmityRecentChatScreenViewModelType {
     // MARK: - Repository
     private let channelRepository: AmityChannelRepository
     private var roleController: AmityChannelRoleController?
+    private let userRepository: AmityUserRepository
     
     // MARK: - Collection
     private var channelsCollection: AmityCollection<AmityChannel>?
-    
     
     
     // MARK: - Token
@@ -94,11 +94,19 @@ final class AmityRecentChatScreenViewModel: AmityRecentChatScreenViewModelType {
     private var existingChannelToken: AmityNotificationToken?
     private var communityToken: AmityNotificationToken?
     private var channelType: AmityChannelType = .conversation
-    
+    private var channelToken: AmityNotificationToken?
+
+    private let followManager: AmityUserFollowManager
+    private var followToken: AmityNotificationToken?
+    private var followersList: [AmityFollowRelationship] = []
+    private var followersCollection: AmityCollection<AmityFollowRelationship>?
+
     init(channelType: AmityChannelType) {
         self.channelType = channelType
+        userRepository = AmityUserRepository(client: AmityUIKitManagerInternal.shared.client)
         channelRepository = AmityChannelRepository(client: AmityUIKitManagerInternal.shared.client)
-        
+        followManager = userRepository.followManager
+
         RecentChatAvatarArray.shared.avatarArray = []
     }
     
@@ -119,6 +127,15 @@ final class AmityRecentChatScreenViewModel: AmityRecentChatScreenViewModelType {
     
     func isAddMemberBarButtonEnabled() -> Bool {
         return channelType == .community
+    }
+    
+    func numberOfItems() -> Int {
+        return followersList.count
+    }
+    
+    func item(at indexPath: IndexPath) -> AmityUserModel? {
+        guard let model = getUser(at: indexPath) else { return nil }
+        return AmityUserModel(user: model)
     }
     
     func createCommunityChannel(users: [AmitySelectMemberModel]) {
@@ -209,6 +226,35 @@ final class AmityRecentChatScreenViewModel: AmityRecentChatScreenViewModelType {
             }
         }
     }
+    
+    func createChat(with value: AmityUserModel) {
+        AmityHUD.show(.loading)
+        let builder = AmityConversationChannelBuilder()
+        builder.setUserId(value.userId)
+        builder.setDisplayName(value.displayName)
+
+        let channel: AmityObject<AmityChannel> = channelRepository.createChannel(with: builder)
+        channelToken?.invalidate()
+        channelToken = channel.observeOnce { [weak self] channelObject, _ in
+            AmityHUD.hide()
+            guard let strongSelf = self else { return }
+            switch channelObject.dataStatus {
+            case .fresh:
+                if let channel = channelObject.object {
+                    strongSelf.delegate?.screenViewModel(strongSelf, didCreateChannel: channel)
+                }
+                strongSelf.channelToken?.invalidate()
+            case .local:
+                if let channel = channelObject.object {
+                    strongSelf.delegate?.screenViewModel(strongSelf, didCreateChannel: channel)
+                }
+            case .error, .notExist:
+                strongSelf.channelToken?.invalidate()
+            @unknown default:
+                break
+            }
+        }
+    }
 }
 
 // MARK: - Action
@@ -216,6 +262,7 @@ extension AmityRecentChatScreenViewModel {
     
     func viewDidLoad() {
         getChannelList()
+        getFollowsList()
     }
     
     func createChannel(users: [AmitySelectMemberModel]) {
@@ -251,6 +298,17 @@ extension AmityRecentChatScreenViewModel {
 }
 
 private extension AmityRecentChatScreenViewModel {
+    
+    func getFollowsList() {
+        followManager.clearAmityFollowRelationshipLocalData()
+        followersCollection = followManager.getMyFollowingList(with: .accepted)
+        
+        followToken?.invalidate()
+        followToken = followersCollection?.observe { [weak self] collection, _, error in
+            self?.followToken?.invalidate()
+            self?.prepareDataSource(collection: collection, error: error)
+        }
+    }
     
     func getChannelList() {
         switch channelType {
@@ -337,5 +395,33 @@ private extension AmityRecentChatScreenViewModel {
         }
         
         
+    }
+}
+
+private extension AmityRecentChatScreenViewModel {
+    func getUser(at indexPath: IndexPath) -> AmityUser? {
+        let recordAtRow = followersList[indexPath.row]
+        return recordAtRow.targetUser
+    }
+    
+    private func prepareDataSource(collection: AmityCollection<AmityFollowRelationship>, error: Error?) {
+        if let _ = error {
+            followToken?.invalidate()
+            delegate?.screenViewModelDidGetListFail()
+            return
+        }
+        
+        switch collection.dataStatus {
+        case .fresh:
+            var followers: [AmityFollowRelationship] = []
+            for i in 0..<collection.count() {
+                guard let follow = collection.object(at: i) else { continue }
+                followers.append(follow)
+            }
+                        
+            followersList = followers.shuffled()
+            delegate?.screenViewModelDidGetListSuccess()
+        default: break
+        }
     }
 }
