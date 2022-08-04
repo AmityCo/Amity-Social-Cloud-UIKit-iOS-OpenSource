@@ -10,12 +10,15 @@ import UIKit
 import AmitySDK
 
 protocol AmityRecentChatScreenViewModelDelegate: AnyObject {
+    func screenViewModelDidGetListFail()
+    func screenViewModelDidGetListSuccess()
     func screenViewModelDidGetChannel()
     func screenViewModelLoadingState(for state: AmityLoadingState)
     func screenViewModelRoute(for route: AmityRecentChatScreenViewModel.Route)
     func screenViewModelEmptyView(isEmpty: Bool)
     func screenViewModelDidCreateCommunity(channelId: String)
     func screenViewModelDidFailedCreateCommunity(error: String)
+    func screenViewModel(_ viewModel: AmityRecentChatScreenViewModelType, didCreateChannel channel: AmityChannel)
 }
 
 protocol AmityRecentChatScreenViewModelDataSource {
@@ -23,6 +26,8 @@ protocol AmityRecentChatScreenViewModelDataSource {
     func channel(at indexPath: IndexPath) -> AmityChannelModel
     func numberOfRow(in section: Int) -> Int
     func isAddMemberBarButtonEnabled() -> Bool
+    func numberOfItems() -> Int
+    func item(at indexPath: IndexPath) -> AmityUserModel?
 }
 
 protocol AmityRecentChatScreenViewModelAction {
@@ -30,6 +35,7 @@ protocol AmityRecentChatScreenViewModelAction {
     func join(at indexPath: IndexPath)
     func createChannel(users: [AmitySelectMemberModel])
     func loadMore()
+    func createChat(with value: AmityUserModel)
 }
 
 protocol AmityRecentChatScreenViewModelType: AmityRecentChatScreenViewModelAction, AmityRecentChatScreenViewModelDataSource {
