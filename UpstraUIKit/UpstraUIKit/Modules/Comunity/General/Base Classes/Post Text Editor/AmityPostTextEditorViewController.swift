@@ -981,12 +981,31 @@ extension AmityPostTextEditorViewController: AmityPostTextEditorMenuViewDelegate
         
         switch action {
         case .camera:
+            var isAuthorized = false
+            var isMicAuthorized = false
+            let group = DispatchGroup()
+            
+            group.enter()
             checkCameraPermission {
-                DispatchQueue.main.async { [weak self] in
-                    self?.presentMediaPickerCamera()
+                isAuthorized = true
+            } fail: {
+                isAuthorized = false
+            }
+            checkMicPermission {
+                isMicAuthorized = true
+                group.leave()
+            } fail: {
+                isMicAuthorized = false
+                group.leave()
+            }
+            group.notify(queue: .main) {
+                if isAuthorized && isMicAuthorized {
+                    self.presentMediaPickerCamera()
+                } else if isAuthorized && !isMicAuthorized {
+                    self.alrtPermisionMic(title: AmityLocalizedStringSet.LiveStream.Alert.titleAlertPermission.localizedString, message: "If you want to use microphone please grant permission microphone in iOS settings.")
+                } else {
+                    self.alrtPermisionAccessphoto(title: AmityLocalizedStringSet.LiveStream.Alert.titleAlertPermission.localizedString, message: AmityLocalizedStringSet.LiveStream.Alert.descriptionAlertPermission.localizedString)
                 }
-            } fail: { [weak self] in
-                self?.alrtPermisionAccessphoto(title: "Camera", message: "Please allow access camera library")
             }
         case .album:
             checkPhotoLibraryPermission {
@@ -1331,10 +1350,39 @@ extension AmityPostTextEditorViewController {
         }
     }
     
+    func checkMicPermission(success: @escaping() -> (), fail: @escaping() -> ()) {
+        if AVCaptureDevice.authorizationStatus(for: AVMediaType.audio) == .authorized {
+            success()
+        } else if AVCaptureDevice.authorizationStatus(for: AVMediaType.audio) == .notDetermined {
+            AVAudioSession.sharedInstance().requestRecordPermission { granted in
+                if granted {
+                    success()
+                } else {
+                    fail()
+                }
+            }
+        } else {
+            fail()
+        }
+    }
+    
     func alrtPermisionAccessphoto(title: String, message: String) {
         DispatchQueue.main.async {
             let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
             alert.addAction(UIAlertAction(title: "Cancel", style: .default, handler: { action in
+            }))
+            alert.addAction(UIAlertAction(title: "Setting", style: .default, handler: { action in
+                UIApplication.shared.open(URL(string: UIApplication.openSettingsURLString)!)
+            }))
+            self.present(alert, animated: true)
+        }
+    }
+    
+    func alrtPermisionMic(title: String, message: String) {
+        DispatchQueue.main.async {
+            let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: "Cancel", style: .default, handler: { action in
+                self.presentMediaPickerCamera()
             }))
             alert.addAction(UIAlertAction(title: "Setting", style: .default, handler: { action in
                 UIApplication.shared.open(URL(string: UIApplication.openSettingsURLString)!)
