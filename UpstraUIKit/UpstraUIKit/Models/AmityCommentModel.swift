@@ -33,7 +33,7 @@ public struct AmityCommentModel {
     // So, this is a workaroud for passing the original object.
     let comment: AmityComment
     
-    init(comment: AmityComment) {
+    public init(comment: AmityComment) {
         id = comment.commentId
         displayName = comment.user?.displayName ?? AmityLocalizedStringSet.General.anonymous.localizedString
         fileURL = comment.user?.getAvatarInfo()?.fileURL ?? ""

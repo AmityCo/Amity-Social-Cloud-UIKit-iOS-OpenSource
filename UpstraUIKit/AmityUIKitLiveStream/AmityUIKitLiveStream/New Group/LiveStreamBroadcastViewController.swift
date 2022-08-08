@@ -22,6 +22,7 @@ final public class LiveStreamBroadcastViewController: UIViewController {
     let targetId: String?
     let targetType: AmityPostTargetType
     let communityRepository: AmityCommunityRepository
+    let commentRepository: AmityCommentRepository
     let userRepository: AmityUserRepository
     let fileRepository: AmityFileRepository
     let streamRepository: AmityStreamRepository
@@ -65,11 +66,18 @@ final public class LiveStreamBroadcastViewController: UIViewController {
     /// We start this timer when we begin to publish stream.
     var liveDurationTimer: Timer?
     
+    /// Live streaming token for get like count and live comment
     var liveObjectQueryToken: AmityNotificationToken?
+    var liveCommentQueryToken: AmityNotificationToken?
+    var liveStreamCommentArray:String?
+    
+    /// Show and Hide comment button state
+    var isShowCommentTable: Bool = true
     
     // MARK: - UI General
     @IBOutlet weak var renderingContainer: UIView!
     @IBOutlet private weak var overlayView: UIView!
+    
     
     // MARK: - UI Container Create Components
     @IBOutlet weak var uiContainerCreate: UIView!
@@ -100,6 +108,10 @@ final public class LiveStreamBroadcastViewController: UIViewController {
     @IBOutlet weak var streamingViewerContainer: UIView!
     @IBOutlet weak var streamingViewerCountLabel: UILabel!
     @IBOutlet weak var likeCountLabel: UILabel!
+    @IBOutlet private weak var commentTableView: UITableView!
+    @IBOutlet private weak var commentTextField: UIView!
+    @IBOutlet private weak var hideCommentButton: UIButton!
+    @IBOutlet private weak var showCommentButton: UIButton!
 
     // MARK: - UI Container End Components
     @IBOutlet weak var uiContainerEnd: UIView!
@@ -122,6 +134,7 @@ final public class LiveStreamBroadcastViewController: UIViewController {
         
     var streamId: String?
     var timer = Timer()
+    var subscriptionManager: AmityTopicSubscription?
     
     // MARK: - Init / Deinit
     
@@ -132,6 +145,7 @@ final public class LiveStreamBroadcastViewController: UIViewController {
         self.targetType = targetType
          
         communityRepository = AmityCommunityRepository(client: client)
+        commentRepository = AmityCommentRepository(client: client)
         userRepository = AmityUserRepository(client: client)
         fileRepository = AmityFileRepository(client: client)
         streamRepository = AmityStreamRepository(client: client)
@@ -154,6 +168,8 @@ final public class LiveStreamBroadcastViewController: UIViewController {
         liveDurationFormatter.unitsStyle = .positional
         liveDurationFormatter.zeroFormattingBehavior = .pad
         
+        subscriptionManager = AmityTopicSubscription(client: client)
+        
     }
     
     required init?(coder: NSCoder) {
@@ -171,6 +187,7 @@ final public class LiveStreamBroadcastViewController: UIViewController {
     public override func viewDidLoad() {
         super.viewDidLoad()
         setupViews()
+        setupTableView()
         queryTargetDetail()
         observeKeyboardFrame()
         updateCoverImageSelection()
@@ -347,6 +364,11 @@ final public class LiveStreamBroadcastViewController: UIViewController {
         streamEndLabel.text = AmityLocalizedStringSet.LiveStream.Live.endingLiveStream.localizedString
     }
     
+    func setupTableView(){
+        commentTableView.backgroundColor = .green
+        commentTextField.backgroundColor = .blue
+    }
+    
     private func trySetupBroadcaster() {
         if !hasSetupBroadcaster && permissionsGranted() {
             hasSetupBroadcaster = true
@@ -486,6 +508,18 @@ final public class LiveStreamBroadcastViewController: UIViewController {
         AmityEventHandler.shared.shareCommunityPostDidTap(from: self, title: nil, postId: post.postId, communityId: post.targetCommunity?.communityId ?? "")
     }
     
+    @IBAction func hideCommentTable() {
+        commentTableView.isHidden = true
+        hideCommentButton.isHidden = true
+        showCommentButton.isHidden = false
+    }
+    
+    @IBAction func showCommentTable() {
+        commentTableView.isHidden = false
+        hideCommentButton.isHidden = false
+        showCommentButton.isHidden = true
+    }
+    
 }
 
 extension LiveStreamBroadcastViewController: AmityTextViewDelegate {
@@ -600,6 +634,27 @@ extension LiveStreamBroadcastViewController: UITableViewDelegate {
     public func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
         if tableView.isBottomReached {
             mentionManager.loadMore()
+        }
+    }
+}
+
+// MARK: - Real time event
+extension LiveStreamBroadcastViewController {
+    func startRealTimeEventSubscribe() {
+        guard let currentPost = createdPost else { return }
+        let eventTopic = AmityPostTopic(post: currentPost, andEvent: .comments)
+        subscriptionManager?.subscribeTopic(eventTopic) { success, error in
+            // Handle Result
+            if success {
+                print("[RTE]Successful to subscribe")
+            } else {
+                print("[RTE]Error: \(error?.localizedDescription)")
+            }
+        }
+        
+        liveCommentQueryToken = commentRepository.getCommentsWithReferenceId(currentPost.postId, referenceType: .post, filterByParentId: true, parentId: currentPost.parentPostId, orderBy: .descending, includeDeleted: false).observe { collection, changes, error in
+            let storedMessages: [AmityCommentModel] = collection.allObjects().map(AmityCommentModel.init)
+            print("[RTE]Comment : \(storedMessages)")
         }
     }
 }

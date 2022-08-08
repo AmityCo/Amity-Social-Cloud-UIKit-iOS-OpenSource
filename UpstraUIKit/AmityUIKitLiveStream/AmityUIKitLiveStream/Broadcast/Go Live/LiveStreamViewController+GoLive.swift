@@ -125,6 +125,7 @@ extension LiveStreamBroadcastViewController {
             streamId = streamObject.streamId
             startLiveDurationTimer()
             switchToUIState(.streaming)
+            startRealTimeEventSubscribe()
         case .failure(let error):
             presentErrorDialogue(title: AmityLocalizedStringSet.ErrorHandling.errorTitle.localizedString, message: error.localizedDescription)
         }

@@ -90,6 +90,13 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		7F4C1CD3289A294E00FB69BF /* Custom Cell */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = "Custom Cell";
+			sourceTree = "<group>";
+		};
 		A0B68B3426E077CD007D7B5B /* Operation */ = {
 			isa = PBXGroup;
 			children = (
@@ -178,6 +185,7 @@
 				A0B68B3726E078A2007D7B5B /* Go Live */,
 				A0B68B5226E0BF4B007D7B5B /* Streaming Live */,
 				A0B68B4826E09515007D7B5B /* Finish Live */,
+				7F4C1CD3289A294E00FB69BF /* Custom Cell */,
 				A0BD0B6126DF3A3F0054088B /* LiveStreamBroadcast+UIContainerState.swift */,
 				A0B68B5526E0C9AC007D7B5B /* LiveStreamBroadcastVC+TargetDetail.swift */,
 				A0BD0B5F26DF377A0054088B /* LiveStreamBroadcastVC+CoverImagePicker.swift */,

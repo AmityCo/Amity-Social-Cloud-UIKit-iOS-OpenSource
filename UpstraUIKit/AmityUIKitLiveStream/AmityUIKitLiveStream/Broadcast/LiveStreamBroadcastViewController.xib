@@ -11,11 +11,14 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="LiveStreamBroadcastViewController" customModule="AmityUIKitLiveStream" customModuleProvider="target">
             <connections>
+                <outlet property="commentTableView" destination="pa6-0I-Wgo" id="Abw-Rc-OAt"/>
+                <outlet property="commentTextField" destination="xCb-OX-sh6" id="nUU-3Y-rFI"/>
                 <outlet property="coverImageContainer" destination="wsf-3H-SJK" id="aSm-Zg-wyk"/>
                 <outlet property="coverImageView" destination="xYG-lh-GPh" id="FkR-UE-L61"/>
                 <outlet property="descriptionTextView" destination="aOG-gM-Pbh" id="8HK-ML-oIz"/>
                 <outlet property="finishButton" destination="hb4-4n-9QZ" id="tvj-I3-XlN"/>
                 <outlet property="goLiveButton" destination="xLF-im-up6" id="dEC-fh-Lgw"/>
+                <outlet property="hideCommentButton" destination="mQw-de-yAH" id="RRj-lM-iwK"/>
                 <outlet property="likeCountLabel" destination="vhD-qv-wl6" id="jm6-c3-cb9"/>
                 <outlet property="mentionTableView" destination="ndJ-d5-Nzh" id="yz5-l6-KKA"/>
                 <outlet property="mentionTableViewBottomConstraint" destination="lQm-DI-Gco" id="LnU-CA-W0f"/>
@@ -23,6 +26,7 @@
                 <outlet property="overlayView" destination="EQI-Pf-pby" id="FLT-tP-0cQ"/>
                 <outlet property="renderingContainer" destination="WoG-th-p7m" id="Zgg-Wo-ySh"/>
                 <outlet property="selectCoverButton" destination="OY1-jm-R20" id="jWS-5f-tAg"/>
+                <outlet property="showCommentButton" destination="C8q-EX-mrC" id="b2L-lc-4pw"/>
                 <outlet property="streamEndActivityIndicator" destination="QuL-4c-hIl" id="CUw-Kf-wLE"/>
                 <outlet property="streamEndLabel" destination="aEB-qR-Pd5" id="45w-wx-ZOK"/>
                 <outlet property="streamingContainer" destination="5gV-fy-gT7" id="AdJ-Bu-LM9"/>
@@ -94,10 +98,10 @@
                             </connections>
                         </button>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="teJ-FP-yPK" userLabel="Share Button">
-                            <rect key="frame" x="15" y="717" width="60" height="60"/>
+                            <rect key="frame" x="15" y="729" width="48" height="48"/>
                             <constraints>
-                                <constraint firstAttribute="height" constant="60" id="8DR-rj-mOJ"/>
-                                <constraint firstAttribute="width" constant="60" id="BGk-eO-eqM"/>
+                                <constraint firstAttribute="height" constant="48" id="8DR-rj-mOJ"/>
+                                <constraint firstAttribute="width" constant="48" id="BGk-eO-eqM"/>
                             </constraints>
                             <inset key="contentEdgeInsets" minX="10" minY="10" maxX="10" maxY="10"/>
                             <state key="normal" image="shared"/>
@@ -106,24 +110,15 @@
                             </connections>
                         </button>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="MB2-CF-073">
-                            <rect key="frame" x="91" y="717" width="1" height="60"/>
+                            <rect key="frame" x="68" y="729" width="1" height="48"/>
                             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <constraints>
                                 <constraint firstAttribute="width" constant="1" id="9qO-PO-7PL"/>
-                                <constraint firstAttribute="height" constant="60" id="vmh-Id-xLO"/>
+                                <constraint firstAttribute="height" constant="48" id="vmh-Id-xLO"/>
                             </constraints>
                         </view>
-                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="UOq-qR-fXt" userLabel="Share Button">
-                            <rect key="frame" x="108" y="717" width="60" height="60"/>
-                            <constraints>
-                                <constraint firstAttribute="width" constant="60" id="3nC-g9-c6y"/>
-                                <constraint firstAttribute="height" constant="60" id="mAu-Pc-X2V"/>
-                            </constraints>
-                            <inset key="contentEdgeInsets" minX="10" minY="10" maxX="10" maxY="10"/>
-                            <state key="normal" image="like_fill_button"/>
-                        </button>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="vhD-qv-wl6">
-                            <rect key="frame" x="133.5" y="781" width="9" height="17"/>
+                            <rect key="frame" x="93.5" y="781" width="9" height="17"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="17" id="zwz-kQ-P9W"/>
                             </constraints>
@@ -131,6 +126,56 @@
                             <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <nil key="highlightedColor"/>
                         </label>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="UOq-qR-fXt" userLabel="Like Button">
+                            <rect key="frame" x="74" y="729" width="48" height="48"/>
+                            <constraints>
+                                <constraint firstAttribute="width" constant="48" id="3nC-g9-c6y"/>
+                                <constraint firstAttribute="height" constant="48" id="mAu-Pc-X2V"/>
+                            </constraints>
+                            <inset key="contentEdgeInsets" minX="10" minY="10" maxX="10" maxY="10"/>
+                            <state key="normal" image="like_fill_button"/>
+                        </button>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="mQw-de-yAH" userLabel="Hide button">
+                            <rect key="frame" x="351" y="671" width="48" height="48"/>
+                            <constraints>
+                                <constraint firstAttribute="width" constant="48" id="OJf-La-Dg2"/>
+                                <constraint firstAttribute="height" constant="48" id="xmc-N7-ebY"/>
+                            </constraints>
+                            <inset key="contentEdgeInsets" minX="10" minY="10" maxX="10" maxY="10"/>
+                            <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                            <state key="normal" image="livestream_hide_comment"/>
+                            <connections>
+                                <action selector="hideCommentTable" destination="-1" eventType="touchUpInside" id="lSq-Qy-rLa"/>
+                            </connections>
+                        </button>
+                        <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="C8q-EX-mrC" userLabel="Show button">
+                            <rect key="frame" x="351" y="671" width="48" height="48"/>
+                            <constraints>
+                                <constraint firstAttribute="width" constant="48" id="3aD-Uo-eC0"/>
+                                <constraint firstAttribute="height" constant="48" id="lPU-iM-Hhh"/>
+                            </constraints>
+                            <inset key="contentEdgeInsets" minX="10" minY="10" maxX="10" maxY="10"/>
+                            <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                            <state key="normal" image="livestream_show_comment"/>
+                            <connections>
+                                <action selector="showCommentTable" destination="-1" eventType="touchUpInside" id="n0s-bi-jh0"/>
+                            </connections>
+                        </button>
+                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="xCb-OX-sh6" userLabel="Comment bar">
+                            <rect key="frame" x="132" y="729" width="267" height="48"/>
+                            <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="48" id="6rx-HU-ice"/>
+                            </constraints>
+                        </view>
+                        <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="pa6-0I-Wgo" userLabel="Comment TableView">
+                            <rect key="frame" x="15" y="519" width="326" height="200"/>
+                            <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="200" id="hYC-Bd-Z0W"/>
+                            </constraints>
+                            <color key="sectionIndexBackgroundColor" systemColor="systemGreenColor"/>
+                        </tableView>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="5gV-fy-gT7" userLabel="Status Container">
                             <rect key="frame" x="15" y="15" width="90" height="24"/>
                             <subviews>
@@ -180,21 +225,31 @@
                     <viewLayoutGuide key="safeArea" id="tUC-ur-UUT"/>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <constraints>
+                        <constraint firstItem="xCb-OX-sh6" firstAttribute="centerY" secondItem="UOq-qR-fXt" secondAttribute="centerY" id="0i3-yD-hIt"/>
                         <constraint firstItem="xoP-1u-M6Z" firstAttribute="centerX" secondItem="hb4-4n-9QZ" secondAttribute="centerX" constant="1" id="2Xo-4u-AKa"/>
+                        <constraint firstItem="xCb-OX-sh6" firstAttribute="leading" secondItem="UOq-qR-fXt" secondAttribute="trailing" constant="10" id="7i5-KG-arW"/>
+                        <constraint firstItem="tUC-ur-UUT" firstAttribute="trailing" secondItem="mQw-de-yAH" secondAttribute="trailing" constant="15" id="AOn-vF-y4L"/>
+                        <constraint firstItem="tUC-ur-UUT" firstAttribute="trailing" secondItem="xCb-OX-sh6" secondAttribute="trailing" constant="15" id="ELf-lW-mXJ"/>
                         <constraint firstItem="vhD-qv-wl6" firstAttribute="centerX" secondItem="UOq-qR-fXt" secondAttribute="centerX" id="FCp-CQ-TUx"/>
                         <constraint firstItem="tUC-ur-UUT" firstAttribute="bottom" secondItem="vhD-qv-wl6" secondAttribute="bottom" constant="20" id="Nih-bu-Uh9"/>
                         <constraint firstAttribute="trailing" secondItem="hb4-4n-9QZ" secondAttribute="trailing" constant="16" id="SfJ-O5-enB"/>
-                        <constraint firstItem="MB2-CF-073" firstAttribute="leading" secondItem="teJ-FP-yPK" secondAttribute="trailing" constant="16" id="SgG-y5-hJz"/>
+                        <constraint firstItem="MB2-CF-073" firstAttribute="leading" secondItem="teJ-FP-yPK" secondAttribute="trailing" constant="5" id="SgG-y5-hJz"/>
                         <constraint firstItem="UOq-qR-fXt" firstAttribute="centerY" secondItem="MB2-CF-073" secondAttribute="centerY" id="TaJ-51-HBR"/>
+                        <constraint firstItem="pa6-0I-Wgo" firstAttribute="leading" secondItem="tUC-ur-UUT" secondAttribute="leading" constant="15" id="Z6B-Y8-Zms"/>
                         <constraint firstItem="vhD-qv-wl6" firstAttribute="top" secondItem="UOq-qR-fXt" secondAttribute="bottom" constant="4" id="ZQr-m7-xuG"/>
                         <constraint firstItem="jc4-a6-tmq" firstAttribute="leading" secondItem="5gV-fy-gT7" secondAttribute="trailing" constant="8" symbolic="YES" id="bFH-aQ-FSw"/>
+                        <constraint firstItem="mQw-de-yAH" firstAttribute="leading" secondItem="pa6-0I-Wgo" secondAttribute="trailing" constant="10" id="c8v-vL-wJe"/>
+                        <constraint firstItem="C8q-EX-mrC" firstAttribute="centerY" secondItem="mQw-de-yAH" secondAttribute="centerY" id="e1G-e5-x1x"/>
                         <constraint firstItem="hb4-4n-9QZ" firstAttribute="top" secondItem="tUC-ur-UUT" secondAttribute="top" id="fXf-e5-Sbs"/>
+                        <constraint firstItem="xCb-OX-sh6" firstAttribute="top" secondItem="mQw-de-yAH" secondAttribute="bottom" constant="10" id="gjg-EW-Yor"/>
                         <constraint firstItem="jc4-a6-tmq" firstAttribute="centerY" secondItem="5gV-fy-gT7" secondAttribute="centerY" id="jNd-zA-j1N"/>
                         <constraint firstItem="xoP-1u-M6Z" firstAttribute="top" secondItem="hb4-4n-9QZ" secondAttribute="bottom" constant="8" symbolic="YES" id="kuA-oU-Nhz"/>
                         <constraint firstItem="5gV-fy-gT7" firstAttribute="leading" secondItem="tUC-ur-UUT" secondAttribute="leading" constant="15" id="o3C-V4-Hjg"/>
                         <constraint firstItem="5gV-fy-gT7" firstAttribute="top" secondItem="tUC-ur-UUT" secondAttribute="top" constant="15" id="qGB-dy-xmm"/>
-                        <constraint firstItem="UOq-qR-fXt" firstAttribute="leading" secondItem="MB2-CF-073" secondAttribute="trailing" constant="16" id="re3-Lu-H1K"/>
+                        <constraint firstItem="UOq-qR-fXt" firstAttribute="leading" secondItem="MB2-CF-073" secondAttribute="trailing" constant="5" id="re3-Lu-H1K"/>
                         <constraint firstItem="MB2-CF-073" firstAttribute="centerY" secondItem="teJ-FP-yPK" secondAttribute="centerY" id="s4l-OV-xvl"/>
+                        <constraint firstItem="C8q-EX-mrC" firstAttribute="centerX" secondItem="mQw-de-yAH" secondAttribute="centerX" id="sGr-Vz-cAU"/>
+                        <constraint firstItem="teJ-FP-yPK" firstAttribute="top" secondItem="pa6-0I-Wgo" secondAttribute="bottom" constant="10" id="sSL-l7-SfL"/>
                         <constraint firstItem="teJ-FP-yPK" firstAttribute="leading" secondItem="tUC-ur-UUT" secondAttribute="leading" constant="15" id="tf1-Ni-vmx"/>
                         <constraint firstItem="jc4-a6-tmq" firstAttribute="height" secondItem="5gV-fy-gT7" secondAttribute="height" id="x5n-xz-GL0"/>
                     </constraints>
@@ -430,6 +485,8 @@
         <image name="close_button" width="28" height="28"/>
         <image name="flip_camera" width="32" height="32"/>
         <image name="like_fill_button" width="43" height="42"/>
+        <image name="livestream_hide_comment" width="38" height="38"/>
+        <image name="livestream_show_comment" width="38" height="38"/>
         <image name="shared" width="38" height="38"/>
         <image name="switch_camera" width="28" height="28"/>
         <image name="view_eye" width="12" height="12"/>
@@ -441,6 +498,9 @@
         </systemColor>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+        <systemColor name="systemGreenColor">
+            <color red="0.20392156862745098" green="0.7803921568627451" blue="0.34901960784313724" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
         <systemColor name="systemRedColor">
             <color red="1" green="0.23137254901960785" blue="0.18823529411764706" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
