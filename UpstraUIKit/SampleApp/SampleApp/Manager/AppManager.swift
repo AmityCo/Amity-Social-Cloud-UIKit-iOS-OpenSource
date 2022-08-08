@@ -69,10 +69,10 @@ class AppManager {
             print("[Sample App] register device with userId '\(userId)' \(success ? "successfully" : "failed")")
             if let error = error {
                 print("[Sample App] register device failed \(error.localizedDescription)")
-                self?.registerDevicePushNotification()
+                self.registerDevicePushNotification()
                
             }
-            self?.registerDevicePushNotification()
+            self.registerDevicePushNotification()
         }
         UserDefaults.standard.setValue(userId, forKey: UserDefaultsKey.userId)
         

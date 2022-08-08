@@ -366,9 +366,9 @@ final class AmityUIKitManagerInternal: NSObject {
         messageMediaService.fileRepository = AmityFileRepository(client: client)
     }
     
-    func registerDeviceForPushNotification(_ deviceToken: String, completion: AmityRequestCompletion? = nil) {
-        self._client?.registerDeviceForPushNotification(withDeviceToken: deviceToken, completion: completion)
-    }
+//    func registerDeviceForPushNotification(_ deviceToken: String, completion: AmityRequestCompletion? = nil) {
+//        self._client?.registerDeviceForPushNotification(withDeviceToken: deviceToken, completion: completion)
+//    }
     
     func unregisterDevicePushNotification(completion: AmityRequestCompletion? = nil) {
         guard let currentUserId = self._client?.currentUserId else { return }
