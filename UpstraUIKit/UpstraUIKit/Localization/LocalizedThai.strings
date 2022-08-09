@@ -86,8 +86,8 @@
 "no_internet_connection" = "ไม่มีการเชื่อมต่ออินเทอร์เน็ต";
 "recent_chat_no_message" = "ยังไม่มีข้อความ";
 "recent_chat_announcement_message" = "ค้นหาเพื่อนใหม่ใน TrueID ";
-"recent_chat_announcement_message_ext" = " จากนั้นกดที่ภาพโปรไฟล์เพื่อน ใน Community เพื่อเริ่มแชทได้เลย";
-"recent_chat_underline_message" = "กดที่นี่";
+"recent_chat_announcement_message_ext" = " จากนั้นกดที่ภาพโปรไฟล์เพื่อน\nใน Community เพื่อเริ่มแชทได้เลย";
+"recent_chat_underline_message" = "\"กดที่นี่\"";
 "message_list_alert_error_message_title" = "เกิดข้อผิดพลาดในการส่งข้อความ";
 "message_list_alert_error_message_desc" = "กรุณาลองใหม่อีกครั้ง";
 "message_list_alert_delete_error_title" = "ข้อความของคุณไม่ได้ถูกส่ง";

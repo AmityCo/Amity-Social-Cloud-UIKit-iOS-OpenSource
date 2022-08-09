@@ -35,14 +35,25 @@ extension LiveStreamBroadcastViewController {
                         self?.setTargetDetail(name: nil, avatarUrl: nil)
                         return
                     }
-                    self?.setTargetDetail(name: user.displayName, avatarUrl: user.getAvatarInfo()?.fileURL)
+                    if (user.avatarCustomUrl == nil) {
+                        self?.setTargetDetail(name: user.displayName, avatarUrl: user.getAvatarInfo()?.fileURL)
+                    } else {
+                        self?.setTargetDetail(name: user.displayName, avatarUrl: user.avatarCustomUrl)
+                    }
                 }
             } else {
                 let currentUser = client.currentUser?.object
-                setTargetDetail(
-                    name: currentUser?.displayName,
-                    avatarUrl: currentUser?.getAvatarInfo()?.fileURL
-                )
+                if currentUser?.avatarCustomUrl == nil {
+                    setTargetDetail(
+                        name: currentUser?.displayName,
+                        avatarUrl: currentUser?.getAvatarInfo()?.fileURL
+                    )
+                } else {
+                    setTargetDetail(
+                        name: currentUser?.displayName,
+                        avatarUrl: currentUser?.avatarCustomUrl
+                    )
+                }
             }
         @unknown default:
             assertionFailure("Unhandled case")

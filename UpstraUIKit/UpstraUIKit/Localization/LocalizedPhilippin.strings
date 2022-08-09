@@ -93,8 +93,8 @@
 "no_internet_connection" = "No internet connection";
 "recent_chat_no_message" = "No message yet";
 "recent_chat_announcement_message" = "Explore new friends in TrueID ";
-"recent_chat_announcement_message_ext" = " then tap on user avatar who you want to chat with";
-"recent_chat_underline_message" = "Tap here";
+"recent_chat_announcement_message_ext" = "\nthen tap on user avatar who you want to chat with";
+"recent_chat_underline_message" = "\"Tap here\"";
 "message_list_alert_error_message_title" = "Error sending message";
 "message_list_alert_error_message_desc" = "Please try again";
 "message_list_alert_delete_error_title" = "Your message was not sent";
