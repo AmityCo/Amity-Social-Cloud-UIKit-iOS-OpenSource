@@ -14,13 +14,6 @@ final class AmityMessageListTableViewController: UITableViewController {
     // MARK: - Properties
     private var screenViewModel: AmityMessageListScreenViewModelType!
     
-    struct Constant {
-        static let estimatedTextMessageCellHeight: CGFloat = 112
-        static let estimatedImageMessageCellHeight: CGFloat = 226
-    }
-    
-    private let estimatedCellHeight: CGFloat = 112
-    
     // MARK: - View lifecycle
     private convenience init(viewModel: AmityMessageListScreenViewModelType) {
         self.init(style: .plain)
@@ -52,8 +45,9 @@ extension AmityMessageListTableViewController {
         tableView.separatorInset.left = UIScreen.main.bounds.width
         tableView.tableFooterView = UIView()
         tableView.keyboardDismissMode = .onDrag
+        tableView.estimatedRowHeight = 0
         tableView.backgroundColor = AmityColorSet.backgroundColor
-        screenViewModel.dataSource.allCells.forEach {
+        screenViewModel.dataSource.allCellNibs.forEach {
             tableView.register($0.value, forCellReuseIdentifier: $0.key)
         }
         tableView.dataSource = self
@@ -120,13 +114,9 @@ extension AmityMessageListTableViewController {
     
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         guard let message = screenViewModel.dataSource.message(at: indexPath) else { return 0 }
-        switch message.messageType {
-        case .image where !message.isDeleted:
-            return UITableView.automaticDimension
-        case .file: return 0
-        default:
-            return UITableView.automaticDimension
-        }
+        
+        return cellType(for: message)?
+            .height(for: message, boundingWidth: tableView.bounds.width) ?? 0.0
     }
     
     override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
@@ -140,19 +130,6 @@ extension AmityMessageListTableViewController {
         return dateView
     }
     
-    override func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
-        guard let message = screenViewModel.dataSource.message(at: indexPath)else { return Constant.estimatedTextMessageCellHeight }
-        let messageType = message.messageType
-        
-        switch messageType {
-        case .text:
-            return Constant.estimatedTextMessageCellHeight
-        case .image:
-            return Constant.estimatedImageMessageCellHeight
-        default:
-            return 0
-        }
-    }
 }
 
 // MARK: - DataSource
@@ -178,6 +155,30 @@ extension AmityMessageListTableViewController {
 }
 
 extension AmityMessageListTableViewController: AmityMessageCellDelegate {
+    
+    func performEvent(_ cell: AmityMessageTableViewCell, labelEvents: AmityMessageLabelEvents) {
+        guard let message = cell.message else { return }
+        
+        switch labelEvents {
+        case .tapExpandableLabel:
+            break
+        case .willExpandExpandableLabel, .willCollapseExpandableLabel:
+            tableView.beginUpdates()
+        case .didExpandExpandableLabel(let label):
+            message.appearance.isExpanding = true
+            tableView.endUpdates()
+            let point = label.convert(CGPoint.zero, to: tableView)
+            if let indexPath = tableView.indexPathForRow(at: point) as IndexPath? {
+                DispatchQueue.main.async { [weak self] in
+                    self?.tableView.scrollToRow(at: indexPath, at: .top, animated: true)
+                }
+            }
+        case .didCollapseExpandableLabel:
+            message.appearance.isExpanding = false
+            tableView.endUpdates()
+        }
+    }
+    
     func performEvent(_ cell: AmityMessageTableViewCell, events: AmityMessageCellEvents) {
         
         switch cell.message.messageType {
@@ -196,33 +197,6 @@ extension AmityMessageListTableViewController: AmityMessageCellDelegate {
     }
 }
 
-extension AmityMessageListTableViewController: AmityExpandableLabelDelegate {
-    
-    public func expandableLabeldidTap(_ label: AmityExpandableLabel) {
-        // Intentionally left empty
-    }
-    
-    public func willExpandLabel(_ label: AmityExpandableLabel) {
-        tableView.beginUpdates()
-    }
-    
-    public func didExpandLabel(_ label: AmityExpandableLabel) {
-        tableView.endUpdates()
-    }
-    
-    public func willCollapseLabel(_ label: AmityExpandableLabel) {
-        tableView.beginUpdates()
-    }
-    
-    public func didCollapseLabel(_ label: AmityExpandableLabel) {
-        tableView.endUpdates()
-    }
-    
-    public func didTapOnMention(_ label: AmityExpandableLabel, withUserId userId: String) {
-        // Intentionally left empty
-    }
-}
-
 // MARK: - Private functions
 extension AmityMessageListTableViewController {
     
@@ -232,7 +206,6 @@ extension AmityMessageListTableViewController {
             cell.delegate = self
             cell.setViewModel(with: screenViewModel)
             cell.setIndexPath(with: indexPath)
-            (cell as? AmityMessageTextTableViewCell)?.textDelegate = self
         }
         
         (cell as? AmityMessageCellProtocol)?.display(message: message)
@@ -240,22 +213,23 @@ extension AmityMessageListTableViewController {
     
     private func cellIdentifier(for message: AmityMessageModel) -> String? {
         switch message.messageType {
-        case .custom where message.isOwner:
-            fallthrough
-        case .text where message.isOwner:
-            return AmityMessageTypes.textOutgoing.identifier
         case .text:
-            return AmityMessageTypes.textIncoming.identifier
-        case .image where message.isOwner:
-            return AmityMessageTypes.imageOutgoing.identifier
-        case .image:
-            return AmityMessageTypes.imageIncoming.identifier
-        case .audio where message.isOwner:
-            return AmityMessageTypes.audioOutgoing.identifier
+            return message.isOwner ? AmityMessageTypes.textOutgoing.identifier : AmityMessageTypes.textIncoming.identifier
+        case .image :
+            return message.isOwner ? AmityMessageTypes.imageOutgoing.identifier : AmityMessageTypes.imageIncoming.identifier
         case .audio:
-            return AmityMessageTypes.audioIncoming.identifier
+            return message.isOwner ? AmityMessageTypes.audioOutgoing.identifier : AmityMessageTypes.audioIncoming.identifier
+        case .custom:
+            fallthrough
         default:
             return nil
         }
+
     }
+    
+    private func cellType(for message: AmityMessageModel) -> AmityMessageCellProtocol.Type? {
+        guard let identifier = cellIdentifier(for: message) else { return nil }
+        return screenViewModel.allCellClasses[identifier]
+    }
+    
 }

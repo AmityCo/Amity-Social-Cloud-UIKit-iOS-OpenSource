@@ -33,7 +33,8 @@ protocol AmityMessageListScreenViewModelDelegate: AnyObject {
 }
 
 protocol AmityMessageListScreenViewModelDataSource {
-    var allCells: [String: UINib] { get }
+    var allCellNibs: [String: UINib] { get }
+    var allCellClasses: [String: AmityMessageCellProtocol.Type] { get }
     
     func message(at indexPath: IndexPath) -> AmityMessageModel?
     func numberOfMessages() -> Int
@@ -62,7 +63,7 @@ protocol AmityMessageListScreenViewModelAction {
     
     func shouldScrollToBottom(force: Bool)
     
-    func registerCell()
+    func registerCellNibs()
     func register(items: [AmityMessageTypes:AmityMessageCellProtocol.Type])
     
     func inputSource(for event: AmityMessageListScreenViewModel.KeyboardInputEvents)

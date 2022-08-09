@@ -67,6 +67,14 @@ final class AmityMessageAudioTableViewCell: AmityMessageTableViewCell {
         super.display(message: message)
     }
     
+    override class func height(for message: AmityMessageModel, boundingWidth: CGFloat) -> CGFloat {
+        let displaynameHeight: CGFloat = message.isOwner ? 0 : 22
+        if message.isDeleted {
+            return AmityMessageTableViewCell.deletedMessageCellHeight + displaynameHeight
+        }
+        return 90 + displaynameHeight
+    }
+    
 }
 
 extension AmityMessageAudioTableViewCell {

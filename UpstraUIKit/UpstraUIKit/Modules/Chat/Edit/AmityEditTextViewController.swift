@@ -79,6 +79,16 @@ public class AmityEditTextViewController: AmityViewController {
         }
     }
     
+    public override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        AmityKeyboardService.shared.delegate = self
+    }
+    
+    public override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        AmityKeyboardService.shared.delegate = nil
+    }
+    
     public override func didTapLeftBarButton() {
         dismissHandler?()
     }
@@ -112,7 +122,6 @@ public class AmityEditTextViewController: AmityViewController {
         textView.placeholder = AmityLocalizedStringSet.textMessagePlaceholder.localizedString
         textView.showsVerticalScrollIndicator = false
         textView.customTextViewDelegate = self
-        AmityKeyboardService.shared.delegate = self
     }
     
     private func setupMentionTableView() {

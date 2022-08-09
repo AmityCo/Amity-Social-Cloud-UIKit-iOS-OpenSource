@@ -11,6 +11,8 @@ import AmitySDK
 
 class AmityMessageTableViewCell: UITableViewCell, AmityMessageCellProtocol {
     
+    static let deletedMessageCellHeight: CGFloat = 52
+    
     // MARK: - Delegate
     weak var delegate: AmityMessageCellDelegate?
     
@@ -65,6 +67,10 @@ class AmityMessageTableViewCell: UITableViewCell, AmityMessageCellProtocol {
         metadataLabel?.isHidden = false
         errorButton?.isHidden = true
         avatarView?.image = nil
+    }
+    
+    class func height(for message: AmityMessageModel, boundingWidth: CGFloat) -> CGFloat {
+        fatalError("This function need to be implemented.")
     }
     
     func setViewModel(with viewModel: AmityMessageListScreenViewModelType) {
@@ -162,6 +168,19 @@ class AmityMessageTableViewCell: UITableViewCell, AmityMessageCellProtocol {
         metadataLabel?.attributedText = fullString
     }
     
+    // MARK: - Setup View
+    private func setupView() {
+        selectionStyle = .none
+        
+        statusMetadataImageView?.isHidden = true
+        containerView?.backgroundColor = UIColor.gray.withAlphaComponent(0.25)
+        containerView?.layer.cornerRadius = 4
+        containerView?.menuItems = [editMenuItem, deleteMenuItem, reportMenuItem]
+        errorButton?.isHidden = true
+        
+        contentView.backgroundColor = AmityColorSet.backgroundColor
+    }
+    
     private func setDisplayName(for message: AmityMessageModel) {
         setDisplayName(message.displayName)
     }
@@ -171,17 +190,10 @@ class AmityMessageTableViewCell: UITableViewCell, AmityMessageCellProtocol {
     }
     
     private func setAvatarImage(_ messageModel: AmityMessageModel) {
-        if let customURL = messageModel.object.user?.avatarCustomUrl,
-           !customURL.isEmpty {
-            avatarView.setImage(withImageURL: customURL,
-                                placeholder: AmityIconSet.defaultAvatar)
-        } else if
-            let url = messageModel.object.user?.getAvatarInfo()?.fileURL,
-            !url.isEmpty {
-            avatarView.setImage(withImageURL: url,
-                                placeholder: AmityIconSet.defaultAvatar)
-        }
+        let url = messageModel.object.user?.getAvatarInfo()?.fileURL
+        avatarView.setImage(withImageURL: url, placeholder: AmityIconSet.defaultAvatar)
     }
+
 }
 
 // MARK: - Action
@@ -210,19 +222,5 @@ private extension AmityMessageTableViewCell {
     @IBAction func errorTap() {
         screenViewModel.action.performCellEvent(for: .deleteErrorMessage(indexPath: indexPath))
     }
-}
-
-// MARK: - Setup View
-private extension AmityMessageTableViewCell {
-    private func setupView() {
-        selectionStyle = .none
-        
-        statusMetadataImageView?.isHidden = true
-        containerView?.backgroundColor = UIColor.gray.withAlphaComponent(0.25)
-        containerView?.layer.cornerRadius = 4
-        containerView?.menuItems = [editMenuItem, deleteMenuItem, reportMenuItem]
-        errorButton?.isHidden = true
-        
-        contentView.backgroundColor = AmityColorSet.backgroundColor
-    }
+    
 }

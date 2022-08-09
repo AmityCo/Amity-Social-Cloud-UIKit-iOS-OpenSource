@@ -6,6 +6,7 @@
 //  Copyright © 2564 BE Amity. All rights reserved.
 //
 
+import AmitySDK
 import AmityUIKit
 import UIKit
 
@@ -51,32 +52,56 @@ class AppManager {
     }
     
     func register(withUserId userId: String) {
-        AmityUIKitManager.registerDevice(withUserId: userId, displayName: nil) { success, error in
+        AmityUIKitManager.registerDevice(withUserId: userId, displayName: nil) { [weak self] success, error in
             print("[Sample App] register device with userId '\(userId)' \(success ? "successfully" : "failed")")
             if let error = error {
                 print("[Sample App] register device failed \(error.localizedDescription)")
             }
+            self?.registerDevicePushNotification()
         }
         UserDefaults.standard.setValue(userId, forKey: UserDefaultsKey.userId)
         
         UIApplication.shared.windows.first?.rootViewController = TabbarViewController()
         UIApplication.shared.windows.first?.makeKeyAndVisible()
         
-        if let deviceToken = UserDefaults.standard.value(forKey: UserDefaultsKey.deviceToken) as? String {
-            AmityUIKitManager.unregisterDevicePushNotification()
-            AmityUIKitManager.registerDeviceForPushNotification(deviceToken)
+    }
+    
+    private func registerDevicePushNotification() {
+        
+        guard let deviceToken = UserDefaults.standard.value(forKey: UserDefaultsKey.deviceToken) as? String else { return }
+        
+        AmityUIKitManager.registerDeviceForPushNotification(deviceToken) { success, error in
+            if success {
+                AmityHUD.show(.success(message: "Success with id \(deviceToken)"))
+            } else {
+                AmityHUD.show(.error(message: "Failed with error \(error?.localizedDescription)"))
+            }
+            
         }
+        
     }
     
     func unregister() {
-        AmityUIKitManager.unregisterDevicePushNotification()
-        AmityUIKitManager.unregisterDevice()
-        UserDefaults.standard.setValue(nil, forKey: UserDefaultsKey.deviceToken)
-        UserDefaults.standard.setValue(nil, forKey: UserDefaultsKey.userId)
-        
-        UIApplication.shared.windows.first?.rootViewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "RegisterNavigationController")
-        UIApplication.shared.windows.first?.makeKeyAndVisible()
-        UIApplication.shared.applicationIconBadgeNumber = 0  // reset badge counter
+        // 1. unregister push notification
+        AmityUIKitManager.unregisterDevicePushNotification() { success, error in
+            if let error = error {
+                AmityHUD.show(.error(message: "Unregister failed with error \(error.localizedDescription)"))
+            }
+            
+            // 2. unregister user
+            //    wether it success or failed, we execute unregister to not breaking logout flow.
+            AmityUIKitManager.unregisterDevice()
+            UserDefaults.standard.setValue(nil, forKey: UserDefaultsKey.deviceToken)
+            UserDefaults.standard.setValue(nil, forKey: UserDefaultsKey.userId)
+            
+            UIApplication.shared.windows.first?.rootViewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "RegisterNavigationController")
+            UIApplication.shared.windows.first?.makeKeyAndVisible()
+            UIApplication.shared.applicationIconBadgeNumber = 0  // reset badge counter
+        }
+    }
+    
+    func unregisterDevicePushNotification(completion: AmityRequestCompletion?) {
+        AmityUIKitManager.unregisterDevicePushNotification(completion: completion)
     }
     
     func registerDeviceToken(_ token: Data) {
@@ -102,6 +127,10 @@ class AppManager {
     }
     
     // MARK: - Helpers
+    
+    func getDeviceToken() -> String {
+        return UserDefaults.standard.value(forKey: UserDefaultsKey.deviceToken) as? String ?? ""
+    }
     
     func startingPage() -> UIViewController {
         if isUserRegistered {

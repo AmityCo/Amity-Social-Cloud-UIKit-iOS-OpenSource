@@ -25,8 +25,17 @@ final class AmityCommentController: AmityCommentControllerProtocol {
 
 // MARK: - Fetch Comment Post
 extension AmityCommentController {
+    
+    var hasMoreComments: Bool {
+        fetchCommentPostController.hasMoreComments
+    }
+    
     func getCommentsForPostId(withReferenceId postId: String, referenceType: AmityCommentReferenceType, filterByParentId isParent: Bool, parentId: String?, orderBy: AmityOrderBy, includeDeleted: Bool, completion: ((Result<[AmityCommentModel], AmityError>) -> Void)?) {
         fetchCommentPostController.getCommentsForPostId(withReferenceId: postId, referenceType: referenceType, filterByParentId: isParent, parentId: parentId, orderBy: orderBy, includeDeleted: includeDeleted, completion: completion)
+    }
+    
+    func loadMoreComments() {
+        fetchCommentPostController.loadMoreComments()
     }
 }
 
@@ -39,8 +48,8 @@ extension AmityCommentController {
 
 // MARK: - Comment Editor
 extension AmityCommentController {
-    func delete(withComment comment: AmityCommentModel, completion: AmityRequestCompletion?) {
-        editorController.delete(withComment: comment, completion: completion)
+    func delete(withCommentId commentId: String, completion: AmityRequestCompletion?) {
+        editorController.delete(withCommentId: commentId, completion: completion)
     }
     
     func edit(withComment comment: AmityCommentModel, text: String, metadata: [String : Any]?, mentionees: AmityMentioneesBuilder?, completion: AmityRequestCompletion?) {
