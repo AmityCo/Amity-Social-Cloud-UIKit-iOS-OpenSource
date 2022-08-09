@@ -113,8 +113,9 @@ public final class AmityUIKitManager {
     }
     
     /// Unregisters this device for receiving push notification related to AmitySDK.
-    public static func unregisterDevicePushNotification() {
-        AmityUIKitManagerInternal.shared.unregisterDevicePushNotification()
+    public static func unregisterDevicePushNotification(completion: AmityRequestCompletion? = nil) {
+        let currentUserId = AmityUIKitManagerInternal.shared.currentUserId
+        AmityUIKitManagerInternal.shared.unregisterDevicePushNotification(for: currentUserId, completion: completion)
     }
     
     public static func setEnvironment(_ env: [String: Any]) {
@@ -193,6 +194,7 @@ final class AmityUIKitManagerInternal: NSObject {
     public static let shared = AmityUIKitManagerInternal()
     private var _client: AmityClient?
     private var apiKey: String = ""
+    private var notificationTokenMap: [String: String] = [:]
     private var httpUrl: String = ""
     private var socketUrl: String = ""
     private var language: String = ""
@@ -326,15 +328,47 @@ final class AmityUIKitManagerInternal: NSObject {
         self._client?.logout()
     }
     
-    func didUpdateClient() {
+    func registerDeviceForPushNotification(_ deviceToken: String, completion: AmityRequestCompletion? = nil) {
+        // It's possible that `deviceToken` can be changed while user is logging in.
+        // To prevent user from registering notification twice, we will revoke the current one before register new one.
+        revokeDeviceTokens()
+        
+        _client?.registerDeviceForPushNotification(withDeviceToken: deviceToken) { [weak self] success, error in
+            if success, let currentUserId = self?._client?.currentUserId {
+                // if register device successfully, binds device token to user id.
+                self?.notificationTokenMap[currentUserId] = deviceToken
+            }
+            completion?(success, error)
+        }
+    }
+    
+    func unregisterDevicePushNotification(for userId: String, completion: AmityRequestCompletion? = nil) {
+        client.unregisterDeviceForPushNotification(forUserId: userId) { [weak self] success, error in
+            if success, let currentUserId = self?._client?.currentUserId {
+                // if unregister device successfully, remove device token belonging to the user id.
+                self?.notificationTokenMap[currentUserId] = nil
+            }
+            completion?(success, error)
+        }
+    }
+    
+    // MARK: - Helpers
+    
+    private func revokeDeviceTokens() {
+        for (userId, _) in notificationTokenMap {
+            unregisterDevicePushNotification(for: userId, completion: nil)
+        }
+    }
+    
+    private func didUpdateClient() {
         // Update file repository to use in file service.
         fileService.fileRepository = AmityFileRepository(client: client)
         messageMediaService.fileRepository = AmityFileRepository(client: client)
     }
     
-    func registerDeviceForPushNotification(_ deviceToken: String, completion: AmityRequestCompletion? = nil) {
-        self._client?.registerDeviceForPushNotification(withDeviceToken: deviceToken, completion: completion)
-    }
+//    func registerDeviceForPushNotification(_ deviceToken: String, completion: AmityRequestCompletion? = nil) {
+//        self._client?.registerDeviceForPushNotification(withDeviceToken: deviceToken, completion: completion)
+//    }
     
     func unregisterDevicePushNotification(completion: AmityRequestCompletion? = nil) {
         guard let currentUserId = self._client?.currentUserId else { return }

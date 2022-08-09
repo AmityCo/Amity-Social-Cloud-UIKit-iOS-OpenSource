@@ -88,6 +88,7 @@
 "recent_chat_announcement_message" = "Explore new friends in TrueID ";
 "recent_chat_announcement_message_ext" = " then tap on user avatar who you want to chat with";
 "recent_chat_underline_message" = "\"Tap here\"";
+"discovery_friends_message" = "Discovery friends";
 "message_list_alert_error_message_title" = "Gagal mengirim pesan";
 "message_list_alert_error_message_desc" = "Silakan coba lagi";
 "message_list_alert_delete_error_title" = "Pesan anda tidak terkirim";
