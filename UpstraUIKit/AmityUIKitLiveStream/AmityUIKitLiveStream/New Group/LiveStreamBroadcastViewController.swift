@@ -135,6 +135,8 @@ final public class LiveStreamBroadcastViewController: UIViewController {
     var streamId: String?
     var timer = Timer()
     var subscriptionManager: AmityTopicSubscription?
+    var commentSet: Set<String> = []
+    var storedComment: [AmityCommentModel] = []
     
     // MARK: - Init / Deinit
     
@@ -366,8 +368,12 @@ final public class LiveStreamBroadcastViewController: UIViewController {
     }
     
     func setupTableView(){
-        commentTableView.backgroundColor = .green
+//        commentTableView.backgroundColor = .green
         commentTextField.backgroundColor = .blue
+        
+        commentTableView.register(LiveStreamBroadcastOverlayCommentTableViewCell.nib, forCellReuseIdentifier: LiveStreamBroadcastOverlayCommentTableViewCell.identifier)
+        commentTableView.delegate = self
+        commentTableView.dataSource = self
     }
     
     private func trySetupBroadcaster() {
@@ -602,10 +608,18 @@ extension LiveStreamBroadcastViewController: AmityMentionManagerDelegate {
 // MARK: - UITableViewDataSource
 extension LiveStreamBroadcastViewController: UITableViewDataSource {
     public func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        if tableView == commentTableView {
+            return storedComment.count
+        }
         return mentionManager.users.count
     }
     
     public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        if tableView == commentTableView {
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: LiveStreamBroadcastOverlayCommentTableViewCell.identifier) as? LiveStreamBroadcastOverlayCommentTableViewCell else { return UITableViewCell() }
+            cell.display(comment: storedComment[indexPath.row])
+            return cell
+        }
         guard let cell = tableView.dequeueReusableCell(withIdentifier: AmityMentionTableViewCell.identifier) as? AmityMentionTableViewCell else { return UITableViewCell() }
         if let model = mentionManager.item(at: indexPath) {
             cell.display(with: model)
@@ -618,6 +632,9 @@ extension LiveStreamBroadcastViewController: UITableViewDataSource {
 // MARK: - UITableViewDelegate
 extension LiveStreamBroadcastViewController: UITableViewDelegate {
     public func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        if tableView == commentTableView {
+            return LiveStreamBroadcastOverlayCommentTableViewCell.height
+        }
         return AmityMentionTableViewCell.height
     }
     
@@ -633,8 +650,12 @@ extension LiveStreamBroadcastViewController: UITableViewDelegate {
     }
     
     public func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-        if tableView.isBottomReached {
-            mentionManager.loadMore()
+        if tableView == commentTableView {
+
+        } else {
+            if tableView.isBottomReached {
+                mentionManager.loadMore()
+            }
         }
     }
 }
@@ -657,8 +678,19 @@ extension LiveStreamBroadcastViewController {
             if error != nil {
                 print("[RTE]Error in get comment: \(error?.localizedDescription)")
             }
-            let storedMessages: [AmityCommentModel] = collection.allObjects().map(AmityCommentModel.init)
-            print("[RTE]Comment : \(storedMessages)")
+            let comments: [AmityCommentModel] = collection.allObjects().map(AmityCommentModel.init)
+            print("[RTE]Comment : \(comments)")
+            for comment in comments {
+                if !self.commentSet.contains(comment.id){
+                    self.commentSet.insert(comment.id)
+                    self.storedComment.append(comment)
+                } else {
+                    continue
+                }
+            }
+            DispatchQueue.main.async {
+                self.commentTableView.reloadData()
+            }
         }
     }
 }

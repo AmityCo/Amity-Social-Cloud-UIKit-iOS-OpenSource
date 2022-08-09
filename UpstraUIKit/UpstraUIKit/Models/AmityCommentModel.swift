@@ -11,23 +11,23 @@ import AmitySDK
  Amity Comment model
  */
 public struct AmityCommentModel {
-    let id: String
-    let displayName: String
-    let fileURL: String
-    let avatarCustomURL: String
-    let text: String
-    let isDeleted: Bool
-    let isEdited: Bool
-    var createdAt: Date
-    var updatedAt: Date
-    let childrenNumber: Int
-    let childrenComment: [AmityCommentModel]
-    let parentId: String?
-    let userId: String
-    let isAuthorGlobalBanned: Bool
+    public let id: String
+    public let displayName: String
+    public let fileURL: String
+    public let avatarCustomURL: String
+    public let text: String
+    public let isDeleted: Bool
+    public let isEdited: Bool
+    public var createdAt: Date
+    public var updatedAt: Date
+    public let childrenNumber: Int
+    public let childrenComment: [AmityCommentModel]
+    public let parentId: String?
+    public let userId: String
+    public let isAuthorGlobalBanned: Bool
     private let myReactions: [String]
-    let metadata: [String: Any]?
-    let mentionees: [AmityMentionees]?
+    public let metadata: [String: Any]?
+    public let mentionees: [AmityMentionees]?
     
     // Due to AmityChat 4.0.0 requires comment object for editing and deleting
     // So, this is a workaroud for passing the original object.
