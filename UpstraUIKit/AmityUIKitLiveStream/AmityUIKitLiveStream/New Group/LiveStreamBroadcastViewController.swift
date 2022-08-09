@@ -152,6 +152,7 @@ final public class LiveStreamBroadcastViewController: UIViewController {
         postRepository = AmityPostRepository(client: client)
         reactionReposity = AmityReactionRepository(client: client)
         broadcaster = AmityStreamBroadcaster(client: client)
+        subscriptionManager = AmityTopicSubscription(client: client)
         mentionManager = AmityMentionManager(withType: .post(communityId: targetId))
         
         let bundle = Bundle(for: type(of: self))
@@ -168,8 +169,6 @@ final public class LiveStreamBroadcastViewController: UIViewController {
         liveDurationFormatter.unitsStyle = .positional
         liveDurationFormatter.zeroFormattingBehavior = .pad
         
-        subscriptionManager = AmityTopicSubscription(client: client)
-        
     }
     
     required init?(coder: NSCoder) {
@@ -178,6 +177,8 @@ final public class LiveStreamBroadcastViewController: UIViewController {
     
     deinit {
         liveObjectQueryToken = nil
+        liveCommentQueryToken = nil
+        subscriptionManager = nil
         unobserveKeyboardFrame()
         stopLiveDurationTimer()
     }
@@ -652,7 +653,10 @@ extension LiveStreamBroadcastViewController {
             }
         }
         
-        liveCommentQueryToken = commentRepository.getCommentsWithReferenceId(currentPost.postId, referenceType: .post, filterByParentId: true, parentId: currentPost.parentPostId, orderBy: .descending, includeDeleted: false).observe { collection, changes, error in
+        liveCommentQueryToken = commentRepository.getCommentsWithReferenceId(currentPost.postId, referenceType: .post, filterByParentId: false, parentId: nil, orderBy: .descending, includeDeleted: false).observe { collection, changes, error in
+            if error != nil {
+                print("[RTE]Error in get comment: \(error?.localizedDescription)")
+            }
             let storedMessages: [AmityCommentModel] = collection.allObjects().map(AmityCommentModel.init)
             print("[RTE]Comment : \(storedMessages)")
         }
