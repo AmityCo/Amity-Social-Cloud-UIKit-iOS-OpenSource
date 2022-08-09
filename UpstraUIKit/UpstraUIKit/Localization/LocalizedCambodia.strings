@@ -94,7 +94,7 @@
 "no_internet_connection" = "មិនមានសេវាអុីនធើណែត";
 "recent_chat_no_message" = "No message yet";
 "recent_chat_announcement_message" = "Explore new friends in TrueID ";
-"recent_chat_announcement_message_ext" = " then tap on user avatar who you want to chat with";
+"recent_chat_announcement_message_ext" = "\nthen tap on user avatar who you want to chat with";
 "recent_chat_underline_message" = "\"Tap here\"";
 "message_list_alert_error_message_title" = "មានបញ្ហាមិនអាចបញ្ជូនសារ";
 "message_list_alert_error_message_desc" = "សូមព្យាយាមម្តងទៀត";
