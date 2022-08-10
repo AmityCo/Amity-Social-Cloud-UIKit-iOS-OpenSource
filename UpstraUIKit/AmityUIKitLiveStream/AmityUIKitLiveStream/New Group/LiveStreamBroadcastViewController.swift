@@ -371,9 +371,16 @@ final public class LiveStreamBroadcastViewController: UIViewController {
 //        commentTableView.backgroundColor = .green
         commentTextField.backgroundColor = .blue
         
-        commentTableView.register(LiveStreamBroadcastOverlayCommentTableViewCell.nib, forCellReuseIdentifier: LiveStreamBroadcastOverlayCommentTableViewCell.identifier)
+        guard let nibName = NSStringFromClass(LiveStreamBroadcastOverlayTableViewCell.self).components(separatedBy: ".").last else {
+            fatalError("Class name not found")
+        }
+        let bundle = Bundle(for: LiveStreamBroadcastOverlayTableViewCell.self)
+        let uiNib = UINib(nibName: nibName, bundle: bundle)
+        commentTableView.register(uiNib, forCellReuseIdentifier: LiveStreamBroadcastOverlayTableViewCell.identifier)
         commentTableView.delegate = self
         commentTableView.dataSource = self
+        commentTableView.separatorStyle = .none
+        commentTableView.backgroundColor = .clear
     }
     
     private func trySetupBroadcaster() {
@@ -616,7 +623,7 @@ extension LiveStreamBroadcastViewController: UITableViewDataSource {
     
     public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         if tableView == commentTableView {
-            guard let cell = tableView.dequeueReusableCell(withIdentifier: LiveStreamBroadcastOverlayCommentTableViewCell.identifier) as? LiveStreamBroadcastOverlayCommentTableViewCell else { return UITableViewCell() }
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: LiveStreamBroadcastOverlayTableViewCell.identifier) as? LiveStreamBroadcastOverlayTableViewCell else { return UITableViewCell() }
             cell.display(comment: storedComment[indexPath.row])
             return cell
         }
@@ -633,9 +640,16 @@ extension LiveStreamBroadcastViewController: UITableViewDataSource {
 extension LiveStreamBroadcastViewController: UITableViewDelegate {
     public func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         if tableView == commentTableView {
-            return LiveStreamBroadcastOverlayCommentTableViewCell.height
+            if indexPath.row < storedComment.count {
+                let currentComment = storedComment[indexPath.row]
+                return LiveStreamBroadcastOverlayTableViewCell.height(for: currentComment, boundingWidth: commentTableView.bounds.width-40)
+            }
         }
         return AmityMentionTableViewCell.height
+    }
+    
+    public func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
+        return UITableView.automaticDimension
     }
     
     public func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
@@ -690,6 +704,10 @@ extension LiveStreamBroadcastViewController {
             }
             DispatchQueue.main.async {
                 self.commentTableView.reloadData()
+                if !self.storedComment.isEmpty {
+                    let lastIndex = IndexPath(row: self.storedComment.count-1, section: 0)
+                    self.commentTableView.scrollToRow(at: lastIndex, at: .bottom, animated: true)
+                }
             }
         }
     }

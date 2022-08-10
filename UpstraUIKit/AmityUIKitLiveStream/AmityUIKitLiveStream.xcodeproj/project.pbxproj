@@ -8,8 +8,9 @@
 
 /* Begin PBXBuildFile section */
 		7F1D596027EAD93B005A3A1C /* AmityVideoPlayerKit.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7F1D595F27EAD93B005A3A1C /* AmityVideoPlayerKit.xcframework */; };
-		7F49ACA328A23F8700488718 /* LiveStreamBroadcastOverlayCommentTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F49ACA128A23F8700488718 /* LiveStreamBroadcastOverlayCommentTableViewCell.swift */; };
-		7F49ACA428A23F8700488718 /* LiveStreamBroadcastOverlayCommentTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7F49ACA228A23F8700488718 /* LiveStreamBroadcastOverlayCommentTableViewCell.xib */; };
+		7F6EFF2528A3568800A6C150 /* LiveStreamBroadcastOverlayTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F6EFF2328A3568800A6C150 /* LiveStreamBroadcastOverlayTableViewCell.swift */; };
+		7F6EFF2628A3568800A6C150 /* LiveStreamBroadcastOverlayTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7F6EFF2428A3568800A6C150 /* LiveStreamBroadcastOverlayTableViewCell.xib */; };
+		7F9731C728A364C7009908EA /* Nib+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F9731C628A364C7009908EA /* Nib+Extension.swift */; };
 		A0B68B3026E07278007D7B5B /* LiveStreamViewController+GoLive.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0B68B2F26E07278007D7B5B /* LiveStreamViewController+GoLive.swift */; };
 		A0B68B3626E07824007D7B5B /* AsyncOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0B68B3526E07824007D7B5B /* AsyncOperation.swift */; };
 		A0B68B3F26E07912007D7B5B /* CreatePost.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0B68B3E26E07912007D7B5B /* CreatePost.swift */; };
@@ -43,8 +44,9 @@
 /* Begin PBXFileReference section */
 		612DF8E227E9A43B00D5A073 /* AmityVideoPlayerKit.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = AmityVideoPlayerKit.xcframework; path = "/Users/aungmoehein/Documents/IOS/Amity-Social-Cloud-UIKit-iOS-OpenSource-TrueID/UpstraUIKit/SampleApp/../Shared/AmityVideoPlayerKit.xcframework"; sourceTree = "<absolute>"; };
 		7F1D595F27EAD93B005A3A1C /* AmityVideoPlayerKit.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = AmityVideoPlayerKit.xcframework; path = ../Shared/AmityVideoPlayerKit.xcframework; sourceTree = "<group>"; };
-		7F49ACA128A23F8700488718 /* LiveStreamBroadcastOverlayCommentTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LiveStreamBroadcastOverlayCommentTableViewCell.swift; sourceTree = "<group>"; };
-		7F49ACA228A23F8700488718 /* LiveStreamBroadcastOverlayCommentTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = LiveStreamBroadcastOverlayCommentTableViewCell.xib; sourceTree = "<group>"; };
+		7F6EFF2328A3568800A6C150 /* LiveStreamBroadcastOverlayTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LiveStreamBroadcastOverlayTableViewCell.swift; sourceTree = "<group>"; };
+		7F6EFF2428A3568800A6C150 /* LiveStreamBroadcastOverlayTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = LiveStreamBroadcastOverlayTableViewCell.xib; sourceTree = "<group>"; };
+		7F9731C628A364C7009908EA /* Nib+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Nib+Extension.swift"; sourceTree = "<group>"; };
 		A0B68B2F26E07278007D7B5B /* LiveStreamViewController+GoLive.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "LiveStreamViewController+GoLive.swift"; sourceTree = "<group>"; };
 		A0B68B3526E07824007D7B5B /* AsyncOperation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AsyncOperation.swift; sourceTree = "<group>"; };
 		A0B68B3E26E07912007D7B5B /* CreatePost.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreatePost.swift; sourceTree = "<group>"; };
@@ -97,8 +99,8 @@
 		7F4C1CD3289A294E00FB69BF /* Custom Cell */ = {
 			isa = PBXGroup;
 			children = (
-				7F49ACA128A23F8700488718 /* LiveStreamBroadcastOverlayCommentTableViewCell.swift */,
-				7F49ACA228A23F8700488718 /* LiveStreamBroadcastOverlayCommentTableViewCell.xib */,
+				7F6EFF2328A3568800A6C150 /* LiveStreamBroadcastOverlayTableViewCell.swift */,
+				7F6EFF2428A3568800A6C150 /* LiveStreamBroadcastOverlayTableViewCell.xib */,
 			);
 			name = "Custom Cell";
 			sourceTree = "<group>";
@@ -259,6 +261,7 @@
 			isa = PBXGroup;
 			children = (
 				FCCD2CB827D23EC5000088DC /* UIView+Extension.swift */,
+				7F9731C628A364C7009908EA /* Nib+Extension.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -336,9 +339,9 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7F6EFF2628A3568800A6C150 /* LiveStreamBroadcastOverlayTableViewCell.xib in Resources */,
 				A0BD0B4D26DDEFB40054088B /* Assets.xcassets in Resources */,
 				A0BD0B3026DCE5800054088B /* LiveStreamBroadcastViewController.xib in Resources */,
-				7F49ACA428A23F8700488718 /* LiveStreamBroadcastOverlayCommentTableViewCell.xib in Resources */,
 				A0B68B6526E73522007D7B5B /* LiveStreamPlayerViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -352,6 +355,7 @@
 			files = (
 				A0B68B5626E0C9AC007D7B5B /* LiveStreamBroadcastVC+TargetDetail.swift in Sources */,
 				A0BD0B2F26DCE5800054088B /* LiveStreamBroadcastViewController.swift in Sources */,
+				7F6EFF2528A3568800A6C150 /* LiveStreamBroadcastOverlayTableViewCell.swift in Sources */,
 				A0B68B4326E07928007D7B5B /* CreateStream.swift in Sources */,
 				A0BD0B6226DF3A3F0054088B /* LiveStreamBroadcast+UIContainerState.swift in Sources */,
 				A0BD0B5E26DF37160054088B /* LiveStreamBroadcastVC+Keyboard.swift in Sources */,
@@ -366,7 +370,7 @@
 				FCCD2CB927D23EC5000088DC /* UIView+Extension.swift in Sources */,
 				A0B68B6426E73522007D7B5B /* LiveStreamPlayerViewController.swift in Sources */,
 				A0B68B3626E07824007D7B5B /* AsyncOperation.swift in Sources */,
-				7F49ACA328A23F8700488718 /* LiveStreamBroadcastOverlayCommentTableViewCell.swift in Sources */,
+				7F9731C728A364C7009908EA /* Nib+Extension.swift in Sources */,
 				B43EF4BD282912460081CB8C /* CustomAPIRequest.swift in Sources */,
 				A0B68B4A26E0952E007D7B5B /* LiveStreamBroadcastViewController+FinishLive.swift in Sources */,
 				A0B68B5426E0BF5D007D7B5B /* LiveStreamViewController+Streaming.swift in Sources */,
