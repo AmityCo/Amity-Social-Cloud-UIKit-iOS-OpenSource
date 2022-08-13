@@ -116,7 +116,8 @@ extension LiveStreamBroadcastViewController {
             // The stream object post, is in the post.children[0].
             guard let firstChildPost = post.childrenPosts?.first,
                   let streamObject = firstChildPost.getLiveStreamInfo() else {
-                assertionFailure("post.getLiveStreamInfo must exist at this point.")
+
+                      assertionFailure("post.getLiveStreamInfo must exist at this point.")
 //                presentErrorDialogue(title: AmityLocalizedStringSet.ErrorHandling.errorTitle.localizedString, message: AmityLocalizedStringSet.LiveStream.Live.findPostLiveStreamData.localizedString)
                 return
             }

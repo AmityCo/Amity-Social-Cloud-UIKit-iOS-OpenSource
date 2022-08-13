@@ -8,34 +8,34 @@
 
 import UIKit
 
-struct AmityColorSet {
+public struct AmityColorSet {
     
-    static var primary: UIColor {
+    public static var primary: UIColor {
         return AmityThemeManager.currentTheme.primary
     }
-    static var secondary: UIColor {
+    public static var secondary: UIColor {
         return AmityThemeManager.currentTheme.secondary
     }
-    static var alert: UIColor {
+    public static var alert: UIColor {
         return AmityThemeManager.currentTheme.alert
     }
-    static var highlight: UIColor {
+    public static var highlight: UIColor {
         return AmityThemeManager.currentTheme.highlight
     }
-    static var base: UIColor {
+    public static var base: UIColor {
         return AmityThemeManager.currentTheme.base
     }
-    static var baseInverse: UIColor {
+    public static var baseInverse: UIColor {
         return AmityThemeManager.currentTheme.baseInverse
     }
-    static var messageBubble: UIColor {
+    public static var messageBubble: UIColor {
         return AmityThemeManager.currentTheme.messageBubble
     }
-    static var messageBubbleInverse: UIColor {
+    public static var messageBubbleInverse: UIColor {
         return AmityThemeManager.currentTheme.messageBubbleInverse
     }
     
-    static var backgroundColor: UIColor {
+    public static var backgroundColor: UIColor {
         return UIColor.white
     }
     

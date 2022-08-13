@@ -69,7 +69,9 @@ final public class LiveStreamBroadcastViewController: UIViewController {
     /// Live streaming token for get like count and live comment
     var liveObjectQueryToken: AmityNotificationToken?
     var liveCommentQueryToken: AmityNotificationToken?
+    var liveCommentToken: AmityNotificationToken?
     var liveStreamCommentArray:String?
+    
     
     /// Show and Hide comment button state
     var isShowCommentTable: Bool = true
@@ -109,9 +111,11 @@ final public class LiveStreamBroadcastViewController: UIViewController {
     @IBOutlet weak var streamingViewerCountLabel: UILabel!
     @IBOutlet weak var likeCountLabel: UILabel!
     @IBOutlet private weak var commentTableView: UITableView!
-    @IBOutlet private weak var commentTextField: UIView!
+    @IBOutlet private weak var commentTextView: AmityTextView!
+    @IBOutlet private weak var postCommentButton: UIButton!
     @IBOutlet private weak var hideCommentButton: UIButton!
     @IBOutlet private weak var showCommentButton: UIButton!
+    @IBOutlet private weak var streamingViewBottomConstraint: NSLayoutConstraint!
 
     // MARK: - UI Container End Components
     @IBOutlet weak var uiContainerEnd: UIView!
@@ -199,6 +203,7 @@ final public class LiveStreamBroadcastViewController: UIViewController {
         mentionManager.setFont(AmityFontSet.body, highlightFont: AmityFontSet.bodyBold)
         mentionManager.setColor(.white, highlightColor: .white)
         getLiveStreamViwerCount()
+        setupKeyboardListener()
     }
     
     public override func viewDidAppear(_ animated: Bool) {
@@ -312,7 +317,7 @@ final public class LiveStreamBroadcastViewController: UIViewController {
         descriptionTextView.font = AmityFontSet.body
         descriptionTextView.placeholder = AmityLocalizedStringSet.LiveStream.Create.description.localizedString
         descriptionTextView.textColor = .white
-        descriptionTextView.returnKeyType = .done
+        descriptionTextView.returnKeyType = .default
         descriptionTextView.customTextViewDelegate = self
         descriptionTextView.typingAttributes = [.font: AmityFontSet.body, .foregroundColor: UIColor.white]
         
@@ -369,7 +374,7 @@ final public class LiveStreamBroadcastViewController: UIViewController {
     
     func setupTableView(){
 //        commentTableView.backgroundColor = .green
-        commentTextField.backgroundColor = .blue
+//        commentTextView.backgroundColor = .blue
         
         guard let nibName = NSStringFromClass(LiveStreamBroadcastOverlayTableViewCell.self).components(separatedBy: ".").last else {
             fatalError("Class name not found")
@@ -381,6 +386,24 @@ final public class LiveStreamBroadcastViewController: UIViewController {
         commentTableView.dataSource = self
         commentTableView.separatorStyle = .none
         commentTableView.backgroundColor = .clear
+        
+        let textViewToolbar: UIToolbar = UIToolbar()
+        textViewToolbar.barStyle = .default
+        textViewToolbar.items = [
+            UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: self, action: nil),
+            UIBarButtonItem(title: AmityLocalizedStringSet.General.done.localizedString, style: .done, target: self, action: #selector(cancelInput))
+        ]
+        textViewToolbar.sizeToFit()
+        commentTextView.inputAccessoryView = textViewToolbar
+        commentTextView.backgroundColor = AmityColorSet.backgroundColor
+        commentTextView.layer.borderWidth = 1
+        commentTextView.layer.borderColor = AmityColorSet.secondary.blend(.shade4).cgColor
+        commentTextView.layer.cornerRadius = 4
+        commentTextView.font = AmityFontSet.body.withSize(15)
+        commentTextView.customTextViewDelegate = self
+        
+        postCommentButton.titleLabel?.font = AmityFontSet.body.withSize(15)
+        postCommentButton.addTarget(self, action: #selector(self.sendComment), for: .touchUpInside)
     }
     
     private func trySetupBroadcaster() {
@@ -468,6 +491,20 @@ final public class LiveStreamBroadcastViewController: UIViewController {
         let cancelAction = UIAlertAction(title: "Done", style: .cancel, handler: nil)
         alertController.addAction(cancelAction)
         present(alertController, animated: true, completion: nil)
+    }
+    
+    func setupKeyboardListener() {
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: UIResponder.keyboardWillShowNotification, object: nil)
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: UIResponder.keyboardWillHideNotification, object: nil)
+        
+//        //Looks for single or multiple taps.
+//         let tap = UITapGestureRecognizer(target: self, action: #selector(UIInputViewController.dismissKeyboard))
+//
+//        //Uncomment the line below if you want the tap not not interfere and cancel other interactions.
+//        tap.cancelsTouchesInView = false
+//
+//        view.addGestureRecognizer(tap)
     }
     
     // MARK: - IBActions
@@ -710,6 +747,43 @@ extension LiveStreamBroadcastViewController {
                 }
             }
         }
+    }
+    
+    @objc func sendComment() {
+        guard let currentPost = createdPost else { return }
+        guard let currentText = commentTextView.text else { return }
+        self.commentTextView.text = ""
+        liveCommentToken = commentRepository.createComment(forReferenceId: currentPost.postId, referenceType: .post, parentId: currentPost.parentPostId, text: currentText).observeOnce { liveObject, error in
+            if error != nil {
+                print("[LiveStream]Comment error: \(error?.localizedDescription)")
+            }
+            self.view.endEditing(true)
+        }
+    }
+}
+
+//Move view when keyboard show and hide
+extension LiveStreamBroadcastViewController {
+    @objc func keyboardWillShow(notification: NSNotification) {
+        if let keyboardSize = (notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue {
+            if streamingViewBottomConstraint.constant == 20.0 {
+                streamingViewBottomConstraint.constant += keyboardSize.height
+            }
+        }
+    }
+
+    @objc func keyboardWillHide(notification: NSNotification) {
+//        if self.view.frame.origin.y != 0 {
+//            self.view.frame.origin.y = 0
+//        }
+        if streamingViewBottomConstraint.constant != 20.0 {
+            streamingViewBottomConstraint.constant = 20.0
+        }
+    }
+    
+    @objc func dismissKeyboard() {
+        //Causes the view (or one of its embedded text fields) to resign the first responder status.
+        view.endEditing(true)
     }
 }
 

@@ -11,6 +11,7 @@
 		7F6EFF2528A3568800A6C150 /* LiveStreamBroadcastOverlayTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F6EFF2328A3568800A6C150 /* LiveStreamBroadcastOverlayTableViewCell.swift */; };
 		7F6EFF2628A3568800A6C150 /* LiveStreamBroadcastOverlayTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7F6EFF2428A3568800A6C150 /* LiveStreamBroadcastOverlayTableViewCell.xib */; };
 		7F9731C728A364C7009908EA /* Nib+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F9731C628A364C7009908EA /* Nib+Extension.swift */; };
+		7F9731C928A79088009908EA /* AmityTextComposeBar+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F9731C828A79088009908EA /* AmityTextComposeBar+Extension.swift */; };
 		A0B68B3026E07278007D7B5B /* LiveStreamViewController+GoLive.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0B68B2F26E07278007D7B5B /* LiveStreamViewController+GoLive.swift */; };
 		A0B68B3626E07824007D7B5B /* AsyncOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0B68B3526E07824007D7B5B /* AsyncOperation.swift */; };
 		A0B68B3F26E07912007D7B5B /* CreatePost.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0B68B3E26E07912007D7B5B /* CreatePost.swift */; };
@@ -47,6 +48,7 @@
 		7F6EFF2328A3568800A6C150 /* LiveStreamBroadcastOverlayTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LiveStreamBroadcastOverlayTableViewCell.swift; sourceTree = "<group>"; };
 		7F6EFF2428A3568800A6C150 /* LiveStreamBroadcastOverlayTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = LiveStreamBroadcastOverlayTableViewCell.xib; sourceTree = "<group>"; };
 		7F9731C628A364C7009908EA /* Nib+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Nib+Extension.swift"; sourceTree = "<group>"; };
+		7F9731C828A79088009908EA /* AmityTextComposeBar+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AmityTextComposeBar+Extension.swift"; sourceTree = "<group>"; };
 		A0B68B2F26E07278007D7B5B /* LiveStreamViewController+GoLive.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "LiveStreamViewController+GoLive.swift"; sourceTree = "<group>"; };
 		A0B68B3526E07824007D7B5B /* AsyncOperation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AsyncOperation.swift; sourceTree = "<group>"; };
 		A0B68B3E26E07912007D7B5B /* CreatePost.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreatePost.swift; sourceTree = "<group>"; };
@@ -262,6 +264,7 @@
 			children = (
 				FCCD2CB827D23EC5000088DC /* UIView+Extension.swift */,
 				7F9731C628A364C7009908EA /* Nib+Extension.swift */,
+				7F9731C828A79088009908EA /* AmityTextComposeBar+Extension.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -364,6 +367,7 @@
 				A0B68B3F26E07912007D7B5B /* CreatePost.swift in Sources */,
 				A0BD0B5C26DF35C80054088B /* LiveStreamBroadcastVC+Permission.swift in Sources */,
 				A0B68B3026E07278007D7B5B /* LiveStreamViewController+GoLive.swift in Sources */,
+				7F9731C928A79088009908EA /* AmityTextComposeBar+Extension.swift in Sources */,
 				A0BD0B5A26DE26940054088B /* GeneralError.swift in Sources */,
 				A0BD0B6026DF377A0054088B /* LiveStreamBroadcastVC+CoverImagePicker.swift in Sources */,
 				A0B68B4126E0791D007D7B5B /* UploadCoverImage.swift in Sources */,
