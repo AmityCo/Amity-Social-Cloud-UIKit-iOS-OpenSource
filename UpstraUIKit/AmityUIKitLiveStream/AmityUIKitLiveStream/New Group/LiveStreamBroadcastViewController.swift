@@ -112,6 +112,7 @@ final public class LiveStreamBroadcastViewController: UIViewController {
     @IBOutlet weak var likeCountLabel: UILabel!
     @IBOutlet private weak var commentTableView: UITableView!
     @IBOutlet private weak var commentTextView: AmityTextView!
+    @IBOutlet private weak var commentTextViewHeight: NSLayoutConstraint!
     @IBOutlet private weak var postCommentButton: UIButton!
     @IBOutlet private weak var hideCommentButton: UIButton!
     @IBOutlet private weak var showCommentButton: UIButton!
@@ -373,8 +374,6 @@ final public class LiveStreamBroadcastViewController: UIViewController {
     }
     
     func setupTableView(){
-//        commentTableView.backgroundColor = .green
-//        commentTextView.backgroundColor = .blue
         
         guard let nibName = NSStringFromClass(LiveStreamBroadcastOverlayTableViewCell.self).components(separatedBy: ".").last else {
             fatalError("Class name not found")
@@ -401,6 +400,7 @@ final public class LiveStreamBroadcastViewController: UIViewController {
         commentTextView.layer.cornerRadius = 4
         commentTextView.font = AmityFontSet.body.withSize(15)
         commentTextView.customTextViewDelegate = self
+        commentTextView.textContainer.lineBreakMode = .byTruncatingTail
         
         postCommentButton.titleLabel?.font = AmityFontSet.body.withSize(15)
         postCommentButton.addTarget(self, action: #selector(self.sendComment), for: .touchUpInside)
@@ -584,6 +584,12 @@ extension LiveStreamBroadcastViewController: AmityTextViewDelegate {
             return false
         }
         return mentionManager.shouldChangeTextIn(textView, inRange: range, replacementText: text, currentText: textView.text ?? "")
+    }
+    
+    public func textViewDidChange(_ textView: AmityTextView) {
+        if textView == commentTextView {
+            commentTextViewHeight.constant = textView.contentSize.height
+        }
     }
 }
 

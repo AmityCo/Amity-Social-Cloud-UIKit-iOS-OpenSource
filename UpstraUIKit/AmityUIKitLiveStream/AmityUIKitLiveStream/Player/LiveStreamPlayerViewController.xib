@@ -12,21 +12,28 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="LiveStreamPlayerViewController" customModule="AmityUIKitLiveStream" customModuleProvider="target">
             <connections>
+                <outlet property="commentTableView" destination="NcS-Ka-yRI" id="TUC-Xh-hna"/>
+                <outlet property="commentTextView" destination="BEG-uX-kot" id="Gel-it-ExU"/>
+                <outlet property="commentTextViewHeight" destination="DfP-if-4qZ" id="ilQ-So-eyR"/>
                 <outlet property="controlContainer" destination="aMJ-3v-4eD" id="4Lz-vE-u6M"/>
                 <outlet property="dislikeButton" destination="3YZ-Az-dkB" id="iFt-dd-EqX"/>
+                <outlet property="hideCommentButton" destination="aNk-S4-LvX" id="SY0-TE-rpk"/>
                 <outlet property="likeButton" destination="Trc-GE-dDu" id="008-ma-6ch"/>
                 <outlet property="likeCountLabel" destination="OpI-Sn-EgU" id="oJy-Os-s5I"/>
                 <outlet property="loadingActivityIndicator" destination="oZo-fU-T19" id="ot4-Sy-bxW"/>
                 <outlet property="loadingOverlay" destination="S6e-xR-XMI" id="qPS-9T-GhM"/>
                 <outlet property="playButton" destination="eMx-8g-uCW" id="2g8-DX-d5r"/>
+                <outlet property="postCommentButton" destination="qRc-OM-avP" id="ebu-Qd-IXS"/>
                 <outlet property="renderGestureView" destination="rcm-LB-Fz3" id="lyU-5J-mIK"/>
                 <outlet property="renderView" destination="rha-6m-7Zi" id="B6f-hO-N5R"/>
+                <outlet property="showCommentButton" destination="ycJ-61-eqc" id="m6u-BU-HBb"/>
                 <outlet property="statusContainer" destination="rQa-vC-jCd" id="IiX-QR-aXy"/>
                 <outlet property="statusLabel" destination="BfH-Mk-SEa" id="p9J-cW-omp"/>
                 <outlet property="stopButton" destination="GsN-Z4-b5d" id="7Ki-Ke-suw"/>
                 <outlet property="streamEndContainer" destination="dWE-Vp-cX4" id="IrN-Eu-EPa"/>
                 <outlet property="streamEndDescriptionLabel" destination="afI-fc-1JZ" id="yYm-hM-lWm"/>
                 <outlet property="streamEndTitleLabel" destination="wYP-in-Z1B" id="M6g-NG-D79"/>
+                <outlet property="streamingViewBottomConstraint" destination="UTV-Sl-1ei" id="CzA-Uq-mhN"/>
                 <outlet property="streamingViewerContainer" destination="sGh-zA-lpL" id="Gbj-IK-vCH"/>
                 <outlet property="streamingViewerCountLabel" destination="SHf-Se-zPQ" id="S6j-da-dyR"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
@@ -261,19 +268,80 @@ to watch shortly.</string>
                             <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <nil key="highlightedColor"/>
                         </label>
+                        <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="NcS-Ka-yRI" userLabel="Comment TableView">
+                            <rect key="frame" x="15" y="-188" width="326" height="200"/>
+                            <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="200" id="Vss-cx-0zn"/>
+                            </constraints>
+                        </tableView>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="aNk-S4-LvX" userLabel="Hide Button">
+                            <rect key="frame" x="351" y="-36" width="48" height="48"/>
+                            <constraints>
+                                <constraint firstAttribute="width" constant="48" id="Ot5-57-JiM"/>
+                                <constraint firstAttribute="height" constant="48" id="Tfz-MV-tg1"/>
+                            </constraints>
+                            <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                            <state key="normal" image="livestream_hide_comment"/>
+                            <connections>
+                                <action selector="hideCommentTable" destination="-1" eventType="touchUpInside" id="xuN-V7-jya"/>
+                            </connections>
+                        </button>
+                        <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ycJ-61-eqc" userLabel="Show Button">
+                            <rect key="frame" x="351" y="-36" width="48" height="48"/>
+                            <constraints>
+                                <constraint firstAttribute="width" constant="48" id="BN8-bB-J4k"/>
+                                <constraint firstAttribute="height" constant="48" id="QrF-3N-beh"/>
+                            </constraints>
+                            <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                            <state key="normal" image="livestream_show_comment"/>
+                            <connections>
+                                <action selector="showCommentTable" destination="-1" eventType="touchUpInside" id="YFE-TK-Ulc"/>
+                            </connections>
+                        </button>
+                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="BEG-uX-kot" userLabel="Comment TextView" customClass="AmityTextView" customModule="AmityUIKit">
+                            <rect key="frame" x="163" y="57" width="171" height="30"/>
+                            <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="30" id="DfP-if-4qZ"/>
+                            </constraints>
+                        </view>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="qRc-OM-avP" userLabel="Post Button">
+                            <rect key="frame" x="339" y="57" width="60" height="30"/>
+                            <constraints>
+                                <constraint firstAttribute="width" constant="60" id="Olb-C7-x4i"/>
+                                <constraint firstAttribute="height" constant="30" id="bNy-7b-K64"/>
+                            </constraints>
+                            <state key="normal" title="Button"/>
+                            <buttonConfiguration key="configuration" style="plain" title="Post"/>
+                        </button>
                     </subviews>
                     <constraints>
+                        <constraint firstItem="ycJ-61-eqc" firstAttribute="width" secondItem="aNk-S4-LvX" secondAttribute="width" id="0Qv-w3-cYF"/>
+                        <constraint firstItem="qRc-OM-avP" firstAttribute="leading" secondItem="BEG-uX-kot" secondAttribute="trailing" constant="5" id="2mC-dY-lZ0"/>
+                        <constraint firstItem="guv-EO-DGA" firstAttribute="top" secondItem="NcS-Ka-yRI" secondAttribute="bottom" constant="15" id="5mE-Jg-FZa"/>
                         <constraint firstItem="Trc-GE-dDu" firstAttribute="leading" secondItem="D6n-y9-Evb" secondAttribute="trailing" constant="8" symbolic="YES" id="6gL-UU-stR"/>
+                        <constraint firstItem="ycJ-61-eqc" firstAttribute="height" secondItem="aNk-S4-LvX" secondAttribute="height" id="74W-oN-xFI"/>
+                        <constraint firstItem="NcS-Ka-yRI" firstAttribute="leading" secondItem="vhx-J6-EZs" secondAttribute="leading" constant="15" id="8SJ-O0-zr9"/>
+                        <constraint firstItem="ycJ-61-eqc" firstAttribute="centerX" secondItem="aNk-S4-LvX" secondAttribute="centerX" id="DOV-0s-JqY"/>
+                        <constraint firstItem="aNk-S4-LvX" firstAttribute="leading" secondItem="NcS-Ka-yRI" secondAttribute="trailing" constant="10" id="EqQ-sa-dfE"/>
                         <constraint firstItem="OpI-Sn-EgU" firstAttribute="top" secondItem="Trc-GE-dDu" secondAttribute="bottom" constant="4" id="IJQ-jr-gCq"/>
+                        <constraint firstAttribute="trailing" secondItem="qRc-OM-avP" secondAttribute="trailing" constant="15" id="JPE-y8-K3L"/>
+                        <constraint firstItem="BEG-uX-kot" firstAttribute="bottom" secondItem="3YZ-Az-dkB" secondAttribute="bottom" id="Mi2-4a-cld"/>
                         <constraint firstAttribute="height" constant="128" id="NaD-wR-qzG"/>
                         <constraint firstItem="D6n-y9-Evb" firstAttribute="centerY" secondItem="guv-EO-DGA" secondAttribute="centerY" id="Qfh-a8-Cr1"/>
+                        <constraint firstItem="aNk-S4-LvX" firstAttribute="bottom" secondItem="NcS-Ka-yRI" secondAttribute="bottom" id="Rj2-wg-SAS"/>
                         <constraint firstAttribute="bottom" secondItem="OpI-Sn-EgU" secondAttribute="bottom" constant="20" id="UTV-Sl-1ei"/>
+                        <constraint firstItem="BEG-uX-kot" firstAttribute="leading" secondItem="Trc-GE-dDu" secondAttribute="trailing" constant="10" id="Ufz-3l-Dgc"/>
                         <constraint firstItem="3YZ-Az-dkB" firstAttribute="centerX" secondItem="Trc-GE-dDu" secondAttribute="centerX" id="VuQ-q6-WMe"/>
                         <constraint firstItem="OpI-Sn-EgU" firstAttribute="centerX" secondItem="Trc-GE-dDu" secondAttribute="centerX" id="W27-Og-WXp"/>
                         <constraint firstItem="3YZ-Az-dkB" firstAttribute="centerY" secondItem="Trc-GE-dDu" secondAttribute="centerY" id="doK-3M-ddv"/>
+                        <constraint firstAttribute="trailing" secondItem="aNk-S4-LvX" secondAttribute="trailing" constant="15" id="kc3-T0-sOv"/>
                         <constraint firstItem="D6n-y9-Evb" firstAttribute="leading" secondItem="guv-EO-DGA" secondAttribute="trailing" constant="8" symbolic="YES" id="mZt-5H-xac"/>
                         <constraint firstItem="Trc-GE-dDu" firstAttribute="centerY" secondItem="guv-EO-DGA" secondAttribute="centerY" id="nXH-a6-vQO"/>
+                        <constraint firstItem="qRc-OM-avP" firstAttribute="bottom" secondItem="BEG-uX-kot" secondAttribute="bottom" id="o4o-nX-klg"/>
                         <constraint firstItem="guv-EO-DGA" firstAttribute="leading" secondItem="vhx-J6-EZs" secondAttribute="leading" constant="16" id="riD-04-Vdv"/>
+                        <constraint firstItem="ycJ-61-eqc" firstAttribute="centerY" secondItem="aNk-S4-LvX" secondAttribute="centerY" id="vhW-Rx-2aH"/>
                     </constraints>
                 </view>
             </subviews>
@@ -309,12 +377,17 @@ to watch shortly.</string>
         <image name="close" width="32" height="32"/>
         <image name="like_button" width="45" height="44"/>
         <image name="like_fill_button" width="43" height="42"/>
+        <image name="livestream_hide_comment" width="38" height="38"/>
+        <image name="livestream_show_comment" width="38" height="38"/>
         <image name="pause_button" width="64" height="64"/>
         <image name="play_button" width="64" height="64"/>
         <image name="shared" width="38" height="38"/>
         <image name="view_eye" width="12" height="12"/>
         <systemColor name="secondarySystemBackgroundColor">
             <color red="0.94901960784313721" green="0.94901960784313721" blue="0.96862745098039216" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </systemColor>
+        <systemColor name="systemBackgroundColor">
+            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>
         <systemColor name="systemRedColor">
             <color red="1" green="0.23137254901960785" blue="0.18823529411764706" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
