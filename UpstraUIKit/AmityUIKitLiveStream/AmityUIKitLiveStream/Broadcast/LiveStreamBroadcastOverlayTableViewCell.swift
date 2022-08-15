@@ -23,6 +23,10 @@ class LiveStreamBroadcastOverlayTableViewCell: UITableViewCell,Nibbable {
 
     func display(comment: AmityCommentModel){
         
+        self.backgroundColor = .clear
+        
+        avatarView.backgroundColor = .clear
+        
         if !comment.avatarCustomURL.isEmpty {
             avatarView.setImage(withCustomURL: comment.avatarCustomURL)
         } else {

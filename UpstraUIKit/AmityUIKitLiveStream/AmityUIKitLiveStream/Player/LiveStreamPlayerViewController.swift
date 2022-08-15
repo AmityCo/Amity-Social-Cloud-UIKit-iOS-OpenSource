@@ -54,6 +54,7 @@ public class LiveStreamPlayerViewController: UIViewController {
     
     /// The view above renderView to intercept tap gestuere for show/hide control container.
     @IBOutlet private weak var renderGestureView: UIView!
+    @IBOutlet private weak var renderGestureViewBottomConstraint: NSLayoutConstraint!
     
     @IBOutlet private weak var loadingOverlay: UIView!
     @IBOutlet private weak var loadingActivityIndicator: UIActivityIndicatorView!
@@ -62,6 +63,7 @@ public class LiveStreamPlayerViewController: UIViewController {
     @IBOutlet private weak var controlContainer: UIView!
     @IBOutlet private weak var playButton: UIButton!
     @IBOutlet private weak var stopButton: UIButton!
+    @IBOutlet private weak var controlViewBottomConstraint: NSLayoutConstraint!
     
     // MARK: - Stream End Container
     @IBOutlet private weak var streamEndContainer: UIView!
@@ -166,7 +168,7 @@ public class LiveStreamPlayerViewController: UIViewController {
         renderView.addSubview(videoView)
         // Tell the player to render the video in this view.
         player.renderView = videoView
-        player.delegate = self        
+        player.delegate = self
     }
     
     private func setupView() {
@@ -194,6 +196,8 @@ public class LiveStreamPlayerViewController: UIViewController {
         
         // Show control at start by default
         controlContainer.isHidden = false
+        
+        controlContainer.alpha = 0
         
         loadingActivityIndicator.stopAnimating()
         
@@ -551,15 +555,19 @@ extension LiveStreamPlayerViewController: AmityVideoPlayerDelegate {
 extension LiveStreamPlayerViewController {
     @objc func keyboardWillShow(notification: NSNotification) {
         if let keyboardSize = (notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue {
-            if streamingViewBottomConstraint.constant == 20.0 {
+            if streamingViewBottomConstraint.constant == 0.0 {
                 streamingViewBottomConstraint.constant += keyboardSize.height
+                controlViewBottomConstraint.constant += 1000
+                renderGestureViewBottomConstraint.constant += 1000
             }
         }
     }
 
     @objc func keyboardWillHide(notification: NSNotification) {
-        if streamingViewBottomConstraint.constant != 20.0 {
-            streamingViewBottomConstraint.constant = 20.0
+        if streamingViewBottomConstraint.constant != 0.0 {
+            streamingViewBottomConstraint.constant = 0.0
+            controlViewBottomConstraint.constant = 34.0
+            renderGestureViewBottomConstraint.constant = 0.0
         }
     }
     
@@ -570,6 +578,10 @@ extension LiveStreamPlayerViewController {
 }
 
 extension LiveStreamPlayerViewController: AmityTextViewDelegate {
+    
+    public func textView(_ textView: AmityTextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
+        return true
+    }
     
     public func textViewDidChange(_ textView: AmityTextView) {
         if textView == commentTextView {
@@ -658,7 +670,6 @@ extension LiveStreamPlayerViewController {
             if error != nil {
                 print("[LiveStream]Comment error: \(error?.localizedDescription)")
             }
-            self.view.endEditing(true)
         }
     }
 }
