@@ -8,7 +8,7 @@
 
 import UIKit
 
-enum ColorBlendingOption: CGFloat, CaseIterable {
+public enum ColorBlendingOption: CGFloat, CaseIterable {
     case shade1 = 25
     case shade2 = 40
     case shade3 = 50
@@ -17,7 +17,7 @@ enum ColorBlendingOption: CGFloat, CaseIterable {
 
 extension UIColor {
     
-    func blend(_ option: ColorBlendingOption) -> UIColor {
+    public func blend(_ option: ColorBlendingOption) -> UIColor {
         
         let luminant = option.rawValue
         let key = AmityColorCache.shared.key(for: self, lum: luminant)

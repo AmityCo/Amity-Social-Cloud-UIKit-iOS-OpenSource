@@ -20,11 +20,16 @@ public class LiveStreamPlayerViewController: UIViewController {
     private var stream: AmityStream?
     private var getStreamToken: AmityNotificationToken?
     private var getReactionToken: AmityNotificationToken?
+    private var liveCommentQueryToken: AmityNotificationToken?
+    private var liveObjectQueryToken: AmityNotificationToken?
+    private var liveCommentToken: AmityNotificationToken?
     
     private var postRepository: AmityPostRepository?
     private var reactionRepository: AmityReactionRepository?
+    private var commentRepository: AmityCommentRepository?
     
     private var amityPost: AmityPost?
+    private var liveStreamCommentArray:String?
         
     @IBOutlet private weak var renderView: UIView!
     
@@ -38,8 +43,18 @@ public class LiveStreamPlayerViewController: UIViewController {
     @IBOutlet weak var likeButton: UIButton!
     @IBOutlet weak var likeCountLabel: UILabel!
     
+    //Live Comment
+    @IBOutlet private weak var commentTableView: UITableView!
+    @IBOutlet private weak var commentTextView: AmityTextView!
+    @IBOutlet private weak var commentTextViewHeight: NSLayoutConstraint!
+    @IBOutlet private weak var postCommentButton: UIButton!
+    @IBOutlet private weak var hideCommentButton: UIButton!
+    @IBOutlet private weak var showCommentButton: UIButton!
+    @IBOutlet private weak var streamingViewBottomConstraint: NSLayoutConstraint!
+    
     /// The view above renderView to intercept tap gestuere for show/hide control container.
     @IBOutlet private weak var renderGestureView: UIView!
+    @IBOutlet private weak var renderGestureViewBottomConstraint: NSLayoutConstraint!
     
     @IBOutlet private weak var loadingOverlay: UIView!
     @IBOutlet private weak var loadingActivityIndicator: UIActivityIndicatorView!
@@ -48,11 +63,16 @@ public class LiveStreamPlayerViewController: UIViewController {
     @IBOutlet private weak var controlContainer: UIView!
     @IBOutlet private weak var playButton: UIButton!
     @IBOutlet private weak var stopButton: UIButton!
+    @IBOutlet private weak var controlViewBottomConstraint: NSLayoutConstraint!
     
     // MARK: - Stream End Container
     @IBOutlet private weak var streamEndContainer: UIView!
     @IBOutlet private weak var streamEndTitleLabel: UILabel!
     @IBOutlet private weak var streamEndDescriptionLabel: UILabel!
+    
+    var subscriptionManager: AmityTopicSubscription?
+    var commentSet: Set<String> = []
+    var storedComment: [AmityCommentModel] = []
         
     /// This sample app uses AmityVideoPlayer to play live videos.
     /// The player consumes the stream instance, and works automatically.
@@ -90,6 +110,8 @@ public class LiveStreamPlayerViewController: UIViewController {
         self.postRepository = AmityPostRepository(client: AmityUIKitManager.client)
         self.reactionRepository = AmityReactionRepository(client: AmityUIKitManager.client)
         self.streamRepository = AmityStreamRepository(client: AmityUIKitManager.client)
+        self.commentRepository = AmityCommentRepository(client: AmityUIKitManager.client)
+        self.subscriptionManager = AmityTopicSubscription(client: AmityUIKitManager.client)
         self.streamIdToWatch = streamIdToWatch
         self.player = AmityVideoPlayer(client: AmityUIKitManager.client)
         self.postId = postId
@@ -106,6 +128,9 @@ public class LiveStreamPlayerViewController: UIViewController {
     }
     
     deinit {
+        liveObjectQueryToken = nil
+        liveCommentQueryToken = nil
+        subscriptionManager = nil
         unobserveStreamObject()
         stopStream()
     }
@@ -120,6 +145,9 @@ public class LiveStreamPlayerViewController: UIViewController {
         requestingStreamObject = true
         observeStreamObject()
         getLiveStreamViwerCount()
+        setupTableView()
+        setupKeyboardListener()
+        startRealTimeEventSubscribe()
     }
     
     public override func viewWillAppear(_ animated: Bool) {
@@ -140,7 +168,7 @@ public class LiveStreamPlayerViewController: UIViewController {
         renderView.addSubview(videoView)
         // Tell the player to render the video in this view.
         player.renderView = videoView
-        player.delegate = self        
+        player.delegate = self
     }
     
     private func setupView() {
@@ -169,12 +197,47 @@ public class LiveStreamPlayerViewController: UIViewController {
         // Show control at start by default
         controlContainer.isHidden = false
         
+        controlContainer.alpha = 0
+        
         loadingActivityIndicator.stopAnimating()
         
         controlContainer.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(controlContainerDidTap)))
         
         renderGestureView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(playerContainerDidTap)))
         
+    }
+    
+    func setupTableView(){
+        
+        guard let nibName = NSStringFromClass(LiveStreamBroadcastOverlayTableViewCell.self).components(separatedBy: ".").last else {
+            fatalError("Class name not found")
+        }
+        let bundle = Bundle(for: LiveStreamBroadcastOverlayTableViewCell.self)
+        let uiNib = UINib(nibName: nibName, bundle: bundle)
+        commentTableView.register(uiNib, forCellReuseIdentifier: LiveStreamBroadcastOverlayTableViewCell.identifier)
+        commentTableView.delegate = self
+        commentTableView.dataSource = self
+        commentTableView.separatorStyle = .none
+        commentTableView.backgroundColor = .clear
+        
+        let textViewToolbar: UIToolbar = UIToolbar()
+        textViewToolbar.barStyle = .default
+        textViewToolbar.items = [
+            UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: self, action: nil),
+            UIBarButtonItem(title: AmityLocalizedStringSet.General.done.localizedString, style: .done, target: self, action: #selector(cancelInput))
+        ]
+        textViewToolbar.sizeToFit()
+        commentTextView.inputAccessoryView = textViewToolbar
+        commentTextView.backgroundColor = AmityColorSet.backgroundColor
+        commentTextView.layer.borderWidth = 1
+        commentTextView.layer.borderColor = AmityColorSet.secondary.blend(.shade4).cgColor
+        commentTextView.layer.cornerRadius = 4
+        commentTextView.font = AmityFontSet.body.withSize(15)
+        commentTextView.customTextViewDelegate = self
+        commentTextView.textContainer.lineBreakMode = .byTruncatingTail
+        
+        postCommentButton.titleLabel?.font = AmityFontSet.body.withSize(15)
+        postCommentButton.addTarget(self, action: #selector(self.sendComment), for: .touchUpInside)
     }
     
     /// Call function get reaction count
@@ -372,6 +435,12 @@ public class LiveStreamPlayerViewController: UIViewController {
         getStreamToken = nil
     }
     
+    func setupKeyboardListener() {
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: UIResponder.keyboardWillShowNotification, object: nil)
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: UIResponder.keyboardWillHideNotification, object: nil)
+    }
+    
     private func playStream() {
         
         isStarting = true
@@ -411,6 +480,10 @@ public class LiveStreamPlayerViewController: UIViewController {
     
     private func stopStream() {
         player.stop()
+    }
+    
+    @objc func cancelInput() {
+        view.endEditing(true)
     }
     
     @IBAction private func stopButtonDidTouch() {
@@ -456,6 +529,18 @@ public class LiveStreamPlayerViewController: UIViewController {
         }
     }
     
+    @IBAction func hideCommentTable() {
+        commentTableView.isHidden = true
+        hideCommentButton.isHidden = true
+        showCommentButton.isHidden = false
+    }
+    
+    @IBAction func showCommentTable() {
+        commentTableView.isHidden = false
+        hideCommentButton.isHidden = false
+        showCommentButton.isHidden = true
+    }
+    
 }
 
 extension LiveStreamPlayerViewController: AmityVideoPlayerDelegate {
@@ -466,3 +551,125 @@ extension LiveStreamPlayerViewController: AmityVideoPlayerDelegate {
     
 }
 
+//Move view when keyboard show and hide
+extension LiveStreamPlayerViewController {
+    @objc func keyboardWillShow(notification: NSNotification) {
+        if let keyboardSize = (notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue {
+            if streamingViewBottomConstraint.constant == 0.0 {
+                streamingViewBottomConstraint.constant += keyboardSize.height
+                controlViewBottomConstraint.constant += 1000
+                renderGestureViewBottomConstraint.constant += 1000
+            }
+        }
+    }
+
+    @objc func keyboardWillHide(notification: NSNotification) {
+        if streamingViewBottomConstraint.constant != 0.0 {
+            streamingViewBottomConstraint.constant = 0.0
+            controlViewBottomConstraint.constant = 34.0
+            renderGestureViewBottomConstraint.constant = 0.0
+        }
+    }
+    
+    @objc func dismissKeyboard() {
+        //Causes the view (or one of its embedded text fields) to resign the first responder status.
+        view.endEditing(true)
+    }
+}
+
+extension LiveStreamPlayerViewController: AmityTextViewDelegate {
+    
+    public func textView(_ textView: AmityTextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
+        return true
+    }
+    
+    public func textViewDidChange(_ textView: AmityTextView) {
+        if textView == commentTextView {
+            commentTextViewHeight.constant = textView.contentSize.height
+        }
+    }
+}
+
+// MARK: - UITableViewDataSource
+extension LiveStreamPlayerViewController: UITableViewDataSource {
+    public func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return storedComment.count
+    }
+    
+    public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: LiveStreamBroadcastOverlayTableViewCell.identifier) as? LiveStreamBroadcastOverlayTableViewCell else { return UITableViewCell() }
+        cell.display(comment: storedComment[indexPath.row])
+        return cell
+    }
+}
+
+// MARK: - UITableViewDelegate
+extension LiveStreamPlayerViewController: UITableViewDelegate {
+    public func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        if tableView == commentTableView {
+            if indexPath.row < storedComment.count {
+                let currentComment = storedComment[indexPath.row]
+                return LiveStreamBroadcastOverlayTableViewCell.height(for: currentComment, boundingWidth: commentTableView.bounds.width-40)
+            }
+        }
+        return AmityMentionTableViewCell.height
+    }
+    
+    public func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
+        return UITableView.automaticDimension
+    }
+    
+    public func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+
+    }
+}
+
+// MARK: - Real time event
+extension LiveStreamPlayerViewController {
+    func startRealTimeEventSubscribe() {
+        guard let currentPost = amityPost else { return }
+        let eventTopic = AmityPostTopic(post: currentPost, andEvent: .comments)
+        subscriptionManager?.subscribeTopic(eventTopic) { success, error in
+            // Handle Result
+            if success {
+                print("[RTE]Successful to subscribe")
+            } else {
+                print("[RTE]Error: \(error?.localizedDescription)")
+            }
+        }
+        
+        liveCommentQueryToken = commentRepository?.getCommentsWithReferenceId(currentPost.postId, referenceType: .post, filterByParentId: false, parentId: nil, orderBy: .descending, includeDeleted: false).observe { collection, changes, error in
+            if error != nil {
+                print("[RTE]Error in get comment: \(error?.localizedDescription)")
+            }
+            let comments: [AmityCommentModel] = collection.allObjects().map(AmityCommentModel.init)
+            print("[RTE]Comment : \(comments)")
+            for comment in comments {
+                if !self.commentSet.contains(comment.id){
+                    self.commentSet.insert(comment.id)
+                    self.storedComment.append(comment)
+                } else {
+                    continue
+                }
+            }
+            DispatchQueue.main.async {
+                self.commentTableView.reloadData()
+                if !self.storedComment.isEmpty {
+                    let lastIndex = IndexPath(row: self.storedComment.count-1, section: 0)
+                    self.commentTableView.scrollToRow(at: lastIndex, at: .bottom, animated: true)
+                }
+            }
+        }
+    }
+    
+    @objc func sendComment() {
+        guard let currentPost = amityPost else { return }
+        guard let currentText = commentTextView.text else { return }
+        self.commentTextView.text = ""
+        liveCommentToken = commentRepository?.createComment(forReferenceId: currentPost.postId, referenceType: .post, parentId: currentPost.parentPostId, text: currentText).observeOnce { liveObject, error in
+            if error != nil {
+                print("[LiveStream]Comment error: \(error?.localizedDescription)")
+            }
+        }
+    }
+}
