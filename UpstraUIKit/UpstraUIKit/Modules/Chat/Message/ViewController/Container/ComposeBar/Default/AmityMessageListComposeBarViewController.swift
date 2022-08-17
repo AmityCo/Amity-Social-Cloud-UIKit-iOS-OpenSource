@@ -163,6 +163,7 @@ extension AmityMessageListComposeBarViewController: AmityComposeBar {
             recordButton.isHidden = true
             showAudioButton.isHidden = setting.shouldHideAudioButton
             showDefaultKeyboardButton.isHidden = true
+            textComposeBarView.textView.becomeFirstResponder()
             if textComposeBarView.text != "" {
                 sendMessageButton.isHidden = false
                 showKeyboardComposeBarButton.isHidden = true
