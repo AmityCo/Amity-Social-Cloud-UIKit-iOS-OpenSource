@@ -120,10 +120,11 @@ extension TodayNewsFeedScreenViewModel {
         isLoading = true
         customAPIRequest.getTodayPostData() { postArray in
             guard let postsData = postArray else { return }
+            self.array = []
             self.postsObject = postsData
         }
         
-        DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
             self.prepareData()
         }
     }
