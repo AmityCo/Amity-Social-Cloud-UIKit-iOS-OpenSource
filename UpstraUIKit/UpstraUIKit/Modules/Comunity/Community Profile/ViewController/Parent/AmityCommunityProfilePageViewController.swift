@@ -31,6 +31,7 @@ public final class AmityCommunityProfilePageViewController: AmityProfileViewCont
     
     private var isEverFetch: Bool = false
     private var isEverRoute: Bool = false
+    private var isFromTaday: Bool = false
 
     public override func viewDidLoad() {
         super.viewDidLoad()
@@ -78,6 +79,28 @@ public final class AmityCommunityProfilePageViewController: AmityProfileViewCont
         
     }
     
+    //Make with flag from TrueID's shortcut
+    public static func make(
+        withCommunityId communityId: String, postId: String? = nil, fromDeeplinks: Bool = false, settings: AmityCommunityProfilePageSettings = .init(), fromToday: Bool
+    ) -> AmityCommunityProfilePageViewController {
+        
+        let communityRepositoryManager = AmityCommunityRepositoryManager(communityId: communityId)
+        let viewModel = AmityCommunityProfileScreenViewModel(
+            communityId: communityId,
+            postId: postId,
+            fromDeeplinks: fromDeeplinks,
+            communityRepositoryManager: communityRepositoryManager
+        )
+        let vc = AmityCommunityProfilePageViewController()
+        vc.screenViewModel = viewModel
+        vc.header = AmityCommunityProfileHeaderViewController.make(rootViewController: vc, viewModel: viewModel, settings: settings)
+        vc.bottom = AmityCommunityFeedViewController.make(communityId: communityId)
+        vc.settings = settings
+        vc.isFromTaday = fromToday
+        return vc
+
+    }
+    
     override func headerViewController() -> UIViewController {
         return header
     }
@@ -91,7 +114,11 @@ public final class AmityCommunityProfilePageViewController: AmityProfileViewCont
     }
     
     public override func didTapLeftBarButton() {
-        navigationController?.popViewController(animated: true)
+        if isFromTaday {
+            self.dismiss(animated: true, completion: nil)
+        } else {
+            navigationController?.popViewController(animated: true)
+        }
     }
     
     // MARK: - Setup ViewModel
