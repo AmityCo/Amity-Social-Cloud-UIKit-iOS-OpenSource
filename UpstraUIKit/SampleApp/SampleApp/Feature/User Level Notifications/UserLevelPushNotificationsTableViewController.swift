@@ -35,6 +35,8 @@ final class UserLevelPushNotificationsTableViewController: UITableViewController
     private var isEnabled: Bool = false
     private var modules: [UserNotificationModuleViewModel] = []
     
+    private var copyDeviceTokenButtonItem: UIBarButtonItem!
+    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         fetchUserNotification()
@@ -46,6 +48,13 @@ final class UserLevelPushNotificationsTableViewController: UITableViewController
         title = "User Notifications"
         tableView.register(SwitchTableViewCell.self, forCellReuseIdentifier: "SwitchTableViewCell")
         tableView.register(NotificationModuleTableViewCell.self, forCellReuseIdentifier: "NotificationModuleTableViewCell")
+        
+        copyDeviceTokenButtonItem = UIBarButtonItem(title: "Copy Device ID", style: .plain, target: self, action: #selector(copyDeviceToken))
+        navigationItem.rightBarButtonItem = copyDeviceTokenButtonItem
+    }
+    
+    @objc private func copyDeviceToken() {
+        UIPasteboard.general.string = AppManager.shared.getDeviceToken()
     }
     
     // MARK: UITableViewDataSource

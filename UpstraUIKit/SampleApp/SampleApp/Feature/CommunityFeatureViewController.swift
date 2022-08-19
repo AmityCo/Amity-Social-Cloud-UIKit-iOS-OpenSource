@@ -331,6 +331,7 @@ extension CommunityFeatureViewController: UITableViewDelegate {
             AmityCommunityHandler.shared.getNotificationHistory() { result in
                 DispatchQueue.main.async {
                     let vc = self.storyboard?.instantiateViewController(withIdentifier: "NotificationBoxViewController") as! NotificationBoxViewController
+                    print(result?.data)
                     vc.dataList = result?.data ?? []
                     self.navigationController?.pushViewController(vc, animated: true)
                 }

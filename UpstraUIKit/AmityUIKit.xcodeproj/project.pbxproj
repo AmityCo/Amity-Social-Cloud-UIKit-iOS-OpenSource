@@ -508,8 +508,8 @@
 		A0B68B6126E7238E007D7B5B /* AmityPostLiveStreamTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = A0B68B5F26E7238E007D7B5B /* AmityPostLiveStreamTableViewCell.xib */; };
 		A0E2B23226B7B68200F1C4D5 /* AmityPostGalleryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0E2B23026B7B68200F1C4D5 /* AmityPostGalleryViewController.swift */; };
 		A0E2B23326B7B68200F1C4D5 /* AmityPostGalleryViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = A0E2B23126B7B68200F1C4D5 /* AmityPostGalleryViewController.xib */; };
-		B401D70A28910BFD0040F93C /* AmityHeaderRecentChatTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B401D70828910BFD0040F93C /* AmityHeaderRecentChatTableViewCell.swift */; };
-		B401D70B28910BFD0040F93C /* AmityHeaderRecentChatTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = B401D70928910BFD0040F93C /* AmityHeaderRecentChatTableViewCell.xib */; };
+		B4196217289A2D5600A62E1F /* AmityFollowingRecentChatCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4196215289A2D5600A62E1F /* AmityFollowingRecentChatCollectionViewCell.swift */; };
+		B4196218289A2D5600A62E1F /* AmityFollowingRecentChatCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = B4196216289A2D5600A62E1F /* AmityFollowingRecentChatCollectionViewCell.xib */; };
 		B427F71F2877E62800E5B438 /* TodayNewsFeedViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B427F71E2877E62800E5B438 /* TodayNewsFeedViewController.swift */; };
 		B427F7232877EB8700E5B438 /* TodayNewsFeedViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B427F7222877EB8700E5B438 /* TodayNewsFeedViewModel.swift */; };
 		B427F7262877EC6200E5B438 /* TodayNewsFeedViewModelProtocal.swift in Sources */ = {isa = PBXBuildFile; fileRef = B427F7252877EC6200E5B438 /* TodayNewsFeedViewModelProtocal.swift */; };
@@ -1195,8 +1195,8 @@
 		A0B68B5F26E7238E007D7B5B /* AmityPostLiveStreamTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = AmityPostLiveStreamTableViewCell.xib; sourceTree = "<group>"; };
 		A0E2B23026B7B68200F1C4D5 /* AmityPostGalleryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AmityPostGalleryViewController.swift; sourceTree = "<group>"; };
 		A0E2B23126B7B68200F1C4D5 /* AmityPostGalleryViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = AmityPostGalleryViewController.xib; sourceTree = "<group>"; };
-		B401D70828910BFD0040F93C /* AmityHeaderRecentChatTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AmityHeaderRecentChatTableViewCell.swift; sourceTree = "<group>"; };
-		B401D70928910BFD0040F93C /* AmityHeaderRecentChatTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AmityHeaderRecentChatTableViewCell.xib; sourceTree = "<group>"; };
+		B4196215289A2D5600A62E1F /* AmityFollowingRecentChatCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AmityFollowingRecentChatCollectionViewCell.swift; sourceTree = "<group>"; };
+		B4196216289A2D5600A62E1F /* AmityFollowingRecentChatCollectionViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = AmityFollowingRecentChatCollectionViewCell.xib; sourceTree = "<group>"; };
 		B427F71E2877E62800E5B438 /* TodayNewsFeedViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodayNewsFeedViewController.swift; sourceTree = "<group>"; };
 		B427F7222877EB8700E5B438 /* TodayNewsFeedViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodayNewsFeedViewModel.swift; sourceTree = "<group>"; };
 		B427F7252877EC6200E5B438 /* TodayNewsFeedViewModelProtocal.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodayNewsFeedViewModelProtocal.swift; sourceTree = "<group>"; };
@@ -2414,6 +2414,8 @@
 			children = (
 				72A350B924EA820700DA9D46 /* AmityRecentChatTableViewCell.xib */,
 				72A350BA24EA820700DA9D46 /* AmityRecentChatTableViewCell.swift */,
+				B4196215289A2D5600A62E1F /* AmityFollowingRecentChatCollectionViewCell.swift */,
+				B4196216289A2D5600A62E1F /* AmityFollowingRecentChatCollectionViewCell.xib */,
 			);
 			path = Cell;
 			sourceTree = "<group>";
@@ -4766,6 +4768,7 @@
 				B750672224FC061B00DD17B4 /* AmitySelectMemberListTableViewCell.xib in Resources */,
 				72A3516224EA820800DA9D46 /* AmityRecentChatViewController.xib in Resources */,
 				B71AD6582537F9E400AFB3D0 /* AmityCommunityMemberSettingsTableViewCell.xib in Resources */,
+				B4196218289A2D5600A62E1F /* AmityFollowingRecentChatCollectionViewCell.xib in Resources */,
 				723B6A85251B3A6200EAE8D3 /* AmityCommentView.xib in Resources */,
 				7218BEE025D3E783002F5132 /* AmityDeletedReplyTableViewCell.xib in Resources */,
 				B789C0BE254F12F700C1DB05 /* AmityMessageListHeaderView.xib in Resources */,
@@ -4923,6 +4926,7 @@
 				0DBC353F25A2ED830064D138 /* AmityCommunityInfoController.swift in Sources */,
 				0D48DEA425D24CAB0090FE80 /* AmityPostPreviewCommentTableViewCell.swift in Sources */,
 				B729BF6E2519163F00FC1A98 /* AmityMyCommunityTableViewCell.swift in Sources */,
+				B4196217289A2D5600A62E1F /* AmityFollowingRecentChatCollectionViewCell.swift in Sources */,
 				72A3514C24EA820800DA9D46 /* AmityMessageListScreenViewModelProtocol.swift in Sources */,
 				97D0EBB926A14ADE00E9FE6A /* AmityPostReviewSettingsCommunityViewModel.swift in Sources */,
 				782EDA6F25F3E3790056FC48 /* AmitySettingsTableView.swift in Sources */,
@@ -5568,7 +5572,7 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				MARKETING_VERSION = 2.19.0;
+				MARKETING_VERSION = 2.21.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.amity.amityuikit;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
@@ -5601,7 +5605,7 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
-				MARKETING_VERSION = 2.19.0;
+				MARKETING_VERSION = 2.21.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.amity.amityuikit;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;

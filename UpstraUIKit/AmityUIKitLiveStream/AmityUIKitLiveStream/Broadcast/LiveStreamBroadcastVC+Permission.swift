@@ -31,6 +31,12 @@ extension LiveStreamBroadcastViewController {
         return cameraAuth == .notDetermined && microphoneAuth == .undetermined
     }
     
+    func permissionsGoliveNotDetermined() -> Bool {
+        let cameraAuth = AVCaptureDevice.authorizationStatus(for: .video)
+        let microphoneAuth = AVAudioSession.sharedInstance().recordPermission
+        return cameraAuth == .authorized && microphoneAuth == .granted
+    }
+    
     func requestPermissions(completion: @escaping (Bool) -> Void) {
         let requestCameraPermission: (@escaping (Bool) -> Void) -> Void = { completion in
             AVCaptureDevice.requestAccess(for: .video) { granted in
