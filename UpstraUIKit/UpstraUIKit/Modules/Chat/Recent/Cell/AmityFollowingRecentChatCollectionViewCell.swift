@@ -48,6 +48,7 @@ class AmityFollowingRecentChatCollectionViewCell: UICollectionViewCell, Nibbable
     
     func displayDummy() {
         displayNameLabel.text = AmityLocalizedStringSet.RecentMessage.discoveryFriendsMessage.localizedString
-        avatarView.image = AmityIconSet.defaultCommunityAvatar
+        avatarView.contentMode = .center
+        avatarView.image = AmityIconSet.Chat.iconCommunityRecent
     }
 }
