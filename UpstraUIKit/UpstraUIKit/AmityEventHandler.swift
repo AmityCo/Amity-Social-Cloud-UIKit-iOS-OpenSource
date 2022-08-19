@@ -331,7 +331,7 @@ open class AmityEventHandler {
     open func setURLAdvertisement(_ url: String) {}
     
     /// TrueID finish post from Today
-    open func finishPostEvent(_ success: Bool, userId: String) {}
+    open func finishPostEvent(_ success: Bool, userId: String? = "", commuId: String? = "") {}
     
     /// TrueID route to newsfeed from recent hat
     open func routeToNewsfeedDidTap(from source: UIViewController) {}

@@ -942,7 +942,6 @@ extension AmityPostTextEditorViewController: AmityPostTextEditorScreenViewModelD
                 })], from: self)
             case .published, .declined:
                 postButton.isEnabled = true
-                dismiss(animated: true, completion: nil)
             @unknown default:
                 break
             }
@@ -952,12 +951,30 @@ extension AmityPostTextEditorViewController: AmityPostTextEditorScreenViewModelD
         }
         
         //If post from 'Today' page. Tell client to redirect
-        if postType != nil || fromGallery{
-            let userId = AmityUIKitManagerInternal.shared.currentUserId
-            if error == nil {
-                AmityEventHandler.shared.finishPostEvent(true, userId: userId)
+        if postType != nil {
+            if fromGallery {
+                
             } else {
-                AmityEventHandler.shared.finishPostEvent(false, userId: userId)
+                switch postTarget {
+                case .myFeed:
+                    let userId = AmityUIKitManagerInternal.shared.currentUserId
+                    if error == nil {
+                        AmityEventHandler.shared.finishPostEvent(true, userId: userId)
+                    } else {
+                        AmityEventHandler.shared.finishPostEvent(false, userId: userId)
+                    }
+                    dismiss(animated: true, completion: nil)
+                case .community(let object):
+                    let commuId = object.channelId
+                    if error == nil {
+                        AmityEventHandler.shared.finishPostEvent(true, commuId: commuId)
+                        let commuVC = AmityCommunityProfilePageViewController.make(withCommunityId: commuId, fromToday: true)
+                        navigationController?.pushViewController(commuVC, animated: true)
+                    } else {
+                        AmityEventHandler.shared.finishPostEvent(false, commuId: commuId)
+                    }
+                }
+                
             }
         }
     }
