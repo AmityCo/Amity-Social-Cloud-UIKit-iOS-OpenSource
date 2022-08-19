@@ -126,6 +126,7 @@ public struct AmityIconSet {
         public static var iconDelete2 = UIImage(named: "icon_delete_2", in: AmityUIKitManager.bundle, compatibleWith: nil)
         public static var iconDelete3 = UIImage(named: "icon_delete_3", in: AmityUIKitManager.bundle, compatibleWith: nil)
         public static var iconSetting = UIImage(named: "icon_chat_setting", in: AmityUIKitManager.bundle, compatibleWith: nil)
+        public static var iconCommunityRecent = UIImage(named: "icon_community_recent", in: AmityUIKitManager.bundle, compatibleWith: nil)
     }
     
     enum Post {
