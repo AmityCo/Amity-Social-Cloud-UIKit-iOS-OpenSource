@@ -338,7 +338,7 @@ open class AmityEventHandler {
 
     /// TrueID open contact page
     open func openContactPageEvent() {}
-    
+        
     //MARK: - AnalyticNCCEvent
     open func communityTopbarSearchTracking() {}
     open func communityTopbarProfileTracking() {}

@@ -88,7 +88,6 @@ final class AmityRecentChatScreenViewModel: AmityRecentChatScreenViewModelType {
     // MARK: - Collection
     private var channelsCollection: AmityCollection<AmityChannel>?
     
-    
     // MARK: - Token
     private var channelsToken: AmityNotificationToken?
     private var existingChannelToken: AmityNotificationToken?

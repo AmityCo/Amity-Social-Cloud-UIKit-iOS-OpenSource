@@ -18,7 +18,8 @@ class FeatureViewController: UIViewController {
         case data
         case chatFromProfile
         case testUnreadFromOutsideAmity
-        
+        case testUnreadFromRednose
+
         var text: String {
             switch self {
             case .chatFeature:
@@ -31,6 +32,8 @@ class FeatureViewController: UIViewController {
                 return "Test chat from profile"
             case .testUnreadFromOutsideAmity:
                 return "Test get unreadCount from outside Amity"
+            case .testUnreadFromRednose:
+                return "Test get unreadCount from Rednose"
             }
         }
     }
@@ -96,8 +99,21 @@ extension FeatureViewController: UITableViewDelegate {
                     print(error.localizedDescription)
                 }
             }
-            
-            
+        case.testUnreadFromRednose:
+            AmityChatHandler.shared.getUnreadCountFromASC{ result in
+                switch result {
+                case .success(let count):
+                    let alert = UIAlertController(title: "Test unreadCount", message: "Total unread count = \(count)", preferredStyle: .alert)
+                    alert.addAction(UIAlertAction(title: "Ok", style: .default, handler: { UIAlertAction in
+                        
+                    }))
+                    DispatchQueue.main.async {
+                        self.present(alert, animated: true, completion: nil)
+                    }
+                case .failure(let error):
+                    print(error.localizedDescription)
+                }
+            }
         }
         
     }

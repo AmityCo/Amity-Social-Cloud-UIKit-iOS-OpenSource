@@ -8,6 +8,7 @@
 
 import Foundation
 import UIKit
+import AmitySDK
 
 public class AmityChatHandler {
     public static var shared = AmityChatHandler()
@@ -23,6 +24,34 @@ public class AmityChatHandler {
             case .failure(let error):
                 completion(.failure(error))
             }
+        }
+    }
+    
+    open func getUnreadCountFromASC(completion: @escaping(_ completion:Result<Int,Error>) -> () ) {
+        let channelRepository = AmityChannelRepository(client: AmityUIKitManagerInternal.shared.client)
+        var channelsCollection: AmityCollection<AmityChannel>?
+        var channelsToken: AmityNotificationToken?
+        
+        let query = AmityChannelQuery()
+        query.types = [AmityChannelQueryType.conversation]
+        query.filter = .userIsMember
+        query.includeDeleted = false
+        channelsCollection = channelRepository.getChannels(with: query)
+        
+        channelsToken?.invalidate()
+        channelsToken = channelsCollection?.observe { [weak self] (collection, change, error) in
+            if error != nil {
+                completion(.failure(error!))
+            }
+            guard let collection = channelsCollection else { return }
+            var unreadCount: Int = 0
+            for index in 0..<collection.count() {
+                guard let channel = collection.object(at: UInt(index)) else { return }
+                let model = AmityChannelModel(object: channel)
+                unreadCount += model.unreadCount
+            }
+            
+            completion(.success(unreadCount))
         }
     }
 }
