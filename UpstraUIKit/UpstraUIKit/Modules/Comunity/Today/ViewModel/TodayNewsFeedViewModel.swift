@@ -118,7 +118,7 @@ extension TodayNewsFeedScreenViewModel {
     
     func fetchPosts() {
         isLoading = true
-        AmityHUD.show(.loading)
+//        AmityHUD.show(.loading)
         customAPIRequest.getTodayPostData() { postArray in
             guard let postsData = postArray else { return }
             self.array = []
@@ -152,7 +152,7 @@ extension TodayNewsFeedScreenViewModel {
                 }
             }
         } else {
-            AmityHUD.hide()
+//            AmityHUD.hide()
             prepareComponents(posts: array)
             index = 0
         }
