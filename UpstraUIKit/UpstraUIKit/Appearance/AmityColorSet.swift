@@ -34,7 +34,6 @@ public struct AmityColorSet {
     public static var messageBubbleInverse: UIColor {
         return AmityThemeManager.currentTheme.messageBubbleInverse
     }
-    
     public static var backgroundColor: UIColor {
         return UIColor.white
     }
