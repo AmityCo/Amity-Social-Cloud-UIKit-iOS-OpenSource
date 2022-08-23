@@ -118,6 +118,7 @@ extension TodayNewsFeedScreenViewModel {
     
     func fetchPosts() {
         isLoading = true
+        AmityHUD.show(.loading)
         customAPIRequest.getTodayPostData() { postArray in
             guard let postsData = postArray else { return }
             self.array = []
@@ -138,7 +139,6 @@ extension TodayNewsFeedScreenViewModel {
                 case .success(let post):
                     post.latestComments = []
                     strongSelf.array.append(post)
-                    strongSelf.prepareComponents(posts: strongSelf.array)
                     strongSelf.index += 1
                     strongSelf.prepareData()
                 case .failure(let error):
@@ -152,6 +152,8 @@ extension TodayNewsFeedScreenViewModel {
                 }
             }
         } else {
+            AmityHUD.hide()
+            prepareComponents(posts: array)
             index = 0
         }
     }
