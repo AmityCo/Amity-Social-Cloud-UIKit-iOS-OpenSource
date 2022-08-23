@@ -86,7 +86,7 @@
 "no_internet_connection" = "Không có kết nối Internet";
 "recent_chat_no_message" = "No message yet";
 "recent_chat_announcement_message" = "Explore new friends in TrueID ";
-"recent_chat_announcement_message_ext" = " then tap on user avatar who you want to chat with";
+"recent_chat_announcement_message_ext" = "\nthen tap on user avatar who you want to chat with";
 "recent_chat_underline_message" = "\"Tap here\"";
 "discovery_friends_message" = "Discovery friends";
 "message_list_alert_error_message_title" = "Lỗi khi gửi tin nhắn";

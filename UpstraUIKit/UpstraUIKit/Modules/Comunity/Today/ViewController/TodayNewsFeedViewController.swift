@@ -328,10 +328,12 @@ extension TodayNewsFeedViewController: TodayNewsFeedScreenViewModelDelegate {
     // MARK: - Post
     func screenViewModelDidLikePostSuccess(_ viewModel: TodayNewsFeedScreenViewModelType) {
         tableView.feedDelegate?.didPerformActionLikePost()
+        screenViewModel.action.fetchPosts()
     }
     
     func screenViewModelDidUnLikePostSuccess(_ viewModel: TodayNewsFeedScreenViewModelType) {
         tableView.feedDelegate?.didPerformActionUnLikePost()
+        screenViewModel.action.fetchPosts()
     }
     
     func screenViewModelDidGetReportStatusPost(isReported: Bool) {

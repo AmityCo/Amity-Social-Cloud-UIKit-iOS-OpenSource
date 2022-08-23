@@ -666,14 +666,14 @@ extension AmityMessageListViewController: AmityMessageListScreenViewModelDelegat
     func screenViewModelToggleDefaultKeyboardAndAudioKeyboard(for events: AmityMessageListScreenViewModel.KeyboardInputEvents) {
         switch events {
         case .default:
-            composeBar.showRecordButton(show: false)
+            composeBar.showRecordButton(show: false)            
         case .audio:
             composeBar.showRecordButton(show: true)
+            view.endEditing(true)
         default:
             break
         }
         screenViewModel.action.toggleKeyboardVisible(visible: false)
-        view.endEditing(true)
     }
     
     func screenViewModelDidReportMessage(at indexPath: IndexPath) {

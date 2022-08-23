@@ -123,9 +123,4 @@ extension AmityTextComposeBarView: AmityTextViewDelegate {
         
         textViewDidChanged?(text)
     }
-
-    func textViewShouldBeginEditing(_ textView: AmityTextView) -> Bool {
-        textViewShouldBeginEditing?(textView)
-        return true
-    }
 }

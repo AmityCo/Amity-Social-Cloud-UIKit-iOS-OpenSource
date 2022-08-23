@@ -31,7 +31,7 @@ public final class AmitySelectMemberModel: Equatable {
         if let metadata = object.metadata {
             self.email = metadata["email"] as? String ?? ""
         }
-        self.avatarURL = object.getAvatarInfo()?.fileURL ?? ""
+        self.avatarURL = object.avatarCustomUrl ?? ""
     }
     
     init(object: AmityCommunityMembershipModel) {

@@ -214,7 +214,13 @@ extension AmityUserProfileEditorViewController: AmityUserProfileEditorScreenView
             // To prevent image view showing an old image, checking if it nil here.
             userAvatarView.image = image
         } else {
-            userAvatarView?.setImage(withImageURL: user.avatarURL, placeholder: AmityIconSet.defaultAvatar)
+            if !(user.avatarCustomURL.isEmpty) {
+                userAvatarView.setImage(withCustomURL: user.avatarCustomURL,
+                                             placeholder: AmityIconSet.defaultAvatar)
+            } else {
+                userAvatarView.setImage(withImageURL: user.avatarURL,
+                                             placeholder: AmityIconSet.defaultAvatar)
+            }
         }
         
         updateViewState()
