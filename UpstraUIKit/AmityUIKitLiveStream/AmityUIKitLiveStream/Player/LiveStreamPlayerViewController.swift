@@ -50,7 +50,9 @@ public class LiveStreamPlayerViewController: UIViewController {
     @IBOutlet private weak var postCommentButton: UIButton!
     @IBOutlet private weak var hideCommentButton: UIButton!
     @IBOutlet private weak var showCommentButton: UIButton!
-    @IBOutlet private weak var streamingViewBottomConstraint: NSLayoutConstraint!
+    @IBOutlet private weak var likeCommentViewBottomConstraint: NSLayoutConstraint!
+    @IBOutlet private weak var liveCommentView: UIView!
+    @IBOutlet private weak var liveCommentViewHeightConstraint: NSLayoutConstraint!
     
     /// The view above renderView to intercept tap gestuere for show/hide control container.
     @IBOutlet private weak var renderGestureView: UIView!
@@ -219,6 +221,7 @@ public class LiveStreamPlayerViewController: UIViewController {
         commentTableView.dataSource = self
         commentTableView.separatorStyle = .none
         commentTableView.backgroundColor = .clear
+        commentTableView.allowsSelection = false
         
         let textViewToolbar: UIToolbar = UIToolbar()
         textViewToolbar.barStyle = .default
@@ -227,17 +230,23 @@ public class LiveStreamPlayerViewController: UIViewController {
             UIBarButtonItem(title: AmityLocalizedStringSet.General.done.localizedString, style: .done, target: self, action: #selector(cancelInput))
         ]
         textViewToolbar.sizeToFit()
-        commentTextView.inputAccessoryView = textViewToolbar
-        commentTextView.backgroundColor = AmityColorSet.backgroundColor
+//        commentTextView.inputAccessoryView = textViewToolbar
+        commentTextView.backgroundColor = UIColor(hex: "#1C1C1C")
         commentTextView.layer.borderWidth = 1
         commentTextView.layer.borderColor = AmityColorSet.secondary.blend(.shade4).cgColor
         commentTextView.layer.cornerRadius = 4
         commentTextView.font = AmityFontSet.body.withSize(15)
+        commentTextView.textColor = UIColor(hex: "#808080")
+        commentTextView.layer.borderColor = UIColor(hex: "#808080").cgColor
+        commentTextView.layer.cornerRadius = 10
         commentTextView.customTextViewDelegate = self
         commentTextView.textContainer.lineBreakMode = .byTruncatingTail
         
         postCommentButton.titleLabel?.font = AmityFontSet.body.withSize(15)
         postCommentButton.addTarget(self, action: #selector(self.sendComment), for: .touchUpInside)
+        
+        liveCommentView.backgroundColor = UIColor(hex: "#404040", alpha: 1.0)
+        
     }
     
     /// Call function get reaction count
@@ -555,19 +564,32 @@ extension LiveStreamPlayerViewController: AmityVideoPlayerDelegate {
 extension LiveStreamPlayerViewController {
     @objc func keyboardWillShow(notification: NSNotification) {
         if let keyboardSize = (notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue {
-            if streamingViewBottomConstraint.constant == 0.0 {
-                streamingViewBottomConstraint.constant += keyboardSize.height
-                controlViewBottomConstraint.constant += 1000
-                renderGestureViewBottomConstraint.constant += 1000
+            if likeCommentViewBottomConstraint.constant == 0.0 {
+//            if self.view.frame.origin.y == 0.0 {
+                let safeAreaBottom = view.safeAreaInsets.bottom
+//                self.view.frame.origin.y -= keyboardSize.height
+                likeCommentViewBottomConstraint.constant += keyboardSize.height - safeAreaBottom
+//
+//                controlViewBottomConstraint.constant += 1000
+//                renderGestureViewBottomConstraint.constant += 1000
+                UIView.animate(withDuration: 0.5) {
+                    self.view.layoutIfNeeded()
+                }
             }
         }
     }
 
     @objc func keyboardWillHide(notification: NSNotification) {
-        if streamingViewBottomConstraint.constant != 0.0 {
-            streamingViewBottomConstraint.constant = 0.0
-            controlViewBottomConstraint.constant = 34.0
-            renderGestureViewBottomConstraint.constant = 0.0
+        if likeCommentViewBottomConstraint.constant != 0.0 {
+//        if self.view.frame.origin.y != 0.0 {
+//            self.view.frame.origin.y = 0.0
+//            let safeAreaBottom = view.safeAreaInsets.bottom
+            likeCommentViewBottomConstraint.constant = 0.0
+//            controlViewBottomConstraint.constant = safeAreaBottom
+//            renderGestureViewBottomConstraint.constant = 0.0
+            UIView.animate(withDuration: 0.5) {
+                self.view.layoutIfNeeded()
+            }
         }
     }
     
@@ -580,12 +602,19 @@ extension LiveStreamPlayerViewController {
 extension LiveStreamPlayerViewController: AmityTextViewDelegate {
     
     public func textView(_ textView: AmityTextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
+        if textView == commentTextView {
+            if text == "\n" {
+                self.sendComment()
+            }
+        }
         return true
     }
     
     public func textViewDidChange(_ textView: AmityTextView) {
         if textView == commentTextView {
-            commentTextViewHeight.constant = textView.contentSize.height
+            let contentSize = textView.sizeThatFits(textView.bounds.size)
+            commentTextViewHeight.constant = contentSize.height
+            liveCommentViewHeightConstraint.constant = 70+contentSize.height-36
         }
     }
 }
@@ -663,13 +692,22 @@ extension LiveStreamPlayerViewController {
     }
     
     @objc func sendComment() {
+        //Reset all constant
+        self.view.endEditing(true)
+        commentTextViewHeight.constant = 36
+        liveCommentViewHeightConstraint.constant = 70
+        
         guard let currentPost = amityPost else { return }
-        guard let currentText = commentTextView.text else { return }
-        self.commentTextView.text = ""
-        liveCommentToken = commentRepository?.createComment(forReferenceId: currentPost.postId, referenceType: .post, parentId: currentPost.parentPostId, text: currentText).observeOnce { liveObject, error in
-            if error != nil {
-                print("[LiveStream]Comment error: \(error?.localizedDescription)")
+        if commentTextView.text != "" || commentTextView.text == nil {
+            guard let currentText = commentTextView.text else { return }
+            self.commentTextView.text = ""
+            liveCommentToken = commentRepository?.createComment(forReferenceId: currentPost.postId, referenceType: .post, parentId: currentPost.parentPostId, text: currentText).observeOnce { liveObject, error in
+                if error != nil {
+                    print("[LiveStream]Comment error: \(error?.localizedDescription)")
+                }
             }
+        } else {
+            return
         }
     }
 }

@@ -11,6 +11,7 @@ import AmityUIKit
 class LiveStreamBroadcastOverlayTableViewCell: UITableViewCell,Nibbable {
     
     @IBOutlet var avatarView: AmityAvatarView!
+    @IBOutlet var commentView: UIView!
     @IBOutlet var displayNameLabel: UILabel!
     @IBOutlet var commentLabel: UILabel!
     
@@ -25,6 +26,9 @@ class LiveStreamBroadcastOverlayTableViewCell: UITableViewCell,Nibbable {
         
         self.backgroundColor = .clear
         
+        commentView.backgroundColor = UIColor(hex: "#808080", alpha: 0.3)
+        commentView.layer.cornerRadius = 10
+        
         avatarView.backgroundColor = .clear
         
         if !comment.avatarCustomURL.isEmpty {
@@ -35,6 +39,7 @@ class LiveStreamBroadcastOverlayTableViewCell: UITableViewCell,Nibbable {
         
         displayNameLabel.text = comment.displayName
         displayNameLabel.font = AmityFontSet.headerLine.withSize(16)
+        displayNameLabel.textColor = .white
         displayNameLabel.backgroundColor = .clear
         
         commentLabel.text = comment.text
@@ -43,6 +48,8 @@ class LiveStreamBroadcastOverlayTableViewCell: UITableViewCell,Nibbable {
         commentLabel.numberOfLines = 0
         commentLabel.lineBreakMode = .byTruncatingTail
         commentLabel.sizeToFit()
+        commentLabel.textColor = .white
+        
     }
     
     class func height(for comment: AmityCommentModel, boundingWidth: CGFloat) -> CGFloat {

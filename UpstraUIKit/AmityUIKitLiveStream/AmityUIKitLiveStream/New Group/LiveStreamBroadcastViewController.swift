@@ -117,6 +117,8 @@ final public class LiveStreamBroadcastViewController: UIViewController {
     @IBOutlet private weak var hideCommentButton: UIButton!
     @IBOutlet private weak var showCommentButton: UIButton!
     @IBOutlet private weak var streamingViewBottomConstraint: NSLayoutConstraint!
+    @IBOutlet private weak var liveCommentView: UIView!
+    @IBOutlet private weak var liveCommentViewHeightConstraint: NSLayoutConstraint!
 
     // MARK: - UI Container End Components
     @IBOutlet weak var uiContainerEnd: UIView!
@@ -385,6 +387,7 @@ final public class LiveStreamBroadcastViewController: UIViewController {
         commentTableView.dataSource = self
         commentTableView.separatorStyle = .none
         commentTableView.backgroundColor = .clear
+        commentTableView.allowsSelection = false
         
         let textViewToolbar: UIToolbar = UIToolbar()
         textViewToolbar.barStyle = .default
@@ -393,17 +396,22 @@ final public class LiveStreamBroadcastViewController: UIViewController {
             UIBarButtonItem(title: AmityLocalizedStringSet.General.done.localizedString, style: .done, target: self, action: #selector(cancelInput))
         ]
         textViewToolbar.sizeToFit()
-        commentTextView.inputAccessoryView = textViewToolbar
-        commentTextView.backgroundColor = AmityColorSet.backgroundColor
+//        commentTextView.inputAccessoryView = textViewToolbar
+        commentTextView.backgroundColor = UIColor(hex: "#1C1C1C")
         commentTextView.layer.borderWidth = 1
         commentTextView.layer.borderColor = AmityColorSet.secondary.blend(.shade4).cgColor
         commentTextView.layer.cornerRadius = 4
         commentTextView.font = AmityFontSet.body.withSize(15)
+        commentTextView.textColor = UIColor(hex: "#808080")
+        commentTextView.layer.borderColor = UIColor(hex: "#808080").cgColor
+        commentTextView.layer.cornerRadius = 10
         commentTextView.customTextViewDelegate = self
         commentTextView.textContainer.lineBreakMode = .byTruncatingTail
         
         postCommentButton.titleLabel?.font = AmityFontSet.body.withSize(15)
         postCommentButton.addTarget(self, action: #selector(self.sendComment), for: .touchUpInside)
+        
+        liveCommentView.backgroundColor = UIColor(hex: "#404040", alpha: 1.0)
     }
     
     private func trySetupBroadcaster() {
@@ -579,16 +587,24 @@ extension LiveStreamBroadcastViewController: AmityTextViewDelegate {
     }
     
     public func textView(_ textView: AmityTextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
-        if textView.text?.count ?? 0 > AmityMentionManager.maximumCharacterCountForPost {
-            showAlertForMaximumCharacters()
-            return false
+//        if textView.text?.count ?? 0 > AmityMentionManager.maximumCharacterCountForPost {
+//            showAlertForMaximumCharacters()
+//            return false
+//        }
+//        return mentionManager.shouldChangeTextIn(textView, inRange: range, replacementText: text, currentText: textView.text ?? "")
+        if textView == commentTextView {
+            if text == "\n" {
+                self.sendComment()
+            }
         }
-        return mentionManager.shouldChangeTextIn(textView, inRange: range, replacementText: text, currentText: textView.text ?? "")
+        return true
     }
     
     public func textViewDidChange(_ textView: AmityTextView) {
         if textView == commentTextView {
-            commentTextViewHeight.constant = textView.contentSize.height
+            let contentSize = textView.sizeThatFits(textView.bounds.size)
+            commentTextViewHeight.constant = contentSize.height
+            liveCommentViewHeightConstraint.constant = 70+contentSize.height-36
         }
     }
 }
@@ -715,6 +731,8 @@ extension LiveStreamBroadcastViewController: UITableViewDelegate {
             }
         }
     }
+
+    
 }
 
 // MARK: - Real time event
@@ -756,14 +774,22 @@ extension LiveStreamBroadcastViewController {
     }
     
     @objc func sendComment() {
+        //Reset all constant
+        self.view.endEditing(true)
+        commentTextViewHeight.constant = 36
+        liveCommentViewHeightConstraint.constant = 70
+        
         guard let currentPost = createdPost else { return }
-        guard let currentText = commentTextView.text else { return }
-        self.commentTextView.text = ""
-        liveCommentToken = commentRepository.createComment(forReferenceId: currentPost.postId, referenceType: .post, parentId: currentPost.parentPostId, text: currentText).observeOnce { liveObject, error in
-            if error != nil {
-                print("[LiveStream]Comment error: \(error?.localizedDescription)")
+        if commentTextView.text != "" || commentTextView.text == nil {
+            guard let currentText = commentTextView.text else { return }
+            self.commentTextView.text = ""
+            liveCommentToken = commentRepository.createComment(forReferenceId: currentPost.postId, referenceType: .post, parentId: currentPost.parentPostId, text: currentText).observeOnce { liveObject, error in
+                if error != nil {
+                    print("[LiveStream]Comment error: \(error?.localizedDescription)")
+                }
             }
-            self.view.endEditing(true)
+        } else {
+            return
         }
     }
 }
@@ -772,8 +798,11 @@ extension LiveStreamBroadcastViewController {
 extension LiveStreamBroadcastViewController {
     @objc func keyboardWillShow(notification: NSNotification) {
         if let keyboardSize = (notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue {
-            if streamingViewBottomConstraint.constant == 20.0 {
+            if streamingViewBottomConstraint.constant == 0.0 {
                 streamingViewBottomConstraint.constant += keyboardSize.height
+                UIView.animate(withDuration: 0.5) {
+                    self.view.layoutIfNeeded()
+                }
             }
         }
     }
@@ -782,8 +811,11 @@ extension LiveStreamBroadcastViewController {
 //        if self.view.frame.origin.y != 0 {
 //            self.view.frame.origin.y = 0
 //        }
-        if streamingViewBottomConstraint.constant != 20.0 {
-            streamingViewBottomConstraint.constant = 20.0
+        if streamingViewBottomConstraint.constant != 0.0 {
+            streamingViewBottomConstraint.constant = 0.0
+            UIView.animate(withDuration: 0.5) {
+                self.view.layoutIfNeeded()
+            }
         }
     }
     
