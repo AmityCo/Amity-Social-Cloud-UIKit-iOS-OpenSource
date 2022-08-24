@@ -25,7 +25,11 @@ extension LiveStreamBroadcastViewController {
                     self?.setTargetDetail(name: nil, avatarUrl: nil)
                     return
                 }
-                self?.setTargetDetail(name: community.displayName, avatarUrl: community.avatar?.fileURL)
+                if (community.user?.avatarCustomUrl == nil) {
+                    self?.setTargetDetail(name: community.displayName, avatarUrl: community.avatar?.fileURL)
+                } else {
+                    self?.setTargetDetail(name: community.displayName, avatarUrl: community.user?.avatarCustomUrl)
+                }
             }
         case .user:
             if let targetId = targetId {
