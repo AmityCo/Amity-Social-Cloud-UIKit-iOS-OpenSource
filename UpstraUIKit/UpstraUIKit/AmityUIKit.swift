@@ -155,6 +155,10 @@ public final class AmityUIKitManager {
         AmityEventHandler.shared = eventHandler
     }
     
+    public static func set(extensionEventHandler: AmityExtensionEventHandler) {
+        AmityExtensionEventHandler.shared = extensionEventHandler
+    }
+    
     public static func set(channelEventHandler: AmityChannelEventHandler) {
         AmityChannelEventHandler.shared = channelEventHandler
     }
