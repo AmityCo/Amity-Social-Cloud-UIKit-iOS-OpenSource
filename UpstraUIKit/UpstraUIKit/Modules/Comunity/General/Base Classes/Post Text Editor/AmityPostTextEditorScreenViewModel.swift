@@ -7,6 +7,7 @@
 //
 
 import AmitySDK
+import SwiftUI
 
 class AmityPostTextEditorScreenViewModel: AmityPostTextEditorScreenViewModelType {
     
@@ -30,6 +31,8 @@ class AmityPostTextEditorScreenViewModel: AmityPostTextEditorScreenViewModelType
     // MARK: - Action
     
     func createPost(text: String, medias: [AmityMedia], files: [AmityFile], communityId: String?, metadata: [String: Any]?, mentionees: AmityMentioneesBuilder?) {
+        
+        delegate?.showLoadingView()
         
         let targetType: AmityPostTargetType = communityId == nil ? .user : .community
         var postBuilder: AmityPostBuilder

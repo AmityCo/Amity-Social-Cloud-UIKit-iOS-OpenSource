@@ -35,6 +35,7 @@ protocol AmityPostTextEditorScreenViewModelDelegate: AnyObject {
     func screenViewModelDidCreatePost(_ viewModel: AmityPostTextEditorScreenViewModel, post: AmityPost?, error: Error?)
     func screenViewModelDidUpdatePost(_ viewModel: AmityPostTextEditorScreenViewModel, error: Error?)
     func screenViewModelDidCreatePostFailure(error: AmityError?)
+    func showLoadingView()
 }
 
 protocol AmityPostTextEditorScreenViewModelAction {

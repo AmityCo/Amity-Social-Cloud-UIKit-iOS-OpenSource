@@ -12,6 +12,7 @@ import AmitySDK
 import AVKit
 import MobileCoreServices
 import AVFoundation
+import SwiftUI
 
 public class AmityPostEditorSettings {
     
@@ -798,6 +799,17 @@ public class AmityPostTextEditorViewController: AmityViewController {
         addMedias(newMedias, type: .image)
     }
     
+    func showLoadingView() {
+        if fromGallery {
+            //Show indicator
+            let loadingView = UIHostingController(rootView: LoadingView())
+            addChild(loadingView)
+            loadingView.view.frame = UIScreen.main.bounds
+            self.view.addSubview(loadingView.view)
+            loadingView.didMove(toParent: self)
+        }
+    }
+    
 }
 
 extension AmityPostTextEditorViewController: TrueIDGalleryCollectionViewDelegate {
@@ -952,29 +964,90 @@ extension AmityPostTextEditorViewController: AmityPostTextEditorScreenViewModelD
         
         //If post from 'Today' page. Tell client to redirect
         if postType != nil {
+        
+            let model: CommunityPostEventModel
+            let userId = AmityUIKitManagerInternal.shared.currentUserId
+            let postId = post?.postId
+            
+            switch postTarget {
+            case .myFeed:
+                if error == nil {
+                    model = CommunityPostEventModel(isSuccess: true, userId: userId, postId: postId ?? "", postType: .shortcut)
+                } else {
+                    model = CommunityPostEventModel(isSuccess: false, userId: userId, postId: postId ?? "", postType: .shortcut)
+                }
+                AmityEventHandler.shared.finishPostEvent(model)
+                self.dismiss(animated: true, completion: nil)
+            case .community(let object):
+                let commuId = object.channelId
+                if error == nil {
+                    model = CommunityPostEventModel(isSuccess: true, userId: userId, commuId: commuId, postId: postId ?? "", postType: .shortcut)
+                } else {
+                    model = CommunityPostEventModel(isSuccess: false, userId: userId, commuId: commuId, postId: postId ?? "", postType: .shortcut)
+                }
+                AmityEventHandler.shared.finishPostEvent(model)
+                let commuVC = AmityCommunityProfilePageViewController.make(withCommunityId: commuId, fromToday: true)
+                navigationController?.pushViewController(commuVC, animated: true)
+            }
+            
+        } else {
+            //From Gallery case
             if fromGallery {
+                let resultView: AmityShareFromGalleryProcessingView
+                let model: CommunityPostEventModel
+                let userId = AmityUIKitManagerInternal.shared.currentUserId
+                let postId = post?.postId
                 
-            } else {
                 switch postTarget {
                 case .myFeed:
-                    let userId = AmityUIKitManagerInternal.shared.currentUserId
                     if error == nil {
-                        AmityEventHandler.shared.finishPostEvent(true, userId: userId)
+                        model = CommunityPostEventModel(isSuccess: true, userId: userId, postId: postId ?? "", postType: .gallery)
+                        resultView = AmityShareFromGalleryProcessingView(isSuccess: true)
                     } else {
-                        AmityEventHandler.shared.finishPostEvent(false, userId: userId)
+                        model = CommunityPostEventModel(isSuccess: false, userId: userId, postId: postId ?? "", postType: .gallery)
+                        resultView = AmityShareFromGalleryProcessingView(isSuccess: false)
                     }
-                    dismiss(animated: true, completion: nil)
                 case .community(let object):
                     let commuId = object.channelId
                     if error == nil {
-                        AmityEventHandler.shared.finishPostEvent(true, commuId: commuId)
-                        let commuVC = AmityCommunityProfilePageViewController.make(withCommunityId: commuId, fromToday: true)
-                        navigationController?.pushViewController(commuVC, animated: true)
+                        model = CommunityPostEventModel(isSuccess: true, userId: userId, commuId: commuId, postId: postId ?? "", postType: .gallery)
+                        resultView = AmityShareFromGalleryProcessingView(isSuccess: true)
                     } else {
-                        AmityEventHandler.shared.finishPostEvent(false, commuId: commuId)
+                        model = CommunityPostEventModel(isSuccess: false, userId: userId, commuId: commuId, postId: postId ?? "", postType: .gallery)
+                        resultView = AmityShareFromGalleryProcessingView(isSuccess: false)
                     }
                 }
                 
+                self.view.addSubview(resultView.view)
+                DispatchQueue.main.asyncAfter(deadline: .now()+2, execute: {
+                    self.postButton.isEnabled = false
+                    AmityExtensionEventHandler.shared.finishPostEvent(model)
+                    self.dismiss(animated: true, completion: nil)
+                })
+            } else {
+                // Default case
+                let model: CommunityPostEventModel
+                let userId = AmityUIKitManagerInternal.shared.currentUserId
+                let postId = post?.postId
+                
+                switch postTarget {
+                case .myFeed:
+                    if error == nil {
+                        model = CommunityPostEventModel(isSuccess: true, userId: userId, postId: postId ?? "")
+                    } else {
+                        model = CommunityPostEventModel(isSuccess: false, userId: userId, postId: postId ?? "")
+                    }
+                case .community(let object):
+                    let commuId = object.channelId
+                    if error == nil {
+                        model = CommunityPostEventModel(isSuccess: true, userId: userId, commuId: commuId, postId: postId ?? "")
+                    } else {
+                        model = CommunityPostEventModel(isSuccess: false, userId: userId, commuId: commuId, postId: postId ?? "")
+                    }
+                }
+                
+                AmityEventHandler.shared.finishPostEvent(model)
+                self.dismiss(animated: true, completion: nil)
             }
         }
     }
