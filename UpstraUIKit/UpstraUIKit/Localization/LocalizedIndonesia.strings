@@ -414,5 +414,6 @@
 "amity_video_stream_title_photo" = "Foto";
 "amirt_video_stream_please_allow_access_photo" = "Berikan akses untuk galeri foto";
 "amirt_video_stream_please_allow_access_camera" = "Berikan akses untuk kamera";
+"amity_video_stream_live_comment_placeholder" = "Chat with people";
 "community_title" = "KOMUNITAS";
 "community_search" = "Cari";

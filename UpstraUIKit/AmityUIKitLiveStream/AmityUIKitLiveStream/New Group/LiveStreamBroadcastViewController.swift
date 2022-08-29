@@ -402,6 +402,7 @@ final public class LiveStreamBroadcastViewController: UIViewController {
         commentTextView.layer.cornerRadius = 10
         commentTextView.customTextViewDelegate = self
         commentTextView.textContainer.lineBreakMode = .byTruncatingTail
+        commentTextView.placeholder = AmityLocalizedStringSet.LiveStream.Live.streamningCommentPlaceholder.localizedString
         
         postCommentButton.titleLabel?.font = AmityFontSet.body
         postCommentButton.addTarget(self, action: #selector(self.sendComment), for: .touchUpInside)
