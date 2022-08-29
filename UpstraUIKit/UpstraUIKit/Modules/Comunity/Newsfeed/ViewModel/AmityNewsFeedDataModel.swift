@@ -14,7 +14,16 @@ struct AmityNewsFeedDataModel: Decodable {
         case posts = "posts"
     }
     
-    var posts: [AmityFeedPostModel]
+    var posts: [AmityFeedPinPostModel]
+}
+
+struct AmityFeedPinPostModel: Codable {
+    
+    enum CodingKeys: String, CodingKey {
+        case postId = "postId"
+    }
+    
+    let postId: String?
 }
 
 struct AmityTodayNewsFeedDataModel: Decodable {
