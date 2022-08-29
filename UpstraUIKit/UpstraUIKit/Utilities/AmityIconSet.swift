@@ -169,4 +169,6 @@ public struct AmityIconSet {
     
     //MARK: - Add by Mono
     public static var iconChatInCommunity = UIImage(named: "icon_chat_true_id", in: AmityUIKitManager.bundle, compatibleWith: nil)
+    public static var iconShareFromGallerySuccess = UIImage(named: "icon_share_from_gallery_success", in: AmityUIKitManager.bundle, compatibleWith: nil)
+    public static var iconShareFromGalleryFail = UIImage(named: "icon_share_from_gallery_fail", in: AmityUIKitManager.bundle, compatibleWith: nil)
 }

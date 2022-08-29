@@ -1018,6 +1018,7 @@ extension AmityPostTextEditorViewController: AmityPostTextEditorScreenViewModelD
                     }
                 }
                 
+                resultView.view.center = self.view.center
                 self.view.addSubview(resultView.view)
                 DispatchQueue.main.asyncAfter(deadline: .now()+2, execute: {
                     self.postButton.isEnabled = false

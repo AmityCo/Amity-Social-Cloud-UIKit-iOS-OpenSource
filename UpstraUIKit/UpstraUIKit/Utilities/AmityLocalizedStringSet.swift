@@ -605,5 +605,11 @@ public struct AmityLocalizedStringSet {
         static let errorMessageConnectionError = "error_message_connection_error"
     }
     
+    // MARK: - Share from gallery
+    public enum ShareFromGallery {
+        static let shareSuccessMessage = "share_success_message"
+        static let shareFailMessage = "share_fail_message"
+    }
+    
     
 }

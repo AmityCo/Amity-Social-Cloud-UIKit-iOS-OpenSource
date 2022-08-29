@@ -416,3 +416,6 @@
 "amirt_video_stream_please_allow_access_camera" = "โปรดอนุญาตให้เข้าถึงไลบรารีของกล้อง";
 "community_title" = "คอมมูนิตี้";
 "community_search" = "ค้นหา";
+
+"share_success_message" = "แชร์ไปไทม์ไลน์สำเร็จ";
+"share_fail_message" = "การแชร์ล้มเหลว";

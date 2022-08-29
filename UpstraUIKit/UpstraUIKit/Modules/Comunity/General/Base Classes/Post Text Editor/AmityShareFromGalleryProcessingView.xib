@@ -22,14 +22,14 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon_close_with_background" translatesAutoresizingMaskIntoConstraints="NO" id="sgy-dG-OpC">
-                    <rect key="frame" x="157" y="244" width="100" height="100"/>
+                    <rect key="frame" x="157" y="353" width="100" height="100"/>
                     <constraints>
                         <constraint firstAttribute="width" constant="100" id="5Do-Ce-JF5"/>
                         <constraint firstAttribute="height" constant="100" id="vYa-mE-QW8"/>
                     </constraints>
                 </imageView>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Test text Test text Test text Test text Test text Test text Test text Test text Test text " textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Q9W-al-phx">
-                    <rect key="frame" x="55" y="364" width="304" height="61"/>
+                    <rect key="frame" x="55" y="473" width="304" height="61"/>
                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                     <nil key="textColor"/>
                     <nil key="highlightedColor"/>
@@ -38,8 +38,8 @@
             <viewLayoutGuide key="safeArea" id="vUN-kp-3ea"/>
             <color key="backgroundColor" systemColor="systemBackgroundColor"/>
             <constraints>
+                <constraint firstItem="sgy-dG-OpC" firstAttribute="centerY" secondItem="vUN-kp-3ea" secondAttribute="centerY" constant="-50" id="0Kf-mr-Xus"/>
                 <constraint firstItem="Q9W-al-phx" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" constant="55" id="DiT-Pe-zav"/>
-                <constraint firstItem="sgy-dG-OpC" firstAttribute="top" secondItem="vUN-kp-3ea" secondAttribute="top" constant="200" id="FqF-AS-49W"/>
                 <constraint firstItem="Q9W-al-phx" firstAttribute="top" secondItem="sgy-dG-OpC" secondAttribute="bottom" constant="20" id="eYH-G2-MvN"/>
                 <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="Q9W-al-phx" secondAttribute="trailing" constant="55" id="tEe-Id-sNy"/>
                 <constraint firstItem="sgy-dG-OpC" firstAttribute="centerX" secondItem="vUN-kp-3ea" secondAttribute="centerX" id="zYM-ek-I4n"/>

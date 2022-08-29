@@ -425,3 +425,6 @@
 "amirt_video_stream_please_allow_access_camera" = "Please allow access camera library";
 "community_title" = "Community";
 "community_search" = "Search";
+
+"share_success_message" = "Share to timeline successfully";
+"share_fail_message" = "Failed to share to timeline";

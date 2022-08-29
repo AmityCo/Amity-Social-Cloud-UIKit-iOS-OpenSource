@@ -423,3 +423,6 @@
 "amirt_video_stream_please_allow_access_camera" = "camera library မှ allow access ကို ရွေးချယ်ပါ";
 "community_title" = "အဖွဲ့အစည်း";
 "community_search" = "ရှာဖွေသည်";
+
+"share_success_message" = "Share to timeline successfully";
+"share_fail_message" = "Failed to share to timeline";
