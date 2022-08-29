@@ -416,3 +416,6 @@
 "amirt_video_stream_please_allow_access_camera" = "Berikan akses untuk kamera";
 "community_title" = "KOMUNITAS";
 "community_search" = "Cari";
+
+"share_success_message" = "Share to timeline successfully";
+"share_fail_message" = "Failed to share to timeline";

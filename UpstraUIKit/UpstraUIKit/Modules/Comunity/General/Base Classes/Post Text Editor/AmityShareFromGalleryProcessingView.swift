@@ -31,11 +31,11 @@ class AmityShareFromGalleryProcessingView: AmityViewController {
     
     func updateProcessing(success: Bool) {
         if success {
-            resultImageView.image = AmityIconSet.iconLike
-            resultLabel.text = "Share to your timeline,\nsuccessfully"
+            resultImageView.image = AmityIconSet.iconShareFromGallerySuccess
+            resultLabel.text = AmityLocalizedStringSet.ShareFromGallery.shareSuccessMessage.localizedString
         } else {
-            resultImageView.image = AmityIconSet.iconClose
-            resultLabel.text = "Failed to share to your\ntimeline."
+            resultImageView.image = AmityIconSet.iconShareFromGalleryFail
+            resultLabel.text = AmityLocalizedStringSet.ShareFromGallery.shareFailMessage.localizedString
         }
     }
     
