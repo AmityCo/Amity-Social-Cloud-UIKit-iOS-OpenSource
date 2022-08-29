@@ -230,22 +230,18 @@ public class LiveStreamPlayerViewController: UIViewController {
             UIBarButtonItem(title: AmityLocalizedStringSet.General.done.localizedString, style: .done, target: self, action: #selector(cancelInput))
         ]
         textViewToolbar.sizeToFit()
-//        commentTextView.inputAccessoryView = textViewToolbar
-        commentTextView.backgroundColor = UIColor(hex: "#1C1C1C")
-        commentTextView.layer.borderWidth = 1
-        commentTextView.layer.borderColor = AmityColorSet.secondary.blend(.shade4).cgColor
+        commentTextView.backgroundColor = UIColor(hex: "#474747")
         commentTextView.layer.cornerRadius = 4
-        commentTextView.font = AmityFontSet.body.withSize(15)
-        commentTextView.textColor = UIColor(hex: "#808080")
-        commentTextView.layer.borderColor = UIColor(hex: "#808080").cgColor
+        commentTextView.font = AmityFontSet.body
+        commentTextView.textColor = UIColor(hex: "#8c8c8c")
         commentTextView.layer.cornerRadius = 10
         commentTextView.customTextViewDelegate = self
         commentTextView.textContainer.lineBreakMode = .byTruncatingTail
         
-        postCommentButton.titleLabel?.font = AmityFontSet.body.withSize(15)
+        postCommentButton.titleLabel?.font = AmityFontSet.body
         postCommentButton.addTarget(self, action: #selector(self.sendComment), for: .touchUpInside)
         
-        liveCommentView.backgroundColor = UIColor(hex: "#404040", alpha: 1.0)
+        liveCommentView.backgroundColor = UIColor(hex: "#000000", alpha: 1.0)
         
     }
     
@@ -272,7 +268,7 @@ public class LiveStreamPlayerViewController: UIViewController {
                     self.likeButton.isHidden = false
                     self.dislikeButton.isHidden = true
                 }
-                self.likeCountLabel.text = String(post.reactionsCount)
+//                self.likeCountLabel.text = String(post.reactionsCount)
             }
         }
     }
