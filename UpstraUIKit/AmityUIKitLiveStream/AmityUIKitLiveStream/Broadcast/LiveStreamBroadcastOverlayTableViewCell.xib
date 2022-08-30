@@ -27,10 +27,10 @@
                         </constraints>
                     </view>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="hix-An-j8X">
-                        <rect key="frame" x="40" y="5" width="275" height="50"/>
+                        <rect key="frame" x="40" y="5" width="51.5" height="50"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3ed-af-YjF" userLabel="Display name">
-                                <rect key="frame" x="5" y="5" width="265" height="18"/>
+                                <rect key="frame" x="5" y="5" width="41.5" height="18"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="18" id="bgl-qJ-5bi"/>
                                 </constraints>
@@ -39,7 +39,7 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xeO-ut-h0E">
-                                <rect key="frame" x="5" y="23" width="265" height="27"/>
+                                <rect key="frame" x="5" y="23" width="41.5" height="27"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
@@ -61,7 +61,7 @@
                     <constraint firstItem="Idr-9F-E5P" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="5" id="0ss-RI-6W6"/>
                     <constraint firstItem="hix-An-j8X" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="5" id="7Vw-Sg-adh"/>
                     <constraint firstItem="Idr-9F-E5P" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="5" id="BmF-cy-AbR"/>
-                    <constraint firstAttribute="trailing" secondItem="hix-An-j8X" secondAttribute="trailing" constant="5" id="f80-SS-mMa"/>
+                    <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="hix-An-j8X" secondAttribute="trailing" constant="5" id="f80-SS-mMa"/>
                     <constraint firstItem="hix-An-j8X" firstAttribute="leading" secondItem="Idr-9F-E5P" secondAttribute="trailing" constant="5" id="gn4-cm-4XX"/>
                     <constraint firstAttribute="bottom" secondItem="hix-An-j8X" secondAttribute="bottom" constant="5" id="k7R-Xe-QWY"/>
                 </constraints>

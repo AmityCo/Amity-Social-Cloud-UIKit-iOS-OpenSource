@@ -506,6 +506,7 @@ public struct AmityLocalizedStringSet {
             public static let findPostData = "amity_video_stream_unable_to_find_post_data"
             public static let findPostStremData = "amity_video_stream_unable_to_find_create_stream"
             public static let recorded = "amity_video_stream_recorded"
+            public static let streamningCommentPlaceholder = "amity_video_stream_live_comment_placeholder"
         }
         
         public enum Alert {

@@ -422,6 +422,8 @@
 "amity_video_stream_title_photo" = "រូបថត";
 "amirt_video_stream_please_allow_access_photo" = "សូមអនុញ្ញាតឱ្យចូលប្រើបណ្ណាល័យរូបថត";
 "amirt_video_stream_please_allow_access_camera" = "សូមអនុញ្ញាតឱ្យចូលប្រើបណ្ណាល័យកាមេរ៉ា";
+"amity_video_stream_live_comment_placeholder" = "Chat with people";
+
 "community_title" = "សហគមន៍";
 "community_search" = "ស្វែងរក";
 
