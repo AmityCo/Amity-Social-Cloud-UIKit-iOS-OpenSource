@@ -404,8 +404,10 @@ private extension AmityRecentChatScreenViewModel {
     }
     
     private func prepareDataSource(collection: AmityCollection<AmityFollowRelationship>, error: Error?) {
+        //Stop observe when already get data.
+        followToken?.invalidate()
+        
         if let _ = error {
-            followToken?.invalidate()
             delegate?.screenViewModelDidGetListFail()
             return
         }
