@@ -190,12 +190,10 @@ extension AmityRecentChatViewController: AmityRecentChatScreenViewModelDelegate 
     }
     
     func screenViewModelDidGetListSuccess() {
-        setupHeaderView()
         collectionView.reloadData()
     }
     
     func screenViewModelDidGetListFail() {
-        setupHeaderView()
     }
     
     func screenViewModelDidCreateCommunity(channelId: String) {
@@ -207,6 +205,7 @@ extension AmityRecentChatViewController: AmityRecentChatScreenViewModelDelegate 
     }
     
     func screenViewModelDidGetChannel() {
+        setupHeaderView()
         tableView.reloadData()
     }
     

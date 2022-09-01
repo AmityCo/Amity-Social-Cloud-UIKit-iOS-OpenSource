@@ -8,7 +8,7 @@
 
 import SwiftUI
 
-public struct LoadingView: View {
+public struct AmityLoadingView: View {
     @Environment (\.colorScheme) var colorScheme: ColorScheme
     @State private var isLoading = false
     

@@ -802,7 +802,7 @@ public class AmityPostTextEditorViewController: AmityViewController {
     func showLoadingView() {
         if fromGallery {
             //Show indicator
-            let loadingView = UIHostingController(rootView: LoadingView())
+            let loadingView = UIHostingController(rootView: AmityLoadingView())
             addChild(loadingView)
             loadingView.view.frame = UIScreen.main.bounds
             self.view.addSubview(loadingView.view)
