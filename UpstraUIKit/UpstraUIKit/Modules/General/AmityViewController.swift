@@ -122,7 +122,7 @@ open class AmityViewController: UIViewController {
         case .present:
             titleFont = AmityFontSet.title
             navigationItem.titleView = titleLabel
-            leftBarButtonItem?.image = AmityIconSet.iconClose
+            leftBarButtonItem?.image = AmityIconSet.iconBack
             navigationItem.leftBarButtonItem = leftBarButtonItem
         case .push:
             titleFont = AmityFontSet.title
