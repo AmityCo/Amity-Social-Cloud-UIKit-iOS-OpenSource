@@ -427,3 +427,4 @@
 
 "share_success_message" = "Share to timeline successfully";
 "share_fail_message" = "Failed to share to timeline";
+"share_loading_message" = "Posting...";

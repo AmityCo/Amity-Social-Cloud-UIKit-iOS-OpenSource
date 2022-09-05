@@ -457,7 +457,7 @@ public class LiveStreamPlayerViewController: UIViewController {
         notificationCenterFromBG.addObserver(self, selector: #selector(playStream), name: UIApplication.didBecomeActiveNotification, object: nil)
     }
     
-    private func playStream() {
+    @objc private func playStream() {
         
         isStarting = true
         
@@ -494,7 +494,7 @@ public class LiveStreamPlayerViewController: UIViewController {
         })
     }
     
-    private func stopStream() {
+    @objc private func stopStream() {
         player.stop()
     }
     
