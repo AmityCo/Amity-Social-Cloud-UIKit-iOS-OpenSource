@@ -149,6 +149,7 @@ public class LiveStreamPlayerViewController: UIViewController {
         getLiveStreamViwerCount()
         setupTableView()
         setupKeyboardListener()
+        setBackgroundListener()
         startRealTimeEventSubscribe()
     }
     
@@ -446,6 +447,14 @@ public class LiveStreamPlayerViewController: UIViewController {
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: UIResponder.keyboardWillShowNotification, object: nil)
         
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: UIResponder.keyboardWillHideNotification, object: nil)
+    }
+    
+    func setBackgroundListener(){
+        let notificationCenterGoBG = NotificationCenter.default
+        notificationCenterGoBG.addObserver(self, selector: #selector(stopStream), name: UIApplication.willResignActiveNotification, object: nil)
+        
+        let notificationCenterFromBG = NotificationCenter.default
+        notificationCenterFromBG.addObserver(self, selector: #selector(playStream), name: UIApplication.didBecomeActiveNotification, object: nil)
     }
     
     private func playStream() {
