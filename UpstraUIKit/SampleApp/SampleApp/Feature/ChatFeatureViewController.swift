@@ -118,7 +118,7 @@ extension ChatFeatureViewController: UITableViewDelegate {
             navigationController?.pushViewController(vc, animated: true)
         case .chatList:
             ChatFeatureSetting.shared.iscustomMessageEnabled = false
-            let vc = AmityRecentChatViewController.make(channelType: .community)
+            let vc = AmityRecentChatViewController.make(channelType: .conversation)
             navigationController?.pushViewController(vc, animated: true)
         case .chatListCustomize:
             ChatFeatureSetting.shared.iscustomMessageEnabled = true
