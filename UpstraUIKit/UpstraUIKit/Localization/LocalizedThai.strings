@@ -420,3 +420,4 @@
 
 "share_success_message" = "แชร์ไปไทม์ไลน์สำเร็จ";
 "share_fail_message" = "การแชร์ล้มเหลว";
+"share_loading_message" = "กำลังโพสต์...";

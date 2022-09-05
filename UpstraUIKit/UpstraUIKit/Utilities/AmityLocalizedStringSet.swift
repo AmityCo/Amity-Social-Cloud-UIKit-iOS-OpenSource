@@ -610,6 +610,7 @@ public struct AmityLocalizedStringSet {
     public enum ShareFromGallery {
         static let shareSuccessMessage = "share_success_message"
         static let shareFailMessage = "share_fail_message"
+        static let loadingMessage = "share_loading_message"
     }
     
     
