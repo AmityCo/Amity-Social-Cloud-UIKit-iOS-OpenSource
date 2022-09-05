@@ -218,10 +218,12 @@ final class AmityRecentChatScreenViewModel: AmityRecentChatScreenViewModelType {
         
         let channelObject = channelRepository.createChannel(with: builder)
         communityToken?.invalidate()
-        communityToken = channelObject.observe { channelObject, error in
-            if let channelId = channelObject.object?.channelId {
-                self.communityToken?.invalidate()
-                self.delegate?.screenViewModelDidCreateCommunity(channelId: channelId)
+        DispatchQueue.main.async {
+            self.communityToken = channelObject.observe { channelObject, error in
+                if let channelId = channelObject.object?.channelId {
+                    self.communityToken?.invalidate()
+                    self.delegate?.screenViewModelDidCreateCommunity(channelId: channelId)
+                }
             }
         }
     }
@@ -304,6 +306,7 @@ private extension AmityRecentChatScreenViewModel {
         
         followToken?.invalidate()
         followToken = followersCollection?.observe { [weak self] collection, _, error in
+            //Stop observe when already get data.
             self?.followToken?.invalidate()
             self?.prepareDataSource(collection: collection, error: error)
         }
@@ -343,13 +346,13 @@ private extension AmityRecentChatScreenViewModel {
             _channels.append(model)
         }
         channels = _channels
-        
+
         for (index, channel) in channels.enumerated() {
             getRecentMessage(channelModel: channel, index: index) { [weak self] (model, index) in
                 self?.channels[index] = model
             }
         }
-        
+
         delegate?.screenViewModelLoadingState(for: .loaded)
         delegate?.screenViewModelDidGetChannel()
         delegate?.screenViewModelEmptyView(isEmpty: channels.isEmpty)
@@ -404,8 +407,6 @@ private extension AmityRecentChatScreenViewModel {
     }
     
     private func prepareDataSource(collection: AmityCollection<AmityFollowRelationship>, error: Error?) {
-        //Stop observe when already get data.
-        followToken?.invalidate()
         
         if let _ = error {
             delegate?.screenViewModelDidGetListFail()

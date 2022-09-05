@@ -94,25 +94,23 @@ final class AmityRecentChatTableViewCell: UITableViewCell, Nibbable {
                                              placeholder: AmityIconSet.defaultAvatar)
                 }
             } else {
+                let otherUserId = channel.getOtherUserId()
                 participateToken?.invalidate()
                 participateToken = channel.participation.getMembers(filter: .all, sortBy: .firstCreated, roles: []).observe { collection, change, error in
                     for i in 0..<collection.count(){
                         let userId = collection.object(at: i)?.userId
                         if userId != AmityUIKitManagerInternal.shared.currentUserId {
-                            self.token = self.repository?.getUser(userId ?? "").observe { [weak self] user, error in
-                                self?.token?.invalidate()
-                                guard let userObject = user.object else { return }
-                                self?.titleLabel.text = userObject.displayName
-                                let userModel = AmityUserModel(user: userObject)
-                                if !userModel.avatarCustomURL.isEmpty {
-                                    self?.avatarView.setImage(withCustomURL: userModel.avatarCustomURL,
-                                                             placeholder: AmityIconSet.defaultAvatar)
-                                    RecentChatAvatarArray.shared.avatarArray.append(RecentChatAvatar(channelId: channel.channelId, avatarURL: userModel.avatarCustomURL, displayName: userModel.displayName, isCustom: true))
-                                } else {
-                                    self?.avatarView.setImage(withImageURL: userModel.avatarURL,
-                                                              placeholder: AmityIconSet.defaultAvatar)
-                                    RecentChatAvatarArray.shared.avatarArray.append(RecentChatAvatar(channelId: channel.channelId, avatarURL: userModel.avatarURL, displayName: userModel.displayName, isCustom: false))
-                                }
+                            let otherUserModel = AmityUserModel(user: (collection.object(at: i)?.user)!)
+                            let userModel = otherUserModel
+                            self.titleLabel.text = userModel.displayName
+                            if !userModel.avatarCustomURL.isEmpty {
+                                self.avatarView.setImage(withCustomURL: userModel.avatarCustomURL,
+                                                         placeholder: AmityIconSet.defaultAvatar)
+                                RecentChatAvatarArray.shared.avatarArray.append(RecentChatAvatar(channelId: channel.channelId, avatarURL: userModel.avatarCustomURL, displayName: userModel.displayName, isCustom: true))
+                            } else {
+                                self.avatarView.setImage(withImageURL: userModel.avatarURL,
+                                                          placeholder: AmityIconSet.defaultAvatar)
+                                RecentChatAvatarArray.shared.avatarArray.append(RecentChatAvatar(channelId: channel.channelId, avatarURL: userModel.avatarURL, displayName: userModel.displayName, isCustom: false))
                             }
                         }
                     }
