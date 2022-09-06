@@ -232,17 +232,17 @@ to watch shortly.</string>
                             <nil key="highlightedColor"/>
                         </label>
                         <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="NcS-Ka-yRI" userLabel="Comment TableView">
-                            <rect key="frame" x="15" y="-100" width="316" height="270"/>
+                            <rect key="frame" x="15" y="-100" width="319" height="270"/>
                             <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="270" id="Vss-cx-0zn"/>
                             </constraints>
                         </tableView>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="aNk-S4-LvX" userLabel="Hide Button">
-                            <rect key="frame" x="341" y="122" width="48" height="48"/>
+                            <rect key="frame" x="344" y="125" width="45" height="45"/>
                             <constraints>
-                                <constraint firstAttribute="width" constant="48" id="Ot5-57-JiM"/>
-                                <constraint firstAttribute="height" constant="48" id="Tfz-MV-tg1"/>
+                                <constraint firstAttribute="width" constant="45" id="Ot5-57-JiM"/>
+                                <constraint firstAttribute="height" constant="45" id="Tfz-MV-tg1"/>
                             </constraints>
                             <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
                             <state key="normal" image="livestream_hide_comment"/>
@@ -251,11 +251,7 @@ to watch shortly.</string>
                             </connections>
                         </button>
                         <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ycJ-61-eqc" userLabel="Show Button">
-                            <rect key="frame" x="341" y="122" width="48" height="48"/>
-                            <constraints>
-                                <constraint firstAttribute="width" constant="48" id="BN8-bB-J4k"/>
-                                <constraint firstAttribute="height" constant="48" id="QrF-3N-beh"/>
-                            </constraints>
+                            <rect key="frame" x="344" y="125" width="45" height="45"/>
                             <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
                             <state key="normal" image="livestream_show_comment"/>
                             <connections>
@@ -336,18 +332,19 @@ to watch shortly.</string>
                     </subviews>
                     <viewLayoutGuide key="safeArea" id="DUK-Je-sWA"/>
                     <constraints>
-                        <constraint firstItem="ycJ-61-eqc" firstAttribute="width" secondItem="aNk-S4-LvX" secondAttribute="width" id="0Qv-w3-cYF"/>
-                        <constraint firstItem="ycJ-61-eqc" firstAttribute="height" secondItem="aNk-S4-LvX" secondAttribute="height" id="74W-oN-xFI"/>
                         <constraint firstItem="NcS-Ka-yRI" firstAttribute="leading" secondItem="vhx-J6-EZs" secondAttribute="leading" constant="15" id="8SJ-O0-zr9"/>
                         <constraint firstAttribute="trailing" secondItem="rMN-jh-cKQ" secondAttribute="trailing" id="9tB-Dl-XXD"/>
                         <constraint firstItem="ycJ-61-eqc" firstAttribute="centerX" secondItem="aNk-S4-LvX" secondAttribute="centerX" id="DOV-0s-JqY"/>
                         <constraint firstItem="aNk-S4-LvX" firstAttribute="leading" secondItem="NcS-Ka-yRI" secondAttribute="trailing" constant="10" id="EqQ-sa-dfE"/>
                         <constraint firstAttribute="height" constant="250" id="NaD-wR-qzG"/>
                         <constraint firstItem="rMN-jh-cKQ" firstAttribute="leading" secondItem="vhx-J6-EZs" secondAttribute="leading" id="O3A-4n-ERo"/>
+                        <constraint firstItem="ycJ-61-eqc" firstAttribute="height" secondItem="aNk-S4-LvX" secondAttribute="height" id="OZj-oW-YTF"/>
                         <constraint firstItem="aNk-S4-LvX" firstAttribute="bottom" secondItem="NcS-Ka-yRI" secondAttribute="bottom" id="Rj2-wg-SAS"/>
                         <constraint firstItem="rMN-jh-cKQ" firstAttribute="top" secondItem="NcS-Ka-yRI" secondAttribute="bottom" constant="10" id="RkY-hl-Fti"/>
+                        <constraint firstItem="aNk-S4-LvX" firstAttribute="trailing" secondItem="Trc-GE-dDu" secondAttribute="trailing" id="XSz-SZ-Awk"/>
                         <constraint firstItem="aNk-S4-LvX" firstAttribute="trailing" secondItem="3YZ-Az-dkB" secondAttribute="trailing" id="h7f-c0-fcK"/>
                         <constraint firstAttribute="bottom" secondItem="rMN-jh-cKQ" secondAttribute="bottom" id="jql-LA-KHj"/>
+                        <constraint firstItem="ycJ-61-eqc" firstAttribute="width" secondItem="aNk-S4-LvX" secondAttribute="width" id="lty-1Y-gZc"/>
                         <constraint firstItem="ycJ-61-eqc" firstAttribute="centerY" secondItem="aNk-S4-LvX" secondAttribute="centerY" id="vhW-Rx-2aH"/>
                     </constraints>
                 </view>
