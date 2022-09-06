@@ -979,7 +979,7 @@ extension AmityPostTextEditorViewController: AmityPostTextEditorScreenViewModelD
                 AmityEventHandler.shared.finishPostEvent(model)
                 self.dismiss(animated: true, completion: nil)
             case .community(let object):
-                let commuId = object.channelId
+                let commuId = object.communityId
                 if error == nil {
                     model = CommunityPostEventModel(isSuccess: true, userId: userId, commuId: commuId, postId: postId ?? "", postType: .shortcut)
                 } else {
