@@ -98,26 +98,22 @@ extension AmityMessageListHeaderView {
             participateToken = channel.participation.getMembers(filter: .all, sortBy: .firstCreated, roles: []).observe { collection, change, error in
                 for i in 0..<collection.count(){
                     let userId = collection.object(at: i)?.userId
+                    guard let otherUserModel = collection.object(at: i)?.user else { return }
                     if userId != AmityUIKitManagerInternal.shared.currentUserId {
-                        self.token = self.repository?.getUser(userId ?? "").observe { [weak self] user, error in
-                            self?.token?.invalidate()
-                            guard let userObject = user.object else { return }
-                            self?.userId = userObject.userId
-                            self?.displayNameLabel.text = userObject.displayName
-                            let userModel = AmityUserModel(user: userObject)
-                            if !userModel.avatarCustomURL.isEmpty {
-                                if self?.avatarURL != userModel.avatarCustomURL {
-                                    self?.avatarView.setImage(withCustomURL: userModel.avatarCustomURL,
-                                                             placeholder: AmityIconSet.defaultAvatar)
-                                    self?.avatarURL = userModel.avatarCustomURL
-                                }
-                                
-                            } else {
-                                if self?.avatarURL != userModel.avatarURL {
-                                    self?.avatarView.setImage(withImageURL: userModel.avatarURL,
-                                                              placeholder: AmityIconSet.defaultAvatar)
-                                    self?.avatarURL = userModel.avatarURL
-                                }
+                        let userModel = AmityUserModel(user: otherUserModel)
+                        self.userId = userModel.userId
+                        self.displayNameLabel.text = userModel.displayName
+                        if !userModel.avatarCustomURL.isEmpty {
+                            if self.avatarURL != userModel.avatarCustomURL {
+                                self.avatarView.setImage(withCustomURL: userModel.avatarCustomURL,
+                                                          placeholder: AmityIconSet.defaultAvatar)
+                                self.avatarURL = userModel.avatarCustomURL
+                            }
+                        } else {
+                            if self.avatarURL != userModel.avatarURL {
+                                self.avatarView.setImage(withImageURL: userModel.avatarURL,
+                                                          placeholder: AmityIconSet.defaultAvatar)
+                                self.avatarURL = userModel.avatarURL
                             }
                         }
                     }
