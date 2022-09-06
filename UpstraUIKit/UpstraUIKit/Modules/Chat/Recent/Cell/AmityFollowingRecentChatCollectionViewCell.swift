@@ -29,7 +29,7 @@ class AmityFollowingRecentChatCollectionViewCell: UICollectionViewCell, Nibbable
         containerView.backgroundColor = AmityColorSet.backgroundColor
         avatarView.placeholderPostion = .fullSize
         avatarView.placeholder = AmityIconSet.defaultCommunity
-        avatarView.contentMode = .scaleAspectFill
+        avatarView.contentMode = .scaleAspectFit
         avatarView.isUserInteractionEnabled = false
         displayNameLabel.text = ""
         displayNameLabel.textAlignment = .center
@@ -39,6 +39,7 @@ class AmityFollowingRecentChatCollectionViewCell: UICollectionViewCell, Nibbable
     
     func display(with value: AmityUserModel) {
         displayNameLabel.text = value.displayName
+        avatarView.contentMode = .scaleAspectFit
         if !value.avatarCustomURL.isEmpty {
             avatarView.setImage(withCustomURL: value.avatarCustomURL, placeholder: AmityIconSet.defaultCommunity)
         } else {

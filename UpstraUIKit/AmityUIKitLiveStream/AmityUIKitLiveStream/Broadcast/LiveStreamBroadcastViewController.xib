@@ -102,10 +102,10 @@
                             </connections>
                         </button>
                         <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="C8q-EX-mrC" userLabel="Show button">
-                            <rect key="frame" x="351" y="690" width="48" height="48"/>
+                            <rect key="frame" x="363" y="702" width="36" height="36"/>
                             <constraints>
-                                <constraint firstAttribute="width" constant="48" id="3aD-Uo-eC0"/>
-                                <constraint firstAttribute="height" constant="48" id="lPU-iM-Hhh"/>
+                                <constraint firstAttribute="width" constant="36" id="3aD-Uo-eC0"/>
+                                <constraint firstAttribute="height" constant="36" id="lPU-iM-Hhh"/>
                             </constraints>
                             <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
                             <state key="normal" image="livestream_show_comment"/>
@@ -114,11 +114,7 @@
                             </connections>
                         </button>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="mQw-de-yAH" userLabel="Hide button">
-                            <rect key="frame" x="351" y="690" width="48" height="48"/>
-                            <constraints>
-                                <constraint firstAttribute="width" constant="48" id="OJf-La-Dg2"/>
-                                <constraint firstAttribute="height" constant="48" id="xmc-N7-ebY"/>
-                            </constraints>
+                            <rect key="frame" x="363" y="702" width="36" height="36"/>
                             <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
                             <state key="normal" image="livestream_hide_comment"/>
                             <connections>
@@ -126,7 +122,7 @@
                             </connections>
                         </button>
                         <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="pa6-0I-Wgo" userLabel="Comment TableView">
-                            <rect key="frame" x="15" y="468" width="326" height="270"/>
+                            <rect key="frame" x="15" y="468" width="338" height="270"/>
                             <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="270" id="hYC-Bd-Z0W"/>
@@ -226,10 +222,12 @@
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <constraints>
                         <constraint firstItem="xoP-1u-M6Z" firstAttribute="centerX" secondItem="hb4-4n-9QZ" secondAttribute="centerX" constant="1" id="2Xo-4u-AKa"/>
+                        <constraint firstItem="mQw-de-yAH" firstAttribute="width" secondItem="C8q-EX-mrC" secondAttribute="width" id="9jH-0X-Ndd"/>
                         <constraint firstItem="8Lt-xq-V8q" firstAttribute="top" secondItem="pa6-0I-Wgo" secondAttribute="bottom" constant="10" id="DtJ-Va-yFY"/>
                         <constraint firstItem="C8q-EX-mrC" firstAttribute="leading" secondItem="pa6-0I-Wgo" secondAttribute="trailing" constant="10" id="FZ4-yu-P0O"/>
                         <constraint firstItem="tUC-ur-UUT" firstAttribute="trailing" secondItem="C8q-EX-mrC" secondAttribute="trailing" constant="15" id="Gux-zS-XXa"/>
                         <constraint firstItem="mQw-de-yAH" firstAttribute="centerY" secondItem="C8q-EX-mrC" secondAttribute="centerY" id="Ly6-bx-345"/>
+                        <constraint firstItem="mQw-de-yAH" firstAttribute="height" secondItem="C8q-EX-mrC" secondAttribute="height" id="MXy-0Z-AK4"/>
                         <constraint firstItem="8Lt-xq-V8q" firstAttribute="leading" secondItem="tUC-ur-UUT" secondAttribute="leading" id="R6o-rw-McC"/>
                         <constraint firstAttribute="trailing" secondItem="hb4-4n-9QZ" secondAttribute="trailing" id="SfJ-O5-enB"/>
                         <constraint firstItem="pa6-0I-Wgo" firstAttribute="leading" secondItem="tUC-ur-UUT" secondAttribute="leading" constant="15" id="Z6B-Y8-Zms"/>
