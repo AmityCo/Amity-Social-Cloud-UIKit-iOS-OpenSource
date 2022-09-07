@@ -446,19 +446,22 @@ private extension AmityMessageListViewController {
 extension AmityMessageListViewController: AmityKeyboardServiceDelegate {
     func keyboardWillChange(service: AmityKeyboardService, height: CGFloat, animationDuration: TimeInterval) {
         
-        let offset = height > 0 ? view.safeAreaInsets.bottom : 0
-        bottomConstraint.constant = -height + offset
-        
-        view.setNeedsUpdateConstraints()
-        view.layoutIfNeeded()
-        
-        if height == 0 {
-            screenViewModel.action.toggleKeyboardVisible(visible: false)
-            screenViewModel.action.inputSource(for: .default)
-        } else {
-            screenViewModel.action.toggleKeyboardVisible(visible: true)
-            screenViewModel.shouldScrollToBottom(force: true)
+        UIView.performWithoutAnimation {
+            let offset = height > 0 ? view.safeAreaInsets.bottom : 0
+            bottomConstraint.constant = -height + offset
+            
+            view.setNeedsUpdateConstraints()
+            view.layoutIfNeeded()
+            
+            if height == 0 {
+                screenViewModel.action.toggleKeyboardVisible(visible: false)
+                screenViewModel.action.inputSource(for: .default)
+            } else {
+                screenViewModel.action.toggleKeyboardVisible(visible: true)
+                screenViewModel.shouldScrollToBottom(force: true)
+            }
         }
+        
     }
 }
 
