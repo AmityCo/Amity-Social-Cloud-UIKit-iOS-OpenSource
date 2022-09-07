@@ -26,6 +26,7 @@ class ChatFeatureViewController: UIViewController {
         case chatListCustomize
         case messageListWithTextOnlyKeyboard
         case createFromContact
+        case getNotiCount
 
         var text: String {
             switch self {
@@ -39,6 +40,8 @@ class ChatFeatureViewController: UIViewController {
                 return "Message List with text only keyboard"
             case .createFromContact:
                 return "Create chat from contact"
+            case .getNotiCount:
+                return "Get Noti"
             }
         }
         
@@ -135,6 +138,18 @@ extension ChatFeatureViewController: UITableViewDelegate {
                     self.navigationController?.pushViewController(vc, animated: true)
                 case .failure(let error):
                     print("Error from create channel: \(error.localizedDescription)")
+                }
+            }
+        case .getNotiCount:
+            AmityChatHandler.shared.getUnreadCountFromASC { completion in
+                switch completion {
+                case .success(let count):
+                    print("Get Rednose: \(count)")
+                    let alert = UIAlertController(title: "Alert RedNose", message: "RedNose count: \(count)", preferredStyle: .alert)
+                    alert.addAction(UIAlertAction(title: "Ok", style: .default, handler: nil))
+                    self.present(alert, animated: true)
+                case .failure(let error):
+                    print(error.localizedDescription)
                 }
             }
         }
