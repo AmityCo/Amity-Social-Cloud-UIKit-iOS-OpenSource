@@ -32,6 +32,12 @@ final public class AmityPostTargetPickerViewController: AmityViewController {
         title = AmityLocalizedStringSet.postToTitle.localizedString
     }
     
+    deinit {
+        if galleryAsset != nil {
+            AmityExtensionEventHandler.shared.dismissTargetPickerEvent()
+        }
+    }
+    
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }

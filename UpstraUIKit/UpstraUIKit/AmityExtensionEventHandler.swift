@@ -33,4 +33,5 @@ open class AmityExtensionEventHandler {
     
     /// TrueID finish post from Today
     open func finishPostEvent(_ callbackModel: CommunityPostEventModel) {}
+    open func dismissTargetPickerEvent() {}
 }

@@ -13,6 +13,12 @@ import AmitySDK
 import AmityUIKitLiveStream
 #endif
 
+class AmityCustomExtensionEventHandler: AmityExtensionEventHandler {
+    override func dismissTargetPickerEvent() {
+        print("Dismiss picker.")
+    }
+}
+
 class AmityCustomEventHandler: AmityEventHandler {
     
     override func userDidTap(from source: AmityViewController, userId: String) {
