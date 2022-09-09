@@ -32,6 +32,8 @@ public final class AmityPollCreatorViewController: AmityViewController {
     private var screenViewModel: AmityPollCreatorScreenViewModelType?
     private var mentionManager: AmityMentionManager?
     private var postType: PostFromTodayType? = nil
+    private var fromShortcut: Bool = false
+    private var postTarget: AmityPostTarget?
     
     
     // MARK: - View's lifecycle
@@ -53,6 +55,7 @@ public final class AmityPollCreatorViewController: AmityViewController {
         let vc = AmityPollCreatorViewController(nibName: AmityPollCreatorViewController.identifier, bundle: AmityUIKitManager.bundle)
         vc.screenViewModel = viewModel
         var communityId: String? = nil
+        vc.postTarget = postTarget
         switch postTarget {
         case .community(let object):
             if !object.isPublic {
@@ -70,6 +73,7 @@ public final class AmityPollCreatorViewController: AmityViewController {
         vc.postType = postType
         vc.screenViewModel = viewModel
         var communityId: String? = nil
+        vc.postTarget = postTarget
         switch postTarget {
         case .community(let object):
             if !object.isPublic {
@@ -131,7 +135,7 @@ public final class AmityPollCreatorViewController: AmityViewController {
 extension AmityPollCreatorViewController: AmityKeyboardServiceDelegate {
     func keyboardWillChange(service: AmityKeyboardService, height: CGFloat, animationDuration: TimeInterval) {
         mentionTableViewBottomConstraint.constant = height
-
+        
         view.setNeedsUpdateConstraints()
         view.layoutIfNeeded()
     }
@@ -155,12 +159,11 @@ extension AmityPollCreatorViewController: AmityPollCreatorScreenViewModelDelegat
             case .reviewing:
                 AmityAlertController.present(title: AmityLocalizedStringSet.postCreationSubmitTitle.localizedString,
                                              message: AmityLocalizedStringSet.postCreationSubmitDesc.localizedString, actions: [.ok(style: .default, handler: { [weak self] in
-                                                self?.postButton?.isEnabled = true
-                                                self?.dismiss(animated: true, completion: nil)
-                                             })], from: self)
+                    self?.postButton?.isEnabled = true
+                    self?.dismiss(animated: true, completion: nil)
+                })], from: self)
             case .published, .declined:
                 postButton?.isEnabled = true
-                dismiss(animated: true, completion: nil)
             @unknown default:
                 break
             }
@@ -172,11 +175,54 @@ extension AmityPollCreatorViewController: AmityPollCreatorScreenViewModelDelegat
         //If post from 'Today' page. Tell client to redirect
         if postType != nil {
             let userId = AmityUIKitManagerInternal.shared.currentUserId
-            if error == nil {
-                AmityEventHandler.shared.finishPostEvent(true, userId: userId)
-            } else {
-                AmityEventHandler.shared.finishPostEvent(false, userId: userId)
+            let model: CommunityPostEventModel
+            let postId = post?.postId ?? ""
+            
+            switch postTarget! {
+            case .myFeed:
+                if error == nil {
+                    model = CommunityPostEventModel(isSuccess: true, userId: userId, postId: postId , postType: .shortcut)
+                } else {
+                    model = CommunityPostEventModel(isSuccess: false, userId: userId, postId: postId , postType: .shortcut)
+                }
+                AmityEventHandler.shared.finishPostEvent(model)
+                self.dismiss(animated: true, completion: nil)
+            case .community(let object):
+                let commuId = object.communityId
+
+                if error == nil {
+                    model = CommunityPostEventModel(isSuccess: true, userId: userId, commuId: commuId, postId: postId , postType: .shortcut)
+                } else {
+                    model = CommunityPostEventModel(isSuccess: false, userId: userId, commuId: commuId, postId: postId , postType: .shortcut)
+                }
+                AmityEventHandler.shared.finishPostEvent(model)
+                let commuVC = AmityCommunityProfilePageViewController.make(withCommunityId: commuId, fromToday: true)
+                navigationController?.pushViewController(commuVC, animated: true)
             }
+        } else {
+            // Default case
+            let model: CommunityPostEventModel
+            let userId = AmityUIKitManagerInternal.shared.currentUserId
+            let postId = post?.postId
+            
+            switch postTarget! {
+            case .myFeed:
+                if error == nil {
+                    model = CommunityPostEventModel(isSuccess: true, userId: userId, postId: postId ?? "")
+                } else {
+                    model = CommunityPostEventModel(isSuccess: false, userId: userId, postId: postId ?? "")
+                }
+            case .community(let object):
+                let commuId = object.channelId
+                if error == nil {
+                    model = CommunityPostEventModel(isSuccess: true, userId: userId, commuId: commuId, postId: postId ?? "")
+                } else {
+                    model = CommunityPostEventModel(isSuccess: false, userId: userId, commuId: commuId, postId: postId ?? "")
+                }
+            }
+            
+            AmityEventHandler.shared.finishPostEvent(model)
+            self.dismiss(animated: true, completion: nil)
         }
         
     }
@@ -398,7 +444,7 @@ extension AmityPollCreatorViewController: AmityMentionManagerDelegate {
             mentionTableView.isHidden = false
             mentionTableView.reloadData()
         }
-//        mentionTableView.isHidden = true
+        //        mentionTableView.isHidden = true
     }
     
     public func didMentionsReachToMaximumLimit() {
