@@ -20,12 +20,17 @@ public struct CommunityPostEventModel {
     public let communityID: String?
     public let postID: String
     public let postType: ShortcutPostType
+    public let postCaption: String
+    public let communityName: String
     
-    init(isSuccess: Bool, userId: String, commuId: String? = nil, postId: String, postType: ShortcutPostType = .none) {
+    init(isSuccess: Bool, userId: String, commuId: String? = nil, postId: String, postType: ShortcutPostType = .none, postCaption: String = "",
+         communityName: String = "") {
         self.isSuccessToPost = isSuccess
         self.userID = userId
         self.communityID = commuId
         self.postID = postId
         self.postType = postType
+        self.postCaption = postCaption
+        self.communityName = communityName
     }
 }
