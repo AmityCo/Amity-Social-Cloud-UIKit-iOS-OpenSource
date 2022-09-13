@@ -330,7 +330,9 @@ private extension AmityRecentChatScreenViewModel {
             break
         }
         channelsToken = channelsCollection?.observe { [weak self] (collection, change, error) in
-            self?.prepareDataSource()
+            if collection.dataStatus == .fresh{
+                self?.prepareDataSource()
+            }
         }
     }
     
