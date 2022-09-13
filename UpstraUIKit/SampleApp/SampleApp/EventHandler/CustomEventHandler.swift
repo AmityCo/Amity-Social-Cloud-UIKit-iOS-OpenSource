@@ -162,6 +162,16 @@ class AmityCustomEventHandler: AmityEventHandler {
 
     }
     
+    override func finishPostEvent(_ callbackModel: CommunityPostEventModel) {
+        if callbackModel.isSuccessToPost {
+//            let alert = UIAlertController(title: "Post status", message: "User: \(callbackModel.userID) | PostID: \(callbackModel.postID) | Post Caption: \(callbackModel.postCaption) | CommunityID: \(callbackModel.communityID) | CommunityName: \(callbackModel.communityName)", preferredStyle: .alert)
+//            alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+            print("---> User: \(callbackModel.userID) | PostID: \(callbackModel.postID) | Post Caption: \(callbackModel.postCaption) | CommunityID: \(callbackModel.communityID ?? "") | CommunityName: \(callbackModel.communityName)")
+        } else {
+            print("---> Fail to post")
+        }
+    }
+    
     override func routeToNewsfeedDidTap(from source: UIViewController) {            
         let homepage = AmityCommunityHomePageFullHeaderViewController.make()
         let navigationController = UINavigationController(rootViewController: homepage)
