@@ -44,7 +44,6 @@ class AmityFollowingRecentChatCollectionViewCell: UICollectionViewCell, Nibbable
             avatarView.setImage(withCustomURL: value.avatarCustomURL, placeholder: AmityIconSet.defaultCommunity)
         } else {
             avatarView.setImage(withCustomURL: value.avatarURL, placeholder: AmityIconSet.defaultCommunity)
-//            avatarView.setImage(withImageURL: value.avatarURL, placeholder: AmityIconSet.defaultCommunity)
         }
     }
     
