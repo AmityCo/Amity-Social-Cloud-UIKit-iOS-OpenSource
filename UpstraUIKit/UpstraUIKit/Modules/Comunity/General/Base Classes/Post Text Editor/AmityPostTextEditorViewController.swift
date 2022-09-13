@@ -967,7 +967,7 @@ extension AmityPostTextEditorViewController: AmityPostTextEditorScreenViewModelD
         let userId = AmityUIKitManagerInternal.shared.currentUserId
         let postId = createdPostModel.postId
         let caption = createdPostModel.text
-        let commuName = createdPostModel.displayName
+        let commuName = createdPostModel.targetCommunity?.displayName ?? ""
         let model: CommunityPostEventModel
         
         //If post from 'Today' page. Tell client to redirect
@@ -1028,23 +1028,19 @@ extension AmityPostTextEditorViewController: AmityPostTextEditorScreenViewModelD
                 })
             } else {
                 // Default case
-                let model: CommunityPostEventModel
-                let userId = AmityUIKitManagerInternal.shared.currentUserId
-                let postId = post?.postId
-                
                 switch postTarget {
                 case .myFeed:
                     if error == nil {
-                        model = CommunityPostEventModel(isSuccess: true, userId: userId, postId: postId ?? "", postCaption: caption)
+                        model = CommunityPostEventModel(isSuccess: true, userId: userId, postId: postId, postCaption: caption)
                     } else {
-                        model = CommunityPostEventModel(isSuccess: false, userId: userId, postId: postId ?? "", postCaption: caption)
+                        model = CommunityPostEventModel(isSuccess: false, userId: userId, postId: postId, postCaption: caption)
                     }
                 case .community(let object):
                     let commuId = object.channelId
                     if error == nil {
-                        model = CommunityPostEventModel(isSuccess: true, userId: userId, commuId: commuId, postId: postId ?? "", postCaption: caption, communityName: commuName)
+                        model = CommunityPostEventModel(isSuccess: true, userId: userId, commuId: commuId, postId: postId, postCaption: caption, communityName: commuName)
                     } else {
-                        model = CommunityPostEventModel(isSuccess: false, userId: userId, commuId: commuId, postId: postId ?? "", postCaption: caption, communityName: commuName)
+                        model = CommunityPostEventModel(isSuccess: false, userId: userId, commuId: commuId, postId: postId, postCaption: caption, communityName: commuName)
                     }
                 }
                 

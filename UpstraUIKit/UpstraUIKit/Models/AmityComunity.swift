@@ -20,11 +20,11 @@ public struct CommunityPostEventModel {
     public let communityID: String?
     public let postID: String
     public let postType: ShortcutPostType
-    public let postCaption: String
-    public let communityName: String
+    public let postCaption: String?
+    public let communityName: String?
     
-    init(isSuccess: Bool, userId: String, commuId: String? = nil, postId: String, postType: ShortcutPostType = .none, postCaption: String = "",
-         communityName: String = "") {
+    init(isSuccess: Bool, userId: String, commuId: String? = nil, postId: String, postType: ShortcutPostType = .none, postCaption: String? = nil,
+         communityName: String? = nil) {
         self.isSuccessToPost = isSuccess
         self.userID = userId
         self.communityID = commuId
