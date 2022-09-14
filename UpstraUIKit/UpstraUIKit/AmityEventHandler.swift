@@ -31,6 +31,12 @@ public enum AmityPostContentType {
     case livestream
 }
 
+public enum AmityCurrentPagetType {
+    case chat(ssoId: String? = nil, channelId: String? = nil)
+    case recentChat
+    case other
+}
+
 open class AmityEventHandler {
     
     public static var shared = AmityEventHandler()
@@ -339,6 +345,9 @@ open class AmityEventHandler {
 
     /// TrueID open contact page
     open func openContactPageEvent() {}
+    
+    /// TrueID current page
+    open func openCurrentPageEvent(_ pageType: AmityCurrentPagetType) {}
         
     //MARK: - AnalyticNCCEvent
     open func communityTopbarSearchTracking() {}
