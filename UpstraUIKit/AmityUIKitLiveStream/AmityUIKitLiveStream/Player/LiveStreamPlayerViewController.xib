@@ -12,6 +12,7 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="LiveStreamPlayerViewController" customModule="AmityUIKitLiveStream" customModuleProvider="target">
             <connections>
+                <outlet property="blackBarHeightConstraint" destination="tjz-NO-SVE" id="xc7-7F-YSC"/>
                 <outlet property="commentTableView" destination="NcS-Ka-yRI" id="TUC-Xh-hna"/>
                 <outlet property="commentTextView" destination="BEG-uX-kot" id="Gel-it-ExU"/>
                 <outlet property="commentTextViewHeight" destination="DfP-if-4qZ" id="ilQ-So-eyR"/>
@@ -20,7 +21,7 @@
                 <outlet property="dislikeButton" destination="3YZ-Az-dkB" id="iFt-dd-EqX"/>
                 <outlet property="hideCommentButton" destination="aNk-S4-LvX" id="SY0-TE-rpk"/>
                 <outlet property="likeButton" destination="Trc-GE-dDu" id="008-ma-6ch"/>
-                <outlet property="likeCommentViewBottomConstraint" destination="kC4-5k-tqg" id="DXx-n0-6j6"/>
+                <outlet property="likeCommentViewBottomConstraint" destination="ZK2-f5-mPS" id="SLS-dn-ndj"/>
                 <outlet property="likeCountLabel" destination="PHY-KD-fhp" id="8eK-Gh-ZtD"/>
                 <outlet property="liveCommentView" destination="rMN-jh-cKQ" id="o4x-0D-y9H"/>
                 <outlet property="liveCommentViewHeightConstraint" destination="X27-Wr-m6g" id="YX1-lb-n7P"/>
@@ -250,10 +251,12 @@ to watch shortly.</string>
                                 <action selector="hideCommentTable" destination="-1" eventType="touchUpInside" id="xuN-V7-jya"/>
                             </connections>
                         </button>
-                        <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ycJ-61-eqc" userLabel="Show Button">
+                        <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ycJ-61-eqc" userLabel="Show Button">
                             <rect key="frame" x="353" y="134" width="36" height="36"/>
                             <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
-                            <state key="normal" image="livestream_show_comment"/>
+                            <state key="normal" image="livestream_show_comment">
+                                <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            </state>
                             <connections>
                                 <action selector="showCommentTable" destination="-1" eventType="touchUpInside" id="YFE-TK-Ulc"/>
                             </connections>

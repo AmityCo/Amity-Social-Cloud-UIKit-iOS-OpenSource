@@ -387,6 +387,8 @@ final public class LiveStreamBroadcastViewController: UIViewController {
         commentTableView.separatorStyle = .none
         commentTableView.backgroundColor = .clear
         commentTableView.allowsSelection = false
+        commentTableView.showsVerticalScrollIndicator = false
+        commentTableView.showsHorizontalScrollIndicator = false
         
         let textViewToolbar: UIToolbar = UIToolbar()
         textViewToolbar.barStyle = .default
