@@ -39,6 +39,7 @@ public class AmityChatHandler {
         query.filter = .userIsMember
         query.includeDeleted = false
         channelsCollection = channelRepository.getChannels(with: query)
+        channelsToken?.invalidate()
         channelsToken = channelsCollection?.observe { [weak self] (collectionFromObserve, change, error) in
             if error != nil {
                 completion(.failure(error!))

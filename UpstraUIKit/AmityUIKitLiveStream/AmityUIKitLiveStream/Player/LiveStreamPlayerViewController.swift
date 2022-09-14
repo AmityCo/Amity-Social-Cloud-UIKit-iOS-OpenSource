@@ -53,6 +53,7 @@ public class LiveStreamPlayerViewController: UIViewController {
     @IBOutlet private weak var likeCommentViewBottomConstraint: NSLayoutConstraint!
     @IBOutlet private weak var liveCommentView: UIView!
     @IBOutlet private weak var liveCommentViewHeightConstraint: NSLayoutConstraint!
+    @IBOutlet private weak var blackBarHeightConstraint: NSLayoutConstraint!
     
     /// The view above renderView to intercept tap gestuere for show/hide control container.
     @IBOutlet private weak var renderGestureView: UIView!
@@ -223,6 +224,8 @@ public class LiveStreamPlayerViewController: UIViewController {
         commentTableView.separatorStyle = .none
         commentTableView.backgroundColor = .clear
         commentTableView.allowsSelection = false
+        commentTableView.showsVerticalScrollIndicator = false
+        commentTableView.showsHorizontalScrollIndicator = false
         
         let textViewToolbar: UIToolbar = UIToolbar()
         textViewToolbar.barStyle = .default
@@ -575,7 +578,7 @@ extension LiveStreamPlayerViewController {
 //            if self.view.frame.origin.y == 0.0 {
                 let safeAreaBottom = view.safeAreaInsets.bottom
 //                self.view.frame.origin.y -= keyboardSize.height
-                likeCommentViewBottomConstraint.constant += keyboardSize.height - safeAreaBottom
+                likeCommentViewBottomConstraint.constant += (keyboardSize.height - blackBarHeightConstraint.constant)
 //
 //                controlViewBottomConstraint.constant += 1000
 //                renderGestureViewBottomConstraint.constant += 1000
