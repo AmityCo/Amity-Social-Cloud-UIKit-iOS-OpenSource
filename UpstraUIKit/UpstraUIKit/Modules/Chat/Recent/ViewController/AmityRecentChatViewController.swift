@@ -57,6 +57,7 @@ public final class AmityRecentChatViewController: AmityViewController, Indicator
         setupScreenViewModel()
         setupView()
         openChannelByDeppLink()
+        AmityEventHandler.shared.openCurrentPageEvent(.recentChat)
     }
     
     public static func make(channelType: AmityChannelType = .conversation, channelID: String? = nil) -> AmityRecentChatViewController {

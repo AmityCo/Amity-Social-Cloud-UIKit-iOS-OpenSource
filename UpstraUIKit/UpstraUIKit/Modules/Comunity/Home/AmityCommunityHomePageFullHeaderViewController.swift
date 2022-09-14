@@ -69,6 +69,7 @@ public class AmityCommunityHomePageFullHeaderViewController: AmityProfileViewCon
         super.viewWillAppear(animated)
         navigationController?.setBackgroundColor(with: .white)
 //        runDeeplinksRouter()
+        AmityEventHandler.shared.openCurrentPageEvent(.other)
     }
     
     public override func viewWillDisappear(_ animated: Bool) {

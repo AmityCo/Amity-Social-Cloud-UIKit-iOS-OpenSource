@@ -98,6 +98,7 @@ public final class AmityMessageListViewController: AmityViewController, AmityMes
         }
     }
     
+    
     public override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         AmityKeyboardService.shared.delegate = nil
@@ -530,6 +531,7 @@ extension AmityMessageListViewController: AmityMessageListScreenViewModelDelegat
     func screenViewModelDidGetChannel(channel: AmityChannelModel) {
         navigationHeaderViewController?.updateViews(channel: channel)
         screenViewModel.action.shouldScrollToBottom(force: false)
+        AmityEventHandler.shared.openCurrentPageEvent(.chat(ssoId: channel.getOtherUserId(), channelId: channel.channelId))
     }
     
     func screenViewModelScrollToBottom(for indexPath: IndexPath) {
