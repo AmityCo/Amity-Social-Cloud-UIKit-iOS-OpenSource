@@ -120,7 +120,7 @@ built with <b>messaging service APIs</b> to ignite connections and
 open discussions.
 
 Learn more about Amity Chat on [our
-website→](https://www.amity.co/products/amity-chat) or view the Amity
+website→](https://www.amity.co/chat) or view the Amity
 Chat [Docs→](https://docs.amity.co/chat)
 
 <br />
@@ -130,8 +130,8 @@ Get in-app communities up and running using Amity Social SDK. Enable
 <b>plug-and-play social features using supercharged social APIs</b>
 and see preference-based groups thrive within your platform.
 
-Learn more about Amity Chat on [our
-website→](https://www.amity.co/products/amity-social) or view the
+Learn more about Amity Social on [our
+website→](https://www.amity.co/social) or view the
 Amity Social [Docs→](https://docs.amity.co/social)
 
 <br />
@@ -143,8 +143,8 @@ application's user experience by adding interactive features such as
 captivating, memorable virtual events to participate in along with
 other viewers from around the world.
 
-Learn more about Amity Chat on [our
-website→](https://www.amity.co/products/amity-video) or view the Amity
+Learn more about Amity Video on [our
+website→](https://www.amity.co/video) or view the Amity
 Video [Docs→](https://docs.amity.co/video)
 
 <br />
