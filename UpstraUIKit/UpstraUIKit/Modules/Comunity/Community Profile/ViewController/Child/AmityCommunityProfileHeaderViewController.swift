@@ -178,7 +178,7 @@ final class AmityCommunityProfileHeaderViewController: UIViewController {
         if !community.avatarCustomURL.isEmpty {
             avatarView.setImage(withCustomURL: community.avatarCustomURL, size: .large, placeholder: AmityIconSet.defaultCommunity)
         } else {
-            avatarView.setImage(withImageURL: community.avatarURL, size: .large, placeholder: AmityIconSet.defaultCommunity)
+            avatarView.setImage(withCustomURL: community.avatarURL, size: .large, placeholder: AmityIconSet.defaultCommunity)
         }
         displayNameLabel.text = community.displayName
         descriptionLabel.text = community.description
