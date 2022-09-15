@@ -48,7 +48,7 @@ struct AmityCommunityModel {
         self.tags = object.tags ?? []
         self.category = object.categories.first?.name ?? AmityLocalizedStringSet.General.general.localizedString
         self.categoryId = object.categoryIds.first
-        self.avatarURL = object.avatar?.fileURL ?? ""
+        self.avatarURL = object.user?.avatarCustomUrl ?? ""
         self.participation = object.participation
         self.isPostReviewEnabled = object.isPostReviewEnabled
     }

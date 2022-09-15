@@ -175,9 +175,7 @@ final class AmityCommunityProfileHeaderViewController: UIViewController {
     func updateView() {
         guard let community = screenViewModel.dataSource.community, !isUpdateInProgress else { return }
         isUpdateInProgress = true
-        avatarView.setImage(withImageURL: community.avatarURL,
-                            size: .large,
-                            placeholder: AmityIconSet.defaultCommunity)
+        avatarView.setImage(withCustomURL: community.avatarURL, size: .large, placeholder: AmityIconSet.defaultCommunity)
         displayNameLabel.text = community.displayName
         descriptionLabel.text = community.description
         descriptionLabel.isHidden = community.description == ""
