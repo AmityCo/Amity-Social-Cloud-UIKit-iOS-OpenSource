@@ -575,13 +575,7 @@ extension LiveStreamPlayerViewController {
     @objc func keyboardWillShow(notification: NSNotification) {
         if let keyboardSize = (notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue {
             if likeCommentViewBottomConstraint.constant == 0.0 {
-//            if self.view.frame.origin.y == 0.0 {
-                let safeAreaBottom = view.safeAreaInsets.bottom
-//                self.view.frame.origin.y -= keyboardSize.height
                 likeCommentViewBottomConstraint.constant += (keyboardSize.height - blackBarHeightConstraint.constant)
-//
-//                controlViewBottomConstraint.constant += 1000
-//                renderGestureViewBottomConstraint.constant += 1000
                 UIView.animate(withDuration: 0.5) {
                     self.view.layoutIfNeeded()
                 }
@@ -591,12 +585,7 @@ extension LiveStreamPlayerViewController {
 
     @objc func keyboardWillHide(notification: NSNotification) {
         if likeCommentViewBottomConstraint.constant != 0.0 {
-//        if self.view.frame.origin.y != 0.0 {
-//            self.view.frame.origin.y = 0.0
-//            let safeAreaBottom = view.safeAreaInsets.bottom
             likeCommentViewBottomConstraint.constant = 0.0
-//            controlViewBottomConstraint.constant = safeAreaBottom
-//            renderGestureViewBottomConstraint.constant = 0.0
             UIView.animate(withDuration: 0.5) {
                 self.view.layoutIfNeeded()
             }
