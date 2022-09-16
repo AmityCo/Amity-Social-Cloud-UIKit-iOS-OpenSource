@@ -122,19 +122,24 @@ class AmityFileService {
             return
         }
         
-        fileRepository.downloadImage(fromURL: imageURL, size: size) { [weak self] (url, error) in
-            if let imagePath = url?.path, // a local path returned from sdk
-               let image = UIImage(contentsOfFile: imagePath) {
-                self?.pathCache[imageCacheKey] = imagePath
-                completion?(.success(image))
-            } else if let error = error {
-                completion?(.failure(error))
-            } else {
-                let error = AmityError.unknown
-                completion?(.failure(error))
+        fileRepository.downloadImageAsData(fromURL: imageURL, size: .medium) { [weak self] (image, size, error) in
+            if let image = image, let data = image.jpegData(compressionQuality: 1.0) {
+                let path = NSSearchPathForDirectoriesInDomains(.cachesDirectory, .userDomainMask, true)
+                let cacheDirectory = NSURL(fileURLWithPath: path.first!)
+                let destinationPath = cacheDirectory.appendingPathComponent(UUID().uuidString + ".jpeg")
+                try? data.write(to: destinationPath!)
+                
+                if let images = UIImage(contentsOfFile: destinationPath!.path) {
+                    self?.pathCache[imageCacheKey] = destinationPath?.path
+                    completion?(.success(images))
+                } else if let error = error {
+                    completion?(.failure(error))
+                } else {
+                    let error = AmityError.unknown
+                    completion?(.failure(error))
+                }
             }
         }
-        
     }
     
     func loadFile(fileURL: String, completion: ((Result<Data, Error>) -> Void)?) {
