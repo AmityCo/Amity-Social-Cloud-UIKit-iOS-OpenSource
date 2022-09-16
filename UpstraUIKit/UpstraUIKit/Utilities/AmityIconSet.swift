@@ -163,8 +163,12 @@ public struct AmityIconSet {
     }
     
     enum CreatePost {
-        public static var iconPost = UIImage(named: "icon_post", in: AmityUIKitManager.bundle, compatibleWith: nil)
-        public static var iconPoll = UIImage(named: "icon_poll", in: AmityUIKitManager.bundle, compatibleWith: nil)
+        public static var iconPost = UIImage(named: "icon_post_type_status", in: AmityUIKitManager.bundle, compatibleWith: nil)
+        public static var iconCamera = UIImage(named: "icon_post_type_camera", in: AmityUIKitManager.bundle, compatibleWith: nil)
+        public static var iconImage = UIImage(named: "icon_post_type_image", in: AmityUIKitManager.bundle, compatibleWith: nil)
+        public static var iconVideo = UIImage(named: "icon_post_type_video", in: AmityUIKitManager.bundle, compatibleWith: nil)
+        public static var iconLivestream = UIImage(named: "icon_post_type_livestream", in: AmityUIKitManager.bundle, compatibleWith: nil)
+        public static var iconPoll = UIImage(named: "icon_post_type_poll", in: AmityUIKitManager.bundle, compatibleWith: nil)
     }
     
     //MARK: - Add by Mono

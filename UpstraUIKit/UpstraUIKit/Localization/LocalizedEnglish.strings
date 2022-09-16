@@ -445,3 +445,10 @@
 "share_success_message" = "Share to timeline successfully";
 "share_fail_message" = "Failed to share to timeline";
 "share_loading_message" = "Posting...";
+
+"post_button_camera" = "Camera";
+"post_button_video" = "Video";
+"post_button_image" = "Image";
+"post_button_status" = "Status";
+"post_button_poll" = "Poll";
+"post_button_livestream" = "Livestream";
