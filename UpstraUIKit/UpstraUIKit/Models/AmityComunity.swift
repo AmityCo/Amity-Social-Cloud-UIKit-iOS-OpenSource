@@ -8,7 +8,7 @@
 
 import UIKit
 
-public enum shortcutPostTarget {
+public enum ShortcutPostTarget {
     case myfeed
     case community
 }
@@ -27,9 +27,10 @@ public struct CommunityPostEventModel {
     public let postType: ShortcutPostType
     public let postCaption: String?
     public let communityName: String?
+    public let postTarget: ShortcutPostTarget
     
     init(isSuccess: Bool, userId: String, commuId: String? = nil, postId: String, postType: ShortcutPostType = .none, postCaption: String? = nil,
-         communityName: String? = nil) {
+         communityName: String? = nil, postTarget: ShortcutPostTarget) {
         self.isSuccessToPost = isSuccess
         self.userID = userId
         self.communityID = commuId
@@ -37,5 +38,6 @@ public struct CommunityPostEventModel {
         self.postType = postType
         self.postCaption = postCaption
         self.communityName = communityName
+        self.postTarget = postTarget
     }
 }
