@@ -172,18 +172,23 @@ extension AmityPollCreatorViewController: AmityPollCreatorScreenViewModelDelegat
             dismiss(animated: true, completion: nil)
         }
         
+        guard let createdPost = post else {return}
+        let createdPostModel = AmityPostModel(post: createdPost)
+        let userId = AmityUIKitManagerInternal.shared.currentUserId
+        let postId = createdPostModel.postId
+        let caption = createdPostModel.text
+        let commuName = createdPostModel.targetCommunity?.displayName ?? ""
+        let model: CommunityPostEventModel
+        
         //If post from 'Today' page. Tell client to redirect
         if postType != nil {
-            let userId = AmityUIKitManagerInternal.shared.currentUserId
-            let model: CommunityPostEventModel
-            let postId = post?.postId ?? ""
             
             switch postTarget! {
             case .myFeed:
                 if error == nil {
-                    model = CommunityPostEventModel(isSuccess: true, userId: userId, postId: postId , postType: .shortcut)
+                    model = CommunityPostEventModel(isSuccess: true, userId: userId, postId: postId , postType: .shortcut, postCaption: caption, postTarget: .myfeed)
                 } else {
-                    model = CommunityPostEventModel(isSuccess: false, userId: userId, postId: postId , postType: .shortcut)
+                    model = CommunityPostEventModel(isSuccess: false, userId: userId, postId: postId , postType: .shortcut, postCaption: caption, postTarget: .myfeed)
                 }
                 AmityEventHandler.shared.finishPostEvent(model)
                 self.dismiss(animated: true, completion: nil)
@@ -191,9 +196,9 @@ extension AmityPollCreatorViewController: AmityPollCreatorScreenViewModelDelegat
                 let commuId = object.communityId
 
                 if error == nil {
-                    model = CommunityPostEventModel(isSuccess: true, userId: userId, commuId: commuId, postId: postId , postType: .shortcut)
+                    model = CommunityPostEventModel(isSuccess: true, userId: userId, commuId: commuId, postId: postId , postType: .shortcut, postCaption: caption, communityName: commuName, postTarget: .community)
                 } else {
-                    model = CommunityPostEventModel(isSuccess: false, userId: userId, commuId: commuId, postId: postId , postType: .shortcut)
+                    model = CommunityPostEventModel(isSuccess: false, userId: userId, commuId: commuId, postId: postId , postType: .shortcut, communityName: commuName, postTarget: .community)
                 }
                 AmityEventHandler.shared.finishPostEvent(model)
                 let commuVC = AmityCommunityProfilePageViewController.make(withCommunityId: commuId, fromToday: true)
@@ -208,16 +213,16 @@ extension AmityPollCreatorViewController: AmityPollCreatorScreenViewModelDelegat
             switch postTarget! {
             case .myFeed:
                 if error == nil {
-                    model = CommunityPostEventModel(isSuccess: true, userId: userId, postId: postId ?? "")
+                    model = CommunityPostEventModel(isSuccess: true, userId: userId, postId: postId ?? "", postCaption: caption, postTarget: .myfeed)
                 } else {
-                    model = CommunityPostEventModel(isSuccess: false, userId: userId, postId: postId ?? "")
+                    model = CommunityPostEventModel(isSuccess: false, userId: userId, postId: postId ?? "", postCaption: caption, postTarget: .myfeed)
                 }
             case .community(let object):
                 let commuId = object.channelId
                 if error == nil {
-                    model = CommunityPostEventModel(isSuccess: true, userId: userId, commuId: commuId, postId: postId ?? "")
+                    model = CommunityPostEventModel(isSuccess: true, userId: userId, commuId: commuId, postId: postId ?? "", communityName: commuName, postTarget: .community)
                 } else {
-                    model = CommunityPostEventModel(isSuccess: false, userId: userId, commuId: commuId, postId: postId ?? "")
+                    model = CommunityPostEventModel(isSuccess: false, userId: userId, commuId: commuId, postId: postId ?? "", communityName: commuName, postTarget: .community)
                 }
             }
             
