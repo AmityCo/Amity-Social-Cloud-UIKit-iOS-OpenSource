@@ -53,6 +53,7 @@ public class LiveStreamPlayerViewController: UIViewController {
     @IBOutlet private weak var likeCommentViewBottomConstraint: NSLayoutConstraint!
     @IBOutlet private weak var liveCommentView: UIView!
     @IBOutlet private weak var liveCommentViewHeightConstraint: NSLayoutConstraint!
+    @IBOutlet private weak var blackBarHeightConstraint: NSLayoutConstraint!
     
     /// The view above renderView to intercept tap gestuere for show/hide control container.
     @IBOutlet private weak var renderGestureView: UIView!
@@ -223,6 +224,8 @@ public class LiveStreamPlayerViewController: UIViewController {
         commentTableView.separatorStyle = .none
         commentTableView.backgroundColor = .clear
         commentTableView.allowsSelection = false
+        commentTableView.showsVerticalScrollIndicator = false
+        commentTableView.showsHorizontalScrollIndicator = false
         
         let textViewToolbar: UIToolbar = UIToolbar()
         textViewToolbar.barStyle = .default
@@ -572,13 +575,7 @@ extension LiveStreamPlayerViewController {
     @objc func keyboardWillShow(notification: NSNotification) {
         if let keyboardSize = (notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue {
             if likeCommentViewBottomConstraint.constant == 0.0 {
-//            if self.view.frame.origin.y == 0.0 {
-                let safeAreaBottom = view.safeAreaInsets.bottom
-//                self.view.frame.origin.y -= keyboardSize.height
-                likeCommentViewBottomConstraint.constant += keyboardSize.height - safeAreaBottom
-//
-//                controlViewBottomConstraint.constant += 1000
-//                renderGestureViewBottomConstraint.constant += 1000
+                likeCommentViewBottomConstraint.constant += (keyboardSize.height - blackBarHeightConstraint.constant)
                 UIView.animate(withDuration: 0.5) {
                     self.view.layoutIfNeeded()
                 }
@@ -588,12 +585,7 @@ extension LiveStreamPlayerViewController {
 
     @objc func keyboardWillHide(notification: NSNotification) {
         if likeCommentViewBottomConstraint.constant != 0.0 {
-//        if self.view.frame.origin.y != 0.0 {
-//            self.view.frame.origin.y = 0.0
-//            let safeAreaBottom = view.safeAreaInsets.bottom
             likeCommentViewBottomConstraint.constant = 0.0
-//            controlViewBottomConstraint.constant = safeAreaBottom
-//            renderGestureViewBottomConstraint.constant = 0.0
             UIView.animate(withDuration: 0.5) {
                 self.view.layoutIfNeeded()
             }

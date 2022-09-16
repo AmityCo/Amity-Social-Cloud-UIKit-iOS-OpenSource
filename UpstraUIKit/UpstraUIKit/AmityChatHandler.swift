@@ -13,8 +13,12 @@ import AmitySDK
 public class AmityChatHandler {
     public static var shared = AmityChatHandler()
     var channelsToken: AmityNotificationToken?
+    var channelsCollection: AmityCollection<AmityChannel>?
+    let channelRepository: AmityChannelRepository
     
-    public init() {}
+    public init() {
+        channelRepository = AmityChannelRepository(client: AmityUIKitManagerInternal.shared.client)
+    }
     
     // MARK: - Public function
     open func getNotiCountFromAPI(completion: @escaping(_ completion:Result<Int,Error>) -> () ) {
@@ -29,21 +33,18 @@ public class AmityChatHandler {
     }
     
     open func getUnreadCountFromASC(completion: @escaping(_ completion:Result<Int,Error>) -> () ) {
-        let channelRepository = AmityChannelRepository(client: AmityUIKitManagerInternal.shared.client)
-        var channelsCollection: AmityCollection<AmityChannel>?
         
         let query = AmityChannelQuery()
         query.types = [AmityChannelQueryType.conversation]
         query.filter = .userIsMember
         query.includeDeleted = false
         channelsCollection = channelRepository.getChannels(with: query)
-        
         channelsToken?.invalidate()
-        channelsToken = channelsCollection?.observe { [weak self] (collection, change, error) in
+        channelsToken = channelsCollection?.observe { [weak self] (collectionFromObserve, change, error) in
             if error != nil {
                 completion(.failure(error!))
             }
-            guard let collection = channelsCollection else { return }
+            guard let collection = self?.channelsCollection else { return }
             var unreadCount: Int = 0
             for index in 0..<collection.count() {
                 guard let channel = collection.object(at: UInt(index)) else { return }

@@ -387,6 +387,8 @@ final public class LiveStreamBroadcastViewController: UIViewController {
         commentTableView.separatorStyle = .none
         commentTableView.backgroundColor = .clear
         commentTableView.allowsSelection = false
+        commentTableView.showsVerticalScrollIndicator = false
+        commentTableView.showsHorizontalScrollIndicator = false
         
         let textViewToolbar: UIToolbar = UIToolbar()
         textViewToolbar.barStyle = .default
@@ -795,8 +797,9 @@ extension LiveStreamBroadcastViewController {
 extension LiveStreamBroadcastViewController {
     @objc func keyboardWillShow(notification: NSNotification) {
         if let keyboardSize = (notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue {
+            let safeAreaBottom = view.safeAreaInsets.bottom
             if streamingViewBottomConstraint.constant == 0.0 {
-                streamingViewBottomConstraint.constant += keyboardSize.height
+                streamingViewBottomConstraint.constant += (keyboardSize.height - safeAreaBottom)
                 UIView.animate(withDuration: 0.5) {
                     self.view.layoutIfNeeded()
                 }
@@ -805,9 +808,6 @@ extension LiveStreamBroadcastViewController {
     }
 
     @objc func keyboardWillHide(notification: NSNotification) {
-//        if self.view.frame.origin.y != 0 {
-//            self.view.frame.origin.y = 0
-//        }
         if streamingViewBottomConstraint.constant != 0.0 {
             streamingViewBottomConstraint.constant = 0.0
             UIView.animate(withDuration: 0.5) {
