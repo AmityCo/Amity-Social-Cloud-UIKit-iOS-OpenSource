@@ -52,6 +52,8 @@ public class AmityPostTextEditorViewController: AmityViewController {
     
     private var galleryAsset: [PHAsset] = []
     private var fromGallery: Bool = false
+    private var fromShortcut: Bool = true
+    private var contentType: AmityPostContentType = .post
     
     private let comunityPanelView = AmityComunityPanelView(frame: .zero)
     private let scrollView = UIScrollView(frame: .zero)
@@ -90,6 +92,32 @@ public class AmityPostTextEditorViewController: AmityViewController {
         self.settings = settings
         self.postMenuView = AmityPostTextEditorMenuView(allowPostAttachments: settings.allowPostAttachments)
         self.mentionTableView = AmityMentionTableView(frame: .zero)
+        
+        if postMode == .create {
+            var communityId: String? = nil
+            switch postTarget {
+            case .community(let community):
+                communityId = community.isPublic ? nil : community.communityId
+            default: break
+            }
+            mentionManager = AmityMentionManager(withType: .post(communityId: communityId))
+        }
+        
+        super.init(nibName: nil, bundle: nil)
+        
+        screenViewModel.delegate = self
+    }
+    
+    //New post button init
+    init(postTarget: AmityPostTarget, postMode: AmityPostMode, settings: AmityPostEditorSettings, contentType: AmityPostContentType) {
+        
+        self.postTarget = postTarget
+        self.postType = nil
+        self.postMode = postMode
+        self.settings = settings
+        self.postMenuView = AmityPostTextEditorMenuView(allowPostAttachments: settings.allowPostAttachments)
+        self.mentionTableView = AmityMentionTableView(frame: .zero)
+        self.contentType = contentType
         
         if postMode == .create {
             var communityId: String? = nil
@@ -294,6 +322,17 @@ public class AmityPostTextEditorViewController: AmityViewController {
         mentionTableView.delegate = self
         mentionTableView.dataSource = self
         mentionManager?.delegate = self
+        
+        switch contentType {
+        case .video:
+            postMenuView(postMenuView, didTap: .video)
+        case .image:
+            postMenuView(postMenuView, didTap: .album)
+        case .camera:
+            postMenuView(postMenuView, didTap: .camera)
+        default:
+            break
+        }
         
         if postType != nil {
             switch postType {

@@ -421,3 +421,10 @@
 "share_success_message" = "แชร์ไปไทม์ไลน์สำเร็จ";
 "share_fail_message" = "การแชร์ล้มเหลว";
 "share_loading_message" = "กำลังโพสต์...";
+
+"post_button_camera" = "กล้อง";
+"post_button_video" = "วิดีโอ";
+"post_button_image" = "รูปภาพ";
+"post_button_status" = "สถานะ";
+"post_button_poll" = "โพล";
+"post_button_livestream" = "ไลฟ์สตรีม";

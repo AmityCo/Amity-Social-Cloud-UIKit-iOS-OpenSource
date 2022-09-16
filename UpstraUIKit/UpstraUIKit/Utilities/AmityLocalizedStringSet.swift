@@ -137,6 +137,15 @@ public struct AmityLocalizedStringSet {
         static let editMessage = "message_edit"
     }
     
+    enum PostButton {
+        static let postButtonCamera = "post_button_camera"
+        static let postButtonVideo = "post_button_video"
+        static let postButtonImage = "post_button_image"
+        static let postButtonStatus = "post_button_status"
+        static let postButtonPoll = "post_button_poll"
+        static let postButtonLivestream = "post_button_livestream"
+    }
+    
     // MARK: - Empty Newsfeed
     static let emptyNewsfeedTitle = "empty_newsfeed_title"
     static let emptyNewsfeedSubtitle = "empty_newsfeed_subtitle"

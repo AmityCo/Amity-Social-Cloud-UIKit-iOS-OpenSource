@@ -8,6 +8,11 @@
 
 import UIKit
 
+public enum shortcutPostTarget {
+    case myfeed
+    case community
+}
+
 public enum ShortcutPostType {
     case shortcut
     case gallery

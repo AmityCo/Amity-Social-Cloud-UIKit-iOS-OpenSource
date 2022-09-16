@@ -27,6 +27,9 @@ import Photos
 
 public enum AmityPostContentType {
     case post
+    case camera
+    case image
+    case video
     case poll
     case livestream
 }
@@ -157,23 +160,34 @@ open class AmityEventHandler {
         }
         
         // present bottom sheet
-        let postOption = ImageItemOption(title: AmityLocalizedStringSet.General.post.localizedString, image: AmityIconSet.CreatePost.iconPost) {
+        let postCameraOption = ImageItemOption(title: AmityLocalizedStringSet.PostButton.postButtonCamera.localizedString, image: AmityIconSet.CreatePost.iconCamera) {
+            completion(.camera)
+        }
+        
+        let postVideoOption = ImageItemOption(title: AmityLocalizedStringSet.PostButton.postButtonVideo.localizedString, image: AmityIconSet.CreatePost.iconVideo) {
+            completion(.video)
+        }
+        
+        let postImageOption = ImageItemOption(title: AmityLocalizedStringSet.PostButton.postButtonImage.localizedString, image: AmityIconSet.CreatePost.iconImage) {
+            completion(.image)
+        }
+        
+        let postOption = ImageItemOption(title: AmityLocalizedStringSet.PostButton.postButtonStatus.localizedString, image: AmityIconSet.CreatePost.iconPost) {
             completion(.post)
         }
-        let pollPostOption = ImageItemOption(title: AmityLocalizedStringSet.General.poll.localizedString, image: AmityIconSet.CreatePost.iconPoll) {
+        
+        let pollPostOption = ImageItemOption(title: AmityLocalizedStringSet.PostButton.postButtonPoll.localizedString, image: AmityIconSet.CreatePost.iconPoll) {
             completion(.poll)
         }
         
-        let livestreamPost = ImageItemOption(
-            title: AmityLocalizedStringSet.LiveStream.Create.titleName.localizedString,
-            image: UIImage(named: "icon_create_livestream_post", in: AmityUIKitManager.bundle, compatibleWith: nil)) {
-                completion(.livestream)
-            }
+        let livestreamPostOption = ImageItemOption(title: AmityLocalizedStringSet.PostButton.postButtonLivestream.localizedString, image: AmityIconSet.CreatePost.iconLivestream) {
+            completion(.livestream)
+        }
         
         if liveStreamPermission {
-            AmityBottomSheet.present(options: [postOption, livestreamPost, pollPostOption], from: source)
+            AmityBottomSheet.present(options: [postCameraOption, postVideoOption, postImageOption, postOption, pollPostOption, livestreamPostOption], from: source)
         } else {
-            AmityBottomSheet.present(options: [postOption, pollPostOption], from: source)
+            AmityBottomSheet.present(options: [postCameraOption, postVideoOption, postImageOption, postOption, pollPostOption], from: source)
         }
 
     }
@@ -188,8 +202,14 @@ open class AmityEventHandler {
         
         var viewController: AmityViewController
         switch postContentType {
+        case .camera:
+            viewController = AmityPostCreatorViewController.make(postTarget: postTarget, contentType: postContentType)
+        case .image:
+            viewController = AmityPostCreatorViewController.make(postTarget: postTarget, contentType: postContentType)
+        case .video:
+            viewController = AmityPostCreatorViewController.make(postTarget: postTarget, contentType: postContentType)
         case .post:
-            viewController = AmityPostCreatorViewController.make(postTarget: postTarget)
+            viewController = AmityPostCreatorViewController.make(postTarget: postTarget, contentType: postContentType)
         case .poll:
             viewController = AmityPollCreatorViewController.make(postTarget: postTarget)
         case .livestream:
