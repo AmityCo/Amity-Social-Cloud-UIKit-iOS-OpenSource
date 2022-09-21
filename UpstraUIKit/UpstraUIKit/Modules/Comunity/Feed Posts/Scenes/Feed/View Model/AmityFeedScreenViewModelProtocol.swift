@@ -66,7 +66,7 @@ protocol AmityFeedScreenViewModelAction {
     func getReportStatus(withCommendId commendId: String, completion: ((Bool) -> Void)?)
     
     // MARK: Poll
-    func vote(withPollId pollId: String?, answerIds: [String])
+    func vote(withPollId pollId: String?, answerIds: [String], communityId: String?)
     func close(withPollId pollId: String?)
     
     // MARK: Observer

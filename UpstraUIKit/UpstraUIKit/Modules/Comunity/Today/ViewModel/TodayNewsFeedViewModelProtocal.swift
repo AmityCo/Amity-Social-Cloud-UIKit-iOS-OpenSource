@@ -29,6 +29,9 @@ protocol TodayNewsFeedScreenViewModelDelegate: AnyObject {
     func screenViewModelDidDeleteCommentSuccess(_ viewModel: TodayNewsFeedScreenViewModelType)
     func screenViewModelDidEditCommentSuccess(_ viewModel: TodayNewsFeedScreenViewModelType)
     
+    // MARK: Poll
+    func screenViewModelDidVotePollSuccess()
+    
     // MARK: User
     func screenViewModelDidGetUserSettings(_ viewModel: TodayNewsFeedScreenViewModelType)
 }
@@ -57,7 +60,7 @@ protocol TodayNewsFeedScreenViewModelAction {
     func getReportStatus(withPostId postId: String)
     
     // MARK: Poll
-    func vote(withPollId pollId: String?, answerIds: [String])
+    func vote(withPollId pollId: String?, answerIds: [String], communityId: String?)
     func close(withPollId pollId: String?)
     
     // MARK: Observer

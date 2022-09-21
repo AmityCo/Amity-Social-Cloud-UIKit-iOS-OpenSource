@@ -18,6 +18,9 @@ final class AmityPostDetailScreenViewModel: AmityPostDetailScreenViewModelType {
     private let reactionController: AmityReactionControllerProtocol
     private let childrenController: AmityCommentChildrenController
     private let pollRepository: AmityPollRepository
+    private let communityRepository: AmityCommunityRepository
+    private var token: AmityNotificationToken?
+    private var communityObject: AmityObject<AmityCommunity>?
     
     private let postId: String
     private(set) var post: AmityPostModel?
@@ -37,6 +40,7 @@ final class AmityPostDetailScreenViewModel: AmityPostDetailScreenViewModelType {
         self.reactionController = reactionController
         self.childrenController = childrenController
         self.pollRepository = AmityPollRepository(client: AmityUIKitManagerInternal.shared.client)
+        self.communityRepository = AmityCommunityRepository(client: AmityUIKitManagerInternal.shared.client)
     }
     
 }
@@ -453,12 +457,29 @@ extension AmityPostDetailScreenViewModel {
 // MARK: Poll
 extension AmityPostDetailScreenViewModel {
     
-    func vote(withPollId pollId: String?, answerIds: [String]) {
+    func vote(withPollId pollId: String?, answerIds: [String], communityId: String?) {
         guard let pollId = pollId else { return }
         pollRepository.votePoll(withId: pollId, answerIds: answerIds) { [weak self] success, error in
             guard let strongSelf = self else { return }
+            
             if success {
-                self?.fetchPost()
+                strongSelf.communityObject = strongSelf.communityRepository.getCommunity(withId: communityId ?? "")
+                strongSelf.token = strongSelf.communityObject?.observe { community, error in
+                    if community.dataStatus == .fresh {
+                        strongSelf.token?.invalidate()
+                    }
+                    guard let object = community.object else { return }
+                    let model = AmityCommunityModel(object: object)
+                    
+                    if !model.isJoined {
+                        strongSelf.communityRepository.joinCommunity(withId: communityId ?? "") { (success, error) in
+                            if error != nil {
+                                strongSelf.delegate?.screenViewModel(strongSelf, didFinishWithError: AmityError(error: error) ?? .unknown)
+                            }
+                        }
+                    }
+                    strongSelf.fetchPost()
+                }
             } else {
                 strongSelf.delegate?.screenViewModel(strongSelf, didFinishWithError: AmityError(error: error) ?? .unknown)
             }
