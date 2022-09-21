@@ -76,6 +76,7 @@ public final class TodayNewsFeedViewController: AmityViewController, AmityRefres
         super.viewDidDisappear(animated)
         isVisible = false
         refreshControl.endRefreshing()
+        NotificationCenter.default.removeObserver(self, name: NSNotification.Name("ScrollFeedToTop"), object: nil)
     }
     
     private func resetRefreshControlStateIfNeeded() {
