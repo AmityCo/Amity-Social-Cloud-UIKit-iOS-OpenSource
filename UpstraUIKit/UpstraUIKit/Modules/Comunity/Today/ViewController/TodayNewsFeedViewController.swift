@@ -131,6 +131,7 @@ public final class TodayNewsFeedViewController: AmityViewController, AmityRefres
     private func setupView() {
         setupTableView()
         setupRefreshControl()
+        setupNotificationCenterAction()
     }
     
     private func setupTableView() {
@@ -154,6 +155,10 @@ public final class TodayNewsFeedViewController: AmityViewController, AmityRefres
         tableView.refreshControl = refreshControl
     }
     
+    private func setupNotificationCenterAction() {
+        NotificationCenter.default.addObserver(self, selector: #selector(scrollFeedToTop), name: NSNotification.Name("ScrollFeedToTop"), object: nil)
+    }
+    
     // MARK: SrollToTop
     private func scrollToTop() {
         guard tableView.numberOfRows(inSection: 0) > 0 else { return }
@@ -162,6 +167,10 @@ public final class TodayNewsFeedViewController: AmityViewController, AmityRefres
         DispatchQueue.main.async { [weak self] in
             self?.tableView.scrollToRow(at: topRow, at: .top, animated: false)
         }
+    }
+    
+    @objc func scrollFeedToTop(notification: NSNotification) {
+        tableView.setContentOffset(.zero, animated: true)
     }
     
     // MARK: - Refreshing
