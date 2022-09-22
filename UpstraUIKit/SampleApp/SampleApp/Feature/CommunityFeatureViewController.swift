@@ -338,11 +338,16 @@ extension CommunityFeatureViewController: UITableViewDelegate {
             }
         case .todayNewsFeed:
             let vc = TodayNewsFeedViewController.make()
+            vc.navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Scroll", style: .plain, target: self, action: #selector(scrollToTop))
             let navigationController = UINavigationController(rootViewController: vc)
             navigationController.modalPresentationStyle = .fullScreen
             present(navigationController, animated: true, completion: nil)
         }
         
+    }
+    
+    @objc func scrollToTop() {
+        NotificationCenter.default.post(name: NSNotification.Name("ScrollFeedToTop"), object: nil)
     }
     
     private func openHomePage() {
