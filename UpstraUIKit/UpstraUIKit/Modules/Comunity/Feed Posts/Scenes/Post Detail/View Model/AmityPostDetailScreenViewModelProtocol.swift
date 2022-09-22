@@ -96,7 +96,7 @@ protocol AmityPostDetailScreenViewModelAction {
     func getReplyComments(at section: Int)
     
     // MARK: Poll
-    func vote(withPollId pollId: String?, answerIds: [String])
+    func vote(withPollId pollId: String?, answerIds: [String], communityId: String?)
     func close(withPollId pollId: String?)
 }
 

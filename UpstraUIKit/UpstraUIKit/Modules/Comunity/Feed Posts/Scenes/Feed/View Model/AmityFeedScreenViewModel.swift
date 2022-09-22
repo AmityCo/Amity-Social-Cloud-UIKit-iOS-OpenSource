@@ -19,6 +19,9 @@ final class AmityFeedScreenViewModel: AmityFeedScreenViewModelType {
     private let commentController: AmityCommentControllerProtocol
     private let reactionController: AmityReactionControllerProtocol
     private let pollRepository: AmityPollRepository
+    private let communityRepository: AmityCommunityRepository
+    private var token: AmityNotificationToken?
+    private var communityObject: AmityObject<AmityCommunity>?
     
     // MARK: - Properties
     private let debouncer = Debouncer(delay: 0.3)
@@ -44,6 +47,7 @@ final class AmityFeedScreenViewModel: AmityFeedScreenViewModelType {
         self.isPrivate = false
         self.isLoading = false
         self.pollRepository = AmityPollRepository(client: AmityUIKitManagerInternal.shared.client)
+        self.communityRepository = AmityCommunityRepository(client: AmityUIKitManagerInternal.shared.client)
     }
     
 }
@@ -392,14 +396,29 @@ extension AmityFeedScreenViewModel {
 // MARK: Poll
 extension AmityFeedScreenViewModel {
     
-    func vote(withPollId pollId: String?, answerIds: [String]) {
+    func vote(withPollId pollId: String?, answerIds: [String], communityId: String?) {
         guard let pollId = pollId else { return }
         pollRepository.votePoll(withId: pollId, answerIds: answerIds) { [weak self] success, error in
             guard let strongSelf = self else { return }
             
             Log.add("[Poll] Vote Poll: \(success) Error: \(error)")
             if success {
-                
+                strongSelf.communityObject = strongSelf.communityRepository.getCommunity(withId: communityId ?? "")
+                strongSelf.token = strongSelf.communityObject?.observe { community, error in
+                    if community.dataStatus == .fresh {
+                        strongSelf.token?.invalidate()
+                    }
+                    guard let object = community.object else { return }
+                    let model = AmityCommunityModel(object: object)
+                    
+                    if !model.isJoined {
+                        strongSelf.communityRepository.joinCommunity(withId: communityId ?? "") { (success, error) in
+                            if error != nil {
+                                strongSelf.delegate?.screenViewModelDidFail(strongSelf, failure: AmityError(error: error) ?? .unknown)
+                            }
+                        }
+                    }
+                }
             } else {
                 strongSelf.delegate?.screenViewModelDidFail(strongSelf, failure: AmityError(error: error) ?? .unknown)
             }
@@ -411,7 +430,6 @@ extension AmityFeedScreenViewModel {
         pollRepository.closePoll(withId: pollId) { [weak self] success, error in
             guard let strongSelf = self else { return }
             if success {
-                
             } else {
                 strongSelf.delegate?.screenViewModelDidFail(strongSelf, failure: AmityError(error: error) ?? .unknown)
             }
