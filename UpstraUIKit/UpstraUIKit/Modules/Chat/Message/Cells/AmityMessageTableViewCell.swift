@@ -99,7 +99,7 @@ class AmityMessageTableViewCell: UITableViewCell, AmityMessageCellProtocol {
             
             switch message.messageType {
             case .text, .audio:
-                containerView.backgroundColor = AmityColorSet.messageBubble
+                containerView.backgroundColor = .red
             case .image:
                 containerView.backgroundColor = AmityColorSet.messageBubbleInverse
             default:

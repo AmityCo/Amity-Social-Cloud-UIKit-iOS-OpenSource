@@ -37,7 +37,7 @@ enum HyperlinkType {
  */
 open class AmityExpandableLabel: UILabel {
     
-    private let truncateText = "..."
+    private let truncateText = " ..."
     private var readMoreText = "Read more"
     
     public enum TextReplacementType {
@@ -163,6 +163,7 @@ open class AmityExpandableLabel: UILabel {
                     _hyperLinkTextRange.append(Hyperlink(range: match.range, type: .url(url: url)))
                 }
                 hyperLinks = _hyperLinkTextRange
+                print("Text: \(_hyperLinkTextRange)")
                 self.attributedText = attributedString
             } else {
                 self.attributedText = nil
@@ -272,7 +273,7 @@ extension AmityExpandableLabel {
 extension AmityExpandableLabel {
     private func commonInit() {
         isUserInteractionEnabled = true
-        lineBreakMode = .byClipping
+        lineBreakMode = .byWordWrapping
         collapsedNumberOfLines = numberOfLines
         updateReadMoreAttributes()
     }
@@ -417,9 +418,26 @@ extension AmityExpandableLabel {
         
         // if text is expandable and it doesn't expand yet, add a reserved range for "...Read More".
         // other cases mean text is showing at the full size and no need to a range.
-        let unwantedRange = isExpandable && !isExpanded ? truncateText.count + readMoreText.count : 0
-        let index = characterIndex(at: touchPoint) - unwantedRange
-        return NSLocationInRange(index, targetRange)
+        let unwantedRange = isExpandable && !isExpanded ? truncateText.count + readMoreText.count : 20
+        var index = 0
+        var upperFloor = 0
+        var lowerFloor = 0
+        if isExpanded {
+            index = characterIndex(at: touchPoint)
+            upperFloor = targetRange.location + targetRange.length - ( unwantedRange )
+            lowerFloor = targetRange.location - unwantedRange
+        } else {
+            index = characterIndex(at: touchPoint) - unwantedRange
+            upperFloor = targetRange.location + targetRange.length - ( unwantedRange+10 )
+            lowerFloor = targetRange.location - unwantedRange
+        }
+        
+        if index >= lowerFloor && index <= upperFloor {
+            return true
+        } else {
+            return false
+        }
+        
     }
 
     @discardableResult private func setLinkHighlighted(_ touches: Set<UITouch>?, event: UIEvent?, highlighted: Bool) -> Bool {

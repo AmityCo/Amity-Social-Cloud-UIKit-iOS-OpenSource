@@ -88,7 +88,6 @@ private extension AmityMessageListHeaderView {
 extension AmityMessageListHeaderView {
     
     func updateViews(channel: AmityChannelModel) {
-        displayNameLabel.text = channel.displayName
         switch channel.channelType {
         case .standard:
             avatarView.setImage(withImageURL: channel.avatarURL, placeholder: AmityIconSet.defaultGroupChat)
@@ -100,6 +99,7 @@ extension AmityMessageListHeaderView {
                     let userId = collection.object(at: i)?.userId
                     if userId != AmityUIKitManagerInternal.shared.currentUserId {
                         let otherUserModel = AmityUserModel(user: (collection.object(at: i)?.user)!)
+                        self.displayNameLabel.text = otherUserModel.displayName
                         let userModel = otherUserModel
                         
                         if !userModel.avatarCustomURL.isEmpty {
