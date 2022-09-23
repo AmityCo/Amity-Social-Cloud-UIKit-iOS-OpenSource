@@ -21,8 +21,8 @@ final public class AmityCommunityFeedViewController: AmityProfileBottomViewContr
     // MARK: - View lifecycle
     public override func viewDidLoad() {
         super.viewDidLoad()
-//        setupFeed()
-//        setupEmptyState()
+        setupFeed()
+        setupEmptyState()
     }
     
     func handleRefreshFeed()  {
