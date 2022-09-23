@@ -125,12 +125,32 @@ extension AmityPostProtocolHandler: AmityPostDelegate {
                     recordedData: stream.recordingData
                 )
             default:
-                AmityEventHandler.shared.openLiveStreamPlayer(
-                    from: viewController!,
-                    postId: post.postId,
-                    streamId: stream.streamId,
-                    post: post.post
-                )
+                guard let liveTypeMetaData = post.metadata?["liveType"] as? [String] else {
+                    AmityEventHandler.shared.openLiveStreamPlayer(
+                        from: viewController!,
+                        postId: post.postId,
+                        streamId: stream.streamId,
+                        post: post.post
+                    )
+                    return
+                }
+                for liveType in liveTypeMetaData {
+                    if liveType == "COMMERCE" {
+                        AmityEventHandler.shared.openLiveStreamPlayer(
+                            from: viewController!,
+                            postId: post.postId,
+                            streamId: stream.streamId,
+                            post: post.post
+                        )
+                    } else {
+                        AmityEventHandler.shared.openLiveStreamPlayer(
+                            from: viewController!,
+                            postId: post.postId,
+                            streamId: stream.streamId,
+                            post: post.post
+                        )
+                    }
+                }
             }
         case .tapOnMentionWithUserId(let userId):
             AmityEventHandler.shared.userDidTap(from: viewController!, userId: userId)

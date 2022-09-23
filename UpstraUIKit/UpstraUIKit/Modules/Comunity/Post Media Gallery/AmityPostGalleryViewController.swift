@@ -338,12 +338,32 @@ extension AmityPostGalleryViewController: UICollectionViewDelegateFlowLayout {
                         recordedData: stream.recordingData
                     )
                 case .live:
-                    AmityEventHandler.shared.openLiveStreamPlayer(
-                        from: self,
-                        postId: postObject.postId,
-                        streamId: stream.streamId,
-                        post: postObject
-                    )
+                    guard let liveTypeMetaData = postObject.metadata?["liveType"] as? [String] else {
+                        AmityEventHandler.shared.openLiveStreamPlayer(
+                            from: self,
+                            postId: postObject.postId,
+                            streamId: stream.streamId,
+                            post: postObject
+                        )
+                        return
+                    }
+                    for liveType in liveTypeMetaData {
+                        if liveType == "COMMERCE" {
+                            AmityEventHandler.shared.openLiveStreamPlayer(
+                                from: self,
+                                postId: postObject.postId,
+                                streamId: stream.streamId,
+                                post: postObject
+                            )
+                        } else {
+                            AmityEventHandler.shared.openLiveStreamPlayer(
+                                from: self,
+                                postId: postObject.postId,
+                                streamId: stream.streamId,
+                                post: postObject
+                            )
+                        }
+                    }
                 case .ended, .idle:
                     break
                 @unknown default:
