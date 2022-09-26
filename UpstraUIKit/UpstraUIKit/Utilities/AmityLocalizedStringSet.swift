@@ -52,7 +52,7 @@ public struct AmityLocalizedStringSet {
         static let file = "general_file"
         static let location = "general_location"
         static let album = "general_album"
-        static let anonymous = "general_anonymous"
+        public static let anonymous = "general_anonymous"
         static let general = "general_general"
         static let ok = "general_ok"
         static let search = "general_search"

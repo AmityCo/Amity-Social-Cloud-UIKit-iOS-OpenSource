@@ -192,6 +192,8 @@ public class LiveStreamPlayerViewController: UIViewController {
         streamingViewerContainer.backgroundColor = UIColor(red: 1, green: 1, blue: 1, alpha: 0.2)
         streamingViewerCountLabel.textColor = .white
         streamingViewerCountLabel.font = AmityFontSet.captionBold
+        streamingViewerContainer.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(showWatcherListWindow)))
+        streamingViewerContainer.isUserInteractionEnabled = true
         
         streamEndTitleLabel.font = AmityFontSet.title
         streamEndDescriptionLabel.font = AmityFontSet.body
@@ -491,6 +493,7 @@ public class LiveStreamPlayerViewController: UIViewController {
         
     }
     
+    
     private func presentUnableToPlayLiveStreamError(reason: String?) {
         presentErrorDialogue(title: "Unable to play live stream.", message: reason, ok: { [weak self] in
             self?.dismiss(animated: true, completion: nil)
@@ -503,6 +506,21 @@ public class LiveStreamPlayerViewController: UIViewController {
     
     @objc func cancelInput() {
         view.endEditing(true)
+    }
+    
+    @objc func showWatcherListWindow() {
+        
+        guard let nibName = NSStringFromClass(LivestreamWatcherListViewController.self).components(separatedBy: ".").last else {
+            fatalError("Class name not found")
+        }
+        let bundle = Bundle(for: LivestreamWatcherListViewController.self)
+        
+        let vc = LivestreamWatcherListViewController.init(nibName: nibName, bundle: bundle)
+        vc.modalPresentationStyle = .overFullScreen
+        vc.currentLivestreamId = postId
+        vc.isStreamer = false
+        self.present(vc, animated: true, completion: nil)
+        
     }
     
     @IBAction private func stopButtonDidTouch() {

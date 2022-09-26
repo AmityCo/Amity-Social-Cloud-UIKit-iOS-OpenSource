@@ -13,7 +13,7 @@ final class customAPIRequest {
         
         let url = URL(string: "https://qojeq6vaa8.execute-api.ap-southeast-1.amazonaws.com/getStreamViewer?liveStreamId=\(liveStreamId)&page=\(page_number)&type=\(type)")!
         
-        var tempData: StreamViewerDataModel = StreamViewerDataModel(count: 0, maxPage: 1)
+        var tempData: StreamViewerDataModel = StreamViewerDataModel(count: 0, maxPage: 1, viewer: [])
         
         var request = URLRequest(url: url)
         request.httpMethod = "GET"
