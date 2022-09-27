@@ -369,6 +369,8 @@ final public class LiveStreamBroadcastViewController: UIViewController {
         streamingViewerContainer.backgroundColor = UIColor(red: 1, green: 1, blue: 1, alpha: 0.2)
         streamingViewerCountLabel.textColor = .white
         streamingViewerCountLabel.font = AmityFontSet.captionBold
+        streamingViewerContainer.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(showWatcherListWindow)))
+        streamingViewerContainer.isUserInteractionEnabled = true
         setupMentionTableView()
         
         streamEndLabel.text = AmityLocalizedStringSet.LiveStream.Live.endingLiveStream.localizedString
@@ -512,6 +514,21 @@ final public class LiveStreamBroadcastViewController: UIViewController {
 //        tap.cancelsTouchesInView = false
 //
 //        view.addGestureRecognizer(tap)
+    }
+    
+    @objc func showWatcherListWindow() {
+        
+        guard let nibName = NSStringFromClass(LivestreamWatcherListViewController.self).components(separatedBy: ".").last else {
+            fatalError("Class name not found")
+        }
+        let bundle = Bundle(for: LivestreamWatcherListViewController.self)
+        
+        let vc = LivestreamWatcherListViewController.init(nibName: nibName, bundle: bundle)
+        vc.modalPresentationStyle = .overFullScreen
+        vc.currentLivestreamId = self.streamId ?? ""
+        vc.isStreamer = true
+        self.present(vc, animated: true, completion: nil)
+        
     }
     
     // MARK: - IBActions

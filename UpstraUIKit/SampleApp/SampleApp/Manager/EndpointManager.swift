@@ -52,7 +52,7 @@ struct EnvironmentSettingModel: Codable {
 
     static func defaultConfig(for environment: EnvironmentType) -> EndpointConfigModel {
         //Production Thailand
-        return EndpointConfigModel(apiKey: "b3bde15c3989f86045658e4a530a1688d1088be0be3d6f25", httpEndpoint: AmityRegionalEndpoint.SG, socketEndpoint: AmityRegionalEndpoint.SG)
+//        return EndpointConfigModel(apiKey: "b3bde15c3989f86045658e4a530a1688d1088be0be3d6f25", httpEndpoint: AmityRegionalEndpoint.SG, socketEndpoint: AmityRegionalEndpoint.SG)
         
         //Production Indo
 //        return EndpointConfigModel(apiKey: "b0ece908338da6314c61df1a5701408e865d8be7bf366f79", httpEndpoint: AmityRegionalEndpoint.SG, socketEndpoint: AmityRegionalEndpoint.SG)
@@ -61,7 +61,7 @@ struct EnvironmentSettingModel: Codable {
 //        return EndpointConfigModel(apiKey: "b0ece9086bdbf5654c61df1a5701148ad7088be7bf366d7f", httpEndpoint: AmityRegionalEndpoint.SG, socketEndpoint: AmityRegionalEndpoint.SG)
         
         //Dev Test
-//        return EndpointConfigModel(apiKey: "b0eceb5e68ddf36545308f4e000b12dcd90985e2bf3d6a2e", httpEndpoint: AmityRegionalEndpoint.SG, socketEndpoint: AmityRegionalEndpoint.SG)
+        return EndpointConfigModel(apiKey: "b0eceb5e68ddf36545308f4e000b12dcd90985e2bf3d6a2e", httpEndpoint: AmityRegionalEndpoint.SG, socketEndpoint: AmityRegionalEndpoint.SG)
     }
 }
 

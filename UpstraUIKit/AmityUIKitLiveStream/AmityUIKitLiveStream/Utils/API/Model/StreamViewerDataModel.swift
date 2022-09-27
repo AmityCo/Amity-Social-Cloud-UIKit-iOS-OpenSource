@@ -12,8 +12,10 @@ struct StreamViewerDataModel: Decodable {
     enum CodingKeys: String, CodingKey {
         case count = "count"
         case maxPage = "max_page"
+        case viewer = "viewer"
     }
     
     let count: Int
     let maxPage: Int
+    let viewer: [String]
 }
