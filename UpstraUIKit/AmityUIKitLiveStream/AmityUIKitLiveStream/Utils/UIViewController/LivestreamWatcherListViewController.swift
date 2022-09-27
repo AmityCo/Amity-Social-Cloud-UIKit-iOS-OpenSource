@@ -75,7 +75,7 @@ class LivestreamWatcherListViewController: AmityViewController {
         }
     }
     
-    func didFinishGetViewerList(value: StreamViewerDataModel) {
+    func didFinishGetViewerList(value: StreamViewerDataModel) { 
         let tempArray = self.watchingArray + value.viewer
         self.watchingArray = tempArray.uniqued()
         DispatchQueue.main.async {

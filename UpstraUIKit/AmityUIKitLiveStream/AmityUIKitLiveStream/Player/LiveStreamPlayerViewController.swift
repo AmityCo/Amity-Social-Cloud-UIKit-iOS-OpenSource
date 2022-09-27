@@ -517,7 +517,7 @@ public class LiveStreamPlayerViewController: UIViewController {
         
         let vc = LivestreamWatcherListViewController.init(nibName: nibName, bundle: bundle)
         vc.modalPresentationStyle = .overFullScreen
-        vc.currentLivestreamId = postId
+        vc.currentLivestreamId = streamIdToWatch
         vc.isStreamer = false
         self.present(vc, animated: true, completion: nil)
         
