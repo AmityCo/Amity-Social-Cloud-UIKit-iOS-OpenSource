@@ -9,12 +9,19 @@ import UIKit
 import AmityUIKit
 import AmitySDK
 
+
+protocol LivestreamWatchingProtocol {
+    func didAvatarTap(userId: String) -> ()
+}
+
 class LivestreamWatchingTableViewCell: UITableViewCell, Nibbable {
 
     @IBOutlet weak var avatarImageView: AmityAvatarView!
     @IBOutlet weak var displayName: UILabel!
     
     var token: AmityNotificationToken?
+    var delegate: LivestreamWatchingProtocol?
+    var currentUserId: String = ""
     
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -23,6 +30,10 @@ class LivestreamWatchingTableViewCell: UITableViewCell, Nibbable {
 
     func display(userId: String) {
         self.backgroundColor = .clear
+        
+        currentUserId = userId
+        
+        avatarImageView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(didAvatarInCellIsTapped)))
         
         displayName.font = AmityFontSet.body
         displayName.textColor = .black
@@ -48,4 +59,7 @@ class LivestreamWatchingTableViewCell: UITableViewCell, Nibbable {
         })
     }
     
+    @objc func didAvatarInCellIsTapped() {
+        delegate?.didAvatarTap(userId: currentUserId)
+    }
 }

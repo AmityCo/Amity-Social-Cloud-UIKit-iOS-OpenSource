@@ -82,6 +82,10 @@ class LivestreamWatcherListViewController: AmityViewController {
             self.watcherTableView.reloadData()
         }
     }
+    
+    @objc func avatarDidTap(userId: String) {
+        AmityEventHandler.shared.userDidTap(from: self, userId: userId)
+    }
 
     /*
     // MARK: - Navigation
@@ -104,6 +108,7 @@ extension LivestreamWatcherListViewController: UITableViewDelegate, UITableViewD
         guard let cell = tableView.dequeueReusableCell(withIdentifier: LivestreamWatchingTableViewCell.identifier) as? LivestreamWatchingTableViewCell else { return UITableViewCell() }
         cell.display(userId: watchingArray[indexPath.row])
         cell.selectionStyle = .none
+        cell.delegate = self
         return cell
     }
     
@@ -117,7 +122,14 @@ extension LivestreamWatcherListViewController: UITableViewDelegate, UITableViewD
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if !isStreamer{
-            AmityEventHandler.shared.userDidTap(from: self, userId: watchingArray[indexPath.row])
+            avatarDidTap(userId: watchingArray[indexPath.row])
         }
     }
+}
+
+extension LivestreamWatcherListViewController: LivestreamWatchingProtocol {
+    func didAvatarTap(userId: String) {
+        avatarDidTap(userId: userId)
+    }
+    
 }
