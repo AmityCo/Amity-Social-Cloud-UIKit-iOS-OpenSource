@@ -21,6 +21,7 @@ class LivestreamWatcherListViewController: AmityViewController {
     var watchingArray: [String] = []
     var currentLivestreamId: String = ""
     var isStreamer: Bool = false
+    var streamerDisplayName: String = ""
     
     static func make() -> LivestreamWatcherListViewController {
         let vc = LivestreamWatcherListViewController()
@@ -50,6 +51,7 @@ class LivestreamWatcherListViewController: AmityViewController {
         contentView.layer.maskedCorners = [.layerMaxXMinYCorner, .layerMinXMinYCorner]
         
         headerTitle.font = AmityFontSet.title
+        headerTitle.text = "\(streamerDisplayName)'s live video"
         
         whoWatchingTitle.font = AmityFontSet.title
         

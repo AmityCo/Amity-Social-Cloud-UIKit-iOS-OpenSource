@@ -510,6 +510,10 @@ public class LiveStreamPlayerViewController: UIViewController {
     
     @objc func showWatcherListWindow() {
         
+        guard let post = amityPost else { return }
+        let currentPost = AmityPostModel(post: post)
+        let streamerName = currentPost.postedUser?.displayName ?? ""
+        
         guard let nibName = NSStringFromClass(LivestreamWatcherListViewController.self).components(separatedBy: ".").last else {
             fatalError("Class name not found")
         }
@@ -519,6 +523,7 @@ public class LiveStreamPlayerViewController: UIViewController {
         vc.modalPresentationStyle = .overFullScreen
         vc.currentLivestreamId = streamIdToWatch
         vc.isStreamer = false
+        vc.streamerDisplayName = streamerName
         self.present(vc, animated: true, completion: nil)
         
     }
