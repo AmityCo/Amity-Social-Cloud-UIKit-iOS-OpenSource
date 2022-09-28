@@ -518,6 +518,8 @@ final public class LiveStreamBroadcastViewController: UIViewController {
     
     @objc func showWatcherListWindow() {
         
+        let streamerName = createdPost?.postedUser?.displayName ?? ""
+        
         guard let nibName = NSStringFromClass(LivestreamWatcherListViewController.self).components(separatedBy: ".").last else {
             fatalError("Class name not found")
         }
@@ -527,6 +529,7 @@ final public class LiveStreamBroadcastViewController: UIViewController {
         vc.modalPresentationStyle = .overFullScreen
         vc.currentLivestreamId = self.streamId ?? ""
         vc.isStreamer = true
+        vc.streamerDisplayName = streamerName
         self.present(vc, animated: true, completion: nil)
         
     }
