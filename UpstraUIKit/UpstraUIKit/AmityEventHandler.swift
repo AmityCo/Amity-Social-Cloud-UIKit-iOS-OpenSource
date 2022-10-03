@@ -108,6 +108,14 @@ open class AmityEventHandler {
         source.navigationController?.pushViewController(editProfileViewController, animated: true)
     }
     
+    open func roleDidTap(from source: AmityViewController, userBadge: UserBadge.BadgeProfile) {
+        let viewController = BadgeDetailViewController.make(withUserBadge: userBadge)
+        source.navigationController?.modalPresentationStyle = .overCurrentContext
+        source.navigationController?.modalTransitionStyle = .crossDissolve
+        source.navigationController?.presentationController?.presentedView?.gestureRecognizers?[0].isEnabled = true
+        source.navigationController?.present(viewController, animated: true)
+    }
+    
     /// Event for selecting post target
     /// It will be triggered when the user choose target to create the post i.e their own feed or community feed.
     ///
