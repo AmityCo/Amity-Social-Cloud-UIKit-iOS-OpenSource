@@ -513,6 +513,10 @@
 		A0B68B6126E7238E007D7B5B /* AmityPostLiveStreamTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = A0B68B5F26E7238E007D7B5B /* AmityPostLiveStreamTableViewCell.xib */; };
 		A0E2B23226B7B68200F1C4D5 /* AmityPostGalleryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0E2B23026B7B68200F1C4D5 /* AmityPostGalleryViewController.swift */; };
 		A0E2B23326B7B68200F1C4D5 /* AmityPostGalleryViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = A0E2B23126B7B68200F1C4D5 /* AmityPostGalleryViewController.xib */; };
+		AAFFE1CB28E6B8EB00D1453E /* TrueUserBadgeModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAFFE1CA28E6B8EB00D1453E /* TrueUserBadgeModel.swift */; };
+		AAFFE1CD28E6D0C100D1453E /* TrueUserBadge.json in Resources */ = {isa = PBXBuildFile; fileRef = AAFFE1CC28E6D0C100D1453E /* TrueUserBadge.json */; };
+		AAFFE1D428EACCB700D1453E /* BadgeDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAFFE1D228EACCB700D1453E /* BadgeDetailViewController.swift */; };
+		AAFFE1D528EACCB700D1453E /* BadgeDetailViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = AAFFE1D328EACCB700D1453E /* BadgeDetailViewController.xib */; };
 		B4196217289A2D5600A62E1F /* AmityFollowingRecentChatCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4196215289A2D5600A62E1F /* AmityFollowingRecentChatCollectionViewCell.swift */; };
 		B4196218289A2D5600A62E1F /* AmityFollowingRecentChatCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = B4196216289A2D5600A62E1F /* AmityFollowingRecentChatCollectionViewCell.xib */; };
 		B427F71F2877E62800E5B438 /* TodayNewsFeedViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B427F71E2877E62800E5B438 /* TodayNewsFeedViewController.swift */; };
@@ -1205,6 +1209,10 @@
 		A0B68B5F26E7238E007D7B5B /* AmityPostLiveStreamTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = AmityPostLiveStreamTableViewCell.xib; sourceTree = "<group>"; };
 		A0E2B23026B7B68200F1C4D5 /* AmityPostGalleryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AmityPostGalleryViewController.swift; sourceTree = "<group>"; };
 		A0E2B23126B7B68200F1C4D5 /* AmityPostGalleryViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = AmityPostGalleryViewController.xib; sourceTree = "<group>"; };
+		AAFFE1CA28E6B8EB00D1453E /* TrueUserBadgeModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrueUserBadgeModel.swift; sourceTree = "<group>"; };
+		AAFFE1CC28E6D0C100D1453E /* TrueUserBadge.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = TrueUserBadge.json; path = ../../../../../../Downloads/TrueUserBadge.json; sourceTree = "<group>"; };
+		AAFFE1D228EACCB700D1453E /* BadgeDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BadgeDetailViewController.swift; sourceTree = "<group>"; };
+		AAFFE1D328EACCB700D1453E /* BadgeDetailViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = BadgeDetailViewController.xib; sourceTree = "<group>"; };
 		B4196215289A2D5600A62E1F /* AmityFollowingRecentChatCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AmityFollowingRecentChatCollectionViewCell.swift; sourceTree = "<group>"; };
 		B4196216289A2D5600A62E1F /* AmityFollowingRecentChatCollectionViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = AmityFollowingRecentChatCollectionViewCell.xib; sourceTree = "<group>"; };
 		B427F71E2877E62800E5B438 /* TodayNewsFeedViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodayNewsFeedViewController.swift; sourceTree = "<group>"; };
@@ -1683,6 +1691,8 @@
 			children = (
 				0D95688625D58FC900DE98FD /* Components */,
 				0D95688525D58FC000DE98FD /* Cells */,
+				AAFFE1D228EACCB700D1453E /* BadgeDetailViewController.swift */,
+				AAFFE1D328EACCB700D1453E /* BadgeDetailViewController.xib */,
 			);
 			path = Contents;
 			sourceTree = "<group>";
@@ -2266,6 +2276,7 @@
 				B7ED344D2538B900005E33A7 /* AmityLoadingState.swift */,
 				7F77050027B36CCC00600D85 /* AmityTrueUserModel.swift */,
 				7F08B42A288F9BAB0056B511 /* AmityNotificationHistoryModel.swift */,
+				AAFFE1CA28E6B8EB00D1453E /* TrueUserBadgeModel.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -3160,6 +3171,7 @@
 		7F7F081D27C4C11C005C6283 /* API */ = {
 			isa = PBXGroup;
 			children = (
+				AAFFE1CC28E6D0C100D1453E /* TrueUserBadge.json */,
 				7F7F081E27C4C13B005C6283 /* CustomAPIRequest.swift */,
 			);
 			name = API;
@@ -4777,6 +4789,7 @@
 				B427F72A2877FF2800E5B438 /* TodayNewsFeed.xib in Resources */,
 				78CFD35626E2B76400975AAB /* AmityPollCreatorScheduleTableViewCell.xib in Resources */,
 				B76A1011252B7BB400AFC7A8 /* AmityCommunityExplorerViewController.xib in Resources */,
+				AAFFE1CD28E6D0C100D1453E /* TrueUserBadge.json in Resources */,
 				B763E30E252C261E00BCB2F2 /* AmityTrendingCommunityTableViewCell.xib in Resources */,
 				970E784826429FA500E5FCEE /* ChatSettingsTableViewCell.xib in Resources */,
 				B76A1022252B7E3300AFC7A8 /* AmityCategoryPreviewViewController.xib in Resources */,
@@ -4788,6 +4801,7 @@
 				97D723AD2695AE59000735F5 /* AmityMemberSearchViewController.xib in Resources */,
 				72507136251CC8A500200A24 /* AmityCategoryListViewController.xib in Resources */,
 				9791999A2689C67B0057468F /* AmityComposeBarOnlyTextViewController.xib in Resources */,
+				AAFFE1D528EACCB700D1453E /* BadgeDetailViewController.xib in Resources */,
 				0D44379A25CD0A8B00C03616 /* AmityPostHeaderTableViewCell.xib in Resources */,
 				B750672224FC061B00DD17B4 /* AmitySelectMemberListTableViewCell.xib in Resources */,
 				72A3516224EA820800DA9D46 /* AmityRecentChatViewController.xib in Resources */,
@@ -4914,6 +4928,7 @@
 				97D723E02695B133000735F5 /* AmityFollowersListScreenViewModel.swift in Sources */,
 				0D44378E25CCFEBD00C03616 /* AmityPostFooterTableViewCell.swift in Sources */,
 				72A3516C24EA820800DA9D46 /* AmityImagePickerController+Assets.swift in Sources */,
+				AAFFE1CB28E6B8EB00D1453E /* TrueUserBadgeModel.swift in Sources */,
 				D4373A4C25C09C980096D07D /* AmityPostSharePermission.swift in Sources */,
 				72A3512A24EA820800DA9D46 /* AmityResponsiveView.swift in Sources */,
 				B735CD66254937A100A98B95 /* AmityKeyboardComposeBarCollectionViewCell.swift in Sources */,
@@ -5250,6 +5265,7 @@
 				0D44379925CD0A8B00C03616 /* AmityPostHeaderTableViewCell.swift in Sources */,
 				0D43B16A25D82CBD00E6B604 /* AmityPostController.swift in Sources */,
 				B77DE3132537F1BA00568DF0 /* AmityCommunityMemberSettingsViewController.swift in Sources */,
+				AAFFE1D428EACCB700D1453E /* BadgeDetailViewController.swift in Sources */,
 				72A3517C24EA820800DA9D46 /* CameraCollectionViewCell.swift in Sources */,
 				78561A8225F9D86C00A1403E /* AmityPostReviewSettingsItem.swift in Sources */,
 				A0A903F126BFC2D0002949B2 /* PostGalleryFakeItemCell.swift in Sources */,

@@ -12,6 +12,7 @@ import UIKit
 public protocol AmityPostHeaderProtocol: UITableViewCell, AmityCellIdentifiable {
     var delegate: AmityPostHeaderDelegate? { get set }
     var post: AmityPostModel? { get }
+    var currentUserBadge: UserBadge.BadgeProfile? { get }
     
     func display(post: AmityPostModel)
 }
@@ -27,4 +28,5 @@ public enum AmityPostHeaderAction {
     case tapDisplayName
     case tapCommunityName
     case tapOption
+    case tapRole
 }

@@ -7,6 +7,7 @@
 
 import UIKit
 import AmityUIKit
+import AmitySDK
 
 class LiveStreamBroadcastOverlayTableViewCell: UITableViewCell,Nibbable {
     
@@ -14,17 +15,30 @@ class LiveStreamBroadcastOverlayTableViewCell: UITableViewCell,Nibbable {
     @IBOutlet var commentView: UIView!
     @IBOutlet var displayNameLabel: UILabel!
     @IBOutlet var commentLabel: UILabel!
+    @IBOutlet var roleImageView: UIImageView!
+    
+    // MARK: - Repository
+    private var userRepository: AmityUserRepository?
+    private var userToken: AmityNotificationToken?
     
     static let height: CGFloat = 60
+    
+    private var userId: String = ""
+    var userBadge: UserBadge?
+    var currentUserBadge: UserBadge.BadgeProfile?
     
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
+        self.userRepository = AmityUserRepository(client: AmityUIKitManager.client)
+        fetchUserData()
+        setupRole()
     }
 
     func display(comment: AmityCommentModel){
         
         self.backgroundColor = .clear
+        self.userId = comment.userId
         
         commentView.backgroundColor = UIColor(hex: "#808080", alpha: 0.3)
         commentView.layer.cornerRadius = 10
@@ -49,7 +63,6 @@ class LiveStreamBroadcastOverlayTableViewCell: UITableViewCell,Nibbable {
         commentLabel.lineBreakMode = .byTruncatingTail
         commentLabel.sizeToFit()
         commentLabel.textColor = .white
-        
     }
     
     class func height(for comment: AmityCommentModel, boundingWidth: CGFloat) -> CGFloat {
@@ -66,5 +79,114 @@ class LiveStreamBroadcastOverlayTableViewCell: UITableViewCell,Nibbable {
         return height
 
     }
+    
+    // MARK: - Setup Role Data
+    private func setupRole() {
+        let JSONString = """
+              {
+                 "group_profile": [
+                    {
+                       "enable": false,
+                       "role": "admin",
+                       "profile": [
+                          {
+                             "badge_icon": "https://cms.dmpcdn.com/livetv/2020/09/17/dfacfdc0-f8ca-11ea-93ca-b15d54ae9c1e_original.png",
+                             "badge_description_en": "Chat admins ensure that chat is up to standards by removing offensive posts and spam that detracts from conversations. Feel free to chat with our admin team!",
+                             "badge_title_en": "Chat Admin",
+                             "badge_title_local": "แอดมินห้องแชท",
+                             "badge_description_local": "แอดมินห้องแชท ทำหน้าที่ควบคุมมาตรฐานการแชท โดยการลบโพสต์และสแปมที่ไม่เหมาะสม ทำให้ทุกคนสามารถพูดคุยกันอย่างสนุกสนานไร้กังวล"
+                          }
+                       ]
+                    },
+                    {
+                       "profile": [
+                          {
+                             "badge_title_local": "แฟนตัวยง",
+                             "badge_description_local": "รับ เครื่องหมาย แฟนตัวยง ง่ายๆ เพียงแค่คุณเป็นหนึ่งในสมาชิกที่ใช้งานอย่างสม่ำเสมอ บน live chat ของทรูไอดี ซึ่งรวมไปถึงการส่งความรู้สึกตอบสนอง หรือแม้แต่การพิมพ์ตอบข้อความสมาชิกท่านอื่น เพียงแค่มีเครื่องหมายนี้ข้อความของคุณก็จะโดดเด่นเกินใคร!",
+                             "badge_description_en": "Earn a super fan badge by being one of the most active member on True ID live chat, which include reacting and replying to other users’ messages",
+                             "badge_title_en": "Super Fan",
+                             "badge_icon": "https://cms.dmpcdn.com/livetv/2020/09/22/cc7a2be0-fcaa-11ea-b266-63e567a949c5_original.png"
+                          }
+                       ],
+                       "role": "beginner",
+                       "enable": false
+                    },
+                    {
+                       "enable": false,
+                       "role": "general",
+                       "profile": [
+                          {}
+                       ]
+                    },
+                    {
+                       "enable": true,
+                       "role": "rising-star",
+                       "profile": [
+                          {
+                             "badge_description_en": "Earn a Rising Star badge by being an active member on True ID live chat, which include reacting and replying to other users’ messages",
+                             "badge_title_en": "Rising Star",
+                             "badge_title_local": "ดาวรุ่งพุ่งแรง",
+                             "badge_icon": "https://cms.dmpcdn.com/livetv/2020/09/17/d65999e0-f8ca-11ea-93ca-b15d54ae9c1e_original.png",
+                             "badge_description_local": "รับ เครื่องหมาย ดาวรุ่งพุ่งแรง ง่ายๆ เพียงแค่คุณเป็นหนึ่งในสมาชิกที่ใช้งานอย่างสม่ำเสมอ บน live chat ของทรูไอดี ซึ่งรวมไปถึงการส่งความรู้สึกตอบสนอง หรือแม้แต่การพิมพ์ตอบข้อความสมาชิกท่านอื่น เพียงแค่มีเครื่องหมายนี้ข้อความของคุณก็จะโดดเด่นเกินใคร!"
+                          }
+                       ]
+                    },
+                    {
+                       "profile": [
+                          {
+                             "badge_description_local": "สัญลักษณ์แฟนตัวยง เป็นสัญลักษณ์แสดงความขอบคุณจาก True ID สำหรับลูกค้าที่มีส่วนร่วมมากที่สุดใน live chat ไม่ว่าจะเป็น การกดถูกใจ การตอบสนองต่อข้อความ การเริ่มต้นการสนทนา การแสดงความคิดเห็น เพียงแค่มีส่วนร่วมอย่างสม่ำเสมอเท่านั้น!",
+                             "badge_title_local": "แฟนตัวยง",
+                             "badge_description_en": "Super Fan badge are awarded to those who are most active and engaged, including reacting to content, replying to messages, and initiating conversations, on True ID live chat. Start earning your badge today!",
+                             "badge_icon": "https://cms.dmpcdn.com/livetv/2020/09/17/e6f612b0-f8ca-11ea-816f-61c1bc726fdd_original.png",
+                             "badge_title_en": "Super Fan"
+                          }
+                       ],
+                       "enable": true,
+                       "role": "super-fan"
+                    }
+                 ]
+              }
+              """
+        let jsonData = JSONString.data(using: .utf8)!
+        do {
+            let decoder = JSONDecoder()
+            let data = try decoder.decode(UserBadge.self, from: jsonData)
+            userBadge = data
+        }
+        catch {
+        }
+    }
+    
+    func fetchUserData() {
+        userToken?.invalidate()
+        userToken = userRepository?.getUser(userId).observe { [weak self] object, error in
+            guard let strongSelf = self else { return }
+            // Due to `observeOnce` doesn't guarantee if the data is fresh or local.
+            // So, this is a workaround to execute code specifically for fresh data status.
+            switch object.dataStatus {
+            case .fresh:
+                if let user = object.object {
+                    /// Setup Role
+                    let userModel = AmityUserModel(user: user)
+                    for role in userModel.role {
+                        guard let profile = strongSelf.userBadge?.groupProfile else { return }
+                        for badge in profile {
+                            if role == badge.role {
+                                if badge.enable ?? false {
+                                    strongSelf.roleImageView.downloaded(from: badge.profile?.first?.badgeIcon ?? "")
+                                    guard let currentProfile = badge.profile else { return }
+                                    strongSelf.currentUserBadge = currentProfile.first!
+                                }
+                            }
+                        }
+                    }
+                }
+                strongSelf.userToken?.invalidate()
+            @unknown default:
+                break
+            }
+        }
+    }
+
     
 }

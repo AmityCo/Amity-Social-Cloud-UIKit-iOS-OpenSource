@@ -22,6 +22,8 @@ final class AmityFeedScreenViewModel: AmityFeedScreenViewModelType {
     private let communityRepository: AmityCommunityRepository
     private var token: AmityNotificationToken?
     private var communityObject: AmityObject<AmityCommunity>?
+    private let userRepository: AmityUserRepository
+
     
     // MARK: - Properties
     private let debouncer = Debouncer(delay: 0.3)
@@ -48,6 +50,8 @@ final class AmityFeedScreenViewModel: AmityFeedScreenViewModelType {
         self.isLoading = false
         self.pollRepository = AmityPollRepository(client: AmityUIKitManagerInternal.shared.client)
         self.communityRepository = AmityCommunityRepository(client: AmityUIKitManagerInternal.shared.client)
+        self.userRepository = AmityUserRepository(client: AmityUIKitManagerInternal.shared.client)
+
     }
     
 }

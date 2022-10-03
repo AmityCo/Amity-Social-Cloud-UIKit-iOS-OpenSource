@@ -265,6 +265,8 @@ public class AmityPostModel {
     
     public var isPin: Bool = false
     
+    public let postUserRole: [String]
+    
     // MARK: - Internal variables
     
     var dataTypeInternal: DataType = .unknown
@@ -322,6 +324,7 @@ public class AmityPostModel {
         poll = post.getPollInfo().map(Poll.init)
         metadata = post.metadata
         mentionees = post.mentionees
+        postUserRole = post.postedUser?.roles ?? []
         extractPostData()
     }
     

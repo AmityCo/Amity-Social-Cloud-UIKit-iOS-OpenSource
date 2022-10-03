@@ -14,7 +14,7 @@ public class LiveStreamPlayerViewController: UIViewController {
     
     private let streamIdToWatch: String
     private var streamRepository: AmityStreamRepository
-    
+
     private let postId: String
     
     private var stream: AmityStream?
