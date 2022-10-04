@@ -10,7 +10,7 @@ import AmitySDK
 import AmityLiveVideoBroadcastKit
 import AmityUIKit
 
-final public class LiveStreamBroadcastViewController: UIViewController {
+final public class LiveStreamBroadcastViewController: AmityViewController {
     
     /// When the user finish live streaming, it will present post detail page.
     /// When the user exit post detail page, the it will dismiss back to this destination.
@@ -875,4 +875,11 @@ extension Int {
         
         return numFormatter.string(from: NSNumber (value:value))!
     }
+}
+
+extension LiveStreamBroadcastViewController: LiveStreamBroadcastOverlayProtocol {
+    func didBadgeTap(userBadge: UserBadge.BadgeProfile) {
+        AmityEventHandler.shared.roleDidTap(from: self, userBadge: userBadge)
+    }
+    
 }

@@ -24,6 +24,8 @@ public final class AmityPostHeaderTableViewCell: UITableViewCell, Nibbable, Amit
     @IBOutlet private var pinIconImageView: UIImageView!
     @IBOutlet private var roleIconImageView: UIImageView!
     @IBOutlet private var roleIconImageViewConstain: NSLayoutConstraint!
+    @IBOutlet private var roleIconImageViewLeftConstain: NSLayoutConstraint!
+    @IBOutlet private var roleIconImageViewRightConstain: NSLayoutConstraint!
     @IBOutlet private var targetNameLabel: AmityFeedDisplayNameLabel!
 
     private(set) public var post: AmityPostModel?
@@ -91,12 +93,19 @@ public final class AmityPostHeaderTableViewCell: UITableViewCell, Nibbable, Amit
         }
         
         roleIconImageView.image = UIImage()
+        roleIconImageViewConstain.constant = 0
+        roleIconImageViewLeftConstain.constant = 0
+        roleIconImageViewRightConstain.constant = 0
+        
         /// Setup Role
         for role in post.postUserRole {
             guard let profile = userBadge?.groupProfile else { return }
             for badge in profile {
                 if role == badge.role {
                     if badge.enable ?? false {
+                        roleIconImageViewConstain.constant = 20
+                        roleIconImageViewLeftConstain.constant = 7.5
+                        roleIconImageViewRightConstain.constant = 7.5
                         roleIconImageView.loadImage(with: badge.profile?.first?.badgeIcon ?? "", size: .full, placeholder: UIImage())
                         guard let currentProfile = badge.profile else { return }
                         currentUserBadge = currentProfile.first!
