@@ -65,7 +65,6 @@
                                                     <constraint firstItem="hJ4-GE-kKa" firstAttribute="top" secondItem="xmb-S7-Dmo" secondAttribute="top" constant="2" id="1Q1-uK-YxM"/>
                                                     <constraint firstItem="bOG-qG-b0M" firstAttribute="top" secondItem="xmb-S7-Dmo" secondAttribute="top" constant="2" id="9S2-k2-V3G"/>
                                                     <constraint firstItem="hJ4-GE-kKa" firstAttribute="leading" secondItem="xmb-S7-Dmo" secondAttribute="leading" id="C2f-wg-dDN"/>
-                                                    <constraint firstAttribute="trailing" secondItem="bOG-qG-b0M" secondAttribute="trailing" id="LQi-7b-9Na"/>
                                                     <constraint firstItem="E5V-SV-Q0D" firstAttribute="leading" secondItem="hJ4-GE-kKa" secondAttribute="trailing" constant="7.5" id="NTB-7R-A0s"/>
                                                     <constraint firstAttribute="height" constant="25" id="RsF-dW-FrZ"/>
                                                     <constraint firstItem="bOG-qG-b0M" firstAttribute="leading" secondItem="E5V-SV-Q0D" secondAttribute="trailing" constant="8" symbolic="YES" id="SnC-W5-g7R"/>
@@ -152,11 +151,22 @@
                 <outlet property="optionButton" destination="Ufv-WN-XV4" id="Fnp-ox-ZLz"/>
                 <outlet property="pinIconImageView" destination="qms-n9-1mA" id="mAn-cH-40F"/>
                 <outlet property="roleIconImageView" destination="E5V-SV-Q0D" id="UlO-t8-63k"/>
+                <outlet property="roleIconImageViewConstain" destination="fkS-eI-4EN" id="DvH-el-2Ww"/>
+                <outlet property="roleIconImageViewLeftConstain" destination="NTB-7R-A0s" id="yue-5H-DPg"/>
+                <outlet property="roleIconImageViewRightConstain" destination="SnC-W5-g7R" id="JWc-ye-TVX"/>
                 <outlet property="targetNameLabel" destination="bOG-qG-b0M" id="age-Fq-kwx"/>
             </connections>
             <point key="canvasLocation" x="189.13043478260872" y="123.88392857142857"/>
         </tableViewCell>
     </objects>
+    <designables>
+        <designable name="bOG-qG-b0M">
+            <size key="intrinsicContentSize" width="41.5" height="20.5"/>
+        </designable>
+        <designable name="hJ4-GE-kKa">
+            <size key="intrinsicContentSize" width="41.5" height="20.5"/>
+        </designable>
+    </designables>
     <resources>
         <image name="icon_pin" width="24" height="24"/>
         <systemColor name="systemBackgroundColor">
