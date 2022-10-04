@@ -57,7 +57,16 @@ public final class AmityRecentChatViewController: AmityViewController, Indicator
         setupScreenViewModel()
         setupView()
         openChannelByDeppLink()
+    }
+    
+    public override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
         AmityEventHandler.shared.openCurrentPageEvent(.recentChat)
+    }
+    
+    public override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        AmityEventHandler.shared.openCurrentPageEvent(.other)
     }
     
     public static func make(channelType: AmityChannelType = .conversation, channelID: String? = nil) -> AmityRecentChatViewController {

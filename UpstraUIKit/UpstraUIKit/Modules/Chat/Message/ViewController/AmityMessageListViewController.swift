@@ -76,6 +76,13 @@ public final class AmityMessageListViewController: AmityViewController, AmityMes
     private var didEnterBackgroundObservation: NSObjectProtocol?
     private var willEnterForegroundObservation: NSObjectProtocol?
     
+    private var userId: String = ""
+    private var channelId: String = ""
+    
+    private lazy var openCurrentPage: Void = {
+        AmityEventHandler.shared.openCurrentPageEvent(.chat(ssoId: userId, channelId: channelId))
+    }()
+    
     // MARK: - View lifecyle
     public override func viewDidLoad() {
         super.viewDidLoad()
@@ -110,6 +117,7 @@ public final class AmityMessageListViewController: AmityViewController, AmityMes
         AmityAudioPlayer.shared.stop()
         bottomConstraint.constant = .zero
         view.endEditing(true)
+        AmityEventHandler.shared.openCurrentPageEvent(.other)
     }
     
     /// Create `AmityMessageListViewController` instance.
@@ -531,7 +539,9 @@ extension AmityMessageListViewController: AmityMessageListScreenViewModelDelegat
     func screenViewModelDidGetChannel(channel: AmityChannelModel) {
         navigationHeaderViewController?.updateViews(channel: channel)
         screenViewModel.action.shouldScrollToBottom(force: false)
-        AmityEventHandler.shared.openCurrentPageEvent(.chat(ssoId: channel.getOtherUserId(), channelId: channel.channelId))
+        userId = channel.getOtherUserId()
+        channelId = channel.channelId
+        _ = openCurrentPage
     }
     
     func screenViewModelScrollToBottom(for indexPath: IndexPath) {
