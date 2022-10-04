@@ -9,6 +9,10 @@ import UIKit
 import AmityUIKit
 import AmitySDK
 
+protocol LiveStreamBroadcastOverlayProtocol {
+    func didBadgeTap(userBadge: UserBadge.BadgeProfile) -> ()
+}
+
 class LiveStreamBroadcastOverlayTableViewCell: UITableViewCell,Nibbable {
     
     @IBOutlet var avatarView: AmityAvatarView!
@@ -17,28 +21,22 @@ class LiveStreamBroadcastOverlayTableViewCell: UITableViewCell,Nibbable {
     @IBOutlet var commentLabel: UILabel!
     @IBOutlet var roleImageView: UIImageView!
     
-    // MARK: - Repository
-    private var userRepository: AmityUserRepository?
-    private var userToken: AmityNotificationToken?
-    
     static let height: CGFloat = 60
     
-    private var userId: String = ""
+    var delegate: LiveStreamBroadcastOverlayProtocol?
+
     var userBadge: UserBadge?
     var currentUserBadge: UserBadge.BadgeProfile?
     
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
-        self.userRepository = AmityUserRepository(client: AmityUIKitManager.client)
-        fetchUserData()
         setupRole()
     }
 
     func display(comment: AmityCommentModel){
         
         self.backgroundColor = .clear
-        self.userId = comment.userId
         
         commentView.backgroundColor = UIColor(hex: "#808080", alpha: 0.3)
         commentView.layer.cornerRadius = 10
@@ -63,6 +61,29 @@ class LiveStreamBroadcastOverlayTableViewCell: UITableViewCell,Nibbable {
         commentLabel.lineBreakMode = .byTruncatingTail
         commentLabel.sizeToFit()
         commentLabel.textColor = .white
+        
+        /// Setup Role
+        for role in comment.role {
+            guard let profile = userBadge?.groupProfile else { return }
+            for badge in profile {
+                if role == badge.role {
+                    if badge.enable ?? false {
+                        roleImageView.downloaded(from: badge.profile?.first?.badgeIcon ?? "")
+                        guard let currentProfile = badge.profile else { return }
+                        currentUserBadge = currentProfile.first!
+                    }
+                }
+            }
+        }
+        
+        let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(roleTap(tapGestureRecognizer:)))
+        roleImageView.isUserInteractionEnabled = true
+        roleImageView.addGestureRecognizer(tapGestureRecognizer)
+    }
+    
+    @objc func roleTap(tapGestureRecognizer: UITapGestureRecognizer) {
+        guard let user = currentUserBadge else { return }
+        delegate?.didBadgeTap(userBadge: user)
     }
     
     class func height(for comment: AmityCommentModel, boundingWidth: CGFloat) -> CGFloat {
@@ -156,37 +177,5 @@ class LiveStreamBroadcastOverlayTableViewCell: UITableViewCell,Nibbable {
         catch {
         }
     }
-    
-    func fetchUserData() {
-        userToken?.invalidate()
-        userToken = userRepository?.getUser(userId).observe { [weak self] object, error in
-            guard let strongSelf = self else { return }
-            // Due to `observeOnce` doesn't guarantee if the data is fresh or local.
-            // So, this is a workaround to execute code specifically for fresh data status.
-            switch object.dataStatus {
-            case .fresh:
-                if let user = object.object {
-                    /// Setup Role
-                    let userModel = AmityUserModel(user: user)
-                    for role in userModel.role {
-                        guard let profile = strongSelf.userBadge?.groupProfile else { return }
-                        for badge in profile {
-                            if role == badge.role {
-                                if badge.enable ?? false {
-                                    strongSelf.roleImageView.downloaded(from: badge.profile?.first?.badgeIcon ?? "")
-                                    guard let currentProfile = badge.profile else { return }
-                                    strongSelf.currentUserBadge = currentProfile.first!
-                                }
-                            }
-                        }
-                    }
-                }
-                strongSelf.userToken?.invalidate()
-            @unknown default:
-                break
-            }
-        }
-    }
-
     
 }

@@ -37,21 +37,24 @@
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="xmb-S7-Dmo">
                                                 <rect key="frame" x="0.0" y="0.0" width="261" height="25"/>
                                                 <subviews>
-                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hJ4-GE-kKa" customClass="AmityFeedDisplayNameLabel" customModule="AmityUIKit" customModuleProvider="target">
-                                                        <rect key="frame" x="144.5" y="2" width="41.5" height="20.5"/>
+                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hJ4-GE-kKa" customClass="AmityFeedDisplayNameLabel" customModule="AmityUIKit" customModuleProvider="target">
+                                                        <rect key="frame" x="0.0" y="2" width="41.5" height="20.5"/>
                                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                         <nil key="textColor"/>
                                                         <nil key="highlightedColor"/>
                                                     </label>
-                                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="E5V-SV-Q0D">
-                                                        <rect key="frame" x="191.5" y="2.5" width="20" height="20"/>
+                                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="E5V-SV-Q0D">
+                                                        <rect key="frame" x="49" y="2.5" width="20" height="20"/>
                                                         <constraints>
-                                                            <constraint firstAttribute="height" constant="20" id="5DW-Mb-dt9"/>
-                                                            <constraint firstAttribute="width" constant="20" id="OvO-Kr-tGo"/>
+                                                            <constraint firstAttribute="height" constant="20" id="24E-nT-8me"/>
+                                                            <constraint firstAttribute="width" constant="20" id="fkS-eI-4EN"/>
                                                         </constraints>
                                                     </imageView>
-                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bOG-qG-b0M" customClass="AmityFeedDisplayNameLabel" customModule="AmityUIKit" customModuleProvider="target">
-                                                        <rect key="frame" x="219.5" y="2" width="41.5" height="20.5"/>
+                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bOG-qG-b0M" customClass="AmityFeedDisplayNameLabel" customModule="AmityUIKit" customModuleProvider="target">
+                                                        <rect key="frame" x="77" y="2" width="184" height="21"/>
+                                                        <constraints>
+                                                            <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="184" id="B84-ZZ-Y7G"/>
+                                                        </constraints>
                                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                         <nil key="textColor"/>
                                                         <nil key="highlightedColor"/>
@@ -59,16 +62,16 @@
                                                 </subviews>
                                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                                 <constraints>
-                                                    <constraint firstItem="bOG-qG-b0M" firstAttribute="top" secondItem="xmb-S7-Dmo" secondAttribute="top" constant="2" id="24i-Sg-Lo3"/>
-                                                    <constraint firstItem="bOG-qG-b0M" firstAttribute="leading" secondItem="E5V-SV-Q0D" secondAttribute="trailing" constant="8" symbolic="YES" id="2J5-q1-vxe"/>
-                                                    <constraint firstAttribute="bottom" secondItem="bOG-qG-b0M" secondAttribute="bottom" constant="2.5" id="4NA-ma-pTn"/>
-                                                    <constraint firstItem="E5V-SV-Q0D" firstAttribute="leading" secondItem="hJ4-GE-kKa" secondAttribute="trailing" constant="5.5" id="AZo-Rb-Duv"/>
-                                                    <constraint firstItem="E5V-SV-Q0D" firstAttribute="centerY" secondItem="hJ4-GE-kKa" secondAttribute="centerY" id="OJa-HG-xcS"/>
+                                                    <constraint firstItem="hJ4-GE-kKa" firstAttribute="top" secondItem="xmb-S7-Dmo" secondAttribute="top" constant="2" id="1Q1-uK-YxM"/>
+                                                    <constraint firstItem="bOG-qG-b0M" firstAttribute="top" secondItem="xmb-S7-Dmo" secondAttribute="top" constant="2" id="9S2-k2-V3G"/>
+                                                    <constraint firstItem="hJ4-GE-kKa" firstAttribute="leading" secondItem="xmb-S7-Dmo" secondAttribute="leading" id="C2f-wg-dDN"/>
+                                                    <constraint firstAttribute="trailing" secondItem="bOG-qG-b0M" secondAttribute="trailing" id="LQi-7b-9Na"/>
+                                                    <constraint firstItem="E5V-SV-Q0D" firstAttribute="leading" secondItem="hJ4-GE-kKa" secondAttribute="trailing" constant="7.5" id="NTB-7R-A0s"/>
                                                     <constraint firstAttribute="height" constant="25" id="RsF-dW-FrZ"/>
-                                                    <constraint firstItem="hJ4-GE-kKa" firstAttribute="leading" secondItem="xmb-S7-Dmo" secondAttribute="leading" id="Xpx-0S-aLW"/>
-                                                    <constraint firstAttribute="trailing" secondItem="bOG-qG-b0M" secondAttribute="trailing" id="jBE-nI-37c"/>
-                                                    <constraint firstItem="hJ4-GE-kKa" firstAttribute="top" secondItem="xmb-S7-Dmo" secondAttribute="top" constant="2" id="scP-Ny-pdg"/>
-                                                    <constraint firstAttribute="bottom" secondItem="hJ4-GE-kKa" secondAttribute="bottom" constant="2.5" id="vS4-Xj-YIt"/>
+                                                    <constraint firstItem="bOG-qG-b0M" firstAttribute="leading" secondItem="E5V-SV-Q0D" secondAttribute="trailing" constant="8" symbolic="YES" id="SnC-W5-g7R"/>
+                                                    <constraint firstItem="E5V-SV-Q0D" firstAttribute="centerY" secondItem="hJ4-GE-kKa" secondAttribute="centerY" id="V39-3v-wcv"/>
+                                                    <constraint firstAttribute="bottom" secondItem="hJ4-GE-kKa" secondAttribute="bottom" constant="2.5" id="adC-T2-fIz"/>
+                                                    <constraint firstAttribute="bottom" secondItem="bOG-qG-b0M" secondAttribute="bottom" constant="2" id="cRK-D1-qUx"/>
                                                 </constraints>
                                             </view>
                                             <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="CbP-Nb-k1P">
@@ -149,20 +152,11 @@
                 <outlet property="optionButton" destination="Ufv-WN-XV4" id="Fnp-ox-ZLz"/>
                 <outlet property="pinIconImageView" destination="qms-n9-1mA" id="mAn-cH-40F"/>
                 <outlet property="roleIconImageView" destination="E5V-SV-Q0D" id="UlO-t8-63k"/>
-                <outlet property="roleIconImageViewConstain" destination="OvO-Kr-tGo" id="Ef3-9P-lAo"/>
                 <outlet property="targetNameLabel" destination="bOG-qG-b0M" id="age-Fq-kwx"/>
             </connections>
             <point key="canvasLocation" x="189.13043478260872" y="123.88392857142857"/>
         </tableViewCell>
     </objects>
-    <designables>
-        <designable name="bOG-qG-b0M">
-            <size key="intrinsicContentSize" width="41.5" height="20.5"/>
-        </designable>
-        <designable name="hJ4-GE-kKa">
-            <size key="intrinsicContentSize" width="41.5" height="20.5"/>
-        </designable>
-    </designables>
     <resources>
         <image name="icon_pin" width="24" height="24"/>
         <systemColor name="systemBackgroundColor">

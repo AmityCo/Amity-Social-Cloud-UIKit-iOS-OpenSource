@@ -28,6 +28,7 @@ public struct AmityCommentModel {
     private let myReactions: [String]
     public let metadata: [String: Any]?
     public let mentionees: [AmityMentionees]?
+    public let role: [String]
     
     // Due to AmityChat 4.0.0 requires comment object for editing and deleting
     // So, this is a workaroud for passing the original object.
@@ -52,6 +53,7 @@ public struct AmityCommentModel {
         isAuthorGlobalBanned = comment.user?.isGlobalBan ?? false
         metadata = comment.metadata
         mentionees = comment.mentionees
+        role = comment.user?.roles ?? []
     }
     
     var isChildrenExisted: Bool {
