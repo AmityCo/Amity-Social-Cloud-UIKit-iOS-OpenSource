@@ -140,7 +140,10 @@ public final class AmityFeedViewController: AmityViewController, AmityRefreshabl
         screenViewModel.delegate = self
         screenViewModel.action.startObserveFeedUpdate()
         screenViewModel.action.fetchUserSettings()
-        screenViewModel.action.fetchPosts()
+        DispatchQueue.main.asyncAfter(deadline: .now()+1.5) {
+            self.screenViewModel.action.fetchPosts()
+        }
+        
     }
     
     // MARK: - Setup Views
