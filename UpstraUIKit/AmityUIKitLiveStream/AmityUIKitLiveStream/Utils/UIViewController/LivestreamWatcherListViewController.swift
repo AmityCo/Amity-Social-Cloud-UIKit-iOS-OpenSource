@@ -10,18 +10,22 @@ import AmityUIKit
 import AmitySDK
 
 class LivestreamWatcherListViewController: AmityViewController {
-
+    
     @IBOutlet weak var contentView: UIView!
     @IBOutlet weak var headerTitle: UILabel!
     @IBOutlet weak var whoWatchingTitle: UILabel!
     @IBOutlet weak var watcherTableView: UITableView!
     @IBOutlet weak var backgroundView: UIView!
+    @IBOutlet weak var dragToDismissBar: UIView!
     
     var pagination: Int = 1
     var watchingArray: [String] = []
     var currentLivestreamId: String = ""
     var isStreamer: Bool = false
     var streamerDisplayName: String = ""
+    var panGestureRecognizer: UIPanGestureRecognizer?
+    var percentDriven: UIPercentDrivenInteractiveTransition!
+    var originContentViewY: CGFloat = 0.0
     
     static func make() -> LivestreamWatcherListViewController {
         let vc = LivestreamWatcherListViewController()
@@ -35,15 +39,20 @@ class LivestreamWatcherListViewController: AmityViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
+        let panGestureRecognizer = UIPanGestureRecognizer(target: self, action: #selector(handlePanGesture(panGesture:)))
+//        self.contentView.addGestureRecognizer(panGestureRecognizer)
+        self.view.addGestureRecognizer(panGestureRecognizer)
         
         getWatchingList(page: pagination)
     }
-
+    
     func setupView() {
         self.view.backgroundColor = .clear
         
         backgroundView.backgroundColor = UIColor.black.withAlphaComponent(0.5)
         backgroundView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(dismissView)))
+        
+        dragToDismissBar.layer.cornerRadius = dragToDismissBar.frame.height / 2
         
         contentView.backgroundColor = .white
         contentView.clipsToBounds = true
@@ -65,6 +74,8 @@ class LivestreamWatcherListViewController: AmityViewController {
         watcherTableView.delegate = self
         watcherTableView.backgroundColor = .clear
         watcherTableView.separatorStyle = .none
+        
+        originContentViewY = contentView.frame.origin.y
     }
     
     @objc func dismissView() {
@@ -77,7 +88,7 @@ class LivestreamWatcherListViewController: AmityViewController {
         }
     }
     
-    func didFinishGetViewerList(value: StreamViewerDataModel) { 
+    func didFinishGetViewerList(value: StreamViewerDataModel) {
         let tempArray = self.watchingArray + value.viewer
         self.watchingArray = tempArray.uniqued()
         DispatchQueue.main.async {
@@ -89,16 +100,57 @@ class LivestreamWatcherListViewController: AmityViewController {
         AmityEventHandler.shared.userDidTap(from: self, userId: userId)
     }
 
-    /*
-    // MARK: - Navigation
+    @objc func handlePanGesture(panGesture: UIPanGestureRecognizer) {
+        
+        let percent = max(panGesture.translation(in: view).y, 0) / view.frame.width
 
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
+        switch panGesture.state {
+        case .began:
+            percentDriven = UIPercentDrivenInteractiveTransition()
+            percentDriven.completionCurve = .easeOut
+
+        case .changed:
+            
+            let newY = panGesture.translation(in: view).y
+            
+            if let percentDriven = percentDriven {
+                percentDriven.update(percent)
+                if (newY + self.contentView.frame.origin.y) > self.originContentViewY {
+                    self.contentView.frame.origin.y = newY + self.originContentViewY
+                }
+            }
+
+        case .ended:
+            
+//             Continue if drag more than 50% of screen width or velocity is higher than 1000
+            if percent > 0.7{
+                percentDriven.finish()
+                self.dismissView()
+            } else {
+                percentDriven.cancel()
+                UIView.animate(withDuration: 0.3, animations: {
+                    self.contentView.frame.origin.y = self.originContentViewY
+                })
+            }
+
+        case .cancelled, .failed:
+            percentDriven.cancel()
+
+        default:
+            break
+        }
     }
-    */
-
+    
+    /*
+     // MARK: - Navigation
+     
+     // In a storyboard-based application, you will often want to do a little preparation before navigation
+     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+     // Get the new view controller using segue.destination.
+     // Pass the selected object to the new view controller.
+     }
+     */
+    
 }
 
 extension LivestreamWatcherListViewController: UITableViewDelegate, UITableViewDataSource {

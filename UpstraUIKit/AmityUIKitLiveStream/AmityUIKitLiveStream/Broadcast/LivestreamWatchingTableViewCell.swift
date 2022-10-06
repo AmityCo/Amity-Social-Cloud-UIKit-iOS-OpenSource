@@ -35,7 +35,7 @@ class LivestreamWatchingTableViewCell: UITableViewCell, Nibbable {
         
         avatarImageView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(didAvatarInCellIsTapped)))
         
-        displayName.font = AmityFontSet.body
+        displayName.font = AmityFontSet.title
         displayName.textColor = .black
         
         let userRepository = AmityUserRepository(client: AmityUIKitManager.client)
