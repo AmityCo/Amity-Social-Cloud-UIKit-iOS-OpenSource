@@ -265,8 +265,6 @@ public class LiveStreamPlayerViewController: UIViewController {
             myReactions = allReactions.compactMap(AmityReactionType.init)
                         
             self.isLike = myReactions.contains(.like)
-            
-            print("---------------> \(liveObject.dataStatus)")
                         
             DispatchQueue.main.async {
                 if self.isLike {
@@ -524,6 +522,7 @@ public class LiveStreamPlayerViewController: UIViewController {
         vc.currentLivestreamId = streamIdToWatch
         vc.isStreamer = false
         vc.streamerDisplayName = streamerName
+        
         self.present(vc, animated: true, completion: nil)
         
     }

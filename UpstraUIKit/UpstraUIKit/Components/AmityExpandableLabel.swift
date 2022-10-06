@@ -163,7 +163,6 @@ open class AmityExpandableLabel: UILabel {
                     _hyperLinkTextRange.append(Hyperlink(range: match.range, type: .url(url: url)))
                 }
                 hyperLinks = _hyperLinkTextRange
-                print("Text: \(_hyperLinkTextRange)")
                 self.attributedText = attributedString
             } else {
                 self.attributedText = nil

@@ -62,7 +62,6 @@ public class AmityCommunityHomePageFullHeaderViewController: AmityProfileViewCon
         setupViewModel()
         runDeeplinksRouter()
         
-        print("----------------> \(AmityUIKitManager.currentUserId)")
     }
     
     public override func viewWillAppear(_ animated: Bool) {
