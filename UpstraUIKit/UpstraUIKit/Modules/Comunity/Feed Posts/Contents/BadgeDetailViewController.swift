@@ -28,11 +28,19 @@ class BadgeDetailViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        setupView()
     }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         displayView()
+    }
+    
+    func setupView() {
+        view.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(dismissView)))
+        
+        roleNameLabel.font = AmityFontSet.title
+        roleDescLabel.font = AmityFontSet.body
     }
     
     func displayView() {
@@ -47,5 +55,9 @@ class BadgeDetailViewController: UIViewController {
             roleNameLabel.text = roleTitle
             roleDescLabel.text = roleDesc
         }
+    }
+    
+    @objc func dismissView() {
+        self.dismiss(animated: true)
     }
 }
