@@ -105,67 +105,73 @@ class LiveStreamBroadcastOverlayTableViewCell: UITableViewCell,Nibbable {
     private func setupRole() {
         let JSONString = """
               {
-                 "group_profile": [
-                    {
-                       "enable": false,
-                       "role": "admin",
-                       "profile": [
-                          {
-                             "badge_icon": "https://cms.dmpcdn.com/livetv/2020/09/17/dfacfdc0-f8ca-11ea-93ca-b15d54ae9c1e_original.png",
-                             "badge_description_en": "Chat admins ensure that chat is up to standards by removing offensive posts and spam that detracts from conversations. Feel free to chat with our admin team!",
-                             "badge_title_en": "Chat Admin",
-                             "badge_title_local": "แอดมินห้องแชท",
-                             "badge_description_local": "แอดมินห้องแชท ทำหน้าที่ควบคุมมาตรฐานการแชท โดยการลบโพสต์และสแปมที่ไม่เหมาะสม ทำให้ทุกคนสามารถพูดคุยกันอย่างสนุกสนานไร้กังวล"
-                          }
-                       ]
-                    },
-                    {
-                       "profile": [
-                          {
-                             "badge_title_local": "แฟนตัวยง",
-                             "badge_description_local": "รับ เครื่องหมาย แฟนตัวยง ง่ายๆ เพียงแค่คุณเป็นหนึ่งในสมาชิกที่ใช้งานอย่างสม่ำเสมอ บน live chat ของทรูไอดี ซึ่งรวมไปถึงการส่งความรู้สึกตอบสนอง หรือแม้แต่การพิมพ์ตอบข้อความสมาชิกท่านอื่น เพียงแค่มีเครื่องหมายนี้ข้อความของคุณก็จะโดดเด่นเกินใคร!",
-                             "badge_description_en": "Earn a super fan badge by being one of the most active member on True ID live chat, which include reacting and replying to other users’ messages",
-                             "badge_title_en": "Super Fan",
-                             "badge_icon": "https://cms.dmpcdn.com/livetv/2020/09/22/cc7a2be0-fcaa-11ea-b266-63e567a949c5_original.png"
-                          }
-                       ],
-                       "role": "beginner",
-                       "enable": false
-                    },
-                    {
-                       "enable": false,
-                       "role": "general",
-                       "profile": [
-                          {}
-                       ]
-                    },
-                    {
-                       "enable": true,
-                       "role": "rising-star",
-                       "profile": [
-                          {
-                             "badge_description_en": "Earn a Rising Star badge by being an active member on True ID live chat, which include reacting and replying to other users’ messages",
-                             "badge_title_en": "Rising Star",
-                             "badge_title_local": "ดาวรุ่งพุ่งแรง",
-                             "badge_icon": "https://cms.dmpcdn.com/livetv/2020/09/17/d65999e0-f8ca-11ea-93ca-b15d54ae9c1e_original.png",
-                             "badge_description_local": "รับ เครื่องหมาย ดาวรุ่งพุ่งแรง ง่ายๆ เพียงแค่คุณเป็นหนึ่งในสมาชิกที่ใช้งานอย่างสม่ำเสมอ บน live chat ของทรูไอดี ซึ่งรวมไปถึงการส่งความรู้สึกตอบสนอง หรือแม้แต่การพิมพ์ตอบข้อความสมาชิกท่านอื่น เพียงแค่มีเครื่องหมายนี้ข้อความของคุณก็จะโดดเด่นเกินใคร!"
-                          }
-                       ]
-                    },
-                    {
-                       "profile": [
-                          {
-                             "badge_description_local": "สัญลักษณ์แฟนตัวยง เป็นสัญลักษณ์แสดงความขอบคุณจาก True ID สำหรับลูกค้าที่มีส่วนร่วมมากที่สุดใน live chat ไม่ว่าจะเป็น การกดถูกใจ การตอบสนองต่อข้อความ การเริ่มต้นการสนทนา การแสดงความคิดเห็น เพียงแค่มีส่วนร่วมอย่างสม่ำเสมอเท่านั้น!",
-                             "badge_title_local": "แฟนตัวยง",
-                             "badge_description_en": "Super Fan badge are awarded to those who are most active and engaged, including reacting to content, replying to messages, and initiating conversations, on True ID live chat. Start earning your badge today!",
-                             "badge_icon": "https://cms.dmpcdn.com/livetv/2020/09/17/e6f612b0-f8ca-11ea-816f-61c1bc726fdd_original.png",
-                             "badge_title_en": "Super Fan"
-                          }
-                       ],
-                       "enable": true,
-                       "role": "super-fan"
-                    }
-                 ]
+               "group_profile": [
+                  {
+                     "enable": false,
+                     "role": "admin",
+                     "profile": [
+                        {
+                           "badge_icon": "https://cms.dmpcdn.com/livetv/2020/09/17/dfacfdc0-f8ca-11ea-93ca-b15d54ae9c1e_original.png",
+                           "badge_description_en": "Chat admins ensure that chat is up to standards by removing offensive posts and spam that detracts from conversations. Feel free to chat with our admin team!",
+                           "badge_title_en": "Chat Admin",
+                           "badge_title_local": "แอดมินห้องแชท",
+                           "badge_description_local": "แอดมินห้องแชท ทำหน้าที่ควบคุมมาตรฐานการแชท โดยการลบโพสต์และสแปมที่ไม่เหมาะสม ทำให้ทุกคนสามารถพูดคุยกันอย่างสนุกสนานไร้กังวล"
+                        }
+                     ]
+                  },
+                  {
+                     "profile": [
+                        {
+                           "badge_title_local": "แฟนตัวยง",
+                           "badge_description_local": "รับ เครื่องหมาย แฟนตัวยง ง่ายๆ เพียงแค่คุณเป็นหนึ่งในสมาชิกที่ใช้งานอย่างสม่ำเสมอ บน live chat ของทรูไอดี ซึ่งรวมไปถึงการส่งความรู้สึกตอบสนอง หรือแม้แต่การพิมพ์ตอบข้อความสมาชิกท่านอื่น เพียงแค่มีเครื่องหมายนี้ข้อความของคุณก็จะโดดเด่นเกินใคร!",
+                           "badge_description_en": "Earn a super fan badge by being one of the most active member on True ID live chat, which include reacting and replying to other users’ messages",
+                           "badge_title_en": "Super Fan",
+                           "badge_icon": "https://cms.dmpcdn.com/livetv/2020/09/22/cc7a2be0-fcaa-11ea-b266-63e567a949c5_original.png"
+                        }
+                     ],
+                     "role": "beginner",
+                     "enable": false
+                  },
+                  {
+                     "enable": false,
+                     "role": "general",
+                     "profile": [
+                        {
+                           "badge_title_local": "",
+                           "badge_description_local": "",
+                           "badge_description_en": "",
+                           "badge_title_en": "",
+                           "badge_icon": ""
+                        }
+                     ]
+                  },
+                  {
+                     "enable": true,
+                     "role": "rising-star",
+                     "profile": [
+                        {
+                           "badge_description_en": "This badge awarded to the user who win TrueID campaign",
+                           "badge_title_en": "The Winner",
+                           "badge_title_local": "ผู้ชนะเลิศ",
+                           "badge_icon": "https://cms.dmpcdn.com/livetv/2020/09/17/d65999e0-f8ca-11ea-93ca-b15d54ae9c1e_original.png",
+                           "badge_description_local": "สัญลักษณ์นี้สำหรับสมาชิกที่มีส่วนร่วมและชนะการแข่งขันในกิจกรรมบน TrueID!"
+                        }
+                     ]
+                  },
+                  {
+                     "profile": [
+                        {
+                           "badge_description_local": "สัญลักษณ์นี้สำหรับสมาชิกที่มีส่วนร่วมกับกิจกรรมบน TrueID มากที่สุด!",
+                           "badge_title_local": "แฟนตัวยง",
+                           "badge_description_en": "This badge awarded to the user who has provide high contributions in TrueID campaign",
+                           "badge_icon": "https://cms.dmpcdn.com/livetv/2020/09/17/e6f612b0-f8ca-11ea-816f-61c1bc726fdd_original.png",
+                           "badge_title_en": "Super Fan"
+                        }
+                     ],
+                     "enable": true,
+                     "role": "super-fan"
+                  }
+               ]
               }
               """
         let jsonData = JSONString.data(using: .utf8)!
