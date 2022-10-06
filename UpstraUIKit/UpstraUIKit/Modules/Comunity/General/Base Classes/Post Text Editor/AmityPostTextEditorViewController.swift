@@ -1074,6 +1074,8 @@ extension AmityPostTextEditorViewController: AmityPostTextEditorScreenViewModelD
                     } else {
                         model = CommunityPostEventModel(isSuccess: false, userId: userId, postId: postId, postCaption: caption, postTarget: .myfeed)
                     }
+                    AmityEventHandler.shared.finishPostEvent(model)
+                    self.dismiss(animated: true, completion: nil)
                 case .community(let object):
                     let commuId = object.channelId
                     if error == nil {
@@ -1081,10 +1083,10 @@ extension AmityPostTextEditorViewController: AmityPostTextEditorScreenViewModelD
                     } else {
                         model = CommunityPostEventModel(isSuccess: false, userId: userId, commuId: commuId, postId: postId, postCaption: caption, communityName: commuName, postTarget: .community)
                     }
+                    AmityEventHandler.shared.finishPostEvent(model)
+                    let commuVC = AmityCommunityProfilePageViewController.make(withCommunityId: commuId, fromToday: true)
+                    navigationController?.pushViewController(commuVC, animated: true)
                 }
-                
-                AmityEventHandler.shared.finishPostEvent(model)
-                self.dismiss(animated: true, completion: nil)
             }
         }
     }
