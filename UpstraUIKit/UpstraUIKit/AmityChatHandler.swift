@@ -33,7 +33,6 @@ public class AmityChatHandler {
     }
     
     open func getUnreadCountFromASC(completion: @escaping(_ completion:Result<Int,Error>) -> () ) {
-        print("[Get Rednose] Start function")
         channelRepository = AmityChannelRepository(client: AmityUIKitManagerInternal.shared.client)
         let query = AmityChannelQuery()
         query.types = [AmityChannelQueryType.conversation]
@@ -42,7 +41,6 @@ public class AmityChatHandler {
         channelsCollection = channelRepository.getChannels(with: query)
         channelsToken?.invalidate()
         channelsToken = channelsCollection?.observe { [weak self] (collectionFromObserve, change, error) in
-            print("[Get Rednose] Start observe")
             if error != nil {
                 completion(.failure(error!))
             }
