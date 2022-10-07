@@ -1048,7 +1048,7 @@ extension AmityPostTextEditorViewController: AmityPostTextEditorScreenViewModelD
                         resultView = AmityShareFromGalleryProcessingView(isSuccess: false)
                     }
                 case .community(let object):
-                    let commuId = object.channelId
+                    let commuId = object.communityId
                     if error == nil {
                         model = CommunityPostEventModel(isSuccess: true, userId: userId, commuId: commuId, postId: postId, postType: .gallery, postCaption: caption, communityName: commuName, postTarget: .community)
                         resultView = AmityShareFromGalleryProcessingView(isSuccess: true)
@@ -1077,7 +1077,7 @@ extension AmityPostTextEditorViewController: AmityPostTextEditorScreenViewModelD
                     AmityEventHandler.shared.finishPostEvent(model)
                     self.dismiss(animated: true, completion: nil)
                 case .community(let object):
-                    let commuId = object.channelId
+                    let commuId = object.communityId
                     if error == nil {
                         model = CommunityPostEventModel(isSuccess: true, userId: userId, commuId: commuId, postId: postId, postCaption: caption, communityName: commuName, postTarget: .community)
                     } else {

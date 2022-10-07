@@ -14,7 +14,7 @@ public class AmityChatHandler {
     public static var shared = AmityChatHandler()
     var channelsToken: AmityNotificationToken?
     var channelsCollection: AmityCollection<AmityChannel>?
-    let channelRepository: AmityChannelRepository
+    var channelRepository: AmityChannelRepository
     
     public init() {
         channelRepository = AmityChannelRepository(client: AmityUIKitManagerInternal.shared.client)
@@ -33,7 +33,7 @@ public class AmityChatHandler {
     }
     
     open func getUnreadCountFromASC(completion: @escaping(_ completion:Result<Int,Error>) -> () ) {
-        
+        channelRepository = AmityChannelRepository(client: AmityUIKitManagerInternal.shared.client)
         let query = AmityChannelQuery()
         query.types = [AmityChannelQueryType.conversation]
         query.filter = .userIsMember
