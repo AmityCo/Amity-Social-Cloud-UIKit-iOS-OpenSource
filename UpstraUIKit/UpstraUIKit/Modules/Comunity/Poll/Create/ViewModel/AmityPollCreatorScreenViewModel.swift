@@ -22,7 +22,7 @@ final class AmityPollCreatorScreenViewModel: AmityPollCreatorScreenViewModelType
     var isMultipleSelection: Bool = false  { didSet { validateFieldsMandatory() } }
     private(set) var selectedDay: Int = 0
     
-    var timeMilliseconds: Int = 0  { didSet { validateFieldsMandatory() } }
+    var timeMilliseconds: Int? { didSet { validateFieldsMandatory() } }
     
     init(postTarget: AmityPostTarget) {
         postRepository = AmityPostRepository(client: AmityUIKitManagerInternal.shared.client)
@@ -31,7 +31,7 @@ final class AmityPollCreatorScreenViewModel: AmityPollCreatorScreenViewModelType
     }
     
     func validateFieldsIsChange() {
-        let result = (pollQuestion != "") || (!answersItem.isEmpty) || (isMultipleSelection) || (timeMilliseconds != 0)
+        let result = (pollQuestion != "") || (!answersItem.isEmpty) || (isMultipleSelection) || (timeMilliseconds != nil)
         delegate?.screenViewModelFieldsChange(result)
     }
 }
@@ -109,7 +109,9 @@ extension AmityPollCreatorScreenViewModel {
         }
         
         builder.setQuestion(pollQuestion)
-        builder.setTimeToClosePoll(timeMilliseconds)
+        if let timeMilliseconds = timeMilliseconds {
+            builder.setTimeToClosePoll(timeMilliseconds)
+        }
         builder.setAnswerType(isMultipleSelection ? .multiple : .single)
         pollRepository.createPoll(builder) { [weak self] pollId, error in
             guard let strongSelf = self else { return }

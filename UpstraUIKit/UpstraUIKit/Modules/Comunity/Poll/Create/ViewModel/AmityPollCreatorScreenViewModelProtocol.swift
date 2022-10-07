@@ -22,7 +22,7 @@ protocol AmityPollCreatorScreenViewModelDataSource {
     var answersItem: [String] { get }
     var isMultipleSelection: Bool { get }
     var selectedDay: Int { get }
-    var timeMilliseconds: Int { get }
+    var timeMilliseconds: Int? { get }
     func getAnswer(at indexPath: IndexPath) -> String
 }
 
