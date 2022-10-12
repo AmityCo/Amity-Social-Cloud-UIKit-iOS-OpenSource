@@ -416,9 +416,11 @@ extension AmityFeedScreenViewModel {
                     let model = AmityCommunityModel(object: object)
                     
                     if !model.isJoined {
-                        strongSelf.communityRepository.joinCommunity(withId: communityId ?? "") { (success, error) in
-                            if error != nil {
-                                strongSelf.delegate?.screenViewModelDidFail(strongSelf, failure: AmityError(error: error) ?? .unknown)
+                        if communityId != nil {
+                            strongSelf.communityRepository.joinCommunity(withId: communityId ?? "") { (success, error) in
+                                if error != nil {
+                                    strongSelf.delegate?.screenViewModelDidFail(strongSelf, failure: AmityError(error: error) ?? .unknown)
+                                }
                             }
                         }
                     }
