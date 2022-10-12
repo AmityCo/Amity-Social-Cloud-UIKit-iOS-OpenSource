@@ -11,13 +11,15 @@ import UIKit
 protocol AmityFeedDisplayNameLabelDelegate: AnyObject {
     func labelDidTapUserDisplayName(_ label: AmityFeedDisplayNameLabel)
     func labelDidTapCommunityName(_ label: AmityFeedDisplayNameLabel)
+    func labelDidTapBadgeIcon(_ label: AmityFeedDisplayNameLabel)
 }
 
 class AmityFeedDisplayNameLabel: UILabel {
     
     private var displayName: String = ""
     private var communityName: String?
-    
+    private var badgeIcon: String?
+
     weak var delegate: AmityFeedDisplayNameLabelDelegate?
     
     required init?(coder: NSCoder) {
@@ -33,12 +35,21 @@ class AmityFeedDisplayNameLabel: UILabel {
         addGestureRecognizer(tap)
     }
     
-    func configure(displayName: String, communityName: String?, isOfficial: Bool, shouldShowCommunityName: Bool, shouldShowBannedSymbol: Bool) {
+    func configure(displayName: String, communityName: String?, isOfficial: Bool, shouldShowCommunityName: Bool, shouldShowBannedSymbol: Bool, badgeIcon: UIImage) {
         self.displayName = displayName
         self.communityName = communityName
         
         let attributeString = NSMutableAttributedString()
         attributeString.append(NSAttributedString(string: displayName))
+        
+        // create image NSTextAtttachment
+        let badgeImageAttachment = NSTextAttachment()
+        badgeImageAttachment.image = badgeIcon
+        badgeImageAttachment.setImageHeight(height: 20)
+        
+        // wrap the attachment in its attributed string
+        let imageString = NSAttributedString(attachment: badgeImageAttachment)
+        attributeString.append(imageString)
         
         if shouldShowBannedSymbol {
             let imageRightAttachment = NSTextAttachment()
@@ -71,6 +82,8 @@ class AmityFeedDisplayNameLabel: UILabel {
             delegate?.labelDidTapUserDisplayName(self)
         } else if sender.didTapAttributedTextInLabel(label: self, inRange: communityNameRange) {
             delegate?.labelDidTapCommunityName(self)
+        } else {
+            delegate?.labelDidTapBadgeIcon(self)
         }
     }
     
@@ -128,4 +141,13 @@ extension UITapGestureRecognizer {
         return NSLocationInRange(adjustedRange, targetRange)
     }
 
+}
+
+extension NSTextAttachment {
+    func setImageHeight(height: CGFloat) {
+        guard let image = image else { return }
+        let ratio = image.size.width / image.size.height
+        
+        bounds = CGRect(x: bounds.origin.x, y: bounds.origin.y, width: ratio * height, height: height)
+    }
 }

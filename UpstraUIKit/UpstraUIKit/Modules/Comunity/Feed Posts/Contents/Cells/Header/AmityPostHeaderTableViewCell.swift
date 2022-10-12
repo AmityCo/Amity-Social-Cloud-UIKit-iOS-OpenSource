@@ -22,15 +22,12 @@ public final class AmityPostHeaderTableViewCell: UITableViewCell, Nibbable, Amit
     @IBOutlet private var datetimeLabel: UILabel!
     @IBOutlet private var optionButton: UIButton!
     @IBOutlet private var pinIconImageView: UIImageView!
-    @IBOutlet private var roleIconImageView: UIImageView!
-    @IBOutlet private var roleIconImageViewConstain: NSLayoutConstraint!
-    @IBOutlet private var roleIconImageViewLeftConstain: NSLayoutConstraint!
-    @IBOutlet private var roleIconImageViewRightConstain: NSLayoutConstraint!
-    @IBOutlet private var targetNameLabel: AmityFeedDisplayNameLabel!
 
     private(set) public var post: AmityPostModel?
     private var userBadge: UserBadge?
     private(set) public var currentUserBadge: UserBadge.BadgeProfile?
+    
+    private var badgeIcon: UIImage?
     
     public override func awakeFromNib() {
         super.awakeFromNib()
@@ -47,6 +44,20 @@ public final class AmityPostHeaderTableViewCell: UITableViewCell, Nibbable, Amit
         self.post = post
 //        avatarView.setImage(withImageURL: post.postedUser?.avatarURL, placeholder: AmityIconSet.defaultAvatar)
         
+        /// Setup Role
+        for role in post.postUserRole {
+            guard let profile = userBadge?.groupProfile else { return }
+            for badge in profile {
+                if role == badge.role {
+                    if badge.enable ?? false {
+                        loadImage(with: badge.profile?.first?.badgeIcon ?? "", placeholder: UIImage())
+                        guard let currentProfile = badge.profile else { return }
+                        currentUserBadge = currentProfile.first!
+                    }
+                }
+            }
+        }
+        
         if !( (post.postedUser?.customAvatarURL ?? "").isEmpty) {
             avatarView.setImage(withCustomURL: post.postedUser?.customAvatarURL,
                                          placeholder: AmityIconSet.defaultAvatar)
@@ -59,15 +70,10 @@ public final class AmityPostHeaderTableViewCell: UITableViewCell, Nibbable, Amit
         }
 
         displayNameLabel.configure(displayName: post.displayName,
-                                   communityName: "",
-                                   isOfficial: false,
-                                   shouldShowCommunityName: false, shouldShowBannedSymbol: false)
-        targetNameLabel.configure(displayName: "",
                                    communityName: post.targetCommunity?.displayName,
                                    isOfficial: post.targetCommunity?.isOfficial ?? false,
-                                   shouldShowCommunityName: post.appearance.shouldShowCommunityName, shouldShowBannedSymbol: post.postedUser?.isGlobalBan ?? false)
+                                   shouldShowCommunityName: post.appearance.shouldShowCommunityName, shouldShowBannedSymbol: post.postedUser?.isGlobalBan ?? false, badgeIcon: badgeIcon ?? UIImage())
         displayNameLabel.delegate = self
-        targetNameLabel.delegate = self
         datetimeLabel.text = post.subtitle
 
         switch post.feedType {
@@ -92,27 +98,6 @@ public final class AmityPostHeaderTableViewCell: UITableViewCell, Nibbable, Amit
             pinIconImageView.isHidden = true
         }
         
-        roleIconImageView.image = UIImage()
-        roleIconImageViewConstain.constant = 0
-        roleIconImageViewLeftConstain.constant = 0
-        roleIconImageViewRightConstain.constant = 0
-        
-        /// Setup Role
-        for role in post.postUserRole {
-            guard let profile = userBadge?.groupProfile else { return }
-            for badge in profile {
-                if role == badge.role {
-                    if badge.enable ?? false {
-                        roleIconImageViewConstain.constant = 20
-                        roleIconImageViewLeftConstain.constant = 7.5
-                        roleIconImageViewRightConstain.constant = 7.5
-                        roleIconImageView.loadImage(with: badge.profile?.first?.badgeIcon ?? "", size: .full, placeholder: UIImage())
-                        guard let currentProfile = badge.profile else { return }
-                        currentUserBadge = currentProfile.first!
-                    }
-                }
-            }
-        }
     }
 
     // MARK: - Setup views
@@ -121,7 +106,7 @@ public final class AmityPostHeaderTableViewCell: UITableViewCell, Nibbable, Amit
         backgroundColor = .clear
         contentView.backgroundColor = .clear
         containerView.backgroundColor = AmityColorSet.backgroundColor
-        displayNameLabel.configure(displayName: AmityLocalizedStringSet.General.anonymous.localizedString, communityName: nil, isOfficial: false, shouldShowCommunityName: false, shouldShowBannedSymbol: false)
+        displayNameLabel.configure(displayName: AmityLocalizedStringSet.General.anonymous.localizedString, communityName: nil, isOfficial: false, shouldShowCommunityName: false, shouldShowBannedSymbol: false, badgeIcon: UIImage())
         
         // badge
         badgeLabel.text = AmityLocalizedStringSet.General.moderator.localizedString + " • "
@@ -137,10 +122,6 @@ public final class AmityPostHeaderTableViewCell: UITableViewCell, Nibbable, Amit
         // option
         optionButton.tintColor = AmityColorSet.base
         optionButton.setImage(AmityIconSet.iconOption, for: .normal)
-        
-        let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(roleTap(tapGestureRecognizer:)))
-        roleIconImageView.isUserInteractionEnabled = true
-        roleIconImageView.addGestureRecognizer(tapGestureRecognizer)
     }
     
     // MARK: - Perform Action
@@ -231,6 +212,21 @@ public final class AmityPostHeaderTableViewCell: UITableViewCell, Nibbable, Amit
         }
     }
     
+    func loadImage(with url: String, placeholder: UIImage?, optimisticLoad: Bool = false) {
+        if let placeholder = placeholder {
+            self.badgeIcon = placeholder
+        }
+        AmityUIKitManagerInternal.shared.fileService.loadImage(imageURL: url, size: .small, optimisticLoad: optimisticLoad) { [weak self] result in
+            switch result {
+            case .success(let image):
+                self?.badgeIcon = image
+            case .failure(let error):
+                Log.add("Error while downloading image with file id: \(url) error: \(error)")
+            }
+        }
+        
+    }
+    
 }
 
 // MARK: - Action
@@ -240,16 +236,16 @@ private extension AmityPostHeaderTableViewCell {
         performAction(action: .tapAvatar)
     }
     
-    @objc func roleTap(tapGestureRecognizer: UITapGestureRecognizer) {
-        performAction(action: .tapRole)
-    }
-    
     @IBAction func optionTap() {
         performAction(action: .tapOption)
     }
 }
 
 extension AmityPostHeaderTableViewCell: AmityFeedDisplayNameLabelDelegate {
+    func labelDidTapBadgeIcon(_ label: AmityFeedDisplayNameLabel) {
+        performAction(action: .tapRole)
+    }
+    
     func labelDidTapUserDisplayName(_ label: AmityFeedDisplayNameLabel) {
         performAction(action: .tapDisplayName)
     }
