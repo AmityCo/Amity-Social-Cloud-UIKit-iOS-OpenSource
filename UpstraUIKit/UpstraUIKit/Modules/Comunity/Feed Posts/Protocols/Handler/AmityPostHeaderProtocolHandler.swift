@@ -37,7 +37,7 @@ final class AmityPostHeaderProtocolHandler: AmityPostHeaderDelegate {
     }
     
     func didPerformAction(_ cell: AmityPostHeaderProtocol, action: AmityPostHeaderAction) {
-        guard let viewController = viewController, let post = cell.post, let currentUserBadge = cell.currentUserBadge else { return }
+        guard let viewController = viewController, let post = cell.post else { return }
         self.post = post
         switch action {
         case .tapAvatar, .tapDisplayName:
@@ -47,6 +47,7 @@ final class AmityPostHeaderProtocolHandler: AmityPostHeaderDelegate {
         case .tapOption:
             delegate?.headerProtocolHandlerDidPerformAction(self, action: .tapOption, withPost: post)
         case .tapRole:
+            guard let currentUserBadge = cell.currentUserBadge else { return }
             AmityEventHandler.shared.roleDidTap(from: viewController, userBadge: currentUserBadge)
         }
     }

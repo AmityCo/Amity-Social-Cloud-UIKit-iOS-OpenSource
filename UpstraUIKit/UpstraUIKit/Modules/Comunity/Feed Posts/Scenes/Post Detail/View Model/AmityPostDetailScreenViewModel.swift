@@ -207,6 +207,7 @@ extension AmityPostDetailScreenViewModel {
                     }
                 }
             case .failure(let error):
+                print("-----> Error localizedDescription: \(error.localizedDescription), Error rawValue: \(error.rawValue)")
                 if error.isAmityErrorCode(.linkNotAllowed) {
                     self?.prepareData()
                 } else {
