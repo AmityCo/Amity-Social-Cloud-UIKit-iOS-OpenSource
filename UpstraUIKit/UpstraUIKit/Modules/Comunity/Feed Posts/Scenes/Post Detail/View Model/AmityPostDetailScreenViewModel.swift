@@ -206,8 +206,12 @@ extension AmityPostDetailScreenViewModel {
                         self?.prepareData()
                     }
                 }
-            case .failure:
-                self?.showAlertDialog()
+            case .failure(let error):
+                if error.isAmityErrorCode(.linkNotAllowed) {
+                    self?.prepareData()
+                } else {
+                    self?.showAlertDialog()
+                }
             }
         }
     }

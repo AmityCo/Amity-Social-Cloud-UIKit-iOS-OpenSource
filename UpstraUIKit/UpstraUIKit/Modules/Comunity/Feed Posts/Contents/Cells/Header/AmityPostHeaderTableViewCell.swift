@@ -27,7 +27,7 @@ public final class AmityPostHeaderTableViewCell: UITableViewCell, Nibbable, Amit
     private var userBadge: UserBadge?
     private(set) public var currentUserBadge: UserBadge.BadgeProfile?
     
-    private var badgeIcon: UIImage?
+    private var badgeIcon: UIImage? = nil
     
     public override func awakeFromNib() {
         super.awakeFromNib()
@@ -38,6 +38,7 @@ public final class AmityPostHeaderTableViewCell: UITableViewCell, Nibbable, Amit
     public override func prepareForReuse() {
         super.prepareForReuse()
         avatarView.placeholder = AmityIconSet.defaultAvatar
+        badgeIcon = nil
     }
     
     public func display(post: AmityPostModel) {
@@ -72,7 +73,7 @@ public final class AmityPostHeaderTableViewCell: UITableViewCell, Nibbable, Amit
         displayNameLabel.configure(displayName: post.displayName,
                                    communityName: post.targetCommunity?.displayName,
                                    isOfficial: post.targetCommunity?.isOfficial ?? false,
-                                   shouldShowCommunityName: post.appearance.shouldShowCommunityName, shouldShowBannedSymbol: post.postedUser?.isGlobalBan ?? false, badgeIcon: badgeIcon ?? UIImage())
+                                   shouldShowCommunityName: post.appearance.shouldShowCommunityName, shouldShowBannedSymbol: post.postedUser?.isGlobalBan ?? false, badgeIcon: badgeIcon)
         displayNameLabel.delegate = self
         datetimeLabel.text = post.subtitle
 
