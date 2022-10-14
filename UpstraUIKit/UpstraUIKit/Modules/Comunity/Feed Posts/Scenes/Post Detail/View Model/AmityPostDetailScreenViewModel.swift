@@ -208,7 +208,7 @@ extension AmityPostDetailScreenViewModel {
                 }
             case .failure(let error):
                 print("-----> Error localizedDescription: \(error.localizedDescription), Error rawValue: \(error.rawValue)")
-                if error.isAmityErrorCode(.linkNotAllowed) {
+                if error.isAmityErrorCode(.itemNotFound) || error.rawValue == 400400 {
                     self?.prepareData()
                 } else {
                     self?.showAlertDialog()
