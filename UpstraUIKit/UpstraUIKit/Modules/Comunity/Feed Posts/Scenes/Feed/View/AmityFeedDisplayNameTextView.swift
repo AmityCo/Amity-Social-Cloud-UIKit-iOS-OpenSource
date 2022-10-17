@@ -18,7 +18,6 @@ class AmityFeedDisplayNameLabel: UILabel {
     
     private var displayName: String = ""
     private var communityName: String?
-    private var badgeIcon: String?
 
     weak var delegate: AmityFeedDisplayNameLabelDelegate?
     
@@ -35,7 +34,7 @@ class AmityFeedDisplayNameLabel: UILabel {
         addGestureRecognizer(tap)
     }
     
-    func configure(displayName: String, communityName: String?, isOfficial: Bool, shouldShowCommunityName: Bool, shouldShowBannedSymbol: Bool, badgeIcon: UIImage) {
+    func configure(displayName: String, communityName: String?, isOfficial: Bool, shouldShowCommunityName: Bool, shouldShowBannedSymbol: Bool, badgeIcon: UIImage?) {
         self.displayName = displayName
         self.communityName = communityName
         
@@ -43,13 +42,15 @@ class AmityFeedDisplayNameLabel: UILabel {
         attributeString.append(NSAttributedString(string: displayName))
         
         // create image NSTextAtttachment
-        let badgeImageAttachment = NSTextAttachment()
-        badgeImageAttachment.image = badgeIcon
-        badgeImageAttachment.setImageHeight(height: 20)
-        
-        // wrap the attachment in its attributed string
-        let imageString = NSAttributedString(attachment: badgeImageAttachment)
-        attributeString.append(imageString)
+        if badgeIcon != nil {
+            let badgeImageAttachment = NSTextAttachment()
+            badgeImageAttachment.image = badgeIcon
+            badgeImageAttachment.setImageHeight(height: 20)
+            
+            // wrap the attachment in its attributed string
+            let imageString = NSAttributedString(attachment: badgeImageAttachment)
+            attributeString.append(imageString)
+        }
         
         if shouldShowBannedSymbol {
             let imageRightAttachment = NSTextAttachment()

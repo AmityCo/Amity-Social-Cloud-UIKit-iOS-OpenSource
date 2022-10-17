@@ -206,8 +206,13 @@ extension AmityPostDetailScreenViewModel {
                         self?.prepareData()
                     }
                 }
-            case .failure:
-                self?.showAlertDialog()
+            case .failure(let error):
+                print("-----> Error localizedDescription: \(error.localizedDescription), Error rawValue: \(error.rawValue)")
+                if error.isAmityErrorCode(.itemNotFound) || error.rawValue == 400400 {
+                    self?.prepareData()
+                } else {
+                    self?.showAlertDialog()
+                }
             }
         }
     }
