@@ -17,12 +17,19 @@ public enum PostFromTodayType {
     case poll
 }
 
+public enum ShareExtensionMediaType {
+    case image
+    case video
+}
+
 final public class AmityPostTargetPickerViewController: AmityViewController {
     
     /// Set this variable to indicate post type to create.
     var postContentType: AmityPostContentType = .post
     var postType: PostFromTodayType?
     var galleryAsset: [PHAsset]?
+    var galleryURLArray: [URL]?
+    var shareExtensionMediaType: ShareExtensionMediaType?
 
     private let tableView = UITableView(frame: .zero, style: .plain)
     private let screenViewModel = AmityPostTargetPickerScreenViewModel()
@@ -54,9 +61,10 @@ final public class AmityPostTargetPickerViewController: AmityViewController {
         return vc
     }
     
-    public static func makePostBy(asset:[PHAsset] = []) -> AmityPostTargetPickerViewController {
+    public static func makePostBy(url:[URL] = [], mediaType: ShareExtensionMediaType) -> AmityPostTargetPickerViewController {
         let vc = AmityPostTargetPickerViewController()
-        vc.galleryAsset = asset
+        vc.galleryURLArray = url
+        vc.shareExtensionMediaType = mediaType
         return vc
     }
 
@@ -162,8 +170,8 @@ extension AmityPostTargetPickerViewController: UITableViewDelegate {
         if postType != nil {
             AmityEventHandler.shared.postTargetDidSelectFromToday(from: self, postTarget: postTarget, postType: self.postType!)
         } else {
-            if galleryAsset != nil {
-                AmityEventHandler.shared.postTargetDidSelectFromGallery(from: self, postTarget: postTarget, asset: galleryAsset!)
+            if galleryURLArray != nil {
+                AmityEventHandler.shared.postTargetDidSelectFromGallery(from: self, postTarget: postTarget, url: galleryURLArray ?? [], mediaType: shareExtensionMediaType!)
             } else {
                 AmityEventHandler.shared.postTargetDidSelect(from: self, postTarget: postTarget, postContentType: self.postContentType)
             }

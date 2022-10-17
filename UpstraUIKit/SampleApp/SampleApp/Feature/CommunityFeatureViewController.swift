@@ -306,27 +306,11 @@ extension CommunityFeatureViewController: UITableViewDelegate {
             nav.modalPresentationStyle = .fullScreen
             present(nav, animated: true, completion: nil)
         case .selectFromGallery:
-            let supportedMediaTypes: Set<Settings.Fetch.Assets.MediaTypes>
-            var selectedAssets: [PHAsset] = []
-            // The closue to execute when picker finish picking the media.
-            let finish: ([PHAsset]) -> Void
-            
-            supportedMediaTypes = [.image]
-            finish = { [weak self] assets in
-                guard let strongSelf = self else { return }
-                
-                let postTarget = AmityPostTargetPickerViewController.makePostBy(asset: assets)
-                let nav = UINavigationController(rootViewController: postTarget)
-                nav.modalPresentationStyle = .fullScreen
-                strongSelf.present(nav, animated: true, completion: nil)
-            }
-            
-            let imagePicker = AmityImagePickerController(selectedAssets: selectedAssets)
-//            imagePicker.settings.theme.selectionStyle = .numbered
-//            imagePicker.settings.fetch.assets.supportedMediaTypes = supportedMediaTypes
-//            imagePicker.settings.selection.max = maxNumberOfSelection
-//            imagePicker.settings.selection.unselectOnReachingMax = false
-            presentImagePicker(imagePicker, select: nil, deselect: nil, cancel: nil, finish: finish, completion: nil)
+            let imageURL: URL = URL(string: "file:///Users/monoxide/Library/Developer/CoreSimulator/Devices/0E7B26FC-41AF-4AE3-8946-4E5005E91849/data/Media/DCIM/100APPLE/IMG_0010.PNG")!
+            let postTarget = AmityPostTargetPickerViewController.makePostBy(url: [imageURL], mediaType: .image)
+            let nav = UINavigationController(rootViewController: postTarget)
+            nav.modalPresentationStyle = .fullScreen
+            present(nav, animated: true, completion: nil)
         case .notificationHistory:
             AmityCommunityHandler.shared.getNotificationHistory() { result in
                 DispatchQueue.main.async {

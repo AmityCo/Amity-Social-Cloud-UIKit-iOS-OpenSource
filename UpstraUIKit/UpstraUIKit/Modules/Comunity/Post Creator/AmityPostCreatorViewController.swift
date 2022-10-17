@@ -32,8 +32,8 @@ public class AmityPostCreatorViewController: AmityPostTextEditorViewController {
         return AmityPostCreatorViewController(postTarget: postTarget, postType: postType, postMode: .create, settings: settings)
     }
     
-    // This is a wrapper class to help pre-image from gallery.
-    public static func make(postTarget: AmityPostTarget, asset: [PHAsset], settings: AmityPostEditorSettings = AmityPostEditorSettings()) -> AmityPostCreatorViewController {
-        return AmityPostCreatorViewController(postTarget: postTarget, postMode: .create, settings: settings, asset: asset)
+    // This is a wrapper class to help pre-image from gallery with URL.
+    public static func make(postTarget: AmityPostTarget, url: [URL], mediaType: ShareExtensionMediaType, settings: AmityPostEditorSettings = AmityPostEditorSettings()) -> AmityPostCreatorViewController {
+        return AmityPostCreatorViewController(postTarget: postTarget, postMode: .create, settings: settings, url: url, mediaType: mediaType)
     }
 }
