@@ -51,6 +51,7 @@ public class AmityPostTextEditorViewController: AmityViewController {
     private let postMode: AmityPostMode
     
     private var galleryAsset: [PHAsset] = []
+    private var galleryImageURLArray: [URL] = []
     private var fromGallery: Bool = false
     private var fromShortcut: Bool = true
     private var contentType: AmityPostContentType = .post
@@ -71,6 +72,7 @@ public class AmityPostTextEditorViewController: AmityViewController {
     private var mentionTableView: AmityMentionTableView
     private var mentionTableViewHeightConstraint: NSLayoutConstraint!
     private var mentionManager: AmityMentionManager?
+    private var mediaTypes: ShareExtensionMediaType = .image
     
     private var isValueChanged: Bool {
         return !textView.text.isEmpty || !galleryView.medias.isEmpty || !fileView.files.isEmpty
@@ -159,14 +161,15 @@ public class AmityPostTextEditorViewController: AmityViewController {
         screenViewModel.delegate = self
     }
     
-    //init when select media from gallery
-    init(postTarget: AmityPostTarget, postMode: AmityPostMode, settings: AmityPostEditorSettings, asset: [PHAsset]) {
+    //init when select media from gallery with URL
+    init(postTarget: AmityPostTarget, postMode: AmityPostMode, settings: AmityPostEditorSettings, url: [URL], mediaType: ShareExtensionMediaType) {
         
         self.postTarget = postTarget
         self.postType = nil
         self.postMode = postMode
         self.settings = settings
-        self.galleryAsset = asset
+        self.galleryImageURLArray = url
+        self.mediaTypes = mediaType
         self.fromGallery = true
         self.postMenuView = AmityPostTextEditorMenuView(allowPostAttachments: settings.allowPostAttachments)
         self.mentionTableView = AmityMentionTableView(frame: .zero)
@@ -347,8 +350,13 @@ public class AmityPostTextEditorViewController: AmityViewController {
             }
         }
         
-        if !galleryAsset.isEmpty {
-            addMediasFromGallery()
+        if !galleryImageURLArray.isEmpty {
+            switch mediaTypes{
+            case .image:
+                addMediasFromGallery()
+            case .video:
+                addVideoMediasFromGallery()
+            }
         }
     }
     
@@ -817,25 +825,32 @@ public class AmityPostTextEditorViewController: AmityViewController {
     }
     
     func addMediasFromGallery(){
-        //Use asset from parameter to show on screen
-        var selectedAssets: [PHAsset] = []
-        for media in galleryView.medias {
-            if let local = media.localAsset {
-                selectedAssets.append(local)
+        //Use asset from parameter to show on screen 
+        var newMedias: [AmityMedia] = []
+        for localURL in galleryImageURLArray {
+            do {
+                let imageData = try Data(contentsOf: localURL)
+                guard let image = UIImage(data: imageData) else { continue }
+                let media = AmityMedia(state: .image(image), type: .image)
+                newMedias.append(media)
+            } catch {
+                print("[Amity] Can't get image from URL.")
             }
         }
-        let selectedAssetIds: [String] = selectedAssets.map { $0.localIdentifier }
         
+        addMedias(newMedias, type: .image)
+    }
+    
+    func addVideoMediasFromGallery(){
+        //Use asset from parameter to show on screen
         var newMedias: [AmityMedia] = []
-        for asset in self.galleryAsset {
-            guard !selectedAssetIds.contains(asset.localIdentifier) else {
-                continue
-            }
-            let media = AmityMedia(state: .localAsset(asset), type: .image)
-            media.localAsset = asset
+        for localURL in galleryImageURLArray {
+            let media = AmityMedia(state: .localURL(url: localURL), type: .video)
+            media.localUrl = localURL
             newMedias.append(media)
         }
-        addMedias(newMedias, type: .image)
+        
+        addMedias(newMedias, type: .video)
     }
     
     func showLoadingView() {

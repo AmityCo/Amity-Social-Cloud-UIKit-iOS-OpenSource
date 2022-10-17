@@ -142,9 +142,10 @@ open class AmityEventHandler {
         from source: AmityViewController,
         postTarget: AmityPostTarget,
         openByProfileTrueID: Bool = false,
-        asset: [PHAsset]
+        url: [URL],
+        mediaType: ShareExtensionMediaType
     ) {
-        createPostDidTapFromGallery(from: source, postTarget: postTarget, asset: asset)
+        createPostDidTapFromGallery(from: source, postTarget: postTarget, url: url, mediaType: mediaType)
     }
         
     /// Event for post creator
@@ -282,11 +283,11 @@ open class AmityEventHandler {
         }
         
     }
-    
-    open func createPostDidTapFromGallery(from source: AmityViewController, postTarget: AmityPostTarget, asset: [PHAsset]) {
+
+    open func createPostDidTapFromGallery(from source: AmityViewController, postTarget: AmityPostTarget, url: [URL], mediaType: ShareExtensionMediaType) {
         
         var viewController: AmityViewController
-        viewController = AmityPostCreatorViewController.make(postTarget: postTarget, asset: asset)
+        viewController = AmityPostCreatorViewController.make(postTarget: postTarget, url: url, mediaType: mediaType)
         source.navigationController?.pushViewController(viewController, animated: true)
         
     }
