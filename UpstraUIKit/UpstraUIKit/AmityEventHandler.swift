@@ -129,6 +129,16 @@ open class AmityEventHandler {
         createPostDidTap(from: source, postTarget: postTarget, postContentType: postContentType, openByProfileTrueID: openByProfileTrueID)
     }
     
+    /// Floating button action with already in CommunityProfile
+    open func postTargetDidSelectInCommuProfile(
+        from source: AmityViewController,
+        postTarget: AmityPostTarget,
+        postContentType: AmityPostContentType,
+        openByProfileTrueID: Bool = false
+    ) {
+        createPostDidTapInCommuProfile(from: source, postTarget: postTarget, postContentType: postContentType, openByProfileTrueID: openByProfileTrueID)
+    }
+    
     open func postTargetDidSelectFromToday(
         from source: AmityViewController,
         postTarget: AmityPostTarget,
@@ -157,7 +167,7 @@ open class AmityEventHandler {
         let completion: ((AmityPostContentType) -> Void) = { postContentType in
             if let postTarget = postTarget {
                 // show create post
-                AmityEventHandler.shared.postTargetDidSelect(from: source, postTarget: postTarget, postContentType: postContentType, openByProfileTrueID: openByProfileTrueID)
+                AmityEventHandler.shared.postTargetDidSelectInCommuProfile(from: source, postTarget: postTarget, postContentType: postContentType, openByProfileTrueID: openByProfileTrueID)
             } else {
                 // show post target picker
                 let postTargetVC = AmityPostTargetPickerViewController.make(postContentType: postContentType)
@@ -225,7 +235,59 @@ open class AmityEventHandler {
             case .myFeed:
                 createLiveStreamPost(from: source, targetId: nil, targetType: .user, openByProfileTrueID: openByProfileTrueID, destinationToUnwindBackAfterFinish: source.presentingViewController ?? source)
             case .community(object: let community):
-//                createLiveStreamPost(from: source, targetId: community.communityId, targetType: .community, destinationToUnwindBackAfterFinish: source.presentingViewController ?? source)
+                createLiveStreamPost(from: source, targetId: community.communityId, targetType: .community, openByProfileTrueID: openByProfileTrueID, destinationToUnwindBackAfterFinish: source.presentingViewController ?? source)
+            }
+            return
+        }
+        
+        if openByProfileTrueID {
+            let navigationController = UINavigationController(rootViewController: viewController)
+            navigationController.modalPresentationStyle = .overFullScreen
+            source.present(navigationController, animated: true, completion: nil)
+        } else {
+            if source.isModalPresentation {
+                // a source is presenting. push a new vc.
+                if source.isKind(of: AmityPostTargetPickerViewController.self) {
+                    source.navigationController?.pushViewController(viewController, animated: true)
+                    return
+                }
+                
+                if case .myFeed = postTarget {
+                    source.navigationController?.pushViewController(viewController, animated: true)
+                    return
+                }
+                
+                let navigationController = UINavigationController(rootViewController: viewController)
+                navigationController.modalPresentationStyle = .overFullScreen
+                source.present(navigationController, animated: true, completion: nil)
+            } else {
+                let navigationController = UINavigationController(rootViewController: viewController)
+                navigationController.modalPresentationStyle = .overFullScreen
+                source.present(navigationController, animated: true, completion: nil)
+            }
+        }
+        
+    }
+    
+    open func createPostDidTapInCommuProfile(from source: AmityViewController, postTarget: AmityPostTarget, postContentType: AmityPostContentType = .post, openByProfileTrueID: Bool) {
+        
+        var viewController: AmityViewController
+        switch postContentType {
+        case .camera:
+            viewController = AmityPostCreatorViewController.make(postTarget: postTarget, contentType: postContentType, inCommunity: true)
+        case .image:
+            viewController = AmityPostCreatorViewController.make(postTarget: postTarget, contentType: postContentType, inCommunity: true)
+        case .video:
+            viewController = AmityPostCreatorViewController.make(postTarget: postTarget, contentType: postContentType, inCommunity: true)
+        case .post:
+            viewController = AmityPostCreatorViewController.make(postTarget: postTarget, contentType: postContentType, inCommunity: true)
+        case .poll:
+            viewController = AmityPollCreatorViewController.make(postTarget: postTarget, inCommunity: true)
+        case .livestream:
+            switch postTarget {
+            case .myFeed:
+                createLiveStreamPost(from: source, targetId: nil, targetType: .user, openByProfileTrueID: openByProfileTrueID, destinationToUnwindBackAfterFinish: source.presentingViewController ?? source)
+            case .community(object: let community):
                 createLiveStreamPost(from: source, targetId: community.communityId, targetType: .community, openByProfileTrueID: openByProfileTrueID, destinationToUnwindBackAfterFinish: source.presentingViewController ?? source)
             }
             return
