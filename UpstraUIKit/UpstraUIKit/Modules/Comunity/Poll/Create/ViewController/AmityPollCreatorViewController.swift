@@ -34,6 +34,7 @@ public final class AmityPollCreatorViewController: AmityViewController {
     private var postType: PostFromTodayType? = nil
     private var fromShortcut: Bool = false
     private var postTarget: AmityPostTarget?
+    private var isAlreadyInCommunity: Bool = false
     
     
     // MARK: - View's lifecycle
@@ -56,6 +57,24 @@ public final class AmityPollCreatorViewController: AmityViewController {
         vc.screenViewModel = viewModel
         var communityId: String? = nil
         vc.postTarget = postTarget
+        switch postTarget {
+        case .community(let object):
+            if !object.isPublic {
+                communityId = object.communityId
+            }
+        default: break
+        }
+        vc.mentionManager = AmityMentionManager(withType: .post(communityId: communityId))
+        return vc
+    }
+    
+    public static func make(postTarget: AmityPostTarget, inCommunity: Bool) -> AmityPollCreatorViewController {
+        let viewModel = AmityPollCreatorScreenViewModel(postTarget: postTarget)
+        let vc = AmityPollCreatorViewController(nibName: AmityPollCreatorViewController.identifier, bundle: AmityUIKitManager.bundle)
+        vc.screenViewModel = viewModel
+        var communityId: String? = nil
+        vc.postTarget = postTarget
+        vc.isAlreadyInCommunity = inCommunity
         switch postTarget {
         case .community(let object):
             if !object.isPublic {
@@ -217,17 +236,28 @@ extension AmityPollCreatorViewController: AmityPollCreatorScreenViewModelDelegat
                 } else {
                     model = CommunityPostEventModel(isSuccess: false, userId: userId, postId: postId ?? "", postCaption: caption, postTarget: .myfeed)
                 }
+                
+                AmityEventHandler.shared.finishPostEvent(model)
+                self.dismiss(animated: true, completion: nil)
             case .community(let object):
-                let commuId = object.channelId
+                let commuId = object.communityId
                 if error == nil {
                     model = CommunityPostEventModel(isSuccess: true, userId: userId, commuId: commuId, postId: postId ?? "", communityName: commuName, postTarget: .community)
                 } else {
                     model = CommunityPostEventModel(isSuccess: false, userId: userId, commuId: commuId, postId: postId ?? "", communityName: commuName, postTarget: .community)
                 }
+                
+                AmityEventHandler.shared.finishPostEvent(model)
+                
+                if isAlreadyInCommunity {
+                    self.dismiss(animated: true)
+                } else {
+                    let commuVC = AmityCommunityProfilePageViewController.make(withCommunityId: commuId, fromToday: true)
+                    navigationController?.pushViewController(commuVC, animated: true)
+                }
+
             }
             
-            AmityEventHandler.shared.finishPostEvent(model)
-            self.dismiss(animated: true, completion: nil)
         }
         
     }

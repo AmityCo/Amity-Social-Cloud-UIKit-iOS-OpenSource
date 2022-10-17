@@ -54,6 +54,7 @@ public class AmityPostTextEditorViewController: AmityViewController {
     private var fromGallery: Bool = false
     private var fromShortcut: Bool = true
     private var contentType: AmityPostContentType = .post
+    private var isAlreadyInCommu: Bool = false
     
     private let comunityPanelView = AmityComunityPanelView(frame: .zero)
     private let scrollView = UIScrollView(frame: .zero)
@@ -143,6 +144,33 @@ public class AmityPostTextEditorViewController: AmityViewController {
         self.settings = settings
         self.postMenuView = AmityPostTextEditorMenuView(allowPostAttachments: settings.allowPostAttachments)
         self.mentionTableView = AmityMentionTableView(frame: .zero)
+        
+        if postMode == .create {
+            var communityId: String? = nil
+            switch postTarget {
+            case .community(let community):
+                communityId = community.isPublic ? nil : community.communityId
+            default: break
+            }
+            mentionManager = AmityMentionManager(withType: .post(communityId: communityId))
+        }
+        
+        super.init(nibName: nil, bundle: nil)
+        
+        screenViewModel.delegate = self
+    }
+    
+    //init from already in community
+    init(postTarget: AmityPostTarget, postMode: AmityPostMode, settings: AmityPostEditorSettings, contentType: AmityPostContentType, inCommunity: Bool) {
+        
+        self.postTarget = postTarget
+        self.postType = nil
+        self.postMode = postMode
+        self.settings = settings
+        self.postMenuView = AmityPostTextEditorMenuView(allowPostAttachments: settings.allowPostAttachments)
+        self.mentionTableView = AmityMentionTableView(frame: .zero)
+        self.contentType = contentType
+        self.isAlreadyInCommu = inCommunity
         
         if postMode == .create {
             var communityId: String? = nil
@@ -1084,8 +1112,13 @@ extension AmityPostTextEditorViewController: AmityPostTextEditorScreenViewModelD
                         model = CommunityPostEventModel(isSuccess: false, userId: userId, commuId: commuId, postId: postId, postCaption: caption, communityName: commuName, postTarget: .community)
                     }
                     AmityEventHandler.shared.finishPostEvent(model)
-                    let commuVC = AmityCommunityProfilePageViewController.make(withCommunityId: commuId, fromToday: true)
-                    navigationController?.pushViewController(commuVC, animated: true)
+                    
+                    if isAlreadyInCommu {
+                        self.dismiss(animated: true)
+                    } else {
+                        let commuVC = AmityCommunityProfilePageViewController.make(withCommunityId: commuId, fromToday: true)
+                        navigationController?.pushViewController(commuVC, animated: true)
+                    }
                 }
             }
         }

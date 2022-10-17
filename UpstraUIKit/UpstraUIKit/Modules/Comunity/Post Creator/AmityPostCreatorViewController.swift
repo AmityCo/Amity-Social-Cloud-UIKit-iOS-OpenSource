@@ -22,6 +22,11 @@ public class AmityPostCreatorViewController: AmityPostTextEditorViewController {
         return AmityPostCreatorViewController(postTarget: postTarget, postMode: .create, settings: settings, contentType: contentType)
     }
     
+    // This is a wrapper class make for post button that already in community.
+    public static func make(postTarget: AmityPostTarget, settings: AmityPostEditorSettings = AmityPostEditorSettings(), contentType: AmityPostContentType, inCommunity: Bool) -> AmityPostCreatorViewController {
+        return AmityPostCreatorViewController(postTarget: postTarget, postMode: .create, settings: settings, contentType: contentType, inCommunity: inCommunity)
+    }
+    
     // This is a wrapper class to help fill in parameters when post from Today.
     public static func make(postTarget: AmityPostTarget, postType: PostFromTodayType, settings: AmityPostEditorSettings = AmityPostEditorSettings()) -> AmityPostCreatorViewController {
         return AmityPostCreatorViewController(postTarget: postTarget, postType: postType, postMode: .create, settings: settings)
