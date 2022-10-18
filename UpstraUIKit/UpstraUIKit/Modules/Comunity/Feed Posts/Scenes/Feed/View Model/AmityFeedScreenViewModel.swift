@@ -415,6 +415,8 @@ extension AmityFeedScreenViewModel {
                     guard let object = community.object else { return }
                     let model = AmityCommunityModel(object: object)
                     
+                    strongSelf.fetchPosts()
+                    
                     if !model.isJoined {
                         if communityId != nil {
                             strongSelf.communityRepository.joinCommunity(withId: communityId ?? "") { (success, error) in
