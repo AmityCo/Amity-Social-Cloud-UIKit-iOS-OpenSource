@@ -36,13 +36,14 @@ final class customAPIRequest {
         
         let urlString = "https://qojeq6vaa8.execute-api.ap-southeast-1.amazonaws.com/media?page=\(page_number)&region=\(region)".addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)
         let url = URL(string: urlString ?? "")!
-        
         var tempDiscoveryData: [DiscoveryDataModel] = []
+        let userToken = AmityUIKitManagerInternal.shared.currentUserToken
         
         var request = URLRequest(url: url)
         request.httpMethod = "GET"
         request.allHTTPHeaderFields = [
-            "Content-Type" : "application/json"
+            "Content-Type" : "application/json",
+            "Authorization" : "Bearer \(userToken)"
         ]
         
         //Get Request
@@ -89,6 +90,7 @@ final class customAPIRequest {
         }
         
         let urlString = "https://qojeq6vaa8.execute-api.ap-southeast-1.amazonaws.com/getRedNoseTrueId?userId=\(userId)&region=\(region)".addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)
+        
         let url = URL(string: urlString ?? "")!
         var badge: Int = 0
         var request = URLRequest(url: url)
@@ -137,13 +139,14 @@ final class customAPIRequest {
         }
         
         let url = URL(string: "https://qojeq6vaa8.execute-api.ap-southeast-1.amazonaws.com/getPinPost?region=\(region)")!
-        
         var tempData: AmityNewsFeedDataModel = AmityNewsFeedDataModel(posts: [])
+        let userToken = AmityUIKitManagerInternal.shared.currentUserToken
         
         var request = URLRequest(url: url)
         request.httpMethod = "GET"
         request.allHTTPHeaderFields = [
-            "Content-Type" : "application/json"
+            "Content-Type" : "application/json",
+            "Authorization" : "Bearer \(userToken)"
         ]
         
         //Get Request
@@ -194,11 +197,13 @@ final class customAPIRequest {
         
         let url = URL(string: "https://cpvp6wy03k.execute-api.ap-southeast-1.amazonaws.com/newsfeed/getNewsfeedNoUCG?region=\(region)")!
         var tempData: AmityTodayNewsFeedDataModel = AmityTodayNewsFeedDataModel(post: [])
+        let userToken = AmityUIKitManagerInternal.shared.currentUserToken
         
         var request = URLRequest(url: url)
         request.httpMethod = "GET"
         request.allHTTPHeaderFields = [
-            "Content-Type" : "application/json"
+            "Content-Type" : "application/json",
+            "Authorization" : "Bearer \(userToken)"
         ]
         
         //Get Request
