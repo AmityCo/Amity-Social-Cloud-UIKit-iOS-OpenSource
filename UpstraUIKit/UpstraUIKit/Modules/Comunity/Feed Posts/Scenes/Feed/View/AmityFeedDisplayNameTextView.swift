@@ -18,6 +18,7 @@ class AmityFeedDisplayNameLabel: UILabel {
     
     private var displayName: String = ""
     private var communityName: String?
+    private var badgeIcon: UIImage? = nil
 
     weak var delegate: AmityFeedDisplayNameLabelDelegate?
     
@@ -37,6 +38,7 @@ class AmityFeedDisplayNameLabel: UILabel {
     func configure(displayName: String, communityName: String?, isOfficial: Bool, shouldShowCommunityName: Bool, shouldShowBannedSymbol: Bool, badgeIcon: UIImage?) {
         self.displayName = displayName
         self.communityName = communityName
+        self.badgeIcon = badgeIcon
         
         let attributeString = NSMutableAttributedString()
         attributeString.append(NSAttributedString(string: displayName))
@@ -45,7 +47,7 @@ class AmityFeedDisplayNameLabel: UILabel {
         if badgeIcon != nil {
             let badgeImageAttachment = NSTextAttachment()
             badgeImageAttachment.image = badgeIcon
-            badgeImageAttachment.setImageHeight(height: 20)
+            badgeImageAttachment.bounds = CGRect(x: 0, y: -3, width: 20, height: 20)
             
             // wrap the attachment in its attributed string
             let imageString = NSAttributedString(attachment: badgeImageAttachment)
@@ -78,12 +80,12 @@ class AmityFeedDisplayNameLabel: UILabel {
     @objc func tapFunction(sender: UITapGestureRecognizer) {
         let displayNameRange = (text! as NSString).range(of: displayName)
         let communityNameRange = (text! as NSString).range(of: communityName ?? "")
-
+        
         if sender.didTapAttributedTextInLabel(label: self, inRange: displayNameRange) {
             delegate?.labelDidTapUserDisplayName(self)
         } else if sender.didTapAttributedTextInLabel(label: self, inRange: communityNameRange) {
             delegate?.labelDidTapCommunityName(self)
-        } else {
+        } else if badgeIcon != nil {
             delegate?.labelDidTapBadgeIcon(self)
         }
     }
@@ -142,13 +144,4 @@ extension UITapGestureRecognizer {
         return NSLocationInRange(adjustedRange, targetRange)
     }
 
-}
-
-extension NSTextAttachment {
-    func setImageHeight(height: CGFloat) {
-        guard let image = image else { return }
-        let ratio = image.size.width / image.size.height
-        
-        bounds = CGRect(x: bounds.origin.x, y: bounds.origin.y, width: ratio * height, height: height)
-    }
 }
