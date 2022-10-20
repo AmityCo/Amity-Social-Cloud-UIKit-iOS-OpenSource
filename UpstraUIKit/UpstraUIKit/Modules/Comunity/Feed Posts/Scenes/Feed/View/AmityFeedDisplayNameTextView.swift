@@ -47,7 +47,8 @@ class AmityFeedDisplayNameLabel: UILabel {
         if badgeIcon != nil {
             let badgeImageAttachment = NSTextAttachment()
             badgeImageAttachment.image = badgeIcon
-            badgeImageAttachment.bounds = CGRect(x: 0, y: -3, width: 20, height: 20)
+            badgeImageAttachment.bounds.origin = CGPoint(x: 0, y: -5)
+            badgeImageAttachment.bounds.size = CGSize(width: 20, height: 20)
             
             // wrap the attachment in its attributed string
             let imageString = NSAttributedString(attachment: badgeImageAttachment)
