@@ -62,12 +62,15 @@ class LiveStreamBroadcastOverlayTableViewCell: UITableViewCell,Nibbable {
         commentLabel.sizeToFit()
         commentLabel.textColor = .white
         
+        roleImageView.isHidden = true
+        
         /// Setup Role
         for role in comment.role {
             guard let profile = userBadge?.groupProfile else { return }
             for badge in profile {
                 if role == badge.role {
                     if badge.enable ?? false {
+                        roleImageView.isHidden = false
                         roleImageView.downloaded(from: badge.profile?.first?.badgeIcon ?? "")
                         guard let currentProfile = badge.profile else { return }
                         currentUserBadge = currentProfile.first!

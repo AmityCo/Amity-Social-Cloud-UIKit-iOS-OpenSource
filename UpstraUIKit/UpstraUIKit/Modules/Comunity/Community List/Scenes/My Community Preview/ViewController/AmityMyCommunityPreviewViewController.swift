@@ -153,8 +153,8 @@ extension AmityMyCommunityPreviewViewController: AmityMyCommunityPreviewScreenVi
         
         shouldShowMyCommunityPreview = !communityList.isEmpty
         
-        // When view is invisible but data source request updates, mark it as a dirty data source.
-        // Then after view already appear, reload table view for refreshing data.
+//         When view is invisible but data source request updates, mark it as a dirty data source.
+//         Then after view already appear, reload table view for refreshing data.
 //        guard isVisible else {
 //            isDataSourceDirty = true
 //            return
@@ -163,8 +163,6 @@ extension AmityMyCommunityPreviewViewController: AmityMyCommunityPreviewScreenVi
         delegate?.viewController(self, shouldShowMyCommunityPreview: shouldShowMyCommunityPreview)
         if shouldShowMyCommunityPreview {
             collectionView?.reloadData()
-        } else {
-            retrieveCommunityList()
         }
     }
     
