@@ -163,8 +163,6 @@ extension AmityMyCommunityPreviewViewController: AmityMyCommunityPreviewScreenVi
         delegate?.viewController(self, shouldShowMyCommunityPreview: shouldShowMyCommunityPreview)
         if shouldShowMyCommunityPreview {
             collectionView?.reloadData()
-        } else {
-            retrieveCommunityList()
         }
     }
     
