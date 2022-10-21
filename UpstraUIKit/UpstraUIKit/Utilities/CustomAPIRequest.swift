@@ -34,7 +34,12 @@ final class customAPIRequest {
             }
         }
         
-        let urlString = "https://qojeq6vaa8.execute-api.ap-southeast-1.amazonaws.com/media?page=\(page_number)&region=\(region)".addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)
+        //Original
+//        let urlString = "https://qojeq6vaa8.execute-api.ap-southeast-1.amazonaws.com/media?page=\(page_number)&region=\(region)".addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)
+        
+        //New Endpoint for Authen test
+        let urlString = "https://9g5o0eiyh9.execute-api.ap-southeast-1.amazonaws.com/media?page=\(page_number)&region=\(region)".addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)
+        
         let url = URL(string: urlString ?? "")!
         var tempDiscoveryData: [DiscoveryDataModel] = []
         let userToken = AmityUIKitManagerInternal.shared.currentUserToken
@@ -89,7 +94,11 @@ final class customAPIRequest {
             }
         }
         
-        let urlString = "https://qojeq6vaa8.execute-api.ap-southeast-1.amazonaws.com/getRedNoseTrueId?userId=\(userId)&region=\(region)".addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)
+        //Original
+//        let urlString = "https://qojeq6vaa8.execute-api.ap-southeast-1.amazonaws.com/getRedNoseTrueId?userId=\(userId)&region=\(region)".addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)
+        
+        //New endpoint
+        let urlString = "https://9g5o0eiyh9.execute-api.ap-southeast-1.amazonaws.com/getRedNoseTrueId?userId=\(userId)&region=\(region)".addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)
         
         let url = URL(string: urlString ?? "")!
         var badge: Int = 0
@@ -138,7 +147,12 @@ final class customAPIRequest {
             }
         }
         
-        let url = URL(string: "https://qojeq6vaa8.execute-api.ap-southeast-1.amazonaws.com/getPinPost?region=\(region)")!
+        //Original
+//        let url = URL(string: "https://qojeq6vaa8.execute-api.ap-southeast-1.amazonaws.com/getPinPost?region=\(region)")!
+        
+        //New Endpoint
+        let url = URL(string: "https://9g5o0eiyh9.execute-api.ap-southeast-1.amazonaws.com/getPinPost?region=\(region)")!
+        
         var tempData: AmityNewsFeedDataModel = AmityNewsFeedDataModel(posts: [])
         let userToken = AmityUIKitManagerInternal.shared.currentUserToken
         
@@ -195,7 +209,11 @@ final class customAPIRequest {
             }
         }
         
-        let url = URL(string: "https://cpvp6wy03k.execute-api.ap-southeast-1.amazonaws.com/newsfeed/getNewsfeedNoUCG?region=\(region)")!
+        //Original
+//        let url = URL(string: "https://cpvp6wy03k.execute-api.ap-southeast-1.amazonaws.com/newsfeed/getNewsfeedNoUCG?region=\(region)")!
+        //New Endpoint
+        let url = URL(string: "https://9g5o0eiyh9.execute-api.ap-southeast-1.amazonaws.com/newsfeed/getNewsfeedNoUCG?region=\(region)")!
+        
         var tempData: AmityTodayNewsFeedDataModel = AmityTodayNewsFeedDataModel(post: [])
         let userToken = AmityUIKitManagerInternal.shared.currentUserToken
         
