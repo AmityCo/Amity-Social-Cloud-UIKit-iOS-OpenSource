@@ -8,7 +8,7 @@
 
 import UIKit
 
-protocol AmityPendingPostsActionCellDelegate: class {
+protocol AmityPendingPostsActionCellDelegate: AnyObject {
     func performAction(_ cell: AmityPendingPostsActionCellProtocol, action: AmityPendingPostsAction)
 }
 

@@ -101,14 +101,18 @@ public class AmityGalleryCollectionViewCell: UICollectionViewCell {
         
         if let media = media {
             shouldShowPlayButton = (media.type == .video)
-        }
-        
-        updateViewState(viewState)
-        
-        if let media = media {
+            
+            switch media.state {
+            case .error:
+                self.viewState = .error
+            default:
+                self.viewState = .idle
+            }
+            
             tryLoadMediaThumbnail(media)
         }
         
+        updateViewState(viewState)
     }
     
     private func tryLoadMediaThumbnail(_ media: AmityMedia) {

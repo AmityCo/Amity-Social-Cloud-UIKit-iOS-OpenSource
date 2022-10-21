@@ -75,14 +75,14 @@ extension UITableView {
     }
     
     func showLoadingIndicator() {
-        let loading = UIActivityIndicatorView(style: .gray)
+        let loading = UIActivityIndicatorView(style: .medium)
         loading.frame = CGRect(x: 0, y: 0, width: bounds.width, height: 40)
         loading.startAnimating()
         tableFooterView = loading
     }
     
     func showHeaderLoadingIndicator() {
-        let loading = UIActivityIndicatorView(style: .gray)
+        let loading = UIActivityIndicatorView(style: .medium)
         loading.frame = CGRect(x: 0, y: 0, width: bounds.width, height: 40)
         loading.startAnimating()
         tableHeaderView = loading

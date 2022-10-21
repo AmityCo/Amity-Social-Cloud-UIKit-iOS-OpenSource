@@ -19,7 +19,7 @@ protocol AmityGroupChatEditorViewModelDataSource {
     func getChannelEditUserPermission(_ completion: ((Bool) -> Void)?)
 }
 
-protocol AmityGroupChatEditorScreenViewModelDelegate: class {
+protocol AmityGroupChatEditorScreenViewModelDelegate: AnyObject {
     func screenViewModelDidUpdate(_ viewModel: AmityGroupChatEditorScreenViewModelType)
     func screenViewModelDidUpdateFailed(_ viewModel: AmityGroupChatEditorScreenViewModelType, withError error: String)
     func screenViewModelDidUpdateSuccess(_ viewModel: AmityGroupChatEditorScreenViewModelType)

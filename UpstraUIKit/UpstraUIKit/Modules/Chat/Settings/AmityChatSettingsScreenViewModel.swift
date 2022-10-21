@@ -54,7 +54,7 @@ enum OptionsList: Equatable {
     }
 }
 
-protocol AmityChatSettingsScreenViewModelDelegate: class {
+protocol AmityChatSettingsScreenViewModelDelegate: AnyObject {
     func screenViewModelDidFinishReport(error: String?)
     func screenViewModelDidFinishLeaveChat(error: String?)
     func screenViewModelDidPresentMember(channel: AmityChannelModel)

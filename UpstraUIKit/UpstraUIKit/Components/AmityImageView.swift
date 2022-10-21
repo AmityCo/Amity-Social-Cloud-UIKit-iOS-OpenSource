@@ -97,7 +97,7 @@ public class AmityImageView: AmityView {
 //        overlayView.backgroundColor = UIColor.white.withAlphaComponent(0.4)
         overlayView.backgroundColor = .red
         overlayView.isHidden = true
-        activityIndicator.style = .white
+        activityIndicator.style = .medium
     }
     
     private func updateState() {

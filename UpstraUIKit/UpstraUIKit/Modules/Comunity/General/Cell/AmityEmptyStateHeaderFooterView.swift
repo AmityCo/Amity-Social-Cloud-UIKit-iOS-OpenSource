@@ -95,7 +95,7 @@ class AmityEmptyStateHeaderFooterView: UITableViewHeaderFooterView {
     }
     
     private func setupLoadingIndicator() {
-        loadingIndicator.style = .whiteLarge
+        loadingIndicator.style = .large
         loadingIndicator.color = AmityColorSet.base.blend(.shade2)
     }
     

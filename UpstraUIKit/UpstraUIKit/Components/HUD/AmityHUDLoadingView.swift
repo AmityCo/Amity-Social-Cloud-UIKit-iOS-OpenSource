@@ -32,7 +32,7 @@ class AmityHUDLoadingView: UIView {
         addSubview(label)
         
         loadingIndicator.translatesAutoresizingMaskIntoConstraints = false
-        loadingIndicator.style = .whiteLarge
+        loadingIndicator.style = .large
         loadingIndicator.startAnimating()
         
         label.translatesAutoresizingMaskIntoConstraints = false

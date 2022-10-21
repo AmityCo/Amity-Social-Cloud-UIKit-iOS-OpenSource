@@ -105,41 +105,41 @@ extension AmityImagePickerImageView {
     }
 
     /// See UIImageView documentation
-    open var animationImages: [UIImage]? {
+    public var animationImages: [UIImage]? {
         get { return imageView.animationImages }
         set { imageView.animationImages = newValue }
     }
 
     /// See UIImageView documentation
-    open var highlightedAnimationImages: [UIImage]? {
+    public var highlightedAnimationImages: [UIImage]? {
         get { return imageView.highlightedAnimationImages }
         set { imageView.highlightedAnimationImages = newValue }
     }
 
     /// See UIImageView documentation
-    open var animationDuration: TimeInterval {
+    public var animationDuration: TimeInterval {
         get { return imageView.animationDuration }
         set { imageView.animationDuration = newValue }
     }
 
     /// See UIImageView documentation
-    open var animationRepeatCount: Int {
+    public var animationRepeatCount: Int {
         get { return imageView.animationRepeatCount }
         set { imageView.animationRepeatCount = newValue }
     }
 
     /// See UIImageView documentation
-    open func startAnimating() {
+    public func startAnimating() {
         imageView.startAnimating()
     }
 
     /// See UIImageView documentation
-    open func stopAnimating() {
+    public func stopAnimating() {
         imageView.stopAnimating()
     }
 
     /// See UIImageView documentation
-    open var isAnimating: Bool {
+    public var isAnimating: Bool {
         get { return imageView.isAnimating }
     }
 }

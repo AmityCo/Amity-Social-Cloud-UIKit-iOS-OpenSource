@@ -76,7 +76,6 @@ final class AmityResponsiveView: UIView {
         senderView.becomeFirstResponder()
 
         UIMenuController.shared.menuItems = menuItems
-        UIMenuController.shared.setTargetRect(senderView.frame, in: superView)
-        UIMenuController.shared.setMenuVisible(true, animated: true)
+        UIMenuController.shared.showMenu(from: superView, rect: senderView.frame)
     }
 }

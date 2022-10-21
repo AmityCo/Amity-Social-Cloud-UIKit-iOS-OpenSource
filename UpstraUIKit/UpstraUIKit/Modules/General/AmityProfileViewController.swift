@@ -41,7 +41,10 @@ public class AmityProfileViewController: AmityViewController, AmityProfileDataSo
         refreshControl.tintColor = .gray
         refreshControl.addTarget(self, action: #selector(handleRefreshControl), for: .valueChanged)
         
-        let navBarHeight = UIApplication.shared.statusBarFrame.size.height +
+        let keyWindow = UIApplication.shared.connectedScenes.flatMap { ($0 as? UIWindowScene)?.windows ?? [] }.first { $0.isKeyWindow }
+        let windowHeight = keyWindow?.windowScene?.statusBarManager?.statusBarFrame.height ?? 0
+
+        let navBarHeight = windowHeight +
                  (navigationController?.navigationBar.frame.height ?? 0.0)
         
         let refreshView = UIView(frame: CGRect(x: 0, y: navBarHeight, width: 0, height: 0))

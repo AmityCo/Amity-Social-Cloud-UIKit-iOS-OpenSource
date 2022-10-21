@@ -297,7 +297,8 @@ extension AmityPollCreatorViewController: AmityPollCreatorCellProtocolDelegate {
         case .multipleSelectionChange(let isMultiple):
             screenViewModel?.action.setIsMultipleSelection(isMultiple)
         case .selectSchedule:
-            guard let window = UIApplication.shared.keyWindow else { return }
+            let keyWindow = UIApplication.shared.connectedScenes.flatMap { ($0 as? UIWindowScene)?.windows ?? [] }.first { $0.isKeyWindow }
+            guard let window = keyWindow else { return }
             if pollTimeframeView == nil {
                 pollTimeframeView = AmityPollCreatorTimeframeView(frame: window.frame)
             }

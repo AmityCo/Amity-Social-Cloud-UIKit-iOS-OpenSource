@@ -393,7 +393,8 @@ extension AmityMessageListViewController: AmityMessageListScreenViewModelDelegat
         switch events {
         case .show:
             composeBar.isTimeout = false
-            guard let window = UIApplication.shared.keyWindow else { return }
+            let keyWindow = UIApplication.shared.connectedScenes.flatMap { ($0 as? UIWindowScene)?.windows ?? [] }.first { $0.isKeyWindow }
+            guard let window = keyWindow else { return }
             circular.show(for: window)
         case .hide:
             circular.hide()

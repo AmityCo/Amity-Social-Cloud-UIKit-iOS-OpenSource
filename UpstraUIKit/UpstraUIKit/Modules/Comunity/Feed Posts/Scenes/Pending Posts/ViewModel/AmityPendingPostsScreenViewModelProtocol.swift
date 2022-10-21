@@ -8,7 +8,7 @@
 
 import UIKit
 
-protocol AmityPendingPostsScreenViewModelDelegate: class {
+protocol AmityPendingPostsScreenViewModelDelegate: AnyObject {
     func screenViewModel(_ viewModel: AmityPendingPostsScreenViewModelType, didGetMemberStatusCommunity status: AmityMemberStatusCommunity)
     func screenViewModelDidGetPendingPosts(_ viewModel: AmityPendingPostsScreenViewModelType)
     func screenViewModel(_ viewModel: AmityPendingPostsScreenViewModelType, didFail error: AmityError)

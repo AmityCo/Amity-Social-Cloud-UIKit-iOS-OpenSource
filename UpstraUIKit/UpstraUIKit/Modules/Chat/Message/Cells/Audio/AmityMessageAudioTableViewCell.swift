@@ -41,7 +41,7 @@ final class AmityMessageAudioTableViewCell: AmityMessageTableViewCell {
             if message.isOwner {
                 durationLabel.textColor = AmityColorSet.baseInverse
                 actionImageView.tintColor = AmityColorSet.baseInverse
-                activityIndicatorView.style = .white
+                activityIndicatorView.style = .medium
                 switch message.syncState {
                 case .syncing:
                     durationLabel.alpha = 0
@@ -55,7 +55,7 @@ final class AmityMessageAudioTableViewCell: AmityMessageTableViewCell {
             } else {
                 durationLabel.textColor = AmityColorSet.base
                 actionImageView.tintColor = AmityColorSet.base
-                activityIndicatorView.style = .gray
+                activityIndicatorView.style = .medium
             }
             
             if AmityAudioPlayer.shared.isPlaying(), AmityAudioPlayer.shared.fileName == message.messageId {

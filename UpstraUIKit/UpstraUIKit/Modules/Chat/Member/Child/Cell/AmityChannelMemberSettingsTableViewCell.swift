@@ -9,7 +9,7 @@
 import UIKit
 import AmitySDK
 
-protocol AmityChannelMemberSettingsTableViewCellDelegate: class {
+protocol AmityChannelMemberSettingsTableViewCellDelegate: AnyObject {
     func didPerformAction(at indexPath: IndexPath, action: AmityChannelMemberAction)
 }
 
