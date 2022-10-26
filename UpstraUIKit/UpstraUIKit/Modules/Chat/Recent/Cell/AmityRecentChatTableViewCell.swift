@@ -75,6 +75,13 @@ final class AmityRecentChatTableViewCell: UITableViewCell, Nibbable {
         avatarView.placeholder = AmityIconSet.defaultAvatar
         previewMessageLabel.text = channel.recentMessage
         
+        //Metadata from commerce
+        var userIdsFromCommerce: [String] = []
+        let isLiveCommerce = channel.metadata["isLiveCommerce"] as? Bool ?? false
+        if isLiveCommerce {
+            userIdsFromCommerce = channel.metadata["userIds"] as? [String] ?? []
+        }
+        
         switch channel.channelType {
         case .standard:
             avatarView.setImage(withImageURL: channel.avatarURL, placeholder: AmityIconSet.defaultGroupChat)
@@ -90,24 +97,50 @@ final class AmityRecentChatTableViewCell: UITableViewCell, Nibbable {
             } else {
                 participateToken?.invalidate()
                 participateToken = channel.participation.getMembers(filter: .all, sortBy: .firstCreated, roles: []).observe { collection, change, error in
+                    
                     for i in 0..<collection.count(){
                         let userId = collection.object(at: i)?.userId
                         if userId != AmityUIKitManagerInternal.shared.currentUserId {
-                            let otherUserModel = AmityUserModel(user: (collection.object(at: i)?.user)!)
-                            let userModel = otherUserModel
-                            self.titleLabel.text = userModel.displayName
-                            if !userModel.avatarCustomURL.isEmpty {
-                                self.avatarView.setImage(withCustomURL: userModel.avatarCustomURL,
-                                                         placeholder: AmityIconSet.defaultAvatar)
-                                RecentChatAvatarArray.shared.avatarArray.append(RecentChatAvatar(channelId: channel.channelId, avatarURL: userModel.avatarCustomURL, displayName: userModel.displayName, isCustom: true))
-                                
+                            
+                            // If user from commerce isEmpty = Not from commerce
+                            if userIdsFromCommerce.isEmpty {
+                                let otherUserModel = AmityUserModel(user: (collection.object(at: i)?.user)!)
+                                let userModel = otherUserModel
+                                self.titleLabel.text = userModel.displayName
+                                if !userModel.avatarCustomURL.isEmpty {
+                                    self.avatarView.setImage(withCustomURL: userModel.avatarCustomURL,
+                                                             placeholder: AmityIconSet.defaultAvatar)
+                                    RecentChatAvatarArray.shared.avatarArray.append(RecentChatAvatar(channelId: channel.channelId, avatarURL: userModel.avatarCustomURL, displayName: userModel.displayName, isCustom: true))
+                                    
+                                } else {
+                                    self.avatarView.setImage(withCustomURL: userModel.avatarURL,
+                                                             placeholder: AmityIconSet.defaultAvatar)
+                                    RecentChatAvatarArray.shared.avatarArray.append(RecentChatAvatar(channelId: channel.channelId, avatarURL: userModel.avatarURL, displayName: userModel.displayName, isCustom: false))
+                                }
                             } else {
-                                self.avatarView.setImage(withCustomURL: userModel.avatarURL,
-                                                         placeholder: AmityIconSet.defaultAvatar)
-                                RecentChatAvatarArray.shared.avatarArray.append(RecentChatAvatar(channelId: channel.channelId, avatarURL: userModel.avatarURL, displayName: userModel.displayName, isCustom: false))
+                                for userCommerce in userIdsFromCommerce {
+                                    if userId == userCommerce {
+                                        let otherUserModel = AmityUserModel(user: (collection.object(at: i)?.user)!)
+                                        let userModel = otherUserModel
+                                        self.titleLabel.text = userModel.displayName
+                                        if !userModel.avatarCustomURL.isEmpty {
+                                            self.avatarView.setImage(withCustomURL: userModel.avatarCustomURL,
+                                                                     placeholder: AmityIconSet.defaultAvatar)
+                                            RecentChatAvatarArray.shared.avatarArray.append(RecentChatAvatar(channelId: channel.channelId, avatarURL: userModel.avatarCustomURL, displayName: userModel.displayName, isCustom: true))
+                                            
+                                        } else {
+                                            self.avatarView.setImage(withCustomURL: userModel.avatarURL,
+                                                                     placeholder: AmityIconSet.defaultAvatar)
+                                            RecentChatAvatarArray.shared.avatarArray.append(RecentChatAvatar(channelId: channel.channelId, avatarURL: userModel.avatarURL, displayName: userModel.displayName, isCustom: false))
+                                        }
+                                    }
+                                }
                             }
+                            
                         }
                     }
+                    
+                    
                 }
             }
             
