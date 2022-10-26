@@ -53,13 +53,13 @@ class AmityCustomEventHandler: AmityEventHandler {
         source.navigationController?.pushViewController(viewController, animated: true)
     }
     override func openCurrentPageEvent(_ pageType: AmityCurrentPagetType) {
-        let alert = UIAlertController(title: "Test Current Page", message: "Current page is : \(pageType)", preferredStyle: .alert)
-        alert.addAction(UIAlertAction(title: "Ok", style: .default, handler: { UIAlertAction in
-
-        }))
-        DispatchQueue.main.async {
-            UIApplication.shared.keyWindow?.rootViewController?.present(alert, animated: true, completion: nil)
-        }
+//        let alert = UIAlertController(title: "Test Current Page", message: "Current page is : \(pageType)", preferredStyle: .alert)
+//        alert.addAction(UIAlertAction(title: "Ok", style: .default, handler: { UIAlertAction in
+//
+//        }))
+//        DispatchQueue.main.async {
+//            UIApplication.shared.keyWindow?.rootViewController?.present(alert, animated: true, completion: nil)
+//        }
     }
     
 //    override func createPostDidTap(from source: AmityViewController, postTarget: AmityPostTarget, postContentType: AmityPostContentType = .post) {

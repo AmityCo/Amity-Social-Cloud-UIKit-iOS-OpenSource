@@ -197,7 +197,7 @@ class AmityMessageTableViewCell: UITableViewCell, AmityMessageCellProtocol {
         } else if
             let url = messageModel.object.user?.getAvatarInfo()?.fileURL,
             !url.isEmpty {
-            avatarView.setImage(withImageURL: url,
+            avatarView.setImage(withCustomURL: url,
                                 placeholder: AmityIconSet.defaultAvatar)
         }
     }

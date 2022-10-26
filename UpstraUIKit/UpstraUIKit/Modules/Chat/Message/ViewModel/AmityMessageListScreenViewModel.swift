@@ -10,6 +10,25 @@ import UIKit
 import Photos
 import AmitySDK
 
+class MessageListAvatarArray {
+    static var shared = MessageListAvatarArray()
+    var avatarArray: [MessageListAvatar] = []
+}
+
+struct MessageListAvatar {
+    let channelId: String
+    let avatarURL: String
+    let displayName: String
+    let isCustom: Bool
+    
+    init(channelId: String, avatarURL: String, displayName: String, isCustom: Bool){
+        self.channelId = channelId
+        self.avatarURL = avatarURL
+        self.displayName = displayName
+        self.isCustom = isCustom
+    }
+}
+
 final class AmityMessageListScreenViewModel: AmityMessageListScreenViewModelType {
     
     enum Route {

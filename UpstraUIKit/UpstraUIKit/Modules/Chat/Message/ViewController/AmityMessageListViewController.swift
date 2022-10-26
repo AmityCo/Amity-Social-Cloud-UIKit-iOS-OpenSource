@@ -118,6 +118,8 @@ public final class AmityMessageListViewController: AmityViewController, AmityMes
         bottomConstraint.constant = .zero
         view.endEditing(true)
         AmityEventHandler.shared.openCurrentPageEvent(.other)
+        
+        MessageListAvatarArray.shared.avatarArray = []
     }
     
     /// Create `AmityMessageListViewController` instance.
@@ -542,6 +544,8 @@ extension AmityMessageListViewController: AmityMessageListScreenViewModelDelegat
         userId = channel.getOtherUserId()
         channelId = channel.channelId
         _ = openCurrentPage
+        messageViewController.tableView.reloadData()
+        self.view.layoutIfNeeded()
     }
     
     func screenViewModelScrollToBottom(for indexPath: IndexPath) {
