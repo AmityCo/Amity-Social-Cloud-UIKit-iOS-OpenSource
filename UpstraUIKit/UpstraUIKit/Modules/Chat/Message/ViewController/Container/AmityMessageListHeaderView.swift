@@ -92,22 +92,50 @@ extension AmityMessageListHeaderView {
         case .standard:
             avatarView.setImage(withImageURL: channel.avatarURL, placeholder: AmityIconSet.defaultGroupChat)
         case .conversation:
-//            avatarView.setImage(withImageURL: channel.avatarURL, placeholder: AmityIconSet.defaultAvatar)
+            
+            //Metadata from commerce
+            var userIdsFromCommerce: [String] = []
+            let isLiveCommerce = channel.metadata["isLiveCommerce"] as? Bool ?? false
+            if isLiveCommerce {
+                userIdsFromCommerce = channel.metadata["userIds"] as? [String] ?? []
+            }
+            
             participateToken?.invalidate()
             participateToken = channel.participation.getMembers(filter: .all, sortBy: .firstCreated, roles: []).observe { collection, change, error in
                 for i in 0..<collection.count(){
                     let userId = collection.object(at: i)?.userId
                     if userId != AmityUIKitManagerInternal.shared.currentUserId {
-                        let otherUserModel = AmityUserModel(user: (collection.object(at: i)?.user)!)
-                        self.displayNameLabel.text = otherUserModel.displayName
-                        let userModel = otherUserModel
                         
-                        if !userModel.avatarCustomURL.isEmpty {
-                            self.avatarView.setImage(withCustomURL: userModel.avatarCustomURL,
-                                                     placeholder: AmityIconSet.defaultAvatar)
+                        let otherUserModel = AmityUserModel(user: (collection.object(at: i)?.user)!)
+                        
+                        // If user from commerce isEmpty = Not from commerce
+                        if userIdsFromCommerce.isEmpty {
+                            
+                            self.displayNameLabel.text = otherUserModel.displayName
+                            let userModel = otherUserModel
+                            
+                            if !userModel.avatarCustomURL.isEmpty {
+                                self.avatarView.setImage(withCustomURL: userModel.avatarCustomURL,
+                                                         placeholder: AmityIconSet.defaultAvatar)
+                            } else {
+                                self.avatarView.setImage(withCustomURL: userModel.avatarURL, placeholder: AmityIconSet.defaultAvatar)
+                            }
                         } else {
-                            self.avatarView.setImage(withCustomURL: userModel.avatarURL, placeholder: AmityIconSet.defaultAvatar)
+                            for user in userIdsFromCommerce {
+                                if userId == user {
+                                    self.displayNameLabel.text = otherUserModel.displayName
+                                    let userModel = otherUserModel
+                                    
+                                    if !userModel.avatarCustomURL.isEmpty {
+                                        self.avatarView.setImage(withCustomURL: userModel.avatarCustomURL,
+                                                                 placeholder: AmityIconSet.defaultAvatar)
+                                    } else {
+                                        self.avatarView.setImage(withCustomURL: userModel.avatarURL, placeholder: AmityIconSet.defaultAvatar)
+                                    }
+                                }
+                            }
                         }
+                        
                     }
                 }
             }
