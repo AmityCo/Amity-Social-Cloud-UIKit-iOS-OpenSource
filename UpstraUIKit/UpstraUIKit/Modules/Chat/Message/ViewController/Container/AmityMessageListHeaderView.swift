@@ -100,45 +100,63 @@ extension AmityMessageListHeaderView {
                 userIdsFromCommerce = channel.metadata["userIds"] as? [String] ?? []
             }
             
-            participateToken?.invalidate()
-            participateToken = channel.participation.getMembers(filter: .all, sortBy: .firstCreated, roles: []).observe { collection, change, error in
-                for i in 0..<collection.count(){
-                    let userId = collection.object(at: i)?.userId
-                    if userId != AmityUIKitManagerInternal.shared.currentUserId {
-                        
-                        let otherUserModel = AmityUserModel(user: (collection.object(at: i)?.user)!)
-                        
-                        // If user from commerce isEmpty = Not from commerce
-                        if userIdsFromCommerce.isEmpty {
+            if let userIndex = MessageListAvatarArray.shared.avatarArray.firstIndex(where: {$0.channelId == channel.channelId }) {
+                let currentArray = MessageListAvatarArray.shared.avatarArray[userIndex]
+                displayNameLabel.text = (currentArray.displayName != "") ? currentArray.displayName : channel.displayName
+                avatarView.setImage(withCustomURL: currentArray.avatarURL,
+                                         placeholder: AmityIconSet.defaultAvatar)
+            } else {
+                participateToken?.invalidate()
+                participateToken = channel.participation.getMembers(filter: .all, sortBy: .firstCreated, roles: []).observe { collection, change, error in
+                    for i in 0..<collection.count(){
+                        let userId = collection.object(at: i)?.userId
+                        if userId != AmityUIKitManagerInternal.shared.currentUserId {
                             
-                            self.displayNameLabel.text = otherUserModel.displayName
-                            let userModel = otherUserModel
+                            self.userId = userId
                             
-                            if !userModel.avatarCustomURL.isEmpty {
-                                self.avatarView.setImage(withCustomURL: userModel.avatarCustomURL,
-                                                         placeholder: AmityIconSet.defaultAvatar)
-                            } else {
-                                self.avatarView.setImage(withCustomURL: userModel.avatarURL, placeholder: AmityIconSet.defaultAvatar)
-                            }
-                        } else {
-                            for user in userIdsFromCommerce {
-                                if userId == user {
+                            let otherUserModel = AmityUserModel(user: (collection.object(at: i)?.user)!)
+                            
+                            DispatchQueue.main.asyncAfter(deadline: .now()+0.1, execute: {
+                                // If user from commerce isEmpty = Not from commerce
+                                if userIdsFromCommerce.isEmpty {
+                                    
                                     self.displayNameLabel.text = otherUserModel.displayName
                                     let userModel = otherUserModel
                                     
                                     if !userModel.avatarCustomURL.isEmpty {
                                         self.avatarView.setImage(withCustomURL: userModel.avatarCustomURL,
                                                                  placeholder: AmityIconSet.defaultAvatar)
+                                        MessageListAvatarArray.shared.avatarArray.append(MessageListAvatar(channelId: channel.channelId, avatarURL: userModel.avatarCustomURL, displayName: userModel.displayName, isCustom: true))
                                     } else {
                                         self.avatarView.setImage(withCustomURL: userModel.avatarURL, placeholder: AmityIconSet.defaultAvatar)
+                                        MessageListAvatarArray.shared.avatarArray.append(MessageListAvatar(channelId: channel.channelId, avatarURL: userModel.avatarURL, displayName: userModel.displayName, isCustom: false))
+                                    }
+                                } else {
+                                    for user in userIdsFromCommerce {
+                                        if userId == user {
+                                            self.displayNameLabel.text = otherUserModel.displayName
+                                            let userModel = otherUserModel
+                                            
+                                            if !userModel.avatarCustomURL.isEmpty {
+                                                self.avatarView.setImage(withCustomURL: userModel.avatarCustomURL,
+                                                                         placeholder: AmityIconSet.defaultAvatar)
+                                                MessageListAvatarArray.shared.avatarArray.append(MessageListAvatar(channelId: channel.channelId, avatarURL: userModel.avatarCustomURL, displayName: userModel.displayName, isCustom: true))
+                                            } else {
+                                                self.avatarView.setImage(withCustomURL: userModel.avatarURL, placeholder: AmityIconSet.defaultAvatar)
+                                                MessageListAvatarArray.shared.avatarArray.append(MessageListAvatar(channelId: channel.channelId, avatarURL: userModel.avatarURL, displayName: userModel.displayName, isCustom: false))
+                                            }
+                                        }
                                     }
                                 }
-                            }
+                            })
+                            
+                            
                         }
-                        
                     }
                 }
+                self.layoutIfNeeded()
             }
+
         case .community:
             avatarView.setImage(withImageURL: channel.avatarURL, placeholder: AmityIconSet.defaultAvatar)
             if !channel.getOtherUserId().isEmpty {
