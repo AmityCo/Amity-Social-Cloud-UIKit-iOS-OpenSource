@@ -34,11 +34,10 @@ final class customAPIRequest {
             }
         }
         
-        //Original
-        let urlString = "https://cpvp6wy03k.execute-api.ap-southeast-1.amazonaws.com/discovery/getDiscovery?page=\(page_number)&region=\(region)".addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)
         
-        //New Endpoint for Authen test
-//        let urlString = "https://9g5o0eiyh9.execute-api.ap-southeast-1.amazonaws.com/media?page=\(page_number)&region=\(region)".addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)
+
+        let urlString = "https://cpvp6wy03k.execute-api.ap-southeast-1.amazonaws.com/discovery/getDiscovery?page=\(page_number)&region=\(region)".addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)
+
         
         let url = URL(string: urlString ?? "")!
         var tempDiscoveryData: [DiscoveryDataModel] = []
@@ -144,12 +143,8 @@ final class customAPIRequest {
             }
         }
         
-        //Original
-        let url = URL(string: "https://qojeq6vaa8.execute-api.ap-southeast-1.amazonaws.com/getPinPost?region=\(region)")!
-        
-        //New Endpoint
-//        let url = URL(string: "https://9g5o0eiyh9.execute-api.ap-southeast-1.amazonaws.com/getPinPost?region=\(region)")!
-        
+        let url = URL(string: "https://cpvp6wy03k.execute-api.ap-southeast-1.amazonaws.com/getPinPost?region=\(region)")!
+
         var tempData: AmityNewsFeedDataModel = AmityNewsFeedDataModel(posts: [])
         let userToken = AmityUIKitManagerInternal.shared.currentUserToken
         
