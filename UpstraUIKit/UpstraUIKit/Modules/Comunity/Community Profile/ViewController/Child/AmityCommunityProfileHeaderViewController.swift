@@ -175,10 +175,10 @@ final class AmityCommunityProfileHeaderViewController: UIViewController {
     func updateView() {
         guard let community = screenViewModel.dataSource.community, !isUpdateInProgress else { return }
         isUpdateInProgress = true
-        if !community.avatarCustomURL.isEmpty {
-            avatarView.setImage(withCustomURL: community.avatarCustomURL, size: .large, placeholder: AmityIconSet.defaultCommunity)
-        } else {
+        if !community.avatarURL.isEmpty {
             avatarView.setImage(withCustomURL: community.avatarURL, size: .large, placeholder: AmityIconSet.defaultCommunity)
+        } else {
+            avatarView.setImage(withCustomURL: community.avatarCustomURL, size: .large, placeholder: AmityIconSet.defaultCommunity)
         }
         displayNameLabel.text = community.displayName
         descriptionLabel.text = community.description
