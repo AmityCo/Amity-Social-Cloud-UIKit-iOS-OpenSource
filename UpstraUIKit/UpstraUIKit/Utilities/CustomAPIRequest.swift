@@ -72,52 +72,52 @@ final class customAPIRequest {
     
     static func getChatBadgeCount(userId: String, completion: @escaping(_ completion:Result<Int,Error>) -> () ) {
         
-        var region: String {
-            switch AmityUIKitManagerInternal.shared.envByApiKey {
-            case .staging:
-                return "staging"
-            case .production:
-                return "th"
-            case .indonesia:
-                return "id"
-            case .cambodia:
-                return "kh"
-            case .philippin:
-                return "ph"
-            case .vietnam:
-                return "vn"
-            case .myanmar:
-                return "mm"
-            default:
-                return "th"
-            }
-        }
-        
-        //Original
-        let urlString = "https://qojeq6vaa8.execute-api.ap-southeast-1.amazonaws.com/discovery/getDiscovery?page=\(page_number)&region=\(region)".addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)
-        
-        let url = URL(string: urlString ?? "")!
-        var badge: Int = 0
-        var request = URLRequest(url: url)
-        request.httpMethod = "GET"
-        request.allHTTPHeaderFields = [
-            "Content-Type" : "application/json"
-        ]
-        
-        let task = URLSession.shared.dataTask(with: request) { data, response, error in
-            guard let data = data, error == nil else {
-                print(error?.localizedDescription ?? "No data.")
-                completion(.failure(error!))
-                return
-            }
-            
-            guard let jsonDecode = try? JSONDecoder().decode(Int.self, from: data) else { return }
-            badge = jsonDecode
-            
-            completion(.success(badge))
-        }
-        
-        task.resume()
+//        var region: String {
+//            switch AmityUIKitManagerInternal.shared.envByApiKey {
+//            case .staging:
+//                return "staging"
+//            case .production:
+//                return "th"
+//            case .indonesia:
+//                return "id"
+//            case .cambodia:
+//                return "kh"
+//            case .philippin:
+//                return "ph"
+//            case .vietnam:
+//                return "vn"
+//            case .myanmar:
+//                return "mm"
+//            default:
+//                return "th"
+//            }
+//        }
+//        
+//        //Original
+//        let urlString = "https://qojeq6vaa8.execute-api.ap-southeast-1.amazonaws.com/discovery/getDiscovery?page=\(page_number)&region=\(region)".addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)
+//        
+//        let url = URL(string: urlString ?? "")!
+//        var badge: Int = 0
+//        var request = URLRequest(url: url)
+//        request.httpMethod = "GET"
+//        request.allHTTPHeaderFields = [
+//            "Content-Type" : "application/json"
+//        ]
+//        
+//        let task = URLSession.shared.dataTask(with: request) { data, response, error in
+//            guard let data = data, error == nil else {
+//                print(error?.localizedDescription ?? "No data.")
+//                completion(.failure(error!))
+//                return
+//            }
+//            
+//            guard let jsonDecode = try? JSONDecoder().decode(Int.self, from: data) else { return }
+//            badge = jsonDecode
+//            
+//            completion(.success(badge))
+//        }
+//        
+//        task.resume()
     }
     
     static func getPinPostData(completion: @escaping(_ postArray: AmityNewsFeedDataModel?) -> () ) {
