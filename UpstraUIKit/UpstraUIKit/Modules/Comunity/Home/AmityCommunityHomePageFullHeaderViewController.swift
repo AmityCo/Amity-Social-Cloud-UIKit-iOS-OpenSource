@@ -60,8 +60,7 @@ public class AmityCommunityHomePageFullHeaderViewController: AmityProfileViewCon
         setupView()
         setupNavigationItem()
         setupViewModel()
-        runDeeplinksRouter()
-        
+//        runDeeplinksRouter()
     }
     
     public override func viewWillAppear(_ animated: Bool) {
