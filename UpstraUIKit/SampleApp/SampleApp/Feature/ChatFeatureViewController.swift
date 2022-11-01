@@ -27,6 +27,7 @@ class ChatFeatureViewController: UIViewController {
         case messageListWithTextOnlyKeyboard
         case createFromContact
         case getNotiCount
+        case getContact
 
         var text: String {
             switch self {
@@ -42,6 +43,8 @@ class ChatFeatureViewController: UIViewController {
                 return "Create chat from contact"
             case .getNotiCount:
                 return "Get Noti"
+            case .getContact:
+                return "Get Contact Access"
             }
         }
         
@@ -150,6 +153,21 @@ extension ChatFeatureViewController: UITableViewDelegate {
                     self.present(alert, animated: true)
                 case .failure(let error):
                     print(error.localizedDescription)
+                }
+            }
+        case .getContact:
+            AmityChatHandler.shared.syncContact(userId: AmityUIKitManager.currentUserId) { result in
+                var alertText = ""
+                switch result {
+                case .success(let phoneArray):
+                    alertText = "\(phoneArray)"
+                case .failure(let error):
+                    alertText = "\(error)"
+                }
+                DispatchQueue.main.async {
+                    let alertVC = UIAlertController(title: "Sync Contact", message: alertText, preferredStyle: .alert)
+                    alertVC.addAction(UIAlertAction(title: "OK", style: .default))
+                    self.present(alertVC, animated: true)
                 }
             }
         }

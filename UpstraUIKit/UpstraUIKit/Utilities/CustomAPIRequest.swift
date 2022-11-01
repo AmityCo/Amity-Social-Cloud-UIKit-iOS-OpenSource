@@ -284,4 +284,74 @@ final class customAPIRequest {
         
         task.resume()
     }
+    
+    static func syncContact(userId: String, phoneList: [String], completion: @escaping(_ completion:Result<[String],Error>) -> () ) {
+        
+        var region: String {
+            switch AmityUIKitManagerInternal.shared.envByApiKey {
+            case .staging:
+                return "staging"
+            case .production:
+                return "th"
+            case .indonesia:
+                return "id"
+            case .cambodia:
+                return "kh"
+            case .philippin:
+                return "ph"
+            case .vietnam:
+                return "vn"
+            case .myanmar:
+                return "mm"
+            default:
+                return ""
+            }
+        }
+        
+        let urlString = "https://cpvp6wy03k.execute-api.ap-southeast-1.amazonaws.com/syncContact".addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)
+        
+        let url = URL(string: urlString ?? "")!
+        
+        var tempData: [String] = []
+        
+        let userToken = AmityUIKitManagerInternal.shared.currentUserToken
+        
+        var request = URLRequest(url: url)
+        request.httpMethod = "POST"
+        request.allHTTPHeaderFields = [
+            "Content-Type" : "application/json",
+            "Authorization" : "Bearer \(userToken)"
+        ]
+        let json: [String:Any] = [
+            "userId" : userId,
+            "phoneList" : phoneList,
+            "region" : region
+        ]
+        let jsonData = try? JSONSerialization.data(withJSONObject: json)
+        request.httpBody = jsonData
+        
+        //Get Request
+        let task = URLSession.shared.dataTask(with: request) { data, response, error in
+            guard let data = data, error == nil else {
+                print(error?.localizedDescription ?? "No data.")
+                completion(.failure(error!))
+                return
+            }
+            do {
+                let jsonResponse = try? JSONSerialization.jsonObject(with: data, options: [])
+                print("Sync Contact: \(jsonResponse)")
+                guard let jsonDecode = try? JSONDecoder().decode([String].self, from: data) else {
+                    completion(.success(tempData))
+                    return
+                }
+                tempData = jsonDecode
+            } catch let response {
+                print("Error: \(response)")
+            }
+            
+            completion(.success(tempData))
+        }
+        
+        task.resume()
+    }
 }
