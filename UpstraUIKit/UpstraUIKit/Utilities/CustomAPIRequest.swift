@@ -202,7 +202,7 @@ final class customAPIRequest {
         }
         
         //Original
-        let url = URL(string: "https://cpvp6wy03k.execute-api.ap-southeast-1.amazonaws.com/newsfeed/getNewsfeedNoUCG?region=\(region)")!
+        let url = URL(string: "https://cpvp6wy03k.execute-api.ap-southeast-1.amazonaws.com/discovery/getPopularFeed?region=\(region)")!
         //New Endpoint
 //        let url = URL(string: "https://9g5o0eiyh9.execute-api.ap-southeast-1.amazonaws.com/newsfeed/getNewsfeedNoUCG?region=\(region)")!
         
