@@ -55,4 +55,26 @@ public class AmityChatHandler {
             completion(.success(unreadCount))
         }
     }
+    
+    open func syncContact(userId: String,  completion: @escaping(_ completion:Result<[String],Error>) -> () ){
+        let contactArray = ContactsModel.generateModelArray()
+        var phoneListArray: [String] = []
+        for contact in contactArray {
+            for phoneNumber in contact.phoneNumber {
+                let phoneWithoutDash = phoneNumber.replacingOccurrences(of: "-", with: "")
+                phoneListArray.append(phoneWithoutDash)
+            }
+        }
+        
+        customAPIRequest.syncContact(userId: userId, phoneList: phoneListArray) { result in
+            switch result {
+            case .success(let phoneList):
+                completion(.success(phoneList))
+            case .failure(let error):
+                completion(.failure(error))
+            }   
+        }
+    }
 }
+
+
