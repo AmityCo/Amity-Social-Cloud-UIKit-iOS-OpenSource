@@ -86,12 +86,12 @@ struct AmityFeedPostModel: Codable {
     let hashFlag: Bool?
     let reactions: ReactionNewsFeedDataModel?
     let reactionsCount: Int?
-    let myReactions: [ReactionNewsFeedDataModel]
-    let comments: [String]
-    let children: [String]
+    let myReactions: [ReactionNewsFeedDataModel]?
+    let comments: [String]?
+    let children: [String]?
     let feedId: String?
-    let mentionees: [mentioneesNewsFeedDataModel]
-    let tags: [String]
+    let mentionees: [mentioneesNewsFeedDataModel]?
+    let tags: [String]?
 }
 
 struct TextNewsFeedDataModel: Codable {
