@@ -233,6 +233,7 @@ final class customAPIRequest {
             } catch let response {
                 print("Error: \(response)")
             }
+            print("Popular feed: \(tempData)")
             completion(tempData)
         }
         task.resume()
@@ -320,7 +321,8 @@ final class customAPIRequest {
         request.httpMethod = "POST"
         request.allHTTPHeaderFields = [
             "Content-Type" : "application/json",
-            "Authorization" : "Bearer \(userToken)"
+            "Authorization" : "Bearer \(userToken)",
+            "client_id" : "3608"
         ]
         let json: [String:Any] = [
             "userId" : userId,
