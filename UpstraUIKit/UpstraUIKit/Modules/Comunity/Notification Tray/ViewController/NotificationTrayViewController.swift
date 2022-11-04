@@ -85,7 +85,11 @@ extension NotificationTrayViewController: UITableViewDelegate {
     public func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         guard let item = screenViewModel.item(at: indexPath) else { return }
         screenViewModel.updateReadItem(model: item)
-        AmityEventHandler.shared.postDidtap(from: self, postId: item.targetId ?? "")
+        if item.targetType != "community" {
+            AmityEventHandler.shared.postDidtap(from: self, postId: item.targetId ?? "")
+        } else {
+            AmityEventHandler.shared.communityDidTap(from: self, communityId: item.targetGroup ?? "")
+        }
     }
 }
 
