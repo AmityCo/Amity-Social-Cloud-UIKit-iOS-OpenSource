@@ -70,7 +70,9 @@ public class AmityCommunityHomePageViewController: AmityProfileBottomViewControl
     
     override func viewControllers(for pagerTabStripController: AmityPagerTabViewController) -> [UIViewController] {
         newsFeedVC.pageTitle = AmityLocalizedStringSet.newsfeedTitle.localizedString
-        newfeedHeader.retrieveCommunityList()
+        DispatchQueue.main.asyncAfter(deadline: .now() + 2) { [self] in
+            newfeedHeader.retrieveCommunityList()
+        }
         newsFeedVC.headerView = newfeedHeader
         
         newfeedHeader.delegate = self
