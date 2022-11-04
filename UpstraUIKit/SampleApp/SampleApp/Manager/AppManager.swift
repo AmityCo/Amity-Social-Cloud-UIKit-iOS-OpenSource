@@ -34,7 +34,7 @@ class AppManager {
         
         
         let endpointConfig = EndpointManager.shared.currentEndpointConfig
-                AmityUIKitManager.setup(apiKey: endpointConfig.apiKey,
+        AmityUIKitManager.setup(apiKey: endpointConfig.apiKey,
                                         httpUrl: endpointConfig.httpEndpoint,
                                         socketUrl: endpointConfig.socketEndpoint)
         
