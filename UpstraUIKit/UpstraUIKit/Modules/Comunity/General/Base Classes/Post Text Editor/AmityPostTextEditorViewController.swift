@@ -1025,7 +1025,7 @@ extension AmityPostTextEditorViewController: AmityPostTextEditorScreenViewModelD
     }
     
     func screenViewModelDidCreatePost(_ viewModel: AmityPostTextEditorScreenViewModel, post: AmityPost?, error: Error?) {
-        
+        navigationController?.setNavigationBarHidden(true, animated: false)
         if let post = post {
             switch post.getFeedType() {
             case .reviewing:

@@ -4679,7 +4679,7 @@
 		72A3502724EA811500DA9D46 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastSwiftUpdateCheck = 1160;
+				LastSwiftUpdateCheck = 1340;
 				LastUpgradeCheck = 1240;
 				ORGANIZATIONNAME = Amity;
 				TargetAttributes = {

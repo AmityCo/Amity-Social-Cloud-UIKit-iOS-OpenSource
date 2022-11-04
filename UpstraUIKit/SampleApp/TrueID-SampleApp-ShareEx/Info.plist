@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>NSExtension</key>
+	<dict>
+        <key>NSExtensionAttributes</key>
+        <dict>
+            <key>NSExtensionActivationRule</key>
+            <string>SUBQUERY (
+                            extensionItems,
+                            $extensionItem,
+                            SUBQUERY (
+                            $extensionItem.attachments,
+                            $attachment,
+                            (
+                            ANY $attachment.registeredTypeIdentifiers UTI-CONFORMS-TO "public.plain-text" OR
+                            ANY $attachment.registeredTypeIdentifiers UTI-CONFORMS-TO "public.movie" OR
+                            ANY $attachment.registeredTypeIdentifiers UTI-CONFORMS-TO "public.image" OR
+                            ANY $attachment.registeredTypeIdentifiers UTI-CONFORMS-TO "public.data" OR
+                            ANY $attachment.registeredTypeIdentifiers UTI-CONFORMS-TO "public.url" OR
+                            ANY $attachment.registeredTypeIdentifiers UTI-CONFORMS-TO "public.content")
+                            AND NOT (ANY $attachment.registeredTypeIdentifiers UTI-CONFORMS-TO "public.audio")
+                            ).@count == $extensionItem.attachments.@count
+                            ).@count == 1</string>
+        </dict>
+		<key>NSExtensionMainStoryboard</key>
+		<string>MainInterface</string>
+		<key>NSExtensionPointIdentifier</key>
+		<string>com.apple.share-services</string>
+	</dict>
+</dict>
+</plist>

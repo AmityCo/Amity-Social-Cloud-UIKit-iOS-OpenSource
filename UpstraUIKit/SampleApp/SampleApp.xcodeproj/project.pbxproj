@@ -29,6 +29,17 @@
 		729CAF3E273CC8ED000AE162 /* Binding+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 729CAF3D273CC8ED000AE162 /* Binding+Extension.swift */; };
 		729CAF42273CC95B000AE162 /* EndpointManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 729CAF41273CC95B000AE162 /* EndpointManager.swift */; };
 		72AACE0B273931F100E59D55 /* EndpointsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72AACE0A273931F100E59D55 /* EndpointsView.swift */; };
+		7F4653C428C75D8100F0CD91 /* ShareViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F4653C328C75D8100F0CD91 /* ShareViewController.swift */; };
+		7F4653C728C75D8100F0CD91 /* MainInterface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7F4653C528C75D8100F0CD91 /* MainInterface.storyboard */; };
+		7F4653CB28C75D8100F0CD91 /* TrueID-SampleApp-ShareEx.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 7F4653C128C75D8100F0CD91 /* TrueID-SampleApp-ShareEx.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		7F4653D128C75E8400F0CD91 /* AmityUIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7F4653D028C75E8400F0CD91 /* AmityUIKit.framework */; };
+		7F4653D228C75E8400F0CD91 /* AmityUIKit.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 7F4653D028C75E8400F0CD91 /* AmityUIKit.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		7F4653D428C75E8600F0CD91 /* AmitySDK.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = D45D45B726204253008F7C2C /* AmitySDK.xcframework */; };
+		7F4653D528C75E8600F0CD91 /* AmitySDK.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = D45D45B726204253008F7C2C /* AmitySDK.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		7F4653D628C75E9100F0CD91 /* Realm.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = D45B3A93264A840300F6FF52 /* Realm.xcframework */; };
+		7F4653D728C75E9100F0CD91 /* Realm.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = D45B3A93264A840300F6FF52 /* Realm.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		7F50FEB429140AE400C181E3 /* CustomExtensionEventHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F50FEB329140AE400C181E3 /* CustomExtensionEventHandler.swift */; };
+		7F50FEB629140B5300C181E3 /* CustomExtensionEventHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F50FEB329140AE400C181E3 /* CustomExtensionEventHandler.swift */; };
 		7F7704FF27B24F4100600D85 /* ChatFromCommunityViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F7704FE27B24F4100600D85 /* ChatFromCommunityViewController.swift */; };
 		97F101F526A69FBF00AD84A1 /* CustomChannelEventHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97F101F426A69FBF00AD84A1 /* CustomChannelEventHandler.swift */; };
 		A03190A7272169C1008A85DC /* PostCreatorSettingsPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = A03190A6272169C1008A85DC /* PostCreatorSettingsPage.swift */; };
@@ -75,6 +86,13 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		7F4653C928C75D8100F0CD91 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = B78DA46D24BED7D300EE902B /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 7F4653C028C75D8100F0CD91;
+			remoteInfo = "TrueID-SampleApp-ShareEx";
+		};
 		B78DA48C24BED7DA00EE902B /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = B78DA46D24BED7D300EE902B /* Project object */;
@@ -92,6 +110,30 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
+		7F4653CC28C75D8100F0CD91 /* Embed App Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				7F4653CB28C75D8100F0CD91 /* TrueID-SampleApp-ShareEx.appex in Embed App Extensions */,
+			);
+			name = "Embed App Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		7F4653D328C75E8400F0CD91 /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				7F4653D228C75E8400F0CD91 /* AmityUIKit.framework in Embed Frameworks */,
+				7F4653D528C75E8600F0CD91 /* AmitySDK.xcframework in Embed Frameworks */,
+				7F4653D728C75E9100F0CD91 /* Realm.xcframework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		A052EAF42577A6B700FF9312 /* Embed Frameworks */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
@@ -133,6 +175,12 @@
 		729CAF3D273CC8ED000AE162 /* Binding+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Binding+Extension.swift"; sourceTree = "<group>"; };
 		729CAF41273CC95B000AE162 /* EndpointManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EndpointManager.swift; sourceTree = "<group>"; };
 		72AACE0A273931F100E59D55 /* EndpointsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EndpointsView.swift; sourceTree = "<group>"; };
+		7F4653C128C75D8100F0CD91 /* TrueID-SampleApp-ShareEx.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = "TrueID-SampleApp-ShareEx.appex"; sourceTree = BUILT_PRODUCTS_DIR; };
+		7F4653C328C75D8100F0CD91 /* ShareViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareViewController.swift; sourceTree = "<group>"; };
+		7F4653C628C75D8100F0CD91 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/MainInterface.storyboard; sourceTree = "<group>"; };
+		7F4653C828C75D8100F0CD91 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		7F4653D028C75E8400F0CD91 /* AmityUIKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = AmityUIKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		7F50FEB329140AE400C181E3 /* CustomExtensionEventHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomExtensionEventHandler.swift; sourceTree = "<group>"; };
 		7F7704FE27B24F4100600D85 /* ChatFromCommunityViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatFromCommunityViewController.swift; sourceTree = "<group>"; };
 		97F101F426A69FBF00AD84A1 /* CustomChannelEventHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomChannelEventHandler.swift; sourceTree = "<group>"; };
 		A03190A6272169C1008A85DC /* PostCreatorSettingsPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostCreatorSettingsPage.swift; sourceTree = "<group>"; };
@@ -182,6 +230,16 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		7F4653BE28C75D8100F0CD91 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				7F4653D128C75E8400F0CD91 /* AmityUIKit.framework in Frameworks */,
+				7F4653D428C75E8600F0CD91 /* AmitySDK.xcframework in Frameworks */,
+				7F4653D628C75E9100F0CD91 /* Realm.xcframework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		B78DA47224BED7D300EE902B /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -294,6 +352,7 @@
 				721AF3C326088849005BA15F /* CustomEventHandler.swift */,
 				721AF3C926088884005BA15F /* CustomFeedEventHandler.swift */,
 				97F101F426A69FBF00AD84A1 /* CustomChannelEventHandler.swift */,
+				7F50FEB329140AE400C181E3 /* CustomExtensionEventHandler.swift */,
 			);
 			path = EventHandler;
 			sourceTree = "<group>";
@@ -321,6 +380,16 @@
 				729CAF41273CC95B000AE162 /* EndpointManager.swift */,
 			);
 			path = Manager;
+			sourceTree = "<group>";
+		};
+		7F4653C228C75D8100F0CD91 /* TrueID-SampleApp-ShareEx */ = {
+			isa = PBXGroup;
+			children = (
+				7F4653C328C75D8100F0CD91 /* ShareViewController.swift */,
+				7F4653C528C75D8100F0CD91 /* MainInterface.storyboard */,
+				7F4653C828C75D8100F0CD91 /* Info.plist */,
+			);
+			path = "TrueID-SampleApp-ShareEx";
 			sourceTree = "<group>";
 		};
 		A03190A527216946008A85DC /* Post Creator Settings */ = {
@@ -360,6 +429,7 @@
 				B78DA47724BED7D300EE902B /* SampleApp */,
 				B78DA48E24BED7DA00EE902B /* SampleAppTests */,
 				B78DA49924BED7DA00EE902B /* SampleAppUITests */,
+				7F4653C228C75D8100F0CD91 /* TrueID-SampleApp-ShareEx */,
 				B78DA47624BED7D300EE902B /* Products */,
 				B78DA4A824BED83100EE902B /* Frameworks */,
 			);
@@ -371,6 +441,7 @@
 				B78DA47524BED7D300EE902B /* SampleApp.app */,
 				B78DA48B24BED7DA00EE902B /* SampleAppTests.xctest */,
 				B78DA49624BED7DA00EE902B /* SampleAppUITests.xctest */,
+				7F4653C128C75D8100F0CD91 /* TrueID-SampleApp-ShareEx.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -415,6 +486,7 @@
 		B78DA4A824BED83100EE902B /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				7F4653D028C75E8400F0CD91 /* AmityUIKit.framework */,
 				A0BD0B4726DDE0E30054088B /* AmityUIKitLiveStream.framework */,
 				A0BD0B3E26DDE0020054088B /* AmityLiveVideoBroadcastKit.xcframework */,
 				A0BD0B3F26DDE0020054088B /* AmityVideoPlayerKit.xcframework */,
@@ -473,6 +545,24 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		7F4653C028C75D8100F0CD91 /* TrueID-SampleApp-ShareEx */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 7F4653CF28C75D8100F0CD91 /* Build configuration list for PBXNativeTarget "TrueID-SampleApp-ShareEx" */;
+			buildPhases = (
+				7F4653BD28C75D8100F0CD91 /* Sources */,
+				7F4653BE28C75D8100F0CD91 /* Frameworks */,
+				7F4653BF28C75D8100F0CD91 /* Resources */,
+				7F4653D328C75E8400F0CD91 /* Embed Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "TrueID-SampleApp-ShareEx";
+			productName = "TrueID-SampleApp-ShareEx";
+			productReference = 7F4653C128C75D8100F0CD91 /* TrueID-SampleApp-ShareEx.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
 		B78DA47424BED7D300EE902B /* SampleApp */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = B78DA49F24BED7DA00EE902B /* Build configuration list for PBXNativeTarget "SampleApp" */;
@@ -481,10 +571,12 @@
 				B78DA47224BED7D300EE902B /* Frameworks */,
 				B78DA47324BED7D300EE902B /* Resources */,
 				A052EAF42577A6B700FF9312 /* Embed Frameworks */,
+				7F4653CC28C75D8100F0CD91 /* Embed App Extensions */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				7F4653CA28C75D8100F0CD91 /* PBXTargetDependency */,
 			);
 			name = SampleApp;
 			productName = SampleApp;
@@ -533,10 +625,13 @@
 		B78DA46D24BED7D300EE902B /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastSwiftUpdateCheck = 1150;
+				LastSwiftUpdateCheck = 1340;
 				LastUpgradeCheck = 1240;
 				ORGANIZATIONNAME = Eko;
 				TargetAttributes = {
+					7F4653C028C75D8100F0CD91 = {
+						CreatedOnToolsVersion = 13.4.1;
+					};
 					B78DA47424BED7D300EE902B = {
 						CreatedOnToolsVersion = 11.5;
 					};
@@ -566,11 +661,20 @@
 				B78DA47424BED7D300EE902B /* SampleApp */,
 				B78DA48A24BED7DA00EE902B /* SampleAppTests */,
 				B78DA49524BED7DA00EE902B /* SampleAppUITests */,
+				7F4653C028C75D8100F0CD91 /* TrueID-SampleApp-ShareEx */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		7F4653BF28C75D8100F0CD91 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				7F4653C728C75D8100F0CD91 /* MainInterface.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		B78DA47324BED7D300EE902B /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -609,6 +713,15 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		7F4653BD28C75D8100F0CD91 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				7F50FEB629140B5300C181E3 /* CustomExtensionEventHandler.swift in Sources */,
+				7F4653C428C75D8100F0CD91 /* ShareViewController.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		B78DA47124BED7D300EE902B /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -647,6 +760,7 @@
 				B754DBEC24C6F6B5005A8282 /* SettingViewController.swift in Sources */,
 				0D73ACA425DB93A2000D73CA /* ThumbsupPostComponent.swift in Sources */,
 				72AACE0B273931F100E59D55 /* EndpointsView.swift in Sources */,
+				7F50FEB429140AE400C181E3 /* CustomExtensionEventHandler.swift in Sources */,
 				729CAF42273CC95B000AE162 /* EndpointManager.swift in Sources */,
 				721AF3C426088849005BA15F /* CustomEventHandler.swift in Sources */,
 				B78DA4B324BEDBD100EE902B /* ChatFeatureViewController.swift in Sources */,
@@ -672,6 +786,11 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		7F4653CA28C75D8100F0CD91 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 7F4653C028C75D8100F0CD91 /* TrueID-SampleApp-ShareEx */;
+			targetProxy = 7F4653C928C75D8100F0CD91 /* PBXContainerItemProxy */;
+		};
 		B78DA48D24BED7DA00EE902B /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = B78DA47424BED7D300EE902B /* SampleApp */;
@@ -685,6 +804,14 @@
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
+		7F4653C528C75D8100F0CD91 /* MainInterface.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				7F4653C628C75D8100F0CD91 /* Base */,
+			);
+			name = MainInterface.storyboard;
+			sourceTree = "<group>";
+		};
 		B78DA47E24BED7D300EE902B /* Main.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
@@ -704,6 +831,62 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
+		7F4653CD28C75D8100F0CD91 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 37Z583JR6K;
+				"EXCLUDED_ARCHS[sdk=iphonesimulator*]" = arm64;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "TrueID-SampleApp-ShareEx/Info.plist";
+				INFOPLIST_KEY_CFBundleDisplayName = "TrueID-SampleApp-ShareEx";
+				INFOPLIST_KEY_NSHumanReadableCopyright = "Copyright © 2565 BE Eko. All rights reserved.";
+				IPHONEOS_DEPLOYMENT_TARGET = 15.5;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.amity.professional-service-team.TrueID-SampleApp-ShareEx";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		7F4653CE28C75D8100F0CD91 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 37Z583JR6K;
+				"EXCLUDED_ARCHS[sdk=iphonesimulator*]" = arm64;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "TrueID-SampleApp-ShareEx/Info.plist";
+				INFOPLIST_KEY_CFBundleDisplayName = "TrueID-SampleApp-ShareEx";
+				INFOPLIST_KEY_NSHumanReadableCopyright = "Copyright © 2565 BE Eko. All rights reserved.";
+				IPHONEOS_DEPLOYMENT_TARGET = 15.5;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.amity.professional-service-team.TrueID-SampleApp-ShareEx";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
 		B78DA49D24BED7DA00EE902B /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -823,6 +1006,7 @@
 		B78DA4A024BED7DA00EE902B /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = SampleApp/SampleApp.entitlements;
 				CODE_SIGN_STYLE = Automatic;
@@ -851,6 +1035,7 @@
 		B78DA4A124BED7DA00EE902B /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = SampleApp/SampleApp.entitlements;
 				CODE_SIGN_STYLE = Automatic;
@@ -960,6 +1145,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		7F4653CF28C75D8100F0CD91 /* Build configuration list for PBXNativeTarget "TrueID-SampleApp-ShareEx" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				7F4653CD28C75D8100F0CD91 /* Debug */,
+				7F4653CE28C75D8100F0CD91 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		B78DA47024BED7D300EE902B /* Build configuration list for PBXProject "SampleApp" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
