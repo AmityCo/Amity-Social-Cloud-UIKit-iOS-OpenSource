@@ -50,6 +50,7 @@ class CommunityFeatureViewController: UIViewController {
         case selectFromGallery
         case notificationHistory
         case todayNewsFeed
+        case notificationTray
         
         var text: String {
             switch self {
@@ -107,6 +108,8 @@ class CommunityFeatureViewController: UIViewController {
                 return "Notification History"
             case .todayNewsFeed:
                 return "Today NewsFeed"
+            case .notificationTray:
+                return "Notification Tray"
             }
         }
     }
@@ -323,6 +326,11 @@ extension CommunityFeatureViewController: UITableViewDelegate {
         case .todayNewsFeed:
             let vc = TodayNewsFeedViewController.make()
             vc.navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Scroll", style: .plain, target: self, action: #selector(scrollToTop))
+            let navigationController = UINavigationController(rootViewController: vc)
+            navigationController.modalPresentationStyle = .fullScreen
+            present(navigationController, animated: true, completion: nil)
+        case .notificationTray:
+            let vc = NotificationTrayViewController.make()
             let navigationController = UINavigationController(rootViewController: vc)
             navigationController.modalPresentationStyle = .fullScreen
             present(navigationController, animated: true, completion: nil)
