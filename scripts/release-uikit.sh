@@ -53,25 +53,12 @@ cd ${ROOT_FOLDER}
 
 # 2 combine all archive and create .xcframework
 
-# 2.1
-# .xcarchive contains bcsymbolmap of AmitySDK and AmityUIKit.
-# We need to find the one that belong to AmityUIKit.framework
-symbolmapsPath=(${BUILD_FOLDER}/uikit/ios.xcarchive/BCSymbolMaps)
-# Search every files in BCSymbolMaps that contain "AmityUIKit_vers.c" word in the file content .
-upstraSymbolMap=$(find ${symbolmapsPath} -type f -print0 | xargs -0 grep -l "AmityUIKit_vers.c")
- # Rename that file from "random-uuid.bcsymbolmap" into "AmityUIKit.bcsymbolmap"
-mv ${upstraSymbolMap} "${BUILD_FOLDER}/uikit/ios.xcarchive/BCSymbolMaps/AmityUIKit.bcsymbolmap"
-
-# 2.2 Make xcframework.
+# 2.1 Make xcframework.
 xcodebuild -create-xcframework \
     -framework "${BUILD_FOLDER}/uikit/ios.xcarchive/Products/Library/Frameworks/AmityUIKit.framework" \
     -debug-symbols "${BUILD_FOLDER}/uikit/ios.xcarchive/dSYMs/AmityUIKit.framework.dSYM" \
-    -debug-symbols "${BUILD_FOLDER}/uikit/ios.xcarchive/BCSymbolMaps/AmityUIKit.bcsymbolmap" \
     -framework "${BUILD_FOLDER}/uikit/ios_sim.xcarchive/Products/Library/Frameworks/AmityUIKit.framework" \
     -output "${BUILD_FOLDER}/AmityUIKit.xcframework"
-
-
-
 
 ####### Make AmityUIKitLiveStream.xcframework
 
@@ -97,24 +84,12 @@ cd ${ROOT_FOLDER}
 
 # 2 combine all archive and create .xcframework
 
-# 2.1
-# .xcarchive contains bcsymbolmap of frameworks
-# We need to find the one that belong to AmityUIKitLiveStream.framework
-symbolmapsPath=(${BUILD_FOLDER}/uikit-livestream/ios.xcarchive/BCSymbolMaps)
-# Search every files in BCSymbolMaps that contain "AmityUIKitLiveStream_vers.c" word in the file content .
-upstraSymbolMap=$(find ${symbolmapsPath} -type f -print0 | xargs -0 grep -l "AmityUIKitLiveStream_vers.c")
- # Rename that file from "random-uuid.bcsymbolmap" into "AmityUIKitLiveStream.bcsymbolmap"
-mv ${upstraSymbolMap} "${BUILD_FOLDER}/uikit-livestream/ios.xcarchive/BCSymbolMaps/AmityUIKitLiveStream.bcsymbolmap"
-
-# 2.2 Make xcframework.
+# 2.1 Make xcframework.
 xcodebuild -create-xcframework \
     -framework "${BUILD_FOLDER}/uikit-livestream/ios.xcarchive/Products/Library/Frameworks/AmityUIKitLiveStream.framework" \
     -debug-symbols "${BUILD_FOLDER}/uikit-livestream/ios.xcarchive/dSYMs/AmityUIKitLiveStream.framework.dSYM" \
-    -debug-symbols "${BUILD_FOLDER}/uikit-livestream/ios.xcarchive/BCSymbolMaps/AmityUIKitLiveStream.bcsymbolmap" \
     -framework "${BUILD_FOLDER}/uikit-livestream/ios_sim.xcarchive/Products/Library/Frameworks/AmityUIKitLiveStream.framework" \
     -output "${BUILD_FOLDER}/AmityUIKitLiveStream.xcframework"
-
-
 
 ####### Make amity-uikit.zip
 
