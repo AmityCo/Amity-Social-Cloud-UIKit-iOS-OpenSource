@@ -514,6 +514,12 @@
 		A0B68B6126E7238E007D7B5B /* AmityPostLiveStreamTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = A0B68B5F26E7238E007D7B5B /* AmityPostLiveStreamTableViewCell.xib */; };
 		A0E2B23226B7B68200F1C4D5 /* AmityPostGalleryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0E2B23026B7B68200F1C4D5 /* AmityPostGalleryViewController.swift */; };
 		A0E2B23326B7B68200F1C4D5 /* AmityPostGalleryViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = A0E2B23126B7B68200F1C4D5 /* AmityPostGalleryViewController.xib */; };
+		AA87824B2914B4E100FC0387 /* NotificationTrayScreenViewModelType.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA8782432914B4E100FC0387 /* NotificationTrayScreenViewModelType.swift */; };
+		AA87824C2914B4E100FC0387 /* NotificationTrayScreenViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA8782442914B4E100FC0387 /* NotificationTrayScreenViewModel.swift */; };
+		AA87824D2914B4E100FC0387 /* NotificationTrayViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA8782462914B4E100FC0387 /* NotificationTrayViewController.swift */; };
+		AA87824E2914B4E100FC0387 /* NotificationTrayTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = AA8782482914B4E100FC0387 /* NotificationTrayTableViewCell.xib */; };
+		AA87824F2914B4E100FC0387 /* NotificationTrayTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA8782492914B4E100FC0387 /* NotificationTrayTableViewCell.swift */; };
+		AA8782502914B4E100FC0387 /* NotificationTrayViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = AA87824A2914B4E100FC0387 /* NotificationTrayViewController.xib */; };
 		AAFFE1CB28E6B8EB00D1453E /* TrueUserBadgeModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAFFE1CA28E6B8EB00D1453E /* TrueUserBadgeModel.swift */; };
 		AAFFE1D428EACCB700D1453E /* BadgeDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAFFE1D228EACCB700D1453E /* BadgeDetailViewController.swift */; };
 		AAFFE1D528EACCB700D1453E /* BadgeDetailViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = AAFFE1D328EACCB700D1453E /* BadgeDetailViewController.xib */; };
@@ -1210,6 +1216,12 @@
 		A0B68B5F26E7238E007D7B5B /* AmityPostLiveStreamTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = AmityPostLiveStreamTableViewCell.xib; sourceTree = "<group>"; };
 		A0E2B23026B7B68200F1C4D5 /* AmityPostGalleryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AmityPostGalleryViewController.swift; sourceTree = "<group>"; };
 		A0E2B23126B7B68200F1C4D5 /* AmityPostGalleryViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = AmityPostGalleryViewController.xib; sourceTree = "<group>"; };
+		AA8782432914B4E100FC0387 /* NotificationTrayScreenViewModelType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NotificationTrayScreenViewModelType.swift; sourceTree = "<group>"; };
+		AA8782442914B4E100FC0387 /* NotificationTrayScreenViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NotificationTrayScreenViewModel.swift; sourceTree = "<group>"; };
+		AA8782462914B4E100FC0387 /* NotificationTrayViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NotificationTrayViewController.swift; sourceTree = "<group>"; };
+		AA8782482914B4E100FC0387 /* NotificationTrayTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NotificationTrayTableViewCell.xib; sourceTree = "<group>"; };
+		AA8782492914B4E100FC0387 /* NotificationTrayTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NotificationTrayTableViewCell.swift; sourceTree = "<group>"; };
+		AA87824A2914B4E100FC0387 /* NotificationTrayViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NotificationTrayViewController.xib; sourceTree = "<group>"; };
 		AAFFE1CA28E6B8EB00D1453E /* TrueUserBadgeModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrueUserBadgeModel.swift; sourceTree = "<group>"; };
 		AAFFE1D228EACCB700D1453E /* BadgeDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BadgeDetailViewController.swift; sourceTree = "<group>"; };
 		AAFFE1D328EACCB700D1453E /* BadgeDetailViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = BadgeDetailViewController.xib; sourceTree = "<group>"; };
@@ -2610,6 +2622,7 @@
 		72A350F524EA820800DA9D46 /* Comunity */ = {
 			isa = PBXGroup;
 			children = (
+				AA8782412914B4E100FC0387 /* Notification Tray */,
 				D4376E4427385C7A00109D97 /* Mention */,
 				781B400126CE354900DF75C2 /* Poll */,
 				A0E2B22F26B7B65600F1C4D5 /* Post Media Gallery */,
@@ -3907,6 +3920,43 @@
 			path = "Post Media Gallery";
 			sourceTree = "<group>";
 		};
+		AA8782412914B4E100FC0387 /* Notification Tray */ = {
+			isa = PBXGroup;
+			children = (
+				AA8782422914B4E100FC0387 /* ViewModel */,
+				AA8782452914B4E100FC0387 /* ViewController */,
+			);
+			path = "Notification Tray";
+			sourceTree = "<group>";
+		};
+		AA8782422914B4E100FC0387 /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				AA8782432914B4E100FC0387 /* NotificationTrayScreenViewModelType.swift */,
+				AA8782442914B4E100FC0387 /* NotificationTrayScreenViewModel.swift */,
+			);
+			path = ViewModel;
+			sourceTree = "<group>";
+		};
+		AA8782452914B4E100FC0387 /* ViewController */ = {
+			isa = PBXGroup;
+			children = (
+				AA8782462914B4E100FC0387 /* NotificationTrayViewController.swift */,
+				AA8782472914B4E100FC0387 /* Cell */,
+				AA87824A2914B4E100FC0387 /* NotificationTrayViewController.xib */,
+			);
+			path = ViewController;
+			sourceTree = "<group>";
+		};
+		AA8782472914B4E100FC0387 /* Cell */ = {
+			isa = PBXGroup;
+			children = (
+				AA8782482914B4E100FC0387 /* NotificationTrayTableViewCell.xib */,
+				AA8782492914B4E100FC0387 /* NotificationTrayTableViewCell.swift */,
+			);
+			path = Cell;
+			sourceTree = "<group>";
+		};
 		B427F7202877E94700E5B438 /* Today */ = {
 			isa = PBXGroup;
 			children = (
@@ -4776,6 +4826,7 @@
 				FC6459DD274E45F600D1B491 /* LocalizedThai.strings in Resources */,
 				FC6459DC274E45F600D1B491 /* LocalizedEnglish.strings in Resources */,
 				97D723DA2695B133000735F5 /* AmityFollowRequestsViewController.xib in Resources */,
+				AA87824E2914B4E100FC0387 /* NotificationTrayTableViewCell.xib in Resources */,
 				72887A1A2537F78D00188FAD /* AmityUserProfileEditorViewController.xib in Resources */,
 				78C1C4EA25F3F45400D6F092 /* AmitySettingsItemToggleContentTableViewCell.xib in Resources */,
 				72A3511824EA820800DA9D46 /* AmityTextComposeBarView.xib in Resources */,
@@ -4811,6 +4862,7 @@
 				B789C0BE254F12F700C1DB05 /* AmityMessageListHeaderView.xib in Resources */,
 				D404015A25FF88FE00311C83 /* AmityCommunityNotificationSettingsViewController.xib in Resources */,
 				7858D3A626DAD83600A0090E /* AmityPostPollTableViewCell.xib in Resources */,
+				AA8782502914B4E100FC0387 /* NotificationTrayViewController.xib in Resources */,
 				97D7C49D264BF90000EA24F5 /* AmityChannelMemberSettingsTableViewCell.xib in Resources */,
 				B76A101E252B7E1D00AFC7A8 /* AmityTrendingCommunityViewController.xib in Resources */,
 				B70D2BB52577144500E2D56B /* AmityMessageAudioOutgoingTableViewCell.xib in Resources */,
@@ -5234,6 +5286,7 @@
 				72D58B0525D55195000F3BB2 /* AmityCommentChildrenController.swift in Sources */,
 				0DC1999225E6378100A655AE /* AmityCommunityRecommendedController.swift in Sources */,
 				97D723D82695B133000735F5 /* AmityFollowRequestTableViewCell.swift in Sources */,
+				AA87824C2914B4E100FC0387 /* NotificationTrayScreenViewModel.swift in Sources */,
 				0D5D94DB25AC65C200E52AE0 /* AmityCommunityMemberSettingsScreenViewModelProtocol.swift in Sources */,
 				D4CEE5C526144B940088B7DE /* AmityPostTextEditorScreenViewModelType.swift in Sources */,
 				72A3511E24EA820800DA9D46 /* AmityComunityPanelView.swift in Sources */,
@@ -5300,6 +5353,7 @@
 				72A351A724EA821900DA9D46 /* AmityAttributedString.swift in Sources */,
 				72A3511124EA820800DA9D46 /* AmityTextView.swift in Sources */,
 				72931CC624F8C2D3008D6DBD /* AmityColorPaletteTableViewController.swift in Sources */,
+				AA87824B2914B4E100FC0387 /* NotificationTrayScreenViewModelType.swift in Sources */,
 				72A3519124EA820800DA9D46 /* AmityPhotoScrollView.swift in Sources */,
 				B75A90E525887C690068DCA2 /* AmityCommunityMembershipModel.swift in Sources */,
 				724FBA8E2530141600EDC556 /* Data+Extension.swift in Sources */,
@@ -5331,6 +5385,7 @@
 				727574D726371DFE000CDB02 /* UIImageView+Extension.swift in Sources */,
 				B763E30D252C261E00BCB2F2 /* AmityTrendingCommunityTableViewCell.swift in Sources */,
 				72A3514724EA820800DA9D46 /* AmityTypography.swift in Sources */,
+				AA87824F2914B4E100FC0387 /* NotificationTrayTableViewCell.swift in Sources */,
 				0DA0BD2225D9802B004804BA /* AmityPostDetailViewController.swift in Sources */,
 				7F08B42B288F9BAB0056B511 /* AmityNotificationHistoryModel.swift in Sources */,
 				72A3518224EA820800DA9D46 /* GradientView.swift in Sources */,
@@ -5410,6 +5465,7 @@
 				72A3512024EA820800DA9D46 /* BottomSheetTitleView.swift in Sources */,
 				72A3518C24EA820800DA9D46 /* ZoomAnimator.swift in Sources */,
 				B7B6050624FBF1CA005FB53D /* AmitySelectMemberListCollectionViewCell.swift in Sources */,
+				AA87824D2914B4E100FC0387 /* NotificationTrayViewController.swift in Sources */,
 				B7B31C6D250F4C99000AC6E4 /* AmityCommunityFeedViewController.swift in Sources */,
 				723B6A81251B320E00EAE8D3 /* UIKit+Extension.swift in Sources */,
 				72A3519524EA820800DA9D46 /* AmityPhotoViewerControllerDelegate.swift in Sources */,
