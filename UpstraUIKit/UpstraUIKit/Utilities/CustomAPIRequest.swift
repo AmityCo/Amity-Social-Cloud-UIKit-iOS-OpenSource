@@ -202,7 +202,7 @@ final class customAPIRequest {
         }
         
         //Original
-        let url = URL(string: "https://cpvp6wy03k.execute-api.ap-southeast-1.amazonaws.com/newsfeed/getNewsfeedNoUCG?region=\(region)")!
+        let url = URL(string: "https://cpvp6wy03k.execute-api.ap-southeast-1.amazonaws.com/discovery/getPopularFeed?region=\(region)")!
         //New Endpoint
 //        let url = URL(string: "https://9g5o0eiyh9.execute-api.ap-southeast-1.amazonaws.com/newsfeed/getNewsfeedNoUCG?region=\(region)")!
         
@@ -236,53 +236,6 @@ final class customAPIRequest {
             print("Popular feed: \(tempData)")
             completion(tempData)
         }
-        task.resume()
-    }
-    
-    static func getNotificationHistory(completion: @escaping(_ postArray: NotificationHistory?) -> () ) {
-        var urlString = ""
-        
-        switch AmityUIKitManagerInternal.shared.envByApiKey {
-        case .staging:
-            urlString = "https://staging.amity.services/notifications/history"
-        default:
-            urlString = "https://beta.amity.services/notifications/history"
-        }
-        
-        let url = URL(string: urlString)!
-        
-        var tempData: NotificationHistory?
-        
-        let userToken = AmityUIKitManagerInternal.shared.currentUserToken
-        
-        var request = URLRequest(url: url)
-        request.httpMethod = "GET"
-        request.allHTTPHeaderFields = [
-            "Content-Type" : "application/json",
-            "Authorization" : "Bearer \(userToken)"
-        ]
-        
-        //Get Request
-        let task = URLSession.shared.dataTask(with: request) { data, response, error in
-            guard let data = data, error == nil else {
-                print(error?.localizedDescription ?? "No data.")
-                return
-            }
-            do {
-                let jsonResponse = try? JSONSerialization.jsonObject(with: data, options: [])
-                print("Noti History JSon: \(jsonResponse)")
-                guard let jsonDecode = try? JSONDecoder().decode(NotificationHistory.self, from: data) else {
-                    completion(tempData)
-                    return
-                }
-                tempData = jsonDecode
-            } catch let response {
-                print("Error: \(response)")
-            }
-            
-            completion(tempData)
-        }
-        
         task.resume()
     }
     
@@ -352,6 +305,131 @@ final class customAPIRequest {
             }
             
             completion(.success(tempData))
+        }
+        
+        task.resume()
+    }
+    
+    static func getNotificationHistory(completion: @escaping(_ postArray: NotificationHistory?) -> () ) {
+        var urlString = ""
+        
+        switch AmityUIKitManagerInternal.shared.envByApiKey {
+        case .staging:
+            urlString = "https://staging.amity.services/notifications/history"
+        default:
+            urlString = "https://beta.amity.services/notifications/history"
+        }
+        
+        let url = URL(string: urlString)!
+        
+        var tempData: NotificationHistory?
+        
+        let userToken = AmityUIKitManagerInternal.shared.currentUserToken
+        
+        var request = URLRequest(url: url)
+        request.httpMethod = "GET"
+        request.allHTTPHeaderFields = [
+            "Content-Type" : "application/json",
+            "Authorization" : "Bearer \(userToken)"
+        ]
+        
+        //Get Request
+        let task = URLSession.shared.dataTask(with: request) { data, response, error in
+            guard let data = data, error == nil else {
+                print(error?.localizedDescription ?? "No data.")
+                return
+            }
+            do {
+                let jsonResponse = try? JSONSerialization.jsonObject(with: data, options: [])
+                print("Noti History JSon: \(jsonResponse)")
+                guard let jsonDecode = try? JSONDecoder().decode(NotificationHistory.self, from: data) else {
+                    completion(tempData)
+                    return
+                }
+                tempData = jsonDecode
+            } catch let response {
+                print("Error: \(response)")
+            }
+            
+            completion(tempData)
+        }
+        
+        task.resume()
+    }
+    
+    static func updateHasReadTray(completion: @escaping(_ value: String) -> () ) {
+        
+        var urlString = ""
+        
+        switch AmityUIKitManagerInternal.shared.envByApiKey {
+        case .staging:
+            urlString = "https://staging.amity.services/notifications/last-read"
+        default:
+            urlString = "https://beta.amity.services/notifications/last-read"
+        }
+        let url = URL(string: urlString)!
+                
+        let userToken = AmityUIKitManagerInternal.shared.currentUserToken
+
+        var request = URLRequest(url: url)
+        request.httpMethod = "POST"
+        request.allHTTPHeaderFields = [
+            "Content-Type" : "application/json",
+            "Authorization" : "Bearer \(userToken)"
+        ]
+        
+        let task = URLSession.shared.dataTask(with: request) { data, response, error in
+            
+            guard let data = data, error == nil else {
+                print(error?.localizedDescription ?? "No data.")
+                completion(error?.localizedDescription ?? "No data.")
+                return
+            }
+
+            guard let jsonDecode = try? JSONDecoder().decode(String.self, from: data) else { return }
+            completion("Success")
+        }
+        
+        task.resume()
+    }
+    
+    static func updateHasReadItem(verb: String, targetId: String, targetGroup: String, completion: @escaping(_ value: String) -> () ) {
+        
+        var urlString = ""
+        
+        switch AmityUIKitManagerInternal.shared.envByApiKey {
+        case .staging:
+            urlString = "https://staging.amity.services/notifications/read"
+        default:
+            urlString = "https://beta.amity.services/notifications/read"
+        }
+        let url = URL(string: urlString)!
+        let userToken = AmityUIKitManagerInternal.shared.currentUserToken
+        
+        let params: [String:Any?] = [
+            "verb": verb,
+            "targetId": targetId,
+            "targetGroup": targetGroup
+        ]
+        
+        var request = URLRequest(url: url)
+        request.httpMethod = "POST"
+        request.allHTTPHeaderFields = [
+            "Content-Type" : "application/json",
+            "Authorization" : "Bearer \(userToken)"
+        ]
+        request.httpBody = try? JSONSerialization.data(withJSONObject: params, options: [])
+        
+        let task = URLSession.shared.dataTask(with: request) { data, response, error in
+            
+            guard let data = data, error == nil else {
+                print(error?.localizedDescription ?? "No data.")
+                completion(error?.localizedDescription ?? "No data.")
+                return
+            }
+
+            guard let jsonDecode = try? JSONDecoder().decode(String.self, from: data) else { return }
+            completion("Success")
         }
         
         task.resume()

@@ -15,11 +15,11 @@ public struct NotificationHistory: Decodable {
 }
 
 public struct LastReadData: Decodable {
-    public var ch_uid: String?
+    public var netid_uid: String?
     public var lastReadDate: Int?
     
     enum CodingKeys: String, CodingKey {
-        case ch_uid = "ch_uid"
+        case netid_uid = "netid_uid"
         case lastReadDate = "lastReadDate"
     }
 }
@@ -30,12 +30,15 @@ public struct NotificationModel: Decodable {
     public var userId: String?
     public var verb: String?
     public var targetId: String?
+    public var targetGroup: String?
     public var imageUrl: String?
+    public var customImageUrl: String?
     public var targetType: String?
     public var hasRead: Bool?
     public var lastUpdate: Int?
     public var actors: [actorModel]?
     public var actorsCount: Int?
+    public var communityName: String?
     
     enum CodingKeys: String, CodingKey {
         case description = "description"
@@ -43,12 +46,15 @@ public struct NotificationModel: Decodable {
         case userId = "userId"
         case verb = "verb"
         case targetId = "targetId"
+        case targetGroup = "targetGroup"
         case imageUrl = "imageUrl"
+        case customImageUrl = "customImageUrl"
         case targetType = "targetType"
         case hasRead = "hasRead"
         case lastUpdate = "lastUpdate"
         case actors = "actors"
         case actorsCount = "actorsCount"
+        case communityName = "communityName"
     }
 }
 
