@@ -622,8 +622,13 @@ extension LiveStreamBroadcastViewController: AmityTextViewDelegate {
     public func textViewDidChange(_ textView: AmityTextView) {
         if textView == commentTextView {
             let contentSize = textView.sizeThatFits(textView.bounds.size)
-            commentTextViewHeight.constant = contentSize.height
-            liveCommentViewHeightConstraint.constant = 70+contentSize.height-36
+            if contentSize.height < 70 {
+                commentTextViewHeight.constant = contentSize.height
+                liveCommentViewHeightConstraint.constant = 70+contentSize.height-36
+                textView.isScrollEnabled = false
+            } else {
+                textView.isScrollEnabled = true
+            }
         }
     }
 }
@@ -802,7 +807,7 @@ extension LiveStreamBroadcastViewController {
         if commentTextView.text != "" || commentTextView.text == nil {
             guard let currentText = commentTextView.text else { return }
             self.commentTextView.text = ""
-            liveCommentToken = commentRepository.createComment(forReferenceId: currentPost.postId, referenceType: .post, parentId: currentPost.parentPostId, text: currentText).observeOnce { liveObject, error in
+            liveCommentToken = commentRepository.createComment(forReferenceId: currentPost.postId, referenceType: .post, parentId: currentPost.parentPostId, text: currentText).observe { liveObject, error in
                 if error != nil {
                     print("[LiveStream]Comment error: \(error?.localizedDescription)")
                 }
