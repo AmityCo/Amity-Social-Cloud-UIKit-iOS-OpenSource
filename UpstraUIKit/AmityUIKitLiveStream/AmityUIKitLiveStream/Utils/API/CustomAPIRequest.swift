@@ -11,7 +11,7 @@ final class customAPIRequest {
     
     static func getLiveStreamViewerData(page_number: Int, liveStreamId: String, type: String, completion: @escaping(_ value: StreamViewerDataModel) -> () ) {
         
-        let url = URL(string: "https://qojeq6vaa8.execute-api.ap-southeast-1.amazonaws.com/getStreamViewer?liveStreamId=\(liveStreamId)&page=\(page_number)&type=\(type)")!
+        let url = URL(string: "https://cpvp6wy03k.execute-api.ap-southeast-1.amazonaws.com/getStreamViewer?liveStreamId=\(liveStreamId)&page=\(page_number)&type=\(type)")!
         
         var tempData: StreamViewerDataModel = StreamViewerDataModel(count: 0, maxPage: 1, viewer: [])
         
@@ -42,7 +42,7 @@ final class customAPIRequest {
     
     static func saveLiveStreamViewerData(postId: String, liveStreamId: String, userId: String, action: String, completion: @escaping(_ value: String) -> () ) {
         
-        let url = URL(string: "https://qojeq6vaa8.execute-api.ap-southeast-1.amazonaws.com/saveStreamViewer")!
+        let url = URL(string: "https://cpvp6wy03k.execute-api.ap-southeast-1.amazonaws.com/saveStreamViewer")!
         
         let params: [String:Any?] = [
             "postId": postId,
