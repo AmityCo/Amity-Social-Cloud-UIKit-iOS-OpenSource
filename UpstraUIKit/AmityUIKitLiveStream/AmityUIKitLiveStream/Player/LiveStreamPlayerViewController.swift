@@ -10,7 +10,7 @@ import AmityUIKit
 import AmitySDK
 import AmityVideoPlayerKit
 
-public class LiveStreamPlayerViewController: UIViewController {
+public class LiveStreamPlayerViewController: AmityViewController {
     
     private let streamIdToWatch: String
     private var streamRepository: AmityStreamRepository
@@ -649,6 +649,7 @@ extension LiveStreamPlayerViewController: UITableViewDataSource {
     public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: LiveStreamBroadcastOverlayTableViewCell.identifier) as? LiveStreamBroadcastOverlayTableViewCell else { return UITableViewCell() }
         cell.display(comment: storedComment[indexPath.row])
+        cell.delegate = self
         return cell
     }
 }
@@ -731,4 +732,11 @@ extension LiveStreamPlayerViewController {
             return
         }
     }
+}
+
+extension LiveStreamPlayerViewController: LiveStreamBroadcastOverlayProtocol {
+    func didBadgeTap(userBadge: UserBadge.BadgeProfile) {
+        AmityEventHandler.shared.roleDidTap(fromLiveStream: self, userBadge: userBadge)
+    }
+    
 }

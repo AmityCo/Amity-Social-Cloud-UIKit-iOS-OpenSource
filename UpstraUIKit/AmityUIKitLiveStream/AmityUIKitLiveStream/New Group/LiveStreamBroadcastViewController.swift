@@ -703,6 +703,7 @@ extension LiveStreamBroadcastViewController: UITableViewDataSource {
         if tableView == commentTableView {
             guard let cell = tableView.dequeueReusableCell(withIdentifier: LiveStreamBroadcastOverlayTableViewCell.identifier) as? LiveStreamBroadcastOverlayTableViewCell else { return UITableViewCell() }
             cell.display(comment: storedComment[indexPath.row])
+            cell.delegate = self
             return cell
         }
         guard let cell = tableView.dequeueReusableCell(withIdentifier: AmityMentionTableViewCell.identifier) as? AmityMentionTableViewCell else { return UITableViewCell() }
@@ -879,7 +880,7 @@ extension Int {
 
 extension LiveStreamBroadcastViewController: LiveStreamBroadcastOverlayProtocol {
     func didBadgeTap(userBadge: UserBadge.BadgeProfile) {
-        AmityEventHandler.shared.roleDidTap(from: self, userBadge: userBadge)
+        AmityEventHandler.shared.roleDidTap(fromLiveStream: self, userBadge: userBadge)
     }
     
 }
