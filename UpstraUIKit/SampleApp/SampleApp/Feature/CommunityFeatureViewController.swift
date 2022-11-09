@@ -330,10 +330,24 @@ extension CommunityFeatureViewController: UITableViewDelegate {
             navigationController.modalPresentationStyle = .fullScreen
             present(navigationController, animated: true, completion: nil)
         case .notificationTray:
-            let vc = NotificationTrayViewController.make()
-            let navigationController = UINavigationController(rootViewController: vc)
-            navigationController.modalPresentationStyle = .fullScreen
-            present(navigationController, animated: true, completion: nil)
+            var unreadCount = 0
+            
+            AmityEventHandler.shared.getNotiCountFromAPI{ result in
+                switch result {
+                case .success(let count):
+                    unreadCount = count
+                case .failure(let error):
+                    print(error.localizedDescription)
+                }
+            }
+            
+            DispatchQueue.main.async {
+                let vc = NotificationTrayViewController.make()
+                vc.navigationItem.rightBarButtonItem = UIBarButtonItem(title: "\(unreadCount)", style: .plain, target: self, action: nil)
+                let navigationController = UINavigationController(rootViewController: vc)
+                navigationController.modalPresentationStyle = .fullScreen
+                self.present(navigationController, animated: true, completion: nil)
+            }
         }
         
     }

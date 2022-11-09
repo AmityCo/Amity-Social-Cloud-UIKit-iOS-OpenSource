@@ -12,6 +12,12 @@ public struct NotificationHistory: Decodable {
     public var lastRecordDate: Int?
     public var lastRead: LastReadData?
     public var data: [NotificationModel]?
+    
+    enum CodingKeys: String, CodingKey {
+        case lastRecordDate = "lastRecordDate"
+        case lastRead = "lastRead"
+        case data = "data"
+    }
 }
 
 public struct LastReadData: Decodable {
@@ -65,5 +71,22 @@ public struct actorModel: Decodable {
     enum CodingKeys: String, CodingKey {
         case name = "name"
         case id = "id"
+    }
+}
+
+// MARK: - Notification Unread Count
+public struct NotificationUnreadCount: Codable {
+    let data: DataClass
+    
+    enum CodingKeys: String, CodingKey {
+        case data = "data"
+    }
+}
+
+public struct DataClass: Codable {
+    let totalUnreadCount: Int
+    
+    enum CodingKeys: String, CodingKey {
+        case totalUnreadCount = "totalUnreadCount"
     }
 }

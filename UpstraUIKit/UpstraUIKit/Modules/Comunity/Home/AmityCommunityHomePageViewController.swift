@@ -61,7 +61,7 @@ public class AmityCommunityHomePageViewController: AmityProfileBottomViewControl
     public override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         runDeeplinksRouter()
-        getChatBadge()
+//        getChatBadge()
     }
    
     public static func make(amityCommunityEventType: AmityCommunityEventTypeModel? = nil) -> AmityCommunityHomePageViewController {
