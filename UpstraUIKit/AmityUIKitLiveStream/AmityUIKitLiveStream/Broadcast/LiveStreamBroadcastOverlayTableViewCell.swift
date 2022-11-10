@@ -32,16 +32,30 @@ class LiveStreamBroadcastOverlayTableViewCell: UITableViewCell,Nibbable {
         super.awakeFromNib()
         // Initialization code
         setupRole()
+        setupCell()
     }
-
-    func display(comment: AmityCommentModel){
-        
+    
+    func setupCell() {
         self.backgroundColor = .clear
         
         commentView.backgroundColor = UIColor(hex: "#808080", alpha: 0.3)
         commentView.layer.cornerRadius = 10
         
         avatarView.backgroundColor = .clear
+        
+        displayNameLabel.font = AmityFontSet.headerLine.withSize(16)
+        displayNameLabel.textColor = .white
+        displayNameLabel.backgroundColor = .clear
+        
+        commentLabel.font = AmityFontSet.caption.withSize(14)
+        commentLabel.backgroundColor = .clear
+        commentLabel.numberOfLines = 0
+        commentLabel.lineBreakMode = .byTruncatingTail
+        commentLabel.sizeToFit()
+        commentLabel.textColor = .white
+    }
+
+    func display(comment: AmityCommentModel){
         
         if !comment.avatarCustomURL.isEmpty {
             avatarView.setImage(withCustomURL: comment.avatarCustomURL)
@@ -50,17 +64,9 @@ class LiveStreamBroadcastOverlayTableViewCell: UITableViewCell,Nibbable {
         }
         
         displayNameLabel.text = comment.displayName
-        displayNameLabel.font = AmityFontSet.headerLine.withSize(16)
-        displayNameLabel.textColor = .white
-        displayNameLabel.backgroundColor = .clear
+        
         
         commentLabel.text = comment.text
-        commentLabel.font = AmityFontSet.caption.withSize(14)
-        commentLabel.backgroundColor = .clear
-        commentLabel.numberOfLines = 0
-        commentLabel.lineBreakMode = .byTruncatingTail
-        commentLabel.sizeToFit()
-        commentLabel.textColor = .white
         
         roleImageView.isHidden = true
         

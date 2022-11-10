@@ -220,7 +220,7 @@ to watch shortly.</string>
                     </constraints>
                 </view>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="vhx-J6-EZs" userLabel="Like Comment View">
-                    <rect key="frame" x="0.0" y="629" width="414" height="250"/>
+                    <rect key="frame" x="0.0" y="529" width="414" height="350"/>
                     <subviews>
                         <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="PHY-KD-fhp" userLabel="Like Count">
                             <rect key="frame" x="186" y="114" width="42" height="21"/>
@@ -230,14 +230,14 @@ to watch shortly.</string>
                             <nil key="highlightedColor"/>
                         </label>
                         <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="NcS-Ka-yRI" userLabel="Comment TableView">
-                            <rect key="frame" x="15" y="-100" width="328" height="270"/>
+                            <rect key="frame" x="15" y="0.0" width="328" height="270"/>
                             <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="270" id="Vss-cx-0zn"/>
                             </constraints>
                         </tableView>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="aNk-S4-LvX" userLabel="Hide Button">
-                            <rect key="frame" x="353" y="134" width="36" height="36"/>
+                            <rect key="frame" x="353" y="234" width="36" height="36"/>
                             <constraints>
                                 <constraint firstAttribute="width" constant="36" id="Ot5-57-JiM"/>
                                 <constraint firstAttribute="height" constant="36" id="Tfz-MV-tg1"/>
@@ -249,7 +249,7 @@ to watch shortly.</string>
                             </connections>
                         </button>
                         <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ycJ-61-eqc" userLabel="Show Button">
-                            <rect key="frame" x="353" y="134" width="36" height="36"/>
+                            <rect key="frame" x="353" y="234" width="36" height="36"/>
                             <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
                             <state key="normal" image="livestream_show_comment">
                                 <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -259,7 +259,7 @@ to watch shortly.</string>
                             </connections>
                         </button>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="rMN-jh-cKQ" userLabel="Live comment view">
-                            <rect key="frame" x="0.0" y="180" width="414" height="70"/>
+                            <rect key="frame" x="0.0" y="280" width="414" height="70"/>
                             <subviews>
                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="guv-EO-DGA" userLabel="Share Button">
                                     <rect key="frame" x="15" y="17" width="36" height="36"/>
@@ -336,7 +336,7 @@ to watch shortly.</string>
                         <constraint firstAttribute="trailing" secondItem="rMN-jh-cKQ" secondAttribute="trailing" id="9tB-Dl-XXD"/>
                         <constraint firstItem="ycJ-61-eqc" firstAttribute="centerX" secondItem="aNk-S4-LvX" secondAttribute="centerX" id="DOV-0s-JqY"/>
                         <constraint firstItem="aNk-S4-LvX" firstAttribute="leading" secondItem="NcS-Ka-yRI" secondAttribute="trailing" constant="10" id="EqQ-sa-dfE"/>
-                        <constraint firstAttribute="height" constant="250" id="NaD-wR-qzG"/>
+                        <constraint firstAttribute="height" constant="350" id="NaD-wR-qzG"/>
                         <constraint firstItem="rMN-jh-cKQ" firstAttribute="leading" secondItem="vhx-J6-EZs" secondAttribute="leading" id="O3A-4n-ERo"/>
                         <constraint firstItem="ycJ-61-eqc" firstAttribute="height" secondItem="aNk-S4-LvX" secondAttribute="height" id="OZj-oW-YTF"/>
                         <constraint firstItem="aNk-S4-LvX" firstAttribute="bottom" secondItem="NcS-Ka-yRI" secondAttribute="bottom" id="Rj2-wg-SAS"/>
