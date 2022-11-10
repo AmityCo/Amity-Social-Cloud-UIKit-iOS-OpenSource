@@ -634,8 +634,13 @@ extension LiveStreamPlayerViewController: AmityTextViewDelegate {
     public func textViewDidChange(_ textView: AmityTextView) {
         if textView == commentTextView {
             let contentSize = textView.sizeThatFits(textView.bounds.size)
-            commentTextViewHeight.constant = contentSize.height
-            liveCommentViewHeightConstraint.constant = 70+contentSize.height-36
+            if contentSize.height < 70 {
+                commentTextViewHeight.constant = contentSize.height
+                liveCommentViewHeightConstraint.constant = 70+contentSize.height-36
+                textView.isScrollEnabled = false
+            } else {
+                textView.isScrollEnabled = true
+            }
         }
     }
 }
