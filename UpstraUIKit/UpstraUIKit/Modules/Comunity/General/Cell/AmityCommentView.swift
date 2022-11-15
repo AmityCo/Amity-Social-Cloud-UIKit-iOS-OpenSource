@@ -68,7 +68,7 @@ class AmityCommentView: AmityView {
         timeLabel.font = AmityFontSet.caption
         contentLabel.textColor = AmityColorSet.base
         contentLabel.font = AmityFontSet.body
-        contentLabel.numberOfLines = 8
+        contentLabel.numberOfLines = 2
         separatorLineView.backgroundColor  = AmityColorSet.secondary.blend(.shade4)
         labelContainerView.backgroundColor = AmityColorSet.base.blend(.shade4)
         labelContainerView.layer.cornerRadius = 12

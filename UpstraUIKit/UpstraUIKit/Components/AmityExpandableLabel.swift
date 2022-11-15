@@ -346,7 +346,7 @@ extension AmityExpandableLabel {
 
     private func getCollapsedText(for text: NSAttributedString?, link: NSAttributedString) -> NSAttributedString? {
         guard let text = text else { return nil }
-        let lines = text.lines(for: preferredMaxLayoutWidth > 0 ? preferredMaxLayoutWidth : frame.size.width)
+        let lines = text.lines(for: preferredMaxLayoutWidth > 0 ? preferredMaxLayoutWidth : UIScreen.main.bounds.width)
         if collapsedNumberOfLines > 0 && collapsedNumberOfLines < lines.count {
             let lastLineRef = lines[collapsedNumberOfLines-1] as CTLine
             var lineIndex: LineIndexTuple?
