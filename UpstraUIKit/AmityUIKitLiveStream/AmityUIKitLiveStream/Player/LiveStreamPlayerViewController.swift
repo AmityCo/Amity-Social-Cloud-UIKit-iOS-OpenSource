@@ -48,6 +48,7 @@ public class LiveStreamPlayerViewController: AmityViewController {
     @IBOutlet private weak var commentTextView: AmityTextView!
     @IBOutlet private weak var commentTextViewHeight: NSLayoutConstraint!
     @IBOutlet private weak var postCommentButton: UIButton!
+    @IBOutlet private weak var chatButton: UIButton!
     @IBOutlet private weak var hideCommentButton: UIButton!
     @IBOutlet private weak var showCommentButton: UIButton!
     @IBOutlet private weak var likeCommentViewBottomConstraint: NSLayoutConstraint!
@@ -211,6 +212,7 @@ public class LiveStreamPlayerViewController: AmityViewController {
         
         renderGestureView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(playerContainerDidTap)))
         
+        postCommentButton.isHidden = true
     }
     
     func setupTableView(){
@@ -582,6 +584,22 @@ public class LiveStreamPlayerViewController: AmityViewController {
         showCommentButton.isHidden = true
     }
     
+    @IBAction func chatWithStreamer() {
+        let streamerID = amityPost?.postedUserId ?? ""
+        let user = TrueUser(userId: streamerID)
+        AmityCreateChannelHandler.shared.createChannel(trueUser: user) { result in
+            switch result {
+            case .success(let channelId):
+                let vc = AmityMessageListViewController.make(channelId: channelId)
+                let nav = UINavigationController(rootViewController: vc)
+                nav.modalPresentationStyle = .overFullScreen
+                self.present(nav, animated: true)
+            case .failure(let error):
+                print("[AmityLiveStream] Error in create channel from chat with streamer button.")
+            }
+        }
+    }
+    
 }
 
 extension LiveStreamPlayerViewController: AmityVideoPlayerDelegate {
@@ -633,6 +651,14 @@ extension LiveStreamPlayerViewController: AmityTextViewDelegate {
     
     public func textViewDidChange(_ textView: AmityTextView) {
         if textView == commentTextView {
+            if textView.text == "" {
+                postCommentButton.isHidden = true
+                chatButton.isHidden = false
+            } else {
+                postCommentButton.isHidden = false
+                chatButton.isHidden = true
+            }
+            
             let contentSize = textView.sizeThatFits(textView.bounds.size)
             if contentSize.height < 70 {
                 commentTextViewHeight.constant = contentSize.height

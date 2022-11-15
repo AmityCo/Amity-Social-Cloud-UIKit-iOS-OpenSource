@@ -13,6 +13,7 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="LiveStreamPlayerViewController" customModule="AmityUIKitLiveStream" customModuleProvider="target">
             <connections>
                 <outlet property="blackBarHeightConstraint" destination="tjz-NO-SVE" id="xc7-7F-YSC"/>
+                <outlet property="chatButton" destination="Cdm-dq-zPg" id="lqn-J7-Re5"/>
                 <outlet property="commentTableView" destination="NcS-Ka-yRI" id="TUC-Xh-hna"/>
                 <outlet property="commentTextView" destination="BEG-uX-kot" id="Gel-it-ExU"/>
                 <outlet property="commentTextViewHeight" destination="DfP-if-4qZ" id="ilQ-So-eyR"/>
@@ -288,6 +289,18 @@ to watch shortly.</string>
                                     <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
                                     <state key="normal" image="livestream_send_comment"/>
                                 </button>
+                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Cdm-dq-zPg" userLabel="Chat Button">
+                                    <rect key="frame" x="307" y="17" width="36" height="36"/>
+                                    <constraints>
+                                        <constraint firstAttribute="width" constant="36" id="1qE-v6-8gN"/>
+                                        <constraint firstAttribute="height" constant="36" id="xLh-bo-OU7"/>
+                                    </constraints>
+                                    <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                    <state key="normal" image="commerce_product"/>
+                                    <connections>
+                                        <action selector="chatWithStreamer" destination="-1" eventType="touchUpInside" id="e5n-DP-8hP"/>
+                                    </connections>
+                                </button>
                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Trc-GE-dDu" userLabel="Like Button">
                                     <rect key="frame" x="353" y="17" width="36" height="36"/>
                                     <constraints>
@@ -320,11 +333,13 @@ to watch shortly.</string>
                                 <constraint firstItem="3YZ-Az-dkB" firstAttribute="centerY" secondItem="Trc-GE-dDu" secondAttribute="centerY" id="UbV-0Z-Kwf"/>
                                 <constraint firstAttribute="height" constant="70" id="X27-Wr-m6g"/>
                                 <constraint firstItem="BEG-uX-kot" firstAttribute="leading" secondItem="guv-EO-DGA" secondAttribute="trailing" constant="10" id="YiH-Pp-lOi"/>
+                                <constraint firstItem="Cdm-dq-zPg" firstAttribute="centerY" secondItem="qRc-OM-avP" secondAttribute="centerY" id="cEw-hb-PJh"/>
                                 <constraint firstItem="3YZ-Az-dkB" firstAttribute="centerX" secondItem="Trc-GE-dDu" secondAttribute="centerX" id="eLL-ad-EtK"/>
                                 <constraint firstItem="guv-EO-DGA" firstAttribute="leading" secondItem="rMN-jh-cKQ" secondAttribute="leading" constant="15" id="hn7-Mz-VlW"/>
                                 <constraint firstItem="Trc-GE-dDu" firstAttribute="leading" secondItem="qRc-OM-avP" secondAttribute="trailing" constant="10" id="sKM-hU-PxS"/>
                                 <constraint firstAttribute="bottom" secondItem="qRc-OM-avP" secondAttribute="bottom" constant="17" id="ssq-QT-mhH"/>
                                 <constraint firstAttribute="bottom" secondItem="Trc-GE-dDu" secondAttribute="bottom" constant="17" id="vGS-Xw-jX1"/>
+                                <constraint firstItem="Cdm-dq-zPg" firstAttribute="centerX" secondItem="qRc-OM-avP" secondAttribute="centerX" id="vhf-Q3-zqF"/>
                                 <constraint firstAttribute="trailing" secondItem="Trc-GE-dDu" secondAttribute="trailing" constant="25" id="wkr-si-6B4"/>
                                 <constraint firstItem="qRc-OM-avP" firstAttribute="leading" secondItem="BEG-uX-kot" secondAttribute="trailing" constant="10" id="xzj-QD-B6G"/>
                             </constraints>
@@ -385,6 +400,7 @@ to watch shortly.</string>
     </objects>
     <resources>
         <image name="close" width="32" height="32"/>
+        <image name="commerce_product" width="36" height="36"/>
         <image name="like_button" width="45" height="45"/>
         <image name="like_fill_button" width="45" height="45"/>
         <image name="livestream_hide_comment" width="45" height="45"/>
