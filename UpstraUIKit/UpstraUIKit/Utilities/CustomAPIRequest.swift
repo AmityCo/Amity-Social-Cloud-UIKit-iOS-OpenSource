@@ -239,7 +239,7 @@ final class customAPIRequest {
         task.resume()
     }
     
-    static func syncContact(userId: String, phoneList: [String], completion: @escaping(_ completion:Result<[String],Error>) -> () ) {
+    static func syncContact(userId: String, phoneList: [String], completion: @escaping(_ completion:Result<[PhoneNumber],Error>) -> () ) {
         
         var region: String {
             switch AmityUIKitManagerInternal.shared.envByApiKey {
@@ -262,11 +262,11 @@ final class customAPIRequest {
             }
         }
         
-        let urlString = "https://cpvp6wy03k.execute-api.ap-southeast-1.amazonaws.com/syncContact".addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)
+        let urlString = "https://cpvp6wy03k.execute-api.ap-southeast-1.amazonaws.com/syncContactList".addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)
         
         let url = URL(string: urlString ?? "")!
         
-        var tempData: [String] = []
+        var tempData: [PhoneNumber] = []
         
         let userToken = AmityUIKitManagerInternal.shared.currentUserToken
         
@@ -295,11 +295,11 @@ final class customAPIRequest {
             do {
                 let jsonResponse = try? JSONSerialization.jsonObject(with: data, options: [])
                 print("Sync Contact: \(jsonResponse)")
-                guard let jsonDecode = try? JSONDecoder().decode([String].self, from: data) else {
+                guard let jsonDecode = try? JSONDecoder().decode(JsonContact.self, from: data) else {
                     completion(.success(tempData))
                     return
                 }
-                tempData = jsonDecode
+                tempData = jsonDecode.contact
             } catch let response {
                 print("Error: \(response)")
             }

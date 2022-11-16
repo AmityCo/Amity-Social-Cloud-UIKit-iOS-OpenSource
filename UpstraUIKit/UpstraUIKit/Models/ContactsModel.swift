@@ -9,6 +9,42 @@
 import Foundation
 import ContactsUI
 
+public class AmityContactModel: NSObject {
+    let contact: CNContact
+    var phoneNumber: [PhoneNumber]
+    
+    init(contact: CNContact, phoneNumber: [PhoneNumber]) {
+        self.contact = contact
+        self.phoneNumber = phoneNumber
+    }
+}
+
+public class JsonContact: Decodable {
+    let contact: [PhoneNumber]
+    
+    enum CodingKeys: String, CodingKey {
+        case contact = "contact"
+    }
+}
+
+public class PhoneNumber: NSObject, Decodable {
+    let number: String
+    let isAmity: Bool
+    let ssoid: String
+    
+    init(number: String, isAmity: Bool, ssoid: String) {
+        self.number = number
+        self.isAmity = isAmity
+        self.ssoid = ssoid
+    }
+    
+    enum CodingKeys: String, CodingKey {
+        case number = "phone"
+        case isAmity = "isChatable"
+        case ssoid = "ssoid"
+    }
+}
+
 class ContactsModel : NSObject {
     let givenName: String
     let familyName: String
@@ -39,6 +75,17 @@ class ContactsModel : NSObject {
             let identifier = contact.identifier
             var image = UIImage()
             contactsData.append(ContactsModel(givenName: givenName, familyName: familyName, phoneNumber: phoneNumber, emailAddress: emailAddress as String, identifier: identifier, image: image))
+        })
+        return contactsData
+    }
+    
+    class func generateCNContactArray() -> [CNContact]{
+        let contactStore = CNContactStore()
+        var contactsData = [CNContact]()
+        let key = [CNContactGivenNameKey,CNContactFamilyNameKey,CNContactImageDataKey,CNContactThumbnailImageDataKey,CNContactPhoneNumbersKey,CNContactEmailAddressesKey] as [CNKeyDescriptor]
+        let request = CNContactFetchRequest(keysToFetch: key)
+        try? contactStore.enumerateContacts(with: request, usingBlock: { (contact, stoppingPointer) in
+            contactsData.append(contact)
         })
         return contactsData
     }
