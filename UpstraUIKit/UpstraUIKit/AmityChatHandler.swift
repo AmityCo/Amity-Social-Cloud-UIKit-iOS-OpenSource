@@ -60,6 +60,7 @@ public class AmityChatHandler {
     open func syncContact(userId: String,  completion: @escaping(_ completion:Result<[AmityContactModel],Error>) -> () ){
         
         var contactArray = ContactsModel.generateCNContactArray()
+        contactArray = contactArray.sorted { $0.givenName < $1.givenName }
         var resultArray: [AmityContactModel] = []
         
         //API can handle only 200 contact per request

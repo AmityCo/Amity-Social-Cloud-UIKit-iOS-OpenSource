@@ -30,9 +30,9 @@ public class JsonContact: Decodable {
 public class PhoneNumber: NSObject, Decodable {
     let number: String
     let isAmity: Bool
-    let ssoid: String
+    let ssoid: String?
     
-    init(number: String, isAmity: Bool, ssoid: String) {
+    init(number: String, isAmity: Bool, ssoid: String? = nil) {
         self.number = number
         self.isAmity = isAmity
         self.ssoid = ssoid
