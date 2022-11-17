@@ -475,6 +475,15 @@ open class AmityEventHandler {
     open func communityUserProfileToTimelineTracking() {}
     open func communityCategoryNameListTracking(categoryName: String) {}
     
-    
+    open func getNotiCountFromAPI(completion: @escaping(_ completion:Result<Int,Error>) -> () ) {
+        customAPIRequest.getChatBadgeCount(userId: AmityUIKitManagerInternal.shared.currentUserId) { result in
+            switch result {
+            case .success(let badgeCount):
+                completion(.success(badgeCount))
+            case .failure(let error):
+                completion(.failure(error))
+            }
+        }
+    }
     
 }
