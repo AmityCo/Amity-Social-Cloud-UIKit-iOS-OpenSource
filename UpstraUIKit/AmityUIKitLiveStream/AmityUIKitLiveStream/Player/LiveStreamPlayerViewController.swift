@@ -681,6 +681,7 @@ extension LiveStreamPlayerViewController: UITableViewDataSource {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: LiveStreamBroadcastOverlayTableViewCell.identifier) as? LiveStreamBroadcastOverlayTableViewCell else { return UITableViewCell() }
         cell.display(comment: storedComment[indexPath.row])
         cell.delegate = self
+        cell.tapAvatarDelegate = self
         return cell
     }
 }
@@ -720,7 +721,7 @@ extension LiveStreamPlayerViewController {
             }
         }
         
-        liveCommentQueryToken = commentRepository?.getCommentsWithReferenceId(currentPost.postId, referenceType: .post, filterByParentId: false, parentId: nil, orderBy: .descending, includeDeleted: false).observe { collection, changes, error in
+        liveCommentQueryToken = commentRepository?.getCommentsWithReferenceId(currentPost.postId, referenceType: .post, filterByParentId: false, parentId: nil, orderBy: .ascending, includeDeleted: false).observe { collection, changes, error in
             if error != nil {
                 print("[RTE]Error in get comment: \(error?.localizedDescription)")
             }
@@ -754,6 +755,8 @@ extension LiveStreamPlayerViewController {
         if commentTextView.text != "" || commentTextView.text == nil {
             guard let currentText = commentTextView.text else { return }
             self.commentTextView.text = ""
+            self.chatButton.isHidden = false
+            self.postCommentButton.isHidden = true
             liveCommentToken = commentRepository?.createComment(forReferenceId: currentPost.postId, referenceType: .post, parentId: currentPost.parentPostId, text: currentText).observeOnce { liveObject, error in
                 if error != nil {
                     print("[LiveStream]Comment error: \(error?.localizedDescription)")
@@ -770,4 +773,10 @@ extension LiveStreamPlayerViewController: LiveStreamBroadcastOverlayProtocol {
         AmityEventHandler.shared.roleDidTap(fromLiveStream: self, userBadge: userBadge)
     }
     
+}
+
+extension LiveStreamPlayerViewController: LivestreamWatchingProtocol {
+    func didAvatarTap(userId: String) {
+        AmityEventHandler.shared.userDidTap(from: self, userId: userId)
+    }
 }
