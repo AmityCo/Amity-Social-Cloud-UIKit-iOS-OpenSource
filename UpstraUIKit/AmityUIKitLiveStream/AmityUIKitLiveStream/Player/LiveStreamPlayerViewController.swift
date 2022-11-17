@@ -721,7 +721,7 @@ extension LiveStreamPlayerViewController {
             }
         }
         
-        liveCommentQueryToken = commentRepository?.getCommentsWithReferenceId(currentPost.postId, referenceType: .post, filterByParentId: false, parentId: nil, orderBy: .descending, includeDeleted: false).observe { collection, changes, error in
+        liveCommentQueryToken = commentRepository?.getCommentsWithReferenceId(currentPost.postId, referenceType: .post, filterByParentId: false, parentId: nil, orderBy: .ascending, includeDeleted: false).observe { collection, changes, error in
             if error != nil {
                 print("[RTE]Error in get comment: \(error?.localizedDescription)")
             }
