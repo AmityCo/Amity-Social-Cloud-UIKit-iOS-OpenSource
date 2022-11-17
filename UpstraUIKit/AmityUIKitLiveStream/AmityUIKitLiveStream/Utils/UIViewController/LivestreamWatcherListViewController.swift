@@ -185,5 +185,4 @@ extension LivestreamWatcherListViewController: LivestreamWatchingProtocol {
     func didAvatarTap(userId: String) {
         avatarDidTap(userId: userId)
     }
-    
 }

@@ -24,9 +24,11 @@ class LiveStreamBroadcastOverlayTableViewCell: UITableViewCell,Nibbable {
     static let height: CGFloat = 60
     
     var delegate: LiveStreamBroadcastOverlayProtocol?
+    var tapAvatarDelegate: LivestreamWatchingProtocol?
 
     var userBadge: UserBadge?
     var currentUserBadge: UserBadge.BadgeProfile?
+    var commentUserId: String = ""
     
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -65,6 +67,7 @@ class LiveStreamBroadcastOverlayTableViewCell: UITableViewCell,Nibbable {
         
         displayNameLabel.text = comment.displayName
         
+        commentUserId = comment.userId
         
         commentLabel.text = comment.text
         
@@ -88,6 +91,10 @@ class LiveStreamBroadcastOverlayTableViewCell: UITableViewCell,Nibbable {
         let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(roleTap(tapGestureRecognizer:)))
         roleImageView.isUserInteractionEnabled = true
         roleImageView.addGestureRecognizer(tapGestureRecognizer)
+        
+        let avatarTapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(didAvatarInCellIsTapped))
+        avatarView.isUserInteractionEnabled = true
+        avatarView.addGestureRecognizer(avatarTapGestureRecognizer)
     }
     
     @objc func roleTap(tapGestureRecognizer: UITapGestureRecognizer) {
@@ -108,6 +115,11 @@ class LiveStreamBroadcastOverlayTableViewCell: UITableViewCell,Nibbable {
         height += messageHeight
         return height
 
+    }
+    
+    // MARK: - Tap avatar to show profile
+    @objc func didAvatarInCellIsTapped() {
+        tapAvatarDelegate?.didAvatarTap(userId: commentUserId)
     }
     
     // MARK: - Setup Role Data

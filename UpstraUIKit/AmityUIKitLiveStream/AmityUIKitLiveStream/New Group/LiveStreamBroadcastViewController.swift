@@ -709,6 +709,7 @@ extension LiveStreamBroadcastViewController: UITableViewDataSource {
             guard let cell = tableView.dequeueReusableCell(withIdentifier: LiveStreamBroadcastOverlayTableViewCell.identifier) as? LiveStreamBroadcastOverlayTableViewCell else { return UITableViewCell() }
             cell.display(comment: storedComment[indexPath.row])
             cell.delegate = self
+            cell.tapAvatarDelegate = self
             return cell
         }
         guard let cell = tableView.dequeueReusableCell(withIdentifier: AmityMentionTableViewCell.identifier) as? AmityMentionTableViewCell else { return UITableViewCell() }
@@ -888,4 +889,10 @@ extension LiveStreamBroadcastViewController: LiveStreamBroadcastOverlayProtocol 
         AmityEventHandler.shared.roleDidTap(fromLiveStream: self, userBadge: userBadge)
     }
     
+}
+
+extension LiveStreamBroadcastViewController: LivestreamWatchingProtocol {
+    func didAvatarTap(userId: String) {
+        AmityEventHandler.shared.userDidTap(from: self, userId: userId)
+    }
 }
