@@ -147,7 +147,7 @@ private extension AmityCommunityHomePageFullHeaderViewController {
             case .post:
                 if screenViewModel.dataSource.amityCommunityEventTypeModel?.communityID != "" && screenViewModel.dataSource.amityCommunityEventTypeModel?.communityID != nil {
                     let viewController = AmityCommunityProfilePageViewController.make(withCommunityId: screenViewModel.dataSource.amityCommunityEventTypeModel?.communityID ?? "", postId: screenViewModel.dataSource.amityCommunityEventTypeModel?.postID ?? "", fromDeeplinks: true)
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 2) { [self] in
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 0) { [self] in
                         guard let navigate = currentViewController else {
                             navigationController?.pushViewController(viewController, animated: true)
                             return
