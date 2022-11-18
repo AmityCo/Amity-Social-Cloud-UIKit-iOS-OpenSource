@@ -19,7 +19,7 @@ class NotificationTrayScreenViewModel: NotificationTrayScreenViewModelType {
         updateReadTray()
     }
     
-    private func fetchData() {
+    func fetchData() {
         customAPIRequest.getNotificationHistory() { [self] (result) in
             collectionData = result
             delegate?.screenViewModelDidUpdateData(self)
@@ -57,7 +57,6 @@ class NotificationTrayScreenViewModel: NotificationTrayScreenViewModelType {
     func updateReadItem(model: NotificationModel) {
         customAPIRequest.updateHasReadItem(verb: model.verb ?? "", targetId: model.targetId ?? "", targetGroup: model.targetGroup ?? "") { result in
             if result != "Success" {
-                
             }
         }
     }

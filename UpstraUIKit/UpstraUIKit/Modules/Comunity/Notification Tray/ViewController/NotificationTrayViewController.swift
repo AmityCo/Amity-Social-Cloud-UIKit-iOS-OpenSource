@@ -39,6 +39,7 @@ public final class NotificationTrayViewController: AmityViewController {
     
     public override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        screenViewModel.fetchData()
     }
     
     // MARK: - Private functions

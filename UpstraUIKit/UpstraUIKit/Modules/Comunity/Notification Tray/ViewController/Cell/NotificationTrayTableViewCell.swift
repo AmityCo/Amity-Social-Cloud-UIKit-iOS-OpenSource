@@ -51,7 +51,10 @@ class NotificationTrayTableViewCell: UITableViewCell, Nibbable {
         let strDate = dateFormatter.string(from: date)
         dateLabel.text = strDate
         
-        if model.hasRead ?? true {
+        if model.hasRead {
+            readMark.isHidden = true
+            contentView.backgroundColor = .white
+        } else {
             readMark.isHidden = false
             contentView.backgroundColor = UIColor(hex: "E1E1E1")
         }

@@ -394,7 +394,7 @@ final class customAPIRequest {
         let url = URL(string: urlString)!
         let userToken = AmityUIKitManagerInternal.shared.currentUserToken
         
-        let params: [String:Any?] = [
+        let params: [String:Any] = [
             "verb": verb,
             "targetId": targetId,
             "targetGroup": targetGroup
@@ -406,6 +406,7 @@ final class customAPIRequest {
             "Content-Type" : "application/json",
             "Authorization" : "Bearer \(userToken)"
         ]
+        
         request.httpBody = try? JSONSerialization.data(withJSONObject: params, options: [])
         
         let task = URLSession.shared.dataTask(with: request) { data, response, error in
