@@ -40,7 +40,7 @@ class NotificationTrayTableViewCell: UITableViewCell, Nibbable {
             avatarView.setImage(withImageURL: model.imageUrl, placeholder: AmityIconSet.defaultAvatar)
         }
         avatarView.placeholderPostion = .fullSize
-        titleLabel.text = model.targetType == "community" ? "Community" : model.targetType
+        titleLabel.text = model.targetType == "community" ? "Community" : "Post"
         descLabel.text = model.description
         
         let date = Date(timeIntervalSince1970: Double(model.lastUpdate ?? 0) / 1000.0)
