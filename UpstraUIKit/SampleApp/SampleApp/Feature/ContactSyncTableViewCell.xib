@@ -44,6 +44,7 @@
                 </constraints>
             </tableViewCellContentView>
             <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
+            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
             <accessibility key="accessibilityConfiguration" identifier="ContactSyncTableViewCell"/>
             <connections>
                 <outlet property="contactname" destination="GPN-0U-cCi" id="Cho-N0-TGU"/>

@@ -519,6 +519,7 @@
                                                 <constraint firstAttribute="trailing" secondItem="71N-4F-S3x" secondAttribute="trailing" constant="5" id="pmA-Rj-Rbz"/>
                                             </constraints>
                                         </tableViewCellContentView>
+                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <accessibility key="accessibilityConfiguration" identifier="ContactSyncTableViewCell"/>
                                         <connections>
                                             <outlet property="contactname" destination="71N-4F-S3x" id="IXV-ZR-kR2"/>

@@ -27,16 +27,21 @@ class ContactSyncTableViewCell: UITableViewCell, Nibbable {
     
     func setup(model: AmityContactModel) {
         contactname.text = "\(model.contact.givenName)"
+        contactname.textColor = .black
         var text = ""
         for phone in model.phoneNumber {
             for number in model.contact.phoneNumbers {
                 let phoneWithoutDash = number.value.stringValue.replacingOccurrences(of: "-", with: "")
                 if phoneWithoutDash == phone.number {
-                    text += "\(number.value.stringValue) | isChatable: \(phone.isAmity) | ssoid: \(phone.ssoid ?? "")\n"
+                    text += "\(number.value.stringValue) | isChatable: \(phone.isAmity) | ssoid: \(phone.ssoid ?? "")"
                 }
             }
         }
         contactvalue.text = text
+        contactvalue.sizeToFit()
+        contactvalue.numberOfLines = 0
+        contactvalue.lineBreakMode = .byTruncatingTail
+        contactvalue.textColor = .black
     }
     
 }
