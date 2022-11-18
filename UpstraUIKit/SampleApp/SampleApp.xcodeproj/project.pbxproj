@@ -41,6 +41,10 @@
 		7F50FEB429140AE400C181E3 /* CustomExtensionEventHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F50FEB329140AE400C181E3 /* CustomExtensionEventHandler.swift */; };
 		7F50FEB629140B5300C181E3 /* CustomExtensionEventHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F50FEB329140AE400C181E3 /* CustomExtensionEventHandler.swift */; };
 		7F7704FF27B24F4100600D85 /* ChatFromCommunityViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F7704FE27B24F4100600D85 /* ChatFromCommunityViewController.swift */; };
+		7F906F2029276E6F00E4B10A /* ContactSyncTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F906F1E29276E6F00E4B10A /* ContactSyncTableViewController.swift */; };
+		7F906F2129276E6F00E4B10A /* ContactSyncTableViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7F906F1F29276E6F00E4B10A /* ContactSyncTableViewController.xib */; };
+		7F906F2429276F0C00E4B10A /* ContactSyncTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F906F2229276F0C00E4B10A /* ContactSyncTableViewCell.swift */; };
+		7F906F2529276F0C00E4B10A /* ContactSyncTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7F906F2329276F0C00E4B10A /* ContactSyncTableViewCell.xib */; };
 		97F101F526A69FBF00AD84A1 /* CustomChannelEventHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97F101F426A69FBF00AD84A1 /* CustomChannelEventHandler.swift */; };
 		A03190A7272169C1008A85DC /* PostCreatorSettingsPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = A03190A6272169C1008A85DC /* PostCreatorSettingsPage.swift */; };
 		A0BD0B4826DDE0E30054088B /* AmityUIKitLiveStream.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A0BD0B4726DDE0E30054088B /* AmityUIKitLiveStream.framework */; };
@@ -182,6 +186,10 @@
 		7F4653D028C75E8400F0CD91 /* AmityUIKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = AmityUIKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		7F50FEB329140AE400C181E3 /* CustomExtensionEventHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomExtensionEventHandler.swift; sourceTree = "<group>"; };
 		7F7704FE27B24F4100600D85 /* ChatFromCommunityViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatFromCommunityViewController.swift; sourceTree = "<group>"; };
+		7F906F1E29276E6F00E4B10A /* ContactSyncTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactSyncTableViewController.swift; sourceTree = "<group>"; };
+		7F906F1F29276E6F00E4B10A /* ContactSyncTableViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ContactSyncTableViewController.xib; sourceTree = "<group>"; };
+		7F906F2229276F0C00E4B10A /* ContactSyncTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactSyncTableViewCell.swift; sourceTree = "<group>"; };
+		7F906F2329276F0C00E4B10A /* ContactSyncTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ContactSyncTableViewCell.xib; sourceTree = "<group>"; };
 		97F101F426A69FBF00AD84A1 /* CustomChannelEventHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomChannelEventHandler.swift; sourceTree = "<group>"; };
 		A03190A6272169C1008A85DC /* PostCreatorSettingsPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostCreatorSettingsPage.swift; sourceTree = "<group>"; };
 		A0BD0B3B26DDDFCC0054088B /* AmityUIKitLiveStream.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = AmityUIKitLiveStream.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -392,6 +400,17 @@
 			path = "TrueID-SampleApp-ShareEx";
 			sourceTree = "<group>";
 		};
+		7F906F1D29276E3D00E4B10A /* New Group */ = {
+			isa = PBXGroup;
+			children = (
+				7F906F1E29276E6F00E4B10A /* ContactSyncTableViewController.swift */,
+				7F906F1F29276E6F00E4B10A /* ContactSyncTableViewController.xib */,
+				7F906F2229276F0C00E4B10A /* ContactSyncTableViewCell.swift */,
+				7F906F2329276F0C00E4B10A /* ContactSyncTableViewCell.xib */,
+			);
+			name = "New Group";
+			sourceTree = "<group>";
+		};
 		A03190A527216946008A85DC /* Post Creator Settings */ = {
 			isa = PBXGroup;
 			children = (
@@ -520,6 +539,7 @@
 				D4AFF23525ED1F88002C001C /* GlobalPostsDataSource.swift */,
 				7F7704FE27B24F4100600D85 /* ChatFromCommunityViewController.swift */,
 				B4CD0D9A2897BE55009E54D6 /* NotificationBoxViewController.swift */,
+				7F906F1D29276E3D00E4B10A /* New Group */,
 			);
 			path = Feature;
 			sourceTree = "<group>";
@@ -685,8 +705,10 @@
 				0D73AC9425DB8CB5000D73CA /* AmityPostThumbsupTableViewCell.xib in Resources */,
 				0D8FFC2A25DCBFD900943538 /* AmityCustomFooterTableViewCell.xib in Resources */,
 				B78DA48224BED7DA00EE902B /* Assets.xcassets in Resources */,
+				7F906F2129276E6F00E4B10A /* ContactSyncTableViewController.xib in Resources */,
 				B78DA48024BED7D300EE902B /* Main.storyboard in Resources */,
 				0D73AC9625DB8CB5000D73CA /* AmityPostBirthdayTableViewCell.xib in Resources */,
+				7F906F2529276F0C00E4B10A /* ContactSyncTableViewCell.xib in Resources */,
 				B4C71FAE2850DD2400744B0F /* NotoSansThai-Bold.ttf in Resources */,
 				B4C71FB32850F44F00744B0F /* NotoSansThai-SemiBold.ttf in Resources */,
 				B42AD33528657F7900349D67 /* NotoSansMyanmar-Regular.ttf in Resources */,
@@ -738,6 +760,7 @@
 				B72861D924C573B100ECC563 /* TabbarViewController.swift in Sources */,
 				D4AFF23225ED1E7C002C001C /* GlobalPostsFeedViewController.swift in Sources */,
 				0D73AC9E25DB9332000D73CA /* BirthdayPostComponent.swift in Sources */,
+				7F906F2029276E6F00E4B10A /* ContactSyncTableViewController.swift in Sources */,
 				7F7704FF27B24F4100600D85 /* ChatFromCommunityViewController.swift in Sources */,
 				D4AFF1CF25ECE8AD002C001C /* PostPreviewTableViewCell.swift in Sources */,
 				D4AFF23625ED1F88002C001C /* GlobalPostsDataSource.swift in Sources */,
@@ -754,6 +777,7 @@
 				729CAF3E273CC8ED000AE162 /* Binding+Extension.swift in Sources */,
 				B72CDA3B256B9BEB00F7CAC3 /* CustomMessageTextIncomingTableViewCell.swift in Sources */,
 				B78DA4B124BEDBC500EE902B /* CommunityFeatureViewController.swift in Sources */,
+				7F906F2429276F0C00E4B10A /* ContactSyncTableViewCell.swift in Sources */,
 				7288E96C2630139E004535DD /* AppManager.swift in Sources */,
 				721AF3CA26088884005BA15F /* CustomFeedEventHandler.swift in Sources */,
 				B78FC54124CAAA2F0083CBB4 /* Theme.swift in Sources */,

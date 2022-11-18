@@ -474,6 +474,81 @@
             </objects>
             <point key="canvasLocation" x="9617" y="-695"/>
         </scene>
+        <!--Contact Sync Table View Controller-->
+        <scene sceneID="VRL-k1-8Uq">
+            <objects>
+                <viewController restorationIdentifier="ContactSyncTableViewController" storyboardIdentifier="ContactSyncTableViewController" id="oGe-J8-rbQ" customClass="ContactSyncTableViewController" customModule="SampleApp" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="vC9-mZ-pFm">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="qMM-xN-52D">
+                                <rect key="frame" x="0.0" y="44" width="414" height="852"/>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                <prototypes>
+                                    <tableViewCell contentMode="scaleToFill" restorationIdentifier="ContactSyncTableViewCell" selectionStyle="default" indentationWidth="10" reuseIdentifier="ContactSyncTableViewCell" rowHeight="77" id="ymu-5a-ZqW" customClass="ContactSyncTableViewCell" customModule="SampleApp" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="44.5" width="414" height="77"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="ymu-5a-ZqW" id="J23-xI-DRm">
+                                            <rect key="frame" x="0.0" y="0.0" width="414" height="77"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="71N-4F-S3x">
+                                                    <rect key="frame" x="5" y="0.0" width="404" height="20"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="height" constant="20" id="lpT-Xh-Zx7"/>
+                                                    </constraints>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <nil key="textColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Kt9-y6-Ael">
+                                                    <rect key="frame" x="5" y="20" width="404" height="52"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <nil key="textColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstAttribute="bottom" secondItem="Kt9-y6-Ael" secondAttribute="bottom" constant="5" id="4D6-F1-AiR"/>
+                                                <constraint firstItem="71N-4F-S3x" firstAttribute="leading" secondItem="J23-xI-DRm" secondAttribute="leading" constant="5" id="HNH-DZ-U8I"/>
+                                                <constraint firstItem="Kt9-y6-Ael" firstAttribute="top" secondItem="71N-4F-S3x" secondAttribute="bottom" id="RaP-6o-t5W"/>
+                                                <constraint firstAttribute="trailing" secondItem="Kt9-y6-Ael" secondAttribute="trailing" constant="5" id="aJJ-3G-HAa"/>
+                                                <constraint firstItem="71N-4F-S3x" firstAttribute="top" secondItem="J23-xI-DRm" secondAttribute="top" id="bKQ-6P-xMe"/>
+                                                <constraint firstItem="Kt9-y6-Ael" firstAttribute="leading" secondItem="J23-xI-DRm" secondAttribute="leading" constant="5" id="lIV-XL-0V6"/>
+                                                <constraint firstAttribute="trailing" secondItem="71N-4F-S3x" secondAttribute="trailing" constant="5" id="pmA-Rj-Rbz"/>
+                                            </constraints>
+                                        </tableViewCellContentView>
+                                        <accessibility key="accessibilityConfiguration" identifier="ContactSyncTableViewCell"/>
+                                        <connections>
+                                            <outlet property="contactname" destination="71N-4F-S3x" id="IXV-ZR-kR2"/>
+                                            <outlet property="contactvalue" destination="Kt9-y6-Ael" id="8po-m4-OCi"/>
+                                        </connections>
+                                    </tableViewCell>
+                                </prototypes>
+                                <connections>
+                                    <outlet property="dataSource" destination="oGe-J8-rbQ" id="8Uh-jm-IsM"/>
+                                    <outlet property="delegate" destination="oGe-J8-rbQ" id="maZ-dv-NLh"/>
+                                </connections>
+                            </tableView>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="BbP-Y8-8ez"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstAttribute="bottom" secondItem="qMM-xN-52D" secondAttribute="bottom" id="1Gu-Mo-1QX"/>
+                            <constraint firstItem="qMM-xN-52D" firstAttribute="leading" secondItem="BbP-Y8-8ez" secondAttribute="leading" id="VKP-jB-OdY"/>
+                            <constraint firstItem="qMM-xN-52D" firstAttribute="top" secondItem="BbP-Y8-8ez" secondAttribute="top" id="rWR-iq-CSK"/>
+                            <constraint firstAttribute="trailing" secondItem="qMM-xN-52D" secondAttribute="trailing" id="up7-hf-RaB"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="tableView" destination="qMM-xN-52D" id="2x4-Ep-fBE"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="JWF-50-1to" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="10436" y="-695"/>
+        </scene>
     </scenes>
     <resources>
         <systemColor name="linkColor">

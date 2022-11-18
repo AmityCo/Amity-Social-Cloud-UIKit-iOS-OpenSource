@@ -10,17 +10,17 @@ import Foundation
 import ContactsUI
 
 public class AmityContactModel: NSObject {
-    let contact: CNContact
-    var phoneNumber: [PhoneNumber]
+    public let contact: CNContact
+    public var phoneNumber: [PhoneNumber]
     
-    init(contact: CNContact, phoneNumber: [PhoneNumber]) {
+    public init(contact: CNContact, phoneNumber: [PhoneNumber]) {
         self.contact = contact
         self.phoneNumber = phoneNumber
     }
 }
 
 public class JsonContact: Decodable {
-    let contact: [PhoneNumber]
+    public let contact: [PhoneNumber]
     
     enum CodingKeys: String, CodingKey {
         case contact = "contact"
@@ -28,11 +28,11 @@ public class JsonContact: Decodable {
 }
 
 public class PhoneNumber: NSObject, Decodable {
-    let number: String
-    let isAmity: Bool
-    let ssoid: String?
+    public let number: String
+    public let isAmity: Bool
+    public let ssoid: String?
     
-    init(number: String, isAmity: Bool, ssoid: String? = nil) {
+    public init(number: String, isAmity: Bool, ssoid: String? = nil) {
         self.number = number
         self.isAmity = isAmity
         self.ssoid = ssoid
