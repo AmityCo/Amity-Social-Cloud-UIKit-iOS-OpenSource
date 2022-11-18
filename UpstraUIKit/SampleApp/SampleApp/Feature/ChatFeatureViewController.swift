@@ -160,15 +160,20 @@ extension ChatFeatureViewController: UITableViewDelegate {
                 var alertText = ""
                 switch result {
                 case .success(let phoneArray):
-                    alertText = "\(phoneArray)"
+                    DispatchQueue.main.async {
+                        let vc = self.storyboard?.instantiateViewController(withIdentifier: "ContactSyncTableViewController") as! ContactSyncTableViewController
+                        vc.contactData = phoneArray
+                        self.navigationController?.pushViewController(vc, animated: true)
+                    }
                 case .failure(let error):
                     alertText = "\(error)"
+                    DispatchQueue.main.async {
+                        let alertVC = UIAlertController(title: "Sync Contact", message: alertText, preferredStyle: .alert)
+                        alertVC.addAction(UIAlertAction(title: "OK", style: .default))
+                        self.present(alertVC, animated: true)
+                    }
                 }
-                DispatchQueue.main.async {
-                    let alertVC = UIAlertController(title: "Sync Contact", message: alertText, preferredStyle: .alert)
-                    alertVC.addAction(UIAlertAction(title: "OK", style: .default))
-                    self.present(alertVC, animated: true)
-                }
+                
             }
         }
     }
