@@ -88,7 +88,7 @@ extension NotificationTrayViewController: UITableViewDelegate {
         if item.targetType != "community" {
             AmityEventHandler.shared.postDidtap(from: self, postId: item.targetId ?? "")
         } else {
-            AmityEventHandler.shared.communityDidTap(from: self, communityId: item.targetGroup ?? "")
+            AmityEventHandler.shared.communityDidTap(from: self, communityId: item.targetId ?? "")
         }
     }
 }

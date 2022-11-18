@@ -416,7 +416,9 @@ final class customAPIRequest {
                 return
             }
 
-            guard let jsonDecode = try? JSONDecoder().decode(String.self, from: data) else { return }
+//            guard let jsonDecode = try? JSONDecoder().decode(String.self, from: data) else { return }
+            guard let responseJSON = try? JSONSerialization.jsonObject(with: data, options: []) else { return }
+            print(responseJSON)
             completion("Success")
         }
         
