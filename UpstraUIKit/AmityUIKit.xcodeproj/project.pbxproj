@@ -476,6 +476,7 @@
 		A0B68B6126E7238E007D7B5B /* AmityPostLiveStreamTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = A0B68B5F26E7238E007D7B5B /* AmityPostLiveStreamTableViewCell.xib */; };
 		A0E2B23226B7B68200F1C4D5 /* AmityPostGalleryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0E2B23026B7B68200F1C4D5 /* AmityPostGalleryViewController.swift */; };
 		A0E2B23326B7B68200F1C4D5 /* AmityPostGalleryViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = A0E2B23126B7B68200F1C4D5 /* AmityPostGalleryViewController.xib */; };
+		A98B3BC12914BD7700C0A56D /* AmityCommentViewLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = A98B3BC02914BD7700C0A56D /* AmityCommentViewLayout.swift */; };
 		B704D1432578CB2F0038BA78 /* AmityPulseAnimation.swift in Sources */ = {isa = PBXBuildFile; fileRef = B704D1422578CB2F0038BA78 /* AmityPulseAnimation.swift */; };
 		B704D1492578E23A0038BA78 /* AmityAudioPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = B704D1482578E23A0038BA78 /* AmityAudioPlayer.swift */; };
 		B704D14E2578E2570038BA78 /* AmityAudioRecorder.swift in Sources */ = {isa = PBXBuildFile; fileRef = B704D14D2578E2570038BA78 /* AmityAudioRecorder.swift */; };
@@ -1117,6 +1118,7 @@
 		A0B68B5F26E7238E007D7B5B /* AmityPostLiveStreamTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = AmityPostLiveStreamTableViewCell.xib; sourceTree = "<group>"; };
 		A0E2B23026B7B68200F1C4D5 /* AmityPostGalleryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AmityPostGalleryViewController.swift; sourceTree = "<group>"; };
 		A0E2B23126B7B68200F1C4D5 /* AmityPostGalleryViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = AmityPostGalleryViewController.xib; sourceTree = "<group>"; };
+		A98B3BC02914BD7700C0A56D /* AmityCommentViewLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AmityCommentViewLayout.swift; sourceTree = "<group>"; };
 		B704D1422578CB2F0038BA78 /* AmityPulseAnimation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AmityPulseAnimation.swift; sourceTree = "<group>"; };
 		B704D1482578E23A0038BA78 /* AmityAudioPlayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AmityAudioPlayer.swift; sourceTree = "<group>"; };
 		B704D14D2578E2570038BA78 /* AmityAudioRecorder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AmityAudioRecorder.swift; sourceTree = "<group>"; };
@@ -2500,8 +2502,7 @@
 			children = (
 				72A3506624EA820700DA9D46 /* AmityCommentTableViewCell.swift */,
 				72A3506B24EA820700DA9D46 /* AmityCommentTableViewCell.xib */,
-				723B6A82251B3A4E00EAE8D3 /* AmityCommentView.swift */,
-				723B6A84251B3A6200EAE8D3 /* AmityCommentView.xib */,
+				A98B3BC22914BE5000C0A56D /* AmityCommentView */,
 				72A350F724EA820800DA9D46 /* AmityCommunityTableViewCell.swift */,
 				72A350F824EA820800DA9D46 /* AmityCommunityTableViewCell.xib */,
 				7271C2482524376600E13F9D /* AmityEmptyStateHeaderFooterView.swift */,
@@ -3668,6 +3669,16 @@
 			path = "Post Media Gallery";
 			sourceTree = "<group>";
 		};
+		A98B3BC22914BE5000C0A56D /* AmityCommentView */ = {
+			isa = PBXGroup;
+			children = (
+				A98B3BC02914BD7700C0A56D /* AmityCommentViewLayout.swift */,
+				723B6A82251B3A4E00EAE8D3 /* AmityCommentView.swift */,
+				723B6A84251B3A6200EAE8D3 /* AmityCommentView.xib */,
+			);
+			path = AmityCommentView;
+			sourceTree = "<group>";
+		};
 		B704D13E2578CA420038BA78 /* Animation */ = {
 			isa = PBXGroup;
 			children = (
@@ -4718,6 +4729,7 @@
 				724A1037254151D60092A3AD /* AmityHUDErrorView.swift in Sources */,
 				721C8C8C262D235E00BA576C /* AmityMyFeedViewController.swift in Sources */,
 				D4CEE5C026144B5B0088B7DE /* AmityPostTargetPickerViewController.swift in Sources */,
+				A98B3BC12914BD7700C0A56D /* AmityCommentViewLayout.swift in Sources */,
 				72A3519A24EA820800DA9D46 /* AmityFileTableView.swift in Sources */,
 				0DB11FE925A7FCA0006A3C80 /* AmityCommunityDeleteController.swift in Sources */,
 				72476B6A253FF4C800B466A4 /* AmityFeedHeaderTableViewCell.swift in Sources */,

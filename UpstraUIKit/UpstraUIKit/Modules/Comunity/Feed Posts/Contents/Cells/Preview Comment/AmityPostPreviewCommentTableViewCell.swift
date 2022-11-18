@@ -18,6 +18,8 @@ public final class AmityPostPreviewCommentTableViewCell: UITableViewCell, Nibbab
     
     // MARK: - Properties
     public private(set) var post: AmityPostModel?
+    public private(set) var comment: AmityCommentModel?
+    public private(set) var isExpanded: Bool = false
     
     public override func awakeFromNib() {
         super.awakeFromNib()
@@ -25,13 +27,22 @@ public final class AmityPostPreviewCommentTableViewCell: UITableViewCell, Nibbab
     }
     
     public func display(post: AmityPostModel, comment: AmityCommentModel?) {
-        guard let comment = comment else { return }
+        self.comment = comment
         self.post = post
-        let shouldActionShow = post.isCommentable
-        commentView.configure(with: comment, layout: .commentPreview(contentExpanded: post.appearance.shouldContentExpand, shouldActionShow: shouldActionShow))
-        
+        guard let comment = comment else { return }
+        let layout = AmityCommentView.Layout(
+            type: .commentPreview,
+            isExpanded: isExpanded,
+            shouldActionShow: post.isCommentable,
+            shouldLineShow: false
+        )
+        commentView.configure(with: comment, layout: layout)
         commentView.delegate = self
         commentView.contentLabel.delegate = self
+    }
+    
+    func setIsExpanded(_ isExpanded: Bool) {
+        self.isExpanded = isExpanded
     }
 
     private func setupView() {

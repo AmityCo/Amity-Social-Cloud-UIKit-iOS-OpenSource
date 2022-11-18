@@ -142,6 +142,11 @@ open class AmityExpandableLabel: UILabel {
     public init() {
         super.init(frame: .zero)
     }
+    
+    open override func layoutSubviews() {
+        super.layoutSubviews()
+        recomputeAttributedText()
+    }
 
     open override var text: String? {
         set(text) {
@@ -174,21 +179,29 @@ open class AmityExpandableLabel: UILabel {
     }
 
     open private(set) var expandedText: NSAttributedString?
+    
+    private var originAttributedText: NSAttributedString?
+    
     open override var attributedText: NSAttributedString? {
-        set(attributedText) {
-            if let attributedText = attributedText?.copyWithAddedFontAttribute(font).copyWithParagraphAttribute(font),
-                attributedText.length > 0 {
-                self.collapsedText = getCollapsedText(for: attributedText, link: (linkHighlighted) ? collapsedAttributedLink.copyWithHighlightedColor() : self.collapsedAttributedLink)
-                self.expandedText = getExpandedText(for: attributedText, link: (linkHighlighted) ? expandedAttributedLink?.copyWithHighlightedColor() : self.expandedAttributedLink)
-                super.attributedText = (self.isExpanded) ? self.expandedText : self.collapsedText
-            } else {
-                self.expandedText = nil
-                self.collapsedText = nil
-                super.attributedText = nil
-            }
+        set {
+            originAttributedText = newValue
+            recomputeAttributedText()
         }
         get {
             return super.attributedText
+        }
+    }
+    
+    private func recomputeAttributedText() {
+        if let attributedText = originAttributedText?.copyWithAddedFontAttribute(font).copyWithParagraphAttribute(font),
+            attributedText.length > 0 {
+            collapsedText = getCollapsedText(for: attributedText, link: (linkHighlighted) ? collapsedAttributedLink.copyWithHighlightedColor() : self.collapsedAttributedLink)
+            expandedText = getExpandedText(for: attributedText, link: (linkHighlighted) ? expandedAttributedLink?.copyWithHighlightedColor() : self.expandedAttributedLink)
+            super.attributedText = (self.isExpanded) ? self.expandedText : self.collapsedText
+        } else {
+            expandedText = nil
+            collapsedText = nil
+            super.attributedText = nil
         }
     }
 

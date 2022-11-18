@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="19455" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="21225" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="19454"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21207"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -24,16 +24,16 @@
             <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <tableView clipsSubviews="YES" contentMode="scaleToFill" ambiguous="YES" alwaysBounceVertical="YES" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="nxX-G7-dP4" customClass="AmityPostTableView" customModule="AmityUIKit" customModuleProvider="target">
-                    <rect key="frame" x="0.0" y="44" width="414" height="784"/>
+                <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="nxX-G7-dP4" customClass="AmityPostTableView" customModule="AmityUIKit" customModuleProvider="target">
+                    <rect key="frame" x="0.0" y="48" width="414" height="814"/>
                     <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                 </tableView>
                 <view contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="gMP-ip-qOd" customClass="AmityPostDetailCompostView" customModule="AmityUIKit" customModuleProvider="target">
-                    <rect key="frame" x="0.0" y="836" width="414" height="26"/>
+                    <rect key="frame" x="0.0" y="828" width="414" height="34"/>
                     <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                 </view>
                 <tableView clipsSubviews="YES" contentMode="scaleToFill" ambiguous="YES" alwaysBounceVertical="YES" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="0s6-hY-oze" customClass="AmityMentionTableView" customModule="AmityUIKit" customModuleProvider="target">
-                    <rect key="frame" x="0.0" y="678" width="414" height="128"/>
+                    <rect key="frame" x="0.0" y="588" width="414" height="240"/>
                     <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="240" id="Fxt-Kx-jBd"/>
@@ -50,8 +50,8 @@
                 <constraint firstItem="0s6-hY-oze" firstAttribute="leading" secondItem="Wb0-7q-vLN" secondAttribute="leading" id="fdG-02-kLl"/>
                 <constraint firstItem="gMP-ip-qOd" firstAttribute="leading" secondItem="Wb0-7q-vLN" secondAttribute="leading" id="k2S-06-qGU"/>
                 <constraint firstItem="Wb0-7q-vLN" firstAttribute="trailing" secondItem="0s6-hY-oze" secondAttribute="trailing" id="k9l-qe-gzs"/>
+                <constraint firstItem="Wb0-7q-vLN" firstAttribute="bottom" secondItem="nxX-G7-dP4" secondAttribute="bottom" id="pIi-d2-Q6R"/>
                 <constraint firstItem="nxX-G7-dP4" firstAttribute="top" secondItem="Wb0-7q-vLN" secondAttribute="top" id="qQI-fA-KRR"/>
-                <constraint firstItem="gMP-ip-qOd" firstAttribute="top" secondItem="nxX-G7-dP4" secondAttribute="bottom" id="vB3-bY-uTZ"/>
                 <constraint firstItem="nxX-G7-dP4" firstAttribute="trailing" secondItem="Wb0-7q-vLN" secondAttribute="trailing" id="yLf-Co-uxc"/>
             </constraints>
             <point key="canvasLocation" x="79.710144927536234" y="75"/>

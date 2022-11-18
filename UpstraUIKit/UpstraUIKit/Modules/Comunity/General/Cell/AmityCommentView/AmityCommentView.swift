@@ -9,12 +9,6 @@
 import UIKit
 import AmitySDK
 
-enum AmityCommentViewLayout {
-    case comment(contentExpanded: Bool, shouldActionShow: Bool, shouldLineShow: Bool)
-    case commentPreview(contentExpanded: Bool, shouldActionShow: Bool)
-    case reply(contentExpanded: Bool, shouldActionShow: Bool, shouldLineShow: Bool)
-}
-
 enum AmityCommentViewAction {
     case avatar
     case like
@@ -103,7 +97,7 @@ class AmityCommentView: AmityView {
         viewReplyButton.addTarget(self, action: #selector(viewReplyButtonTap), for: .touchUpInside)
     }
     
-    func configure(with comment: AmityCommentModel, layout: AmityCommentViewLayout) {
+    func configure(with comment: AmityCommentModel, layout: AmityCommentView.Layout) {
         self.comment = comment
         
         if comment.isEdited {
@@ -136,29 +130,12 @@ class AmityCommentView: AmityView {
             likeButton.setTitle(AmityLocalizedStringSet.General.like.localizedString, for: .normal)
         }
         
-        switch layout {
-        case .comment(let contentExpanded, let shouldActionShow,  _):
-            contentLabel.isExpanded = contentExpanded
-            actionStackView.isHidden = !shouldActionShow
-            viewReplyButton.isHidden = true
-            replyButton.isHidden = false
-            topAvatarImageViewConstraint.constant = 16
-            leadingAvatarImageViewConstraint.constant = 16
-        case .commentPreview(let contentExpanded, let shouldActionShow):
-            contentLabel.isExpanded = contentExpanded
-            actionStackView.isHidden = !shouldActionShow
-            viewReplyButton.isHidden = !comment.isChildrenExisted
-            replyButton.isHidden = false
-            topAvatarImageViewConstraint.constant = 16
-            leadingAvatarImageViewConstraint.constant = 16
-        case .reply(let contentExpanded, let shouldActionShow, _):
-            contentLabel.isExpanded = contentExpanded
-            actionStackView.isHidden = !shouldActionShow
-            viewReplyButton.isHidden = true
-            replyButton.isHidden = true
-            topAvatarImageViewConstraint.constant = 0
-            leadingAvatarImageViewConstraint.constant = 52
-        }
+        contentLabel.isExpanded = layout.isExpanded
+        actionStackView.isHidden = !layout.shouldActionShow
+        viewReplyButton.isHidden = !layout.shouldShowViewReplyButton(for: comment)
+        leadingAvatarImageViewConstraint.constant = layout.space.avatarLeading
+        topAvatarImageViewConstraint.constant = layout.space.aboveAvatar
+        
     }
 
     @IBAction func displaynameTap(_ sender: Any) {
@@ -185,4 +162,50 @@ class AmityCommentView: AmityView {
         bannedImageView.image = nil
         comment = nil
     }
+    
+    open class func height(with comment: AmityCommentModel, layout: AmityCommentView.Layout, boundingWidth: CGFloat) -> CGFloat {
+        
+        let topSpace: CGFloat = 65 + layout.space.aboveAvatar
+        
+        let contentHeight: CGFloat = {
+            let maximumLines = layout.isExpanded ? 0 : 8
+            let leftSpace: CGFloat = layout.space.avatarLeading + layout.space.avatarViewWidth + 8 + 12
+            let rightSpace: CGFloat = 12 + 16
+            let labelBoundingWidth = boundingWidth - leftSpace - rightSpace
+            let height = AmityExpandableLabel.height(
+                for: comment.text,
+                font: AmityFontSet.body,
+                boundingWidth: labelBoundingWidth,
+                maximumLines: maximumLines
+            )
+            return height
+        } ()
+        
+        
+        let bottomStackHeight: CGFloat = {
+            var bottomStackViews: [CGFloat] = []
+            if layout.shouldActionShow {
+                let actionButtonHeight: CGFloat = 22
+                bottomStackViews += [actionButtonHeight]
+            }
+            if layout.shouldShowViewReplyButton(for: comment) {
+                let viewReplyHeight: CGFloat = 28
+                bottomStackViews += [viewReplyHeight]
+            }
+            let spaceBetweenElement: CGFloat = 12
+            let numberOfSpaceBetweenElements: CGFloat = CGFloat(max(bottomStackViews.count - 1, 0))
+            let bottomStackViewHeight = bottomStackViews.reduce(0, +) + (spaceBetweenElement * numberOfSpaceBetweenElements)
+            return bottomStackViewHeight
+        } ()
+
+        
+        return topSpace
+        + contentHeight
+        + layout.space.belowContent
+        + layout.space.aboveStack
+        + bottomStackHeight
+        + layout.space.belowStack
+        
+    }
+    
 }

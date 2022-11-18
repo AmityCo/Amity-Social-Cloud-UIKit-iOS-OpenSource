@@ -23,4 +23,8 @@ class AmityPostDetailDeletedTableViewCell: UITableViewCell, Nibbable {
         textLabel?.text = AmityLocalizedStringSet.PostDetail.deletedCommentMessage.localizedString
     }
     
+    static var height: CGFloat {
+        return 44
+    }
+    
 }
