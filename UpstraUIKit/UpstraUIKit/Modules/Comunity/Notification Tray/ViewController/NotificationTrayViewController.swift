@@ -39,6 +39,7 @@ public final class NotificationTrayViewController: AmityViewController {
     
     public override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        screenViewModel.fetchData()
     }
     
     // MARK: - Private functions
@@ -88,7 +89,7 @@ extension NotificationTrayViewController: UITableViewDelegate {
         if item.targetType != "community" {
             AmityEventHandler.shared.postDidtap(from: self, postId: item.targetId ?? "")
         } else {
-            AmityEventHandler.shared.communityDidTap(from: self, communityId: item.targetGroup ?? "")
+            AmityEventHandler.shared.communityDidTap(from: self, communityId: item.targetId ?? "")
         }
     }
 }

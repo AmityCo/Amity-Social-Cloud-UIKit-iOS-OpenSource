@@ -40,7 +40,7 @@ public struct NotificationModel: Decodable {
     public var imageUrl: String?
     public var customImageUrl: String?
     public var targetType: String?
-    public var hasRead: Bool?
+    public var hasRead: Bool = false
     public var lastUpdate: Int?
     public var actors: [actorModel]?
     public var actorsCount: Int?
