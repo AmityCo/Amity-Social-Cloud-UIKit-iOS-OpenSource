@@ -287,4 +287,13 @@ extension AmityRecentChatViewController: UICollectionViewDataSource {
             cell.display(with: value)
         }
     }
+    
+    public func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
+        let threshold = 50.0
+        let contentOffset = collectionView.contentOffset.x
+        let maximumOffset = collectionView.contentSize.width - collectionView.frame.size.width
+        if (maximumOffset - contentOffset <= threshold) && (maximumOffset - contentOffset != -5.0) {
+            screenViewModel.action.hasNextFollowing()
+        }
+    }
 }

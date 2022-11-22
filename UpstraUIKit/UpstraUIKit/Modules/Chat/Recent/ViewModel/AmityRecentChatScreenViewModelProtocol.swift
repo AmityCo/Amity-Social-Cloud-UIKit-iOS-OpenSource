@@ -36,6 +36,7 @@ protocol AmityRecentChatScreenViewModelAction {
     func createChannel(users: [AmitySelectMemberModel])
     func loadMore()
     func createChat(with value: AmityUserModel)
+    func hasNextFollowing()
 }
 
 protocol AmityRecentChatScreenViewModelType: AmityRecentChatScreenViewModelAction, AmityRecentChatScreenViewModelDataSource {
