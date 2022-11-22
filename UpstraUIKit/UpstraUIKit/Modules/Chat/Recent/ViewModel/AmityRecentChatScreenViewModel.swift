@@ -87,6 +87,7 @@ final class AmityRecentChatScreenViewModel: AmityRecentChatScreenViewModelType {
     
     // MARK: - Collection
     private var channelsCollection: AmityCollection<AmityChannel>?
+    private var followingCollection: AmityCollection<AmityFollowRelationship>?
     
     // MARK: - Token
     private var channelsToken: AmityNotificationToken?
@@ -98,7 +99,6 @@ final class AmityRecentChatScreenViewModel: AmityRecentChatScreenViewModelType {
     private let followManager: AmityUserFollowManager
     private var followToken: AmityNotificationToken?
     private var followersList: [AmityFollowRelationship] = []
-    private var followersCollection: AmityCollection<AmityFollowRelationship>?
 
     init(channelType: AmityChannelType) {
         self.channelType = channelType
@@ -295,6 +295,16 @@ extension AmityRecentChatScreenViewModel {
         channelRepository.joinChannel(channelId)
         delegate?.screenViewModelRoute(for: .messageView(channelId: channelId))
     }
+    
+    func hasNextFollowing() {
+        
+        guard let collection = followingCollection else  { return }
+        
+        if collection.hasNext{
+            collection.nextPage()
+            prepareDataSource(error: nil)
+        }
+    }
 
 }
 
@@ -302,13 +312,13 @@ private extension AmityRecentChatScreenViewModel {
     
     func getFollowsList() {
         followManager.clearAmityFollowRelationshipLocalData()
-        followersCollection = followManager.getMyFollowingList(with: .accepted)
+        followingCollection = followManager.getMyFollowingList(with: .accepted)
         
         followToken?.invalidate()
-        followToken = followersCollection?.observe { [weak self] collection, _, error in
+        followToken = followingCollection?.observe { [weak self] collection, _, error in
             //Stop observe when already get data.
             self?.followToken?.invalidate()
-            self?.prepareDataSource(collection: collection, error: error)
+            self?.prepareDataSource(error: error)
         }
     }
     
@@ -398,8 +408,8 @@ private extension AmityRecentChatScreenViewModel {
             print("[AmitySDK - Recent chat] Empty recent message.")
         }
         
-        
     }
+    
 }
 
 private extension AmityRecentChatScreenViewModel {
@@ -408,22 +418,41 @@ private extension AmityRecentChatScreenViewModel {
         return recordAtRow.targetUser
     }
     
-    private func prepareDataSource(collection: AmityCollection<AmityFollowRelationship>, error: Error?) {
+    private func prepareDataSource(error: Error?) {
+        
+        guard let currentCollection = followingCollection else { return }
         
         if let _ = error {
             delegate?.screenViewModelDidGetListFail()
             return
         }
         
-        switch collection.dataStatus {
+        switch currentCollection.dataStatus {
         case .fresh:
             var followers: [AmityFollowRelationship] = []
-            for i in 0..<collection.count() {
-                guard let follow = collection.object(at: i) else { continue }
+            for i in 0..<currentCollection.count() {
+                guard let follow = currentCollection.object(at: i) else { continue }
                 followers.append(follow)
             }
                         
-            followersList = followers.shuffled()
+            if followersList.isEmpty {
+                followersList = followers
+            }
+            
+            delegate?.screenViewModelDidGetListSuccess()
+        case .local:
+            var followers: [AmityFollowRelationship] = []
+            for i in 0..<currentCollection.count() {
+                guard let follow = currentCollection.object(at: i) else { continue }
+                followers.append(follow)
+            }
+            
+            for user in followers {
+                if !( followersList.contains(where: {$0.targetUserId == user.targetUserId}) ) {
+                    followersList.append(user)
+                }
+            }
+            
             delegate?.screenViewModelDidGetListSuccess()
         default: break
         }
