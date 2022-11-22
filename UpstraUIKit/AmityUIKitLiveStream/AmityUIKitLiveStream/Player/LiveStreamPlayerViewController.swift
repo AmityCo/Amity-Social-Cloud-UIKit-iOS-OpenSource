@@ -183,7 +183,7 @@ public class LiveStreamPlayerViewController: AmityViewController {
         statusContainer.backgroundColor = UIColor(red: 1, green: 0.188, blue: 0.353, alpha: 1)
         statusLabel.textColor = .white
         statusLabel.font = AmityFontSet.captionBold
-        statusLabel.text = "LIVE"
+        statusLabel.text = AmityLocalizedStringSet.LiveStream.Live.live.localizedString
         
         // We show "LIVE" static label while playing.
         statusContainer.isHidden = true
