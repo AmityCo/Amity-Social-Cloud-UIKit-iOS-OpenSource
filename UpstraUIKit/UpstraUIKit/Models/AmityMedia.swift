@@ -76,6 +76,7 @@ public class AmityMedia: Equatable, Hashable {
     
     }
     
+
     func loadImage(to imageView: UIImageView, preferredSize: CGSize? = nil) {
         
         switch state {

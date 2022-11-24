@@ -561,6 +561,7 @@ public class AmityPostTextEditorViewController: AmityViewController {
                             }
                             fileUploadFailedDispatchGroup?.leave()
                             self?.updateViewState()
+                            self?.updateConstraints()
                         })
                     case .failure:
                         media.state = .error
@@ -624,6 +625,7 @@ public class AmityPostTextEditorViewController: AmityViewController {
                         }
                         dispatchGroup?.leave()
                         self?.updateViewState()
+                        self?.updateConstraints()
                     })
                 }
             default:
@@ -860,6 +862,8 @@ public class AmityPostTextEditorViewController: AmityViewController {
                 let imageData = try Data(contentsOf: localURL)
                 guard let image = UIImage(data: imageData) else { continue }
                 let media = AmityMedia(state: .image(image), type: .image)
+                media.localUrl = localURL
+                
                 newMedias.append(media)
             } catch {
                 print("[Amity] Can't get image from URL.")
@@ -875,6 +879,20 @@ public class AmityPostTextEditorViewController: AmityViewController {
         for localURL in galleryImageURLArray {
             let media = AmityMedia(state: .localURL(url: localURL), type: .video)
             media.localUrl = localURL
+            
+            // Generate thumbnail
+            let asset = AVAsset(url: localURL)
+            let assetImageGenerator = AVAssetImageGenerator(asset: asset)
+            assetImageGenerator.appliesPreferredTrackTransform = true
+            let time = CMTime(seconds: 1.0, preferredTimescale: 1)
+            var actualTime: CMTime = CMTime.zero
+            do {
+                let imageRef = try assetImageGenerator.copyCGImage(at: time, actualTime: &actualTime)
+                media.generatedThumbnailImage = UIImage(cgImage: imageRef)
+            } catch {
+                print("Unable to generate thumbnail image for kUTTypeMovie.")
+            }
+            
             newMedias.append(media)
         }
         
