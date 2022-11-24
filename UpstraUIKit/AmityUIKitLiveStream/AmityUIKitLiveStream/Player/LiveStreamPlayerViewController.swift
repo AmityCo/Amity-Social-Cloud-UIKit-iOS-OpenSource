@@ -77,6 +77,7 @@ public class LiveStreamPlayerViewController: AmityViewController {
     var subscriptionManager: AmityTopicSubscription?
     var commentSet: Set<String> = []
     var storedComment: [AmityCommentModel] = []
+    var isSameAsStreamer: Bool = false
         
     /// This sample app uses AmityVideoPlayer to play live videos.
     /// The player consumes the stream instance, and works automatically.
@@ -212,7 +213,21 @@ public class LiveStreamPlayerViewController: AmityViewController {
         
         renderGestureView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(playerContainerDidTap)))
         
-        postCommentButton.isHidden = true
+        guard let post = amityPost else {return}
+        let streamerId = AmityPostModel(post: post).postedUserId
+        if streamerId == AmityUIKitManager.currentUserId {
+            isSameAsStreamer = true
+        } else {
+            isSameAsStreamer = false
+        }
+        
+        if isSameAsStreamer {
+            postCommentButton.isHidden = false
+            chatButton.isHidden = true
+        } else {
+            postCommentButton.isHidden = true
+            chatButton.isHidden = false
+        }
     }
     
     func setupTableView(){
@@ -651,12 +666,14 @@ extension LiveStreamPlayerViewController: AmityTextViewDelegate {
     
     public func textViewDidChange(_ textView: AmityTextView) {
         if textView == commentTextView {
-            if textView.text == "" {
-                postCommentButton.isHidden = true
-                chatButton.isHidden = false
-            } else {
-                postCommentButton.isHidden = false
-                chatButton.isHidden = true
+            if !isSameAsStreamer {
+                if textView.text == "" {
+                    postCommentButton.isHidden = true
+                    chatButton.isHidden = false
+                } else {
+                    postCommentButton.isHidden = false
+                    chatButton.isHidden = true
+                }
             }
             
             let contentSize = textView.sizeThatFits(textView.bounds.size)
