@@ -92,7 +92,7 @@ private extension AmityRecentChatViewController {
         let addImage = UIImage(named: "icon_chat_contact", in: AmityUIKitManager.bundle, compatibleWith: nil)
         let barButton = UIBarButtonItem(image: addImage, style: .plain, target: self, action: #selector(didClickContact))
         barButton.tintColor = .black
-//        navigationItem.rightBarButtonItem = barButton
+        navigationItem.rightBarButtonItem = barButton
         setupTableView()
         setupCollectionView()
         
