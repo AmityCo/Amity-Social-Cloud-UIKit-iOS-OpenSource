@@ -51,7 +51,6 @@ final class AmityFeedScreenViewModel: AmityFeedScreenViewModelType {
         self.pollRepository = AmityPollRepository(client: AmityUIKitManagerInternal.shared.client)
         self.communityRepository = AmityCommunityRepository(client: AmityUIKitManagerInternal.shared.client)
         self.userRepository = AmityUserRepository(client: AmityUIKitManagerInternal.shared.client)
-
     }
     
 }

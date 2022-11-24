@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import SwiftUI
 
 public extension String {
     /// Apply to bold text
@@ -63,6 +64,40 @@ public extension String {
         let boundingBox = self.boundingRect(with: constraintRect, options: .usesLineFragmentOrigin, attributes: [NSAttributedString.Key.font: font], context: nil)
 
         return ceil(boundingBox.width)
+    }
+    
+    func removeRegexMatches() -> String {
+        if AmityUIKitManagerInternal.shared.jsonRegex.ios {
+            let pattern = #"(?:\+?66[689]{1}|0[689]{1})(?:[\-\s0-9]{1}.*)\d"#
+            let regex = try! NSRegularExpression(pattern: pattern, options: .anchorsMatchLines)
+            let stringRange = NSRange(location: 0, length: self.utf16.count)
+            let matches = regex.matches(in: self, range: stringRange)
+            var result: [[String]] = []
+            for match in matches {
+                var groups: [String] = []
+                let string = (self as NSString).substring(with: match.range)
+                groups.append(string)
+                if !groups.isEmpty {
+                    result.append(groups)
+                }
+            }
+            
+            var textString: String = self
+            if !result.isEmpty {
+                for value in result {
+                    for text in value {
+                        if self.contains(text) {
+                            let stringMarking = text.dropLast(4) + "xxxx"
+                            textString = textString.replacingOccurrences(of: text, with: stringMarking)
+                        }
+                    }
+                }
+            }
+                        
+            return textString
+        } else {
+            return self
+        }
     }
     
 }
