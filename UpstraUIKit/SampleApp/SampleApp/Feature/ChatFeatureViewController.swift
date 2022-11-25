@@ -156,25 +156,9 @@ extension ChatFeatureViewController: UITableViewDelegate {
                 }
             }
         case .getContact:
-            AmityChatHandler.shared.syncContact(userId: AmityUIKitManager.currentUserId) { result in
-                var alertText = ""
-                switch result {
-                case .success(let phoneArray):
-                    DispatchQueue.main.async {
-                        let vc = self.storyboard?.instantiateViewController(withIdentifier: "ContactSyncTableViewController") as! ContactSyncTableViewController
-                        vc.contactData = phoneArray
-                        self.navigationController?.pushViewController(vc, animated: true)
-                    }
-                case .failure(let error):
-                    alertText = "\(error)"
-                    DispatchQueue.main.async {
-                        let alertVC = UIAlertController(title: "Sync Contact", message: alertText, preferredStyle: .alert)
-                        alertVC.addAction(UIAlertAction(title: "OK", style: .default))
-                        self.present(alertVC, animated: true)
-                    }
-                }
-                
-            }
+            
+            let vc = self.storyboard?.instantiateViewController(withIdentifier: "ContactSyncTableViewController") as! ContactSyncTableViewController
+            self.navigationController?.pushViewController(vc, animated: true)
         }
     }
 }

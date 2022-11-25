@@ -25,6 +25,27 @@ class ContactSyncTableViewController: UIViewController, UITableViewDelegate, UIT
         
         tableView.dataSource = self
         tableView.delegate = self
+        
+        AmityChatHandler.shared.syncContact(userId: AmityUIKitManager.currentUserId) { result in
+            
+            var alertText = ""
+            switch result {
+            case .success(let phoneArray):
+                DispatchQueue.main.async {
+                    self.contactData.append(contentsOf: phoneArray)
+                    self.tableView.reloadData()
+                }
+            case .failure(let error):
+                alertText = "\(error)"
+                DispatchQueue.main.async {
+                    let alertVC = UIAlertController(title: "Sync Contact", message: alertText, preferredStyle: .alert)
+                    alertVC.addAction(UIAlertAction(title: "OK", style: .default))
+                    self.present(alertVC, animated: true)
+                }
+            }
+            
+        }
+        
     }
 
     // MARK: - Table view data source
