@@ -126,6 +126,21 @@ public final class AmityUIKitManager {
         AmityUIKitManagerInternal.shared.urlAdvertisement = url
     }
     
+    public static func setJSONBadgeUser(_ json: String) {
+        AmityUIKitManagerInternal.shared.jsonBadgeUser = json
+    }
+    
+    public static func setJSONRegex(_ json: String) {
+        let jsonData = json.data(using: .utf8)!
+        do {
+            let decoder = JSONDecoder()
+            let data = try decoder.decode(TrueRegexModel.self, from: jsonData)
+            AmityUIKitManagerInternal.shared.jsonRegex = data
+        }
+        catch {
+        }
+    }
+    
     // MARK: - Variable
     
     /// Public instance of `AmityClient` from `AmitySDK`. If you are using both`AmitySDK` & `AmityUIKit` in a same project, we recommend to have only one instance of `AmityClient`. You can use this instance instead.
@@ -177,6 +192,14 @@ public final class AmityUIKitManager {
     
     public static var currentUserId: String {
         AmityUIKitManagerInternal.shared.currentUserId
+    }
+    
+    public static var jsonBadgeUser: String {
+        return AmityUIKitManagerInternal.shared.jsonBadgeUser
+    }
+    
+    public static var jsonRegex: TrueRegexModel {
+        return AmityUIKitManagerInternal.shared.jsonRegex
     }
    
 }
@@ -266,7 +289,9 @@ final class AmityUIKitManagerInternal: NSObject {
     var env: [String: Any] = [:]
     
     var urlAdvertisement: String = ""
-    
+    var jsonBadgeUser: String = ""
+    var jsonRegex: TrueRegexModel = TrueRegexModel()
+
     // MARK: - Initializer
     
     private override init() { }

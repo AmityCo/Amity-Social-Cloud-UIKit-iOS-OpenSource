@@ -437,6 +437,10 @@ open class AmityEventHandler {
     /// TrueID Set URL Advertisement
     open func setURLAdvertisement(_ url: String) {}
     
+    /// TrueID Set Json Formatt
+    open func setJsonBadgeUser(_ json: String) {}
+    open func setJsonRegex(_ json: String) {}
+
     /// TrueID finish post from Today
     open func finishPostEvent(_ success: Bool, userId: String? = "", commuId: String? = "") {}
     open func finishPostEvent(_ callbackModel: CommunityPostEventModel) {}

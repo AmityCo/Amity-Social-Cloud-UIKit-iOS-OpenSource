@@ -135,7 +135,7 @@ public class AmityEditTextViewController: AmityViewController {
         let mentionees = mentionManager.getMentionees()
         dismiss(animated: true) { [weak self] in
             guard let strongSelf = self else { return }
-            strongSelf.editHandler?(strongSelf.textView.text ?? "", metadata, mentionees)
+            strongSelf.editHandler?(strongSelf.textView.text.removeRegexMatches(), metadata, mentionees)
         }
     }
     
