@@ -19,13 +19,16 @@
                 <outlet property="labelContainerView" destination="hZ6-HJ-hVz" id="it3-aK-Syp"/>
                 <outlet property="leadingAvatarImageViewConstraint" destination="QQS-Sp-FlV" id="8ej-7a-Hj3"/>
                 <outlet property="likeButton" destination="cdk-6j-3dY" id="QwM-FZ-zrU"/>
+                <outlet property="likeButtonWidth" destination="7Jx-jH-dLC" id="OWs-iy-hPe"/>
                 <outlet property="optionButton" destination="pLS-uH-QHV" id="0Mp-Zi-52t"/>
                 <outlet property="replyButton" destination="qnc-ja-fPs" id="bB9-Bw-oVR"/>
+                <outlet property="replyButtonWidth" destination="KCy-hr-8Zx" id="S1W-lI-vJ0"/>
                 <outlet property="separatorLineView" destination="cA7-hE-AlO" id="oAK-RT-Hqo"/>
                 <outlet property="timeLabel" destination="a9t-KZ-yaY" id="2Gd-xV-vnr"/>
                 <outlet property="titleLabel" destination="W8H-Za-fho" id="thL-pp-Q6b"/>
                 <outlet property="topAvatarImageViewConstraint" destination="l5y-tf-gdR" id="cMv-3y-6LR"/>
                 <outlet property="viewReplyButton" destination="dLv-l7-hxu" id="wcu-WL-LG7"/>
+                <outlet property="viewReplyButtonWidth" destination="Vce-IC-HMH" id="DBR-Qp-Th0"/>
             </connections>
         </placeholder>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
@@ -92,6 +95,9 @@
                             <subviews>
                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="cdk-6j-3dY" customClass="AmityButton" customModule="AmityUIKit" customModuleProvider="target">
                                     <rect key="frame" x="0.0" y="0.0" width="45" height="22"/>
+                                    <constraints>
+                                        <constraint firstAttribute="width" constant="45" id="7Jx-jH-dLC"/>
+                                    </constraints>
                                     <fontDescription key="fontDescription" type="system" pointSize="13"/>
                                     <color key="tintColor" red="0.090196078430000007" green="0.094117647060000004" blue="0.10980392160000001" alpha="1" colorSpace="calibratedRGB"/>
                                     <state key="normal" title="Liked" image="icon_like">
@@ -100,6 +106,9 @@
                                 </button>
                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="qnc-ja-fPs" userLabel="Reply" customClass="AmityButton" customModule="AmityUIKit" customModuleProvider="target">
                                     <rect key="frame" x="53" y="0.0" width="48" height="22"/>
+                                    <constraints>
+                                        <constraint firstAttribute="width" constant="48" id="KCy-hr-8Zx"/>
+                                    </constraints>
                                     <fontDescription key="fontDescription" type="system" pointSize="13"/>
                                     <color key="tintColor" red="0.090196078430000007" green="0.094117647060000004" blue="0.10980392160000001" alpha="1" colorSpace="calibratedRGB"/>
                                     <state key="normal" title="Reply" image="icon_reply">
@@ -123,6 +132,7 @@
                             <rect key="frame" x="0.0" y="34" width="113" height="28"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="28" id="HVJ-YR-zj5"/>
+                                <constraint firstAttribute="width" constant="113" id="Vce-IC-HMH"/>
                             </constraints>
                             <state key="normal" title="View Reply" image="icon_arrow_right">
                                 <color key="titleColor" systemColor="labelColor"/>
