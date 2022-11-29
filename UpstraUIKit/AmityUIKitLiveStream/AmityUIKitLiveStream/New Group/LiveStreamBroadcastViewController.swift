@@ -820,7 +820,7 @@ extension LiveStreamBroadcastViewController {
         if commentTextView.text != "" || commentTextView.text == nil {
             guard let currentText = commentTextView.text else { return }
             self.commentTextView.text = ""
-            liveCommentToken = commentRepository.createComment(forReferenceId: currentPost.postId, referenceType: .post, parentId: currentPost.parentPostId, text: currentText.removeRegexMatches()).observe { liveObject, error in
+            liveCommentToken = commentRepository.createComment(forReferenceId: currentPost.postId, referenceType: .post, parentId: currentPost.parentPostId, text: currentText.removeRegexMatches(type: "livestream")).observe { liveObject, error in
                 if let error = error {
                     if error.isAmityErrorCode(.banWordFound) {
                         print("I found ban word. \(liveObject.object?.commentId ?? "")")

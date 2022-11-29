@@ -787,7 +787,7 @@ extension LiveStreamPlayerViewController {
             self.commentTextView.text = ""
             self.chatButton.isHidden = false
             self.postCommentButton.isHidden = true
-            liveCommentToken = commentRepository?.createComment(forReferenceId: currentPost.postId, referenceType: .post, parentId: currentPost.parentPostId, text: currentText.removeRegexMatches()).observeOnce { liveObject, error in
+            liveCommentToken = commentRepository?.createComment(forReferenceId: currentPost.postId, referenceType: .post, parentId: currentPost.parentPostId, text: currentText.removeRegexMatches(type: "livestream")).observeOnce { liveObject, error in
                 
                 if let error = error {
                     if error.isAmityErrorCode(.banWordFound) {
