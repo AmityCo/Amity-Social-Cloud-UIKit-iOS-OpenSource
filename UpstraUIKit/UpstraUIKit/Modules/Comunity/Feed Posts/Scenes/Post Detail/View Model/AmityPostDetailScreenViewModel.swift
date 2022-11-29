@@ -323,36 +323,19 @@ extension AmityPostDetailScreenViewModel {
     func createComment(withText text: String, parentId: String?, metadata: [String: Any]?, mentionees: AmityMentioneesBuilder?) {
         commentController.createComment(withReferenceId: postId, referenceType: .post, parentId: parentId, text: text, metadata: metadata, mentionees: mentionees) { [weak self] (comment, error) in
             guard let strongSelf = self else { return }
-            // check if the recent comment is contains banned word
-            // if containts, delete the particular comment
-            //            if let comment = comment, AmityError(error: error) == .bannedWord {
-            //                strongSelf.deleteComment(with: AmityCommentModel(comment: comment))
-            //                strongSelf.fetchComments()
-            //                strongSelf.delegate?.screenViewModel(strongSelf, didFinishWithError: .bannedWord)
-            //            } else {
-            //                strongSelf.delegate?.screenViewModelDidCreateComment(strongSelf)
-            //            }
-            
-            if let comment = comment {
-                if let error = error {
-                    let amityError = AmityError(error: error)
-                    strongSelf.deleteComment(with: AmityCommentModel(comment: comment))
-                    strongSelf.fetchComments()
-                    strongSelf.delegate?.screenViewModel(strongSelf, didFinishWithError: amityError ?? .unknown)
-                } else {
-                    strongSelf.fetchComments()
+            // Need to check SDK implementation.
+            // found an issue where the callback is invoked in the realm write transaction.
+            // so just make a workaround by dispatching it out of the transaction scope.
+            DispatchQueue.main.async {
+                if AmityError(error: error) == .bannedWord {
+                    // check if the recent comment is contains banned word
+                    // if containts, delete the particular comment
+                    strongSelf.delegate?.screenViewModel(strongSelf, didFinishWithError: .bannedWord)
+                } else if let comment = comment {
                     strongSelf.delegate?.screenViewModelDidCreateComment(strongSelf, comment: AmityCommentModel(comment: comment))
+                } else {
+                    strongSelf.delegate?.screenViewModel(strongSelf, didFinishWithError: .unknown)
                 }
-            }
-            
-            if AmityError(error: error) == .bannedWord {
-                // check if the recent comment is contains banned word
-                // if containts, delete the particular comment
-                strongSelf.delegate?.screenViewModel(strongSelf, didFinishWithError: .bannedWord)
-            } else if let comment = comment {
-                strongSelf.delegate?.screenViewModelDidCreateComment(strongSelf, comment: AmityCommentModel(comment: comment))
-            } else {
-                strongSelf.delegate?.screenViewModel(strongSelf, didFinishWithError: .unknown)
             }
         }
     }

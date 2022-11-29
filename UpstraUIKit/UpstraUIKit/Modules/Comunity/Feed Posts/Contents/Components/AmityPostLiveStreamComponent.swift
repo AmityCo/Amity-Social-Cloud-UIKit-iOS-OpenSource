@@ -85,10 +85,10 @@ public struct AmityPostLiveStreamComponent: AmityPostComposable {
             return cell
         case .commentPreview:
             let cell: AmityPostPreviewCommentTableViewCell = tableView.dequeueReusableCell(for: indexPath)
-            cell.display(
-                post: post,
-                comment: post.getComment(at: indexPath, totalComponent: contentsDataSource.count)
-            )
+            let comment = post.getComment(at: indexPath, totalComponent: contentsDataSource.count)
+            let isExpanded = post.commentExpandedIds.contains(comment?.id ?? "absolutely-cannot-found-xc")
+            cell.setIsExpanded(isExpanded)
+            cell.display(post: post, comment: comment)
             return cell
         case .viewAllComment:
             let cell: AmityPostViewAllCommentsTableViewCell = tableView.dequeueReusableCell(for: indexPath)

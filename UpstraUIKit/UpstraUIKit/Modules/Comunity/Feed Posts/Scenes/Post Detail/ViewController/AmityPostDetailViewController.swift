@@ -30,7 +30,7 @@ open class AmityPostDetailViewController: AmityViewController {
     private var screenViewModel: AmityPostDetailScreenViewModelType
     private var selectedIndexPath: IndexPath?
     private var referenceId: String?
-    private var expandedIds: [String] = []
+    private var expandedIds: Set<String> = []
     private var showReplyIds: [String] = []
     private var mentionManager: AmityMentionManager?
     private var isFromEditTextViewController: Bool = false
@@ -292,6 +292,93 @@ extension AmityPostDetailViewController: AmityPostTableViewDelegate {
         if tableView.isBottomReached {
             screenViewModel.loadMoreComments()
         }
+        
+        let viewModel = screenViewModel.item(at: indexPath)
+        switch viewModel {
+        case .post(let postComponent):
+            var cell: UITableViewCell
+            if let clientComponent = tableView.feedDataSource?.getUIComponentForPost(post: postComponent._composable.post, at: indexPath.section) {
+                cell = clientComponent.getComponentCell(tableView, at: indexPath)
+            } else {
+                cell = postComponent.getComponentCell(tableView, at: indexPath)
+            }
+            (cell as? AmityPostHeaderProtocol)?.delegate = postHeaderProtocolHandler
+            (cell as? AmityPostFooterProtocol)?.delegate = postFooterProtocolHandler
+            (cell as? AmityPostProtocol)?.delegate = postProtocolHandler
+        case .comment(let comment):
+            if comment.isDeleted {
+                let _cell = cell as! AmityPostDetailDeletedTableViewCell
+                _cell.configure(deletedAt: comment.updatedAt)
+            } else {
+                let _cell = cell as! AmityCommentTableViewCell
+                let layout = AmityCommentView.Layout(
+                    type: .comment,
+                    isExpanded: expandedIds.contains(comment.id),
+                    shouldActionShow: screenViewModel.post?.isCommentable ?? false,
+                    shouldLineShow: viewModel.isReplyType
+                )
+                _cell.configure(with: comment, layout: layout)
+                _cell.labelDelegate = self
+                _cell.actionDelegate = self
+            }
+            
+        case .replyComment(let comment):
+            if comment.isDeleted {
+                return
+            }
+            let _cell = cell as! AmityCommentTableViewCell
+            let layout = AmityCommentView.Layout(
+                type: .reply,
+                isExpanded: expandedIds.contains(comment.id),
+                shouldActionShow: screenViewModel.post?.isCommentable ?? false,
+                shouldLineShow: viewModel.isReplyType
+            )
+            _cell.configure(with: comment, layout: layout)
+            _cell.labelDelegate = self
+            _cell.actionDelegate = self
+            
+        case .loadMoreReply:
+            break
+        }
+        
+    }
+    
+    func tableView(_ tableView: AmityPostTableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        let viewModel = screenViewModel.item(at: indexPath)
+        switch viewModel {
+        case .post, .loadMoreReply:
+            return UITableView.automaticDimension
+        case .comment(let comment):
+            if comment.isDeleted {
+                return AmityPostDetailDeletedTableViewCell.height
+            }
+            // Although AmityCommentTableViewCell is a self-sizing cell.
+            // Due to the layout glitch, we need to calculate cell height manually here.
+            let layout = AmityCommentView.Layout(
+                type: .comment,
+                isExpanded: expandedIds.contains(comment.id),
+                shouldActionShow: screenViewModel.post?.isCommentable ?? false,
+                shouldLineShow: viewModel.isReplyType
+            )
+            return AmityCommentTableViewCell.height(with: comment, layout: layout, boundingWidth: tableView.bounds.width)
+        case .replyComment(let comment):
+            if comment.isDeleted {
+                return AmityPostDetailDeletedTableViewCell.height
+            }
+            // Although AmityCommentTableViewCell is a self-sizing cell.
+            // Due to the layout glitch, we need to calculate cell height manually here.
+            let layout = AmityCommentView.Layout(
+                type: .reply,
+                isExpanded: expandedIds.contains(comment.id),
+                shouldActionShow: screenViewModel.post?.isCommentable ?? false,
+                shouldLineShow: viewModel.isReplyType
+            )
+            return AmityCommentTableViewCell.height(with: comment, layout: layout, boundingWidth: tableView.bounds.width)
+        }
+    }
+    
+    func tableView(_ tableView: AmityPostTableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
+        UITableView.automaticDimension
     }
     
 }
@@ -317,23 +404,14 @@ extension AmityPostDetailViewController: AmityPostTableViewDataSource {
             } else {
                 cell = postComponent.getComponentCell(tableView, at: indexPath)
             }
-            (cell as? AmityPostHeaderProtocol)?.delegate = postHeaderProtocolHandler
-            (cell as? AmityPostFooterProtocol)?.delegate = postFooterProtocolHandler
-            (cell as? AmityPostProtocol)?.delegate = postProtocolHandler
             return cell
         case .comment(let comment):
             if comment.isDeleted {
                 let cell: AmityPostDetailDeletedTableViewCell = tableView.dequeueReusableCell(for: indexPath)
-                cell.configure(deletedAt: comment.updatedAt)
                 return cell
             }
             
             let cell: AmityCommentTableViewCell = tableView.dequeueReusableCell(for: indexPath)
-            let shouldActionShow = screenViewModel.post?.isCommentable ?? false
-            let layout: AmityCommentViewLayout = .comment(contentExpanded: false, shouldActionShow: shouldActionShow, shouldLineShow: viewModel.isReplyType)
-            cell.configure(with: comment, layout: layout)
-            cell.labelDelegate = self
-            cell.actionDelegate = self
             return cell
         case .replyComment(let comment):
             if comment.isDeleted {
@@ -341,11 +419,6 @@ extension AmityPostDetailViewController: AmityPostTableViewDataSource {
                 return cell
             }
             let cell: AmityCommentTableViewCell = tableView.dequeueReusableCell(for: indexPath)
-            let shouldActionShow = screenViewModel.post?.isCommentable ?? false
-            let layout: AmityCommentViewLayout = .reply(contentExpanded: false, shouldActionShow: shouldActionShow, shouldLineShow: viewModel.isReplyType)
-            cell.configure(with: comment, layout: layout)
-            cell.labelDelegate = self
-            cell.actionDelegate = self
             return cell
         case .loadMoreReply:
             let cell: AmityViewMoreReplyTableViewCell = tableView.dequeueReusableCell(for: indexPath)
@@ -640,36 +713,49 @@ extension AmityPostDetailViewController: AmityExpandableLabelDelegate {
     }
     
     public func willExpandLabel(_ label: AmityExpandableLabel) {
-        tableView.beginUpdates()
-    }
+            let point = label.convert(CGPoint.zero, to: tableView)
+            
+            if let indexPath = tableView.indexPathForRow(at: point) as IndexPath? {
+                switch screenViewModel.dataSource.item(at: indexPath) {
+                case .comment(let comment), .replyComment(let comment):
+                    expandedIds.insert(comment.id)
+                default:
+                    break
+                }
+                let delayToScroll: DispatchTime = .now() + .milliseconds(300)
+                DispatchQueue.main.asyncAfter(deadline: delayToScroll) { [weak self] in
+                    self?.tableView.scrollToRow(at: indexPath, at: .top, animated: true)
+                }
+                
+            }
+            tableView.beginUpdates()
+        }
     
     public func didExpandLabel(_ label: AmityExpandableLabel) {
-        let point = label.convert(CGPoint.zero, to: tableView)
-        if let indexPath = tableView.indexPathForRow(at: point) as IndexPath?,
-           case .comment(let comment) = screenViewModel.dataSource.item(at: indexPath) {
-            expandedIds.append(comment.id)
-            DispatchQueue.main.async { [weak self] in
-                self?.tableView.scrollToRow(at: indexPath, at: .top, animated: true)
-            }
-        }
         tableView.endUpdates()
     }
     
     public func willCollapseLabel(_ label: AmityExpandableLabel) {
+        let point = label.convert(CGPoint.zero, to: tableView)
+        
+        if let indexPath = tableView.indexPathForRow(at: point) as IndexPath? {
+            switch screenViewModel.dataSource.item(at: indexPath) {
+            case .comment(let comment), .replyComment(let comment):
+                expandedIds.remove(comment.id)
+            default:
+                break
+            }
+            let delayToScroll: DispatchTime = .now() + .milliseconds(300)
+            DispatchQueue.main.asyncAfter(deadline: delayToScroll) { [weak self] in
+                self?.tableView.scrollToRow(at: indexPath, at: .top, animated: true)
+            }
+        }
         tableView.beginUpdates()
     }
     
     public func didCollapseLabel(_ label: AmityExpandableLabel) {
-        let point = label.convert(CGPoint.zero, to: tableView)
-        if let indexPath = tableView.indexPathForRow(at: point) as IndexPath?,
-           case .comment(let comment) = screenViewModel.dataSource.item(at: indexPath) {
-            expandedIds = expandedIds.filter({ $0 != comment.id })
-            DispatchQueue.main.async { [weak self] in
-                self?.tableView.scrollToRow(at: indexPath, at: .top, animated: true)
-            }
-        }
-        tableView.endUpdates()
-    }
+         tableView.endUpdates()
+     }
     
     public func didTapOnMention(_ label: AmityExpandableLabel, withUserId userId: String) {
         AmityEventHandler.shared.userDidTap(from: self, userId: userId)
