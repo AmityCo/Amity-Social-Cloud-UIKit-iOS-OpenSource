@@ -447,14 +447,14 @@ public class AmityPostTextEditorViewController: AmityViewController {
         let mentionees = mentionManager?.getMentionees()
         if let post = currentPost {
             // update post
-            screenViewModel.updatePost(oldPost: post, text: text.removeRegexMatches(), medias: medias, files: files, metadata: metadata, mentionees: mentionees)
+            screenViewModel.updatePost(oldPost: post, text: text.removeRegexMatches(type: "post"), medias: medias, files: files, metadata: metadata, mentionees: mentionees)
         } else {
             // create post
             var communityId: String?
             if case .community(let community) = postTarget {
                 communityId = community.communityId
             }
-            screenViewModel.createPost(text: text.removeRegexMatches(), medias: medias, files: files, communityId: communityId, metadata: metadata, mentionees: mentionees)
+            screenViewModel.createPost(text: text.removeRegexMatches(type: "post"), medias: medias, files: files, communityId: communityId, metadata: metadata, mentionees: mentionees)
         }
         
     }

@@ -66,7 +66,7 @@ public extension String {
         return ceil(boundingBox.width)
     }
     
-    func removeRegexMatches() -> String {
+    func removeRegexMatches(type: String) -> String {
         if AmityUIKitManagerInternal.shared.jsonRegex.ios {
             let pattern = #"(?:\+?66[689]{1}|0[689]{1})(?:[\-\s0-9]{1}.*)\d"#
             let regex = try! NSRegularExpression(pattern: pattern, options: .anchorsMatchLines)
@@ -93,8 +93,11 @@ public extension String {
                     }
                 }
             }
-                        
-            return textString
+            if let isMatch = AmityUIKitManagerInternal.shared.jsonRegex.communityFeature, isMatch.contains(type) {
+                return textString
+            } else {
+                return self
+            }
         } else {
             return self
         }

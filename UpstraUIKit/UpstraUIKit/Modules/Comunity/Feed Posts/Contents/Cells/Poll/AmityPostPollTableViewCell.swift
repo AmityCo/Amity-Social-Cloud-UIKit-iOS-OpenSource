@@ -62,9 +62,9 @@ final public class AmityPostPollTableViewCell: UITableViewCell, Nibbable, AmityP
         guard let poll = post.poll else { return }
         if let metadata = post.metadata, let mentionees = post.mentionees {
             let attributes = AmityMentionManager.getAttributes(fromText: poll.question, withMetadata: metadata, mentionees: mentionees)
-            titlePollLabel.setText(poll.question.removeRegexMatches(), withAttributes: attributes)
+            titlePollLabel.setText(poll.question, withAttributes: attributes)
         } else {
-            titlePollLabel.text = poll.question.removeRegexMatches()
+            titlePollLabel.text = poll.question
         }
         
         var pollStatus: String = AmityLocalizedStringSet.Poll.Option.openForVoting.localizedString
