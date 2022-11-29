@@ -29,6 +29,7 @@ public struct AmityCommentModel {
     public let metadata: [String: Any]?
     public let mentionees: [AmityMentionees]?
     public let role: [String]
+    public let syncState: AmitySyncState
     
     // Due to AmityChat 4.0.0 requires comment object for editing and deleting
     // So, this is a workaroud for passing the original object.
@@ -54,6 +55,7 @@ public struct AmityCommentModel {
         metadata = comment.metadata
         mentionees = comment.mentionees
         role = comment.user?.roles ?? []
+        syncState = comment.syncState
     }
     
     var isChildrenExisted: Bool {

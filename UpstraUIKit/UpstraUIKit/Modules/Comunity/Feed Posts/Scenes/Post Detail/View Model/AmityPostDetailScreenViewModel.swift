@@ -127,6 +127,10 @@ extension AmityPostDetailScreenViewModel {
         for model in comments {
             var commentsModels = [PostDetailViewModel]()
             
+            if model.syncState == .error {
+                continue
+            }
+            
             // parent comment
             commentsModels.append(.comment(model))
             
@@ -323,22 +327,22 @@ extension AmityPostDetailScreenViewModel {
     func createComment(withText text: String, parentId: String?, metadata: [String: Any]?, mentionees: AmityMentioneesBuilder?) {
         commentController.createComment(withReferenceId: postId, referenceType: .post, parentId: parentId, text: text, metadata: metadata, mentionees: mentionees) { [weak self] (comment, error) in
             guard let strongSelf = self else { return }
-            // check if the recent comment is contains banned word
-            // if containts, delete the particular comment
-            //            if let comment = comment, AmityError(error: error) == .bannedWord {
-            //                strongSelf.deleteComment(with: AmityCommentModel(comment: comment))
-            //                strongSelf.fetchComments()
-            //                strongSelf.delegate?.screenViewModel(strongSelf, didFinishWithError: .bannedWord)
-            //            } else {
-            //                strongSelf.delegate?.screenViewModelDidCreateComment(strongSelf)
-            //            }
             
             if let comment = comment {
                 if let error = error {
                     let amityError = AmityError(error: error)
-                    strongSelf.deleteComment(with: AmityCommentModel(comment: comment))
-                    strongSelf.fetchComments()
-                    strongSelf.delegate?.screenViewModel(strongSelf, didFinishWithError: amityError ?? .unknown)
+                    
+                    // check if the recent comment is contains banned word
+                    // if containts, delete the particular comment
+                    if amityError == .bannedWord {
+                        strongSelf.deleteComment(with: AmityCommentModel(comment: comment))
+                        strongSelf.fetchComments()
+                        strongSelf.delegate?.screenViewModel(strongSelf, didFinishWithError: .bannedWord)
+                    } else {
+                        strongSelf.deleteComment(with: AmityCommentModel(comment: comment))
+                        strongSelf.fetchComments()
+                        strongSelf.delegate?.screenViewModel(strongSelf, didFinishWithError: amityError ?? .unknown)
+                    }
                 } else {
                     strongSelf.fetchComments()
                     strongSelf.delegate?.screenViewModelDidCreateComment(strongSelf, comment: AmityCommentModel(comment: comment))
@@ -362,6 +366,7 @@ extension AmityPostDetailScreenViewModel {
             guard let strongSelf = self else { return }
             if success {
                 strongSelf.delegate?.screenViewModelDidDeleteComment(strongSelf)
+                strongSelf.fetchComments()
             } else {
                 strongSelf.delegate?.screenViewModel(strongSelf, didFinishWithError: AmityError(error: error) ?? .unknown)
             }

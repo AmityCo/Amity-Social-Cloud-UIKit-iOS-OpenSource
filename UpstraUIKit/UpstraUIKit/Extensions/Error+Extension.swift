@@ -8,7 +8,7 @@
 
 import Foundation
 
-enum AmityError: Int, Error {
+public enum AmityError: Int, Error {
     
     case unknown = 99999
     case noPermission = 40301
