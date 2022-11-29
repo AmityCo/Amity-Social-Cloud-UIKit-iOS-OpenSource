@@ -54,7 +54,7 @@ public struct AmityLocalizedStringSet {
         static let album = "general_album"
         public static let anonymous = "general_anonymous"
         static let general = "general_general"
-        static let ok = "general_ok"
+        public static let ok = "general_ok"
         static let search = "general_search"
         static let imageGallery = "general_image_gallery"
         static let uploadImage = "general_upload_image"
@@ -606,14 +606,14 @@ public struct AmityLocalizedStringSet {
     // MARK: - Error Handling
     public struct ErrorHandling {
         public static let errorTitle = "error_title"
-        static let errorMessageTitle = "error_message_title"
-        static let errorMessagePostBanword = "error_message_post_banword"
-        static let errorMessageCommentBanword = "error_message_comment_banword"
-        static let errorMessageUserIsBanned = "error_message_user_is_banned"
-        static let errorMessageLinkNotAllowed = "error_message_link_not_allowed"
-        static let errorMessageLinkNotAllowedDetail = "error_message_link_not_allowed_detail"
-        static let errorMessageDefault = "error_message_default"
-        static let errorMessageConnectionError = "error_message_connection_error"
+        public static let errorMessageTitle = "error_message_title"
+        public static let errorMessagePostBanword = "error_message_post_banword"
+        public static let errorMessageCommentBanword = "error_message_comment_banword"
+        public static let errorMessageUserIsBanned = "error_message_user_is_banned"
+        public static let errorMessageLinkNotAllowed = "error_message_link_not_allowed"
+        public static let errorMessageLinkNotAllowedDetail = "error_message_link_not_allowed_detail"
+        public static let errorMessageDefault = "error_message_default"
+        public static let errorMessageConnectionError = "error_message_connection_error"
     }
     
     // MARK: - Share from gallery

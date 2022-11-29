@@ -742,9 +742,22 @@ extension LiveStreamPlayerViewController {
             if error != nil {
                 print("[RTE]Error in get comment: \(error?.localizedDescription)")
             }
-            let comments: [AmityCommentModel] = collection.allObjects().map(AmityCommentModel.init)
-            print("[RTE]Comment : \(comments)")
+            
+            //Get comment from sdk
+            var comments: [AmityCommentModel] = collection.allObjects().map(AmityCommentModel.init)
+            
+            //Remove error comment ex. ban word's comment
+            var filteredComments: [AmityCommentModel] = []
             for comment in comments {
+                if comment.syncState != .error && comment.syncState != .syncing {
+                    filteredComments.append(comment)
+                }
+            }
+            
+            print("[RTE]Comment : \(filteredComments)")
+            
+            //Check is new comment already in array or not
+            for comment in filteredComments {
                 if !self.commentSet.contains(comment.id){
                     self.commentSet.insert(comment.id)
                     self.storedComment.append(comment)
@@ -775,13 +788,38 @@ extension LiveStreamPlayerViewController {
             self.chatButton.isHidden = false
             self.postCommentButton.isHidden = true
             liveCommentToken = commentRepository?.createComment(forReferenceId: currentPost.postId, referenceType: .post, parentId: currentPost.parentPostId, text: currentText.removeRegexMatches()).observeOnce { liveObject, error in
-                if error != nil {
-                    print("[LiveStream]Comment error: \(error?.localizedDescription)")
+                
+                if let error = error {
+                    if error.isAmityErrorCode(.banWordFound) {
+                        print("I found ban word. \(liveObject.object?.commentId ?? "")")
+                        
+                        //Show alert
+                        let message = AmityLocalizedStringSet.ErrorHandling.errorMessageCommentBanword.localizedString
+                        let title = AmityLocalizedStringSet.ErrorHandling.errorMessageTitle.localizedString
+                        let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
+                        alert.addAction(UIAlertAction(title: AmityLocalizedStringSet.General.ok.localizedString, style: .default))
+                        self.present(alert, animated: true)
+                        
+                        //Delete ban word comment
+                        self.delete(withCommentId: liveObject.object?.commentId ?? "") { isSuccess, error in
+                            if isSuccess {
+                                print("[AmityLiveStream] Delete ban word comment successful.")
+                            } else {
+                                print("[AmityLiveStream] Delete ban word comment fail.")
+                            }
+                        }
+                    } else {
+                        print(error.localizedDescription)
+                    }
                 }
             }
         } else {
             return
         }
+    }
+    
+    func delete(withCommentId commentId: String, completion: AmityRequestCompletion?) {
+        commentRepository?.deleteComment(withId: commentId, hardDelete: false, completion: completion)
     }
 }
 
