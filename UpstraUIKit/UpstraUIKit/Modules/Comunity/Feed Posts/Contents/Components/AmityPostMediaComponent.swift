@@ -52,7 +52,10 @@ public struct AmityPostMediaComponent: AmityPostComposable {
             return cell
         default:
             let cell: AmityPostPreviewCommentTableViewCell = tableView.dequeueReusableCell(for: indexPath)
-            cell.display(post: post, comment: post.getComment(at: indexPath, totalComponent: AmityPostConstant.defaultNumberComponent))
+            let comment = post.getComment(at: indexPath, totalComponent: AmityPostConstant.defaultNumberComponent)
+            let isExpanded = post.commentExpandedIds.contains(comment?.id ?? "absolutely-cannot-found-xc")
+            cell.setIsExpanded(isExpanded)
+            cell.display(post: post, comment: comment)
             return cell
         }
     }

@@ -21,6 +21,8 @@ public final class AmityFeedViewController: AmityViewController, AmityRefreshabl
     // MARK: - IBOutlet Properties
     @IBOutlet private var tableView: AmityPostTableView!
     
+    private var expandedIds: Set<String> = []
+
     // MARK: - Properties
     private var screenViewModel: AmityFeedScreenViewModelType!
     
@@ -346,6 +348,8 @@ extension AmityFeedViewController: AmityPostTableViewDataSource {
         if let clientComponent = tableView.feedDataSource?.getUIComponentForPost(post: singleComponent._composable.post, at: indexPath.section) {
             return clientComponent.getComponentCell(tableView, at: indexPath)
         } else {
+            // HACK: inject commentExpandedIds before configuring cell
+            singleComponent._composable.post.commentExpandedIds = expandedIds
             return singleComponent.getComponentCell(tableView, at: indexPath)
         }
     }
@@ -528,8 +532,13 @@ extension AmityFeedViewController: AmityPostPreviewCommentDelegate {
         case .didExpandExpandableLabel(let label):
             let point = label.convert(CGPoint.zero, to: tableView)
             if let indexPath = tableView.indexPathForRow(at: point) as IndexPath? {
-                DispatchQueue.main.async { [weak self] in
-                    self?.tableView.scrollToRow(at: indexPath, at: .top, animated: true)
+                // expand label in comment preview cell
+                if let commentPreviewCell = tableView.cellForRow(at: indexPath) as?  AmityPostPreviewCommentTableViewCell,
+                   let comment = commentPreviewCell.comment {
+                    expandedIds.insert(comment.id)
+                    DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(300)) { [weak self] in
+                        self?.tableView.scrollToRow(at: indexPath, at: .top, animated: true)
+                    }
                 }
             }
             tableView.endUpdates()
@@ -538,8 +547,13 @@ extension AmityFeedViewController: AmityPostPreviewCommentDelegate {
         case .didCollapseExpandableLabel(let label):
             let point = label.convert(CGPoint.zero, to: tableView)
             if let indexPath = tableView.indexPathForRow(at: point) as IndexPath? {
-                DispatchQueue.main.async { [weak self] in
-                    self?.tableView.scrollToRow(at: indexPath, at: .top, animated: true)
+                // expand label in comment preview cell
+                if let commentPreviewCell = tableView.cellForRow(at: indexPath) as?  AmityPostPreviewCommentTableViewCell,
+                   let comment = commentPreviewCell.comment {
+                    expandedIds.remove(comment.id)
+                    DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(300)) { [weak self] in
+                        self?.tableView.scrollToRow(at: indexPath, at: .top, animated: true)
+                    }
                 }
             }
             tableView.endUpdates()

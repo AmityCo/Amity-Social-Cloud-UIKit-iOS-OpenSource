@@ -31,7 +31,7 @@ class AmityCommentTableViewCell: UITableViewCell, Nibbable {
         }
     }
     
-    func configure(with comment: AmityCommentModel, layout: AmityCommentViewLayout) {
+    func configure(with comment: AmityCommentModel, layout: AmityCommentView.Layout) {
         commentView.configure(with: comment, layout: layout)
         commentView.delegate = self
     }
@@ -44,6 +44,10 @@ class AmityCommentTableViewCell: UITableViewCell, Nibbable {
     override func prepareForReuse() {
         super.prepareForReuse()
         commentView.prepareForReuse()
+    }
+    
+    open class func height(with comment: AmityCommentModel, layout: AmityCommentView.Layout, boundingWidth: CGFloat) -> CGFloat {
+        AmityCommentView.height(with: comment, layout: layout, boundingWidth: boundingWidth)
     }
 }
 

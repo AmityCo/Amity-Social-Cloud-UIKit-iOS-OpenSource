@@ -9,12 +9,6 @@
 import UIKit
 import AmitySDK
 
-enum AmityCommentViewLayout {
-    case comment(contentExpanded: Bool, shouldActionShow: Bool, shouldLineShow: Bool)
-    case commentPreview(contentExpanded: Bool, shouldActionShow: Bool)
-    case reply(contentExpanded: Bool, shouldActionShow: Bool, shouldLineShow: Bool)
-}
-
 enum AmityCommentViewAction {
     case avatar
     case like
@@ -36,12 +30,12 @@ class AmityCommentView: AmityView {
     @IBOutlet private var labelContainerView: UIView!
     @IBOutlet private weak var actionStackView: UIStackView!
     @IBOutlet private weak var likeButton: AmityButton!
-    @IBOutlet weak var likeButtonWidth: NSLayoutConstraint!
+//    @IBOutlet weak var likeButtonWidth: NSLayoutConstraint!
     @IBOutlet private weak var replyButton: AmityButton!
-    @IBOutlet weak var replyButtonWidth: NSLayoutConstraint!
+//    @IBOutlet weak var replyButtonWidth: NSLayoutConstraint!
     @IBOutlet private weak var optionButton: UIButton!
     @IBOutlet private weak var viewReplyButton: AmityButton!
-    @IBOutlet weak var viewReplyButtonWidth: NSLayoutConstraint!
+//    @IBOutlet weak var viewReplyButtonWidth: NSLayoutConstraint!
     @IBOutlet private weak var separatorLineView: UIView!
     @IBOutlet private weak var leadingAvatarImageViewConstraint: NSLayoutConstraint!
     @IBOutlet private weak var topAvatarImageViewConstraint: NSLayoutConstraint!
@@ -84,7 +78,7 @@ class AmityCommentView: AmityView {
         likeButton.setTintColor(AmityColorSet.base.blend(.shade2), for: .normal)
         likeButton.addTarget(self, action: #selector(likeButtonTap), for: .touchUpInside)
         likeButton.setInsets(forContentPadding: .zero, imageTitlePadding: 4)
-        likeButtonWidth.constant = (likeButton.titleLabel!.text! as NSString).size().width + 30
+//        likeButtonWidth.constant = (likeButton.titleLabel!.text! as NSString).size().width + 30
         
         replyButton.setTitle(AmityLocalizedStringSet.General.reply.localizedString, for: .normal)
         replyButton.setTitleFont(AmityFontSet.captionBold)
@@ -95,7 +89,7 @@ class AmityCommentView: AmityView {
         replyButton.addTarget(self, action: #selector(replyButtonTap), for: .touchUpInside)
         replyButton.setInsets(forContentPadding: .zero, imageTitlePadding: 4)
         replyButton.sizeToFit()
-        replyButtonWidth.constant = (replyButton.titleLabel!.text! as NSString).size().width + 30
+//        replyButtonWidth.constant = (replyButton.titleLabel!.text! as NSString).size().width + 30
         
         optionButton.addTarget(self, action: #selector(optionButtonTap), for: .touchUpInside)
         optionButton.tintColor = AmityColorSet.base.blend(.shade2)
@@ -110,10 +104,10 @@ class AmityCommentView: AmityView {
         viewReplyButton.setInsets(forContentPadding: UIEdgeInsets(top: 6, left: 12, bottom: 6, right: 16), imageTitlePadding: 8)
         viewReplyButton.addTarget(self, action: #selector(viewReplyButtonTap), for: .touchUpInside)
         viewReplyButton.sizeToFit()
-        viewReplyButtonWidth.constant = (viewReplyButton.titleLabel!.text! as NSString).size().width + 80
+//        viewReplyButtonWidth.constant = (viewReplyButton.titleLabel!.text! as NSString).size().width + 80
     }
     
-    func configure(with comment: AmityCommentModel, layout: AmityCommentViewLayout) {
+    func configure(with comment: AmityCommentModel, layout: AmityCommentView.Layout) {
         self.comment = comment
         
         if comment.isEdited {
@@ -152,35 +146,62 @@ class AmityCommentView: AmityView {
         } else {
             likeButton.setTitle(AmityLocalizedStringSet.General.like.localizedString, for: .normal)
         }
-        likeButtonWidth.constant = (likeButton.titleLabel!.text! as NSString).size().width + 30
+//        likeButtonWidth.constant = (likeButton.titleLabel!.text! as NSString).size().width + 30
         
-        switch layout {
-        case .comment(let contentExpanded, let shouldActionShow,  _):
-            contentLabel.isExpanded = contentExpanded
-            actionStackView.isHidden = !shouldActionShow
-            viewReplyButton.isHidden = true
-            replyButton.isHidden = false
-            topAvatarImageViewConstraint.constant = 16
-            leadingAvatarImageViewConstraint.constant = 16
-        case .commentPreview(let contentExpanded, let shouldActionShow):
-            contentLabel.isExpanded = contentExpanded
-            actionStackView.isHidden = !shouldActionShow
-            viewReplyButton.isHidden = !comment.isChildrenExisted
-            replyButton.isHidden = false
-            topAvatarImageViewConstraint.constant = 16
-            leadingAvatarImageViewConstraint.constant = 16
-        case .reply(let contentExpanded, let shouldActionShow, _):
-            contentLabel.isExpanded = contentExpanded
-            actionStackView.isHidden = !shouldActionShow
-            viewReplyButton.isHidden = true
-            replyButton.isHidden = true
-            topAvatarImageViewConstraint.constant = 0
-            leadingAvatarImageViewConstraint.constant = 52
-        }
+        contentLabel.isExpanded = layout.isExpanded
+        actionStackView.isHidden = !layout.shouldActionShow
+        viewReplyButton.isHidden = !layout.shouldShowViewReplyButton(for: comment)
+        leadingAvatarImageViewConstraint.constant = layout.space.avatarLeading
+        topAvatarImageViewConstraint.constant = layout.space.aboveAvatar
     }
 
     @IBAction func displaynameTap(_ sender: Any) {
         delegate?.commentView(self, didTapAction: .avatar)
+    }
+    
+    open class func height(with comment: AmityCommentModel, layout: AmityCommentView.Layout, boundingWidth: CGFloat) -> CGFloat {
+        
+        let topSpace: CGFloat = 65 + layout.space.aboveAvatar
+        
+        let contentHeight: CGFloat = {
+            let maximumLines = layout.isExpanded ? 0 : 8
+            let leftSpace: CGFloat = layout.space.avatarLeading + layout.space.avatarViewWidth + 8 + 12
+            let rightSpace: CGFloat = 12 + 16
+            let labelBoundingWidth = boundingWidth - leftSpace - rightSpace
+            let height = AmityExpandableLabel.height(
+                for: comment.text,
+                font: AmityFontSet.body,
+                boundingWidth: labelBoundingWidth,
+                maximumLines: maximumLines
+            )
+            return height
+        } ()
+        
+        
+        let bottomStackHeight: CGFloat = {
+            var bottomStackViews: [CGFloat] = []
+            if layout.shouldActionShow {
+                let actionButtonHeight: CGFloat = 22
+                bottomStackViews += [actionButtonHeight]
+            }
+            if layout.shouldShowViewReplyButton(for: comment) {
+                let viewReplyHeight: CGFloat = 28
+                bottomStackViews += [viewReplyHeight]
+            }
+            let spaceBetweenElement: CGFloat = 12
+            let numberOfSpaceBetweenElements: CGFloat = CGFloat(max(bottomStackViews.count - 1, 0))
+            let bottomStackViewHeight = bottomStackViews.reduce(0, +) + (spaceBetweenElement * numberOfSpaceBetweenElements)
+            return bottomStackViewHeight
+        } ()
+        
+        
+        return topSpace
+        + contentHeight
+        + layout.space.belowContent
+        + layout.space.aboveStack
+        + bottomStackHeight
+        + layout.space.belowStack
+        
     }
     
     @objc private func replyButtonTap() {

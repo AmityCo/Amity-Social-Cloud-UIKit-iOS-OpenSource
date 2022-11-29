@@ -263,6 +263,8 @@ public class AmityPostModel {
     
     public var poll: Poll?
     
+    var commentExpandedIds: Set<String> = []
+    
     public var isPin: Bool = false
     
     public let postUserRole: [String]
