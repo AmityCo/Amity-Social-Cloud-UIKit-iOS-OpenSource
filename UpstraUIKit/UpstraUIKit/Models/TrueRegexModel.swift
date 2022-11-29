@@ -11,7 +11,7 @@ import Foundation
 public struct TrueRegexModel: Decodable {
     public var android: Bool = false
     public var pattern: String?
-    public var communityFeature: [String]?
+    public var communityFeature: [String]? = ["livestream", "comment", "post"]
     public var ios: Bool = false
 
     enum CodingKeys: String, CodingKey {

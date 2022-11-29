@@ -48,18 +48,18 @@ public final class AmityPostTextTableViewCell: UITableViewCell, Nibbable, AmityP
             if let metadata = post.metadata, let mentionees = post.mentionees {
                 let attributes = AmityMentionManager.getAttributes(fromText: post.text, withMetadata: metadata, mentionees: mentionees)
                 
-                contentLabel.setText(post.text.removeRegexMatches(), withAttributes: attributes)
+                contentLabel.setText(post.text, withAttributes: attributes)
             } else {
-                contentLabel.text = post.text.removeRegexMatches()
+                contentLabel.text = post.text
             }
         } else {
             
             // The default render behaviour just to grab text from post.text
             if let metadata = post.metadata, let mentionees = post.mentionees {
                 let attributes = AmityMentionManager.getAttributes(fromText: post.text, withMetadata: metadata, mentionees: mentionees)
-                contentLabel.setText(post.text.removeRegexMatches(), withAttributes: attributes)
+                contentLabel.setText(post.text, withAttributes: attributes)
             } else {
-                contentLabel.text = post.text.removeRegexMatches()
+                contentLabel.text = post.text
             }
         }
         
