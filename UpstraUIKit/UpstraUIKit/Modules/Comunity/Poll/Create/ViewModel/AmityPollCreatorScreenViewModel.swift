@@ -109,7 +109,7 @@ extension AmityPollCreatorScreenViewModel {
             builder.setAnswer(item)
         }
         
-        builder.setQuestion(pollQuestion)
+        builder.setQuestion(pollQuestion.removeRegexMatches(type: "post"))
         builder.setTimeToClosePoll(timeMilliseconds)
         builder.setAnswerType(isMultipleSelection ? .multiple : .single)
         pollRepository.createPoll(builder) { [weak self] pollId, error in

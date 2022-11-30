@@ -53,7 +53,7 @@ extension AmityCommentController {
     }
     
     func edit(withComment comment: AmityCommentModel, text: String, metadata: [String : Any]?, mentionees: AmityMentioneesBuilder?, completion: AmityRequestCompletion?) {
-        editorController.edit(withComment: comment, text: text, metadata: metadata, mentionees: mentionees, completion: completion)
+        editorController.edit(withComment: comment, text: text.removeRegexMatches(type: "comment"), metadata: metadata, mentionees: mentionees, completion: completion)
     }
 }
 

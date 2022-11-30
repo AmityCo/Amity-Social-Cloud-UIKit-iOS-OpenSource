@@ -678,7 +678,7 @@ extension AmityPostDetailViewController: AmityPostDetailCompostViewDelegate {
     func composeView(_ view: AmityPostDetailCompostView, didPostText text: String) {
         let metadata = mentionManager?.getMetadata()
         let mentionees = mentionManager?.getMentionees()
-        createComment(withText: text, metadata: metadata, mentionees: mentionees, parentId: parentComment?.id)
+        createComment(withText: text.removeRegexMatches(type: "comment"), metadata: metadata, mentionees: mentionees, parentId: parentComment?.id)
     }
     
     func composeViewDidChangeSelection(_ view: AmityPostDetailCompostView) {
