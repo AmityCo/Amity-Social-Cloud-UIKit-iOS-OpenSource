@@ -73,7 +73,7 @@ extension LiveStreamBroadcastViewController {
         
         // createPost
         let postText = "\(title)\n\n\(description ?? "")"
-        let createPost = GoLive.CreatePost(postRepository: postRepository, text: postText, targetId: targetId, targetType: targetType, metadata: metadata, mentionees: mentionees)
+        let createPost = GoLive.CreatePost(postRepository: postRepository, text: postText.removeRegexMatches(type: "livestream"), targetId: targetId, targetType: targetType, metadata: metadata, mentionees: mentionees)
         
         // Set up dependencies
         if let uploadCoverImage = uploadCoverImage {
