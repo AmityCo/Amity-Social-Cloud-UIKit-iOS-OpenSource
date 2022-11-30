@@ -103,6 +103,7 @@ final class AmityMessageListScreenViewModel: AmityMessageListScreenViewModelType
     private var lastEnterBackground: Date?
     
     private var otherUserNickname: String?
+    private let group = DispatchGroup()
     
     init(channelId: String) {
         self.channelId = channelId
@@ -250,7 +251,7 @@ extension AmityMessageListScreenViewModel {
             guard let object = channel.object else { return }
             let model = AmityChannelModel(object: object)
             self?.channelModel = model
-            self?.getOtherUserData(channelModel: model)
+            self?.delegate?.screenViewModelDidGetChannel(channel: model)
         }
     }
     
@@ -272,17 +273,17 @@ extension AmityMessageListScreenViewModel {
         
     }
     
-    func getOtherUserData(channelModel: AmityChannelModel) {
-        let otherUserId = channelModel.getOtherUserId()
-        userNotificationToken = userRepository.getUser(otherUserId).observe({[weak self] user, error in
-            guard let weakSelf = self else { return }
-            if let userObject = user.object {
-                weakSelf.otherUserNickname = userObject.displayName
-                weakSelf.userNotificationToken?.invalidate()
-            }
-            weakSelf.delegate?.screenViewModelDidGetChannel(channel: channelModel)
-        })
-    }
+//    func getOtherUserData(channelModel: AmityChannelModel) {
+//        let otherUserId = channelModel.getOtherUserId()
+//        userNotificationToken = userRepository.getUser(otherUserId).observe({[weak self] user, error in
+//            guard let weakSelf = self else { return }
+//            if let userObject = user.object {
+//                weakSelf.otherUserNickname = model.displayName
+//                weakSelf.userNotificationToken?.invalidate()
+//
+//            }
+//        })
+//    }
     
     func send(withText text: String?) {
         let textMessage = text?.trimmingCharacters(in: .whitespacesAndNewlines) ?? ""
@@ -292,7 +293,7 @@ extension AmityMessageListScreenViewModel {
         self.text = ""
         delegate?.screenViewModelEvents(for: .didSendText)
         messageRepository.createTextMessage(withChannelId: channelId, text: textMessage, tags: nil, parentId: nil) { [weak self] _,_ in
-            
+            print("")
         }
     }
     
