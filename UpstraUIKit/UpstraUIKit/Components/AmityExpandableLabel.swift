@@ -223,11 +223,12 @@ open class AmityExpandableLabel: UILabel {
         let linesCount = attributedString.lines(for: boundingWidth).count
         let actualHeight = attributedString.boundingRect(for: boundingWidth).height
         
-        if maximumLines == 0 || linesCount <= maximumLines {
+        if maximumLines == 0 || linesCount <= 2 {
             return ceil(actualHeight)
         } else {
             let oneLineHeight = actualHeight / CGFloat(linesCount)
-            return ceil(oneLineHeight * CGFloat(maximumLines))
+            let sum = oneLineHeight * CGFloat(maximumLines)
+            return ceil(40)
         }
     }
     
