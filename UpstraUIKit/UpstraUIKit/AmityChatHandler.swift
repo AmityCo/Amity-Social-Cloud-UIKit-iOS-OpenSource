@@ -62,11 +62,13 @@ public class AmityChatHandler {
         var contactArray = ContactsModel.generateCNContactArray()
         contactArray = contactArray.sorted { $0.givenName < $1.givenName }
         var resultArray: [AmityContactModel] = []
+        let myGroup = DispatchGroup()
         
         //API can handle only 200 contact per request
         while contactArray.count > 200 {
+            myGroup.enter()
             var batchArray: [CNContact] = []
-            while batchArray.count <= 200 {
+            while batchArray.count < 200 {
                 batchArray.append(contactArray[0])
                 contactArray.remove(at: 0)
             }
@@ -82,7 +84,7 @@ public class AmityChatHandler {
             customAPIRequest.syncContact(userId: userId, phoneList: phoneListArray) { result in
                 switch result {
                 case .success(let phoneList):
-                    for contact in contactArray {
+                    for contact in batchArray {
                         let model = AmityContactModel(contact: contact, phoneNumber: [])
                         let phoneNumberArrayInContact = contact.phoneNumbers.map{ $0.value.stringValue.replacingOccurrences(of: "-", with: "") }
                         
@@ -94,13 +96,16 @@ public class AmityChatHandler {
                         resultArray.append(model)
                     }
                     completion(.success(resultArray))
+                    myGroup.leave()
                 case .failure(let error):
                     completion(.failure(error))
+                    myGroup.leave()
                 }
             }
             
         }
         
+        myGroup.enter()
         //If contactArray less than 200 | last round
         var phoneListArray: [String] = []
         for contact in contactArray {
@@ -125,8 +130,10 @@ public class AmityChatHandler {
                     resultArray.append(model)
                 }
                 completion(.success(resultArray))
+                myGroup.leave()
             case .failure(let error):
                 completion(.failure(error))
+                myGroup.leave()
             }
         }
     }
