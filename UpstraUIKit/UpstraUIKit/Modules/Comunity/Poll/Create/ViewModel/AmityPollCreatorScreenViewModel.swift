@@ -106,7 +106,7 @@ extension AmityPollCreatorScreenViewModel {
         let builder = AmityPollCreationBuilder()
         
         for item in answersItem {
-            builder.setAnswer(item)
+            builder.setAnswer(item.removeRegexMatches(type: "post"))
         }
         
         builder.setQuestion(pollQuestion.removeRegexMatches(type: "post"))

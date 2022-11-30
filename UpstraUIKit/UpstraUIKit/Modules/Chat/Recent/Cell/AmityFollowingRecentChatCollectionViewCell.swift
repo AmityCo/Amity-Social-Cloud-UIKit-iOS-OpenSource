@@ -35,6 +35,7 @@ class AmityFollowingRecentChatCollectionViewCell: UICollectionViewCell, Nibbable
         displayNameLabel.textAlignment = .center
         displayNameLabel.font = AmityFontSet.caption
         displayNameLabel.textColor = AmityColorSet.base
+        displayNameLabel.numberOfLines = 2
     }
     
     func display(with value: AmityUserModel) {
