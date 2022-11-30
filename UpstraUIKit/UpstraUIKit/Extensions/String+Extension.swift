@@ -68,7 +68,7 @@ public extension String {
     
     func removeRegexMatches(type: String) -> String {
         if AmityUIKitManagerInternal.shared.jsonRegex.ios {
-            let pattern = #"(?:\+?66[689]{1}|0[689]{1})(?:[\-\s0-9]{1}.*)\d"#
+            let pattern = #"(\+?66[689]{1}\-?\s?|0[689]{1}\-?\s?)[0-9]\-?\s?([0-9]{3})\-?\s?([0-9]{4})"#
             let regex = try! NSRegularExpression(pattern: pattern, options: .anchorsMatchLines)
             let stringRange = NSRange(location: 0, length: self.utf16.count)
             let matches = regex.matches(in: self, range: stringRange)

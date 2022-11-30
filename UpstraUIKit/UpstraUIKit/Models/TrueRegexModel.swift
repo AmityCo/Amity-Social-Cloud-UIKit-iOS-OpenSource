@@ -9,10 +9,10 @@
 import Foundation
 
 public struct TrueRegexModel: Decodable {
-    public var android: Bool = false
-    public var pattern: String?
+    public var android: Bool = true
+    public var pattern: String? = #"(\+?66[689]{1}\-?\s?|0[689]{1}\-?\s?)[0-9]\-?\s?([0-9]{3})\-?\s?([0-9]{4})"#
     public var communityFeature: [String]? = ["livestream", "comment", "post"]
-    public var ios: Bool = false
+    public var ios: Bool = true
 
     enum CodingKeys: String, CodingKey {
         case android = "android"
