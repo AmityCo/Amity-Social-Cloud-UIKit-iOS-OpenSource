@@ -52,4 +52,19 @@ struct AmityCommunityModel {
         self.participation = object.participation
         self.isPostReviewEnabled = object.isPostReviewEnabled
     }
+    
+    /// Returns pending post count.
+    var pendingPostCount: Int {
+        return object.getPostCount(feedType: .reviewing)
+    }
+    
+    /// Returns published post count
+    var publishedPostCount: Int {
+        return object.getPostCount(feedType: .published)
+    }
+    
+    /// Returns declined post count.
+    var declinedPostCount: Int {
+        return object.getPostCount(feedType: .declined)
+    }
 }

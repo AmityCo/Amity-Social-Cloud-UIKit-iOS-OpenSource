@@ -38,6 +38,7 @@ final class AmityFeedRepositoryManager: AmityFeedRepositoryManagerProtocol {
                 collection.nextPage()
                 return true
             }
+            
             return false
         default:
             return false
@@ -66,6 +67,8 @@ final class AmityFeedRepositoryManager: AmityFeedRepositoryManagerProtocol {
         }
         
         token?.invalidate()
+        token = nil
+        
         token = collection?.observe { [weak self] (collection, change, error) in
             guard let strongSelf = self else { return }
             if let error = AmityError(error: error) {

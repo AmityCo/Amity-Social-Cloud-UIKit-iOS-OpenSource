@@ -52,14 +52,8 @@ extension AmityCommunityProfileScreenViewModel {
             return
         }
         
-        communityRepositoryManager.getPendingPostsCount(by: feedType) { (result) in
-            switch result {
-            case .success(let postCount):
-                completion?(postCount)
-            case .failure(_):
-                completion?(0)
-            }
-        }
+        // Return pending post count which is already available locally.
+        completion?(community.pendingPostCount)
     }
 }
 

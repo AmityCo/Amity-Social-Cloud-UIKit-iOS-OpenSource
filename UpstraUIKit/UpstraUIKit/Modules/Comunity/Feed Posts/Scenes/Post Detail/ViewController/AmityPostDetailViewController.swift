@@ -270,12 +270,6 @@ extension AmityPostDetailViewController: AmityPostTableViewDelegate {
         let viewModel = screenViewModel.item(at: indexPath)
         switch viewModel {
         case .post(let postComponent):
-            var cell: UITableViewCell
-            if let clientComponent = tableView.feedDataSource?.getUIComponentForPost(post: postComponent._composable.post, at: indexPath.section) {
-                cell = clientComponent.getComponentCell(tableView, at: indexPath)
-            } else {
-                cell = postComponent.getComponentCell(tableView, at: indexPath)
-            }
             (cell as? AmityPostHeaderProtocol)?.delegate = postHeaderProtocolHandler
             (cell as? AmityPostFooterProtocol)?.delegate = postFooterProtocolHandler
             (cell as? AmityPostProtocol)?.delegate = postProtocolHandler
