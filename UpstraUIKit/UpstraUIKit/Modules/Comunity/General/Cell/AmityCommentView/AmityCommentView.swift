@@ -105,7 +105,14 @@ class AmityCommentView: AmityView {
         } else {
             timeLabel.text = comment.createdAt.relativeTime
         }
-        avatarView.setImage(withImageURL: comment.fileURL, placeholder: AmityIconSet.defaultAvatar)
+//        avatarView.setImage(withImageURL: comment.fileURL, placeholder: AmityIconSet.defaultAvatar)
+        if !(comment.avatarCustomURL.isEmpty) {
+            avatarView.setImage(withCustomURL: comment.avatarCustomURL,
+                                         placeholder: AmityIconSet.defaultAvatar)
+        } else {
+            avatarView.setImage(withImageURL: comment.fileURL,
+                                         placeholder: AmityIconSet.defaultAvatar)
+        }
         titleLabel.text = comment.displayName
         
         if comment.isAuthorGlobalBanned {

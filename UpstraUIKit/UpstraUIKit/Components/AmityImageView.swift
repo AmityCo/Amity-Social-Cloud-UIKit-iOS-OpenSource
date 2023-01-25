@@ -143,5 +143,79 @@ public class AmityImageView: AmityView {
             }
         }
     }
+    
+    public func setImage(withCustomURL imageURL: String?,
+                         size: AmityMediaSize = .small,
+                         placeholder: UIImage? = AmityIconSet.defaultAvatar,
+                         completion: (() -> Void)? = nil) {
+        image = nil
+        self.placeholder = placeholder
+        session = UUID().uuidString
 
+        guard let imageURL = imageURL, !imageURL.isEmpty else { return }
+        let _session = session
+        
+        CustomAvatarImageLoader.shared.loadImage(from: imageURL) { [weak self] result in
+            guard self?.session == _session else {
+                // Cell has already dequeue.
+                return
+            }
+            
+            switch result {
+            case .success(let image):
+                self?.image = image
+                completion?()
+            case .failure:
+                self?.image = nil
+                break
+            }
+        }
+    }
 }
+
+//
+//  CustomAvatarImageLoader.swift
+//  AmityUIKit
+//
+//  Created by Mono TheForestcat on 14/3/2565 BE.
+//  Copyright © 2565 BE Amity. All rights reserved.
+//
+
+import Foundation
+import UIKit
+
+public class CustomAvatarImageLoader {
+    
+    private let cache = NSCache<NSString, UIImage>()
+    static let shared = CustomAvatarImageLoader()
+    
+    func loadImage(from url: String, completion: ((Result<UIImage, Error>) -> Void)?) {
+        let cacheKey = NSString(string: url)
+        
+        let imageURL = URL(string: url)
+        
+        if let image = cache.object(forKey: cacheKey) {
+            completion?(.success(image))
+            return
+        }
+        
+        guard let _imageURL = imageURL else {
+            completion?(.failure(AmityError.unknown))
+            return
+        }
+        
+        DispatchQueue.global().async { [weak self] in
+            if let data = try? Data(contentsOf: _imageURL),
+               let image = UIImage(data: data) {
+                self?.cache.setObject(image, forKey: cacheKey)
+                print("Load custom url avatar success.")
+                completion?(.success(image))
+            } else {
+                print("Load custom url avatar fail.")
+                completion?(.failure(AmityError.unknown))
+            }
+        }
+    }
+    
+}
+

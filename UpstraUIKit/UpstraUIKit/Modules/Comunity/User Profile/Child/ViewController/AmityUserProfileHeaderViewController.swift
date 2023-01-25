@@ -184,7 +184,13 @@ class AmityUserProfileHeaderViewController: AmityViewController, AmityRefreshabl
     }
     
     private func updateView(with user: AmityUserModel) {
-        avatarView.setImage(withImageURL: user.avatarURL, placeholder: AmityIconSet.defaultAvatar)
+        if !user.avatarCustomURL.isEmpty {
+            avatarView.setImage(withCustomURL: user.avatarCustomURL,
+                                         placeholder: AmityIconSet.defaultAvatar)
+        } else {
+            avatarView.setImage(withImageURL: user.avatarURL,
+                                         placeholder: AmityIconSet.defaultAvatar)
+        }
         displayNameLabel.text = user.displayName
         descriptionLabel.text = user.about
         editProfileButton.isHidden = !user.isCurrentUser

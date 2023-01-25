@@ -14,6 +14,7 @@ public struct AmityCommentModel {
     let id: String
     let displayName: String
     let fileURL: String
+    let avatarCustomURL: String
     let text: String
     let isDeleted: Bool
     let isEdited: Bool
@@ -36,6 +37,7 @@ public struct AmityCommentModel {
         id = comment.commentId
         displayName = comment.user?.displayName ?? AmityLocalizedStringSet.General.anonymous.localizedString
         fileURL = comment.user?.getAvatarInfo()?.fileURL ?? ""
+        avatarCustomURL = comment.user?.avatarCustomUrl ?? ""
         text = comment.data?["text"] as? String ?? ""
         isDeleted = comment.isDeleted
         isEdited = comment.isEdited
