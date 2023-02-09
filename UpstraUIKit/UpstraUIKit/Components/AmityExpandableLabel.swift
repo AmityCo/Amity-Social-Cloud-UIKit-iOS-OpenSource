@@ -158,7 +158,7 @@ open class AmityExpandableLabel: UILabel {
                 for match in matches {
                     guard let textRange = Range(match.range, in: text) else { continue }
                     let urlString = String(text[textRange])
-                    let validUrlString = urlString.hasPrefix("http") ? urlString : "http://\(urlString)"
+                    let validUrlString = urlString.hasPrefixIgnoringCase("http") ? urlString : "http://\(urlString)"
                     guard let formattedString = validUrlString.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed),
                         let url = URL(string: formattedString) else { continue }
                     attributedString.addAttributes([
@@ -524,6 +524,11 @@ extension String {
         enumerateSubstrings(in: startIndex..<endIndex, options: .byComposedCharacterSequences) { _,_,_,_  in count += 1 }
         return count
     }
+    
+    public func hasPrefixIgnoringCase(_ prefix: String) -> Bool {
+        let prefixRange = range(of: prefix, options: [.anchored, .caseInsensitive])
+        return prefixRange != nil
+    }
 }
 
 extension UILabel {
@@ -618,7 +623,7 @@ extension AmityExpandableLabel {
         for match in matches {
             guard let textRange = Range(match.range, in: text) else { continue }
             let urlString = String(text[textRange])
-            let validUrlString = urlString.hasPrefix("http") ? urlString : "http://\(urlString)"
+            let validUrlString = urlString.hasPrefixIgnoringCase("http") ? urlString : "http://\(urlString)"
             guard let formattedString = validUrlString.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed),
                 let url = URL(string: formattedString) else { continue }
             attributedString.addAttributes([
