@@ -45,6 +45,7 @@ private extension AmityComposeBarOnlyTextViewController {
     
     @IBAction func sendMessageTap() {
         screenViewModel.action.send(withText: textComposeBarView.text)
+        clearText()
     }
     
 }
