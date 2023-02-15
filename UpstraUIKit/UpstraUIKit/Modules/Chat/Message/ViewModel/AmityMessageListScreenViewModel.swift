@@ -395,6 +395,8 @@ private extension AmityMessageListScreenViewModel {
         
         // Ignore performing data if it don't change.
         guard dataSourceHash != storedMessages.hashValue else {
+            // Ask view to hide loading indicator.
+            self.delegate?.screenViewModelIsRefreshing(false)
             return
         }
         
@@ -430,9 +432,9 @@ private extension AmityMessageListScreenViewModel {
         messages = unsortedMessages.groupSort(byDate: { $0.createdAtDate })
         delegate?.screenViewModelLoadingState(for: .loaded)
         delegate?.screenViewModelEvents(for: .updateMessages)
-                        
+        delegate?.screenViewModelIsRefreshing(false)
+        
         if isFirstTimeLoaded {
-            delegate?.screenViewModelIsRefreshing(false)
             // If this screen is opened for first time, we want to scroll to bottom.
             shouldScrollToBottom(force: true)
             isFirstTimeLoaded = false
