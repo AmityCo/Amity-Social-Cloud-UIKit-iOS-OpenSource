@@ -85,7 +85,6 @@ final class AmityPostHeaderProtocolHandler: AmityPostHeaderDelegate {
         if post.isOwner {
             switch post.dataTypeInternal {
             case .poll:
-                print("AmityPostHeader", post.poll?.status)
                 let closePoll = TextItemOption(title: AmityLocalizedStringSet.Poll.Option.closeTitle.localizedString) { [weak self] in
                     guard let strongSelf = self else { return }
                     let cancel = AmityAlertController.Action.cancel(style: .default, handler: nil)
