@@ -401,7 +401,9 @@ extension AmityPostDetailScreenViewModel {
         pollRepository.votePoll(withId: pollId, answerIds: answerIds) { [weak self] success, error in
             guard let strongSelf = self else { return }
             if success {
-                self?.fetchPost()
+                self?.debouncer.run {
+                    self?.fetchPost()
+                }
             } else {
                 strongSelf.delegate?.screenViewModel(strongSelf, didFinishWithError: AmityError(error: error) ?? .unknown)
             }
@@ -413,7 +415,9 @@ extension AmityPostDetailScreenViewModel {
         pollRepository.closePoll(withId: pollId) { [weak self] success, error in
             guard let strongSelf = self else { return }
             if success {
-                self?.fetchPost()
+                self?.debouncer.run {
+                    self?.fetchPost()
+                }
             } else {
                 strongSelf.delegate?.screenViewModel(strongSelf, didFinishWithError: AmityError(error: error) ?? .unknown)
             }

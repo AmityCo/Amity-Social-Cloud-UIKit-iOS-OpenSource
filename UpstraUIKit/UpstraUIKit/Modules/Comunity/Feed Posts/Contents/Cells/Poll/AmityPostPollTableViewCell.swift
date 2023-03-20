@@ -219,6 +219,13 @@ extension AmityPostPollTableViewCell: UITableViewDataSource {
         }
     }
     
+    
+    public func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        guard let pollAnswer = post?.poll?.answers else { return }
+        tableView.frame.size.height = (cell.frame.height * CGFloat(pollAnswer.count) )
+        tableView.layoutIfNeeded()
+    }
+    
     public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let post = post, let poll = post.poll else { return UITableViewCell() }
         let row = indexPath.row

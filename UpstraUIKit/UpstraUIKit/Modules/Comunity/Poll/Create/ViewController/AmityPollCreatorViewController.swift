@@ -136,17 +136,27 @@ extension AmityPollCreatorViewController: AmityPollCreatorScreenViewModelDelegat
                 AmityAlertController.present(title: AmityLocalizedStringSet.postCreationSubmitTitle.localizedString,
                                              message: AmityLocalizedStringSet.postCreationSubmitDesc.localizedString, actions: [.ok(style: .default, handler: { [weak self] in
                                                 self?.postButton?.isEnabled = true
-                                                self?.dismiss(animated: true, completion: nil)
+                                                self?.closeViewController()
                                              })], from: self)
             case .published, .declined:
                 postButton?.isEnabled = true
-                dismiss(animated: true, completion: nil)
+                closeViewController()
             @unknown default:
                 break
             }
         } else {
             postButton?.isEnabled = true
-            dismiss(animated: true, completion: nil)
+            closeViewController()
+        }
+    }
+    
+    private func closeViewController() {
+        if let firstVCInNavigationVC = navigationController?.viewControllers.first {
+            if firstVCInNavigationVC is AmityCommunityHomePageViewController {
+                navigationController?.popViewController(animated: true)
+            } else {
+                dismiss(animated: true, completion: nil)
+            }
         }
     }
     
