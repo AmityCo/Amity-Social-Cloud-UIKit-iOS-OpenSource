@@ -45,13 +45,13 @@ public final class AmityMessageModel {
         self.isDeleted = object.isDeleted
         self.isEdited = object.isEdited
         self.messageType = object.messageType
-        self.createdAtDate = object.createdAtDate
-        self.date = AmityDateFormatter.Message.getDate(date: self.isEdited ? object.editedAtDate : object.createdAtDate)
-        self.time = AmityDateFormatter.Message.getTime(date: self.isEdited ? object.editedAtDate : object.createdAtDate)
-        self.flagCount = object.flagCount
+        self.createdAtDate = object.createdAt
+        self.date = AmityDateFormatter.Message.getDate(date: self.isEdited ? object.editedAt : object.createdAt)
+        self.time = AmityDateFormatter.Message.getTime(date: self.isEdited ? object.editedAt : object.createdAt)
+        self.flagCount = UInt(object.flagCount)
         self.data = object.data
         self.tags = object.tags
-        self.channelSegment = object.channelSegment
+        self.channelSegment = UInt(object.channelSegment)
         self.appearance = AmityMessageModelAppearance()
     }
     

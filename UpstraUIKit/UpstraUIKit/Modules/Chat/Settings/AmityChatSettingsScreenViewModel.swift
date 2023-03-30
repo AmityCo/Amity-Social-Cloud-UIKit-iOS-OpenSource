@@ -263,10 +263,10 @@ extension AmityChatSettingsScreenViewModel {
     }
     
     func leaveChat() {
-        channelRepository?.leaveChannel(channelId, withCompletion: { [weak self] success,error in
+        AmityAsyncAwaitTransformer.toCompletionHandler(asyncFunction: channelRepository?.leaveChannel, parameters: channelId) { [weak self] success,error in
             guard let weakSelf = self else { return }
             weakSelf.delegate?.screenViewModelDidFinishLeaveChat(error: error?.localizedDescription)
-        })
+        }
     }
     
     func presentMember() {

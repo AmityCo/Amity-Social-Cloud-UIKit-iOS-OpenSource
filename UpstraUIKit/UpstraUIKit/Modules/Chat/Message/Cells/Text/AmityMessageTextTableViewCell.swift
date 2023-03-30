@@ -38,9 +38,11 @@ class AmityMessageTextTableViewCell: AmityMessageTableViewCell {
         if message.isOwner {
             textMessageView.textColor = AmityColorSet.baseInverse
             textMessageView.readMoreColor = AmityColorSet.baseInverse
+            textMessageView.hyperLinkColor = .white
         } else {
             textMessageView.textColor = AmityColorSet.base
             textMessageView.readMoreColor = AmityColorSet.highlight
+            textMessageView.hyperLinkColor = AmityColorSet.highlight
         }
         
         textMessageView.text = message.text

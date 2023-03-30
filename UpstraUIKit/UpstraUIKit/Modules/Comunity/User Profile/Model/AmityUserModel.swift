@@ -21,7 +21,7 @@ struct AmityUserModel {
         displayName = user.displayName ?? AmityLocalizedStringSet.General.anonymous.localizedString
         avatarURL = user.getAvatarInfo()?.fileURL ?? ""
         about = user.userDescription
-        isGlobalBan = user.isGlobalBan
+        isGlobalBan = user.isGlobalBanned
     }
     
     var isCurrentUser: Bool {

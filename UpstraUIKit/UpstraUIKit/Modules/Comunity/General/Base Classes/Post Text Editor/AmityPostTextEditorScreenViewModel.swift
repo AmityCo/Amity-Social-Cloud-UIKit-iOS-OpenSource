@@ -19,7 +19,7 @@ class AmityPostTextEditorScreenViewModel: AmityPostTextEditorScreenViewModelType
     // MARK: - Datasource
     
     func loadPost(for postId: String) {
-        postObjectToken = postrepository.getPostForPostId(postId).observe { [weak self] post, error in
+        postObjectToken = postrepository.getPost(withId: postId).observe { [weak self] post, error in
             guard let strongSelf = self, let post = post.object else { return }
             strongSelf.delegate?.screenViewModelDidLoadPost(strongSelf, post: post)
             // observe once
@@ -124,12 +124,12 @@ class AmityPostTextEditorScreenViewModel: AmityPostTextEditorScreenViewModelType
         }
         
         if let mentionees = mentionees {
-            postrepository.updatePost(withPostId: oldPost.postId, builder: postBuilder, metadata: metadata, mentionees: mentionees) { [weak self] (post, error) in
+            postrepository.updatePost(withId: oldPost.postId, builder: postBuilder, metadata: metadata, mentionees: mentionees) { [weak self] (post, error) in
                 guard let strongSelf = self else { return }
                 strongSelf.updatePostResponseHandler(forPost: post, error: error)
             }
         } else {
-            postrepository.updatePost(withPostId: oldPost.postId, builder: postBuilder) { [weak self] (post, error) in
+            postrepository.updatePost(withId: oldPost.postId, builder: postBuilder) { [weak self] (post, error) in
                 guard let strongSelf = self else { return }
                 strongSelf.updatePostResponseHandler(forPost: post, error: error)
             }

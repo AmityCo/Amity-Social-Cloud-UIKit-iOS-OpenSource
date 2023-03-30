@@ -12,14 +12,14 @@ import AmitySDK
 // Manage audio message
 final class AmityMessageAudioController {
     
-    private let channelId: String
+    private let subChannelId: String
     private weak var repository: AmityMessageRepository?
     
     private var token: AmityNotificationToken?
     private var message: AmityObject<AmityMessage>?
     
-    init(channelId: String, repository: AmityMessageRepository?) {
-        self.channelId = channelId
+    init(subChannelId: String, repository: AmityMessageRepository?) {
+        self.subChannelId = subChannelId
         self.repository = repository
     }
     
@@ -33,16 +33,19 @@ final class AmityMessageAudioController {
         guard let repository = repository else {
             return
         }
-        
-        let messageId = repository.createAudioMessage(withChannelId: channelId, audioFile: audioURL, fileName: AmityAudioRecorder.shared.fileName, parentId: nil, tags: nil, completion: nil)
-        
-        token = repository.getMessage(messageId)?.observe { [weak self] (collection, error) in
-            guard error == nil, let message = collection.object else {
-                self?.token = nil
+        let createOptions = AmityAudioMessageCreateOptions(subChannelId: subChannelId, audioFileURL: audioURL, fileName: AmityAudioRecorder.shared.fileName)
+        repository.createAudioMessage(options: createOptions) { message, error in
+            guard error == nil, let message = message else {
                 return
             }
-            AmityAudioRecorder.shared.updateFilename(withFilename: message.messageId)
-            completion()
+            self.token = repository.getMessage(message.messageId).observe { [weak self] (collection, error) in
+                guard error == nil, let message = collection.object else {
+                    self?.token = nil
+                    return
+                }
+                AmityAudioRecorder.shared.updateFilename(withFilename: message.messageId)
+                completion()
+            }
         }
         
     }

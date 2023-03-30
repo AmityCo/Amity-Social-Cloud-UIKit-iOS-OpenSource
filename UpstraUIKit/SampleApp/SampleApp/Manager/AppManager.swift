@@ -30,9 +30,7 @@ class AppManager {
     func setupAmityUIKit() {
         // setup api key
         let endpointConfig = EndpointManager.shared.currentEndpointConfig
-        AmityUIKitManager.setup(apiKey: endpointConfig.apiKey,
-                                httpUrl: endpointConfig.httpEndpoint,
-                                socketUrl: endpointConfig.socketEndpoint)
+        AmityUIKitManager.setup(apiKey: endpointConfig.apiKey, endpoint: AmityEndpoint(httpUrl: endpointConfig.httpEndpoint, rpcUrl: endpointConfig.socketEndpoint, mqttHost: endpointConfig.mqttEndpoint))
         
         // setup event handlers and page settings
         AmityUIKitManager.set(eventHandler: CustomEventHandler())
@@ -52,7 +50,7 @@ class AppManager {
     }
     
     func register(withUserId userId: String) {
-        AmityUIKitManager.registerDevice(withUserId: userId, displayName: nil) { [weak self] success, error in
+        AmityUIKitManager.registerDevice(withUserId: userId, displayName: nil, sessionHandler: SampleSessionHandler()) { [weak self] success, error in
             print("[Sample App] register device with userId '\(userId)' \(success ? "successfully" : "failed")")
             if let error = error {
                 print("[Sample App] register device failed \(error.localizedDescription)")

@@ -72,6 +72,7 @@ final class AmityMessageListScreenViewModel: AmityMessageListScreenViewModelType
     
     // MARK: - Properties
     private let channelId: String
+    private let subChannelId: String
     private var isFirstTimeLoaded: Bool = true
     
     private let debouncer = Debouncer(delay: 0.6)
@@ -82,8 +83,9 @@ final class AmityMessageListScreenViewModel: AmityMessageListScreenViewModelType
     private var lastNotOnline: Date?
     private var lastEnterBackground: Date?
     
-    init(channelId: String) {
+    init(channelId: String, subChannelId: String) {
         self.channelId = channelId
+        self.subChannelId = subChannelId
         membershipParticipation = AmityChannelParticipation(client: AmityUIKitManagerInternal.shared.client, andChannel: channelId)
         channelRepository = AmityChannelRepository(client: AmityUIKitManagerInternal.shared.client)
         messageRepository = AmityMessageRepository(client: AmityUIKitManagerInternal.shared.client)
@@ -133,49 +135,49 @@ final class AmityMessageListScreenViewModel: AmityMessageListScreenViewModelType
         return channelId
     }
     
-    private func connectionStateDidChanged() {
-        
-        // When the SDK disconnect, it will miss all real-time events during offline period.
-        //
-        // Once SDK reconnect, we reset the live collection to fetch the most recent data.
-        // The page state will be reset to first page (last chunk messages).
-        //
-        switch AmityUIKitManagerInternal.shared.client.connectionStatus {
-        case .notConnected, .connecting, .disconnected:
-            // AmityHUD.show(.error(message: "Not Online"))
-            // We don't care how many offline states are updated, we only record the first one.
-            if lastNotOnline == nil {
-                lastNotOnline = Date()
-            }
-        case .connected:
-            var shouldRefresh = false
-            // The seconds to reset live collection, if sdk is offline more than x seconds.
-            let thresholdToResetLiveCollection = TimeInterval(3)
-            if let lastNotOnline = lastNotOnline, Date().timeIntervalSince(lastNotOnline) > thresholdToResetLiveCollection {
-                shouldRefresh = true
-            } else if let lastEnterBackground = lastEnterBackground, Date().timeIntervalSince(lastEnterBackground) > thresholdToResetLiveCollection {
-                // When the app goes into background, we cannot know the connection status.
-                // If the background takes longer than the threshold, we refresh the collection, once connected no matter what.
-                shouldRefresh = true
-            }
-            if shouldRefresh {
-                 // AmityHUD.show(.success(message: "Online and refresh"))
-                // Toggle `isFirstTimeLoaded` to trigger scroll to bottom logic.
-                delegate?.screenViewModelIsRefreshing(true)
-                isFirstTimeLoaded = true
-                messagesCollection?.resetPage()
-            } else {
-                 // AmityHUD.show(.success(message: "Online without refresh"))
-            }
-            // SDK is online now, we reset this to nil.
-            // This variable, gonna be set again when the connection state is changed to not_online.
-            lastNotOnline = nil
-            lastEnterBackground = nil
-        @unknown default:
-            break
-        }
-        
-    }
+//    private func connectionStateDidChanged() {
+//
+//        // When the SDK disconnect, it will miss all real-time events during offline period.
+//        //
+//        // Once SDK reconnect, we reset the live collection to fetch the most recent data.
+//        // The page state will be reset to first page (last chunk messages).
+//        //
+//        switch AmityUIKitManagerInternal.shared.client.connectionStatus {
+//        case .notConnected, .connecting, .disconnected:
+//            // AmityHUD.show(.error(message: "Not Online"))
+//            // We don't care how many offline states are updated, we only record the first one.
+//            if lastNotOnline == nil {
+//                lastNotOnline = Date()
+//            }
+//        case .connected:
+//            var shouldRefresh = false
+//            // The seconds to reset live collection, if sdk is offline more than x seconds.
+//            let thresholdToResetLiveCollection = TimeInterval(3)
+//            if let lastNotOnline = lastNotOnline, Date().timeIntervalSince(lastNotOnline) > thresholdToResetLiveCollection {
+//                shouldRefresh = true
+//            } else if let lastEnterBackground = lastEnterBackground, Date().timeIntervalSince(lastEnterBackground) > thresholdToResetLiveCollection {
+//                // When the app goes into background, we cannot know the connection status.
+//                // If the background takes longer than the threshold, we refresh the collection, once connected no matter what.
+//                shouldRefresh = true
+//            }
+//            if shouldRefresh {
+//                 // AmityHUD.show(.success(message: "Online and refresh"))
+//                // Toggle `isFirstTimeLoaded` to trigger scroll to bottom logic.
+//                delegate?.screenViewModelIsRefreshing(true)
+//                isFirstTimeLoaded = true
+//                messagesCollection?.resetPage()
+//            } else {
+//                 // AmityHUD.show(.success(message: "Online without refresh"))
+//            }
+//            // SDK is online now, we reset this to nil.
+//            // This variable, gonna be set again when the connection state is changed to not_online.
+//            lastNotOnline = nil
+//            lastEnterBackground = nil
+//        @unknown default:
+//            break
+//        }
+//
+//    }
     
 }
 
@@ -222,8 +224,8 @@ extension AmityMessageListScreenViewModel {
     }
     
     func getMessage() {
-        
-        messagesCollection = messageRepository.getMessages(channelId: channelId, includingTags: [], excludingTags: [], filterByParentId: false, parentId: nil, reverse: true)
+        let queryOptions = AmityMessageQueryOptions(subChannelId: subChannelId, messageParentFilter: .noParent, sortOption: .lastCreated)
+        messagesCollection = messageRepository.getMessages(options: queryOptions)
         
         messagesNotificationToken = messagesCollection?.observe { [weak self] (liveCollection, change, error) in
             self?.groupMessages(in: liveCollection, change: change)
@@ -233,9 +235,9 @@ extension AmityMessageListScreenViewModel {
             self?.lastEnterBackground = Date()
         }
         
-        connectionObservation = AmityUIKitManagerInternal.shared.client.observe(\.connectionStatus) { [weak self] client, changes in
-            self?.connectionStateDidChanged()
-        }
+//        connectionObservation = AmityUIKitManagerInternal.shared.client.observe(\.connectionStatus) { [weak self] client, changes in
+//            self?.connectionStateDidChanged()
+//        }
         
     }
     
@@ -244,7 +246,8 @@ extension AmityMessageListScreenViewModel {
         guard !textMessage.isEmpty else {
             return
         }
-        messageRepository.createTextMessage(withChannelId: channelId, text: textMessage, tags: nil, parentId: nil) { [weak self] _,_ in
+        let createOptioins = AmityTextMessageCreateOptions(subChannelId: subChannelId, text: textMessage)
+        messageRepository.createTextMessage(options: createOptioins) { [weak self] _,_ in
             self?.text = ""
             self?.delegate?.screenViewModelEvents(for: .didSendText)
         }
@@ -288,11 +291,11 @@ extension AmityMessageListScreenViewModel {
     }
     
     func startReading() {
-        membershipParticipation?.startReading()
+        membershipParticipation?.startReading(subChannelId: subChannelId)
     }
     
     func stopReading() {
-        membershipParticipation?.stopReading()
+        membershipParticipation?.stopReading(subChannelId: subChannelId)
         membershipParticipation = nil
     }
     
@@ -458,7 +461,7 @@ private extension AmityMessageListScreenViewModel {
 extension AmityMessageListScreenViewModel {
     
     func send(withMedias medias: [AmityMedia]) {
-        let operations = medias.map { UploadImageMessageOperation(channelId: channelId, media: $0, repository: messageRepository) }
+        let operations = medias.map { UploadImageMessageOperation(subChannelId: subChannelId, media: $0, repository: messageRepository) }
         
         // Define serial dependency A <- B <- C <- ... <- Z
         for (left, right) in zip(operations, operations.dropFirst()) {
@@ -473,7 +476,7 @@ extension AmityMessageListScreenViewModel {
 // MARK: - Send Audio
 extension AmityMessageListScreenViewModel {
     func sendAudio() {
-        messageAudio = AmityMessageAudioController(channelId: channelId, repository: messageRepository)
+        messageAudio = AmityMessageAudioController(subChannelId: subChannelId, repository: messageRepository)
         messageAudio?.create { [weak self] in
             self?.messageAudio = nil
             self?.delegate?.screenViewModelEvents(for: .updateMessages)

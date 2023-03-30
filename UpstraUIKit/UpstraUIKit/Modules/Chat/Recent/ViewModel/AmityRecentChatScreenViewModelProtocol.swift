@@ -14,7 +14,7 @@ protocol AmityRecentChatScreenViewModelDelegate: AnyObject {
     func screenViewModelLoadingState(for state: AmityLoadingState)
     func screenViewModelRoute(for route: AmityRecentChatScreenViewModel.Route)
     func screenViewModelEmptyView(isEmpty: Bool)
-    func screenViewModelDidCreateCommunity(channelId: String)
+    func screenViewModelDidCreateCommunity(channelId: String, subChannelId: String)
     func screenViewModelDidFailedCreateCommunity(error: String)
 }
 

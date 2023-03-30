@@ -76,7 +76,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 extension SceneDelegate {
     func openPost(withId postId: String, scene: UIScene) {
         guard let _ = (scene as? UIWindowScene), let windowScene = scene as? UIWindowScene else { return }
-        AmityUIKitManager.registerDevice(withUserId: "victimIOS", displayName: "victimIOS".uppercased())
+        AmityUIKitManager.registerDevice(withUserId: "victimIOS", displayName: "victimIOS".uppercased(), sessionHandler: SampleSessionHandler())
         let window = UIWindow(windowScene: windowScene)
         let postDetailViewController = AmityPostDetailViewController.make(withPostId: "c1bb8697c88a01f6423765984a3e47ac")
             

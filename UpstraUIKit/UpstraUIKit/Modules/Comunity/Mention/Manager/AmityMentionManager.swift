@@ -19,7 +19,7 @@ public struct AmityMentionUserModel {
         self.userId = user.userId
         self.displayName = user.displayName ?? AmityLocalizedStringSet.General.anonymous.localizedString
         self.avatarURL = user.getAvatarInfo()?.fileURL ?? ""
-        self.isGlobalBan = user.isGlobalBan
+        self.isGlobalBan = user.isGlobalBanned
     }
 }
 

@@ -31,7 +31,7 @@ class GlobalPostsDataSource {
     }
     
     func getPostAtIndex(index: Int) -> PostPreviewModel? {
-        guard let post = postCollection?.object(at: UInt(index)) else { return nil }
+        guard let post = postCollection?.object(at: index) else { return nil }
         return PostPreviewModel(post: post)
     }
     
@@ -85,8 +85,8 @@ struct PostPreviewModel {
         createdAt = PostPreviewModel.dateFormatter.string(from: post.createdAt)
         
         var postDataType = post.dataType
-        if let children = post.childrenPosts, children.count > 0 {
-            for eachChild in children {
+        if post.childrenPosts.count > 0 {
+            for eachChild in post.childrenPosts {
                 switch eachChild.dataType {
                 case "image":
                     postDataType = "image"

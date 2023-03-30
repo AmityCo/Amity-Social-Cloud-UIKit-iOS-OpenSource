@@ -107,7 +107,7 @@ extension LiveStreamBroadcastViewController {
         case .success(let post):
             // The post itself is a text post.
             // The stream object post, is in the post.children[0].
-            guard let firstChildPost = post.childrenPosts?.first,
+            guard let firstChildPost = post.childrenPosts.first,
                   let streamObject = firstChildPost.getLiveStreamInfo() else {
                 assertionFailure("post.getLiveStreamInfo must exist at this point.")
                 presentErrorDialogue(title: "Error", message: "Unable to find live stream data in post.")

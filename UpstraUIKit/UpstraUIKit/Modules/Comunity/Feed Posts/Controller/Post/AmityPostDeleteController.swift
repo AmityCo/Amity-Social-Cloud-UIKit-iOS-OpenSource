@@ -14,9 +14,9 @@ protocol AmityPostDeleteControllerProtocol {
 }
 
 final class AmityPostDeleteController: AmityPostDeleteControllerProtocol {
-    private let repository = AmityFeedRepository(client: AmityUIKitManagerInternal.shared.client)
+    private let repository = AmityPostRepository(client: AmityUIKitManagerInternal.shared.client)
     
     func delete(withPostId postId: String, parentId: String?, completion: AmityRequestCompletion?) {
-        repository.deletePost(withPostId: postId, parentId: parentId, completion: completion)
+        repository.deletePost(withId: postId, parentId: parentId, hardDelete: false, completion: completion)
     }
 }

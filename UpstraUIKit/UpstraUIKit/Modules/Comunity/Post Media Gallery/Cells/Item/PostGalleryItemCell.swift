@@ -89,7 +89,7 @@ class PostGalleryItemCell: UICollectionViewCell, Nibbable {
             streamStatus = nil
         case "video":
             let thumbnailInfo = post.getVideoThumbnailInfo()
-            let videoInfo = post.getVideoInfo(for: .original)
+            let videoInfo = post.getVideoInfo()
             imageUrl = thumbnailInfo?.fileURL
             placeholder = nil
             // Extract duration from video meta

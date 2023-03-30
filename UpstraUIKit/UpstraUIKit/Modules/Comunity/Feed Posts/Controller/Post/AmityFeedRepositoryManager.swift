@@ -73,6 +73,11 @@ final class AmityFeedRepositoryManager: AmityFeedRepositoryManagerProtocol {
             guard let strongSelf = self else { return }
             if let error = AmityError(error: error) {
                 completion?(.failure(error))
+            } else if let error, error._code == 500000 {
+                // Handle 500000 error code explicitly here not to mess up with the rest
+                // Server respond 500000 if the user is not followed anymore
+                // Feed must be wipe out and should not show cache data anymore
+                completion?(.failure(.userNotFound))
             } else {
                 completion?(.success(strongSelf.prepareDataSource(feedType: type)))
             }

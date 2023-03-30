@@ -129,8 +129,8 @@ extension AmityRecentChatViewController: UITableViewDataSource {
 }
 
 extension AmityRecentChatViewController: AmityRecentChatScreenViewModelDelegate {
-    func screenViewModelDidCreateCommunity(channelId: String) {
-        AmityChannelEventHandler.shared.channelDidTap(from: self, channelId: channelId)
+    func screenViewModelDidCreateCommunity(channelId: String, subChannelId: String) {
+        AmityChannelEventHandler.shared.channelDidTap(from: self, channelId: channelId, subChannelId: subChannelId)
     }
     
     func screenViewModelDidFailedCreateCommunity(error: String) {
@@ -154,8 +154,8 @@ extension AmityRecentChatViewController: AmityRecentChatScreenViewModelDelegate 
     
     func screenViewModelRoute(for route: AmityRecentChatScreenViewModel.Route) {
         switch route {
-        case .messageView(let channelId):
-            AmityChannelEventHandler.shared.channelDidTap(from: self, channelId: channelId)
+        case .messageView(let channelId, let subChannelId):
+            AmityChannelEventHandler.shared.channelDidTap(from: self, channelId: channelId, subChannelId: subChannelId)
         }
     }
     

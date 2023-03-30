@@ -30,6 +30,6 @@ struct AmityCommunityMembershipModel {
         self.roles = member.roles
         self.avatarURL = member.user?.getAvatarInfo()?.fileURL ?? ""
         self.isModerator = roles.contains { $0 == AmityCommunityRole.moderator.rawValue || $0 == AmityCommunityRole.communityModerator.rawValue }
-        self.isGlobalBan = member.user?.isGlobalBan ?? false
+        self.isGlobalBan = member.user?.isGlobalBanned ?? false
     }
 }

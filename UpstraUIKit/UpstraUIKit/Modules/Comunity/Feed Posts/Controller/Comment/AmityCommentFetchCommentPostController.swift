@@ -30,7 +30,8 @@ class AmityCommentFetchCommentPostController: AmityCommentFetchCommentPostContro
     func getCommentsForPostId(withReferenceId postId: String, referenceType: AmityCommentReferenceType, filterByParentId isParent: Bool, parentId: String?, orderBy: AmityOrderBy, includeDeleted: Bool, completion: ((Result<[AmityCommentModel], AmityError>) -> Void)?) {
         
         token?.invalidate()
-        collection = repository.getCommentsWithReferenceId(postId, referenceType: referenceType, filterByParentId: isParent, parentId: parentId, orderBy: orderBy, includeDeleted: includeDeleted)
+        let queryOptions = AmityCommentQueryOptions(referenceId: postId, referenceType: referenceType, filterByParentId: isParent, parentId: parentId, orderBy: orderBy, includeDeleted: includeDeleted)
+        collection = repository.getComments(with: queryOptions)
         
         token = collection?.observe { [weak self] (commentCollection, _, error) in
             guard let strongSelf = self else { return }

@@ -23,9 +23,9 @@ open class AmityChannelEventHandler {
     ///
     /// A default behavior is navigating to `AmityMessageListViewController`
     open func channelDidTap(from source: AmityViewController,
-                            channelId: String) {
+                            channelId: String, subChannelId: String) {
         let settings = AmityMessageListViewController.Settings()
-        let viewController = AmityMessageListViewController.make(channelId: channelId, settings: settings)
+        let viewController = AmityMessageListViewController.make(channelId: channelId, subChannelId: subChannelId, settings: settings)
         source.navigationController?.pushViewController(viewController, animated: true)
     }
     

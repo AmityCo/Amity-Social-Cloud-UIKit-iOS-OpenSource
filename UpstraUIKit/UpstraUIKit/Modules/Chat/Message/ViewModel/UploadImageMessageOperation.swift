@@ -11,14 +11,14 @@ import AmitySDK
 
 class UploadImageMessageOperation: AsyncOperation {
     
-    private let channelId: String
+    private let subChannelId: String
     private let media: AmityMedia
     private weak var repository: AmityMessageRepository?
     
     private var token: AmityNotificationToken?
     
-    init(channelId: String, media: AmityMedia, repository: AmityMessageRepository) {
-        self.channelId = channelId
+    init(subChannelId: String, media: AmityMedia, repository: AmityMessageRepository) {
+        self.subChannelId = subChannelId
         self.media = media
         self.repository = repository
     }
@@ -34,7 +34,7 @@ class UploadImageMessageOperation: AsyncOperation {
             return
         }
         
-        let channelId = self.channelId
+        let channelId = self.subChannelId
         
         // Perform actual task on main queue.
         DispatchQueue.main.async { [weak self] in
@@ -49,24 +49,31 @@ class UploadImageMessageOperation: AsyncOperation {
                     let data = image.scalePreservingAspectRatio().jpegData(compressionQuality: 0.8)
                     try? data?.write(to: imageUrl)
                     
-                    let messageId = repository.createImageMessage(withChannelId: channelId, imageFile: imageUrl, caption: nil, fullImage: true, tags: nil, parentId: nil, completion: nil)
-                    self?.token = repository.getMessage(messageId)?.observe { (liveObject, error) in
-                        guard error == nil, let message = liveObject.object else {
-                            self?.token = nil
-                            self?.finish()
+                    let createOptions = AmityImageMessageCreateOptions(subChannelId: channelId, imageURL: imageUrl, fullImage: true)
+                    
+                    repository.createImageMessage(options: createOptions) { message, error in
+                        guard error == nil, let message = message else {
                             return
                         }
-                        switch message.syncState {
-                        case .syncing, .default:
-                            // We don't cache local file URL as sdk handles itself
-                            break
-                        case .synced, .error:
-                            self?.token = nil
-                            self?.finish()
-                        @unknown default:
-                            fatalError()
+                        self?.token = repository.getMessage(message.messageId).observe { (liveObject, error) in
+                            guard error == nil, let message = liveObject.object else {
+                                self?.token = nil
+                                self?.finish()
+                                return
+                            }
+                            switch message.syncState {
+                            case .syncing, .default:
+                                // We don't cache local file URL as sdk handles itself
+                                break
+                            case .synced, .error:
+                                self?.token = nil
+                                self?.finish()
+                            @unknown default:
+                                fatalError()
+                            }
                         }
                     }
+                    
                 case .failure:
                     self?.finish()
                 }

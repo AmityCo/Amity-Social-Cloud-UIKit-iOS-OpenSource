@@ -55,26 +55,6 @@ public final class AmityUIKitManager {
     
     // MARK: - Setup Authentication
     
-    /// Setup AmityUIKit instance. Internally it creates AmityClient instance from AmitySDK.
-    ///
-    /// - Parameters:
-    ///   - apiKey: API key provided by Amity.
-    ///   - httpUrl: Custom url to be used as base url.
-    ///   - socketUrl: Custom url to be used as base url.
-    ///
-    @available(swift, deprecated: 2.8.0, message: "This method will be removed in future version. Please use `setup(apiKey:_, region:_)` method instead")
-    public static func setup(apiKey: String, httpUrl: String? = nil, socketUrl: String? = nil) {
-        if let httpUrl = httpUrl, let socketUrl = socketUrl {
-            AmityUIKitManagerInternal.shared.setup(apiKey, httpUrl: httpUrl, socketUrl: socketUrl)
-        } else if let httpUrl = httpUrl {
-            AmityUIKitManagerInternal.shared.setup(apiKey, httpUrl: httpUrl)
-        } else if let socketUrl = socketUrl {
-            AmityUIKitManagerInternal.shared.setup(apiKey, socketUrl: socketUrl)
-        } else {
-            AmityUIKitManagerInternal.shared.setup(apiKey)
-        }
-    }
-    
     /// Registers current user with server. This is analogous to "login" process. If the user is already registered, local
     /// information is used. It is okay to call this method multiple times.
     ///
@@ -91,8 +71,9 @@ public final class AmityUIKitManager {
         withUserId userId: String,
         displayName: String?,
         authToken: String? = nil,
+        sessionHandler: SessionHandler,
         completion: AmityRequestCompletion? = nil) {
-        AmityUIKitManagerInternal.shared.registerDevice(userId, displayName: displayName, authToken: authToken, completion: completion)
+        AmityUIKitManagerInternal.shared.registerDevice(userId, displayName: displayName, authToken: authToken, sessionHandler: sessionHandler, completion: completion)
     }
     
     /// Unregisters current user. This removes all data related to current user & terminates conenction with server. This is analogous to "logout" process.
@@ -188,40 +169,30 @@ final class AmityUIKitManagerInternal: NSObject {
         guard let client = try? AmityClient(apiKey: apiKey, region: region) else { return }
         
         _client = client
-        _client?.clientErrorDelegate = self
+        _client?.delegate = self
     }
     
     func setup(_ apiKey: String, endpoint: AmityEndpoint) {
         guard let client = try? AmityClient(apiKey: apiKey, endpoint: endpoint) else { return }
         
         _client = client
-        _client?.clientErrorDelegate = self
+        _client?.delegate = self
     }
     
-    func setup(_ apiKey: String, httpUrl: String = "", socketUrl: String = "") {
-        self.apiKey = apiKey
-
-        // Passing empty string over `httpUrl` and `socketUrl` is acceptable.
-        // `AmityClient` will be using the default endpoint instead.
-        guard let client = try? AmityClient(apiKey: apiKey, httpUrl: httpUrl, socketUrl: socketUrl) else {
-            assertionFailure("Something went wrong. API key is invalid.")
-            return
-        }
-        _client = client
-        _client?.clientErrorDelegate = self
-    }
-
     func registerDevice(_ userId: String,
                         displayName: String?,
                         authToken: String?,
+                        sessionHandler: SessionHandler,
                         completion: AmityRequestCompletion?) {
         
-        client.login(userId: userId, displayName: displayName, authToken: authToken) { [weak self] success, error in
-            if success {
-                self?.revokeDeviceTokens()
-                self?.didUpdateClient()
+        AmityAsyncAwaitTransformer.toCompletionHandler(asyncFunction: client.login, parameters: (userId: userId, displayName: displayName, authToken: authToken, sessionHandler: sessionHandler)) { [weak self] success, error in
+            if let error = error {
+                completion?(false, error)
+                return
             }
-            completion?(success, error)
+            self?.revokeDeviceTokens()
+            self?.didUpdateClient()
+            completion?(true, error)
         }
     }
     
@@ -270,9 +241,20 @@ final class AmityUIKitManagerInternal: NSObject {
     
 }
 
-extension AmityUIKitManagerInternal: AmityClientErrorDelegate {
-    
-    func didReceiveAsyncError(_ error: Error) {
+extension AmityUIKitManagerInternal: AmityClientDelegate {
+    func didReceiveError(error: Error) {
         AmityHUD.show(.error(message: error.localizedDescription))
+    }
+    
+}
+
+extension AmityClient {
+    var isEstablished: Bool {
+        switch sessionState {
+        case .established:
+            return true
+        default:
+            return false
+        }
     }
 }

@@ -47,7 +47,7 @@ public struct AmityCommentModel {
         myReactions = comment.myReactions
         childrenComment = comment.childrenComments.map { AmityCommentModel(comment: $0) }
         self.comment = comment
-        isAuthorGlobalBanned = comment.user?.isGlobalBan ?? false
+        isAuthorGlobalBanned = comment.user?.isGlobalBanned ?? false
         metadata = comment.metadata
         mentionees = comment.mentionees
     }

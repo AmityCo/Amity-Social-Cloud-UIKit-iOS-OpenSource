@@ -39,7 +39,7 @@ final class AmityCommunityTrendingController: AmityCommunityTrendingControllerPr
     private func prepareDataSource() -> [AmityCommunityModel] {
         guard let collection = collection else { return [] }
         var community: [AmityCommunityModel] = []
-        for index in 0..<min(collection.count(), maxTrending) {
+        for index in 0..<min(collection.count(), Int(maxTrending)) {
             guard let object = collection.object(at: index) else { continue }
             let model = AmityCommunityModel(object: object)
             community.append(model)

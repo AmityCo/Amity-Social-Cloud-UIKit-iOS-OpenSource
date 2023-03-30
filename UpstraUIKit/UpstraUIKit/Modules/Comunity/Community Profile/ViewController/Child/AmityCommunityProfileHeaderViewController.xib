@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="17701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="21507" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17703"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21505"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -15,7 +15,6 @@
                 <outlet property="actionStackView" destination="Oel-tV-vJX" id="sED-r4-x0g"/>
                 <outlet property="avatarView" destination="9xv-ae-5a2" id="ACs-lS-FWS"/>
                 <outlet property="categoryLabel" destination="Pdi-Fo-9vJ" id="03i-Ft-T2h"/>
-                <outlet property="chatButton" destination="ILm-Zj-Skm" id="LHE-Og-fD9"/>
                 <outlet property="descriptionLabel" destination="afn-1i-qkt" id="TIr-xd-ZS3"/>
                 <outlet property="displayNameLabel" destination="xyE-Zr-AJm" id="IN0-ae-COg"/>
                 <outlet property="memberLabel" destination="JE8-UH-jlx" id="EZ9-Q9-5yn"/>
@@ -36,7 +35,7 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="HXi-Sa-ehB">
-                    <rect key="frame" x="0.0" y="44" width="414" height="614"/>
+                    <rect key="frame" x="0.0" y="48" width="414" height="610"/>
                     <subviews>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Vzm-YV-HXL" userLabel="Avatar Container View">
                             <rect key="frame" x="0.0" y="0.0" width="414" height="276"/>
@@ -171,10 +170,10 @@
                             </constraints>
                         </view>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="H5r-0D-0VA" userLabel="Container View">
-                            <rect key="frame" x="0.0" y="340" width="414" height="274"/>
+                            <rect key="frame" x="0.0" y="340" width="414" height="270"/>
                             <subviews>
                                 <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="12" translatesAutoresizingMaskIntoConstraints="NO" id="FAE-TS-apw">
-                                    <rect key="frame" x="16" y="0.0" width="382" height="274"/>
+                                    <rect key="frame" x="16" y="0.0" width="382" height="270"/>
                                     <subviews>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="afn-1i-qkt" userLabel="Description Label">
                                             <rect key="frame" x="0.0" y="0.0" width="382" height="0.0"/>
@@ -189,16 +188,9 @@
                                                     <rect key="frame" x="0.0" y="0.0" width="382" height="40"/>
                                                     <subviews>
                                                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="kRZ-w2-ean" customClass="AmityButton" customModule="AmityUIKit" customModuleProvider="target">
-                                                            <rect key="frame" x="0.0" y="0.0" width="322" height="40"/>
+                                                            <rect key="frame" x="0.0" y="0.0" width="382" height="40"/>
                                                             <constraints>
                                                                 <constraint firstAttribute="height" constant="40" id="EjK-EQ-slX"/>
-                                                            </constraints>
-                                                        </button>
-                                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ILm-Zj-Skm" userLabel="Chat Button" customClass="AmityButton" customModule="AmityUIKit" customModuleProvider="target">
-                                                            <rect key="frame" x="334" y="0.0" width="48" height="40"/>
-                                                            <constraints>
-                                                                <constraint firstAttribute="width" constant="48" id="8A7-n6-Igm"/>
-                                                                <constraint firstAttribute="height" constant="40" id="8wJ-jb-4cD"/>
                                                             </constraints>
                                                         </button>
                                                     </subviews>
@@ -213,16 +205,16 @@
                                             </constraints>
                                         </view>
                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="xYH-Fg-KT5" userLabel="Pending Posts View">
-                                            <rect key="frame" x="0.0" y="64" width="382" height="210"/>
+                                            <rect key="frame" x="0.0" y="64" width="382" height="206"/>
                                             <subviews>
                                                 <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" spacing="4" translatesAutoresizingMaskIntoConstraints="NO" id="V8d-vK-TXJ">
-                                                    <rect key="frame" x="16" y="16" width="350" height="178"/>
+                                                    <rect key="frame" x="16" y="16" width="350" height="174"/>
                                                     <subviews>
                                                         <stackView opaque="NO" contentMode="scaleToFill" alignment="center" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="lML-9j-XCP">
-                                                            <rect key="frame" x="114" y="0.0" width="122.5" height="153.5"/>
+                                                            <rect key="frame" x="114" y="0.0" width="122.5" height="149.5"/>
                                                             <subviews>
                                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="DGH-bO-PzS">
-                                                                    <rect key="frame" x="0.0" y="74" width="6" height="6"/>
+                                                                    <rect key="frame" x="0.0" y="72" width="6" height="6"/>
                                                                     <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                                                     <constraints>
                                                                         <constraint firstAttribute="width" constant="6" id="MX9-na-7mw"/>
@@ -230,7 +222,7 @@
                                                                     </constraints>
                                                                 </view>
                                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Pending posts" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dhe-u8-8Do">
-                                                                    <rect key="frame" x="14" y="66.5" width="108.5" height="20.5"/>
+                                                                    <rect key="frame" x="14" y="64.5" width="108.5" height="20.5"/>
                                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                                     <nil key="textColor"/>
                                                                     <nil key="highlightedColor"/>
@@ -238,7 +230,7 @@
                                                             </subviews>
                                                         </stackView>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="2 posts need approval" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="CqM-zo-2SB">
-                                                            <rect key="frame" x="91" y="157.5" width="168.5" height="20.5"/>
+                                                            <rect key="frame" x="91" y="153.5" width="168.5" height="20.5"/>
                                                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                             <nil key="textColor"/>
                                                             <nil key="highlightedColor"/>
@@ -246,7 +238,7 @@
                                                     </subviews>
                                                 </stackView>
                                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="vqN-oa-qrf">
-                                                    <rect key="frame" x="0.0" y="0.0" width="382" height="210"/>
+                                                    <rect key="frame" x="0.0" y="0.0" width="382" height="206"/>
                                                     <connections>
                                                         <action selector="pendingPostsTap" destination="-1" eventType="touchUpInside" id="LXv-6C-gzg"/>
                                                     </connections>

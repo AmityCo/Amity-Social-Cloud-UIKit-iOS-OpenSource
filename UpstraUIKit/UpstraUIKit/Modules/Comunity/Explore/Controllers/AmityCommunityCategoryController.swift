@@ -39,7 +39,7 @@ final class AmityCommunityCategoryController: AmityCommunityCategoryControllerPr
     private func prepareDataSource() -> [AmityCommunityCategoryModel] {
         guard let collection = collection else { return [] }
         var category: [AmityCommunityCategoryModel] = []
-        for index in 0..<min(collection.count(), maxCategories) {
+        for index in 0..<min(collection.count(), Int(maxCategories)) {
             guard let object = collection.object(at: index) else { continue }
             let model = AmityCommunityCategoryModel(object: object)
             category.append(model)

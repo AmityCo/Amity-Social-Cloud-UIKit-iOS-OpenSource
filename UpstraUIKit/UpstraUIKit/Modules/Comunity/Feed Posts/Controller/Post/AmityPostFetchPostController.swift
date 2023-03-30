@@ -15,12 +15,12 @@ protocol AmityPostFetchPostControllerProtocol {
 
 final class AmityPostFetchPostController: AmityPostFetchPostControllerProtocol {
     
-    private let repository = AmityFeedRepository(client: AmityUIKitManagerInternal.shared.client)
+    private let repository = AmityPostRepository(client: AmityUIKitManagerInternal.shared.client)
     private var postObject: AmityObject<AmityPost>?
     private var token: AmityNotificationToken?
     
     func getPostForPostId(withPostId postId: String, completion: ((Result<AmityPostModel, AmityError>) -> Void)?) {
-        postObject = repository.getPostForPostId(postId)
+        postObject = repository.getPost(withId: postId)
         token = postObject?.observe { [weak self] (_, error) in
             guard let strongSelf = self else { return }
             if let error = AmityError(error: error) {

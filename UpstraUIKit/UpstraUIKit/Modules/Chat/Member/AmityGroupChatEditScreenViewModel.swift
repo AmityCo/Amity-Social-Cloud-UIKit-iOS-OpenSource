@@ -40,7 +40,6 @@ extension AmityGroupChatEditorScreenViewModelType {
 class AmityGroupChatEditScreenViewModel: AmityGroupChatEditorScreenViewModelType {
     
     private var channelNotificationToken: AmityNotificationToken?
-    private var channelUpdateToken: AmityNotificationToken?
     private let channelRepository = AmityChannelRepository(client: AmityUIKitManagerInternal.shared.client)
     private var channelUpdateBuilder: AmityChannelUpdateBuilder!
     private let fileRepository = AmityFileRepository(client: AmityUIKitManagerInternal.shared.client)
@@ -65,9 +64,8 @@ class AmityGroupChatEditScreenViewModel: AmityGroupChatEditorScreenViewModelType
     func update(displayName: String) {
         // Update
         channelUpdateBuilder.setDisplayName(displayName)
-        channelUpdateToken?.invalidate()
-        
-        channelUpdateToken = channelRepository.updateChannel(with: channelUpdateBuilder).observe({ [weak self] (channel, error) in
+                
+        AmityAsyncAwaitTransformer.toCompletionHandler(asyncFunction: channelRepository.updateChannel, parameters: channelUpdateBuilder) { [weak self] channel, error in
             guard let weakSelf = self else { return }
             
             if let error = error {
@@ -75,20 +73,19 @@ class AmityGroupChatEditScreenViewModel: AmityGroupChatEditorScreenViewModelType
             } else {
                 weakSelf.delegate?.screenViewModelDidUpdateSuccess(weakSelf)
             }
-            
-        })
+        }
     }
     
     func update(avatar: UIImage, completion: @escaping (Bool) -> ()) {
         // Update user avatar
-        channelUpdateToken?.invalidate()
         fileRepository.uploadImage(avatar, progress: nil) { [weak self] (imageData, error) in
             guard let weakSelf = self else { return }
             weakSelf.channelUpdateBuilder.setAvatar(imageData)
-            weakSelf.channelUpdateToken = weakSelf.channelRepository.updateChannel(with: weakSelf.channelUpdateBuilder).observe({ [weak self] (channel, error) in
+            
+            AmityAsyncAwaitTransformer.toCompletionHandler(asyncFunction: weakSelf.channelRepository.updateChannel, parameters: weakSelf.channelUpdateBuilder) { [weak self] channel, error in
                 guard let weakSelf = self else { return }
                 completion(error == nil)
-            })
+            }
         }
     }
     

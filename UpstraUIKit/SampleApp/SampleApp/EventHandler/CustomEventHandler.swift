@@ -25,18 +25,14 @@ class CustomEventHandler: AmityEventHandler {
     }
     
     override func communityDidTap(from source: AmityViewController, communityId: String) {
-        
-        let settings = AmityCommunityProfilePageSettings()
-        settings.shouldChatButtonHide = false
-        
-        let viewController = AmityCommunityProfilePageViewController.make(withCommunityId: communityId, settings: settings)
+        let viewController = AmityCommunityProfilePageViewController.make(withCommunityId: communityId)
         source.navigationController?.pushViewController(viewController, animated: true)
     }
     
-    override func communityChannelDidTap(from source: AmityViewController, channelId: String) {
+    override func communityChannelDidTap(from source: AmityViewController, channelId: String, subChannelId: String) {
         var settings = AmityMessageListViewController.Settings()
         settings.shouldShowChatSettingBarButton = true
-        let viewController = AmityMessageListViewController.make(channelId: channelId, settings: settings)
+        let viewController = AmityMessageListViewController.make(channelId: channelId, subChannelId: subChannelId, settings: settings)
         source.navigationController?.pushViewController(viewController, animated: true)
     }
     

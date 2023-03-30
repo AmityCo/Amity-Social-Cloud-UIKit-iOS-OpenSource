@@ -14,12 +14,12 @@ protocol AmityPostUpdateControllerProtocol {
 }
 
 final class AmityPostUpdateController: AmityPostUpdateControllerProtocol {
-    private let repository = AmityFeedRepository(client: AmityUIKitManagerInternal.shared.client)
+    private let repository = AmityPostRepository(client: AmityUIKitManagerInternal.shared.client)
     
     func update(withPostId postId: String, text: String, completion: AmityPostRequestCompletion?) {
         let textBuilder = AmityTextPostBuilder()
         textBuilder.setText(text)
-        repository.updatePost(withPostId: postId, builder: textBuilder, completion: completion)
+        repository.updatePost(withId: postId, builder: textBuilder, completion: completion)
     }
     
 }

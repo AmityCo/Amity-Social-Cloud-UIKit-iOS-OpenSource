@@ -42,7 +42,8 @@ final class AmityCommentChildrenController {
             }
         } else {
             commentChildrenResults[parentId] = []
-            commentChildrenCollections[parentId] = commentRepository.getCommentsWithReferenceId(postId, referenceType: .post, filterByParentId: true, parentId: parentId, orderBy: .descending, includeDeleted: true)
+            let queryOptions = AmityCommentQueryOptions(referenceId: postId, referenceType: .post, filterByParentId: true, parentId: parentId, orderBy: .descending, includeDeleted: true)
+            commentChildrenCollections[parentId] = commentRepository.getComments(with: queryOptions)
             commentChildrenTokens[parentId] = commentChildrenCollections[parentId]?.observe { [weak self] collection, _, _ in
                 guard let strongSelf = self else { return }
                 var commentModels: [AmityCommentModel] = []

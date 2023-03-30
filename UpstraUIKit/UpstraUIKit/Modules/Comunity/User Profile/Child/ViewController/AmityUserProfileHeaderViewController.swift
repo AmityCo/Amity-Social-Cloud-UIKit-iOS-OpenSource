@@ -325,7 +325,7 @@ extension AmityUserProfileHeaderViewController : AmityUserProfileHeaderScreenVie
     }
     
     func screenViewModel(_ viewModel: AmityUserProfileHeaderScreenViewModelType, didCreateChannel channel: AmityChannel) {
-        AmityChannelEventHandler.shared.channelDidTap(from: self, channelId: channel.channelId)
+        AmityChannelEventHandler.shared.channelDidTap(from: self, channelId: channel.channelId, subChannelId: channel.defaultSubChannelId)
     }
     
     func screenViewModel(_ viewModel: AmityUserProfileHeaderScreenViewModelType, didFollowSuccess status: AmityFollowStatus) {

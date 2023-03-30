@@ -89,6 +89,9 @@ open class AmityExpandableLabel: UILabel {
         }
     }
     
+    // Set a color for hyperLink text in label
+    open var hyperLinkColor: UIColor = AmityColorSet.highlight
+    
     /// Set a font for readmore label
     /// The default value is 'AmityFontSet.bodyBold'.
     open var readMoreFont: UIFont = AmityFontSet.bodyBold {
@@ -162,7 +165,7 @@ open class AmityExpandableLabel: UILabel {
                     guard let formattedString = validUrlString.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed),
                         let url = URL(string: formattedString) else { continue }
                     attributedString.addAttributes([
-                        .foregroundColor: AmityColorSet.highlight,
+                        .foregroundColor: hyperLinkColor,
                         .attachment: url], range: match.range)
                     attributedString.addAttribute(.underlineStyle, value: NSUnderlineStyle.single.rawValue, range: match.range)
                     _hyperLinkTextRange.append(Hyperlink(range: match.range, type: .url(url: url)))
@@ -627,7 +630,7 @@ extension AmityExpandableLabel {
             guard let formattedString = validUrlString.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed),
                 let url = URL(string: formattedString) else { continue }
             attributedString.addAttributes([
-                .foregroundColor: AmityColorSet.highlight,
+                .foregroundColor: hyperLinkColor,
                 .attachment: url], range: match.range)
             attributedString.addAttribute(.underlineStyle, value: NSUnderlineStyle.single.rawValue, range: match.range)
             _hyperLinkTextRange.append(Hyperlink(range: match.range, type: .url(url: url)))

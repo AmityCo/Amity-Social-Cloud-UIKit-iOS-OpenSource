@@ -18,7 +18,8 @@ class AmityPostTargetPickerScreenViewModel: AmityPostTargetPickerScreenViewModel
     private var categoryCollectionToken:AmityNotificationToken?
     
     func observe() {
-        communityCollection = communityRepository.getCommunities(displayName: "", filter: .userIsMember, sortBy: .displayName, categoryId: nil, includeDeleted: false)
+        let queryOptions = AmityCommunityQueryOptions(displayName: "", filter: .userIsMember, sortBy: .displayName, includeDeleted: false)
+        communityCollection = communityRepository.getCommunities(with: queryOptions)
         categoryCollectionToken = communityCollection?.observe({ [weak self] (collection, _, _) in
             guard let strongSelf = self else { return }
             switch collection.dataStatus {
@@ -34,7 +35,7 @@ class AmityPostTargetPickerScreenViewModel: AmityPostTargetPickerScreenViewModel
     }
     
     func community(at indexPath: IndexPath) -> AmityCommunity? {
-        return communityCollection?.object(at: UInt(indexPath.row))
+        return communityCollection?.object(at: indexPath.row)
     }
     
     func loadNext() {

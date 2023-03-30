@@ -12,10 +12,10 @@ import AmityUIKit
 class CustomChannelEventHandler: AmityChannelEventHandler {
     
     override func channelDidTap(from source: AmityViewController,
-                                channelId: String) {
+                                channelId: String, subChannelId: String) {
         var settings = AmityMessageListViewController.Settings()
         settings.shouldShowChatSettingBarButton = true
-        let viewController = AmityMessageListViewController.make(channelId: channelId, settings: settings)
+        let viewController = AmityMessageListViewController.make(channelId: channelId, subChannelId: subChannelId, settings: settings)
         if ChatFeatureSetting.shared.iscustomMessageEnabled {
             viewController.dataSource = self
         } else {

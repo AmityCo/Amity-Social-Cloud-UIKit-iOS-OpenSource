@@ -65,7 +65,7 @@ open class AmityEventHandler {
     /// It will be triggered when community  button tapped
     ///
     /// There is no default behavior yet. Please override and implement your own here.
-    open func communityChannelDidTap(from source: AmityViewController, channelId: String) {
+    open func communityChannelDidTap(from source: AmityViewController, channelId: String, subChannelId: String) {
         // Intentionally left empty
     }
     

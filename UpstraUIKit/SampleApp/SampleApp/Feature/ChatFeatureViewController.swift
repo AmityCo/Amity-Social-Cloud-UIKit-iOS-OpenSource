@@ -76,32 +76,31 @@ class ChatFeatureViewController: UIViewController {
         present(alertController, animated: true, completion: nil)
     }
     
-    private func presentChat(channelId: String) {
+    private func presentChat(channelId: String, subChannelId: String) {
         ChatFeatureSetting.shared.iscustomMessageEnabled = true
         
         var settings = AmityMessageListViewController.Settings()
         settings.composeBarStyle = .textOnly
-        let vc = AmityMessageListViewController.make(channelId: channelId, settings: settings)
+        let vc = AmityMessageListViewController.make(channelId: channelId, subChannelId: subChannelId, settings: settings)
         navigationController?.pushViewController(vc, animated: true)
     }
     
     func joinToTheChannel(channelId: String) {
         channelRepository = AmityChannelRepository(client: AmityUIKitManager.client)
-        channelObject = channelRepository?.joinChannel(channelId)
-        channelToken = channelObject?.observe({ [weak self] channel, error in
-            guard let strongSelf = self else { return }
-            
-            strongSelf.channelToken?.invalidate()
-            if let error = error {
+        Task { @MainActor in
+            do {
+                let channel = try await channelRepository?.joinChannel(channelId: channelId)
+                if let channel = channel {
+                    presentChat(channelId: channel.channelId, subChannelId: channel.defaultSubChannelId)
+                }
+            } catch {
                 let alertController = UIAlertController(title: "Something went wrong", message: "Can't join to the channel: \(error.localizedDescription)", preferredStyle: .alert)
                 
                 let ok = UIAlertAction(title: "OK", style: .cancel)
                 alertController.addAction(ok)
-                strongSelf.present(alertController, animated: true, completion: nil)
-            } else {
-                strongSelf.presentChat(channelId: channelId)
+                present(alertController, animated: true, completion: nil)
             }
-        })
+        }
     }
 }
 

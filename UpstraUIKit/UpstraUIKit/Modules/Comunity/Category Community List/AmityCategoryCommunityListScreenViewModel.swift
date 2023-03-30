@@ -17,7 +17,8 @@ class AmityCategoryCommunityListScreenViewModel: AmityCategoryCommunityListScree
     weak var delegate: AmityCategoryCommunityListScreenViewModelDelegate?
     
     init(categoryId: String) {
-        communityCollection = communityrepository.getCommunities(displayName: nil, filter: .all, sortBy: .displayName, categoryId: categoryId, includeDeleted: false)
+        let queryOptions = AmityCommunityQueryOptions(filter: .all, sortBy: .displayName, categoryId: categoryId, includeDeleted: false)
+        communityCollection = communityrepository.getCommunities(with: queryOptions)
         communityToken = communityCollection?.observe{ [weak self] _,_,_  in
             guard let strongSelf = self else { return  }
             strongSelf.delegate?.screenViewModelDidUpdateData(strongSelf)
@@ -31,7 +32,7 @@ class AmityCategoryCommunityListScreenViewModel: AmityCategoryCommunityListScree
     }
     
     func item(at indexPath: IndexPath) -> AmityCommunityModel? {
-        guard let object = communityCollection?.object(at: UInt(indexPath.row)) else {
+        guard let object = communityCollection?.object(at: indexPath.row) else {
             return nil
         }
         return AmityCommunityModel(object: object)

@@ -35,7 +35,7 @@ class AmityCategoryPickerScreenViewModel: AmityCategoryPickerScreenViewModelType
     }
     
     func item(at indexPath: IndexPath) -> AmityCommunityCategory? {
-        return categoryCollection?.object(at: UInt(indexPath.row))
+        return categoryCollection?.object(at: indexPath.row)
     }
     
     func loadNext() {

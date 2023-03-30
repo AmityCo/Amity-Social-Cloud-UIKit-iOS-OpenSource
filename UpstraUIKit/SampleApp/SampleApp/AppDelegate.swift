@@ -107,7 +107,7 @@ extension AppDelegate {
     
     private func openPost(withId postId: String) {
         window = UIWindow()
-        AmityUIKitManager.registerDevice(withUserId: "victimIOS", displayName: "victimIOS".uppercased())
+        AmityUIKitManager.registerDevice(withUserId: "victimIOS", displayName: "victimIOS".uppercased(), sessionHandler: SampleSessionHandler())
         
         let postDetailViewController = AmityPostDetailViewController.make(withPostId: "c1bb8697c88a01f6423765984a3e47ac")
         window?.rootViewController = postDetailViewController
@@ -115,3 +115,13 @@ extension AppDelegate {
     }
     
 }
+
+
+class SampleSessionHandler: SessionHandler {
+    
+    func sessionWillRenewAccessToken(renewal: AccessTokenRenewal) {
+        renewal.renew()
+    }
+    
+}
+

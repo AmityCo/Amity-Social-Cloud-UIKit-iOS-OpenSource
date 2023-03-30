@@ -20,18 +20,20 @@ public struct AmityChannelModel {
     let avatarFileId: String?
     let participation: AmityChannelParticipation
     let metadata: [String:Any]
+    let object: AmityChannel
     
     init(object: AmityChannel) {
         self.channelId = object.channelId
         self.avatarURL = object.getAvatarInfo()?.fileURL ?? ""
-        self.displayName = object.displayName ?? AmityLocalizedStringSet.General.anonymous.localizedString
+        self.displayName = (object.displayName ?? "") == "" ? AmityLocalizedStringSet.General.anonymous.localizedString : object.displayName!
         self.memberCount = object.memberCount
-        self.unreadCount = object.unreadCount
-        self.lastActivity = object.lastActivity
+        self.unreadCount = object.defaultSubChannelUnreadCount
+        self.lastActivity = object.lastActivity ?? Date()
         self.participation = object.participation
         self.channelType = object.channelType
         self.avatarFileId = object.getAvatarInfo()?.fileURL
         self.metadata = object.metadata ?? [:]
+        self.object = object
     }
     
     var isConversationChannel: Bool {
@@ -55,7 +57,7 @@ final class AmityRecentChatScreenViewModel: AmityRecentChatScreenViewModelType {
     
     
     enum Route {
-        case messageView(channelId: String)
+        case messageView(channelId: String, subChannelId: String)
     }
     
     // MARK: - Repository
@@ -70,7 +72,6 @@ final class AmityRecentChatScreenViewModel: AmityRecentChatScreenViewModelType {
     // MARK: - Token
     private var channelsToken: AmityNotificationToken?
     private var existingChannelToken: AmityNotificationToken?
-    private var communityToken: AmityNotificationToken?
     private var channelType: AmityChannelType = .conversation
     
     init(channelType: AmityChannelType) {
@@ -110,7 +111,6 @@ final class AmityRecentChatScreenViewModel: AmityRecentChatScreenViewModelType {
         let channelId = userIds.sorted().joined(separator: "-")
         let channelDisplayName = users.count == 1 ? users.first?.displayName ?? "" : allUsers.map { $0.displayName ?? "" }.joined(separator: "-")
         builder.setUserIds(userIds)
-        builder.setId(channelId)
         let metaData: [String:Any] = [
             "isDirectChat": allUsers.count == 2,
             "creatorId": currentUser?.userId ?? "",
@@ -130,26 +130,23 @@ final class AmityRecentChatScreenViewModel: AmityRecentChatScreenViewModelType {
                 weakSelf.createNewCommiunityChannel(builder: builder)
             }
             /// which mean we already have that channel and don't need to creaet new channel
-            guard channel.object != nil else { return }
-            weakSelf.channelRepository.joinChannel(channelId)
+            guard let channel = channel.object else { return }
+            AmityAsyncAwaitTransformer.toCompletionHandler(asyncFunction: weakSelf.channelRepository.joinChannel, parameters: channelId)
             weakSelf.existingChannelToken?.invalidate()
-            weakSelf.delegate?.screenViewModelDidCreateCommunity(channelId: channelId)
+            weakSelf.delegate?.screenViewModelDidCreateCommunity(channelId: channelId, subChannelId: channel.defaultSubChannelId)
             weakSelf.existingChannelToken?.invalidate()
         })
     
     }
     
     private func createNewCommiunityChannel(builder: AmityCommunityChannelBuilder) {
-        let channelObject = channelRepository.createChannel(with: builder)
-        communityToken?.invalidate()
-        communityToken = channelObject.observe {[weak self] channelObject, error in
+        AmityAsyncAwaitTransformer.toCompletionHandler(asyncFunction: channelRepository.createChannel, parameters: builder) { [weak self] channelObject, error in
             guard let weakSelf = self else { return }
             if let error = error {
                 weakSelf.delegate?.screenViewModelDidFailedCreateCommunity(error: error.localizedDescription)
             }
-            if let channelId = channelObject.object?.channelId {
-                weakSelf.communityToken?.invalidate()
-                weakSelf.delegate?.screenViewModelDidCreateCommunity(channelId: channelId)
+            if let channelId = channelObject?.channelId, let subChannelId = channelObject?.defaultSubChannelId {
+                weakSelf.delegate?.screenViewModelDidCreateCommunity(channelId: channelId, subChannelId: subChannelId)
             }
         }
     }
@@ -175,13 +172,9 @@ final class AmityRecentChatScreenViewModel: AmityRecentChatScreenViewModelType {
         builder.setDisplayName(channelDisplayName)
         builder.setTags(["ch-comm","ios-sdk"])
         
-        
-        let channelObject = channelRepository.createChannel(with: builder)
-        communityToken?.invalidate()
-        communityToken = channelObject.observe { channelObject, error in
-            if let channelId = channelObject.object?.channelId {
-                self.communityToken?.invalidate()
-                self.delegate?.screenViewModelDidCreateCommunity(channelId: channelId)
+        AmityAsyncAwaitTransformer.toCompletionHandler(asyncFunction: channelRepository.createChannel, parameters: builder) { channelObject, error in
+            if let channelId = channelObject?.channelId, let subChannelId = channelObject?.defaultSubChannelId {
+                self.delegate?.screenViewModelDidCreateCommunity(channelId: channelId, subChannelId: subChannelId)
             }
         }
     }
@@ -219,9 +212,9 @@ extension AmityRecentChatScreenViewModel {
     }
     
     func join(at indexPath: IndexPath) {
-        let channelId = channel(at: indexPath).channelId
-        channelRepository.joinChannel(channelId)
-        delegate?.screenViewModelRoute(for: .messageView(channelId: channelId))
+        let channel = channel(at: indexPath).object
+        AmityAsyncAwaitTransformer.toCompletionHandler(asyncFunction: channelRepository.joinChannel, parameters: channel.channelId)
+        delegate?.screenViewModelRoute(for: .messageView(channelId: channel.channelId, subChannelId: channel.defaultSubChannelId))
     }
 
 }
@@ -256,7 +249,7 @@ private extension AmityRecentChatScreenViewModel {
         }
         var _channels: [AmityChannelModel] = []
         for index in 0..<collection.count() {
-            guard let channel = collection.object(at: UInt(index)) else { return }
+            guard let channel = collection.object(at: index) else { return }
             let model = AmityChannelModel(object: channel)
             _channels.append(model)
         }

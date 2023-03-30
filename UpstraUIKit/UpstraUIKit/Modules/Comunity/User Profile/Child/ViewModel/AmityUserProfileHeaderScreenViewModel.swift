@@ -66,24 +66,27 @@ extension AmityUserProfileHeaderScreenViewModel {
     }
     
     func fetchFollowInfo() {
+        followToken?.invalidate()
+        
         if userId == AmityUIKitManagerInternal.shared.client.currentUserId {
-            followManager.getMyFollowInfo(completion: { [weak self] success, object, error in
+            followToken = followManager.getMyFollowInfo().observe { [weak self] liveObject, error in
                 guard let strongSelf = self else { return }
                 
-                if success, let result = object {
-                    strongSelf.handleFollowInfo(followInfo: AmityFollowInfo(followInfo: result))
+                if let object = liveObject.object {
+                    strongSelf.handleFollowInfo(followInfo: AmityFollowInfo(followInfo: object))
                 } else {
                     strongSelf.delegate?.screenViewModel(strongSelf, failure: AmityError(error: error) ?? .unknown)
                 }
-            })
+            }
             
             return
         }
         
-        followManager.getUserFollowInfo(withUserId: userId) { [weak self] success, object, error in
+        followToken = followManager.getUserFollowInfo(withUserId: userId).observe { [weak self] liveObject, error in
+            
             guard let strongSelf = self else { return }
             
-            if success, let result = object {
+            if let result = liveObject.object {
                 strongSelf.handleFollowInfo(followInfo: AmityFollowInfo(followInfo: result))
             } else {
                 strongSelf.delegate?.screenViewModel(strongSelf, failure: AmityError(error: error) ?? .unknown)
@@ -96,24 +99,10 @@ extension AmityUserProfileHeaderScreenViewModel {
         builder.setUserId(userId)
         builder.setDisplayName(user?.displayName ?? "")
         
-        let channel: AmityObject<AmityChannel> = channelRepository.createChannel(with: builder)
-        channelToken?.invalidate()
-        channelToken = channel.observeOnce { [weak self] channelObject, _ in
+        AmityAsyncAwaitTransformer.toCompletionHandler(asyncFunction: channelRepository.createChannel, parameters: builder) { [weak self] channelObject, _ in
             guard let strongSelf = self else { return }
-            switch channelObject.dataStatus {
-            case .fresh:
-                if let channel = channelObject.object {
-                    strongSelf.delegate?.screenViewModel(strongSelf, didCreateChannel: channel)
-                }
-                strongSelf.channelToken?.invalidate()
-            case .local:
-                if let channel = channelObject.object {
-                    strongSelf.delegate?.screenViewModel(strongSelf, didCreateChannel: channel)
-                }
-            case .error, .notExist:
-                strongSelf.channelToken?.invalidate()
-            @unknown default:
-                break
+            if let channel = channelObject {
+                strongSelf.delegate?.screenViewModel(strongSelf, didCreateChannel: channel)
             }
         }
     }

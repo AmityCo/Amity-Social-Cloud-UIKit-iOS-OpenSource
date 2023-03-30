@@ -28,6 +28,7 @@ final class AmityUserSettingsScreenViewModel: AmityUserSettingsScreenViewModelTy
     private var isFlaggedByMe: Bool?
     private var followStatus: AmityFollowStatus?
     private var dispatchGroup = DispatchGroup()
+    private var followToken: AmityNotificationToken?
     
     init(userId: String, userNotificationController: AmityUserNotificationSettingsControllerProtocol) {
         self.userId = userId
@@ -118,11 +119,13 @@ private extension AmityUserSettingsScreenViewModel {
     }
     
     func getFollowInfo(completion: (() -> Void)?) {
-        followManager.getUserFollowInfo(withUserId: userId) { [weak self] success, object, error in
-            guard let result = object else { return }
+        followToken = followManager.getUserFollowInfo(withUserId: userId).observeOnce {
+            [weak self] liveObject, error in
+            guard let result = liveObject.object else { return }
             
             self?.followStatus = result.status
             completion?()
+            self?.followToken?.invalidate()
         }
     }
     

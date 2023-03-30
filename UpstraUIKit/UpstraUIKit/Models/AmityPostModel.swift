@@ -299,7 +299,7 @@ public class AmityPostModel {
         parentPostId = post.parentPostId
         postedUser = Author(
             avatarURL: post.postedUser?.getAvatarInfo()?.fileURL,
-            displayName: post.postedUser?.displayName ?? AmityLocalizedStringSet.General.anonymous.localizedString, isGlobalBan: post.postedUser?.isGlobalBan ?? false)
+            displayName: post.postedUser?.displayName ?? AmityLocalizedStringSet.General.anonymous.localizedString, isGlobalBan: post.postedUser?.isGlobalBanned ?? false)
         subtitle = post.isEdited ? String.localizedStringWithFormat(AmityLocalizedStringSet.PostDetail.postDetailCommentEdit.localizedString, post.createdAt.relativeTime) : post.createdAt.relativeTime
         postedUserId = post.postedUserId
         sharedCount = Int(post.sharedCount)
@@ -374,7 +374,7 @@ public class AmityPostModel {
                     dataTypeInternal = .file
                 }
             case "video":
-                if let videoData = aChild.getVideoInfo(for: .original) {
+                if let videoData = aChild.getVideoInfo() {
                     let thumbnail = aChild.getVideoThumbnailInfo()
                     let state = AmityMediaState.downloadableVideo(
                         videoData: videoData,

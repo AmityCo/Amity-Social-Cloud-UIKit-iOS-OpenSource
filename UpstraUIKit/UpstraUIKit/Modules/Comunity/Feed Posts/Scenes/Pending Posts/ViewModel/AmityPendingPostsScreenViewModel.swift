@@ -17,7 +17,7 @@ final class AmityPendingPostsScreenViewModel: AmityPendingPostsScreenViewModelTy
     // MARK: - Repository
     private let communityRepository: AmityCommunityRepository
     private let feedRepositoryManager: AmityFeedRepositoryManagerProtocol
-    private let feedRepository: AmityFeedRepository
+    private let postRepository: AmityPostRepository
     
     // MARK: - Tasks
     private let communityViewModel: AmityPendingPostsCommunityViewModelProtocol
@@ -34,7 +34,7 @@ final class AmityPendingPostsScreenViewModel: AmityPendingPostsScreenViewModelTy
         self.communityId = communityId
         self.communityRepository = AmityCommunityRepository(client: AmityUIKitManagerInternal.shared.client)
         self.feedRepositoryManager = AmityFeedRepositoryManager()
-        self.feedRepository = AmityFeedRepository(client: AmityUIKitManagerInternal.shared.client)
+        self.postRepository = AmityPostRepository(client: AmityUIKitManagerInternal.shared.client)
         self.communityViewModel = AmityPendingPostsCommunityViewModel(communityId: communityId, communityRepository: communityRepository)
         self.pendingPostsFeedViewModel = AmityPendingPostsFeedViewModel(communityId: communityId, feedRepositoryManager: feedRepositoryManager)
         self.postViewModel = AmityPendingPostsDetailGetPostViewModel()
@@ -84,11 +84,11 @@ extension AmityPendingPostsScreenViewModel {
     }
    
     func approvePost(withPostId postId: String) {
-        feedRepository.approvePost(withPostId: postId, completion: nil)
+        postRepository.approvePost(withId: postId, completion: nil)
     }
     
     func declinePost(withPostId postId: String) {
-        feedRepository.declinePost(withPostId: postId, completion: nil)
+        postRepository.declinePost(withId: postId, completion: nil)
     }
     
     func deletePost(withPostId postId: String) {
@@ -101,7 +101,7 @@ extension AmityPendingPostsScreenViewModel {
                     strongSelf.delegate?.screenViewModelDidDeletePostFail(title: AmityLocalizedStringSet.PendingPosts.postNotAvailable.localizedString,
                                                                           message: AmityLocalizedStringSet.PendingPosts.alertDeleteFailApproveOrDecline.localizedString)
                 case .reviewing:
-                    self?.feedRepository.deletePost(withPostId: postId, parentId: nil, completion: nil)
+                    self?.postRepository.deletePost(withId: postId, parentId: nil, hardDelete: false, completion: nil)
                 @unknown default:
                     break
                 }

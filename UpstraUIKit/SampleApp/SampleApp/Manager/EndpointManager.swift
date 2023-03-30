@@ -35,6 +35,7 @@ struct EndpointConfigModel: Codable {
     let apiKey: String
     let httpEndpoint: String
     let socketEndpoint: String
+    let mqttEndpoint: String
 }
 
 struct EnvironmentSettingModel: Codable {
@@ -51,7 +52,7 @@ struct EnvironmentSettingModel: Codable {
     }
     
     static func defaultConfig(for environment: EnvironmentType) -> EndpointConfigModel {
-        return EndpointConfigModel(apiKey: "YOUR_API_KEY", httpEndpoint: AmityRegionalEndpoint.SG, socketEndpoint: AmityRegionalEndpoint.SG)
+        return EndpointConfigModel(apiKey: "YOUR_API_KEY", httpEndpoint: AmityRegion.SG.httpUrl, socketEndpoint: AmityRegion.SG.rpcUrl, mqttEndpoint: AmityRegion.SG.mqttHost)
     }
 }
 
@@ -93,7 +94,8 @@ class EndpointManager {
         let _apiKey = apiKey ?? config.apiKey
         let _httpEndpoint = httpEndpoint ?? config.httpEndpoint
         let _socketEndpoint = socketEndpoint ?? config.socketEndpoint
-        let newConfig = EndpointConfigModel(apiKey: _apiKey, httpEndpoint: _httpEndpoint, socketEndpoint: _socketEndpoint)
+        let _mqttEndpoint = config.mqttEndpoint
+        let newConfig = EndpointConfigModel(apiKey: _apiKey, httpEndpoint: _httpEndpoint, socketEndpoint: _socketEndpoint, mqttEndpoint: _mqttEndpoint)
         
         // Update new config to current setting
         settings.configMap[environment] = newConfig
