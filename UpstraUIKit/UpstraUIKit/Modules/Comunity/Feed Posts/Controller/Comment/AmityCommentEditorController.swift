@@ -24,7 +24,18 @@ final class AmityCommentEditorController: AmityCommentEditorControllerProtocol {
     }
         
     func edit(withComment comment: AmityCommentModel, text: String, metadata: [String : Any]?, mentionees: AmityMentioneesBuilder?, completion: AmityRequestCompletion?) {
-        editor = AmityCommentEditor(client: AmityUIKitManagerInternal.shared.client, commentId: comment.id)
-        editor?.editText(text, metadata: metadata, mentionees: mentionees, completion: completion)
+        commentRepository = AmityCommentRepository(client: AmityUIKitManagerInternal.shared.client)
+        let options = AmityCommentUpdateOptions(text: text, metadata: metadata, mentioneesBuilder: mentionees)
+        
+        // Map completion to AmityCommentRequestCompletion
+        let mappedCompletion: (AmityComment?, Error?) -> Void = { comment, error in
+            if let error {
+                completion?(false, error)
+            } else if comment != nil {
+                completion?(true, nil)
+            }
+        }
+        
+        commentRepository?.updateComment(withId: comment.id, options: options, completion: mappedCompletion)
     }
 }
