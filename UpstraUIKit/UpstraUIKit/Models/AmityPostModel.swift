@@ -164,6 +164,9 @@ public class AmityPostModel {
      */
     public let allReactions: [String]
     
+    /// List of all reactions in this post with count.
+    public let reactions: [String: Int]
+    
     /**
      * Id of the target this post belongs to.
      */
@@ -295,7 +298,7 @@ public class AmityPostModel {
         dataType = post.dataType
         targetId = post.targetId
         targetCommunity = post.targetCommunity
-        childrenPosts = post.childrenPosts ?? []
+        childrenPosts = post.childrenPosts
         parentPostId = post.parentPostId
         postedUser = Author(
             avatarURL: post.postedUser?.getAvatarInfo()?.fileURL,
@@ -304,6 +307,7 @@ public class AmityPostModel {
         postedUserId = post.postedUserId
         sharedCount = Int(post.sharedCount)
         reactionsCount = Int(post.reactionsCount)
+        reactions = post.reactions as? [String: Int] ?? [:]
         allCommentCount = Int(post.commentsCount)
         allReactions = post.myReactions
         myReactions = allReactions.compactMap(AmityReactionType.init)

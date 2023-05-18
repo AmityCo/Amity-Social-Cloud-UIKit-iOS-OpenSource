@@ -30,4 +30,5 @@ public enum AmityPostPreviewCommentAction {
     case willCollapseExpandableLabel(label: AmityExpandableLabel)
     case didCollapseExpandableLabel(label: AmityExpandableLabel)
     case tapOnMention(userId: String)
+    case tapOnReactionDetail
 }

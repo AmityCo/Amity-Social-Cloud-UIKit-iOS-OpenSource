@@ -66,6 +66,7 @@ public struct AmityLocalizedStringSet {
         static let generalVideo = "general_video";
         static let generalPhoto = "general_photo";
         static let generalAttachment = "general_attachment";
+        static let generalAll = "general_all";
     }
     
     static let communitySettings = "community_settings"
@@ -502,5 +503,12 @@ public struct AmityLocalizedStringSet {
         public static let unableToMentionPostDescription = "mention_unable_to_mention_post_description"
         public static let unableToMentionCommentDescription = "mention_unable_to_mention_comment_description"
         public static let unableToMentionReplyDescription = "mention_unable_to_mention_reply_description"
+    }
+    
+    // MARK: - Reaction
+    public enum Reaction {
+        public static let reactionTitle = "reaction_screen_title";
+        public static let emptyStateTitle = "reaction_empty_state_title";
+        public static let emptyStateSubtitle = "reaction_empty_state_subtitle";
     }
 }

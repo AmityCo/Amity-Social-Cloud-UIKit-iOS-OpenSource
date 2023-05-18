@@ -53,6 +53,7 @@
 "general_video" = "Video";
 "general_photo" = "Photo";
 "general_attachment" = "Attachment";
+"general_all" = "All";
 
 "title_placeholder" = "Title";
 "description_placeholder" = "Description";
@@ -449,3 +450,8 @@
 "mention_unable_to_mention_post_description" = "You have reached maximum 30 mentioned users in a post.";
 "mention_unable_to_mention_comment_description" = "You have reached maximum 30 mentioned users in a comment.";
 "mention_unable_to_mention_reply_description" = "You have reached maximum 30 mentioned users in a reply.";
+
+// MARK: - Reaction
+"reaction_screen_title" = "Reactions";
+"reaction_empty_state_title" = "Sorry, we couldn't show the content";
+"reaction_empty_state_subtitle" = "Please try again or contact the administrator for more information";

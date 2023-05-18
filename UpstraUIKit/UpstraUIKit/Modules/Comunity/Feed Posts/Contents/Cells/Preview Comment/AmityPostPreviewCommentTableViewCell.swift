@@ -33,7 +33,7 @@ public final class AmityPostPreviewCommentTableViewCell: UITableViewCell, Nibbab
         let layout = AmityCommentView.Layout(
             type: .commentPreview,
             isExpanded: isExpanded,
-            shouldActionShow: post.isCommentable,
+            shouldShowActions: post.isCommentable,
             shouldLineShow: false
         )
         commentView.configure(with: comment, layout: layout)
@@ -102,6 +102,8 @@ extension AmityPostPreviewCommentTableViewCell: AmityCommentViewDelegate {
             performAction(action: .tapOption(comment: comment))
         case .reply, .viewReply:
             performAction(action: .tapReply(comment: comment))
+        case .reactionDetails:
+            performAction(action: .tapOnReactionDetail)
         }
     }
     

@@ -240,6 +240,11 @@ open class AmityPostDetailViewController: AmityViewController {
         commentComposeBarView.resetState()
         mentionManager?.resetState()
     }
+    
+    private func showReactionUserList(info: AmityReactionInfo) {
+        let controller = AmityReactionPageViewController.make(info: [info])
+        self.navigationController?.pushViewController(controller, animated: true)
+    }
 }
 
 // MARK: - AmityPostTableViewDelegate
@@ -283,7 +288,7 @@ extension AmityPostDetailViewController: AmityPostTableViewDelegate {
                 let layout = AmityCommentView.Layout(
                     type: .comment,
                     isExpanded: expandedIds.contains(comment.id),
-                    shouldActionShow: screenViewModel.post?.isCommentable ?? false,
+                    shouldShowActions: screenViewModel.post?.isCommentable ?? false,
                     shouldLineShow: viewModel.isReplyType
                 )
                 _cell.configure(with: comment, layout: layout)
@@ -299,7 +304,7 @@ extension AmityPostDetailViewController: AmityPostTableViewDelegate {
             let layout = AmityCommentView.Layout(
                 type: .reply,
                 isExpanded: expandedIds.contains(comment.id),
-                shouldActionShow: screenViewModel.post?.isCommentable ?? false,
+                shouldShowActions: screenViewModel.post?.isCommentable ?? false,
                 shouldLineShow: viewModel.isReplyType
             )
             _cell.configure(with: comment, layout: layout)
@@ -326,7 +331,7 @@ extension AmityPostDetailViewController: AmityPostTableViewDelegate {
             let layout = AmityCommentView.Layout(
                 type: .comment,
                 isExpanded: expandedIds.contains(comment.id),
-                shouldActionShow: screenViewModel.post?.isCommentable ?? false,
+                shouldShowActions: screenViewModel.post?.isCommentable ?? false,
                 shouldLineShow: viewModel.isReplyType
             )
             return AmityCommentTableViewCell.height(with: comment, layout: layout, boundingWidth: tableView.bounds.width)
@@ -339,7 +344,7 @@ extension AmityPostDetailViewController: AmityPostTableViewDelegate {
             let layout = AmityCommentView.Layout(
                 type: .reply,
                 isExpanded: expandedIds.contains(comment.id),
-                shouldActionShow: screenViewModel.post?.isCommentable ?? false,
+                shouldShowActions: screenViewModel.post?.isCommentable ?? false,
                 shouldLineShow: viewModel.isReplyType
             )
             return AmityCommentTableViewCell.height(with: comment, layout: layout, boundingWidth: tableView.bounds.width)
@@ -563,6 +568,9 @@ extension AmityPostDetailViewController: AmityPostFooterProtocolHandlerDelegate 
             if post.isGroupMember {
                 _ = commentComposeBarView.becomeFirstResponder()
             }
+        case .tapReactionDetails:
+            let info = AmityReactionInfo(referenceId: post.postId, referenceType: .post, reactionsCount: post.reactionsCount)
+            self.showReactionUserList(info: info)
         }
     }
     
@@ -729,6 +737,18 @@ extension AmityPostDetailViewController: AmityCommentTableViewCellDelegate {
         switch screenViewModel.item(at: indexPath) {
         case .comment(let comment), .replyComment(let comment):
             presentOptionBottomSheet(comment: comment)
+        case .post, .loadMoreReply:
+            break
+        }
+    }
+    
+    func commentCellDidTapReactionDetails(_ cell: AmityCommentTableViewCell) {
+        guard let indexPath = tableView.indexPath(for: cell) else { return }
+        
+        switch screenViewModel.item(at: indexPath) {
+        case .comment(let comment), .replyComment(let comment):
+            let info = AmityReactionInfo(referenceId: comment.id, referenceType: .comment, reactionsCount: comment.reactionsCount)
+            self.showReactionUserList(info: info)
         case .post, .loadMoreReply:
             break
         }

@@ -435,7 +435,7 @@ extension AmityFeedViewController: AmityPostFooterProtocolHandlerDelegate {
             } else {
                 screenViewModel.action.like(id: post.postId, referenceType: .post)
             }
-        case .tapComment:
+        case .tapComment, .tapReactionDetails:
             AmityEventHandler.shared.postDidtap(from: self, postId: post.postId)
         }
     }
@@ -459,7 +459,7 @@ extension AmityFeedViewController: AmityPostPreviewCommentDelegate {
             }
         case .tapReply:
             AmityEventHandler.shared.postDidtap(from: self, postId: post.postId)
-        case .tapExpandableLabel:
+        case .tapExpandableLabel, .tapOnReactionDetail:
             AmityEventHandler.shared.postDidtap(from: self, postId: post.postId)
         case .willExpandExpandableLabel:
             tableView.beginUpdates()

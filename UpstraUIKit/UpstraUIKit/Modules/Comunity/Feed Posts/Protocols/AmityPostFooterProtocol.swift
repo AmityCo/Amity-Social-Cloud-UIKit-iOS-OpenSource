@@ -26,4 +26,5 @@ public enum AmityPostFooterAction {
     case tapLike
     case tapComment
     case tapShare
+    case tapReactionDetails
 }

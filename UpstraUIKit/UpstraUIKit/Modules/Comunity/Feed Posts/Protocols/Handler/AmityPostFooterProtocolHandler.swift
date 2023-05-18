@@ -10,6 +10,7 @@ import Foundation
 enum AmityPostFooterProtocolHandlerAction {
     case tapLike
     case tapComment
+    case tapReactionDetails
 }
 protocol AmityPostFooterProtocolHandlerDelegate: AnyObject {
     func footerProtocolHandlerDidPerformAction(_ handler: AmityPostFooterProtocolHandler, action: AmityPostFooterProtocolHandlerAction, withPost post: AmityPostModel)
@@ -29,6 +30,8 @@ final class AmityPostFooterProtocolHandler: AmityPostFooterDelegate {
         switch action {
         case .tapLike:
             delegate?.footerProtocolHandlerDidPerformAction(self, action: .tapLike, withPost: post)
+        case .tapReactionDetails:
+            delegate?.footerProtocolHandlerDidPerformAction(self, action: .tapReactionDetails, withPost: post)
         case .tapComment:
             delegate?.footerProtocolHandlerDidPerformAction(self, action: .tapComment, withPost: post)
         case .tapShare:

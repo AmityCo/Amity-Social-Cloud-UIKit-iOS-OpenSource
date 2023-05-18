@@ -29,7 +29,7 @@ extension AmityCommentView {
         
         let type: LayoutType
         let isExpanded: Bool
-        let shouldActionShow: Bool
+        let shouldShowActions: Bool
         let shouldLineShow: Bool
         
         var space: AmityCommentLayoutSpace {

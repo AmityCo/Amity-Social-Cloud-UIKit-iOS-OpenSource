@@ -89,6 +89,7 @@ public struct AmityIconSet {
         public static var iconFileZIP = UIImage(named: "icon_file_zip", in: AmityUIKitManager.bundle, compatibleWith: nil)
     }
     
+    public static var emptyReaction = UIImage(named: "empty_reactions", in: AmityUIKitManager.bundle, compatibleWith: nil)
     public static var noInternetConnection = UIImage(named: "no_internet_connection", in: AmityUIKitManager.bundle, compatibleWith: nil)
     public static var emptyChat = UIImage(named: "empty_chat", in: AmityUIKitManager.bundle, compatibleWith: nil)
     public static var iconSendMessage = UIImage(named: "icon_send_message", in: AmityUIKitManager.bundle, compatibleWith: nil)

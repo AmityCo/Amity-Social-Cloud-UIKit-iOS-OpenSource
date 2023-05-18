@@ -10,8 +10,6 @@ import UIKit
 
 class AmityEmptyView: AmityView {
 
-    // MARK: - IBOutlet Properties
-    
     @IBOutlet private var imageView: UIImageView!
     @IBOutlet private var titleLabel: UILabel!
     @IBOutlet private var subtitleLabel: UILabel!
@@ -30,8 +28,8 @@ class AmityEmptyView: AmityView {
         titleLabel.numberOfLines = 0
         
         subtitleLabel.text = ""
-        subtitleLabel.font = AmityFontSet.headerLine
-        subtitleLabel.textColor = AmityColorSet.base
+        subtitleLabel.font = AmityFontSet.caption
+        subtitleLabel.textColor = AmityColorSet.base.blend(.shade2)
         subtitleLabel.textAlignment = .center
         subtitleLabel.numberOfLines = 0
     }

@@ -15,6 +15,7 @@ enum AmityCommentViewAction {
     case reply
     case option
     case viewReply
+    case reactionDetails
 }
 
 protocol AmityCommentViewDelegate: AnyObject {
@@ -38,6 +39,10 @@ class AmityCommentView: AmityView {
     @IBOutlet private weak var topAvatarImageViewConstraint: NSLayoutConstraint!
     @IBOutlet private weak var bannedImageView: UIImageView!
     @IBOutlet private weak var bannedImageViewWidthConstraint: NSLayoutConstraint!
+    @IBOutlet private weak var reactionDetailContainerView: UIView!
+    @IBOutlet private weak var reactionDetailLikeIcon: UIImageView!
+    @IBOutlet private weak var reactionDetailLabel: UILabel!
+    @IBOutlet private weak var reactionDetailButton: UIButton!
     
     weak var delegate: AmityCommentViewDelegate?
     private(set) var comment: AmityCommentModel?
@@ -57,13 +62,20 @@ class AmityCommentView: AmityView {
         titleLabel.font = AmityFontSet.bodyBold
         timeLabel.textColor = AmityColorSet.base.blend(.shade1)
         timeLabel.font = AmityFontSet.caption
+        
         contentLabel.textColor = AmityColorSet.base
         contentLabel.font = AmityFontSet.body
         contentLabel.numberOfLines = 8
         separatorLineView.backgroundColor  = AmityColorSet.secondary.blend(.shade4)
+        
         labelContainerView.backgroundColor = AmityColorSet.base.blend(.shade4)
         labelContainerView.layer.cornerRadius = 12
         labelContainerView.layer.maskedCorners = [.layerMinXMaxYCorner, .layerMaxXMinYCorner, .layerMaxXMaxYCorner]
+        
+        reactionDetailLabel.text = ""
+        reactionDetailLabel.font = AmityFontSet.caption
+        reactionDetailLabel.textColor = AmityColorSet.base.blend(.shade2)
+        reactionDetailButton.addTarget(self, action: #selector(onReactionDetailButtonTap), for: .touchUpInside)
         
         likeButton.setTitle(AmityLocalizedStringSet.General.like.localizedString, for: .normal)
         likeButton.setTitleFont(AmityFontSet.captionBold)
@@ -75,6 +87,7 @@ class AmityCommentView: AmityView {
         likeButton.setTintColor(AmityColorSet.base.blend(.shade2), for: .normal)
         likeButton.addTarget(self, action: #selector(likeButtonTap), for: .touchUpInside)
         likeButton.setInsets(forContentPadding: .zero, imageTitlePadding: 4)
+        
         replyButton.setTitle(AmityLocalizedStringSet.General.reply.localizedString, for: .normal)
         replyButton.setTitleFont(AmityFontSet.captionBold)
         replyButton.setImage(AmityIconSet.iconReply, for: .normal)
@@ -83,8 +96,10 @@ class AmityCommentView: AmityView {
         replyButton.setTitleColor(AmityColorSet.base.blend(.shade2), for: .normal)
         replyButton.addTarget(self, action: #selector(replyButtonTap), for: .touchUpInside)
         replyButton.setInsets(forContentPadding: .zero, imageTitlePadding: 4)
+        
         optionButton.addTarget(self, action: #selector(optionButtonTap), for: .touchUpInside)
         optionButton.tintColor = AmityColorSet.base.blend(.shade2)
+        
         viewReplyButton.setTitle(AmityLocalizedStringSet.General.viewReply.localizedString, for: .normal)
         viewReplyButton.setTitleFont(AmityFontSet.captionBold)
         viewReplyButton.setTitleColor(AmityColorSet.base.blend(.shade1), for: .normal)
@@ -122,23 +137,47 @@ class AmityCommentView: AmityView {
         }
         
         likeButton.isSelected = comment.isLiked
+        let likeButtonTitle = comment.isLiked ? AmityLocalizedStringSet.General.liked.localizedString : AmityLocalizedStringSet.General.like.localizedString
+        likeButton.setTitle(likeButtonTitle, for: .normal)
+        
         replyButton.isHidden = layout.type == .reply
         separatorLineView.isHidden = true
         
         if comment.reactionsCount > 0 {
-            likeButton.setTitle(comment.reactionsCount.formatUsingAbbrevation(), for: .normal)
+            reactionDetailContainerView.isHidden = false
+            reactionDetailButton.isEnabled = true
+            reactionDetailLabel.text = comment.reactionsCount.formatUsingAbbrevation()
         } else {
-            likeButton.setTitle(AmityLocalizedStringSet.General.like.localizedString, for: .normal)
+            reactionDetailButton.isEnabled = false
+            reactionDetailContainerView.isHidden = true
         }
         
         contentLabel.isExpanded = layout.isExpanded
-        actionStackView.isHidden = !layout.shouldActionShow
+        
+        toggleActionVisibility(comment: comment, layout: layout)
+        
         viewReplyButton.isHidden = !layout.shouldShowViewReplyButton(for: comment)
         leadingAvatarImageViewConstraint.constant = layout.space.avatarLeading
         topAvatarImageViewConstraint.constant = layout.space.aboveAvatar
-        
     }
-
+    
+    func toggleActionVisibility(comment: AmityCommentModel, layout: AmityCommentView.Layout) {
+        let actionButtons = [likeButton, replyButton, optionButton]
+        
+        if layout.shouldShowActions {
+            actionButtons.forEach { $0?.isHidden = false }
+            actionStackView.isHidden = false
+        } else {
+            // Only show reactions count label if present
+            if comment.reactionsCount > 0 {
+                actionStackView.isHidden = false
+                actionButtons.forEach { $0?.isHidden = true }
+            } else {
+                actionStackView.isHidden = true
+            }
+        }
+    }
+    
     @IBAction func displaynameTap(_ sender: Any) {
         delegate?.commentView(self, didTapAction: .avatar)
     }
@@ -157,6 +196,10 @@ class AmityCommentView: AmityView {
     
     @objc private func viewReplyButtonTap() {
         delegate?.commentView(self, didTapAction: .viewReply)
+    }
+    
+    @objc private func onReactionDetailButtonTap() {
+        delegate?.commentView(self, didTapAction: .reactionDetails)
     }
     
     func prepareForReuse() {
@@ -185,7 +228,8 @@ class AmityCommentView: AmityView {
         
         let bottomStackHeight: CGFloat = {
             var bottomStackViews: [CGFloat] = []
-            if layout.shouldActionShow {
+            // If actions should be shown OR actions should not be shown but comment reaction detail label should be shown.
+            if layout.shouldShowActions || (!layout.shouldShowActions && comment.reactionsCount > 0) {
                 let actionButtonHeight: CGFloat = 22
                 bottomStackViews += [actionButtonHeight]
             }
