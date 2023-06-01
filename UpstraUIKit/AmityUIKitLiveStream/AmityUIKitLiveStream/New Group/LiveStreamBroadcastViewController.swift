@@ -387,7 +387,38 @@ final public class LiveStreamBroadcastViewController: UIViewController {
     }
     
     @IBAction private func selectCoverButtonDidTouch() {
-        presentCoverImagePicker()
+        if coverImageUrl != nil {
+            let actionSheet = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+            
+            let selectImagesAction = UIAlertAction(title: "Change cover image", style: .default) { [weak self] _ in
+                self?.presentCoverImagePicker()
+            }
+            
+            actionSheet.addAction(selectImagesAction)
+            
+            let removeCoverPhotoAction = UIAlertAction(title: "Remove cover image", style: .destructive) { [weak self] _ in
+                // Handle removing the cover photo
+                self?.coverImageUrl = nil
+                self?.updateCoverImageSelection()
+            }
+            
+            actionSheet.addAction(removeCoverPhotoAction)
+            
+            let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
+            
+            actionSheet.addAction(cancelAction)
+            
+            if let popoverController = actionSheet.popoverPresentationController {
+                popoverController.sourceView = selectCoverButton // Set the button that triggered the action sheet
+                popoverController.sourceRect = selectCoverButton.bounds
+            }
+            
+            present(actionSheet, animated: true, completion: nil)
+            
+        } else {
+            self.presentCoverImagePicker()
+        }
+      
     }
     
     @IBAction private func closeButtonDidTouch() {

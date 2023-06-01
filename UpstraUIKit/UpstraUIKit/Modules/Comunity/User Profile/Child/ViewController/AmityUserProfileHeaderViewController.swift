@@ -233,6 +233,8 @@ class AmityUserProfileHeaderViewController: AmityViewController, AmityRefreshabl
             followButton.layer.borderColor = AmityColorSet.base.blend(.shade3).cgColor
             followButton.layer.borderWidth = 1
             followButton.tintColor = AmityColorSet.secondary
+        case .blocked:
+            followButton.isHidden = true
         case .none:
             followButton.isHidden = false
             followButton.setTitle(AmityLocalizedStringSet.userDetailFollowButtonFollow.localizedString, for: .normal)
