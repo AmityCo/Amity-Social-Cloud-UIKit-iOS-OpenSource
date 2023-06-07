@@ -42,7 +42,7 @@ Please note that every view model in this project will be named as **screen view
 
 ## Installation
 
-For latest UIKit releases `> 2.35.0`
+### For latest UIKit releases `> 2.35.0`
 
 AmityUIKit links with other dependencies such as `AmitySDK`, `Realm`, `RealmSwift` etc through `SharedFrameworks` which is a Swift Package.When you clone the project for the first time, all of this should be already setup for you. 
 
@@ -57,7 +57,7 @@ If you encounter any issues, you can
 If you want to integrate this open sourced codebase to your existing project, please follow the installation steps provided in our documentation. [Installation Steps](https://docs.amity.co/uikit/ios/ios-uikit-installation-guide#_bln34rs78cz) 
 
 
-For older UIKit releases `< 2.35.0`:
+### For older UIKit releases `< 2.35.0`:
 
 As our older version of UIKit depends upon git lfs, please run the following command before building framework or running sample app.
 
