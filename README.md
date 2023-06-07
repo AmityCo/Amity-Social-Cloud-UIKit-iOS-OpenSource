@@ -41,10 +41,30 @@ Please note that every view model in this project will be named as **screen view
 <br />
 
 ## Installation
-All AmityUIKit's dependencies are setup to this project. Before building framework or running sample app, please run the following command.
+
+For latest UIKit releases `> 2.35.0`
+
+AmityUIKit links with other dependencies such as `AmitySDK`, `Realm`, `RealmSwift` etc through `SharedFrameworks` which is a Swift Package.When you clone the project for the first time, all of this should be already setup for you. 
+
+To run sample app:
+- Simply build `AmityUIKit` target & then build `SampleApp` target and you would be able to run the sample project.
+
+If you encounter any issues, you can 
+
+- Reset `Sample App` project package cache. 
+- Make sure `SharedFrameworks` and `AmityUIKit.framework` is linked in Sample App.
+
+If you want to integrate this open sourced codebase to your existing project, please follow the installation steps provided in our documentation. [Installation Steps](https://docs.amity.co/uikit/ios/ios-uikit-installation-guide#_bln34rs78cz) 
+
+
+For older UIKit releases `< 2.35.0`:
+
+As our older version of UIKit depends upon git lfs, please run the following command before building framework or running sample app.
+
 ```
 git lfs fetch
 ```
+
 Then, run the following command.
 ```
 git lfs pull
