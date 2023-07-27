@@ -95,7 +95,14 @@ public final class AmityUIKitManager {
     /// Unregisters this device for receiving push notification related to AmitySDK.
     public static func unregisterDevicePushNotification(completion: AmityRequestCompletion? = nil) {
         let currentUserId = AmityUIKitManagerInternal.shared.currentUserId
-        AmityUIKitManagerInternal.shared.unregisterDevicePushNotification(for: currentUserId, completion: completion)
+        Task { @MainActor in
+            do {
+                let success = try await AmityUIKitManagerInternal.shared.unregisterDevicePushNotification(for: currentUserId)
+                completion?(success, nil)
+            } catch let error {
+                completion?(false, error)
+            }
+        }
     }
     
     public static func setEnvironment(_ env: [String: Any]) {
@@ -184,15 +191,15 @@ final class AmityUIKitManagerInternal: NSObject {
                         authToken: String?,
                         sessionHandler: SessionHandler,
                         completion: AmityRequestCompletion?) {
-        
-        AmityAsyncAwaitTransformer.toCompletionHandler(asyncFunction: client.login, parameters: (userId: userId, displayName: displayName, authToken: authToken, sessionHandler: sessionHandler)) { [weak self] success, error in
-            if let error = error {
+        Task { @MainActor in
+            do {
+                try await client.login(userId: userId, displayName: displayName, authToken: authToken, sessionHandler: sessionHandler)
+                await revokeDeviceTokens()
+                didUpdateClient()
+                completion?(true, nil)
+            } catch let error {
                 completion?(false, error)
-                return
             }
-            self?.revokeDeviceTokens()
-            self?.didUpdateClient()
-            completion?(true, error)
         }
     }
     
@@ -204,33 +211,53 @@ final class AmityUIKitManagerInternal: NSObject {
     func registerDeviceForPushNotification(_ deviceToken: String, completion: AmityRequestCompletion? = nil) {
         // It's possible that `deviceToken` can be changed while user is logging in.
         // To prevent user from registering notification twice, we will revoke the current one before register new one.
-        revokeDeviceTokens()
-        
-        _client?.registerDeviceForPushNotification(withDeviceToken: deviceToken) { [weak self] success, error in
-            if success, let currentUserId = self?._client?.currentUserId {
-                // if register device successfully, binds device token to user id.
-                self?.notificationTokenMap[currentUserId] = deviceToken
+        Task { @MainActor in
+            do {
+                await revokeDeviceTokens()
+                
+                let success = try await client.registerPushNotification(withDeviceToken: deviceToken)
+                
+                if success, let currentUserId = _client?.currentUserId {
+                    // if register device successfully, binds device token to user id.
+                    notificationTokenMap[currentUserId] = deviceToken
+                }
+                completion?(success, nil)
+            } catch let error {
+                completion?(false, error)
             }
-            completion?(success, error)
+
         }
     }
     
-    func unregisterDevicePushNotification(for userId: String, completion: AmityRequestCompletion? = nil) {
-        client.unregisterDeviceForPushNotification(forUserId: userId) { [weak self] success, error in
-            if success, let currentUserId = self?._client?.currentUserId {
+    @MainActor
+    func unregisterDevicePushNotification(for userId: String) async throws -> Bool {
+        
+        do {
+            let success = try await client.unregisterPushNotification(forUserId: userId)
+            if success, let currentUserId = self._client?.currentUserId {
                 // if unregister device successfully, remove device token belonging to the user id.
-                self?.notificationTokenMap[currentUserId] = nil
+                self.notificationTokenMap[currentUserId] = nil
             }
-            completion?(success, error)
+            return success
+
+        } catch {
+            return false
         }
     }
     
     // MARK: - Helpers
     
-    private func revokeDeviceTokens() {
-        for (userId, _) in notificationTokenMap {
-            unregisterDevicePushNotification(for: userId, completion: nil)
-        }
+    @MainActor
+    private func revokeDeviceTokens() async {
+        
+        await withThrowingTaskGroup(of: Bool.self, body: { group in
+            for (userId, _) in notificationTokenMap {
+                group.addTask {
+                    try await self.unregisterDevicePushNotification(for: userId)
+                }
+            }
+        })
+            
     }
     
     private func didUpdateClient() {
