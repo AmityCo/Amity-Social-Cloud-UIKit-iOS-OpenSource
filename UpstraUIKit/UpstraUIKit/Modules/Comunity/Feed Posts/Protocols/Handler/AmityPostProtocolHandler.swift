@@ -70,9 +70,12 @@ extension AmityPostProtocolHandler: AmityPostDelegate {
         case .tapMediaInside(let media, let photoViewer):
             switch media.type {
             case .video:
-                if let video = media.video,
-                   let url = URL(string: video.fileURL) {
-                    photoViewer.presentVideoPlayer(at: url)
+                if let videoInfo = media.video {
+                    if let fileUrl = videoInfo.getVideo(resolution: .original), let url = URL(string: fileUrl) {
+                        photoViewer.presentVideoPlayer(at: url)
+                    } else if let url = URL(string: videoInfo.fileURL ) {
+                        photoViewer.presentVideoPlayer(at: url)
+                    }
                 }
             case .image:
                 break

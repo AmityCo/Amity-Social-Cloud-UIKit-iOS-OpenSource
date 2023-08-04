@@ -23,23 +23,23 @@ let package = Package(
             dependencies: []),
         .binaryTarget(
                     name: "AmitySDK",
-                    url: "https://sdk.amity.co/sdk-release/ios-uikit-frameworks/2.35.3/AmitySDK.xcframework.zip",
-                    checksum: "7dc7261c7ccc37083c907ff3bcfe60e0fad64f361da81d6f31078bbc050a05d3"
+                    url: "https://sdk.amity.co/sdk-release/ios-uikit-frameworks/2.35.6/AmitySDK.xcframework.zip",
+                    checksum: "9808a422cc78e40e8e5653d253ab591d85e0a7c43d4ed96bc0e6b9a33fc1789e"
                 ),
         .binaryTarget(
                     name: "Realm",
-                    url: "https://sdk.amity.co/sdk-release/ios-uikit-frameworks/2.35.3/Realm.xcframework.zip",
-                    checksum: "6ba3ef47eb011ca52b1ff78a243300a06807a84e6c56ce1415405685becb01f4"
+                    url: "https://sdk.amity.co/sdk-release/ios-uikit-frameworks/2.35.6/Realm.xcframework.zip",
+                    checksum: "d9854bca58fea75e97bce648f3688ab789335c36b3edd6633c2270dca8e968ad"
                 ),
         .binaryTarget(
                     name: "AmityLiveVideoBroadcastKit",
-                    url: "https://sdk.amity.co/sdk-release/ios-uikit-frameworks/2.35.3/AmityLiveVideoBroadcastKit.xcframework.zip",
-                    checksum: "027cf46134e5358237dd689eab9a70aad12a09ad6595d88bfd4fb845586f49cc"
+                    url: "https://sdk.amity.co/sdk-release/ios-uikit-frameworks/2.35.6/AmityLiveVideoBroadcastKit.xcframework.zip",
+                    checksum: "5a835d31b78dcc0858b85bdc02c95707c414941e2e4f6fd4ede7abf3c1dbaf7c"
                 ),
         .binaryTarget(
                     name: "AmityVideoPlayerKit",
-                    url: "https://sdk.amity.co/sdk-release/ios-uikit-frameworks/2.35.3/AmityVideoPlayerKit.xcframework.zip",
-                    checksum: "fb4485ca3fa6f4a85cfd2c0560b4eab2749d3a29268c76dfab98eb7ad7916497"
+                    url: "https://sdk.amity.co/sdk-release/ios-uikit-frameworks/2.35.6/AmityVideoPlayerKit.xcframework.zip",
+                    checksum: "7d7867dfe2ce7bcebe780af030988bb5fa04331c5764d75541cd0bb0cab924b1"
                 ),
         .binaryTarget(
                     name: "MobileVLCKit",

@@ -219,9 +219,12 @@ extension AmityPostGalleryViewController: UICollectionViewDelegateFlowLayout {
         case .post(let postObject):
             switch postObject.dataType {
             case "video":
-                if let originalVideo = postObject.getVideoInfo(for: .original),
-                   let url = URL(string: originalVideo.fileURL ) {
-                    presentVideoPlayer(at: url)
+                if let videoInfo = postObject.getVideoInfo() {
+                    if let fileUrl = videoInfo.getVideo(resolution: .original), let url = URL(string: fileUrl) {
+                        presentVideoPlayer(at: url)
+                    } else if let url = URL(string: videoInfo.fileURL ) {
+                        presentVideoPlayer(at: url)
+                    }
                 } else {
                     print("unable to find video url for post: \(postObject.postId)")
                 }
