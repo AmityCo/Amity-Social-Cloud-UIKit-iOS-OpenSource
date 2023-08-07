@@ -34,12 +34,12 @@ let package = Package(
         .binaryTarget(
                     name: "AmityLiveVideoBroadcastKit",
                     url: "https://sdk.amity.co/sdk-release/ios-uikit-frameworks/2.35.6/AmityLiveVideoBroadcastKit.xcframework.zip",
-                    checksum: "5a835d31b78dcc0858b85bdc02c95707c414941e2e4f6fd4ede7abf3c1dbaf7c"
+                    checksum: "59a213febade61b63322a827405e783e7891b2d03c75bb8a0d8eb4b9379bc96a"
                 ),
         .binaryTarget(
                     name: "AmityVideoPlayerKit",
                     url: "https://sdk.amity.co/sdk-release/ios-uikit-frameworks/2.35.6/AmityVideoPlayerKit.xcframework.zip",
-                    checksum: "7d7867dfe2ce7bcebe780af030988bb5fa04331c5764d75541cd0bb0cab924b1"
+                    checksum: "2c3ef0e4e205696158fc0dbe65f81ced13f4a344c3209c9393f053476ac13fd8"
                 ),
         .binaryTarget(
                     name: "MobileVLCKit",
