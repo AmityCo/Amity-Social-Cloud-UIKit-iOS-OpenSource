@@ -49,7 +49,6 @@ extension AmityFollowersListScreenViewModel {
 // MARK: - Action
 extension AmityFollowersListScreenViewModel {
     func getFollowsList() {
-        followManager.clearAmityFollowRelationshipLocalData()
         if userId == AmityUIKitManagerInternal.shared.client.currentUserId {
             followersCollection = type == .followers ? followManager.getMyFollowerList(with: .accepted) : followManager.getMyFollowingList(with: .accepted)
         } else {
