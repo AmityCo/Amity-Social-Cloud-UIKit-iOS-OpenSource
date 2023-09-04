@@ -29,13 +29,13 @@ class PostGalleryItemCell: UICollectionViewCell, Nibbable {
     
     private var session = UUID().uuidString
     
-    static var durationFormatter: DateComponentsFormatter = {
+    static func getDurationFormatter(showHour: Bool) -> DateComponentsFormatter {
         let formatter = DateComponentsFormatter()
         formatter.unitsStyle = .positional
-        formatter.allowedUnits = [.minute, .second]
+        formatter.allowedUnits = showHour ? [.hour, .minute, .second] : [.minute, .second]
         formatter.zeroFormattingBehavior = .pad
         return formatter
-    } ()
+    }
     
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -102,7 +102,7 @@ class PostGalleryItemCell: UICollectionViewCell, Nibbable {
             } else {
                 duration = .zero
             }
-            durationText = PostGalleryItemCell.durationFormatter.string(from: duration)
+            durationText = PostGalleryItemCell.getDurationFormatter(showHour: duration >= 3600).string(from: duration)
             mediaTitle = nil
             streamStatus = nil
         case "liveStream":

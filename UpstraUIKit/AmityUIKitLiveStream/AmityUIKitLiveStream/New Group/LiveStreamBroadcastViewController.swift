@@ -26,7 +26,7 @@ final public class LiveStreamBroadcastViewController: UIViewController {
     let fileRepository: AmityFileRepository
     let streamRepository: AmityStreamRepository
     let postRepository: AmityPostRepository
-    var broadcaster: AmityStreamBroadcaster?
+    var broadcaster: AmityVideoBroadcaster?
     
     // MARK: - Internal Const Properties
     
@@ -122,7 +122,7 @@ final public class LiveStreamBroadcastViewController: UIViewController {
         fileRepository = AmityFileRepository(client: client)
         streamRepository = AmityStreamRepository(client: client)
         postRepository = AmityPostRepository(client: client)
-        broadcaster = AmityStreamBroadcaster(client: client)
+        broadcaster = AmityVideoBroadcaster(client: client)
         mentionManager = AmityMentionManager(withType: .post(communityId: targetId))
         
         let bundle = Bundle(for: type(of: self))
@@ -149,6 +149,7 @@ final public class LiveStreamBroadcastViewController: UIViewController {
         liveObjectQueryToken = nil
         unobserveKeyboardFrame()
         stopLiveDurationTimer()
+        NotificationCenter.default.removeObserver(self)
     }
     
     // MARK: - View Controller Life Cycle
@@ -163,6 +164,10 @@ final public class LiveStreamBroadcastViewController: UIViewController {
         mentionManager.delegate = self
         mentionManager.setFont(AmityFontSet.body, highlightFont: AmityFontSet.bodyBold)
         mentionManager.setColor(.white, highlightColor: .white)
+        
+        // Observe app life cycle notfications
+        NotificationCenter.default.addObserver(self, selector: #selector(suspendLiveStream), name: UIApplication.didEnterBackgroundNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(resumeLiveStream), name: UIApplication.willEnterForegroundNotification, object: nil)
     }
     
     public override func viewDidAppear(_ animated: Bool) {
@@ -190,6 +195,28 @@ final public class LiveStreamBroadcastViewController: UIViewController {
     public override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         updateUIBaseOnKeyboardFrame()
+    }
+    
+    @objc
+    func suspendLiveStream() {
+        guard let _ = createdPost,
+              let broadcaster else {
+            return
+        }
+        
+        broadcaster.suspendPublish()
+    }
+    
+    @objc
+    func resumeLiveStream() {
+        guard let createdPost,
+              let broadcaster,
+              let firstChildPost = createdPost.childrenPosts.first,
+              let stream = firstChildPost.getLiveStreamInfo() else {
+            return
+        }
+        
+        broadcaster.startPublish(existingStreamId: stream.streamId)
     }
     
     // MARK: - Internal Functions
@@ -337,11 +364,11 @@ final public class LiveStreamBroadcastViewController: UIViewController {
             return
         }
         
-        switch broadcaster.cameraPosition {
+        switch broadcaster.switchCamera {
         case .front:
-            broadcaster.cameraPosition = .back
+            broadcaster.switchCamera = .back
         case .back:
-            broadcaster.cameraPosition = .front
+            broadcaster.switchCamera = .front
         @unknown default:
             assertionFailure("Unhandled case")
         }
@@ -474,9 +501,8 @@ extension LiveStreamBroadcastViewController: UITextFieldDelegate {
     
 }
 
-extension LiveStreamBroadcastViewController: AmityStreamBroadcasterDelegate {
-    
-    public func amityStreamBroadcasterDidUpdateState(_ broadcaster: AmityStreamBroadcaster) {
+extension LiveStreamBroadcastViewController: AmityVideoBroadcasterDelegate {
+    public func amityVideoBroadcasterDidUpdateState(_ broadcaster: AmityLiveVideoBroadcastKit.AmityVideoBroadcaster) {
         updateStreamingStatusText()
     }
     
