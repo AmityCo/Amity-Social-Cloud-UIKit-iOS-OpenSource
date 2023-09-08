@@ -28,6 +28,7 @@ public struct AmityCommentModel {
     let metadata: [String: Any]?
     let mentionees: [AmityMentionees]?
     let reactions: [String: Int]
+    var isModerator: Bool = false
     
     // Due to AmityChat 4.0.0 requires comment object for editing and deleting
     // So, this is a workaroud for passing the original object.
@@ -52,6 +53,14 @@ public struct AmityCommentModel {
         metadata = comment.metadata
         mentionees = comment.mentionees
         reactions = comment.reactions as? [String: Int] ?? [:]
+        switch comment.target {
+        case .community(_, let communityMember):
+            if let communityMember {
+                isModerator = communityMember.hasModeratorRole
+            }            
+        default:
+            break
+        }
     }
     
     var isChildrenExisted: Bool {

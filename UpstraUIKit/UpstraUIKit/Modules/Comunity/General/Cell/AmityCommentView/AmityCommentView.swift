@@ -43,6 +43,9 @@ class AmityCommentView: AmityView {
     @IBOutlet private weak var reactionDetailLikeIcon: UIImageView!
     @IBOutlet private weak var reactionDetailLabel: UILabel!
     @IBOutlet private weak var reactionDetailButton: UIButton!
+    @IBOutlet private var badgeStackView: UIStackView!
+    @IBOutlet private var badgeIconImageView: UIImageView!
+    @IBOutlet private var badgeLabel: UILabel!
     
     weak var delegate: AmityCommentViewDelegate?
     private(set) var comment: AmityCommentModel?
@@ -110,6 +113,13 @@ class AmityCommentView: AmityView {
         viewReplyButton.layer.cornerRadius = 4
         viewReplyButton.setInsets(forContentPadding: UIEdgeInsets(top: 6, left: 12, bottom: 6, right: 16), imageTitlePadding: 8)
         viewReplyButton.addTarget(self, action: #selector(viewReplyButtonTap), for: .touchUpInside)
+        
+        // badge
+        badgeLabel.text = AmityLocalizedStringSet.General.moderator.localizedString + " • "
+        badgeLabel.font = AmityFontSet.captionBold
+        badgeLabel.textColor = AmityColorSet.base.blend(.shade1)
+        badgeIconImageView.image = AmityIconSet.iconBadgeModerator
+
     }
     
     func configure(with comment: AmityCommentModel, layout: AmityCommentView.Layout) {
@@ -151,6 +161,8 @@ class AmityCommentView: AmityView {
             reactionDetailButton.isEnabled = false
             reactionDetailContainerView.isHidden = true
         }
+        
+        badgeStackView.isHidden = !comment.isModerator
         
         contentLabel.isExpanded = layout.isExpanded
         
