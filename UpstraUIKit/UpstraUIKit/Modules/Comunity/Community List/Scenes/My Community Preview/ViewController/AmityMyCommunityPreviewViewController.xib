@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="17701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17703"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="AmityMyCommunityPreviewViewController" customModule="UpstraUIKit" customModuleProvider="target">
+            <connections>
+                <outlet property="actionButton" destination="Ert-i5-SzN" id="Dzz-hO-vgZ"/>
+                <outlet property="collectionView" destination="RdE-I2-ISy" id="Wuc-hH-L24"/>
+                <outlet property="separatorView" destination="wZn-v6-gEz" id="VJX-qz-4rR"/>
+                <outlet property="titleLabel" destination="s3Q-B5-eX2" id="b2y-5f-nSl"/>
+                <outlet property="view" destination="ny9-ph-bfZ" id="rKJ-u7-4t3"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="ny9-ph-bfZ">
+            <rect key="frame" x="0.0" y="0.0" width="414" height="217"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="s3Q-B5-eX2">
+                    <rect key="frame" x="16" y="16" width="42" height="108"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                    <nil key="textColor"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Ert-i5-SzN">
+                    <rect key="frame" x="358" y="50" width="40" height="40"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="40" id="RJM-mX-8aD"/>
+                        <constraint firstAttribute="height" constant="40" id="VYr-ZD-t5b"/>
+                    </constraints>
+                    <connections>
+                        <action selector="myCommunityTap" destination="-1" eventType="touchUpInside" id="a11-m3-S6o"/>
+                    </connections>
+                </button>
+                <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="none" translatesAutoresizingMaskIntoConstraints="NO" id="RdE-I2-ISy">
+                    <rect key="frame" x="0.0" y="136" width="414" height="64"/>
+                    <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="64" id="uhM-d2-0Yf"/>
+                    </constraints>
+                    <collectionViewFlowLayout key="collectionViewLayout" scrollDirection="horizontal" minimumLineSpacing="10" minimumInteritemSpacing="10" id="Wog-Um-Icl">
+                        <size key="itemSize" width="128" height="128"/>
+                        <size key="headerReferenceSize" width="0.0" height="0.0"/>
+                        <size key="footerReferenceSize" width="0.0" height="0.0"/>
+                        <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
+                    </collectionViewFlowLayout>
+                </collectionView>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="wZn-v6-gEz">
+                    <rect key="frame" x="0.0" y="216" width="414" height="1"/>
+                    <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="1" id="JgU-xZ-rsd"/>
+                    </constraints>
+                </view>
+            </subviews>
+            <viewLayoutGuide key="safeArea" id="BTm-vd-hDJ"/>
+            <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+            <constraints>
+                <constraint firstItem="wZn-v6-gEz" firstAttribute="top" secondItem="RdE-I2-ISy" secondAttribute="bottom" constant="16" id="0Je-64-MMn"/>
+                <constraint firstItem="BTm-vd-hDJ" firstAttribute="trailing" secondItem="Ert-i5-SzN" secondAttribute="trailing" constant="16" id="3wz-x8-zmb"/>
+                <constraint firstItem="Ert-i5-SzN" firstAttribute="centerY" secondItem="s3Q-B5-eX2" secondAttribute="centerY" id="7ix-Is-eu3"/>
+                <constraint firstItem="BTm-vd-hDJ" firstAttribute="bottom" secondItem="wZn-v6-gEz" secondAttribute="bottom" id="D3P-FA-slV"/>
+                <constraint firstItem="RdE-I2-ISy" firstAttribute="leading" secondItem="BTm-vd-hDJ" secondAttribute="leading" id="EwF-i2-pow"/>
+                <constraint firstItem="RdE-I2-ISy" firstAttribute="top" secondItem="s3Q-B5-eX2" secondAttribute="bottom" constant="12" id="LwE-4K-Rht"/>
+                <constraint firstItem="s3Q-B5-eX2" firstAttribute="leading" secondItem="BTm-vd-hDJ" secondAttribute="leading" constant="16" id="RiG-hj-9Wd"/>
+                <constraint firstItem="wZn-v6-gEz" firstAttribute="leading" secondItem="ny9-ph-bfZ" secondAttribute="leading" id="TmZ-nq-wVp"/>
+                <constraint firstAttribute="trailing" secondItem="wZn-v6-gEz" secondAttribute="trailing" id="dJn-0F-zN5"/>
+                <constraint firstItem="s3Q-B5-eX2" firstAttribute="top" secondItem="BTm-vd-hDJ" secondAttribute="top" constant="16" id="eq4-VJ-4rX"/>
+                <constraint firstItem="RdE-I2-ISy" firstAttribute="trailing" secondItem="BTm-vd-hDJ" secondAttribute="trailing" id="kpy-Vh-HRv"/>
+            </constraints>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <point key="canvasLocation" x="137.68115942028987" y="119.53125"/>
+        </view>
+    </objects>
+    <resources>
+        <systemColor name="systemBackgroundColor">
+            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+    </resources>
+</document>

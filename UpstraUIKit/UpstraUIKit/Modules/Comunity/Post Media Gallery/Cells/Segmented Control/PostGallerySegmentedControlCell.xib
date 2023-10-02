@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="18122" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="18093"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" id="gTV-IL-0wX" customClass="PostGallerySegmentedControlCell" customModule="AmityUIKit" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="344" height="64"/>
+            <autoresizingMask key="autoresizingMask"/>
+            <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
+                <rect key="frame" x="0.0" y="0.0" width="344" height="64"/>
+                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                <subviews>
+                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="2g6-xz-Ujz">
+                        <rect key="frame" x="0.0" y="15" width="72" height="34"/>
+                        <inset key="contentEdgeInsets" minX="12" minY="8" maxX="12" maxY="8"/>
+                        <state key="normal" title="Photos"/>
+                        <connections>
+                            <action selector="photoDidTouch" destination="gTV-IL-0wX" eventType="touchUpInside" id="Ctp-ZP-ahm"/>
+                        </connections>
+                    </button>
+                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dFq-dA-8rr">
+                        <rect key="frame" x="80" y="15" width="71" height="34"/>
+                        <inset key="contentEdgeInsets" minX="12" minY="8" maxX="12" maxY="8"/>
+                        <state key="normal" title="Videos"/>
+                        <connections>
+                            <action selector="videoDidTouch" destination="gTV-IL-0wX" eventType="touchUpInside" id="NkF-GR-fB9"/>
+                        </connections>
+                    </button>
+                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="sn5-QM-k8F" userLabel="Live Stream Button">
+                        <rect key="frame" x="159" y="15" width="107" height="34"/>
+                        <inset key="contentEdgeInsets" minX="12" minY="8" maxX="12" maxY="8"/>
+                        <state key="normal" title="Livestreams"/>
+                        <connections>
+                            <action selector="livestreamDidTouch" destination="gTV-IL-0wX" eventType="touchUpInside" id="cSx-xv-Zmw"/>
+                        </connections>
+                    </button>
+                </subviews>
+            </view>
+            <viewLayoutGuide key="safeArea" id="ZTg-uK-7eu"/>
+            <constraints>
+                <constraint firstItem="sn5-QM-k8F" firstAttribute="centerY" secondItem="gTV-IL-0wX" secondAttribute="centerY" id="1WP-vO-GCi"/>
+                <constraint firstItem="dFq-dA-8rr" firstAttribute="centerY" secondItem="gTV-IL-0wX" secondAttribute="centerY" id="Ksg-nP-O8C"/>
+                <constraint firstItem="sn5-QM-k8F" firstAttribute="leading" secondItem="dFq-dA-8rr" secondAttribute="trailing" constant="8" symbolic="YES" id="QVo-81-tsZ"/>
+                <constraint firstItem="2g6-xz-Ujz" firstAttribute="centerY" secondItem="gTV-IL-0wX" secondAttribute="centerY" id="ZAL-LV-f8J"/>
+                <constraint firstItem="2g6-xz-Ujz" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" id="ZFl-x3-SdX"/>
+                <constraint firstItem="dFq-dA-8rr" firstAttribute="leading" secondItem="2g6-xz-Ujz" secondAttribute="trailing" constant="8" id="rOD-CU-0yG"/>
+            </constraints>
+            <size key="customSize" width="344" height="83"/>
+            <connections>
+                <outlet property="livestreamButton" destination="sn5-QM-k8F" id="w6o-0U-iPs"/>
+                <outlet property="photoButton" destination="2g6-xz-Ujz" id="d9d-iO-og0"/>
+                <outlet property="videoButton" destination="dFq-dA-8rr" id="RGf-f9-yOx"/>
+            </connections>
+            <point key="canvasLocation" x="213.04347826086959" y="88.727678571428569"/>
+        </collectionViewCell>
+    </objects>
+</document>

@@ -1,0 +1,12 @@
+{
+  "images" : [
+    {
+      "filename" : "icon_camera_small.pdf",
+      "idiom" : "universal"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  }
+}

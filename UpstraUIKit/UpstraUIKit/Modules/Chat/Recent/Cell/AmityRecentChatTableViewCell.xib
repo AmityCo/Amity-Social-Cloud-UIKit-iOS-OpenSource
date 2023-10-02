@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="17701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17703"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" rowHeight="106" id="APO-pW-KgV" customClass="AmityRecentChatTableViewCell" customModule="UpstraUIKit" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="545" height="106"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="APO-pW-KgV" id="uTq-DA-W3g">
+                <rect key="frame" x="0.0" y="0.0" width="545" height="106"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <stackView opaque="NO" contentMode="scaleToFill" alignment="top" spacing="12" translatesAutoresizingMaskIntoConstraints="NO" id="JBx-rs-wC0">
+                        <rect key="frame" x="16" y="12" width="513" height="74"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" horizontalHuggingPriority="252" verticalHuggingPriority="251" horizontalCompressionResistancePriority="751" translatesAutoresizingMaskIntoConstraints="NO" id="20u-8Q-3sZ" customClass="AmityAvatarView" customModule="UpstraUIKit" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="0.0" width="40" height="40"/>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="40" id="C57-Nw-eGz"/>
+                                    <constraint firstAttribute="width" constant="40" id="sJV-Dh-r5W"/>
+                                </constraints>
+                            </view>
+                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="4" translatesAutoresizingMaskIntoConstraints="NO" id="kCF-4O-N8N">
+                                <rect key="frame" x="52" y="0.0" width="461" height="74"/>
+                                <subviews>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="pWq-Cj-2UP">
+                                        <rect key="frame" x="0.0" y="0.0" width="461" height="20"/>
+                                        <subviews>
+                                            <stackView opaque="NO" contentMode="scaleToFill" spacing="4" translatesAutoresizingMaskIntoConstraints="NO" id="OAU-6v-8u3">
+                                                <rect key="frame" x="0.0" y="0.0" width="65.5" height="20"/>
+                                                <subviews>
+                                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="260" verticalHuggingPriority="251" horizontalCompressionResistancePriority="1000" translatesAutoresizingMaskIntoConstraints="NO" id="e0v-b5-TlO">
+                                                        <rect key="frame" x="0.0" y="0.0" width="20" height="20"/>
+                                                        <constraints>
+                                                            <constraint firstAttribute="height" constant="20" id="N1t-p9-Xvm"/>
+                                                            <constraint firstAttribute="width" constant="20" id="XHO-AI-DfX"/>
+                                                        </constraints>
+                                                    </imageView>
+                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="uMv-MI-0HT">
+                                                        <rect key="frame" x="24" y="0.0" width="41.5" height="20"/>
+                                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                        <nil key="textColor"/>
+                                                        <nil key="highlightedColor"/>
+                                                    </label>
+                                                </subviews>
+                                            </stackView>
+                                            <stackView opaque="NO" contentMode="scaleToFill" spacing="4" translatesAutoresizingMaskIntoConstraints="NO" id="ujf-pg-hsD">
+                                                <rect key="frame" x="69.5" y="0.0" width="67" height="20"/>
+                                                <subviews>
+                                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="260" verticalHuggingPriority="251" horizontalCompressionResistancePriority="1000" translatesAutoresizingMaskIntoConstraints="NO" id="Kbb-R3-kRH">
+                                                        <rect key="frame" x="0.0" y="0.0" width="20" height="20"/>
+                                                        <constraints>
+                                                            <constraint firstAttribute="width" constant="20" id="GOK-B9-GgD"/>
+                                                            <constraint firstAttribute="height" constant="20" id="iAi-Zs-Idu"/>
+                                                        </constraints>
+                                                    </imageView>
+                                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="260" verticalHuggingPriority="251" horizontalCompressionResistancePriority="1000" text="(569)" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="pBa-Nj-HY3">
+                                                        <rect key="frame" x="24" y="0.0" width="43" height="20"/>
+                                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                        <nil key="textColor"/>
+                                                        <nil key="highlightedColor"/>
+                                                    </label>
+                                                </subviews>
+                                            </stackView>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="255" verticalHuggingPriority="251" horizontalCompressionResistancePriority="755" text="8:0PM" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="UJ9-mF-lxz">
+                                                <rect key="frame" x="410.5" y="0.0" width="50.5" height="20.5"/>
+                                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                <nil key="textColor"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                        </subviews>
+                                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                        <constraints>
+                                            <constraint firstItem="OAU-6v-8u3" firstAttribute="leading" secondItem="pWq-Cj-2UP" secondAttribute="leading" id="241-sc-nus"/>
+                                            <constraint firstItem="ujf-pg-hsD" firstAttribute="centerY" secondItem="pWq-Cj-2UP" secondAttribute="centerY" id="25L-ON-HaM"/>
+                                            <constraint firstItem="OAU-6v-8u3" firstAttribute="top" secondItem="pWq-Cj-2UP" secondAttribute="top" id="Ksy-CA-c1Q"/>
+                                            <constraint firstAttribute="trailing" secondItem="UJ9-mF-lxz" secondAttribute="trailing" id="d4Z-KS-nMz"/>
+                                            <constraint firstItem="UJ9-mF-lxz" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="ujf-pg-hsD" secondAttribute="trailing" constant="20" id="j0Q-SD-Vlw"/>
+                                            <constraint firstItem="UJ9-mF-lxz" firstAttribute="centerY" secondItem="pWq-Cj-2UP" secondAttribute="centerY" id="lKW-Gh-fQT"/>
+                                            <constraint firstItem="ujf-pg-hsD" firstAttribute="leading" secondItem="OAU-6v-8u3" secondAttribute="trailing" constant="4" id="vBe-8v-SzU"/>
+                                            <constraint firstAttribute="bottom" secondItem="OAU-6v-8u3" secondAttribute="bottom" id="xVg-6O-fra"/>
+                                        </constraints>
+                                    </view>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="cXm-ph-KqI">
+                                        <rect key="frame" x="0.0" y="24" width="461" height="50"/>
+                                        <subviews>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" text="No message yet" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="KfJ-qk-eMm">
+                                                <rect key="frame" x="0.0" y="0.0" width="123" height="50"/>
+                                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                <nil key="textColor"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                            <view contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="751" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Uer-ro-NIr" customClass="AmityBadgeView" customModule="UpstraUIKit" customModuleProvider="target">
+                                                <rect key="frame" x="441" y="0.0" width="20" height="20"/>
+                                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                            </view>
+                                        </subviews>
+                                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                        <constraints>
+                                            <constraint firstItem="KfJ-qk-eMm" firstAttribute="leading" secondItem="cXm-ph-KqI" secondAttribute="leading" id="AKQ-46-Uvk"/>
+                                            <constraint firstAttribute="bottom" secondItem="KfJ-qk-eMm" secondAttribute="bottom" id="O7h-hT-uhc"/>
+                                            <constraint firstAttribute="trailing" secondItem="Uer-ro-NIr" secondAttribute="trailing" id="Rgl-O6-C4N"/>
+                                            <constraint firstItem="KfJ-qk-eMm" firstAttribute="top" secondItem="cXm-ph-KqI" secondAttribute="top" id="Tr9-vh-WSR"/>
+                                            <constraint firstItem="Uer-ro-NIr" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="KfJ-qk-eMm" secondAttribute="trailing" constant="20" id="fWi-8y-Ng7"/>
+                                            <constraint firstItem="Uer-ro-NIr" firstAttribute="top" secondItem="cXm-ph-KqI" secondAttribute="top" id="fwG-jZ-tiw"/>
+                                        </constraints>
+                                    </view>
+                                </subviews>
+                            </stackView>
+                        </subviews>
+                    </stackView>
+                </subviews>
+                <constraints>
+                    <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="JBx-rs-wC0" secondAttribute="bottom" constant="12" id="72e-lY-yKK"/>
+                    <constraint firstItem="JBx-rs-wC0" firstAttribute="top" secondItem="uTq-DA-W3g" secondAttribute="top" constant="12" id="Et1-Vs-auD"/>
+                    <constraint firstItem="JBx-rs-wC0" firstAttribute="leading" secondItem="uTq-DA-W3g" secondAttribute="leading" constant="16" id="Nxo-mT-wWv"/>
+                    <constraint firstAttribute="trailing" secondItem="JBx-rs-wC0" secondAttribute="trailing" constant="16" id="pNA-kb-MtK"/>
+                </constraints>
+            </tableViewCellContentView>
+            <viewLayoutGuide key="safeArea" id="Vls-bw-Ym1"/>
+            <connections>
+                <outlet property="avatarView" destination="20u-8Q-3sZ" id="Duq-hb-GQT"/>
+                <outlet property="badgeView" destination="Uer-ro-NIr" id="c85-OV-Uk2"/>
+                <outlet property="containerDisplayNameView" destination="pWq-Cj-2UP" id="mrX-uM-RcW"/>
+                <outlet property="containerMessageView" destination="cXm-ph-KqI" id="YZR-12-8tC"/>
+                <outlet property="dateTimeLabel" destination="UJ9-mF-lxz" id="dbs-Gc-je1"/>
+                <outlet property="iconImageView" destination="e0v-b5-TlO" id="1VZ-pK-qwO"/>
+                <outlet property="memberLabel" destination="pBa-Nj-HY3" id="9gR-Qb-9Ak"/>
+                <outlet property="previewMessageLabel" destination="KfJ-qk-eMm" id="N4F-O6-KxJ"/>
+                <outlet property="statusImageView" destination="Kbb-R3-kRH" id="b92-6d-74F"/>
+                <outlet property="titleLabel" destination="uMv-MI-0HT" id="cxj-4f-n9R"/>
+            </connections>
+            <point key="canvasLocation" x="301" y="236"/>
+        </tableViewCell>
+    </objects>
+    <resources>
+        <systemColor name="systemBackgroundColor">
+            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+    </resources>
+</document>

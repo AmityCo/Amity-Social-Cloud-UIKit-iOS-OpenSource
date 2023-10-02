@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="19455" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="19454"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="AmityEditTextViewController" customModule="AmityUIKit" customModuleProvider="target">
+            <connections>
+                <outlet property="bottomConstraint" destination="srR-px-yia" id="ZMG-cD-DjB"/>
+                <outlet property="headerLabel" destination="l6E-e1-oaV" id="FU5-IO-OL5"/>
+                <outlet property="headerView" destination="ERo-GZ-2dl" id="DyH-QH-OI5"/>
+                <outlet property="mentionTableView" destination="863-ru-kjH" id="fsD-gn-UbL"/>
+                <outlet property="mentionTableViewBottomConstraint" destination="7xQ-LZ-fWk" id="jbf-KE-lQs"/>
+                <outlet property="mentionTableViewHeightConstraint" destination="MCf-1a-cSd" id="Lu1-yb-8GR"/>
+                <outlet property="textView" destination="wNs-jb-2fO" id="Zla-zl-WWP"/>
+                <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="i5M-Pr-FkT">
+            <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="wNs-jb-2fO" customClass="AmityTextView" customModule="AmityUIKit" customModuleProvider="target">
+                    <rect key="frame" x="16" y="60" width="382" height="802"/>
+                    <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                    <color key="textColor" systemColor="labelColor"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                    <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                </textView>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ERo-GZ-2dl" userLabel="Header View">
+                    <rect key="frame" x="0.0" y="44" width="414" height="40"/>
+                    <subviews>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="l6E-e1-oaV" userLabel="Header Label">
+                            <rect key="frame" x="16" y="9.5" width="382" height="21"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                            <nil key="textColor"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                    </subviews>
+                    <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                    <constraints>
+                        <constraint firstItem="l6E-e1-oaV" firstAttribute="centerY" secondItem="ERo-GZ-2dl" secondAttribute="centerY" id="078-Mo-fca"/>
+                        <constraint firstAttribute="height" constant="40" id="WGC-Dw-aig"/>
+                        <constraint firstAttribute="trailing" secondItem="l6E-e1-oaV" secondAttribute="trailing" constant="16" id="gYt-1t-4xb"/>
+                        <constraint firstItem="l6E-e1-oaV" firstAttribute="leading" secondItem="ERo-GZ-2dl" secondAttribute="leading" constant="16" id="hBk-yU-8b4"/>
+                    </constraints>
+                </view>
+                <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="863-ru-kjH" customClass="AmityMentionTableView" customModule="AmityUIKit" customModuleProvider="target">
+                    <rect key="frame" x="0.0" y="622" width="414" height="240"/>
+                    <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="240" id="MCf-1a-cSd"/>
+                    </constraints>
+                </tableView>
+            </subviews>
+            <viewLayoutGuide key="safeArea" id="fnl-2z-Ty3"/>
+            <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+            <constraints>
+                <constraint firstItem="863-ru-kjH" firstAttribute="bottom" secondItem="fnl-2z-Ty3" secondAttribute="bottom" id="7xQ-LZ-fWk"/>
+                <constraint firstItem="wNs-jb-2fO" firstAttribute="top" secondItem="fnl-2z-Ty3" secondAttribute="top" constant="16" id="9OL-4c-YvL"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="863-ru-kjH" secondAttribute="trailing" id="Cjz-Io-sed"/>
+                <constraint firstItem="ERo-GZ-2dl" firstAttribute="top" secondItem="fnl-2z-Ty3" secondAttribute="top" id="F1Z-Wn-zY2"/>
+                <constraint firstItem="ERo-GZ-2dl" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="Rio-8S-x44"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="wNs-jb-2fO" secondAttribute="trailing" constant="16" id="Zlw-Dk-ZJ2"/>
+                <constraint firstItem="863-ru-kjH" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="c3m-lE-aWy"/>
+                <constraint firstItem="wNs-jb-2fO" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="16" id="ewl-ya-6V0"/>
+                <constraint firstItem="ERo-GZ-2dl" firstAttribute="trailing" secondItem="fnl-2z-Ty3" secondAttribute="trailing" id="qaN-S7-6HR"/>
+                <constraint firstItem="wNs-jb-2fO" firstAttribute="bottom" secondItem="fnl-2z-Ty3" secondAttribute="bottom" id="srR-px-yia"/>
+            </constraints>
+            <point key="canvasLocation" x="139" y="100"/>
+        </view>
+    </objects>
+    <resources>
+        <systemColor name="labelColor">
+            <color white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+        <systemColor name="systemBackgroundColor">
+            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+    </resources>
+</document>

@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="21507" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_12" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21505"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="AmityReactionPageViewController" customModule="AmityUIKit" customModuleProvider="target">
+            <connections>
+                <outlet property="buttonBarView" destination="aVJ-3g-STt" id="QxA-7V-Kxj"/>
+                <outlet property="containerView" destination="lvN-Qr-mB0" id="5b2-dT-erh"/>
+                <outlet property="view" destination="2WJ-ud-Lj4" id="vnR-zv-a2i"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="2WJ-ud-Lj4">
+            <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="none" translatesAutoresizingMaskIntoConstraints="NO" id="aVJ-3g-STt" customClass="ButtonBarView" customModule="AmityUIKit" customModuleProvider="target">
+                    <rect key="frame" x="0.0" y="59" width="393" height="44"/>
+                    <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="44" id="Dsn-9j-xwb"/>
+                    </constraints>
+                    <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="Nzc-2e-hT0">
+                        <size key="itemSize" width="128" height="128"/>
+                        <size key="headerReferenceSize" width="0.0" height="0.0"/>
+                        <size key="footerReferenceSize" width="0.0" height="0.0"/>
+                        <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
+                    </collectionViewFlowLayout>
+                </collectionView>
+                <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="lvN-Qr-mB0">
+                    <rect key="frame" x="0.0" y="103" width="393" height="749"/>
+                </scrollView>
+            </subviews>
+            <viewLayoutGuide key="safeArea" id="KjH-0Q-xoh"/>
+            <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+            <constraints>
+                <constraint firstItem="aVJ-3g-STt" firstAttribute="leading" secondItem="KjH-0Q-xoh" secondAttribute="leading" id="O2A-W1-Y3x"/>
+                <constraint firstItem="aVJ-3g-STt" firstAttribute="top" secondItem="KjH-0Q-xoh" secondAttribute="top" id="aGq-L9-J4p"/>
+                <constraint firstItem="lvN-Qr-mB0" firstAttribute="leading" secondItem="KjH-0Q-xoh" secondAttribute="leading" id="aSL-Fl-x8f"/>
+                <constraint firstAttribute="bottom" secondItem="lvN-Qr-mB0" secondAttribute="bottom" id="k8W-zE-Hok"/>
+                <constraint firstItem="lvN-Qr-mB0" firstAttribute="trailing" secondItem="KjH-0Q-xoh" secondAttribute="trailing" id="oMm-dK-dkm"/>
+                <constraint firstItem="aVJ-3g-STt" firstAttribute="trailing" secondItem="KjH-0Q-xoh" secondAttribute="trailing" id="oRr-To-II4"/>
+                <constraint firstItem="lvN-Qr-mB0" firstAttribute="top" secondItem="aVJ-3g-STt" secondAttribute="bottom" id="szO-8a-2cV"/>
+            </constraints>
+            <point key="canvasLocation" x="59" y="-42"/>
+        </view>
+    </objects>
+    <resources>
+        <systemColor name="systemBackgroundColor">
+            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+    </resources>
+</document>

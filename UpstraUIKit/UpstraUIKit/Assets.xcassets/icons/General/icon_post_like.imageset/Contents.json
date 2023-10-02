@@ -1,0 +1,12 @@
+{
+  "images" : [
+    {
+      "filename" : "icon_post_like.pdf",
+      "idiom" : "universal"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  }
+}

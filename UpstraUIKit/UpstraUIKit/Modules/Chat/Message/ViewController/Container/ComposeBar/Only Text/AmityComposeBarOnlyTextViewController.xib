@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="17701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17703"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="AmityComposeBarOnlyTextViewController" customModule="AmityUIKit" customModuleProvider="target">
+            <connections>
+                <outlet property="sendMessageButton" destination="yfB-uX-rGz" id="zSu-TI-Pr0"/>
+                <outlet property="textComposeBarView" destination="gU0-nB-1dd" id="rjY-59-dov"/>
+                <outlet property="trailingStackView" destination="Vtv-0T-xxf" id="ZDP-hj-LgS"/>
+                <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="i5M-Pr-FkT">
+            <rect key="frame" x="0.0" y="0.0" width="414" height="60"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="TDX-gX-wQ7">
+                    <rect key="frame" x="0.0" y="0.0" width="414" height="60"/>
+                    <subviews>
+                        <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="center" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="UIT-aS-D2v">
+                            <rect key="frame" x="0.0" y="0.0" width="414" height="52"/>
+                            <subviews>
+                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="fep-sX-u9j">
+                                    <rect key="frame" x="0.0" y="0.0" width="414" height="1"/>
+                                    <color key="backgroundColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                    <constraints>
+                                        <constraint firstAttribute="height" constant="1" id="ojO-Q7-Cgc"/>
+                                    </constraints>
+                                </view>
+                                <stackView opaque="NO" contentMode="scaleToFill" alignment="center" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="kdj-Df-qWR">
+                                    <rect key="frame" x="16" y="9" width="382" height="43"/>
+                                    <subviews>
+                                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="gU0-nB-1dd" customClass="AmityTextComposeBarView" customModule="AmityUIKit" customModuleProvider="target">
+                                            <rect key="frame" x="0.0" y="0.0" width="342" height="43"/>
+                                            <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                        </view>
+                                        <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Vtv-0T-xxf">
+                                            <rect key="frame" x="352" y="6.5" width="30" height="30"/>
+                                            <subviews>
+                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="yfB-uX-rGz">
+                                                    <rect key="frame" x="0.0" y="0.0" width="30" height="30"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="height" constant="30" id="MKt-g6-QTB"/>
+                                                        <constraint firstAttribute="width" constant="30" id="zrw-MU-S6r"/>
+                                                    </constraints>
+                                                    <state key="normal" title="SENT"/>
+                                                    <connections>
+                                                        <action selector="sendMessageTap" destination="-1" eventType="touchUpInside" id="mS1-lr-3KY"/>
+                                                    </connections>
+                                                </button>
+                                            </subviews>
+                                        </stackView>
+                                    </subviews>
+                                    <constraints>
+                                        <constraint firstItem="gU0-nB-1dd" firstAttribute="top" secondItem="kdj-Df-qWR" secondAttribute="top" id="NgL-0l-Xem"/>
+                                        <constraint firstAttribute="bottom" secondItem="gU0-nB-1dd" secondAttribute="bottom" id="TX0-l6-1Z1"/>
+                                    </constraints>
+                                </stackView>
+                            </subviews>
+                            <constraints>
+                                <constraint firstItem="kdj-Df-qWR" firstAttribute="leading" secondItem="UIT-aS-D2v" secondAttribute="leading" constant="16" id="7Au-zx-mBQ"/>
+                                <constraint firstItem="fep-sX-u9j" firstAttribute="leading" secondItem="UIT-aS-D2v" secondAttribute="leading" id="Hai-Nb-vCe"/>
+                                <constraint firstAttribute="trailing" secondItem="fep-sX-u9j" secondAttribute="trailing" id="OLo-1R-562"/>
+                                <constraint firstAttribute="trailing" secondItem="kdj-Df-qWR" secondAttribute="trailing" constant="16" id="aVk-uN-q0n"/>
+                            </constraints>
+                        </stackView>
+                    </subviews>
+                    <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                    <constraints>
+                        <constraint firstAttribute="trailing" secondItem="UIT-aS-D2v" secondAttribute="trailing" id="8WK-Sa-57f"/>
+                        <constraint firstItem="UIT-aS-D2v" firstAttribute="top" secondItem="TDX-gX-wQ7" secondAttribute="top" id="RBn-Ne-Rza"/>
+                        <constraint firstItem="UIT-aS-D2v" firstAttribute="leading" secondItem="TDX-gX-wQ7" secondAttribute="leading" id="SUM-uj-b84"/>
+                        <constraint firstAttribute="bottom" secondItem="UIT-aS-D2v" secondAttribute="bottom" constant="8" id="lf0-5j-dBq"/>
+                    </constraints>
+                </view>
+            </subviews>
+            <viewLayoutGuide key="safeArea" id="fnl-2z-Ty3"/>
+            <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+            <constraints>
+                <constraint firstAttribute="trailing" secondItem="TDX-gX-wQ7" secondAttribute="trailing" id="aiq-XA-cbc"/>
+                <constraint firstItem="TDX-gX-wQ7" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="dhB-vj-NwQ"/>
+                <constraint firstAttribute="bottom" secondItem="TDX-gX-wQ7" secondAttribute="bottom" id="fip-WB-aha"/>
+                <constraint firstItem="TDX-gX-wQ7" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="xG6-is-pQ9"/>
+            </constraints>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <point key="canvasLocation" x="137.68115942028987" y="91.071428571428569"/>
+        </view>
+    </objects>
+    <resources>
+        <systemColor name="systemBackgroundColor">
+            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+    </resources>
+</document>
