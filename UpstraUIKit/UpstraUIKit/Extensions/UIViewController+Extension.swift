@@ -8,6 +8,7 @@
 
 import UIKit
 import AVKit
+import AmitySDK
 
 extension UIViewController {
     
@@ -53,5 +54,5 @@ extension UIViewController {
             player?.play()
         }
     }
-    
+
 }

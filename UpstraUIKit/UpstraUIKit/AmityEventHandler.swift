@@ -221,15 +221,8 @@ open class AmityEventHandler {
     open func openRecordedLiveStreamPlayer(
         from source: AmityViewController,
         postId: String,
-        streamId: String,
-        recordedData: [AmityLiveVideoRecordingData]
+        stream: AmityStream
     ) {
-        guard
-            let firstRecordedData = recordedData.first,
-            let videoUrl = firstRecordedData.url(for: .MP4) else {
-            assertionFailure("recordedData must have at least one recorded data.")
-            return
-        }
-        source.presentVideoPlayer(at: videoUrl)
+        print("To watch recorded live stream videos, please override \(AmityEventHandler.self).\(#function), see https://docs.amity.co/amity-sdk/video/ios/view-play for more details.")
     }
 }

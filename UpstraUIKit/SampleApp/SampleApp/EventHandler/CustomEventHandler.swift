@@ -7,10 +7,15 @@
 //
 
 import UIKit
+import AVKit
 import AmityUIKit
 import AmitySDK
 #if canImport(AmityUIKitLiveStream)
 import AmityUIKitLiveStream
+#endif
+
+#if canImport(AmityVideoPlayerKit)
+import AmityVideoPlayerKit
 #endif
 
 class CustomEventHandler: AmityEventHandler {
@@ -83,6 +88,19 @@ class CustomEventHandler: AmityEventHandler {
         source.present(liveStreamPlayerVC, animated: true, completion: nil)
         #else
         print("To watch live stream, please install AmityUIKitLiveStream, see also `SampleApp/INSTALLATION.md`")
+        #endif
+    }
+    
+    override func openRecordedLiveStreamPlayer(from source: AmityViewController, postId: String, stream: AmityStream) {
+        #if canImport(AmityVideoPlayerKit)
+        let player = AmityRecordedStreamPlayer(client: AmityUIKitManager.client, stream: stream)
+        let playerViewController = AVPlayerViewController()
+        playerViewController.player = player
+        source.present(playerViewController, animated: true) { [weak player] in
+            player?.play()
+        }
+        #else
+        print("To watch recorded live stream, please install AmityVideoPlayerKit.")
         #endif
     }
 }

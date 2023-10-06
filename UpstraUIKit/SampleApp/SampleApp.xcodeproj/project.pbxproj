@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 52;
+	objectVersion = 54;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -18,6 +18,7 @@
 		0D73ACA825DB9423000D73CA /* NewJoinerPostComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D73ACA725DB9423000D73CA /* NewJoinerPostComponent.swift */; };
 		0D8FFC2925DCBFD900943538 /* AmityCustomFooterTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D8FFC2725DCBFD900943538 /* AmityCustomFooterTableViewCell.swift */; };
 		0D8FFC2A25DCBFD900943538 /* AmityCustomFooterTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0D8FFC2825DCBFD900943538 /* AmityCustomFooterTableViewCell.xib */; };
+		6815BB322AD022C800E7557C /* SharedFrameworks in Frameworks */ = {isa = PBXBuildFile; productRef = 6815BB312AD022C800E7557C /* SharedFrameworks */; };
 		7214C9CB2632BE5500192BB3 /* UserLevelPushNotificationsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7214C9CA2632BE5500192BB3 /* UserLevelPushNotificationsTableViewController.swift */; };
 		7214C9D72632C0AD00192BB3 /* NotificationModuleTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7214C9D62632C0AD00192BB3 /* NotificationModuleTableViewCell.swift */; };
 		7214C9DB2632C0D500192BB3 /* SwitchTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7214C9DA2632C0D500192BB3 /* SwitchTableViewCell.swift */; };
@@ -28,7 +29,68 @@
 		729CAF3E273CC8ED000AE162 /* Binding+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 729CAF3D273CC8ED000AE162 /* Binding+Extension.swift */; };
 		729CAF42273CC95B000AE162 /* EndpointManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 729CAF41273CC95B000AE162 /* EndpointManager.swift */; };
 		72AACE0B273931F100E59D55 /* EndpointsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72AACE0A273931F100E59D55 /* EndpointsView.swift */; };
-		92502A462ABC4C99004FA40C /* SharedFrameworks in Frameworks */ = {isa = PBXBuildFile; productRef = 92502A452ABC4C99004FA40C /* SharedFrameworks */; };
+		92DBE8A62ACA98CF007D873C /* DataListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D495077325E637C1005C033F /* DataListViewController.swift */; };
+		92DBE8A72ACA98CF007D873C /* SamplePageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 724C25F3274CE38B0058B066 /* SamplePageViewController.swift */; };
+		92DBE8A82ACA98CF007D873C /* PostCreatorSettingsPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = A03190A6272169C1008A85DC /* PostCreatorSettingsPage.swift */; };
+		92DBE8A92ACA98CF007D873C /* UserLevelPushNotificationsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7214C9CA2632BE5500192BB3 /* UserLevelPushNotificationsTableViewController.swift */; };
+		92DBE8AA2ACA98CF007D873C /* FeatureViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B78DA4AE24BED89000EE902B /* FeatureViewController.swift */; };
+		92DBE8AB2ACA98CF007D873C /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B78DA47824BED7D300EE902B /* AppDelegate.swift */; };
+		92DBE8AC2ACA98CF007D873C /* AmityPostBirthdayTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D73AC8E25DB8CB5000D73CA /* AmityPostBirthdayTableViewCell.swift */; };
+		92DBE8AD2ACA98CF007D873C /* AmityPostThumbsupTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D73AC8B25DB8CB5000D73CA /* AmityPostThumbsupTableViewCell.swift */; };
+		92DBE8AE2ACA98CF007D873C /* AmityPostNewJoinerTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D73AC9225DB8CB5000D73CA /* AmityPostNewJoinerTableViewCell.swift */; };
+		92DBE8AF2ACA98CF007D873C /* TabbarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B72861D824C573B100ECC563 /* TabbarViewController.swift */; };
+		92DBE8B02ACA98CF007D873C /* GlobalPostsFeedViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4AFF23125ED1E7C002C001C /* GlobalPostsFeedViewController.swift */; };
+		92DBE8B12ACA98CF007D873C /* BirthdayPostComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D73AC9D25DB9332000D73CA /* BirthdayPostComponent.swift */; };
+		92DBE8B22ACA98CF007D873C /* PostPreviewTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4AFF1CD25ECE8AD002C001C /* PostPreviewTableViewCell.swift */; };
+		92DBE8B32ACA98CF007D873C /* GlobalPostsDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = D4AFF23525ED1F88002C001C /* GlobalPostsDataSource.swift */; };
+		92DBE8B42ACA98CF007D873C /* UserDefaults.swift in Sources */ = {isa = PBXBuildFile; fileRef = B74ADE5D24F3B026009C86DA /* UserDefaults.swift */; };
+		92DBE8B52ACA98CF007D873C /* RegisterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B754DBED24C6F6BB005A8282 /* RegisterViewController.swift */; };
+		92DBE8B62ACA98CF007D873C /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B78DA47A24BED7D300EE902B /* SceneDelegate.swift */; };
+		92DBE8B72ACA98CF007D873C /* AmityCustomFooterTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D8FFC2725DCBFD900943538 /* AmityCustomFooterTableViewCell.swift */; };
+		92DBE8B82ACA98CF007D873C /* NotificationModuleTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7214C9D62632C0AD00192BB3 /* NotificationModuleTableViewCell.swift */; };
+		92DBE8B92ACA98CF007D873C /* UserDefault.swift in Sources */ = {isa = PBXBuildFile; fileRef = B78FC53D24CAAA2F0083CBB4 /* UserDefault.swift */; };
+		92DBE8BA2ACA98CF007D873C /* CustomChannelEventHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97F101F426A69FBF00AD84A1 /* CustomChannelEventHandler.swift */; };
+		92DBE8BB2ACA98CF007D873C /* NewJoinerPostComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D73ACA725DB9423000D73CA /* NewJoinerPostComponent.swift */; };
+		92DBE8BC2ACA98CF007D873C /* SwitchTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7214C9DA2632C0D500192BB3 /* SwitchTableViewCell.swift */; };
+		92DBE8BD2ACA98CF007D873C /* Binding+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 729CAF3D273CC8ED000AE162 /* Binding+Extension.swift */; };
+		92DBE8BE2ACA98CF007D873C /* CustomMessageTextIncomingTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B72CDA39256B9BEB00F7CAC3 /* CustomMessageTextIncomingTableViewCell.swift */; };
+		92DBE8BF2ACA98CF007D873C /* CommunityFeatureViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B78DA4B024BEDBC500EE902B /* CommunityFeatureViewController.swift */; };
+		92DBE8C02ACA98CF007D873C /* AppManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7288E96B2630139E004535DD /* AppManager.swift */; };
+		92DBE8C12ACA98CF007D873C /* CustomFeedEventHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 721AF3C926088884005BA15F /* CustomFeedEventHandler.swift */; };
+		92DBE8C22ACA98CF007D873C /* Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = B78FC53F24CAAA2F0083CBB4 /* Theme.swift */; };
+		92DBE8C32ACA98CF007D873C /* SettingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B754DBEB24C6F6B5005A8282 /* SettingViewController.swift */; };
+		92DBE8C42ACA98CF007D873C /* ThumbsupPostComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D73ACA325DB93A2000D73CA /* ThumbsupPostComponent.swift */; };
+		92DBE8C52ACA98CF007D873C /* EndpointsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72AACE0A273931F100E59D55 /* EndpointsView.swift */; };
+		92DBE8C62ACA98CF007D873C /* EndpointManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 729CAF41273CC95B000AE162 /* EndpointManager.swift */; };
+		92DBE8C72ACA98CF007D873C /* CustomEventHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 721AF3C326088849005BA15F /* CustomEventHandler.swift */; };
+		92DBE8C82ACA98CF007D873C /* ChatFeatureViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B78DA4B224BEDBD100EE902B /* ChatFeatureViewController.swift */; };
+		92DBE8CA2ACA98CF007D873C /* AmityUIKitLiveStream.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A0BD0B4726DDE0E30054088B /* AmityUIKitLiveStream.framework */; };
+		92DBE8CB2ACA98CF007D873C /* AmitySDK.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = D45D45B726204253008F7C2C /* AmitySDK.xcframework */; };
+		92DBE8CC2ACA98CF007D873C /* AmityLiveVideoBroadcastKit.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = A0BD0B3E26DDE0020054088B /* AmityLiveVideoBroadcastKit.xcframework */; };
+		92DBE8CD2ACA98CF007D873C /* RealmSwift.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 68EF84A629B077E700C7EDEC /* RealmSwift.xcframework */; };
+		92DBE8CE2ACA98CF007D873C /* MobileVLCKit.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = A0BD0B4026DDE0020054088B /* MobileVLCKit.xcframework */; };
+		92DBE8CF2ACA98CF007D873C /* AmityVideoPlayerKit.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = A0BD0B3F26DDE0020054088B /* AmityVideoPlayerKit.xcframework */; };
+		92DBE8D02ACA98CF007D873C /* FirebaseCrashlytics in Frameworks */ = {isa = PBXBuildFile; productRef = 92DBE8A32ACA98CF007D873C /* FirebaseCrashlytics */; };
+		92DBE8D12ACA98CF007D873C /* Realm.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = D45B3A93264A840300F6FF52 /* Realm.xcframework */; };
+		92DBE8D22ACA98CF007D873C /* AmityUIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D478D153262409E5006EA140 /* AmityUIKit.framework */; };
+		92DBE8D42ACA98CF007D873C /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B78DA48324BED7DA00EE902B /* LaunchScreen.storyboard */; };
+		92DBE8D52ACA98CF007D873C /* AmityPostThumbsupTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0D73AC8C25DB8CB5000D73CA /* AmityPostThumbsupTableViewCell.xib */; };
+		92DBE8D62ACA98CF007D873C /* AmityCustomFooterTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0D8FFC2825DCBFD900943538 /* AmityCustomFooterTableViewCell.xib */; };
+		92DBE8D72ACA98CF007D873C /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B78DA48124BED7DA00EE902B /* Assets.xcassets */; };
+		92DBE8D82ACA98CF007D873C /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B78DA47E24BED7D300EE902B /* Main.storyboard */; };
+		92DBE8D92ACA98CF007D873C /* AmityPostBirthdayTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0D73AC8F25DB8CB5000D73CA /* AmityPostBirthdayTableViewCell.xib */; };
+		92DBE8DA2ACA98CF007D873C /* PostPreviewTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = D4AFF1CC25ECE8AD002C001C /* PostPreviewTableViewCell.xib */; };
+		92DBE8DB2ACA98CF007D873C /* CustomMessageTextIncomingTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = B72CDA3A256B9BEB00F7CAC3 /* CustomMessageTextIncomingTableViewCell.xib */; };
+		92DBE8DC2ACA98CF007D873C /* AmityPostNewJoinerTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0D73AC9125DB8CB5000D73CA /* AmityPostNewJoinerTableViewCell.xib */; };
+		92DBE8DE2ACA98CF007D873C /* AmityUIKitLiveStream.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = A0BD0B4726DDE0E30054088B /* AmityUIKitLiveStream.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		92DBE8DF2ACA98CF007D873C /* AmitySDK.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = D45D45B726204253008F7C2C /* AmitySDK.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		92DBE8E02ACA98CF007D873C /* AmityLiveVideoBroadcastKit.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = A0BD0B3E26DDE0020054088B /* AmityLiveVideoBroadcastKit.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		92DBE8E12ACA98CF007D873C /* RealmSwift.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 68EF84A629B077E700C7EDEC /* RealmSwift.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		92DBE8E22ACA98CF007D873C /* MobileVLCKit.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = A0BD0B4026DDE0020054088B /* MobileVLCKit.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		92DBE8E32ACA98CF007D873C /* AmityVideoPlayerKit.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = A0BD0B3F26DDE0020054088B /* AmityVideoPlayerKit.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		92DBE8E42ACA98CF007D873C /* Realm.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = D45B3A93264A840300F6FF52 /* Realm.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		92DBE8E52ACA98CF007D873C /* AmityUIKit.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = D478D153262409E5006EA140 /* AmityUIKit.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		92DBE8ED2ACA9C16007D873C /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 92DBE8EC2ACA9C16007D873C /* GoogleService-Info.plist */; };
 		97F101F526A69FBF00AD84A1 /* CustomChannelEventHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97F101F426A69FBF00AD84A1 /* CustomChannelEventHandler.swift */; };
 		A03190A7272169C1008A85DC /* PostCreatorSettingsPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = A03190A6272169C1008A85DC /* PostCreatorSettingsPage.swift */; };
 		A0BD0B4826DDE0E30054088B /* AmityUIKitLiveStream.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A0BD0B4726DDE0E30054088B /* AmityUIKitLiveStream.framework */; };
@@ -78,6 +140,24 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
+		92DBE8DD2ACA98CF007D873C /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				92DBE8DE2ACA98CF007D873C /* AmityUIKitLiveStream.framework in Embed Frameworks */,
+				92DBE8DF2ACA98CF007D873C /* AmitySDK.xcframework in Embed Frameworks */,
+				92DBE8E02ACA98CF007D873C /* AmityLiveVideoBroadcastKit.xcframework in Embed Frameworks */,
+				92DBE8E12ACA98CF007D873C /* RealmSwift.xcframework in Embed Frameworks */,
+				92DBE8E22ACA98CF007D873C /* MobileVLCKit.xcframework in Embed Frameworks */,
+				92DBE8E32ACA98CF007D873C /* AmityVideoPlayerKit.xcframework in Embed Frameworks */,
+				92DBE8E42ACA98CF007D873C /* Realm.xcframework in Embed Frameworks */,
+				92DBE8E52ACA98CF007D873C /* AmityUIKit.framework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		A052EAF42577A6B700FF9312 /* Embed Frameworks */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
@@ -117,6 +197,8 @@
 		729CAF3D273CC8ED000AE162 /* Binding+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Binding+Extension.swift"; sourceTree = "<group>"; };
 		729CAF41273CC95B000AE162 /* EndpointManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EndpointManager.swift; sourceTree = "<group>"; };
 		72AACE0A273931F100E59D55 /* EndpointsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EndpointsView.swift; sourceTree = "<group>"; };
+		92DBE8E92ACA98CF007D873C /* SampleAppDistribution.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SampleAppDistribution.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		92DBE8EC2ACA9C16007D873C /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../../GoogleService-Info.plist"; sourceTree = "<group>"; };
 		97F101F426A69FBF00AD84A1 /* CustomChannelEventHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomChannelEventHandler.swift; sourceTree = "<group>"; };
 		A03190A6272169C1008A85DC /* PostCreatorSettingsPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostCreatorSettingsPage.swift; sourceTree = "<group>"; };
 		A0BD0B3B26DDDFCC0054088B /* AmityUIKitLiveStream.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = AmityUIKitLiveStream.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -159,13 +241,29 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		92DBE8C92ACA98CF007D873C /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				92DBE8CA2ACA98CF007D873C /* AmityUIKitLiveStream.framework in Frameworks */,
+				92DBE8CB2ACA98CF007D873C /* AmitySDK.xcframework in Frameworks */,
+				92DBE8CC2ACA98CF007D873C /* AmityLiveVideoBroadcastKit.xcframework in Frameworks */,
+				92DBE8CD2ACA98CF007D873C /* RealmSwift.xcframework in Frameworks */,
+				92DBE8CE2ACA98CF007D873C /* MobileVLCKit.xcframework in Frameworks */,
+				92DBE8CF2ACA98CF007D873C /* AmityVideoPlayerKit.xcframework in Frameworks */,
+				92DBE8D02ACA98CF007D873C /* FirebaseCrashlytics in Frameworks */,
+				92DBE8D12ACA98CF007D873C /* Realm.xcframework in Frameworks */,
+				92DBE8D22ACA98CF007D873C /* AmityUIKit.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		B78DA47224BED7D300EE902B /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 				A0BD0B4826DDE0E30054088B /* AmityUIKitLiveStream.framework in Frameworks */,
 				D478D16926240A5E006EA140 /* AmityUIKit.framework in Frameworks */,
-				92502A462ABC4C99004FA40C /* SharedFrameworks in Frameworks */,
+				6815BB322AD022C800E7557C /* SharedFrameworks in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -342,6 +440,7 @@
 				B78DA47524BED7D300EE902B /* SampleApp.app */,
 				B78DA48B24BED7DA00EE902B /* SampleAppTests.xctest */,
 				B78DA49624BED7DA00EE902B /* SampleAppUITests.xctest */,
+				92DBE8E92ACA98CF007D873C /* SampleAppDistribution.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -360,6 +459,7 @@
 				B78DA48124BED7DA00EE902B /* Assets.xcassets */,
 				B78DA48324BED7DA00EE902B /* LaunchScreen.storyboard */,
 				B78DA48624BED7DA00EE902B /* Info.plist */,
+				92DBE8EC2ACA9C16007D873C /* GoogleService-Info.plist */,
 			);
 			path = SampleApp;
 			sourceTree = "<group>";
@@ -442,6 +542,28 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		92DBE8A22ACA98CF007D873C /* SampleAppDistribution */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 92DBE8E62ACA98CF007D873C /* Build configuration list for PBXNativeTarget "SampleAppDistribution" */;
+			buildPhases = (
+				92DBE8A52ACA98CF007D873C /* Sources */,
+				92DBE8C92ACA98CF007D873C /* Frameworks */,
+				92DBE8D32ACA98CF007D873C /* Resources */,
+				92DBE8DD2ACA98CF007D873C /* Embed Frameworks */,
+				92DBE8EB2ACA9B6C007D873C /* ShellScript */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = SampleAppDistribution;
+			packageProductDependencies = (
+				92DBE8A32ACA98CF007D873C /* FirebaseCrashlytics */,
+			);
+			productName = SampleApp;
+			productReference = 92DBE8E92ACA98CF007D873C /* SampleAppDistribution.app */;
+			productType = "com.apple.product-type.application";
+		};
 		B78DA47424BED7D300EE902B /* SampleApp */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = B78DA49F24BED7DA00EE902B /* Build configuration list for PBXNativeTarget "SampleApp" */;
@@ -457,7 +579,7 @@
 			);
 			name = SampleApp;
 			packageProductDependencies = (
-				92502A452ABC4C99004FA40C /* SharedFrameworks */,
+				6815BB312AD022C800E7557C /* SharedFrameworks */,
 			);
 			productName = SampleApp;
 			productReference = B78DA47524BED7D300EE902B /* SampleApp.app */;
@@ -531,6 +653,9 @@
 				Base,
 			);
 			mainGroup = B78DA46C24BED7D300EE902B;
+			packageReferences = (
+				92DBE89F2ACA98BB007D873C /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
+			);
 			productRefGroup = B78DA47624BED7D300EE902B /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -538,11 +663,29 @@
 				B78DA47424BED7D300EE902B /* SampleApp */,
 				B78DA48A24BED7DA00EE902B /* SampleAppTests */,
 				B78DA49524BED7DA00EE902B /* SampleAppUITests */,
+				92DBE8A22ACA98CF007D873C /* SampleAppDistribution */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		92DBE8D32ACA98CF007D873C /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				92DBE8D42ACA98CF007D873C /* LaunchScreen.storyboard in Resources */,
+				92DBE8D52ACA98CF007D873C /* AmityPostThumbsupTableViewCell.xib in Resources */,
+				92DBE8D62ACA98CF007D873C /* AmityCustomFooterTableViewCell.xib in Resources */,
+				92DBE8D72ACA98CF007D873C /* Assets.xcassets in Resources */,
+				92DBE8D82ACA98CF007D873C /* Main.storyboard in Resources */,
+				92DBE8D92ACA98CF007D873C /* AmityPostBirthdayTableViewCell.xib in Resources */,
+				92DBE8DA2ACA98CF007D873C /* PostPreviewTableViewCell.xib in Resources */,
+				92DBE8ED2ACA9C16007D873C /* GoogleService-Info.plist in Resources */,
+				92DBE8DB2ACA98CF007D873C /* CustomMessageTextIncomingTableViewCell.xib in Resources */,
+				92DBE8DC2ACA98CF007D873C /* AmityPostNewJoinerTableViewCell.xib in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		B78DA47324BED7D300EE902B /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -575,7 +718,74 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		92DBE8EB2ACA9B6C007D873C /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${DWARF_DSYM_FOLDER_PATH}/${DWARF_DSYM_FILE_NAME}",
+				"${DWARF_DSYM_FOLDER_PATH}/${DWARF_DSYM_FILE_NAME}/Contents/Resources/DWARF/${PRODUCT_NAME}",
+				"${DWARF_DSYM_FOLDER_PATH}/${DWARF_DSYM_FILE_NAME}/Contents/Info.plist",
+				"$(BUILT_PRODUCTS_DIR)/$(UNLOCALIZED_RESOURCES_FOLDER_PATH)/GoogleService-Info.plist",
+				"$(SRCROOT)/newInputFile",
+			);
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${BUILD_DIR%/Build/*}/SourcePackages/checkouts/firebase-ios-sdk/Crashlytics/run\"\n";
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
+		92DBE8A52ACA98CF007D873C /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				92DBE8A62ACA98CF007D873C /* DataListViewController.swift in Sources */,
+				92DBE8A72ACA98CF007D873C /* SamplePageViewController.swift in Sources */,
+				92DBE8A82ACA98CF007D873C /* PostCreatorSettingsPage.swift in Sources */,
+				92DBE8A92ACA98CF007D873C /* UserLevelPushNotificationsTableViewController.swift in Sources */,
+				92DBE8AA2ACA98CF007D873C /* FeatureViewController.swift in Sources */,
+				92DBE8AB2ACA98CF007D873C /* AppDelegate.swift in Sources */,
+				92DBE8AC2ACA98CF007D873C /* AmityPostBirthdayTableViewCell.swift in Sources */,
+				92DBE8AD2ACA98CF007D873C /* AmityPostThumbsupTableViewCell.swift in Sources */,
+				92DBE8AE2ACA98CF007D873C /* AmityPostNewJoinerTableViewCell.swift in Sources */,
+				92DBE8AF2ACA98CF007D873C /* TabbarViewController.swift in Sources */,
+				92DBE8B02ACA98CF007D873C /* GlobalPostsFeedViewController.swift in Sources */,
+				92DBE8B12ACA98CF007D873C /* BirthdayPostComponent.swift in Sources */,
+				92DBE8B22ACA98CF007D873C /* PostPreviewTableViewCell.swift in Sources */,
+				92DBE8B32ACA98CF007D873C /* GlobalPostsDataSource.swift in Sources */,
+				92DBE8B42ACA98CF007D873C /* UserDefaults.swift in Sources */,
+				92DBE8B52ACA98CF007D873C /* RegisterViewController.swift in Sources */,
+				92DBE8B62ACA98CF007D873C /* SceneDelegate.swift in Sources */,
+				92DBE8B72ACA98CF007D873C /* AmityCustomFooterTableViewCell.swift in Sources */,
+				92DBE8B82ACA98CF007D873C /* NotificationModuleTableViewCell.swift in Sources */,
+				92DBE8B92ACA98CF007D873C /* UserDefault.swift in Sources */,
+				92DBE8BA2ACA98CF007D873C /* CustomChannelEventHandler.swift in Sources */,
+				92DBE8BB2ACA98CF007D873C /* NewJoinerPostComponent.swift in Sources */,
+				92DBE8BC2ACA98CF007D873C /* SwitchTableViewCell.swift in Sources */,
+				92DBE8BD2ACA98CF007D873C /* Binding+Extension.swift in Sources */,
+				92DBE8BE2ACA98CF007D873C /* CustomMessageTextIncomingTableViewCell.swift in Sources */,
+				92DBE8BF2ACA98CF007D873C /* CommunityFeatureViewController.swift in Sources */,
+				92DBE8C02ACA98CF007D873C /* AppManager.swift in Sources */,
+				92DBE8C12ACA98CF007D873C /* CustomFeedEventHandler.swift in Sources */,
+				92DBE8C22ACA98CF007D873C /* Theme.swift in Sources */,
+				92DBE8C32ACA98CF007D873C /* SettingViewController.swift in Sources */,
+				92DBE8C42ACA98CF007D873C /* ThumbsupPostComponent.swift in Sources */,
+				92DBE8C52ACA98CF007D873C /* EndpointsView.swift in Sources */,
+				92DBE8C62ACA98CF007D873C /* EndpointManager.swift in Sources */,
+				92DBE8C72ACA98CF007D873C /* CustomEventHandler.swift in Sources */,
+				92DBE8C82ACA98CF007D873C /* ChatFeatureViewController.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		B78DA47124BED7D300EE902B /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -669,6 +879,62 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
+		92DBE8E72ACA98CF007D873C /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = SampleApp/SampleApp.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = 37Z583JR6K;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/../Distribution",
+				);
+				INFOPLIST_FILE = SampleApp/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 2.21.0;
+				OTHER_SWIFT_FLAGS = "-D DISTRIBUTION";
+				PRODUCT_BUNDLE_IDENTIFIER = com.ekoapp.sample;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_INCLUDE_PATHS = "";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		92DBE8E82ACA98CF007D873C /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = SampleApp/SampleApp.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 37Z583JR6K;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/../Distribution",
+				);
+				INFOPLIST_FILE = SampleApp/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 2.21.0;
+				OTHER_SWIFT_FLAGS = "-D DISTRIBUTION";
+				PRODUCT_BUNDLE_IDENTIFIER = com.ekoapp.sample;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = RELEASE;
+				SWIFT_INCLUDE_PATHS = "";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
 		B78DA49D24BED7DA00EE902B /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -921,6 +1187,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		92DBE8E62ACA98CF007D873C /* Build configuration list for PBXNativeTarget "SampleAppDistribution" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				92DBE8E72ACA98CF007D873C /* Debug */,
+				92DBE8E82ACA98CF007D873C /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		B78DA47024BED7D300EE902B /* Build configuration list for PBXProject "SampleApp" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
@@ -959,10 +1234,34 @@
 		};
 /* End XCConfigurationList section */
 
+/* Begin XCRemoteSwiftPackageReference section */
+		92DBE89F2ACA98BB007D873C /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/firebase/firebase-ios-sdk";
+			requirement = {
+				kind = exactVersion;
+				version = 10.15.0;
+			};
+		};
+		92DBE8A42ACA98CF007D873C /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/firebase/firebase-ios-sdk";
+			requirement = {
+				kind = exactVersion;
+				version = 10.15.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
 /* Begin XCSwiftPackageProductDependency section */
-		92502A452ABC4C99004FA40C /* SharedFrameworks */ = {
+		6815BB312AD022C800E7557C /* SharedFrameworks */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = SharedFrameworks;
+		};
+		92DBE8A32ACA98CF007D873C /* FirebaseCrashlytics */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 92DBE8A42ACA98CF007D873C /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseCrashlytics;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

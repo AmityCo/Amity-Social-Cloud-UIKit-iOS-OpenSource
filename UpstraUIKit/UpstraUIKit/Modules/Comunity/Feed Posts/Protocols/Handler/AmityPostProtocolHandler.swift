@@ -117,8 +117,7 @@ extension AmityPostProtocolHandler: AmityPostDelegate {
                 AmityEventHandler.shared.openRecordedLiveStreamPlayer(
                     from: viewController!,
                     postId: post.postId,
-                    streamId: stream.streamId,
-                    recordedData: stream.recordingData
+                    stream: stream
                 )
             default:
                 AmityEventHandler.shared.openLiveStreamPlayer(

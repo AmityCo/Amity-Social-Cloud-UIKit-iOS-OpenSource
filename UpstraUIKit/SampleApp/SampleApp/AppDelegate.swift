@@ -9,6 +9,9 @@
 import UIKit
 import AmitySDK
 import AmityUIKit
+#if DISTRIBUTION
+import Firebase
+#endif
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -31,6 +34,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             window?.rootViewController = AppManager.shared.startingPage()
             window?.makeKeyAndVisible()
         }
+        
+#if DISTRIBUTION
+        FirebaseApp.configure()
+#endif
         
         return true
     }
