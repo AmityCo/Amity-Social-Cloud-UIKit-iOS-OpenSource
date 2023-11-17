@@ -83,6 +83,7 @@ final class AmityPostTableView: UITableView, UITableViewDelegate, UITableViewDat
         register(cell: AmityPostFooterTableViewCell.self)
         register(cell: AmityPostPreviewCommentTableViewCell.self)
         register(cell: AmityPostTextTableViewCell.self)
+        register(cell: AmityPreviewLinkCell.self)
         register(cell: AmityPostGalleryTableViewCell.self)
         register(cell: AmityPostFileTableViewCell.self)
         register(cell: AmityPostLiveStreamTableViewCell.self)

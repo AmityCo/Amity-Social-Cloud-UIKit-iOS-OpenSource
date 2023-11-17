@@ -336,8 +336,8 @@ extension AmityMessageListScreenViewModel {
             guard let collection = messagesCollection else { return }
             switch collection.loadingStatus {
             case .loaded:
-                if collection.hasPrevious {
-                    collection.previousPage()
+                if collection.hasNext {
+                    collection.nextPage()
                     delegate?.screenViewModelLoadingState(for: .loading)
                 }
             default:

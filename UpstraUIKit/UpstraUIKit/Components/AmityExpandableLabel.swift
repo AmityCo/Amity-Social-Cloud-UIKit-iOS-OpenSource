@@ -247,7 +247,13 @@ extension AmityExpandableLabel {
         guard let touch = touches.first else {
             return
         }
-        if let hyperLink = hyperLinks.first(where: { check(touch: touch, isInRange: $0.range) }) {
+        
+        let isReadMoreTapped: Bool = {
+            guard let collapsedLinkTextRange else { return false }
+            return check(touch: touch, isInRange: collapsedLinkTextRange) && isExpandable && !isExpanded
+        }()
+        
+        if let hyperLink = hyperLinks.first(where: { check(touch: touch, isInRange: $0.range) }), !isReadMoreTapped {
             switch hyperLink.type {
             case .url(let url):
                 UIApplication.shared.open(url, options: [:], completionHandler: nil)
@@ -430,11 +436,8 @@ extension AmityExpandableLabel {
     
     private func check(touch: UITouch, isInRange targetRange: NSRange) -> Bool {
         let touchPoint = touch.location(in: self)
+        let index = characterIndex(at: touchPoint)
         
-        // if text is expandable and it doesn't expand yet, add a reserved range for "...Read More".
-        // other cases mean text is showing at the full size and no need to a range.
-        let unwantedRange = isExpandable && !isExpanded ? truncateText.count + readMoreText.count : 0
-        let index = characterIndex(at: touchPoint) - unwantedRange
         return NSLocationInRange(index, targetRange)
     }
 
@@ -537,72 +540,46 @@ extension String {
 extension UILabel {
 
     func characterIndex(at touchPoint: CGPoint) -> Int {
-        guard let attributedString = attributedText else { return NSNotFound }
-        if !bounds.contains(touchPoint) {
-            return NSNotFound
+        guard let attributedString = attributedText, !attributedString.string.isEmpty else { return NSNotFound }
+        
+        // Create a text container and layout manager
+        let textContainer = NSTextContainer(size: bounds.size)
+        let layoutManager = NSLayoutManager()
+        layoutManager.addTextContainer(textContainer)
+        
+        // Set text container attributes
+        textContainer.lineFragmentPadding = 0
+        textContainer.lineBreakMode = lineBreakMode
+        textContainer.maximumNumberOfLines = numberOfLines
+        
+        // Create a text storage and set the label's attributed text
+        let textStorage = NSTextStorage(attributedString: attributedString)
+        textStorage.addLayoutManager(layoutManager)
+        
+        // Find the character index at the tap location
+        var characterIndex = NSNotFound
+        let adjustedTouchPoint: CGPoint
+        
+        switch textAlignment {
+        case .left:
+            adjustedTouchPoint = touchPoint
+        case .center:
+            adjustedTouchPoint = CGPoint(x: touchPoint.x - (bounds.width - textContainer.size.width) / 2.0, y: touchPoint.y)
+        case .right:
+            adjustedTouchPoint = CGPoint(x: touchPoint.x - (bounds.width - textContainer.size.width), y: touchPoint.y)
+        default:
+            adjustedTouchPoint = touchPoint
         }
-
-        let textRect = self.textRect(forBounds: bounds, limitedToNumberOfLines: numberOfLines)
-        if !textRect.contains(touchPoint) {
-            return NSNotFound
+        
+        // Iterate through the glyphs to find the correct index
+        let glyphIndex = layoutManager.glyphIndex(for: adjustedTouchPoint, in: textContainer)
+        let glyphRect = layoutManager.boundingRect(forGlyphRange: NSRange(location: glyphIndex, length: 1), in: textContainer)
+        
+        if glyphRect.contains(adjustedTouchPoint) {
+            characterIndex = layoutManager.characterIndexForGlyph(at: glyphIndex)
         }
-
-        var point = touchPoint
-        // Offset tap coordinates by textRect origin to make them relative to the origin of frame
-        point = CGPoint(x: point.x - textRect.origin.x, y: point.y - textRect.origin.y)
-        // Convert tap coordinates (start at top left) to CT coordinates (start at bottom left)
-        point = CGPoint(x: point.x, y: textRect.size.height - point.y)
-
-        let framesetter = CTFramesetterCreateWithAttributedString(attributedString)
-        let suggestedSize = CTFramesetterSuggestFrameSizeWithConstraints(framesetter, CFRangeMake(0, attributedString.length), nil, CGSize(width: textRect.width, height: CGFloat.greatestFiniteMagnitude), nil)
-
-        let path = CGMutablePath()
-        path.addRect(CGRect(x: 0, y: 0, width: suggestedSize.width, height: CGFloat(ceilf(Float(suggestedSize.height)))))
-
-        let frame = CTFramesetterCreateFrame(framesetter, CFRangeMake(0, attributedString.length), path, nil)
-        let lines = CTFrameGetLines(frame)
-        let linesCount = numberOfLines > 0 ? min(numberOfLines, CFArrayGetCount(lines)) : CFArrayGetCount(lines)
-        if linesCount == 0 {
-            return NSNotFound
-        }
-
-        var lineOrigins = [CGPoint](repeating: .zero, count: linesCount)
-        CTFrameGetLineOrigins(frame, CFRangeMake(0, linesCount), &lineOrigins)
-
-        for (idx, lineOrigin) in lineOrigins.enumerated() {
-            var lineOrigin = lineOrigin
-            let lineIndex = CFIndex(idx)
-            let line = unsafeBitCast(CFArrayGetValueAtIndex(lines, lineIndex), to: CTLine.self)
-
-            // Get bounding information of line
-            var ascent: CGFloat = 0.0
-            var descent: CGFloat = 0.0
-            var leading: CGFloat = 0.0
-            let width = CGFloat(CTLineGetTypographicBounds(line, &ascent, &descent, &leading))
-            let yMin = CGFloat(floor(lineOrigin.y - descent))
-            let yMax = CGFloat(ceil(lineOrigin.y + ascent))
-
-            // Apply penOffset using flushFactor for horizontal alignment to set lineOrigin since this is the horizontal offset from drawFramesetter
-            let flushFactor = flushFactorForTextAlignment(textAlignment: textAlignment)
-            let penOffset = CGFloat(CTLineGetPenOffsetForFlush(line, flushFactor, Double(textRect.size.width)))
-            lineOrigin.x = penOffset
-
-            // Check if we've already passed the line
-            if point.y > yMax {
-                return NSNotFound
-            }
-            // Check if the point is within this line vertically
-            if point.y >= yMin {
-                // Check if the point is within this line horizontally
-                if point.x >= lineOrigin.x && point.x <= lineOrigin.x + width {
-                    // Convert CT coordinates to line-relative coordinates
-                    let relativePoint = CGPoint(x: point.x - lineOrigin.x, y: point.y - lineOrigin.y)
-                    return Int(CTLineGetStringIndexForPosition(line, relativePoint))
-                }
-            }
-        }
-
-        return NSNotFound
+        
+        return characterIndex
     }
 
     private func flushFactorForTextAlignment(textAlignment: NSTextAlignment) -> CGFloat {

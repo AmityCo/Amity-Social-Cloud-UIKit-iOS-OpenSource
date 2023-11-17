@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="22154" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_12" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="22130"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" rowHeight="300" id="KGk-i7-Jjw" customClass="AmityPreviewLinkCell" customModule="AmityUIKit" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="407" height="300"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" ambiguous="YES" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
+                <rect key="frame" x="0.0" y="0.0" width="407" height="300"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="LM9-yr-anO">
+                        <rect key="frame" x="16" y="8" width="375" height="150"/>
+                        <subviews>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="empty_preview_link_image" translatesAutoresizingMaskIntoConstraints="NO" id="khc-qO-CnJ">
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="91"/>
+                                <accessibility key="accessibilityConfiguration" identifier="previewImage"/>
+                            </imageView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="252" verticalCompressionResistancePriority="751" text="Preview not available" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ye6-ML-gWP">
+                                <rect key="frame" x="12" y="104" width="351" height="13.333333333333329"/>
+                                <fontDescription key="fontDescription" type="system" weight="medium" pointSize="11"/>
+                                <color key="textColor" systemColor="systemGrayColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="252" verticalCompressionResistancePriority="751" text="Please make sure the URL is correct and try again." textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xqR-Eb-5Wn">
+                                <rect key="frame" x="12" y="122.33333333333336" width="353" height="15.666666666666671"/>
+                                <fontDescription key="fontDescription" type="system" weight="medium" pointSize="13"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="xqR-Eb-5Wn" firstAttribute="top" secondItem="Ye6-ML-gWP" secondAttribute="bottom" constant="5" id="6Ov-nL-ack"/>
+                            <constraint firstAttribute="trailing" secondItem="Ye6-ML-gWP" secondAttribute="trailing" constant="12" id="8nM-wZ-gGj"/>
+                            <constraint firstAttribute="height" constant="150" id="CTT-vr-PCb"/>
+                            <constraint firstAttribute="trailing" secondItem="xqR-Eb-5Wn" secondAttribute="trailing" constant="10" id="V65-9k-Yaz"/>
+                            <constraint firstAttribute="bottom" secondItem="xqR-Eb-5Wn" secondAttribute="bottom" constant="12" id="YZa-2J-ij8"/>
+                            <constraint firstAttribute="trailing" secondItem="khc-qO-CnJ" secondAttribute="trailing" id="f6D-lJ-oet"/>
+                            <constraint firstItem="xqR-Eb-5Wn" firstAttribute="leading" secondItem="LM9-yr-anO" secondAttribute="leading" constant="12" id="gA5-2N-OO6"/>
+                            <constraint firstItem="Ye6-ML-gWP" firstAttribute="leading" secondItem="LM9-yr-anO" secondAttribute="leading" constant="12" id="l1b-dA-wQm"/>
+                            <constraint firstItem="khc-qO-CnJ" firstAttribute="leading" secondItem="LM9-yr-anO" secondAttribute="leading" id="pIj-Wc-jSZ"/>
+                            <constraint firstItem="Ye6-ML-gWP" firstAttribute="top" secondItem="khc-qO-CnJ" secondAttribute="bottom" constant="13" id="pVh-oP-Upc"/>
+                            <constraint firstItem="khc-qO-CnJ" firstAttribute="top" secondItem="LM9-yr-anO" secondAttribute="top" id="wps-Kl-dOZ"/>
+                        </constraints>
+                    </view>
+                    <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" ambiguous="YES" hidesWhenStopped="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="H9k-IE-MaQ">
+                        <rect key="frame" x="193.66666666666666" y="140" width="20" height="20"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="20" id="Y9n-YC-JWq"/>
+                            <constraint firstAttribute="height" constant="20" id="cr0-Sn-2PO"/>
+                        </constraints>
+                    </activityIndicatorView>
+                </subviews>
+                <constraints>
+                    <constraint firstItem="H9k-IE-MaQ" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="26V-Jc-Dh6"/>
+                    <constraint firstItem="H9k-IE-MaQ" firstAttribute="centerX" secondItem="H2p-sc-9uM" secondAttribute="centerX" id="FRO-UI-8Is"/>
+                    <constraint firstItem="LM9-yr-anO" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="16" id="RWL-Td-kil"/>
+                    <constraint firstAttribute="bottom" secondItem="LM9-yr-anO" secondAttribute="bottom" constant="8" id="lqC-5k-GPS"/>
+                    <constraint firstItem="LM9-yr-anO" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="8" id="oaf-vS-f2c"/>
+                    <constraint firstAttribute="trailing" secondItem="LM9-yr-anO" secondAttribute="trailing" constant="16" id="xlj-Bl-aIc"/>
+                </constraints>
+            </tableViewCellContentView>
+            <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
+            <connections>
+                <outlet property="activityIndicator" destination="H9k-IE-MaQ" id="yPG-ih-jro"/>
+                <outlet property="previewLinkImage" destination="khc-qO-CnJ" id="hEy-qx-qZb"/>
+                <outlet property="previewLinkTitle" destination="xqR-Eb-5Wn" id="XLe-Ki-eb4"/>
+                <outlet property="previewLinkURL" destination="Ye6-ML-gWP" id="LQg-aE-oRJ"/>
+                <outlet property="previewLinkView" destination="LM9-yr-anO" id="Exd-hF-T8Q"/>
+                <outlet property="previewLinkViewHeightConstraint" destination="CTT-vr-PCb" id="H4b-bE-M32"/>
+            </connections>
+            <point key="canvasLocation" x="43.511450381679388" y="30.281690140845072"/>
+        </tableViewCell>
+    </objects>
+    <resources>
+        <image name="empty_preview_link_image" width="228.66667175292969" height="114.66666412353516"/>
+        <systemColor name="systemGrayColor">
+            <color red="0.5568627451" green="0.5568627451" blue="0.57647058819999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </systemColor>
+    </resources>
+</document>

@@ -221,9 +221,6 @@ public class AmityPostTextEditorViewController: AmityViewController {
             }
         }
         
-        if case .edit(let postId) = postMode {
-            screenViewModel.dataSource.loadPost(for: postId)
-        }
         mentionTableView.delegate = self
         mentionTableView.dataSource = self
         mentionManager?.delegate = self
@@ -734,6 +731,12 @@ extension AmityPostTextEditorViewController: AmityPostTextEditorScreenViewModelD
     }
     
     func screenViewModelDidCreatePost(_ viewModel: AmityPostTextEditorScreenViewModel, post: AmityPost?, error: Error?) {
+        guard error == nil else {
+            AmityAlertController.present(title: nil, message: error?.localizedDescription, actions: [.ok(style: .default, handler: nil)], from: self)
+            postButton.isEnabled = true
+            return
+        }
+        
         if let post = post {
             switch post.getFeedType() {
             case .reviewing:
@@ -755,6 +758,12 @@ extension AmityPostTextEditorViewController: AmityPostTextEditorScreenViewModelD
     }
     
     func screenViewModelDidUpdatePost(_ viewModel: AmityPostTextEditorScreenViewModel, error: Error?) {
+        guard error == nil else {
+            AmityAlertController.present(title: nil, message: error?.localizedDescription, actions: [.ok(style: .default, handler: nil)], from: self)
+            postButton.isEnabled = true
+            return
+        }
+        
         postButton.isEnabled = true
         dismiss(animated: true, completion: nil)
     }

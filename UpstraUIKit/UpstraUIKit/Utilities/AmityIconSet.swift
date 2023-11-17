@@ -131,6 +131,8 @@ public struct AmityIconSet {
     enum Post {
         public static var like = UIImage(named: "icon_post_like", in: AmityUIKitManager.bundle, compatibleWith: nil)
         public static var liked = UIImage(named: "icon_post_liked", in: AmityUIKitManager.bundle, compatibleWith: nil)
+        public static var emptyPreviewLinkImage = UIImage(named: "empty_preview_link_image", in: AmityUIKitManager.bundle, compatibleWith: nil)
+        public static var brokenPreviewLinkImage = UIImage(named: "empty_preview_link_broken_image", in: AmityUIKitManager.bundle, compatibleWith: nil)
     }
     
     enum CommunitySettings {
