@@ -18,15 +18,20 @@ public final class AmityTrendingCommunityViewController: UIViewController, Amity
     
     // MARK: - Properties
     private var screenViewModel: AmityTrendingCommunityScreenViewModelType!
-    private var tableViewHeight: CGFloat = 0 {
-        didSet {
-            heightTableViewContraint.constant = tableViewHeight
-        }
-    }
     
     // MARK: - Callback
     public var selectedCommunityHandler: ((AmityCommunity) -> Void)?
     public var emptyHandler: ((Bool) -> Void)?
+    private var estimatedHeight: CGFloat = 0 // Initial estimated height for 5 trending communities (5 x 56)
+    
+    struct Constant {
+        // Cell height when category label is truncated
+        static let cellHeightLabelTruncated: Double = 70
+        // Cell height when category label is not truncated
+        static let cellHeightLabelNormal: Double = 56
+    }
+    
+    var heightCache: [IndexPath: Double] = [:]
     
     // MARK: - View lifecycle
     override public func viewDidLoad() {
@@ -85,6 +90,7 @@ extension AmityTrendingCommunityViewController: UITableViewDelegate {
 
 // MARK: - UITableViewDataSource
 extension AmityTrendingCommunityViewController: UITableViewDataSource {
+    
     public func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return screenViewModel.dataSource.numberOfTrending()
     }
@@ -95,8 +101,13 @@ extension AmityTrendingCommunityViewController: UITableViewDataSource {
         cell.display(with: community)
         cell.displayNumber(with: indexPath)
         cell.delegate = self
-        let cellHeight = cell.isCategoryLabelTruncated ? 70 : 56
-        tableViewHeight += CGFloat(cellHeight)
+        
+        // Update the height cache. If the number of items becomes larger
+        // in future, optimize this code to not update in case of already
+        // cached height.
+        heightCache[indexPath] = cell.isCategoryLabelTruncated ? Constant.cellHeightLabelTruncated : Constant.cellHeightLabelNormal
+        updateTableViewHeight()
+        
         return cell
     }
 }
@@ -106,15 +117,28 @@ extension AmityTrendingCommunityViewController: AmityTrendingCommunityScreenView
 
     func screenViewModel(_ viewModel: AmityTrendingCommunityScreenViewModelType, didRetrieveTrending trending: [AmityCommunityModel], isEmpty: Bool) {
         emptyHandler?(isEmpty)
-        tableViewHeight = 0
-        heightTableViewContraint.constant = CGFloat(trending.count * 56)
+        
+        // Estimated height of tableview. It can differ based on category label truncation
+        self.estimatedHeight = Double(trending.count) * Constant.cellHeightLabelNormal
+        self.heightTableViewContraint.constant = self.estimatedHeight
+        
         tableView.reloadData()
+    }
+    
+    func updateTableViewHeight() {
+        let finalHeight = heightCache.reduce(0) { partialResult, cacheItem in
+            return partialResult + cacheItem.value
+        }
+        self.heightTableViewContraint.constant = finalHeight
+    }
+    
+    public func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
+        return Constant.cellHeightLabelNormal
     }
     
     func screenViewModel(_ viewModel: AmityTrendingCommunityScreenViewModelType, didFail error: AmityError) {
         emptyHandler?(true)
     }
-
 }
 
 // MARK: - AmityTrendingCommunityTableViewCellDelegate

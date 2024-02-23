@@ -39,18 +39,50 @@ final class AmityUserSettingsScreenViewModel: AmityUserSettingsScreenViewModelTy
 
 // MARK: - Action
 extension AmityUserSettingsScreenViewModel {
+    
     func unfollowUser() {
         followManager.unfollowUser(withUserId: userId) { [weak self] success, response, error in
             guard let strongSelf = self else { return }
             
             if !success {
-                strongSelf.delegate?.screenViewModelDidUnfollowUserFail()
+                strongSelf.delegate?.screenViewModel(strongSelf, didCompleteAction: .unfollow, error: AmityError(error: error))
                 return
             }
             
             strongSelf.followStatus = AmityFollowStatus.none
             strongSelf.createMenuViewModel()
-            strongSelf.delegate?.screenViewModelDidUnfollowUser()
+        }
+    }
+    
+    @MainActor
+    func blockUser() {
+        Task {
+            do {
+                try await followManager.blockUser(userId: userId)
+                
+                self.followStatus = .blocked
+                self.createMenuViewModel()
+                
+                self.delegate?.screenViewModel(self, didCompleteAction: .blockUser, error: nil)
+            } catch let error {
+                self.delegate?.screenViewModel(self, didCompleteAction: .blockUser, error: AmityError(error: error))
+            }
+        }
+    }
+    
+    @MainActor
+    func unblockUser() {
+        Task {
+            do {
+                try await followManager.unblockUser(userId: userId)
+                
+                self.followStatus = AmityFollowStatus.none
+                self.createMenuViewModel()
+                
+                self.delegate?.screenViewModel(self, didCompleteAction: .unblockUser, error: nil)
+            } catch let error {
+                self.delegate?.screenViewModel(self, didCompleteAction: .unblockUser, error: AmityError(error: error))
+            }
         }
     }
     
@@ -60,12 +92,12 @@ extension AmityUserSettingsScreenViewModel {
         flagger?.flag { [weak self] (success, error) in
             guard let strongSelf = self else { return }
             
-            if let error = error {
-                strongSelf.delegate?.screenViewModel(strongSelf, failure: AmityError(error: error) ?? .unknown)
+            if let error {
+                strongSelf.delegate?.screenViewModel(strongSelf, didCompleteAction: .report, error: AmityError(error: error))
             } else {
                 strongSelf.isFlaggedByMe = !(strongSelf.isFlaggedByMe ?? false)
                 strongSelf.createMenuViewModel()
-                strongSelf.delegate?.screenViewModelDidFlagUserSuccess()
+                strongSelf.delegate?.screenViewModel(strongSelf, didCompleteAction: .report, error: nil)
             }
         }
     }
@@ -77,11 +109,12 @@ extension AmityUserSettingsScreenViewModel {
             guard let strongSelf = self else { return }
             
             if let error = error {
-                strongSelf.delegate?.screenViewModel(strongSelf, failure: AmityError(error: error) ?? .unknown)
+                strongSelf.delegate?.screenViewModel(strongSelf, didCompleteAction: .unreport, error: AmityError(error: error))
             } else {
                 self?.isFlaggedByMe = !(self?.isFlaggedByMe ?? false)
                 self?.createMenuViewModel()
-                strongSelf.delegate?.screenViewModelDidUnflagUserSuccess()
+                
+                strongSelf.delegate?.screenViewModel(strongSelf, didCompleteAction: .unreport, error: nil)
             }
         }
     }
@@ -96,14 +129,30 @@ extension AmityUserSettingsScreenViewModel {
                 return
             }
             
-            if let user = user.object {
-                let amityUser = AmityUserModel(user: user)
+            if let user = user.snapshot {
                 strongSelf.user = user
-                strongSelf.delegate?.screenViewModel(strongSelf, didGetUserSuccess: amityUser)
                 strongSelf.retrieveSettingsMenu()
             }
             
             strongSelf.userToken?.invalidate()
+        }
+    }
+    
+    @MainActor
+    func performAction(settingsItem: AmityUserSettingsItem) {
+        switch settingsItem {
+        case .unfollow:
+            unfollowUser()
+        case .report:
+            reportUser()
+        case .blockUser:
+            blockUser()
+        case .unblockUser:
+            unblockUser()
+        case .unreport:
+            unreportUser()
+        default:
+            break
         }
     }
 }
@@ -121,7 +170,7 @@ private extension AmityUserSettingsScreenViewModel {
     func getFollowInfo(completion: (() -> Void)?) {
         followToken = followManager.getUserFollowInfo(withUserId: userId).observeOnce {
             [weak self] liveObject, error in
-            guard let result = liveObject.object else { return }
+            guard let result = liveObject.snapshot else { return }
             
             self?.followStatus = result.status
             completion?()
@@ -131,10 +180,16 @@ private extension AmityUserSettingsScreenViewModel {
     
     func createMenuViewModel() {
         menuViewModel = AmityUserSettingsCreateMenuViewModel()
-        menuViewModel?.createSettingsItems(shouldNotificationItemShow: false, isNotificationEnabled: false, isOwner: userId == AmityUIKitManagerInternal.shared.client.currentUserId, isReported: isFlaggedByMe ?? false, isFollowing: followStatus == .accepted, { [weak self] (items) in
-            guard let strongSelf = self else { return }
-            strongSelf.delegate?.screenViewModel(strongSelf, didGetSettingMenu: items)
-        })
+        
+        let settingsConfiguration = UserSettingsConfiguration(
+            isOwner: userId == AmityUIKitManagerInternal.shared.client.currentUserId,
+            isReported: isFlaggedByMe ?? false,
+            isFollowing: followStatus == .accepted,
+            isBlocked: followStatus == .blocked
+        )
+        
+        guard let settingsMenu = menuViewModel?.createSettingItems(config: settingsConfiguration) else { return }
+        self.delegate?.screenViewModel(self, didGetSettingMenu: settingsMenu)
     }
     
     func retrieveSettingsMenu() {

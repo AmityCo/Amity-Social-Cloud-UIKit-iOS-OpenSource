@@ -18,33 +18,38 @@ final class AmityCommunityRecommendedController: AmityCommunityRecommendedContro
     private let repository = AmityCommunityRepository(client: AmityUIKitManagerInternal.shared.client)
     private var collection: AmityCollection<AmityCommunity>?
     private var token: AmityNotificationToken?
-    private let maxRecommended: UInt = 4
+    private let maxRecommended: Int = 4
     
     func retrieve(_ completion: ((Result<[AmityCommunityModel], AmityError>) -> Void)?) {
+        // Reset previous collection
+        token?.invalidate()
+        token = nil
+        
         collection = repository.getRecommendedCommunities()
         token = collection?.observe { [weak self] (collection, change, error) in
+            guard let self else { return }
+            
+            if let error {
+                completion?(.failure(AmityError(error: error) ?? .unknown))
+                return
+            }
+            
             if collection.dataStatus == .fresh {
-                guard let strongSelf = self else { return }
                 if let error = AmityError(error: error) {
                     completion?(.failure(error))
                 } else {
-                    completion?(.success(strongSelf.prepareDataSource()))
+                    let communities = processRecommendedCommunities(limit: self.maxRecommended)
+                    completion?(.success(communities))
                 }
-            } else {
-                completion?(.failure(AmityError(error: error) ?? .unknown))
             }
         }
     }
     
-    private func prepareDataSource() -> [AmityCommunityModel] {
-        guard let collection = collection else { return [] }
-        var community: [AmityCommunityModel] = []
-        for index in 0..<min(collection.count(), Int(maxRecommended)) {
-            guard let object = collection.object(at: index) else { continue }
-            let model = AmityCommunityModel(object: object)
-            community.append(model)
-        }
-        return community
+    private func processRecommendedCommunities(limit: Int) -> [AmityCommunityModel] {
+        guard let collection else { return [] }
+        
+        let limitedItems = collection.snapshots.prefix(limit)
+        let communities = limitedItems.map { AmityCommunityModel(object: $0) }
+        return communities
     }
-    
 }

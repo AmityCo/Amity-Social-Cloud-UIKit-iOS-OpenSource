@@ -157,10 +157,12 @@ public struct AmityIconSet {
         public static var iconItemUnfollowUser = UIImage(named: "icon_item_unfollow_user", in: AmityUIKitManager.bundle, compatibleWith: nil)
         public static var iconItemReportUser = UIImage(named: "icon_item_report_user", in: AmityUIKitManager.bundle, compatibleWith: nil)
         public static var iconItemEditProfile = UIImage(named: "icon_item_edit_profile", in: AmityUIKitManager.bundle, compatibleWith: nil)
+        public static var iconItemBlockUser = UIImage(named: "icon_item_block_unblock", in: AmityUIKitManager.bundle, compatibleWith: nil)
     }
     
     enum Follow {
         public static var iconFollowPendingRequest = UIImage(named: "icon_follow_pending_request", in: AmityUIKitManager.bundle, compatibleWith: nil)
+        public static var iconUnblockUser = UIImage(named: "icon_user_unblock_button", in: AmityUIKitManager.bundle, compatibleWith: nil)
     }
     
     enum CreatePost {

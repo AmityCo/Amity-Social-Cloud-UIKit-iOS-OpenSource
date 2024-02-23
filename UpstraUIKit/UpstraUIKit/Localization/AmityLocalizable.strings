@@ -178,6 +178,7 @@
 "user_details_pending_requests" = "Pending requests";
 "user_details_pending_requests_description" = "Your requests are waiting for review";
 "user_details_unable_to_follow" = "Unable to follow %@";
+"user_details_button_unblock" = "Unblock";
 
 // MARK: - Timeline
 "timeline_title" = "Timeline";
@@ -293,12 +294,18 @@
 "user_settings_item_unfollow" = "Unfollow";
 "user_settings_item_report_user" = "Report user";
 "user_settings_item_unreport_user" = "Unreport user";
-"user_settings_item_edit_profile" = "Edite profile";
+"user_settings_item_edit_profile" = "Edit profile";
 "user_settings_unfollow_message" = "You’ll have to send a request again to follow %@. Continue?";
 "user_settings_unfollow_fail_title" = "Unable to unfollow %@";
 "user_settings_remove_user" = "Remove user";
 "user_settings_remove_user_title" = "Remove %@ from follwers?";
 "user_settings_remove_user_description" = "We won’t notify %@ that they’ve been remove from your followers";
+"user_settings_item_block_user" = "Block user";
+"user_settings_item_unblock_user" = "Unblock user";
+"user_settings_block_user_succes" = "User has been blocked";
+"user_settings_unblock_user_success" = "User is now unblocked";
+"user_settings_block_user_failed" = "Unable to block user %@";
+"user_settings_unblock_user_failed" = "Unable to unblock user %@";
 
 
 // MARK: - Not support role

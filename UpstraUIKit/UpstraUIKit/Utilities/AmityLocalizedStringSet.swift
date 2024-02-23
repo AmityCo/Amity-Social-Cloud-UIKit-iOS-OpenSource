@@ -191,6 +191,7 @@ public struct AmityLocalizedStringSet {
     static let userDetailsPendingRequests = "user_details_pending_requests"
     static let userDetailsPendingRequestsDescription = "user_details_pending_requests_description"
     static let userDetailsUnableToFollow = "user_details_unable_to_follow"
+    static let userDetailsButtonUnblock = "user_details_button_unblock"
     
     // MARK: - Timeline
     public static let timelineTitle = "timeline_title"
@@ -316,10 +317,17 @@ public struct AmityLocalizedStringSet {
         static let itemReportUser = "user_settings_item_report_user"
         static let itemUnreportUser = "user_settings_item_unreport_user"
         static let itemEditProfile = "user_settings_item_edit_profile"
+        static let itemBlockUser = "user_settings_item_block_user"
+        static let itemUnblockUser = "user_settings_item_unblock_user"
         
         enum UserSettingsMessages {
             static let unfollowMessage = "user_settings_unfollow_message"
             static let unfollowFailTitle = "user_settings_unfollow_fail_title"
+            
+            static let blockUserSuccess = "user_settings_block_user_succes"
+            static let unblockUserSuccess = "user_settings_unblock_user_success"
+            static let blockUserFailedTitle = "user_settings_block_user_failed"
+            static let unblockUserFailedTitle = "user_settings_unblock_user_failed"
         }
         
         enum UserSettingsRemove {
@@ -327,6 +335,8 @@ public struct AmityLocalizedStringSet {
             static let removeUserTitle = "user_settings_remove_user_title"
             static let removeUserDescription = "user_settings_remove_user_description"
         }
+        
+        
     }
     
     // MARK: - Not support role

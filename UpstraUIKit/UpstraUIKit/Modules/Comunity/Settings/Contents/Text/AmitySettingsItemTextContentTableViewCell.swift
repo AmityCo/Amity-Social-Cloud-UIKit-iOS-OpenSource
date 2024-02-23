@@ -15,8 +15,10 @@ protocol AmitySettingsItemTextContentCellProtocol {
 final class AmitySettingsItemTextContentTableViewCell: UITableViewCell, Nibbable, AmitySettingsItemTextContentCellProtocol {
 
     // MARK: - IBOutlet Properties
+    @IBOutlet weak var labelStackView: UIStackView!
     @IBOutlet private var iconView: AmityIconView!
     @IBOutlet private var titleLabel: AmityLabel!
+    @IBOutlet weak var mainStackView: UIStackView!
     @IBOutlet private var descriptionLabel: AmityLabel!
     
     override func awakeFromNib() {
@@ -30,6 +32,12 @@ final class AmitySettingsItemTextContentTableViewCell: UITableViewCell, Nibbable
         iconView.isHidden = false
         titleLabel.text = AmityLocalizedStringSet.titlePlaceholder
         descriptionLabel.text = AmityLocalizedStringSet.descriptionPlaceholder
+        
+        mainStackView.axis = .horizontal
+        labelStackView.axis = .vertical
+        
+        mainStackView.alignment = .center
+        labelStackView.alignment = .top
     }
 
     func display(content: AmitySettingsItem.TextContent) {
@@ -57,6 +65,5 @@ final class AmitySettingsItemTextContentTableViewCell: UITableViewCell, Nibbable
         descriptionLabel.font = AmityFontSet.caption
         descriptionLabel.textColor = AmityColorSet.base.blend(.shade1)
         descriptionLabel.numberOfLines = 0
-        
     }
 }

@@ -222,6 +222,10 @@ class AmityUserProfileHeaderViewController: AmityViewController, AmityRefreshabl
     }
     
     private func updateFollowButton(with status: AmityFollowStatus) {
+        
+        // Hide message button
+        messageButton.isHidden = status == .blocked
+        
         switch status {
         case .accepted:
             followButton.isHidden = true
@@ -234,7 +238,14 @@ class AmityUserProfileHeaderViewController: AmityViewController, AmityRefreshabl
             followButton.layer.borderWidth = 1
             followButton.tintColor = AmityColorSet.secondary
         case .blocked:
-            followButton.isHidden = true
+            // Change follow button to unblock
+            followButton.isHidden = false
+            followButton.setTitle(AmityLocalizedStringSet.userDetailsButtonUnblock.localizedString, for: .normal)
+            followButton.setImage(AmityIconSet.Follow.iconUnblockUser, position: .left)
+            followButton.backgroundColor = .white
+            followButton.layer.borderColor = AmityColorSet.base.blend(.shade3).cgColor
+            followButton.layer.borderWidth = 1
+            followButton.tintColor = AmityColorSet.secondary
         case .none:
             followButton.isHidden = false
             followButton.setTitle(AmityLocalizedStringSet.userDetailFollowButtonFollow.localizedString, for: .normal)
@@ -262,6 +273,8 @@ class AmityUserProfileHeaderViewController: AmityViewController, AmityRefreshabl
     @IBAction func followAction(_ sender: UIButton) {
         let status = screenViewModel.dataSource.followStatus ?? .none
         switch status {
+        case .blocked:
+            screenViewModel.action.unblockUser()
         case .pending:
             unfollow()
         case .none:
@@ -306,7 +319,35 @@ private extension AmityUserProfileHeaderViewController {
 }
 
 extension AmityUserProfileHeaderViewController : AmityUserProfileHeaderScreenViewModelDelegate {
-    func screenViewModel(_ viewModel: AmityUserProfileHeaderScreenViewModelType, failure error: AmityError) {
+    
+    func screenViewModel(_ viewModel: AmityUserProfileHeaderScreenViewModelType, didUnblockUser error: AmityError?) {
+        if let _ = error {
+            let failureMessage = AmityLocalizedStringSet.UserSettings.UserSettingsMessages.unblockUserFailedTitle.localizedString
+            AmityHUD.show(.error(message: failureMessage))
+        } else {
+            updateFollowButton(with: .none)
+        }
+    }
+    
+    func screenViewModel(_ viewModel: AmityUserProfileHeaderScreenViewModelType, didUnfollowUser status: AmityFollowStatus, error: AmityError?) {
+        updateFollowButton(with: status)
+    }
+    
+    func screenViewModel(_ viewModel: AmityUserProfileHeaderScreenViewModelType, didFollowUser status: AmityFollowStatus, error: AmityError?) {
+        updateFollowButton(with: status)
+
+        // Incase of follow error, we show alert
+        if let _ = error {
+            let userName = screenViewModel.dataSource.user?.displayName ?? ""
+            let title = String.localizedStringWithFormat(AmityLocalizedStringSet.userDetailsUnableToFollow.localizedString, userName)
+            let alert = UIAlertController(title: title, message: AmityLocalizedStringSet.somethingWentWrongWithTryAgain.localizedString, preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: AmityLocalizedStringSet.General.ok.localizedString, style: .cancel, handler: nil))
+            
+            present(alert, animated: true, completion: nil)
+        }
+    }
+    
+    func screenViewModel(_ viewModel: AmityUserProfileHeaderScreenViewModelType, didReceiveError error: AmityError) {
     }
     
     func screenViewModel(_ viewModel: AmityUserProfileHeaderScreenViewModelType, didGetUser user: AmityUserModel) {
@@ -328,26 +369,5 @@ extension AmityUserProfileHeaderViewController : AmityUserProfileHeaderScreenVie
     
     func screenViewModel(_ viewModel: AmityUserProfileHeaderScreenViewModelType, didCreateChannel channel: AmityChannel) {
         AmityChannelEventHandler.shared.channelDidTap(from: self, channelId: channel.channelId, subChannelId: channel.defaultSubChannelId)
-    }
-    
-    func screenViewModel(_ viewModel: AmityUserProfileHeaderScreenViewModelType, didFollowSuccess status: AmityFollowStatus) {
-        updateFollowButton(with: status)
-    }
-    
-    func screenViewModel(_ viewModel: AmityUserProfileHeaderScreenViewModelType, didUnfollowSuccess status: AmityFollowStatus) {
-        updateFollowButton(with: status)
-    }
-    
-    func screenViewModelDidFollowFail() {
-        updateFollowButton(with: .none)
-        let userName = screenViewModel.dataSource.user?.displayName ?? ""
-        let title = String.localizedStringWithFormat(AmityLocalizedStringSet.userDetailsUnableToFollow.localizedString, userName)
-        let alert = UIAlertController(title: title, message: AmityLocalizedStringSet.somethingWentWrongWithTryAgain.localizedString, preferredStyle: .alert)
-        alert.addAction(UIAlertAction(title: AmityLocalizedStringSet.General.ok.localizedString, style: .cancel, handler: nil))
-        present(alert, animated: true, completion: nil)
-    }
-    
-    func screenViewModelDidUnfollowFail() {
-        updateFollowButton(with: .pending)
     }
 }

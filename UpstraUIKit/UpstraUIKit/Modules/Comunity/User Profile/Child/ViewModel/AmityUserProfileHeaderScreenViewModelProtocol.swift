@@ -10,14 +10,13 @@ import UIKit
 import AmitySDK
 
 protocol AmityUserProfileHeaderScreenViewModelDelegate: AnyObject {
-    func screenViewModelDidFollowFail()
-    func screenViewModelDidUnfollowFail()
     func screenViewModel(_ viewModel: AmityUserProfileHeaderScreenViewModelType, didGetUser user: AmityUserModel)
     func screenViewModel(_ viewModel: AmityUserProfileHeaderScreenViewModelType, didGetFollowInfo followInfo: AmityFollowInfo)
     func screenViewModel(_ viewModel: AmityUserProfileHeaderScreenViewModelType, didCreateChannel channel: AmityChannel)
-    func screenViewModel(_ viewModel: AmityUserProfileHeaderScreenViewModelType, didFollowSuccess status: AmityFollowStatus)
-    func screenViewModel(_ viewModel: AmityUserProfileHeaderScreenViewModelType, didUnfollowSuccess status: AmityFollowStatus)
-    func screenViewModel(_ viewModel: AmityUserProfileHeaderScreenViewModelType, failure error: AmityError)
+    func screenViewModel(_ viewModel: AmityUserProfileHeaderScreenViewModelType, didReceiveError error: AmityError)
+    func screenViewModel(_ viewModel: AmityUserProfileHeaderScreenViewModelType, didFollowUser status: AmityFollowStatus, error: AmityError?)
+    func screenViewModel(_ viewModel: AmityUserProfileHeaderScreenViewModelType, didUnfollowUser status: AmityFollowStatus, error: AmityError?)
+    func screenViewModel(_ viewModel: AmityUserProfileHeaderScreenViewModelType, didUnblockUser error: AmityError?)
 }
 
 protocol AmityUserProfileHeaderScreenViewModelDataSource {
@@ -33,6 +32,7 @@ protocol AmityUserProfileHeaderScreenViewModelAction {
     func createChannel()
     func follow()
     func unfollow()
+    func unblockUser()
 }
 
 protocol AmityUserProfileHeaderScreenViewModelType: AmityUserProfileHeaderScreenViewModelAction, AmityUserProfileHeaderScreenViewModelDataSource {

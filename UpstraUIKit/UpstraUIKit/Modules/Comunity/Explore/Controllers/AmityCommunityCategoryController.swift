@@ -18,33 +18,36 @@ final class AmityCommunityCategoryController: AmityCommunityCategoryControllerPr
     private let repository = AmityCommunityRepository(client: AmityUIKitManagerInternal.shared.client)
     private var collection: AmityCollection<AmityCommunityCategory>?
     private var token: AmityNotificationToken?
-    private let maxCategories: UInt = 8
+    private let maxCategories: Int = 8
     
     func retrieve(_ completion: ((Result<[AmityCommunityCategoryModel], AmityError>) -> Void)?) {
+        token?.invalidate()
+        token = nil
+        
         collection = repository.getCategories(sortBy: .displayName, includeDeleted: false)
         token = collection?.observe { [weak self] (collection, change, error) in
+            guard let self else { return }
+            
+            if let error {
+                completion?(.failure(AmityError(error: error) ?? .unknown))
+                return
+            }
+            
             if collection.dataStatus == .fresh {
-                guard let strongSelf = self else { return }
                 if let error = AmityError(error: error) {
                     completion?(.failure(error))
                 } else {
-                    completion?(.success(strongSelf.prepareDataSource()))
+                    completion?(.success(self.processCategories(limit: self.maxCategories)))
                 }
-            } else {
-                completion?(.failure(AmityError(error: error) ?? .unknown))
             }
         }
     }
     
-    private func prepareDataSource() -> [AmityCommunityCategoryModel] {
-        guard let collection = collection else { return [] }
-        var category: [AmityCommunityCategoryModel] = []
-        for index in 0..<min(collection.count(), Int(maxCategories)) {
-            guard let object = collection.object(at: index) else { continue }
-            let model = AmityCommunityCategoryModel(object: object)
-            category.append(model)
-        }
-        return category
+    private func processCategories(limit: Int) -> [AmityCommunityCategoryModel] {
+        guard let collection else { return [] }
+        
+        let limitedItems = collection.snapshots.prefix(limit)
+        let categories = limitedItems.map { AmityCommunityCategoryModel(object: $0) }
+        return categories
     }
-
 }

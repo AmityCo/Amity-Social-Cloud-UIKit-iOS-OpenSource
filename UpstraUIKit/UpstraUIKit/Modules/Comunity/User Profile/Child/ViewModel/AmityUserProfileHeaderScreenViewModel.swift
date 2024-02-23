@@ -51,7 +51,7 @@ extension AmityUserProfileHeaderScreenViewModel {
                 }
                 strongSelf.userToken?.invalidate()
             case .error:
-                strongSelf.delegate?.screenViewModel(strongSelf, failure: AmityError(error: error) ?? .unknown)
+                strongSelf.delegate?.screenViewModel(strongSelf, didReceiveError: AmityError(error: error) ?? .unknown)
                 strongSelf.userToken?.invalidate()
             case .local:
                 if let user = object.object {
@@ -75,7 +75,7 @@ extension AmityUserProfileHeaderScreenViewModel {
                 if let object = liveObject.object {
                     strongSelf.handleFollowInfo(followInfo: AmityFollowInfo(followInfo: object))
                 } else {
-                    strongSelf.delegate?.screenViewModel(strongSelf, failure: AmityError(error: error) ?? .unknown)
+                    strongSelf.delegate?.screenViewModel(strongSelf, didReceiveError: AmityError(error: error) ?? .unknown)
                 }
             }
             
@@ -89,7 +89,7 @@ extension AmityUserProfileHeaderScreenViewModel {
             if let result = liveObject.object {
                 strongSelf.handleFollowInfo(followInfo: AmityFollowInfo(followInfo: result))
             } else {
-                strongSelf.delegate?.screenViewModel(strongSelf, failure: AmityError(error: error) ?? .unknown)
+                strongSelf.delegate?.screenViewModel(strongSelf, didReceiveError: AmityError(error: error) ?? .unknown)
             }
         }
     }
@@ -113,9 +113,9 @@ extension AmityUserProfileHeaderScreenViewModel {
             
             if success, let result = result {
                 strongSelf.followStatus = result.status
-                strongSelf.delegate?.screenViewModel(strongSelf, didFollowSuccess: result.status)
+                strongSelf.delegate?.screenViewModel(strongSelf, didFollowUser: result.status, error: nil)
             } else {
-                strongSelf.delegate?.screenViewModelDidFollowFail()
+                strongSelf.delegate?.screenViewModel(strongSelf, didFollowUser: .none, error: AmityError(error: error))
             }
         }
     }
@@ -126,9 +126,23 @@ extension AmityUserProfileHeaderScreenViewModel {
             
             if success, let result = result {
                 strongSelf.followStatus = result.status
-                strongSelf.delegate?.screenViewModel(strongSelf, didUnfollowSuccess: result.status)
+                strongSelf.delegate?.screenViewModel(strongSelf, didUnfollowUser: result.status, error: nil)
             } else {
-                strongSelf.delegate?.screenViewModelDidUnfollowFail()
+                strongSelf.delegate?.screenViewModel(strongSelf, didUnfollowUser: .pending, error: AmityError(error: error))
+            }
+        }
+    }
+    
+    @MainActor
+    func unblockUser() {
+        Task {
+            do {
+                try await followManager.unblockUser(userId: userId)
+                
+                self.followStatus = AmityFollowStatus.none
+                self.delegate?.screenViewModel(self, didUnblockUser: nil)
+            } catch let error {
+                self.delegate?.screenViewModel(self, didUnblockUser: AmityError(error: error))
             }
         }
     }

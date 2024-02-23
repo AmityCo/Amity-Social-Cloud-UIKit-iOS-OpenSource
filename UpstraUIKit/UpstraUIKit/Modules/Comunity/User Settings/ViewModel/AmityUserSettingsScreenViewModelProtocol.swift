@@ -10,13 +10,9 @@ import UIKit
 import AmitySDK
 
 protocol AmityUserSettingsScreenViewModelDelegate: AnyObject {
-    func screenViewModelDidUnfollowUser()
-    func screenViewModelDidUnfollowUserFail()
-    func screenViewModelDidFlagUserSuccess()
-    func screenViewModelDidUnflagUserSuccess()
     func screenViewModel(_ viewModel: AmityUserSettingsScreenViewModelType, didGetSettingMenu settings: [AmitySettingsItem])
-    func screenViewModel(_ viewModel: AmityUserSettingsScreenViewModelType, didGetUserSuccess user: AmityUserModel)
     func screenViewModel(_ viewModel: AmityUserSettingsScreenViewModelType, failure error: AmityError)
+    func screenViewModel(_ viewModel: AmityUserSettingsScreenViewModelType, didCompleteAction action: AmityUserSettingsItem, error: AmityError?)
 }
 
 protocol AmityUserSettingsScreenViewModelDataSource {
@@ -25,9 +21,7 @@ protocol AmityUserSettingsScreenViewModelDataSource {
 }
 
 protocol AmityUserSettingsScreenViewModelAction {
-    func unfollowUser()
-    func reportUser()
-    func unreportUser()
+    func performAction(settingsItem: AmityUserSettingsItem)
     func fetchUserSettings()
 }
 

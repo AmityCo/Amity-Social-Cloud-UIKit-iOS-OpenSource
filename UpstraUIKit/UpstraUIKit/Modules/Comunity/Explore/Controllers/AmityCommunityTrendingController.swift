@@ -18,33 +18,40 @@ final class AmityCommunityTrendingController: AmityCommunityTrendingControllerPr
     private let repository = AmityCommunityRepository(client: AmityUIKitManagerInternal.shared.client)
     private var collection: AmityCollection<AmityCommunity>?
     private var token: AmityNotificationToken?
-    private let maxTrending: UInt = 5
+    private let maxTrending: Int = 5
     
     func retrieve(_ completion: ((Result<[AmityCommunityModel], AmityError>) -> Void)?) {
+        // Reset previous collection
+        token?.invalidate()
+        token = nil
+        
         collection = repository.getTrendingCommunities()
         token = collection?.observe { [weak self] (collection, change, error) in
+            guard let self else { return }
+            
+            // In case of error, show error
+            if let error {
+                completion?(.failure(AmityError(error: error) ?? .unknown))
+                return
+            }
+            
+            // In case of fetching fresh data, show that data.
             if collection.dataStatus == .fresh {
-                guard let strongSelf = self else { return }
                 if let error = AmityError(error: error) {
                     completion?(.failure(error))
                 } else {
-                    completion?(.success(strongSelf.prepareDataSource()))
+                    let communities = processTrendingCommunities(limit: self.maxTrending)
+                    completion?(.success(communities))
                 }
-            } else {
-                completion?(.failure(AmityError(error: error) ?? .unknown))
             }
         }
     }
     
-    private func prepareDataSource() -> [AmityCommunityModel] {
-        guard let collection = collection else { return [] }
-        var community: [AmityCommunityModel] = []
-        for index in 0..<min(collection.count(), Int(maxTrending)) {
-            guard let object = collection.object(at: index) else { continue }
-            let model = AmityCommunityModel(object: object)
-            community.append(model)
-        }
-        return community
+    private func processTrendingCommunities(limit: Int) -> [AmityCommunityModel] {
+        guard let collection else { return [] }
+        
+        let firstFiveItems = collection.snapshots.prefix(limit)
+        let communities = firstFiveItems.map { AmityCommunityModel(object: $0) }
+        return communities
     }
-
 }

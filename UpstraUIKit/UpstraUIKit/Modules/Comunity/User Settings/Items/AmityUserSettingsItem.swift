@@ -15,6 +15,8 @@ enum AmityUserSettingsItem: String {
     case unreport
     case basicInfo
     case editProfile
+    case blockUser
+    case unblockUser
     
     var identifier: String {
         return self.rawValue
@@ -34,6 +36,10 @@ enum AmityUserSettingsItem: String {
             return AmityLocalizedStringSet.UserSettings.itemHeaderBasicInfo.localizedString
         case .editProfile:
             return AmityLocalizedStringSet.UserSettings.itemEditProfile.localizedString
+        case .blockUser:
+            return AmityLocalizedStringSet.UserSettings.itemBlockUser.localizedString
+        case .unblockUser:
+            return AmityLocalizedStringSet.UserSettings.itemUnblockUser.localizedString
         }
     }
     
@@ -45,6 +51,8 @@ enum AmityUserSettingsItem: String {
             return AmityIconSet.UserSettings.iconItemReportUser
         case .editProfile:
             return AmityIconSet.UserSettings.iconItemEditProfile
+        case .blockUser, .unblockUser:
+            return AmityIconSet.UserSettings.iconItemBlockUser
         case .basicInfo, .manage:
             return nil
         }

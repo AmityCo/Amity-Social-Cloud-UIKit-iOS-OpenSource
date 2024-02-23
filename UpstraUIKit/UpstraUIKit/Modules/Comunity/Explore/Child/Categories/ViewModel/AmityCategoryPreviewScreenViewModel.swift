@@ -42,15 +42,16 @@ extension AmityCategoryPreviewScreenViewModel {
 extension AmityCategoryPreviewScreenViewModel {
 
     func retrieveCategory() {
-        categoryController.retrieve { [weak self] (result) in
-            self?.debouncer.run {
-                guard let strongSelf = self else { return }
+        self.debouncer.run { [weak self] in
+            guard let self else { return }
+            
+            self.categoryController.retrieve { result in
                 switch result {
                 case .success(let category):
-                    strongSelf.categories = category
-                    strongSelf.delegate?.screenViewModel(strongSelf, didRetrieveCategory: category, isEmpty: category.isEmpty)
+                    self.categories = category
+                    self.delegate?.screenViewModel(self, didRetrieveCategory: category, isEmpty: category.isEmpty)
                 case .failure(let error):
-                    strongSelf.delegate?.screenViewModel(strongSelf, didFail: error)
+                    self.delegate?.screenViewModel(self, didFail: error)
                 }
             }
         }

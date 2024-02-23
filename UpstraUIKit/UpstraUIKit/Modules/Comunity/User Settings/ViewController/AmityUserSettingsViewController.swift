@@ -9,7 +9,7 @@
 import UIKit
 
 final class AmityUserSettingsViewController: AmityViewController {
-
+    
     // MARK: - IBOutlet Properties
     @IBOutlet weak var settingTableView: AmitySettingsItemTableView!
     
@@ -62,13 +62,11 @@ final class AmityUserSettingsViewController: AmityViewController {
                     actions: [.cancel(handler: nil),
                               .custom(title: AmityLocalizedStringSet.UserSettings.itemUnfollow.localizedString,
                                       style: .destructive, handler: { [weak self] in
-                                        self?.screenViewModel.action.unfollowUser()
+                                          self?.screenViewModel.performAction(settingsItem: .unfollow)
                                       })],
                     from: self)
-            case .report:
-                screenViewModel.action.reportUser()
-            case .unreport:
-                screenViewModel.action.unreportUser()
+            case .blockUser, .unblockUser, .report, .unreport:
+                screenViewModel.action.performAction(settingsItem: item)
             case .basicInfo, .manage, .editProfile:
                 break
             }
@@ -77,7 +75,7 @@ final class AmityUserSettingsViewController: AmityViewController {
             switch item {
             case .editProfile:
                 AmityEventHandler.shared.editUserDidTap(from: self, userId: screenViewModel.dataSource.userId)
-            case .basicInfo, .manage, .report, .unfollow, .unreport:
+            case .basicInfo, .manage, .report, .unfollow, .unreport, .blockUser, .unblockUser:
                 break
             }
         default: break
@@ -86,30 +84,17 @@ final class AmityUserSettingsViewController: AmityViewController {
 }
 
 extension AmityUserSettingsViewController: AmityUserSettingsScreenViewModelDelegate {
-    func screenViewModelDidFlagUserSuccess() {
-        AmityHUD.show(.success(message: AmityLocalizedStringSet.HUD.reportSent.localizedString))
-    }
-    
-    func screenViewModelDidUnflagUserSuccess() {
-        AmityHUD.show(.success(message: AmityLocalizedStringSet.HUD.unreportSent.localizedString))
-    }
     
     func screenViewModel(_ viewModel: AmityUserSettingsScreenViewModelType, didGetSettingMenu settings: [AmitySettingsItem]) {
         settingTableView.settingsItems = settings
-    }
-    
-    func screenViewModel(_ viewModel: AmityUserSettingsScreenViewModelType, didGetUserSuccess user: AmityUserModel) {
-    }
-    
-    func screenViewModelDidUnfollowUser() {
     }
     
     func screenViewModelDidUnfollowUserFail() {
         let userName = screenViewModel?.dataSource.user?.displayName ?? ""
         let title = String.localizedStringWithFormat(AmityLocalizedStringSet.UserSettings.UserSettingsMessages.unfollowFailTitle.localizedString, userName)
         AmityAlertController.present(title: title,
-                                   message: AmityLocalizedStringSet.somethingWentWrongWithTryAgain.localizedString,
-                                   actions: [.ok(handler: nil)], from: self)
+                                     message: AmityLocalizedStringSet.somethingWentWrongWithTryAgain.localizedString,
+                                     actions: [.ok(handler: nil)], from: self)
     }
     
     func screenViewModel(_ viewModel: AmityUserSettingsScreenViewModelType, failure error: AmityError) {
@@ -119,5 +104,43 @@ extension AmityUserSettingsViewController: AmityUserSettingsScreenViewModelDeleg
         default:
             break
         }
+    }
+    
+    // Handle action completion
+    func screenViewModel(_ viewModel: AmityUserSettingsScreenViewModelType, didCompleteAction action: AmityUserSettingsItem, error: AmityError?) {
+        
+        // Handle action completion here
+        switch action {
+        case .unfollow:
+            if let _ = error {
+                let userName = screenViewModel?.dataSource.user?.displayName ?? ""
+                let title = String.localizedStringWithFormat(AmityLocalizedStringSet.UserSettings.UserSettingsMessages.unfollowFailTitle.localizedString, userName)
+                AmityAlertController.present(title: title, message: AmityLocalizedStringSet.somethingWentWrongWithTryAgain.localizedString, actions: [.ok(handler: nil)], from: self)
+            }
+        case .report, .unreport:
+            let successMessage = action == .report ? AmityLocalizedStringSet.HUD.reportSent.localizedString : AmityLocalizedStringSet.HUD.unreportSent.localizedString
+            
+            if let _ = error {
+                self.displayDefaultErrorHUD()
+            } else {
+                AmityHUD.show(.success(message: successMessage))
+            }
+            
+        case .basicInfo, .manage, .editProfile:
+            break
+        case .blockUser, .unblockUser:
+            let successMessage = action == .blockUser ? AmityLocalizedStringSet.UserSettings.UserSettingsMessages.blockUserSuccess.localizedString : AmityLocalizedStringSet.UserSettings.UserSettingsMessages.unblockUserSuccess.localizedString
+            let failureMessage = action == .blockUser ? AmityLocalizedStringSet.UserSettings.UserSettingsMessages.blockUserFailedTitle.localizedString : AmityLocalizedStringSet.UserSettings.UserSettingsMessages.unblockUserFailedTitle.localizedString
+            
+            if let _ = error {
+                AmityHUD.show(.error(message: failureMessage))
+            } else {
+                AmityHUD.show(.success(message: successMessage))
+            }
+        }
+    }
+    
+    func displayDefaultErrorHUD() {
+        AmityHUD.show(.error(message: AmityLocalizedStringSet.HUD.somethingWentWrong.localizedString))
     }
 }

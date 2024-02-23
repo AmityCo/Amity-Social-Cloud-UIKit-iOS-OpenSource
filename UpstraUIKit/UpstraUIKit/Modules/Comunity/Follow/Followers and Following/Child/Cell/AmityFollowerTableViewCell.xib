@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="21507" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="22154" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21505"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="22130"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -11,15 +11,15 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
-        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="KGk-i7-Jjw" customClass="AmityFollowerTableViewCell" customModule="AmityUIKit" customModuleProvider="target">
-            <rect key="frame" x="0.0" y="0.0" width="352" height="82"/>
+        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" rowHeight="55" id="KGk-i7-Jjw" customClass="AmityFollowerTableViewCell" customModule="AmityUIKit" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="352" height="55"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
-                <rect key="frame" x="0.0" y="0.0" width="352" height="82"/>
+                <rect key="frame" x="0.0" y="0.0" width="352" height="55"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="pcw-3w-nO2" customClass="AmityAvatarView" customModule="AmityUIKit" customModuleProvider="target">
-                        <rect key="frame" x="16" y="21" width="40" height="40"/>
+                        <rect key="frame" x="16" y="4" width="40" height="40"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
                             <constraint firstAttribute="width" constant="40" id="A1E-ZM-h3e"/>
@@ -27,20 +27,20 @@
                         </constraints>
                     </view>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="I6d-21-7C6">
-                        <rect key="frame" x="68" y="31" width="41.5" height="20.5"/>
+                        <rect key="frame" x="68" y="14" width="41.5" height="20.5"/>
                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                         <nil key="textColor"/>
                         <nil key="highlightedColor"/>
                     </label>
                     <imageView hidden="YES" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="uM1-Q6-bBV">
-                        <rect key="frame" x="113.5" y="33" width="0.0" height="16"/>
+                        <rect key="frame" x="113.5" y="16" width="0.0" height="16"/>
                         <constraints>
                             <constraint firstAttribute="width" id="bk6-a2-zw0"/>
                             <constraint firstAttribute="height" constant="16" id="fMp-qD-5xz"/>
                         </constraints>
                     </imageView>
                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="RVq-e1-wT7">
-                        <rect key="frame" x="312" y="29" width="24" height="24"/>
+                        <rect key="frame" x="312" y="12" width="24" height="24"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="24" id="aqk-bM-brb"/>
                             <constraint firstAttribute="width" constant="24" id="j4g-aD-4S7"/>
@@ -53,14 +53,16 @@
                 </subviews>
                 <constraints>
                     <constraint firstItem="I6d-21-7C6" firstAttribute="leading" secondItem="pcw-3w-nO2" secondAttribute="trailing" constant="12" id="4qh-Zh-OBl"/>
+                    <constraint firstAttribute="bottom" secondItem="pcw-3w-nO2" secondAttribute="bottom" constant="4" id="Bhx-e9-CTT"/>
                     <constraint firstAttribute="trailing" secondItem="RVq-e1-wT7" secondAttribute="trailing" constant="16" id="Hnd-ue-1vg"/>
                     <constraint firstItem="uM1-Q6-bBV" firstAttribute="leading" secondItem="I6d-21-7C6" secondAttribute="trailing" constant="4" id="NJI-1N-aOx"/>
                     <constraint firstItem="RVq-e1-wT7" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="uM1-Q6-bBV" secondAttribute="trailing" constant="12" id="NQ7-0d-wER"/>
+                    <constraint firstItem="RVq-e1-wT7" firstAttribute="centerY" secondItem="pcw-3w-nO2" secondAttribute="centerY" id="OM1-QR-wss"/>
                     <constraint firstItem="I6d-21-7C6" firstAttribute="centerY" secondItem="pcw-3w-nO2" secondAttribute="centerY" id="Vom-Wf-DpB"/>
                     <constraint firstItem="pcw-3w-nO2" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="16" id="ZjB-r2-Lap"/>
                     <constraint firstItem="uM1-Q6-bBV" firstAttribute="centerY" secondItem="I6d-21-7C6" secondAttribute="centerY" id="ac7-57-TJs"/>
                     <constraint firstItem="RVq-e1-wT7" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="dqv-ms-55a"/>
-                    <constraint firstItem="pcw-3w-nO2" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="tng-XC-oIN"/>
+                    <constraint firstItem="pcw-3w-nO2" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="4" id="vnE-PH-YaB"/>
                 </constraints>
             </tableViewCellContentView>
             <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
@@ -71,7 +73,7 @@
                 <outlet property="displayNameLabel" destination="I6d-21-7C6" id="XqY-jG-A0N"/>
                 <outlet property="optionButton" destination="RVq-e1-wT7" id="3It-fG-MIM"/>
             </connections>
-            <point key="canvasLocation" x="63.768115942028992" y="72.321428571428569"/>
+            <point key="canvasLocation" x="63.768115942028992" y="63.28125"/>
         </tableViewCell>
     </objects>
     <resources>

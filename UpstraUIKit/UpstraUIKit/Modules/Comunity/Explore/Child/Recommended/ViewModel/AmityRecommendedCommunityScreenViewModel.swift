@@ -41,15 +41,16 @@ extension AmityRecommendedCommunityScreenViewModel {
 // MARK: - Action
 extension AmityRecommendedCommunityScreenViewModel {
     func retrieveRecommended() {
-        recommendedController.retrieve { [weak self] result in
-            self?.debouncer.run {
-                guard let strongSelf = self else { return }
+        self.debouncer.run { [weak self] in
+            guard let self else { return }
+            
+            self.recommendedController.retrieve { result in
                 switch result {
                 case .success(let community):
-                    strongSelf.communities = community
-                    strongSelf.delegate?.screenViewModel(strongSelf, didRetrieveRecommended: community, isEmpty: community.isEmpty)
+                    self.communities = community
+                    self.delegate?.screenViewModel(self, didRetrieveRecommended: community, isEmpty: community.isEmpty)
                 case .failure(let error):
-                    strongSelf.delegate?.screenViewModel(strongSelf, didFail: error)
+                    self.delegate?.screenViewModel(self, didFail: error)
                 }
             }
         }

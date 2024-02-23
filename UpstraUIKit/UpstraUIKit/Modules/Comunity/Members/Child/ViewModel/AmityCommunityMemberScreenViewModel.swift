@@ -48,7 +48,7 @@ extension AmityCommunityMemberScreenViewModel {
     func member(at indexPath: IndexPath) -> AmityCommunityMembershipModel {
         return members[indexPath.row]
     }
-
+    
     func getReportUserStatus(at indexPath: IndexPath, completion: ((Bool) -> Void)?) {
         guard let user = member(at: indexPath).user else { return }
         flagger = AmityUserFlagger(client: AmityUIKitManagerInternal.shared.client, userId: user.userId)
