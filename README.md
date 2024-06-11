@@ -1,6 +1,11 @@
+### ‼️ IMPORTANT ‼️ ###
+We have stopped active development in this repository and migrated to a [New Repository](https://github.com/AmityCo/ASC-UIKit-iOS-OpenSource). Please refer to our [documentation](https://docs.amity.co/amity-uikit/ios/ios-uikit-installation-guide#bln34rs78cz) for more details.
+
+---
+
 <img align="right"
 src="https://user-images.githubusercontent.com/100549875/155941445-b1830713-5f9f-4903-9383-f36053a0775b.png"
-alt="Amity Social Cloud SDKs" width="50%" />
+alt="Amit⚠️y Social Cloud SDKs" width="50%" />
 
 <img align="left"
 src="https://user-images.githubusercontent.com/100549875/155947065-3cc4291c-d600-40a1-bc49-4ff5e9b9d1be.svg"
